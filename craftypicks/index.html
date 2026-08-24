@@ -312,14 +312,27 @@ footer{background:var(--bg-2);padding:56px 0 40px}
         <div class="fineprint">No card required &middot; Nothing for sale &middot; 21+</div>
       </div>
       
-      <div class="play" style="grid-column:1/-1">
+      <div class="play" data-league="mlb">
         <div class="play-top">
-          <span class="stamp">No qualifying plays</span>
-          <span class="stamp">Checked every game on the board</span>
+          <div style="display:flex;align-items:center;gap:9px">
+            <span class="dot"></span>
+            <span class="stamp on">Posted 7:33 PM ET</span>
+          </div>
+          <span class="stamp">Play 1 of 6</span>
         </div>
         <div class="play-body">
-          <div class="pick" style="color:var(--muted)">No plays today</div>
-          <p style="margin-top:10px;max-width:60ch">The scanner hasn't run yet. The first card posts at 9:00 AM ET once setup is finished.</p>
+          <div class="pick">Sox ML</div>
+          <div class="meta">MLB &middot; Moneyline
+            &middot; +160 &middot; MyBookie.ag</div>
+          <div class="matchup-line">Boston Red Sox @ Miami Marlins &middot; 6:41 PM ET</div>
+          <ul class="reasons"><li>Vig-free consensus across <b>6 books</b> is +143 (41.2% to win)</li><li>Best number on the board is <b>+160 at MyBookie.ag</b></li><li><b>5 of 6</b> books price this shorter than we're getting it</li><li>Expected value at that price: <b>+7.2%</b> per unit risked</li></ul>
+          <div class="stats">
+            <div class="stat"><div class="k">Stake</div><div class="v">1.0u</div></div>
+            <div class="stat"><div class="k">Edge vs fair</div>
+              <div class="v g">+7.2%</div></div>
+            <div class="stat"><div class="k">Fair price</div>
+              <div class="v">+143</div></div>
+          </div>
         </div>
       </div>
     </div>
@@ -472,7 +485,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
     </div>
     <div class="foot-bot">
       <p>&copy; 2026 Craftypicks. Plays are posted before the number moves and graded exactly as posted.</p>
-      <span class="mono" style="letter-spacing:.14em;text-transform:uppercase">Board updated —</span>
+      <span class="mono" style="letter-spacing:.14em;text-transform:uppercase">Board updated 2026-08-24 19:33</span>
     </div>
   </div>
 </footer>
