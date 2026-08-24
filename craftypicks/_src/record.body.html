@@ -1,0 +1,78 @@
+<section style="background:linear-gradient(180deg,#0A0C0F,var(--bg))">
+  <div class="wrap" style="padding:56px 28px 46px">
+    <div class="eyebrow">Every play, since day one</div>
+    <h1 style="font-size:clamp(32px,4.2vw,50px);margin:14px 0 16px">Track record</h1>
+    <p class="lead">{{RECORD_INTRO}}</p>
+  </div>
+</section>
+
+<section class="pad-sm">
+  <div class="wrap">
+    <div class="kpis">{{KPI_RECORD}}</div>
+  </div>
+</section>
+
+<section class="pad-sm">
+  <div class="wrap">
+    <div class="sec-head" style="margin-bottom:30px">
+      <div class="eyebrow muted">Month by month</div>
+      <h2 style="font-size:26px;margin-top:10px">Units won and lost</h2>
+      <p style="font-size:15px;margin-top:10px">{{MONTHS_LINE}}</p>
+    </div>
+
+    <figure class="card" style="padding:30px 26px 22px;margin:0">
+      {{MONTH_CHART}}
+      <figcaption class="up" style="margin-top:18px;color:var(--dim);text-transform:none;letter-spacing:.04em;font-size:11.5px">Units, flat 1u stakes. Green bars are winning months, red bars losing months. The current month is partial.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="pad-sm">
+  <div class="wrap">
+    <div class="sec-head" style="margin-bottom:26px">
+      <div class="eyebrow muted">By league</div>
+      <h2 style="font-size:26px;margin-top:10px">Where the edge actually comes from</h2>
+    </div>
+    <div class="scroll-x">
+      <table class="tbl">
+        <thead>
+          <tr><th>League</th><th>Plays</th><th>Record</th><th>Win %</th><th>Units</th><th>ROI</th></tr>
+        </thead>
+        <tbody>{{LEAGUE_ROWS}}</tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="pad-sm">
+  <div class="wrap">
+    <div class="split" style="margin-bottom:26px">
+      <div>
+        <div class="eyebrow muted">Play log</div>
+        <h2 style="font-size:26px;margin-top:10px">{{LOG_HEADING}}</h2>
+      </div>
+      <span class="up">Updated daily at {{POST_TIME}}</span>
+    </div>
+    <div class="scroll-x">
+      <table class="tbl">
+        <thead>
+          <tr><th>Date</th><th>Play</th><th>League</th><th>Price</th><th>Edge at post</th><th>Result</th><th>Return</th></tr>
+        </thead>
+        <tbody>{{LOG_ROWS}}</tbody>
+      </table>
+    </div>
+    <div class="note" style="margin-top:26px">
+      <p class="disclaimer"><b style="color:var(--txt)">"Edge at post" is the honest number to judge us on.</b> It's how much better than the vig-free market consensus the play was priced when it was posted &mdash; the thing the process is actually trying to produce. Results swing wildly over any short stretch; the edge column is what should stay positive. A hot month with thin edges is luck, and it gives back.</p>
+    </div>
+  </div>
+</section>
+
+<section class="cta-band">
+  <div class="wrap">
+    <div class="eyebrow">Nothing here is behind a paywall</div>
+    <h2>Follow the plays, judge the record yourself</h2>
+    <p>The card goes out at {{POST_TIME}} every day, with the previous day's grades attached. Free, permanently.</p>
+    {{SIGNUP}}
+    <div class="fineprint">Past results never guarantee future results &middot; 21+</div>
+  </div>
+</section>

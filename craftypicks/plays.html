@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Today's Plays — Craftypicks</title>
+<meta name="description" content="Craftypicks posts free NBA, NFL, MLB and college basketball plays every day — the number, the price, the reasoning, and a fully public track record. Nothing for sale.">
+<meta property="og:title" content="Today's Plays — Craftypicks">
+<meta property="og:description" content="Free daily plays with receipts on every one.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#08090B">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%2308090B'/><path d='M8 20 L14 12 L18 17 L24 9' stroke='%233BE081' stroke-width='2.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>">
+<style>
+:root{
+  --bg:#08090B;
+  --bg-2:#0C0E11;
+  --panel:#101317;
+  --panel-2:#141821;
+  --line:#1D222A;
+  --line-2:#272D37;
+  --txt:#E9EDF2;
+  --muted:#8B939E;
+  --dim:#5D6570;
+  --green:#3BE081;
+  --green-dim:#1F7F4B;
+  --red:#FF5C5C;
+  --amber:#F5C451;
+  --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  --sans:"Inter","Helvetica Neue",Helvetica,Arial,sans-serif;
+  --maxw:1220px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);color:var(--txt);font-family:var(--sans);
+  -webkit-font-smoothing:antialiased;line-height:1.55;overflow-x:hidden;
+}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px}
+
+/* ---------- type ---------- */
+.eyebrow{
+  font-family:var(--mono);font-size:11px;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--green);font-weight:500;
+}
+.eyebrow.muted{color:var(--dim)}
+h1,h2,h3,h4{font-weight:800;letter-spacing:-.03em;line-height:1.05}
+h1{font-size:clamp(38px,5.4vw,68px)}
+h2{font-size:clamp(28px,3.4vw,42px)}
+h3{font-size:20px;letter-spacing:-.02em}
+p{color:var(--muted);font-size:16px}
+.lead{font-size:18px;max-width:56ch}
+.mono{font-family:var(--mono)}
+.up{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim)}
+.g{color:var(--green)}
+.r{color:var(--red)}
+
+/* ---------- nav ---------- */
+header.nav{
+  position:sticky;top:0;z-index:50;background:rgba(8,9,11,.82);
+  backdrop-filter:blur(14px);border-bottom:1px solid var(--line);
+}
+.nav-in{max-width:var(--maxw);margin:0 auto;padding:0 28px;height:68px;
+  display:flex;align-items:center;gap:38px}
+.logo{font-weight:800;font-size:16px;letter-spacing:.24em;text-transform:uppercase}
+.logo span{color:var(--green)}
+.nav-links{display:flex;gap:28px;margin-right:auto}
+.nav-links a{font-size:14px;color:var(--muted);transition:color .15s}
+.nav-links a:hover,.nav-links a.on{color:var(--txt)}
+.nav-cta{display:flex;align-items:center;gap:18px}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;
+  font-weight:500;padding:13px 22px;border:1px solid var(--green);color:var(--green);
+  background:transparent;cursor:pointer;transition:.15s;white-space:nowrap;
+}
+.btn:hover{background:rgba(59,224,129,.08)}
+.btn.solid{background:var(--green);color:#04150C;border-color:var(--green);font-weight:700}
+.btn.solid:hover{background:#59EA95}
+.btn.ghost{border-color:var(--line-2);color:var(--txt)}
+.btn.ghost:hover{border-color:var(--muted);background:rgba(255,255,255,.03)}
+.btn.sm{padding:10px 16px;font-size:11px}
+.link-quiet{font-size:14px;color:var(--muted)}
+.link-quiet:hover{color:var(--txt)}
+.burger{display:none;background:none;border:0;color:var(--txt);font-size:22px;cursor:pointer}
+
+/* ---------- layout blocks ---------- */
+section{border-bottom:1px solid var(--line)}
+.pad{padding:96px 0}
+.pad-sm{padding:64px 0}
+.grid-2{display:grid;grid-template-columns:1.05fr .95fr;gap:64px;align-items:center}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.sec-head{max-width:60ch;margin-bottom:44px}
+.sec-head h2{margin:14px 0 14px}
+
+/* ---------- hero ---------- */
+.hero{
+  position:relative;overflow:hidden;
+  background:
+    radial-gradient(900px 420px at 76% 22%,rgba(59,224,129,.09),transparent 62%),
+    linear-gradient(180deg,#0A0C0F 0%,var(--bg) 100%);
+}
+.hero .wrap{padding-top:104px;padding-bottom:104px}
+.hero h1{margin:22px 0 24px}
+.hero-cta{display:flex;gap:14px;margin:36px 0 18px;flex-wrap:wrap}
+.fineprint{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim)}
+.gridlines{
+  position:absolute;inset:0;pointer-events:none;opacity:.5;
+  background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);
+  background-size:64px 64px;
+  -webkit-mask-image:radial-gradient(700px 500px at 70% 30%,#000,transparent 75%);
+  mask-image:radial-gradient(700px 500px at 70% 30%,#000,transparent 75%);
+}
+.hero .wrap{position:relative;z-index:1}
+
+/* ---------- play card ---------- */
+.card{background:var(--panel);border:1px solid var(--line);}
+.play{background:var(--panel);border:1px solid var(--line-2);position:relative}
+.play::before{content:"";position:absolute;top:-1px;left:22%;right:22%;height:1px;
+  background:linear-gradient(90deg,transparent,var(--green),transparent);opacity:.8}
+.play-top{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:14px 20px;border-bottom:1px solid var(--line);
+}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--green);display:inline-block;
+  box-shadow:0 0 0 3px rgba(59,224,129,.16);animation:pulse 2.4s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+.stamp{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim)}
+.stamp.on{color:var(--green)}
+.play-body{padding:22px 20px 20px}
+.pick{font-size:26px;font-weight:800;letter-spacing:-.02em;margin-bottom:8px}
+.meta{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin-bottom:18px}
+.mock-banner{
+  background:rgba(245,196,81,.12);border-bottom:1px solid rgba(245,196,81,.35);
+  color:var(--amber);font-family:var(--mono);font-size:11.5px;letter-spacing:.04em;
+  padding:11px 28px;text-align:center;
+}
+.mock-banner b{color:var(--amber)}
+.matchup-line{font-size:13px;color:var(--muted);margin:-8px 0 16px}
+.signup-embed{width:100%;max-width:440px;height:70px;margin:26px auto 10px;border:0;display:block}
+.form-msg{font-size:13px;color:var(--green);min-height:20px;margin-top:6px}
+.reasons{list-style:none;display:grid;gap:9px;margin-bottom:20px}
+.reasons li{font-size:13.5px;color:var(--muted);padding-left:14px;border-left:2px solid var(--line-2);line-height:1.45}
+.reasons li b{color:var(--txt);font-weight:600}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--line);}
+.stat{padding:14px 16px;border-right:1px solid var(--line)}
+.stat:last-child{border-right:0}
+.stat .k{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim)}
+.stat .v{font-family:var(--mono);font-size:19px;font-weight:600;margin-top:6px}
+
+/* ---------- feature tiles ---------- */
+.tile{background:var(--panel);border:1px solid var(--line);padding:28px 24px;transition:.18s}
+.tile:hover{border-color:var(--line-2);background:var(--panel-2)}
+.tile .num{font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:var(--green);
+  margin-bottom:18px;text-transform:uppercase}
+[id]{scroll-margin-top:96px}
+.tile h3{margin-bottom:10px}
+.tile p{font-size:14.5px}
+
+/* ---------- kpi strip ---------- */
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line);background:var(--panel)}
+.kpi{padding:28px 24px;border-right:1px solid var(--line)}
+.kpi:last-child{border-right:0}
+.kpi .k{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim)}
+.kpi .v{font-size:34px;font-weight:800;letter-spacing:-.03em;margin-top:10px;font-family:var(--mono)}
+.kpi .s{font-size:12.5px;color:var(--dim);margin-top:4px}
+
+/* ---------- table ---------- */
+.tbl{width:100%;border-collapse:collapse;border:1px solid var(--line);background:var(--panel)}
+.tbl th{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--dim);text-align:left;padding:14px 18px;border-bottom:1px solid var(--line);font-weight:500;
+  background:var(--bg-2);white-space:nowrap;
+}
+.tbl td{padding:15px 18px;border-bottom:1px solid var(--line);font-size:14px;color:var(--muted)}
+.tbl tr:last-child td{border-bottom:0}
+.tbl td.strong{color:var(--txt);font-weight:600}
+.tbl td.m{font-family:var(--mono);font-size:13px}
+.tbl tbody tr:hover{background:var(--panel-2)}
+.tag{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+  padding:4px 8px;border:1px solid var(--line-2);color:var(--muted)}
+.tag.win{color:var(--green);border-color:rgba(59,224,129,.4);background:rgba(59,224,129,.07)}
+.tag.loss{color:var(--red);border-color:rgba(255,92,92,.35);background:rgba(255,92,92,.06)}
+.tag.push{color:var(--amber);border-color:rgba(245,196,81,.35);background:rgba(245,196,81,.06)}
+.scroll-x{overflow-x:auto}
+
+/* ---------- filters ---------- */
+.filters{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.chip{
+  font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+  padding:9px 15px;border:1px solid var(--line-2);color:var(--muted);background:transparent;
+  cursor:pointer;transition:.15s;
+}
+.chip:hover{color:var(--txt);border-color:var(--muted)}
+.chip.on{background:var(--green);border-color:var(--green);color:#04150C;font-weight:700}
+
+/* ---------- misc ---------- */
+.split{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap}
+.bar{height:1px;background:var(--line);margin:0}
+.quote{border-left:2px solid var(--green);padding:6px 0 6px 20px;font-size:17px;color:var(--txt);max-width:60ch}
+.faq{border-top:1px solid var(--line)}
+.faq details{border-bottom:1px solid var(--line);padding:20px 0}
+.faq summary{cursor:pointer;font-weight:600;font-size:16.5px;list-style:none;display:flex;justify-content:space-between;gap:20px}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";color:var(--green);font-family:var(--mono);font-size:18px}
+.faq details[open] summary::after{content:"\2013"}
+.faq p{margin-top:12px;max-width:75ch;font-size:15px}
+.note{border:1px solid var(--line);background:var(--bg-2);padding:22px 24px}
+.note p{font-size:13.5px}
+.cta-band{background:
+  radial-gradient(700px 300px at 50% 0%,rgba(59,224,129,.10),transparent 65%),var(--bg-2);
+  text-align:center}
+.cta-band .wrap{padding:88px 28px}
+.cta-band h2{margin:16px auto 18px;max-width:20ch}
+.cta-band p{margin:0 auto;max-width:52ch}
+.cta-band .hero-cta{justify-content:center}
+.form-row{display:flex;gap:10px;max-width:440px;margin:30px auto 14px;flex-wrap:wrap}
+.form-row input{
+  flex:1;min-width:220px;background:var(--panel);border:1px solid var(--line-2);color:var(--txt);
+  padding:13px 16px;font-family:var(--mono);font-size:13px;outline:none;
+}
+.form-row input:focus{border-color:var(--green)}
+.form-row input::placeholder{color:var(--dim)}
+
+/* ---------- monthly units chart ---------- */
+.chart{width:100%}
+.bars{display:flex;align-items:stretch;gap:12px;position:relative}
+.bars::after{content:"";position:absolute;left:0;right:0;top:180px;height:1px;background:var(--line-2)}
+.col{flex:1;display:flex;flex-direction:column;min-width:0;cursor:default}
+.pos{height:180px;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:7px}
+.neg{height:86px;display:flex;flex-direction:column;justify-content:flex-start;align-items:center;gap:7px}
+.col i{display:block;width:100%;max-width:56px;margin:0 auto;background:var(--green);
+  border-radius:4px 4px 0 0;transition:filter .15s}
+.col i.down{background:var(--red);border-radius:0 0 4px 4px}
+.col:hover i{filter:brightness(1.18)}
+.col .val{font-family:var(--mono);font-size:12px;font-weight:500;letter-spacing:.02em}
+.col .mlab{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--dim);text-align:center;margin-top:10px}
+@media(max-width:620px){
+  .bars{gap:6px}
+  .col .val{font-size:10px}
+  .col .mlab{font-size:9px;letter-spacing:.06em}
+}
+
+/* ---------- footer ---------- */
+footer{background:var(--bg-2);padding:56px 0 40px}
+.foot-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:36px;margin-bottom:44px}
+.foot-grid h4{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--dim);font-weight:500;margin-bottom:16px}
+.foot-grid a{display:block;font-size:14px;color:var(--muted);margin-bottom:10px}
+.foot-grid a:hover{color:var(--txt)}
+.foot-bot{border-top:1px solid var(--line);padding-top:26px;display:flex;justify-content:space-between;
+  gap:20px;flex-wrap:wrap}
+.foot-bot p,.foot-bot span{font-size:12px;color:var(--dim)}
+.disclaimer{font-size:12px;color:var(--dim);line-height:1.7;max-width:70ch}
+
+/* ---------- responsive ---------- */
+@media(max-width:960px){
+  .grid-2{grid-template-columns:1fr;gap:44px}
+  .grid-3,.grid-4{grid-template-columns:1fr 1fr}
+  .kpis{grid-template-columns:1fr 1fr}
+  .kpi:nth-child(2){border-right:0}
+  .kpi:nth-child(-n+2){border-bottom:1px solid var(--line)}
+  .foot-grid{grid-template-columns:1fr 1fr}
+  .nav-in{height:auto;flex-wrap:wrap;padding-top:16px;gap:16px}
+  .nav-links{order:3;width:100%;margin-right:0;gap:24px;overflow-x:auto;
+    border-top:1px solid var(--line);padding:12px 0}
+  .nav-links a{font-size:13.5px;white-space:nowrap}
+  .nav-cta{margin-left:auto}
+  .pad{padding:68px 0}
+}
+@media(max-width:620px){
+  .wrap,.nav-in{padding-left:20px;padding-right:20px}
+  .grid-3,.grid-4{grid-template-columns:1fr}
+  .hero .wrap{padding-top:64px;padding-bottom:72px}
+  .nav-cta .link-quiet{display:none}
+  .stats{grid-template-columns:1fr 1fr}
+  .stat:nth-child(2){border-right:0}
+}
+
+</style>
+</head>
+<body>
+<header class="nav">
+  <div class="nav-in">
+    <a href="index.html" class="logo">Crafty<span>picks</span></a>
+    <nav class="nav-links"><a href="plays.html" class="on">Today's Plays</a><a href="record.html" class="">Track Record</a><a href="about.html" class="">How It Works</a></nav>
+    <div class="nav-cta">
+      <a href="about.html" class="link-quiet">Why it's free</a>
+      <a href="plays.html" class="btn solid sm">Today's plays</a>
+    </div>
+  </div>
+</header>
+
+<section style="background:linear-gradient(180deg,#0A0C0F,var(--bg))">
+  <div class="wrap" style="padding:56px 28px 40px">
+    <div class="split">
+      <div>
+        <div class="eyebrow">Board scanned · Next card posts at 9:00 AM ET</div>
+        <h1 style="font-size:clamp(32px,4.2vw,50px);margin:14px 0 14px">Today's plays</h1>
+        <p class="lead">No plays on the card today. The board was scanned and nothing cleared the edge threshold — that's a normal result, not an outage.</p>
+      </div>
+      <div class="card" style="padding:18px 22px;min-width:240px">
+        <div class="stamp">Card summary</div>
+        <div class="mono" style="font-size:30px;font-weight:600;margin:8px 0 2px">0.0u <span style="color:var(--dim);font-size:15px">risked</span></div>
+        <div style="font-size:13px;color:var(--muted)">—</div>
+      </div>
+    </div>
+
+    
+  </div>
+</section>
+
+<section class="pad-sm">
+  <div class="wrap">
+    <div class="grid-2" id="board" style="align-items:stretch;gap:22px">
+      <div class="play" style="grid-column:1/-1">
+        <div class="play-top">
+          <span class="stamp">No qualifying plays</span>
+          <span class="stamp">Checked every game on the board</span>
+        </div>
+        <div class="play-body">
+          <div class="pick" style="color:var(--muted)">No plays today</div>
+          <p style="margin-top:10px;max-width:60ch">The scanner hasn't run yet. The first card posts at 9:00 AM ET once setup is finished.</p>
+        </div>
+      </div></div>
+
+    <div class="note" style="margin-top:30px">
+      <p class="disclaimer"><b style="color:var(--txt)">Read the price, not just the pick.</b> Each play is only a play at the number and book listed &mdash; that specific price is where the edge lives. If the number has moved against it by the time you look, the edge is gone. Pass on it. Chasing a moved number is how a good process turns into a bad month.</p>
+    </div>
+  </div>
+</section>
+
+<section class="pad-sm" id="results">
+  <div class="wrap">
+    <div class="split" style="margin-bottom:26px">
+      <div>
+        <div class="eyebrow muted">Graded this morning</div>
+        <h2 style="font-size:26px;margin-top:10px">Last card &mdash; the last graded card</h2>
+      </div>
+      <div style="text-align:right">
+        <div class="stamp">Net</div>
+        <div class="mono " style="font-size:24px;font-weight:600">0.00u</div>
+      </div>
+    </div>
+    <div class="scroll-x">
+      <table class="tbl">
+        <thead>
+          <tr><th>Play</th><th>League</th><th>Market</th><th>Price</th><th>Stake</th><th>Result</th><th>Return</th></tr>
+        </thead>
+        <tbody><tr><td colspan="7" style="text-align:center;padding:34px 18px">Nothing graded from yesterday yet.</td></tr></tbody>
+      </table>
+    </div>
+    <div style="margin-top:24px;display:flex;gap:14px;flex-wrap:wrap">
+      <a href="record.html" class="btn ghost">See every play ever posted</a>
+    </div>
+  </div>
+</section>
+
+<section class="cta-band">
+  <div class="wrap">
+    <div class="eyebrow">Don't want to check the site every day?</div>
+    <h2>Have the card sent to you at 9:00 AM ET</h2>
+    <p>Same plays, same math, same grading &mdash; delivered before the numbers move. Always free.</p>
+    <form class="form-row" data-signup>
+      <input type="email" required placeholder="you@email.com" aria-label="Email address">
+      <button class="btn solid" type="submit">Send me the plays</button>
+    </form>
+    <p class="form-msg" role="status"></p>
+    <div class="fineprint">Unsubscribe any time &middot; 21+</div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <a href="index.html" class="logo" style="display:inline-block;margin-bottom:14px">Crafty<span>picks</span></a>
+        <p style="font-size:14px;max-width:34ch">Free plays, posted daily, graded in public. No packages, no premium tier, no DMs.</p>
+      </div>
+      <div>
+        <h4>Plays</h4>
+        <a href="plays.html">Today's board</a>
+        <a href="plays.html#results">Yesterday's results</a>
+        <a href="record.html">Full play log</a>
+      </div>
+      <div>
+        <h4>Transparency</h4>
+        <a href="record.html">Track record</a>
+        <a href="about.html#method">Methodology</a>
+        <a href="about.html#units">Units &amp; bankroll</a>
+      </div>
+      <div>
+        <h4>About</h4>
+        <a href="about.html">How it works</a>
+        <a href="about.html#faq">FAQ</a>
+        <a href="about.html#responsible">Play responsibly</a>
+      </div>
+    </div>
+    <div class="note" style="margin-bottom:26px">
+      <p class="disclaimer"><b style="color:var(--txt)">21+ only. For entertainment purposes.</b> Craftypicks is not a sportsbook and does not accept wagers, hold funds, or facilitate betting of any kind. Nothing here is financial advice or a guarantee of profit &mdash; every play posted can lose, and most winning stretches are followed by losing ones. Never wager money you cannot afford to lose. If gambling stops being fun, call <b style="color:var(--txt)">1-800-GAMBLER</b> or text 800GAM to 800177.</p>
+    </div>
+    <div class="foot-bot">
+      <p>&copy; 2026 Craftypicks. Plays are posted before the number moves and graded exactly as posted.</p>
+      <span class="mono" style="letter-spacing:.14em;text-transform:uppercase">Board updated —</span>
+    </div>
+  </div>
+</footer>
+<script>
+document.querySelectorAll('.chip[data-filter]').forEach(function(chip){
+  if(chip.disabled) return;
+  chip.addEventListener('click',function(){
+    document.querySelectorAll('.chip[data-filter]').forEach(function(c){c.classList.remove('on')});
+    chip.classList.add('on');
+    var f=chip.dataset.filter;
+    document.querySelectorAll('#board .play').forEach(function(card){
+      card.style.display=(f==='all'||card.dataset.league===f)?'':'none';
+    });
+  });
+});
+document.querySelectorAll('form[data-signup]').forEach(function(form){
+  form.addEventListener('submit',function(e){
+    e.preventDefault();
+    var msg=form.parentElement.querySelector('.form-msg');
+    form.reset();
+    if(msg) msg.textContent='Email signup isn\u2019t connected yet \u2014 check back shortly.';
+  });
+});
+</script>
+</body>
+</html>

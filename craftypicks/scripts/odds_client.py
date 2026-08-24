@@ -1,0 +1,218 @@
+"""Thin client for The Odds API v4, with credit accounting and a mock mode.
+
+Mock mode (CRAFTYPICKS_MOCK=1, or no API key present) generates plausible
+synthetic odds so the whole pipeline can be developed and tested without
+spending a single credit.
+"""
+from __future__ import annotations
+
+import json
+import os
+import random
+import urllib.error
+import urllib.parse
+import urllib.request
+from datetime import datetime, timedelta, timezone
+
+import config
+
+
+class OddsAPIError(RuntimeError):
+    pass
+
+
+class BudgetExhausted(RuntimeError):
+    pass
+
+
+class OddsClient:
+    def __init__(self, api_key: str | None = None, mock: bool | None = None):
+        self.api_key = api_key or os.environ.get("ODDS_API_KEY", "").strip()
+        env_mock = os.environ.get("CRAFTYPICKS_MOCK", "").strip() == "1"
+        self.mock = env_mock if mock is None else mock
+        if not self.api_key and not self.mock:
+            raise OddsAPIError(
+                "No ODDS_API_KEY set. Add it as a GitHub secret, or run with "
+                "CRAFTYPICKS_MOCK=1 to use synthetic data."
+            )
+        self.credits_used_this_run = 0
+        self.credits_remaining: int | None = None
+
+    # ------------------------------------------------------------------ http
+    def _get(self, path: str, params: dict) -> list | dict:
+        params = {**params, "apiKey": self.api_key}
+        url = f"{config.API_BASE}{path}?{urllib.parse.urlencode(params)}"
+        req = urllib.request.Request(url, headers={"User-Agent": "craftypicks/1.0"})
+        try:
+            with urllib.request.urlopen(req, timeout=30) as resp:
+                body = resp.read().decode("utf-8")
+                used = resp.headers.get("x-requests-last")
+                remaining = resp.headers.get("x-requests-remaining")
+                if used:
+                    self.credits_used_this_run += int(used)
+                if remaining is not None:
+                    self.credits_remaining = int(remaining)
+                return json.loads(body)
+        except urllib.error.HTTPError as e:
+            detail = e.read().decode("utf-8", "replace")[:300]
+            if e.code == 401:
+                raise OddsAPIError(f"API key rejected (401). {detail}") from e
+            if e.code == 429:
+                raise BudgetExhausted(f"Monthly credit quota exhausted (429). {detail}") from e
+            raise OddsAPIError(f"HTTP {e.code} from odds API: {detail}") from e
+        except urllib.error.URLError as e:
+            raise OddsAPIError(f"Network error reaching odds API: {e.reason}") from e
+
+    def _check_budget(self):
+        if (
+            self.credits_remaining is not None
+            and self.credits_remaining < config.MIN_CREDITS_REMAINING
+        ):
+            raise BudgetExhausted(
+                f"Only {self.credits_remaining} credits left this month; "
+                f"floor is {config.MIN_CREDITS_REMAINING}. Stopping so the rest "
+                "of the month still runs."
+            )
+
+    # ------------------------------------------------------------- endpoints
+    def in_season_sports(self) -> list[str]:
+        """Which of our configured leagues are currently active. Free call."""
+        if self.mock:
+            return _mock_in_season()
+        data = self._get("/sports", {})
+        active = {s["key"] for s in data if s.get("active")}
+        wanted = set(config.LEAGUES) | set(config.LEAGUE_ALIASES)
+        return sorted(wanted & active)
+
+    def odds(self, sport_key: str) -> list[dict]:
+        """Current odds for one league. Costs len(MARKETS) x len(REGIONS)."""
+        if self.mock:
+            return _mock_odds(sport_key)
+        self._check_budget()
+        return self._get(
+            f"/sports/{sport_key}/odds",
+            {
+                "regions": config.REGIONS,
+                "markets": ",".join(config.MARKETS),
+                "oddsFormat": config.ODDS_FORMAT,
+                "dateFormat": "iso",
+            },
+        )
+
+    def scores(self, sport_key: str, days_from: int = 2) -> list[dict]:
+        """Recent final scores for grading. Costs 2 credits with daysFrom."""
+        if self.mock:
+            return _mock_scores(sport_key)
+        self._check_budget()
+        return self._get(
+            f"/sports/{sport_key}/scores",
+            {"daysFrom": str(days_from), "dateFormat": "iso"},
+        )
+
+
+# ---------------------------------------------------------------- mock data --
+_TEAMS = {
+    "baseball_mlb": [
+        "Seattle Mariners", "Houston Astros", "Cleveland Guardians", "Detroit Tigers",
+        "Pittsburgh Pirates", "Chicago Cubs", "San Diego Padres", "San Francisco Giants",
+        "Atlanta Braves", "Philadelphia Phillies", "Milwaukee Brewers", "St. Louis Cardinals",
+    ],
+    "americanfootball_nfl": [
+        "Green Bay Packers", "Chicago Bears", "Houston Texans", "Minnesota Vikings",
+        "Cincinnati Bengals", "Buffalo Bills",
+    ],
+    "basketball_nba": [
+        "Memphis Grizzlies", "Denver Nuggets", "Miami Heat", "Boston Celtics",
+        "Phoenix Suns", "Sacramento Kings",
+    ],
+    "basketball_ncaab": [
+        "Purdue Boilermakers", "Michigan State Spartans", "Gonzaga Bulldogs",
+        "Saint Mary's Gaels", "Houston Cougars", "Baylor Bears",
+    ],
+}
+_BOOKS = [
+    ("draftkings", "DraftKings"), ("fanduel", "FanDuel"), ("betmgm", "BetMGM"),
+    ("williamhill_us", "Caesars"), ("betrivers", "BetRivers"), ("pointsbetus", "PointsBet"),
+    ("bovada", "Bovada"), ("mybookieag", "MyBookie"), ("betonlineag", "BetOnline"),
+]
+
+
+def _mock_in_season() -> list[str]:
+    return ["baseball_mlb", "americanfootball_nfl"]
+
+
+def _mock_odds(sport_key: str) -> list[dict]:
+    rng = random.Random(f"odds-{sport_key}-{datetime.now(timezone.utc):%Y-%m-%d}")
+    teams = _TEAMS.get(sport_key, _TEAMS["baseball_mlb"])
+    games = []
+    now = datetime.now(timezone.utc)
+    for i in range(0, len(teams) - 1, 2):
+        away, home = teams[i], teams[i + 1]
+        base_prob = rng.uniform(0.40, 0.60)          # home win probability
+        spread = round(rng.uniform(-7.5, 7.5) * 2) / 2
+        total = round(rng.uniform(6.5, 9.5) * 2) / 2 if "baseball" in sport_key else \
+            round(rng.uniform(36.5, 48.5) * 2) / 2
+        books = []
+        # one book gets a deliberately generous price so the finder has
+        # something to find in mock runs
+        lucky = rng.randrange(len(_BOOKS))
+        for bi, (key, title) in enumerate(_BOOKS):
+            wobble = rng.uniform(-0.012, 0.012)
+            edge_gift = 0.045 if bi == lucky else 0.0
+            p_home = min(0.92, max(0.08, base_prob + wobble - edge_gift))
+            books.append({
+                "key": key, "title": title,
+                "last_update": now.isoformat(),
+                "markets": [
+                    {"key": "h2h", "outcomes": [
+                        {"name": home, "price": _to_american(p_home * 1.024)},
+                        {"name": away, "price": _to_american((1 - p_home) * 1.024)},
+                    ]},
+                    {"key": "spreads", "outcomes": [
+                        {"name": home, "price": _to_american(0.5 * 1.045 + wobble - edge_gift), "point": spread},
+                        {"name": away, "price": _to_american(0.5 * 1.045 - wobble), "point": -spread},
+                    ]},
+                    {"key": "totals", "outcomes": [
+                        {"name": "Over", "price": _to_american(0.5 * 1.045 + wobble), "point": total},
+                        {"name": "Under", "price": _to_american(0.5 * 1.045 - wobble - edge_gift), "point": total},
+                    ]},
+                ],
+            })
+        games.append({
+            "id": f"mock{sport_key}{i}",
+            "sport_key": sport_key,
+            "commence_time": (now + timedelta(hours=rng.randint(4, 11))).isoformat(),
+            "home_team": home, "away_team": away,
+            "bookmakers": books,
+        })
+    return games
+
+
+def _mock_scores(sport_key: str) -> list[dict]:
+    rng = random.Random(f"scores-{sport_key}-{datetime.now(timezone.utc):%Y-%m-%d}")
+    teams = _TEAMS.get(sport_key, _TEAMS["baseball_mlb"])
+    out = []
+    for i in range(0, len(teams) - 1, 2):
+        away, home = teams[i], teams[i + 1]
+        hi = rng.randint(0, 9) if "baseball" in sport_key else rng.randint(10, 34)
+        ai = rng.randint(0, 9) if "baseball" in sport_key else rng.randint(10, 34)
+        out.append({
+            "id": f"mock{sport_key}{i}",
+            "sport_key": sport_key,
+            "completed": True,
+            "home_team": home, "away_team": away,
+            "scores": [
+                {"name": home, "score": str(hi)},
+                {"name": away, "score": str(ai)},
+            ],
+        })
+    return out
+
+
+def _to_american(prob: float) -> int:
+    """Convert an implied probability into a rounded American price."""
+    prob = min(0.95, max(0.05, prob))
+    dec = 1 / prob
+    if dec >= 2:
+        return int(round((dec - 1) * 100 / 5) * 5)
+    return int(round(-100 / (dec - 1) / 5) * 5)
