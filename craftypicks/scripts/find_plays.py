@@ -240,14 +240,22 @@ def _scan_market(game: dict, books: list[dict], market_key: str) -> list[dict]:
 
 def build_card(candidates: list[dict]) -> list[dict]:
     """Rank, thin out, and label the plays that make today's card."""
-    ranked = sorted(candidates, key=lambda c: c["edge_pct"], reverse=True)
+    # Screen plays are a separate experiment, not competitors on edge. They
+    # are rules-based and can legitimately show a negative price edge — the
+    # question we're testing is whether the rules beat the number anyway.
+    # Ranking them against value plays would quietly delete the experiment.
+    screen_cands = [c for c in candidates if c.get("source") == "screen"]
+    value_cands = [c for c in candidates if c.get("source") != "screen"]
+    ranked = (sorted(screen_cands, key=lambda c: c.get("edge_pct", 0), reverse=True)
+              + sorted(value_cands, key=lambda c: c["edge_pct"], reverse=True))
     card: list[dict] = []
     per_league: Counter = Counter()
     seen_events: set[tuple] = set()
 
     props_taken = 0
     for cand in ranked:
-        if len(card) >= config.MAX_PLAYS_PER_DAY:
+        if len(card) >= (config.MAX_PLAYS_PER_DAY
+                         + getattr(config, "SCREEN_EXTRA_SLOTS", 3)):
             break
         is_prop = bool(cand.get("is_prop"))
         # One side and at most one prop per game. Two sides on one event is
@@ -259,10 +267,12 @@ def build_card(candidates: list[dict]) -> list[dict]:
             continue
         if is_prop and props_taken >= getattr(config, "MAX_PROPS_PER_DAY", 2):
             continue
-        if per_league[cand["league"]] >= config.MAX_PLAYS_PER_LEAGUE:
+        is_screen = cand.get("source") == "screen"
+        if not is_screen and per_league[cand["league"]] >= config.MAX_PLAYS_PER_LEAGUE:
             continue
         seen_events.add(key)
-        per_league[cand["league"]] += 1
+        if not is_screen:
+            per_league[cand["league"]] += 1
         if is_prop:
             props_taken += 1
         # Props arrive with their own label and reasoning already attached.
@@ -298,9 +308,9 @@ def _pick_label(play: dict) -> str:
 
 
 def _reasons(play: dict) -> list[str]:
-    fair = om.format_american(play["fair_price"])
-    price = om.format_american(play["price"])
-    pct = f"{play['fair_prob'] * 100:.1f}%"
+    fair = om.format_american(play.get("fair_price", 0))
+    price = om.format_american(play.get("price", 0))
+    pct = f"{play.get('fair_prob', 0) * 100:.1f}%"
     reasons = [
         f"Vig-free consensus across <b>{play['books_counted']} books</b> is {fair} ({pct} to win)",
         f"Best number on the board is <b>{price} at {play['book']}</b>",

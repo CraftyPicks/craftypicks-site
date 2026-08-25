@@ -1,0 +1,147 @@
+<section style="background:linear-gradient(180deg,#0A0C0F,var(--bg))">
+  <div class="wrap" style="padding:56px 28px 46px">
+    <div class="eyebrow">The second system</div>
+    <h1 style="font-size:clamp(32px,4.2vw,50px);margin:14px 0 16px">The strikeout screens</h1>
+    <p class="lead">Craftypicks runs two methods that disagree with each other on purpose. The scanner hunts for prices the market has wrong. These screens ignore price almost entirely and look for a situation instead: the right arm against the right lineup. Both post to the same card, both get graded in public, and the track record reports them separately so you can see which one is actually working.</p>
+  </div>
+</section>
+
+<section class="pad-sm">
+  <div class="wrap">
+    <div class="note">
+      <p class="disclaimer"><b style="color:var(--txt)">Everything on this page is generated from the configuration file the scanner reads.</b> The thresholds below aren't a description of the rules — they <i>are</i> the rules, pulled from the same values that ran this morning. If a number changes in the code, it changes here on the next build. A published methodology that quietly drifts from the code is worse than publishing nothing.</p>
+    </div>
+  </div>
+</section>
+
+<section class="pad-sm" id="screen-a">
+  <div class="wrap">
+    <div class="sec-head" style="margin-bottom:24px">
+      <div class="eyebrow">Screen A</div>
+      <h2 style="font-size:26px;margin-top:10px">Standard over &mdash; the proven core</h2>
+      <p class="lead" style="margin-top:12px">A strikeout pitcher against a lineup that strikes out, at a number low enough to clear on an ordinary start rather than a special one. This is the screen the system trusts most, which is why it's capped hardest &mdash; a good filter applied to too many games stops being a filter.</p>
+    </div>
+    <div class="scroll-x">
+      <table class="tbl">
+        <thead><tr><th>Condition</th><th></th><th>Threshold</th></tr></thead>
+        <tbody>{{SCREEN_A_ROWS}}</tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="pad-sm" id="screen-b">
+  <div class="wrap">
+    <div class="sec-head" style="margin-bottom:24px">
+      <div class="eyebrow">Screen B</div>
+      <h2 style="font-size:26px;margin-top:10px">Elite arm at 6.5 &mdash; plus money only</h2>
+      <p class="lead" style="margin-top:12px">The same idea one rung higher: a genuine high-volume strikeout arm at a number most pitchers can't reach. This screen hits close to a coin flip, and that single fact decides everything about it &mdash; at &minus;120 a coin flip loses money, at +110 it makes money. So the price gate isn't a preference here, it's the rule that makes the screen viable at all.</p>
+    </div>
+    <div class="scroll-x">
+      <table class="tbl">
+        <thead><tr><th>Condition</th><th></th><th>Threshold</th></tr></thead>
+        <tbody>{{SCREEN_B_ROWS}}</tbody>
+      </table>
+    </div>
+    <div class="note" style="margin-top:22px">
+      <p class="disclaimer">The K/9 requirement exists to separate a real strikeout pitcher from an inflated rate. A ground-ball starter who works five innings can post a strong K% without ever approaching seven strikeouts &mdash; the rate says he misses bats when he's out there, and the volume says he isn't out there long enough for it to matter.</p>
+    </div>
+  </div>
+</section>
+
+<section class="pad-sm" id="screen-c">
+  <div class="wrap">
+    <div class="sec-head" style="margin-bottom:24px">
+      <div class="eyebrow">Screen C</div>
+      <h2 style="font-size:26px;margin-top:10px">The under &mdash; and the arms it refuses</h2>
+      <p class="lead" style="margin-top:12px">A capable but not overpowering starter against a lineup that doesn't strike out. The important rule here is the exclusion: high-strikeout arms are thrown out of this screen entirely rather than merely discouraged. They beat weak-contact lineups on pure stuff, and betting the under on them has lost repeatedly.</p>
+    </div>
+    <div class="scroll-x">
+      <table class="tbl">
+        <thead><tr><th>Condition</th><th></th><th>Threshold</th></tr></thead>
+        <tbody>{{SCREEN_C_ROWS}}</tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="pad-sm" id="caps">
+  <div class="wrap">
+    <div class="sec-head" style="margin-bottom:24px">
+      <div class="eyebrow">Hard caps</div>
+      <h2 style="font-size:26px;margin-top:10px">Rules no screen can override</h2>
+      <p class="lead" style="margin-top:12px">These are checked before any screen runs. A play that violates one is rejected no matter how good the spot looks.</p>
+    </div>
+    <div class="scroll-x">
+      <table class="tbl">
+        <thead><tr><th>Condition</th><th></th><th>Threshold</th></tr></thead>
+        <tbody>{{HARD_CAP_ROWS}}</tbody>
+      </table>
+    </div>
+    <div class="note" style="margin-top:22px">
+      <p class="disclaimer"><b style="color:var(--txt)">Total screen plays per day: {{SCREEN_DAILY_CAP}}.</b> That total covers all three screens together. An earlier version capped each screen separately, which meant pitchers rejected by Screen A's limit simply reappeared under Screen B &mdash; five qualifiers produced five bets from a cap of two. A cap another screen can walk around isn't a cap.</p>
+    </div>
+  </div>
+</section>
+
+<section class="pad-sm" id="price">
+  <div class="wrap">
+    <div class="sec-head" style="margin-bottom:24px">
+      <div class="eyebrow">Why the price gates exist</div>
+      <h2 style="font-size:26px;margin-top:10px">What each number has to hit just to break even</h2>
+    </div>
+    <div class="scroll-x">
+      <table class="tbl">
+        <thead><tr><th>Price</th><th>Win rate needed</th><th></th></tr></thead>
+        <tbody>{{BREAKEVEN_ROWS}}</tbody>
+      </table>
+    </div>
+    <div class="note" style="margin-top:22px">
+      <p class="disclaimer">This table is the whole argument for the juice caps. A screen that wins 55% of the time is excellent at &minus;110 and merely fine at &minus;150. Paying up erases the edge quietly, without ever showing up as a losing day &mdash; you just keep winning and slowly not making money.</p>
+    </div>
+  </div>
+</section>
+
+<section class="pad" id="honest">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">What we don't know yet</div>
+      <h2>The part most sites leave out</h2>
+    </div>
+    <div class="grid-2" style="gap:44px;align-items:start">
+      <div class="tile">
+        <div class="num">Unproven</div>
+        <h3>These screens have not been validated</h3>
+        <p style="margin-top:10px">They're a set of rules, running live, with every play graded in public from day one. That's the test. Nobody has shown they beat the closing number over a meaningful sample, including us &mdash; and until the record says otherwise, that's exactly how they should be treated.</p>
+      </div>
+      <div class="tile">
+        <div class="num">Suspect</div>
+        <h3>The vs-roster data is the weakest input</h3>
+        <p style="margin-top:10px">Screens A and B require a career line against the opposing roster. Those samples are small, they mix seasons where the pitcher was a different pitcher, and they skew toward veterans facing division rivals &mdash; which is a filter on the schedule as much as on the matchup. Screen C uses none of it, so comparing C against A and B over time is itself a test of whether that input earns its place.</p>
+      </div>
+      <div class="tile">
+        <div class="num">Ignored</div>
+        <h3>The screens barely look at price</h3>
+        <p style="margin-top:10px">Beyond the juice caps, a screen play can be posted at a number the wider market says is poor value. That's deliberate &mdash; the claim being tested is that the situation is worth more than the price implies. It's also the most likely way this system loses money, and the "vs close" column is what will catch it.</p>
+      </div>
+      <div class="tile">
+        <div class="num">Limited</div>
+        <h3>Coverage is a handful of games a day</h3>
+        <p style="margin-top:10px">Prop odds are billed one game at a time, so the screens only see the games we already pull props for. They are not scanning the full slate, and a play they'd love could go unexamined simply because it wasn't among the games checked.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-band">
+  <div class="wrap">
+    <div class="eyebrow">Two methods, one scoreboard</div>
+    <h2>Watch them compete</h2>
+    <p>The track record reports each system separately &mdash; record, units, and how often each beat the closing number. Whichever loses that comparison over a real sample gets dropped.</p>
+    <div class="hero-cta">
+      <a href="record.html" class="btn solid">See the comparison</a>
+      <a href="plays.html" class="btn ghost">Today's board</a>
+    </div>
+    <div class="fineprint" style="margin-top:22px">21+ &middot; Entertainment only &middot; Nothing here is for sale</div>
+  </div>
+</section>

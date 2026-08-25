@@ -84,6 +84,11 @@ MIN_BOOKS = 6
 MAX_PLAYS_PER_DAY = 6
 MAX_PLAYS_PER_LEAGUE = 3
 
+# Slots reserved for the strikeout screens, on top of the daily cap. They run
+# as a separate experiment and are judged on their own closing-line value, so
+# they neither consume the scanner's allowance nor compete with it on edge.
+SCREEN_EXTRA_SLOTS = 3
+
 # Skip absurd prices. Long shots produce huge "edges" that are mostly noise.
 # Price band. MAX_PRICE is the blunt lever for "stop showing me big dogs" —
 # drop it to 150 for near-pick'em plays only, raise it to 250 to let longer

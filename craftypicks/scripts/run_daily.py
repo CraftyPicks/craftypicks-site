@@ -41,6 +41,14 @@ try:
 except Exception as _props_err:                              # noqa: BLE001
     props = None
     print(f"!! props module unavailable ({_props_err}); sides only", file=sys.stderr)
+
+# The strikeout screens. Also optional — a rules system that fails to import
+# must not stop the price scanner from posting.
+try:
+    import screen_source   # noqa: E402
+except Exception as _screen_err:                             # noqa: BLE001
+    screen_source = None
+    print(f"!! screen system unavailable ({_screen_err})", file=sys.stderr)
 from odds_client import BudgetExhausted, OddsAPIError, OddsClient  # noqa: E402
 
 
@@ -125,6 +133,7 @@ def main() -> int:
         in_season = client.in_season_sports()
         print(f"-- in season: {', '.join(in_season) or 'nothing'}")
         candidates = []
+        prop_events: list[dict] = []
         for sport in in_season:
             all_games = client.odds(sport)
             archive_board(sport, today, all_games)
@@ -163,6 +172,9 @@ def main() -> int:
                         except (BudgetExhausted, OddsAPIError) as e:
                             print(f"     !! props for {event.get('id')}: {e}", file=sys.stderr)
                             break
+                        # Kept so the screens can reuse this payload for free.
+                        detail.setdefault("sport_key", sport)
+                        prop_events.append(detail)
                         for market_key in config.PROP_MARKETS:
                             hits = props.scan_event(detail, market_key)
                             if hits:
@@ -171,6 +183,21 @@ def main() -> int:
                 except Exception as e:                       # noqa: BLE001
                     print(f"   !! props failed ({type(e).__name__}: {e}) — "
                           "continuing with sides only", file=sys.stderr)
+        for cand in candidates:
+            cand.setdefault("source", "value")
+
+        # The screens run on the games we already bought prop odds for, so
+        # they cost nothing extra. Tagged separately so the record can judge
+        # them against the price scanner rather than blending the two.
+        if screen_source and prop_events:
+            try:
+                screen_plays = screen_source.build_plays(
+                    prop_events, now.strftime("%m/%d/%Y"))
+                candidates.extend(screen_plays)
+            except Exception as e:                           # noqa: BLE001
+                print(f"   !! screens failed ({type(e).__name__}: {e}) — "
+                      "continuing without them", file=sys.stderr)
+
         card = find_plays.build_card(candidates)
     except BudgetExhausted as e:
         note = "Credit budget for the month is spent — no new plays until it resets."

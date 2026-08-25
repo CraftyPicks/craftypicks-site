@@ -84,7 +84,7 @@ def play_card(play: dict, index: int, total: int) -> str:
           <div class="stats">
             <div class="stat"><div class="k">Stake</div><div class="v">{play.get('stake',1.0):.1f}u</div></div>
             <div class="stat"><div class="k">Edge vs fair</div>
-              <div class="v g">{pct(play.get('edge_pct',0))}</div></div>
+              <div class="v {cls_for(play.get('edge_pct',0))}">{pct(play.get('edge_pct',0))}</div></div>
             <div class="stat"><div class="k">Fair price</div>
               <div class="v">{esc(om.format_american(play.get('fair_price',0)))}</div></div>
           </div>
@@ -205,6 +205,29 @@ def league_rows(rows: list[dict]) -> str:
     return "".join(out)
 
 
+SOURCE_LABEL = {"value": "Price scanner", "screen": "Strikeout screens"}
+
+
+def source_rows(rows: list[dict]) -> str:
+    """Head-to-head: which approach is actually beating the closing number."""
+    if not rows:
+        return ('<tr><td colspan="6" style="text-align:center;padding:34px 18px">'
+                "Nothing posted yet.</td></tr>")
+    out = []
+    for r in rows:
+        clv = r.get("clv_beat_pct", 0.0)
+        clv_cell = (f'<td class="m {cls_for(clv - 50)}">{clv:.0f}%</td>'
+                    if r.get("clv_n") else '<td class="m" style="color:var(--dim)">—</td>')
+        out.append(f"""<tr>
+          <td class="strong">{esc(SOURCE_LABEL.get(r['source'], r['source']))}</td>
+          <td class="m">{r['posted']}</td>
+          <td class="m">{esc(r['record'])}</td>
+          <td class="m {cls_for(r['units'])}">{u(r['units'])}</td>
+          <td class="m {cls_for(r['roi'])}">{pct(r['roi'])}</td>
+          {clv_cell}</tr>""")
+    return "".join(out)
+
+
 def _short_date(play: dict) -> str:
     stamp = play.get("posted_date") or (play.get("commence_time") or "")[:10]
     try:
@@ -281,3 +304,77 @@ def signup_form(button: str = "Send me the plays") -> str:
       <button class="btn solid" type="submit">{esc(button)}</button>
     </form>
     <p class="form-msg" role="status"></p>"""
+
+
+# ------------------------------------------------------- screen methodology
+# Labels for the screen thresholds. The page renders straight from
+# screen_config.py, so the rules shown to readers can never drift from the
+# rules the scanner actually applies — a published methodology that quietly
+# disagrees with the code is worse than none.
+SCREEN_LABELS = {
+    "min_pitcher_k_pct": ("Pitcher season K%", "at least", "pct"),
+    "min_vs_pa": ("Career PA vs this roster", "at least", "int"),
+    "min_vs_k_pct": ("K% vs this roster", "at least", "pct"),
+    "max_vs_avg": ("Batting average vs this roster", "under", "three"),
+    "max_vs_woba": ("wOBA vs this roster", "under", "three"),
+    "min_opp_k_per_game": ("Opponent strikeouts per game", "at least", "two"),
+    "max_opp_k_per_game": ("Opponent strikeouts per game", "below", "two"),
+    "line_min": ("Strikeout line", "at least", "one"),
+    "line_max": ("Strikeout line", "at most", "one"),
+    "worst_juice": ("Price", "no worse than", "odds"),
+    "min_odds": ("Price", "plus money only, at least", "odds"),
+    "min_k_per_9": ("Season K/9", "at least", "one"),
+    "max_bets_per_day": ("Plays per day from this screen", "at most", "int"),
+    "preferred_k_pct_min": ("Preferred K% band, low end", "", "pct"),
+    "preferred_k_pct_max": ("Preferred K% band, high end", "", "pct"),
+    "high_k_exclude_at": ("Excluded if season K% reaches", "", "pct"),
+    "max_line": ("Any line at or above this", "never bet", "one"),
+    "banned_line": ("This exact line", "never bet", "one"),
+}
+
+
+def _fmt_threshold(value, kind: str) -> str:
+    if kind == "pct":
+        return f"{value * 100:.0f}%"
+    if kind == "three":
+        return f"{value:.3f}"
+    if kind == "two":
+        return f"{value:.2f}"
+    if kind == "one":
+        return f"{value:g}"
+    if kind == "odds":
+        return om.format_american(value)
+    return str(value)
+
+
+def screen_rule_rows(cfg: dict, skip=("fade_list",)) -> str:
+    rows = []
+    for key, value in cfg.items():
+        if key in skip or key not in SCREEN_LABELS:
+            continue
+        label, comparator, kind = SCREEN_LABELS[key]
+        rows.append(f"""<tr>
+          <td class="strong">{esc(label)}</td>
+          <td>{esc(comparator)}</td>
+          <td class="m">{esc(_fmt_threshold(value, kind))}</td></tr>""")
+    return "".join(rows)
+
+
+def breakeven_rows(prices=(-150, -130, -120, -110, 100, 110, 120, 140)) -> str:
+    """What each price has to hit just to break even."""
+    rows = []
+    for price in prices:
+        need = (100 / (price + 100)) if price > 0 else (abs(price) / (abs(price) + 100))
+        rows.append(f"""<tr>
+          <td class="m strong">{esc(om.format_american(price))}</td>
+          <td class="m">{need * 100:.1f}%</td>
+          <td>{_breakeven_note(need)}</td></tr>""")
+    return "".join(rows)
+
+
+def _breakeven_note(need: float) -> str:
+    if need > 0.5:
+        return "needs a real edge"
+    if abs(need - 0.5) < 1e-9:
+        return "a coin flip breaks even"
+    return "a coin flip profits"

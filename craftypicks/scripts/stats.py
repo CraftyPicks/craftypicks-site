@@ -83,6 +83,35 @@ def compute(history: list[dict]) -> dict:
     clv_n = len(clv_plays)
     clv_beat = sum(1 for p in clv_plays if p["clv_ev"] > 0)
 
+    # Split every measure by where the play came from. This is the entire
+    # reason both systems run: after a few hundred plays the "vs close"
+    # column says which approach is finding real prices, and neither of us
+    # gets to argue with it.
+    by_source = {}
+    for src in sorted({p.get("source", "value") for p in history}):
+        rows = [p for p in history if p.get("source", "value") == src]
+        r_graded = [p for p in rows if p.get("result")]
+        r_clv = [p for p in rows if p.get("clv_ev") is not None
+                 and (p.get("close_minutes_before") or 0) <= 240]
+        w = sum(1 for p in r_graded if p["result"] == "win")
+        l = sum(1 for p in r_graded if p["result"] == "loss")
+        pu = sum(1 for p in r_graded if p["result"] == "push")
+        units = round(sum(p.get("profit", 0.0) for p in r_graded), 2)
+        risked = sum(p.get("stake", 1.0) for p in r_graded)
+        by_source[src] = {
+            "source": src,
+            "posted": len(rows),
+            "graded": len(r_graded),
+            "record": f"{w}–{l}–{pu}",
+            "units": units,
+            "roi": round(units / risked * 100, 1) if risked else 0.0,
+            "clv_n": len(r_clv),
+            "clv_beat_pct": round(sum(1 for p in r_clv if p["clv_ev"] > 0)
+                                  / len(r_clv) * 100, 1) if r_clv else 0.0,
+            "clv_avg": round(sum(p["clv_ev"] for p in r_clv) / len(r_clv), 2)
+                       if r_clv else 0.0,
+        }
+
     return {
         "updated_at": datetime.utcnow().isoformat(timespec="seconds") + "Z",
         "graded": len(graded),
@@ -103,4 +132,5 @@ def compute(history: list[dict]) -> dict:
         "clv_beat": clv_beat,
         "clv_beat_pct": round(clv_beat / clv_n * 100, 1) if clv_n else 0.0,
         "clv_avg": round(sum(p["clv_ev"] for p in clv_plays) / clv_n, 2) if clv_n else 0.0,
+        "by_source": list(by_source.values()),
     }

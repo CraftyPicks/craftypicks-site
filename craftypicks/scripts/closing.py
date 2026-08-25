@@ -66,6 +66,13 @@ def closing_consensus(game: dict, market_key: str, side: str,
     books = find_plays._fresh_books(game.get("bookmakers") or [])
     if exclude_book:
         books = [b for b in books if b.get("key") != exclude_book]
+
+    # Player props are shaped differently: one market holds every pitcher,
+    # the player sits in `description`, and `side` looks like "Name Over".
+    # Matching them by outcome name the way sides are matched finds nothing,
+    # so prop plays silently never got a closing line at all.
+    if market_key.startswith("pitcher_") or market_key.startswith("batter_"):
+        return _prop_consensus(books, side, point)
     fair_probs, best_dec, best_price, best_book = [], 0.0, None, None
     points_seen = []
 
@@ -113,6 +120,56 @@ def closing_consensus(game: dict, market_key: str, side: str,
     if points_seen:
         result["consensus_point"] = max(set(points_seen), key=points_seen.count)
     return result
+
+
+def _prop_consensus(books: list[dict], side: str, point: float | None) -> dict | None:
+    """Closing consensus for a player prop.
+
+    `side` arrives as "Tarik Skubal Over" (scanner) or "Tarik Skubal Over"
+    (screens) — player name then Over/Under. We split off the direction and
+    match the remainder against each outcome's `description`, at the same
+    number we actually bet.
+    """
+    if not side or point is None:
+        return None
+    parts = str(side).rsplit(" ", 1)
+    if len(parts) != 2:
+        return None
+    player, direction = parts[0].strip().lower(), parts[1].strip().lower()
+    if direction not in ("over", "under"):
+        return None
+
+    fairs, best_dec, best_price, best_book = [], 0.0, None, None
+    for book in books:
+        for market in book.get("markets", []):
+            pair, our_price = {}, None
+            for o in market.get("outcomes", []):
+                desc = str(o.get("description", "")).strip().lower()
+                if desc != player:
+                    continue
+                if o.get("point") is None or abs(float(o["point"]) - float(point)) > 1e-9:
+                    continue
+                nm = str(o.get("name", "")).lower()
+                if nm.startswith("over"):
+                    pair["over"] = float(o["price"])
+                elif nm.startswith("under"):
+                    pair["under"] = float(o["price"])
+                if nm.startswith(direction):
+                    our_price = float(o["price"])
+            if "over" in pair and "under" in pair:
+                fo, fu = om.devig_pair(pair["over"], pair["under"], config.DEVIG_METHOD)
+                fairs.append(fo if direction == "over" else fu)
+                if our_price is not None:
+                    dec = om.american_to_decimal(our_price)
+                    if dec > best_dec:
+                        best_dec, best_price = dec, our_price
+                        best_book = book.get("title")
+    if not fairs:
+        return None
+    fair = sum(fairs) / len(fairs)
+    return {"books": len(fairs), "fair_prob": round(fair, 5),
+            "fair_price": om.prob_to_american(fair),
+            "best_price": best_price, "best_book": best_book}
 
 
 def minutes_until(iso: str | None, now: datetime) -> float | None:

@@ -32,11 +32,13 @@ PAGES = {
     "plays.html": f"Today's Plays — {config.SITE_NAME}",
     "record.html": f"Track Record — {config.SITE_NAME}",
     "about.html": f"How It Works — {config.SITE_NAME}",
+    "screens.html": f"The Strikeout Screens — {config.SITE_NAME}",
 }
 NAV_ITEMS = [
     ("plays.html", "Today's Plays", "plays"),
     ("record.html", "Track Record", "record"),
     ("about.html", "How It Works", "about"),
+    ("screens.html", "The Screens", "screens"),
 ]
 
 HEAD = """<!DOCTYPE html>
@@ -95,6 +97,7 @@ FOOTER = """
         <h4>Transparency</h4>
         <a href="record.html">Track record</a>
         <a href="about.html#method">Methodology</a>
+        <a href="screens.html">The strikeout screens</a>
         <a href="about.html#units">Units &amp; bankroll</a>
       </div>
       <div>
@@ -200,6 +203,24 @@ def build() -> None:
             "edge threshold — that's a normal result, not an outage."
         )
 
+    try:
+        import screen_config as scfg
+        screen_tokens = {
+            "{{SCREEN_A_ROWS}}": R.screen_rule_rows(scfg.SCREEN_A),
+            "{{SCREEN_B_ROWS}}": R.screen_rule_rows(scfg.SCREEN_B),
+            "{{SCREEN_C_ROWS}}": R.screen_rule_rows(scfg.SCREEN_C),
+            "{{HARD_CAP_ROWS}}": R.screen_rule_rows(scfg.HARD_CAPS),
+            "{{SCREEN_DAILY_CAP}}": str(getattr(scfg, "MAX_SCREEN_PLAYS_PER_DAY", 3)),
+        }
+    except Exception as e:                                   # noqa: BLE001
+        print(f"!! screen config unavailable ({e}); methodology page will be thin")
+        blank = ('<tr><td colspan="3" style="text-align:center;padding:30px">'
+                 "Screen configuration not loaded.</td></tr>")
+        screen_tokens = {k: blank for k in
+                         ("{{SCREEN_A_ROWS}}", "{{SCREEN_B_ROWS}}",
+                          "{{SCREEN_C_ROWS}}", "{{HARD_CAP_ROWS}}")}
+        screen_tokens["{{SCREEN_DAILY_CAP}}"] = "3"
+
     graded_n = stats.get("graded", 0)
     if graded_n:
         record_intro = (
@@ -224,6 +245,8 @@ def build() -> None:
         log_heading = "Play log"
 
     tokens = {
+        **screen_tokens,
+        "{{BREAKEVEN_ROWS}}": R.breakeven_rows(),
         "{{RECORD_INTRO}}": record_intro,
         "{{DRAWDOWN_LINE}}": (
             f"Worst peak-to-trough run so far: {R.u(stats.get('drawdown', 0.0))}."
@@ -261,6 +284,7 @@ def build() -> None:
         "{{LOG_ROWS}}": R.result_rows(recent[:20], "full"),
         "{{LOG_COUNT}}": str(min(20, len(recent))),
         "{{LEAGUE_ROWS}}": R.league_rows(stats.get("by_league", [])),
+        "{{SOURCE_ROWS}}": R.source_rows(stats.get("by_source", [])),
         "{{MONTH_CHART}}": R.month_chart(stats.get("months", [])),
         "{{GRADED_COUNT}}": str(stats.get("graded", 0)),
         "{{PENDING_COUNT}}": str(stats.get("pending", 0)),
