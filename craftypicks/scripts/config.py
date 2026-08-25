@@ -53,6 +53,14 @@ ODDS_FORMAT = "american"
 # fair price by at least this much, expressed as expected value in percent.
 MIN_EDGE_PCT = 2.5
 
+# A second, stricter gate: how many PERCENTAGE POINTS of true probability we
+# think the market is wrong by. MIN_EDGE_PCT is a ratio, and ratios flatter
+# longshots — a +200 dog clears 5% EV on a 1.7-point probability edge while a
+# −200 favourite needs nearly 3. Requiring both means a dog has to be as
+# genuinely mispriced as a favourite to make the card. Raise this to push the
+# card further toward normal prices; drop it to 0 to disable.
+MIN_EDGE_PP = 1.5
+
 # Ceiling on believable edges. In a market priced by a dozen books, a 20%+
 # edge is never real — it's a stale line, a mismatched number, or a book
 # quoting something else. Anything above this is logged and thrown away.
@@ -77,8 +85,12 @@ MAX_PLAYS_PER_DAY = 6
 MAX_PLAYS_PER_LEAGUE = 3
 
 # Skip absurd prices. Long shots produce huge "edges" that are mostly noise.
+# Price band. MAX_PRICE is the blunt lever for "stop showing me big dogs" —
+# drop it to 150 for near-pick'em plays only, raise it to 250 to let longer
+# prices back in. MIN_EDGE_PP above is the principled filter; this one is
+# taste, and taste is allowed.
 MIN_PRICE = -300
-MAX_PRICE = 250
+MAX_PRICE = 185
 
 # Flat staking. Every play is the same size — this is what keeps the record
 # honest, and it is not negotiable in the grading math.

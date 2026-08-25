@@ -182,6 +182,10 @@ def _scan_market(game: dict, books: list[dict], market_key: str) -> list[dict]:
         edge = om.expected_value_pct(fair_prob, price)
         if edge < config.MIN_EDGE_PCT:
             continue
+        # Absolute probability edge, which treats dogs and favourites alike.
+        edge_pp = (fair_prob - om.american_to_prob(price)) * 100
+        if edge_pp < getattr(config, "MIN_EDGE_PP", 0.0):
+            continue
         # An edge this large against a market priced by this many books is
         # not an edge — it's a data problem (stale line, mismatched number,
         # a book quoting a different game). Drop it rather than post it.
@@ -213,6 +217,7 @@ def _scan_market(game: dict, books: list[dict], market_key: str) -> list[dict]:
             "fair_prob": round(fair_prob, 5),
             "fair_price": om.prob_to_american(fair_prob),
             "edge_pct": round(edge, 2),
+            "edge_pp": round(edge_pp, 2),
             "books_counted": len(offers),
             "books_shorter": shorter,
             "stake": config.STAKE_UNITS,

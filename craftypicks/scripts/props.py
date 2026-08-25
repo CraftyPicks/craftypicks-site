@@ -90,6 +90,9 @@ def scan_event(event: dict, market_key: str) -> list[dict]:
             edge = om.expected_value_pct(fair, best_price)
             if edge < getattr(config, "PROP_MIN_EDGE_PCT", 3.0) or edge > config.MAX_EDGE_PCT:
                 continue
+            edge_pp = (fair - om.american_to_prob(best_price)) * 100
+            if edge_pp < getattr(config, "MIN_EDGE_PP", 0.0):
+                continue
 
             label = PROP_LABEL.get(market_key, market_key)
             results.append({
@@ -110,6 +113,7 @@ def scan_event(event: dict, market_key: str) -> list[dict]:
                 "fair_prob": round(fair, 5),
                 "fair_price": om.prob_to_american(fair),
                 "edge_pct": round(edge, 2),
+                "edge_pp": round(edge_pp, 2),
                 "books_counted": len(offers),
                 "books_shorter": sum(
                     1 for o in offers
