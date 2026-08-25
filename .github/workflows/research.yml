@@ -31,8 +31,14 @@ jobs:
         uses: actions/cache@v4
         with:
           path: craftypicks/research/cache
-          # Cache keys can't contain commas, so 2023,2024,2025 becomes 2023-2024-2025.
-          key: mlb-statsapi-${{ replace(inputs.seasons, ',', '-') }}-v1
+          # Keep the key free of the seasons input entirely — cache keys can't
+          # contain commas, and Actions expressions have no replace() to strip
+          # them. A run-scoped key with a shared prefix is the standard trick:
+          # it restores the newest cache, then always saves an updated one, so
+          # the pitcher logs accumulate across runs instead of freezing.
+          key: mlb-statsapi-v1-${{ github.run_id }}
+          restore-keys: |
+            mlb-statsapi-v1-
 
       - name: Run the study
         run: |
