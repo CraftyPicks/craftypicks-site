@@ -40,23 +40,42 @@ jobs:
           restore-keys: |
             mlb-statsapi-v1-
 
-      - name: Run the study
+      - name: Show where we are
         run: |
-          python research/study_mlb.py --seasons "${{ inputs.seasons }}" | tee study.txt
+          echo "working dir: $(pwd)"
+          echo "--- repo root:"; ls -la ..
+          echo "--- this folder:"; ls -la
+          echo "--- research folder:"; ls -la research || echo "NO research FOLDER HERE"
 
+      - name: Run the study
+        shell: bash          # gives us pipefail, so a Python crash fails the step
+        run: |
+          set -o pipefail
+          python research/study_mlb.py --seasons "${{ inputs.seasons }}" 2>&1 | tee study.txt
+
+      # Runs even if the study failed, so the error lands in the summary
+      # instead of only in the step log.
       - name: Publish results to the run summary
+        if: always()
         run: |
           {
             echo '## MLB starter-quality study'
             echo '```'
-            cat study.txt
+            cat study.txt 2>/dev/null || echo "(the study produced no output — see the step log)"
             echo '```'
           } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Commit the derived dataset
+        if: success()
         run: |
           git config user.name  "craftypicks-bot"
           git config user.email "bot@users.noreply.github.com"
+          # No CSV is a legitimate outcome, not a failure — don't let git's
+          # "pathspec did not match" kill the run.
+          if ! ls research/*.csv >/dev/null 2>&1; then
+            echo "No dataset written; nothing to commit."
+            exit 0
+          fi
           git add research/*.csv
           if git diff --staged --quiet; then
             echo "No dataset change."
