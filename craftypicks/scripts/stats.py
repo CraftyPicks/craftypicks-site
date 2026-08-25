@@ -74,6 +74,15 @@ def compute(history: list[dict]) -> dict:
 
     recent = list(reversed(ordered))[:20]
 
+    # Closing line value — measured on every play with a late line, graded or
+    # not. This converges far faster than win/loss, so it is the first honest
+    # read on whether the method is finding real prices.
+    clv_plays = [p for p in history
+                 if p.get("clv_ev") is not None
+                 and (p.get("close_minutes_before") or 0) <= 240]
+    clv_n = len(clv_plays)
+    clv_beat = sum(1 for p in clv_plays if p["clv_ev"] > 0)
+
     return {
         "updated_at": datetime.utcnow().isoformat(timespec="seconds") + "Z",
         "graded": len(graded),
@@ -90,4 +99,8 @@ def compute(history: list[dict]) -> dict:
         "by_league": league_rows,
         "months": months,
         "recent": recent,
+        "clv_n": clv_n,
+        "clv_beat": clv_beat,
+        "clv_beat_pct": round(clv_beat / clv_n * 100, 1) if clv_n else 0.0,
+        "clv_avg": round(sum(p["clv_ev"] for p in clv_plays) / clv_n, 2) if clv_n else 0.0,
     }

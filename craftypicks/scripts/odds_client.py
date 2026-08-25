@@ -84,8 +84,14 @@ class OddsClient:
         wanted = set(config.LEAGUES) | set(config.LEAGUE_ALIASES)
         return sorted(wanted & active)
 
-    def odds(self, sport_key: str) -> list[dict]:
-        """Current odds for one league. Costs len(MARKETS) x len(REGIONS)."""
+    def odds(self, sport_key: str, markets: list[str] | None = None) -> list[dict]:
+        """Current odds for one league.
+
+        Costs one credit per market per region, so the closing snapshot passes
+        only the markets actually sitting on today's card rather than all
+        three. On a 500-credit month that difference is what keeps a second
+        daily pull affordable.
+        """
         if self.mock:
             return _mock_odds(sport_key)
         self._check_budget()
@@ -93,7 +99,7 @@ class OddsClient:
             f"/sports/{sport_key}/odds",
             {
                 "regions": config.REGIONS,
-                "markets": ",".join(config.MARKETS),
+                "markets": ",".join(markets or config.MARKETS),
                 "oddsFormat": config.ODDS_FORMAT,
                 "dateFormat": "iso",
             },
