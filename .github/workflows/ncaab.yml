@@ -1,16 +1,23 @@
-name: Probe college basketball data
+name: Test NCAAB angles
 
-# Manual only, and read-only — it commits nothing and touches neither the
-# live plays nor the record. All it does is report what the free CBBD tier
-# actually exposes, so the analysis gets written against a known schema
-# instead of a guessed one.
+# Manual only, and it commits nothing — pure research against historical
+# closing numbers. Never touches the live plays or the public record.
 on:
   workflow_dispatch:
+    inputs:
+      seasons:
+        description: "Build seasons (thresholds are chosen on these)"
+        required: true
+        default: "2020,2021,2022,2023,2024,2025"
+      holdout:
+        description: "Held-out season — never used to pick anything"
+        required: true
+        default: "2026"
 
 jobs:
-  probe:
+  study:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 45
 
     steps:
       - uses: actions/checkout@v4
@@ -19,20 +26,30 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Probe the API
+      - name: Restore cached line data
+        uses: actions/cache@v4
+        with:
+          path: research/cache_ncaab
+          key: cbbd-lines-v1-${{ github.run_id }}
+          restore-keys: |
+            cbbd-lines-v1-
+
+      - name: Run the study
         shell: bash
         env:
           CBBD_API_KEY: ${{ secrets.CBBD_API_KEY }}
         run: |
           set -o pipefail
-          python research/probe_cbbd.py 2>&1 | tee probe.txt
+          python research/study_ncaab.py \
+            --seasons "${{ inputs.seasons }}" \
+            --holdout "${{ inputs.holdout }}" 2>&1 | tee ncaab.txt
 
       - name: Publish to the run summary
         if: always()
         run: |
           {
-            echo '## CollegeBasketballData probe'
+            echo '## NCAAB angle testing'
             echo '```'
-            cat probe.txt 2>/dev/null || echo "(no output — see the step log)"
+            cat ncaab.txt 2>/dev/null || echo "(no output — see the step log)"
             echo '```'
           } >> "$GITHUB_STEP_SUMMARY"
