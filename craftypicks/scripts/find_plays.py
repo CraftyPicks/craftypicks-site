@@ -37,7 +37,7 @@ def todays_games(games: list[dict], now: datetime | None = None) -> list[dict]:
     ended up on a Tuesday card. Anything already underway is dropped too —
     the price on the board for a live game isn't the price we posted.
     """
-    if not config.SAME_DAY_ONLY:
+    if not getattr(config, "SAME_DAY_ONLY", True):
         return games
     from zoneinfo import ZoneInfo
     tz = ZoneInfo(config.TIMEZONE)
@@ -239,7 +239,7 @@ def build_card(candidates: list[dict]) -> list[dict]:
         key = (cand["event_id"], is_prop)
         if key in seen_events:
             continue
-        if is_prop and props_taken >= config.MAX_PROPS_PER_DAY:
+        if is_prop and props_taken >= getattr(config, "MAX_PROPS_PER_DAY", 2):
             continue
         if per_league[cand["league"]] >= config.MAX_PLAYS_PER_LEAGUE:
             continue

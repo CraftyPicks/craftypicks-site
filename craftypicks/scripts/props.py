@@ -34,7 +34,7 @@ PROP_LABEL = {
 def scan_event(event: dict, market_key: str) -> list[dict]:
     """Every qualifying prop edge in one game, for one market."""
     books = find_plays._fresh_books(event.get("bookmakers") or [])
-    if len(books) < config.PROP_MIN_BOOKS:
+    if len(books) < getattr(config, "PROP_MIN_BOOKS", 4):
         return []
 
     # (player, point) -> list of (book_key, book_title, over_price, under_price)
@@ -63,7 +63,7 @@ def scan_event(event: dict, market_key: str) -> list[dict]:
 
     results = []
     for (player, point), offers in quotes.items():
-        if len(offers) < config.PROP_MIN_BOOKS:
+        if len(offers) < getattr(config, "PROP_MIN_BOOKS", 4):
             continue
         fair_over, fair_under = [], []
         for _bk, _bt, over, under in offers:
@@ -84,11 +84,11 @@ def scan_event(event: dict, market_key: str) -> list[dict]:
             if not (config.MIN_PRICE <= best_price <= config.MAX_PRICE):
                 continue
             others = [f for f, o in zip(fairs, offers) if o[0] != book_key]
-            if len(others) < config.PROP_MIN_BOOKS - 1:
+            if len(others) < getattr(config, "PROP_MIN_BOOKS", 4) - 1:
                 continue
             fair = sum(others) / len(others)
             edge = om.expected_value_pct(fair, best_price)
-            if edge < config.PROP_MIN_EDGE_PCT or edge > config.MAX_EDGE_PCT:
+            if edge < getattr(config, "PROP_MIN_EDGE_PCT", 3.0) or edge > config.MAX_EDGE_PCT:
                 continue
 
             label = PROP_LABEL.get(market_key, market_key)

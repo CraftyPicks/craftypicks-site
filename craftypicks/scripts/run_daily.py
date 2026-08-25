@@ -31,8 +31,16 @@ DATA = ROOT / "data"
 import config              # noqa: E402
 import find_plays          # noqa: E402
 import grade as grader     # noqa: E402
-import props               # noqa: E402
 import stats as statsmod   # noqa: E402
+
+# Props are an optional extra. If props.py is missing or won't import, the
+# daily card still has to go out — a nice-to-have must never be able to take
+# down the thing the site exists for.
+try:
+    import props           # noqa: E402
+except Exception as _props_err:                              # noqa: BLE001
+    props = None
+    print(f"!! props module unavailable ({_props_err}); sides only", file=sys.stderr)
 from odds_client import BudgetExhausted, OddsAPIError, OddsClient  # noqa: E402
 
 
@@ -128,26 +136,33 @@ def main() -> int:
             candidates.extend(found)
 
             # Props: per-event, so strictly capped. See config.PROP_MAX_EVENTS.
-            if (config.PROP_MARKETS and sport in config.PROP_SPORTS and games
+            # The whole block is wrapped: a prop market that's missing, shaped
+            # unexpectedly, or unavailable for a given game must never cost us
+            # the card.
+            if (props and getattr(config, "PROP_MARKETS", None)
+                    and sport in getattr(config, "PROP_SPORTS", [])
+                    and games
                     and (client.credits_remaining is None
-                         or client.credits_remaining > config.PROP_CREDIT_FLOOR)):
-                targets = props.pick_events(games, config.PROP_MAX_EVENTS)
-                print(f"   props: {len(targets)} event(s) × "
-                      f"{len(config.PROP_MARKETS)} market(s) = "
-                      f"{len(targets) * len(config.PROP_MARKETS)} credits")
-                for event in targets:
-                    try:
-                        detail = client.event_odds(sport, event["id"], config.PROP_MARKETS)
-                    except (BudgetExhausted, OddsAPIError) as e:
-                        print(f"     !! props for {event.get('id')}: {e}", file=sys.stderr)
-                        break
-                    for market_key in config.PROP_MARKETS:
-                        hits = props.scan_event(detail, market_key)
-                        if hits:
-                            print(f"     {market_key}: {len(hits)} edge(s)")
-                        candidates.extend(hits)
-            elif config.PROP_MARKETS and sport in config.PROP_SPORTS:
-                print("   props: skipped (credits low or no games today)")
+                         or client.credits_remaining > getattr(config, "PROP_CREDIT_FLOOR", 160))):
+                try:
+                    targets = props.pick_events(games, config.PROP_MAX_EVENTS)
+                    print(f"   props: {len(targets)} event(s) × "
+                          f"{len(config.PROP_MARKETS)} market(s) = "
+                          f"{len(targets) * len(config.PROP_MARKETS)} credits")
+                    for event in targets:
+                        try:
+                            detail = client.event_odds(sport, event["id"], config.PROP_MARKETS)
+                        except (BudgetExhausted, OddsAPIError) as e:
+                            print(f"     !! props for {event.get('id')}: {e}", file=sys.stderr)
+                            break
+                        for market_key in config.PROP_MARKETS:
+                            hits = props.scan_event(detail, market_key)
+                            if hits:
+                                print(f"     {market_key}: {len(hits)} edge(s)")
+                            candidates.extend(hits)
+                except Exception as e:                       # noqa: BLE001
+                    print(f"   !! props failed ({type(e).__name__}: {e}) — "
+                          "continuing with sides only", file=sys.stderr)
         card = find_plays.build_card(candidates)
     except BudgetExhausted as e:
         note = "Credit budget for the month is spent — no new plays until it resets."
