@@ -1,0 +1,38 @@
+name: Probe college basketball data
+
+# Manual only, and read-only — it commits nothing and touches neither the
+# live plays nor the record. All it does is report what the free CBBD tier
+# actually exposes, so the analysis gets written against a known schema
+# instead of a guessed one.
+on:
+  workflow_dispatch:
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Probe the API
+        shell: bash
+        env:
+          CBBD_API_KEY: ${{ secrets.CBBD_API_KEY }}
+        run: |
+          set -o pipefail
+          python research/probe_cbbd.py 2>&1 | tee probe.txt
+
+      - name: Publish to the run summary
+        if: always()
+        run: |
+          {
+            echo '## CollegeBasketballData probe'
+            echo '```'
+            cat probe.txt 2>/dev/null || echo "(no output — see the step log)"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
