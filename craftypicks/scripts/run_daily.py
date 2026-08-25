@@ -15,6 +15,7 @@ idempotent.
 """
 from __future__ import annotations
 
+import gzip
 import json
 import os
 import sys
@@ -51,6 +52,32 @@ def save_json(path: Path, payload) -> None:
 
 def local_now() -> datetime:
     return datetime.now(ZoneInfo(config.TIMEZONE))
+
+
+def archive_board(sport: str, day: str, games: list[dict]) -> None:
+    """Keep the raw odds response for the day.
+
+    This costs nothing — it's the same API call we already made — and it is
+    the single most valuable thing this project does long-term. Historical
+    odds are the one input nobody hands out free. Every morning this runs,
+    the archive is worth slightly more, and after a few months it can answer
+    the question free data cannot: not "does this factor matter" but "does it
+    matter more than the market already charges for it."
+    """
+    if not games:
+        return
+    path = DATA / "archive" / day
+    path.mkdir(parents=True, exist_ok=True)
+    payload = {
+        "captured_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+        "sport": sport,
+        "games": games,
+    }
+    # gzip keeps a year of daily boards down to tens of megabytes instead of
+    # hundreds — worth it for something that only ever grows.
+    with gzip.open(path / f"{sport}.json.gz", "wt", encoding="utf-8") as fh:
+        json.dump(payload, fh, separators=(",", ":"))
+    print(f"   archived {len(games)} {sport} boards")
 
 
 def main() -> int:
@@ -91,6 +118,7 @@ def main() -> int:
         candidates = []
         for sport in in_season:
             games = client.odds(sport)
+            archive_board(sport, today, games)
             found = find_plays.find_candidates(games)
             print(f"   {sport}: {len(games)} games, {len(found)} qualifying edges")
             candidates.extend(found)
