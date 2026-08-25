@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Track Record — Craftypicks</title>
+<title>The Strikeout Screens — Craftypicks</title>
 <meta name="description" content="Craftypicks posts free NBA, NFL, MLB and college basketball plays every day — the number, the price, the reasoning, and a fully public track record. Nothing for sale.">
-<meta property="og:title" content="Track Record — Craftypicks">
+<meta property="og:title" content="The Strikeout Screens — Craftypicks">
 <meta property="og:description" content="Free daily plays with receipts on every one.">
 <meta property="og:type" content="website">
 <meta name="theme-color" content="#08090B">
@@ -289,7 +289,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
 <header class="nav">
   <div class="nav-in">
     <a href="index.html" class="logo">Crafty<span>picks</span></a>
-    <nav class="nav-links"><a href="plays.html" class="">Today's Plays</a><a href="record.html" class="on">Track Record</a><a href="about.html" class="">How It Works</a><a href="screens.html" class="">The Screens</a></nav>
+    <nav class="nav-links"><a href="plays.html" class="">Today's Plays</a><a href="record.html" class="">Track Record</a><a href="about.html" class="">How It Works</a><a href="screens.html" class="on">The Screens</a></nav>
     <div class="nav-cta">
       <a href="about.html" class="link-quiet">Why it's free</a>
       <a href="plays.html" class="btn solid sm">Today's plays</a>
@@ -299,137 +299,257 @@ footer{background:var(--bg-2);padding:56px 0 40px}
 
 <section style="background:linear-gradient(180deg,#0A0C0F,var(--bg))">
   <div class="wrap" style="padding:56px 28px 46px">
-    <div class="eyebrow">Every play, since day one</div>
-    <h1 style="font-size:clamp(32px,4.2vw,50px);margin:14px 0 16px">Track record</h1>
-    <p class="lead">3 graded plays, 10 still in flight. Nothing removed, nothing re-priced after the fact. The losing stretches are on this page too — they're the point.</p>
+    <div class="eyebrow">The second system</div>
+    <h1 style="font-size:clamp(32px,4.2vw,50px);margin:14px 0 16px">The strikeout screens</h1>
+    <p class="lead">Craftypicks runs two methods that disagree with each other on purpose. The scanner hunts for prices the market has wrong. These screens ignore price almost entirely and look for a situation instead: the right arm against the right lineup. Both post to the same card, both get graded in public, and the track record reports them separately so you can see which one is actually working.</p>
   </div>
 </section>
 
 <section class="pad-sm">
   <div class="wrap">
-    <div class="kpis"><div class="kpi"><div class="k">Units won</div><div class="v r">−0.40u</div><div class="s">Flat 1u stake on every play</div></div><div class="kpi"><div class="k">ROI</div><div class="v r">−13.3%</div><div class="s">Return on 3u risked</div></div><div class="kpi"><div class="k">Record</div><div class="v ">1–2–0</div><div class="s">33.3% on decided plays</div></div><div class="kpi"><div class="k">Beat the close</div><div class="v ">—</div><div class="s">On 0 plays with a late line</div></div></div>
-  </div>
-</section>
-
-<section class="pad-sm">
-  <div class="wrap">
-    <div class="sec-head" style="margin-bottom:30px">
-      <div class="eyebrow muted">Month by month</div>
-      <h2 style="font-size:26px;margin-top:10px">Units won and lost</h2>
-      <p style="font-size:15px;margin-top:10px">1 losing months out of 1. Any record without red months has been edited.</p>
+    <div class="note">
+      <p class="disclaimer"><b style="color:var(--txt)">Everything on this page is generated from the configuration file the scanner reads.</b> The thresholds below aren't a description of the rules — they <i>are</i> the rules, pulled from the same values that ran this morning. If a number changes in the code, it changes here on the next build. A published methodology that quietly drifts from the code is worse than publishing nothing.</p>
     </div>
-
-    <figure class="card" style="padding:30px 26px 22px;margin:0">
-      <div class="chart" role="img" aria-label="Monthly units: Aug −0.40u"><div class="bars"><div class="col" title="Aug 2026 · −0.40u · 3 plays"><div class="pos"></div><div class="neg"><i class="down" style="height:66px"></i><span class="val r">−0.4u</span></div><span class="mlab">Aug</span></div></div></div>
-      <figcaption class="up" style="margin-top:18px;color:var(--dim);text-transform:none;letter-spacing:.04em;font-size:11.5px">Units, flat 1u stakes. Green bars are winning months, red bars losing months. The current month is partial.</figcaption>
-    </figure>
   </div>
 </section>
 
-<section class="pad-sm">
+<section class="pad-sm" id="screen-a">
   <div class="wrap">
-    <div class="sec-head" style="margin-bottom:26px">
-      <div class="eyebrow muted">Two methods, same scoreboard</div>
-      <h2 style="font-size:26px;margin-top:10px">Where the plays come from</h2>
-      <p style="font-size:15px;margin-top:10px">Two systems post to this card. One hunts mispriced numbers across the market; the other is a rules-based strikeout screen. They're tracked separately on purpose &mdash; the "beat close" column decides which one is worth keeping.</p>
+    <div class="sec-head" style="margin-bottom:24px">
+      <div class="eyebrow">Screen A</div>
+      <h2 style="font-size:26px;margin-top:10px">Standard over &mdash; the proven core</h2>
+      <p class="lead" style="margin-top:12px">A strikeout pitcher against a lineup that strikes out, at a number low enough to clear on an ordinary start rather than a special one. This is the screen the system trusts most, which is why it's capped hardest &mdash; a good filter applied to too many games stops being a filter.</p>
     </div>
     <div class="scroll-x">
       <table class="tbl">
-        <thead>
-          <tr><th>Source</th><th>Posted</th><th>Record</th><th>Units</th><th>ROI</th><th>Beat close</th></tr>
-        </thead>
+        <thead><tr><th>Condition</th><th></th><th>Threshold</th></tr></thead>
         <tbody><tr>
-          <td class="strong">Price scanner</td>
-          <td class="m">13</td>
-          <td class="m">1–2–0</td>
-          <td class="m r">−0.40u</td>
-          <td class="m r">−13.3%</td>
-          <td class="m" style="color:var(--dim)">—</td></tr></tbody>
+          <td class="strong">Pitcher season K%</td>
+          <td>at least</td>
+          <td class="m">20%</td></tr><tr>
+          <td class="strong">Career PA vs this roster</td>
+          <td>at least</td>
+          <td class="m">30</td></tr><tr>
+          <td class="strong">K% vs this roster</td>
+          <td>at least</td>
+          <td class="m">20%</td></tr><tr>
+          <td class="strong">Batting average vs this roster</td>
+          <td>under</td>
+          <td class="m">0.270</td></tr><tr>
+          <td class="strong">wOBA vs this roster</td>
+          <td>under</td>
+          <td class="m">0.300</td></tr><tr>
+          <td class="strong">Opponent strikeouts per game</td>
+          <td>at least</td>
+          <td class="m">8.00</td></tr><tr>
+          <td class="strong">Strikeout line</td>
+          <td>at least</td>
+          <td class="m">5</td></tr><tr>
+          <td class="strong">Strikeout line</td>
+          <td>at most</td>
+          <td class="m">5.5</td></tr><tr>
+          <td class="strong">Price</td>
+          <td>no worse than</td>
+          <td class="m">−150</td></tr><tr>
+          <td class="strong">Plays per day from this screen</td>
+          <td>at most</td>
+          <td class="m">2</td></tr></tbody>
       </table>
     </div>
   </div>
 </section>
 
-<section class="pad-sm">
+<section class="pad-sm" id="screen-b">
   <div class="wrap">
-    <div class="sec-head" style="margin-bottom:26px">
-      <div class="eyebrow muted">By league</div>
-      <h2 style="font-size:26px;margin-top:10px">Where the edge actually comes from</h2>
+    <div class="sec-head" style="margin-bottom:24px">
+      <div class="eyebrow">Screen B</div>
+      <h2 style="font-size:26px;margin-top:10px">Elite arm at 6.5 &mdash; plus money only</h2>
+      <p class="lead" style="margin-top:12px">The same idea one rung higher: a genuine high-volume strikeout arm at a number most pitchers can't reach. This screen hits close to a coin flip, and that single fact decides everything about it &mdash; at &minus;120 a coin flip loses money, at +110 it makes money. So the price gate isn't a preference here, it's the rule that makes the screen viable at all.</p>
     </div>
     <div class="scroll-x">
       <table class="tbl">
-        <thead>
-          <tr><th>League</th><th>Plays</th><th>Record</th><th>Win %</th><th>Units</th><th>ROI</th></tr>
-        </thead>
+        <thead><tr><th>Condition</th><th></th><th>Threshold</th></tr></thead>
         <tbody><tr>
-          <td class="strong">MLB</td>
-          <td class="m">3</td>
-          <td class="m">1–2–0</td>
-          <td class="m">33.3%</td>
-          <td class="m r">−0.40u</td>
-          <td class="m r">−13.3%</td></tr></tbody>
+          <td class="strong">Pitcher season K%</td>
+          <td>at least</td>
+          <td class="m">27%</td></tr><tr>
+          <td class="strong">Career PA vs this roster</td>
+          <td>at least</td>
+          <td class="m">30</td></tr><tr>
+          <td class="strong">K% vs this roster</td>
+          <td>at least</td>
+          <td class="m">20%</td></tr><tr>
+          <td class="strong">Batting average vs this roster</td>
+          <td>under</td>
+          <td class="m">0.270</td></tr><tr>
+          <td class="strong">wOBA vs this roster</td>
+          <td>under</td>
+          <td class="m">0.300</td></tr><tr>
+          <td class="strong">Opponent strikeouts per game</td>
+          <td>at least</td>
+          <td class="m">8.00</td></tr><tr>
+          <td class="strong">Strikeout line</td>
+          <td>at most</td>
+          <td class="m">6.5</td></tr><tr>
+          <td class="strong">Price</td>
+          <td>plus money only, at least</td>
+          <td class="m">+100</td></tr><tr>
+          <td class="strong">Season K/9</td>
+          <td>at least</td>
+          <td class="m">9.5</td></tr></tbody>
+      </table>
+    </div>
+    <div class="note" style="margin-top:22px">
+      <p class="disclaimer">The K/9 requirement exists to separate a real strikeout pitcher from an inflated rate. A ground-ball starter who works five innings can post a strong K% without ever approaching seven strikeouts &mdash; the rate says he misses bats when he's out there, and the volume says he isn't out there long enough for it to matter.</p>
+    </div>
+  </div>
+</section>
+
+<section class="pad-sm" id="screen-c">
+  <div class="wrap">
+    <div class="sec-head" style="margin-bottom:24px">
+      <div class="eyebrow">Screen C</div>
+      <h2 style="font-size:26px;margin-top:10px">The under &mdash; and the arms it refuses</h2>
+      <p class="lead" style="margin-top:12px">A capable but not overpowering starter against a lineup that doesn't strike out. The important rule here is the exclusion: high-strikeout arms are thrown out of this screen entirely rather than merely discouraged. They beat weak-contact lineups on pure stuff, and betting the under on them has lost repeatedly.</p>
+    </div>
+    <div class="scroll-x">
+      <table class="tbl">
+        <thead><tr><th>Condition</th><th></th><th>Threshold</th></tr></thead>
+        <tbody><tr>
+          <td class="strong">Pitcher season K%</td>
+          <td>at least</td>
+          <td class="m">20%</td></tr><tr>
+          <td class="strong">Opponent strikeouts per game</td>
+          <td>below</td>
+          <td class="m">8.00</td></tr><tr>
+          <td class="strong">Strikeout line</td>
+          <td>at least</td>
+          <td class="m">5.5</td></tr><tr>
+          <td class="strong">Preferred K% band, low end</td>
+          <td></td>
+          <td class="m">24%</td></tr><tr>
+          <td class="strong">Preferred K% band, high end</td>
+          <td></td>
+          <td class="m">26%</td></tr><tr>
+          <td class="strong">Excluded if season K% reaches</td>
+          <td></td>
+          <td class="m">27%</td></tr></tbody>
       </table>
     </div>
   </div>
 </section>
 
-<section class="pad-sm">
+<section class="pad-sm" id="caps">
   <div class="wrap">
-    <div class="split" style="margin-bottom:26px">
-      <div>
-        <div class="eyebrow muted">Play log</div>
-        <h2 style="font-size:26px;margin-top:10px">The last 3 graded plays</h2>
+    <div class="sec-head" style="margin-bottom:24px">
+      <div class="eyebrow">Hard caps</div>
+      <h2 style="font-size:26px;margin-top:10px">Rules no screen can override</h2>
+      <p class="lead" style="margin-top:12px">These are checked before any screen runs. A play that violates one is rejected no matter how good the spot looks.</p>
+    </div>
+    <div class="scroll-x">
+      <table class="tbl">
+        <thead><tr><th>Condition</th><th></th><th>Threshold</th></tr></thead>
+        <tbody><tr>
+          <td class="strong">Any line at or above this</td>
+          <td>never bet</td>
+          <td class="m">7.5</td></tr><tr>
+          <td class="strong">This exact line</td>
+          <td>never bet</td>
+          <td class="m">4.5</td></tr><tr>
+          <td class="strong">Price</td>
+          <td>no worse than</td>
+          <td class="m">−150</td></tr></tbody>
+      </table>
+    </div>
+    <div class="note" style="margin-top:22px">
+      <p class="disclaimer"><b style="color:var(--txt)">Total screen plays per day: 3.</b> That total covers all three screens together. An earlier version capped each screen separately, which meant pitchers rejected by Screen A's limit simply reappeared under Screen B &mdash; five qualifiers produced five bets from a cap of two. A cap another screen can walk around isn't a cap.</p>
+    </div>
+  </div>
+</section>
+
+<section class="pad-sm" id="price">
+  <div class="wrap">
+    <div class="sec-head" style="margin-bottom:24px">
+      <div class="eyebrow">Why the price gates exist</div>
+      <h2 style="font-size:26px;margin-top:10px">What each number has to hit just to break even</h2>
+    </div>
+    <div class="scroll-x">
+      <table class="tbl">
+        <thead><tr><th>Price</th><th>Win rate needed</th><th></th></tr></thead>
+        <tbody><tr>
+          <td class="m strong">−150</td>
+          <td class="m">60.0%</td>
+          <td>needs a real edge</td></tr><tr>
+          <td class="m strong">−130</td>
+          <td class="m">56.5%</td>
+          <td>needs a real edge</td></tr><tr>
+          <td class="m strong">−120</td>
+          <td class="m">54.5%</td>
+          <td>needs a real edge</td></tr><tr>
+          <td class="m strong">−110</td>
+          <td class="m">52.4%</td>
+          <td>needs a real edge</td></tr><tr>
+          <td class="m strong">+100</td>
+          <td class="m">50.0%</td>
+          <td>a coin flip breaks even</td></tr><tr>
+          <td class="m strong">+110</td>
+          <td class="m">47.6%</td>
+          <td>a coin flip profits</td></tr><tr>
+          <td class="m strong">+120</td>
+          <td class="m">45.5%</td>
+          <td>a coin flip profits</td></tr><tr>
+          <td class="m strong">+140</td>
+          <td class="m">41.7%</td>
+          <td>a coin flip profits</td></tr></tbody>
+      </table>
+    </div>
+    <div class="note" style="margin-top:22px">
+      <p class="disclaimer">This table is the whole argument for the juice caps. A screen that wins 55% of the time is excellent at &minus;110 and merely fine at &minus;150. Paying up erases the edge quietly, without ever showing up as a losing day &mdash; you just keep winning and slowly not making money.</p>
+    </div>
+  </div>
+</section>
+
+<section class="pad" id="honest">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">What we don't know yet</div>
+      <h2>The part most sites leave out</h2>
+    </div>
+    <div class="grid-2" style="gap:44px;align-items:start">
+      <div class="tile">
+        <div class="num">Unproven</div>
+        <h3>These screens have not been validated</h3>
+        <p style="margin-top:10px">They're a set of rules, running live, with every play graded in public from day one. That's the test. Nobody has shown they beat the closing number over a meaningful sample, including us &mdash; and until the record says otherwise, that's exactly how they should be treated.</p>
       </div>
-      <span class="up">Updated daily at 9:00 AM ET</span>
+      <div class="tile">
+        <div class="num">Suspect</div>
+        <h3>The vs-roster data is the weakest input</h3>
+        <p style="margin-top:10px">Screens A and B require a career line against the opposing roster. Those samples are small, they mix seasons where the pitcher was a different pitcher, and they skew toward veterans facing division rivals &mdash; which is a filter on the schedule as much as on the matchup. Screen C uses none of it, so comparing C against A and B over time is itself a test of whether that input earns its place.</p>
+      </div>
+      <div class="tile">
+        <div class="num">Ignored</div>
+        <h3>The screens barely look at price</h3>
+        <p style="margin-top:10px">Beyond the juice caps, a screen play can be posted at a number the wider market says is poor value. That's deliberate &mdash; the claim being tested is that the situation is worth more than the price implies. It's also the most likely way this system loses money, and the "vs close" column is what will catch it.</p>
+      </div>
+      <div class="tile">
+        <div class="num">Limited</div>
+        <h3>Coverage is a handful of games a day</h3>
+        <p style="margin-top:10px">Prop odds are billed one game at a time, so the screens only see the games we already pull props for. They are not scanning the full slate, and a play they'd love could go unexamined simply because it wasn't among the games checked.</p>
+      </div>
     </div>
-    <div class="scroll-x">
-      <table class="tbl">
-        <thead>
-          <tr><th>Date</th><th>Play</th><th>League</th><th>Price</th><th>Edge at post</th><th>vs close</th><th>Result</th><th>Return</th></tr>
-        </thead>
-        <tbody><tr>
-              <td class="m">Aug 24</td>
-              <td class="strong">Padres −1.5</td>
-              <td class="m">MLB</td>
-              <td class="m">+188</td>
-              <td class="m">+53.0%</td>
-              <td class="m" style="color:var(--dim)">—</td>
-              <td><span class="tag loss">Loss</span></td>
-              <td class="m r">−1.00u</td></tr><tr>
-              <td class="m">Aug 24</td>
-              <td class="strong">Rockies ML</td>
-              <td class="m">MLB</td>
-              <td class="m">+216</td>
-              <td class="m">+9.2%</td>
-              <td class="m" style="color:var(--dim)">—</td>
-              <td><span class="tag loss">Loss</span></td>
-              <td class="m r">−1.00u</td></tr><tr>
-              <td class="m">Aug 24</td>
-              <td class="strong">Sox ML</td>
-              <td class="m">MLB</td>
-              <td class="m">+160</td>
-              <td class="m">+7.2%</td>
-              <td class="m" style="color:var(--dim)">—</td>
-              <td><span class="tag win">Win</span></td>
-              <td class="m g">+1.60u</td></tr></tbody>
-      </table>
-    </div>
-    <div class="note" style="margin-top:26px">
-      <p class="disclaimer"><b style="color:var(--txt)">"vs close" is the column that actually matters.</b> It compares the price we posted against what the whole market settled on shortly before tip &mdash; vig removed from both. Positive means we got a better number than the market's final opinion, and that shows up in a couple hundred plays. Win-loss records need thousands before they mean anything, which is why every tout can show you a good month. Worst peak-to-trough run so far: −2.00u.</p>
-    </div>
-  </section>
+  </div>
+</section>
 
 <section class="cta-band">
   <div class="wrap">
-    <div class="eyebrow">Nothing here is behind a paywall</div>
-    <h2>Follow the plays, judge the record yourself</h2>
-    <p>The card goes out at 9:00 AM ET every day, with the previous day's grades attached. Free, permanently.</p>
-    <form class="form-row" data-signup>
-      <input type="email" required placeholder="you@email.com" aria-label="Email address">
-      <button class="btn solid" type="submit">Send me the plays</button>
-    </form>
-    <p class="form-msg" role="status"></p>
-    <div class="fineprint">Past results never guarantee future results &middot; 21+</div>
+    <div class="eyebrow">Two methods, one scoreboard</div>
+    <h2>Watch them compete</h2>
+    <p>The track record reports each system separately &mdash; record, units, and how often each beat the closing number. Whichever loses that comparison over a real sample gets dropped.</p>
+    <div class="hero-cta">
+      <a href="record.html" class="btn solid">See the comparison</a>
+      <a href="plays.html" class="btn ghost">Today's board</a>
+    </div>
+    <div class="fineprint" style="margin-top:22px">21+ &middot; Entertainment only &middot; Nothing here is for sale</div>
   </div>
 </section>
 
