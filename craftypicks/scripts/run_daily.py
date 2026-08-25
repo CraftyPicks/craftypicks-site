@@ -133,6 +133,14 @@ def main() -> int:
             found = find_plays.find_candidates(games)
             print(f"   {sport}: {len(games)} games today "
                   f"({dropped} not today, skipped), {len(found)} qualifying edges")
+            if getattr(find_plays, "REJECTED", None):
+                for reason, count in find_plays.REJECTED.most_common():
+                    print(f"      rejected — {reason}: {count}")
+                near = sorted(getattr(find_plays, "NEAR_MISSES", []),
+                              key=lambda n: -n[2])[:5]
+                for side, price, ev, pp, gate in near:
+                    print(f"      near miss ({gate}) {str(side)[:22]:<22} "
+                          f"{price:>5}  EV {ev:>5.2f}%  pp {pp:>5.2f}")
             candidates.extend(found)
 
             # Props: per-event, so strictly capped. See config.PROP_MAX_EVENTS.

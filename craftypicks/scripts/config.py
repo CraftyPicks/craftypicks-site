@@ -59,7 +59,7 @@ MIN_EDGE_PCT = 2.5
 # −200 favourite needs nearly 3. Requiring both means a dog has to be as
 # genuinely mispriced as a favourite to make the card. Raise this to push the
 # card further toward normal prices; drop it to 0 to disable.
-MIN_EDGE_PP = 1.5
+MIN_EDGE_PP = 1.0
 
 # Ceiling on believable edges. In a market priced by a dozen books, a 20%+
 # edge is never real — it's a stale line, a mismatched number, or a book

@@ -19,6 +19,11 @@ import odds_math as om
 
 MARKET_LABEL = {"h2h": "Moneyline", "spreads": "Spread", "totals": "Total"}
 
+# Why candidates got thrown out on the last scan. Tuning thresholds blind is
+# how you end up with a one-play card and no idea which number caused it.
+REJECTED: Counter = Counter()
+NEAR_MISSES: list = []
+
 
 def league_of(sport_key: str) -> str:
     parent = config.LEAGUE_ALIASES.get(sport_key, sport_key)
@@ -59,6 +64,8 @@ def todays_games(games: list[dict], now: datetime | None = None) -> list[dict]:
 
 def find_candidates(games: list[dict]) -> list[dict]:
     """Every qualifying edge across every game, unsorted."""
+    REJECTED.clear()
+    NEAR_MISSES.clear()
     out = []
     for game in games:
         books = game.get("bookmakers") or []
@@ -170,6 +177,7 @@ def _scan_market(game: dict, books: list[dict], market_key: str) -> list[dict]:
             offers, key=lambda o: om.american_to_decimal(o[2])
         )
         if not (config.MIN_PRICE <= price <= config.MAX_PRICE):
+            REJECTED["price outside band"] += 1
             continue
         # Consensus excludes the book we'd be betting — otherwise the outlier
         # drags the "fair" price toward itself and manufactures an edge.
@@ -177,14 +185,19 @@ def _scan_market(game: dict, books: list[dict], market_key: str) -> list[dict]:
             f for f, o in zip(fairs, offers) if o[0] != book_key
         ]
         if len(others) < config.MIN_BOOKS - 1:
+            REJECTED["too few books"] += 1
             continue
         fair_prob = sum(others) / len(others)
         edge = om.expected_value_pct(fair_prob, price)
-        if edge < config.MIN_EDGE_PCT:
-            continue
-        # Absolute probability edge, which treats dogs and favourites alike.
         edge_pp = (fair_prob - om.american_to_prob(price)) * 100
+        if edge < config.MIN_EDGE_PCT:
+            REJECTED[f"EV below {config.MIN_EDGE_PCT}%"] += 1
+            if edge > config.MIN_EDGE_PCT - 1.0:
+                NEAR_MISSES.append((side, price, round(edge, 2), round(edge_pp, 2), "EV"))
+            continue
         if edge_pp < getattr(config, "MIN_EDGE_PP", 0.0):
+            REJECTED[f"pp below {getattr(config, 'MIN_EDGE_PP', 0)}"] += 1
+            NEAR_MISSES.append((side, price, round(edge, 2), round(edge_pp, 2), "pp"))
             continue
         # An edge this large against a market priced by this many books is
         # not an edge — it's a data problem (stale line, mismatched number,
