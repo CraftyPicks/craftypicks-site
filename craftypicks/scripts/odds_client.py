@@ -105,6 +105,25 @@ class OddsClient:
             },
         )
 
+    def event_odds(self, sport_key: str, event_id: str, markets: list[str]) -> dict:
+        """Player props for one game. Costs one credit per market, per event.
+
+        This is the expensive call in the whole project — there is no bulk
+        version — which is why the caller caps how many events it asks for.
+        """
+        if self.mock:
+            return _mock_event_props(sport_key, event_id)
+        self._check_budget()
+        return self._get(
+            f"/sports/{sport_key}/events/{event_id}/odds",
+            {
+                "regions": config.REGIONS,
+                "markets": ",".join(markets),
+                "oddsFormat": config.ODDS_FORMAT,
+                "dateFormat": "iso",
+            },
+        )
+
     def scores(self, sport_key: str, days_from: int = 2) -> list[dict]:
         """Recent final scores for grading. Costs 2 credits with daysFrom."""
         if self.mock:
@@ -213,6 +232,39 @@ def _mock_scores(sport_key: str) -> list[dict]:
             ],
         })
     return out
+
+
+_PITCHERS = ["Logan Webb", "Zack Wheeler", "Tarik Skubal", "Corbin Burnes",
+             "Framber Valdez", "Sonny Gray"]
+
+
+def _mock_event_props(sport_key: str, event_id: str) -> dict:
+    """Synthetic pitcher props, shaped like the real per-event response."""
+    rng = random.Random(f"props-{event_id}")
+    now = datetime.now(timezone.utc)
+    pitchers = rng.sample(_PITCHERS, 2)
+    # One number per pitcher, shared across books — which is how real prop
+    # markets look. Randomising it per book means no player/number group ever
+    # reaches the book minimum, and the scanner silently finds nothing.
+    lines = {p: rng.choice([4.5, 5.5, 6.5]) for p in pitchers}
+    books = []
+    lucky = rng.randrange(len(_BOOKS))
+    for bi, (key, title) in enumerate(_BOOKS):
+        outcomes = []
+        for pitcher in pitchers:
+            point = lines[pitcher]
+            wobble = rng.uniform(-0.015, 0.015)
+            gift = 0.05 if bi == lucky else 0.0
+            p_over = 0.5 + wobble
+            outcomes.append({"name": "Over", "description": pitcher, "point": point,
+                             "price": _to_american((p_over - gift) * 1.045)})
+            outcomes.append({"name": "Under", "description": pitcher, "point": point,
+                             "price": _to_american((1 - p_over) * 1.045)})
+        books.append({"key": key, "title": title, "last_update": now.isoformat(),
+                      "markets": [{"key": "pitcher_strikeouts", "outcomes": outcomes}]})
+    return {"id": event_id, "sport_key": sport_key,
+            "commence_time": (now + timedelta(hours=3)).isoformat(),
+            "home_team": "Home Team", "away_team": "Away Team", "bookmakers": books}
 
 
 def _to_american(prob: float) -> int:

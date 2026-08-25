@@ -25,13 +25,47 @@ LEAGUE_ALIASES = {
 # h2h = moneyline, spreads = point spread, totals = over/under.
 # COST WARNING: one credit per market per region per request.
 MARKETS = ["h2h", "spreads", "totals"]
+
+# Only post games starting today (in TIMEZONE below). The odds feed returns
+# everything upcoming, so without this the card fills with Sunday's NFL games
+# on a Tuesday. Two reasons that's bad: an edge measured four days out is
+# mostly noise because the line still has to move, and a play that far ahead
+# never lands inside the closing-line window, so it can never be scored.
+SAME_DAY_ONLY = True
+
+# ------------------------------------------------------------ player props --
+# Props live on a per-event endpoint and cost one credit PER MARKET PER EVENT.
+# A full MLB slate of two pitcher markets is ~900 credits a month against a
+# free tier of 500, so on the free plan this has to stay tightly capped.
+# Set PROP_MARKETS = [] to turn props off entirely.
+PROP_MARKETS = ["pitcher_strikeouts", "pitcher_outs"]
+PROP_SPORTS = ["baseball_mlb"]
+PROP_MAX_EVENTS = 3            # games per day to pull props for
+PROP_MIN_BOOKS = 4             # props are thinner than sides; expect fewer books
+PROP_MIN_EDGE_PCT = 3.0        # and demand a bigger edge to compensate
+PROP_CREDIT_FLOOR = 160        # don't touch props below this many credits left
+MAX_PROPS_PER_DAY = 2          # keep props from crowding the whole card
 REGIONS = "us"          # one region keeps the credit cost at 1x
 ODDS_FORMAT = "american"
 
 # ------------------------------------------------------------ play picking --
 # A play is posted when the best price available beats the vig-free consensus
 # fair price by at least this much, expressed as expected value in percent.
-MIN_EDGE_PCT = 2.0
+MIN_EDGE_PCT = 2.5
+
+# Ceiling on believable edges. In a market priced by a dozen books, a 20%+
+# edge is never real — it's a stale line, a mismatched number, or a book
+# quoting something else. Anything above this is logged and thrown away.
+MAX_EDGE_PCT = 12.0
+
+# Books that haven't updated within this many minutes of the freshest book on
+# the same game are ignored. Stale prices are the single biggest source of
+# fake edges.
+STALE_MINUTES = 25
+
+# "power" corrects for books loading extra margin onto longshots.
+# "proportional" is the naive method and will fill your card with +300 dogs.
+DEVIG_METHOD = "power"
 
 # Ignore games priced by fewer books than this — a thin consensus is not a
 # consensus, it's noise.
@@ -43,8 +77,8 @@ MAX_PLAYS_PER_DAY = 6
 MAX_PLAYS_PER_LEAGUE = 3
 
 # Skip absurd prices. Long shots produce huge "edges" that are mostly noise.
-MIN_PRICE = -350
-MAX_PRICE = 400
+MIN_PRICE = -300
+MAX_PRICE = 250
 
 # Flat staking. Every play is the same size — this is what keeps the record
 # honest, and it is not negotiable in the grading math.

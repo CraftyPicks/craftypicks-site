@@ -12,7 +12,7 @@ noise, and noise is what turns a card into a losing month.
 from __future__ import annotations
 
 from collections import Counter, defaultdict
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 
 import config
 import odds_math as om
@@ -30,6 +30,33 @@ def league_short(sport_key: str) -> str:
     return config.LEAGUES.get(parent, {}).get("short", parent)
 
 
+def todays_games(games: list[dict], now: datetime | None = None) -> list[dict]:
+    """Keep only games that start later today, in our local timezone.
+
+    The feed returns everything upcoming, which is how NFL games four days out
+    ended up on a Tuesday card. Anything already underway is dropped too —
+    the price on the board for a live game isn't the price we posted.
+    """
+    if not config.SAME_DAY_ONLY:
+        return games
+    from zoneinfo import ZoneInfo
+    tz = ZoneInfo(config.TIMEZONE)
+    now = now or datetime.now(tz)
+    today = now.astimezone(tz).date()
+    kept = []
+    for game in games:
+        raw = game.get("commence_time")
+        if not raw:
+            continue
+        try:
+            start = datetime.fromisoformat(str(raw).replace("Z", "+00:00")).astimezone(tz)
+        except ValueError:
+            continue
+        if start.date() == today and start > now:
+            kept.append(game)
+    return kept
+
+
 def find_candidates(games: list[dict]) -> list[dict]:
     """Every qualifying edge across every game, unsorted."""
     out = []
@@ -42,7 +69,55 @@ def find_candidates(games: list[dict]) -> list[dict]:
     return out
 
 
+def _anchor_point(outcomes: list[dict], game: dict, market_key: str) -> float | None:
+    """The number a book is offering, expressed on one fixed reference side.
+
+    For spreads that reference side is the home team. Anchoring matters more
+    than it sounds: a book listing the home side at −1.5 and another listing
+    it at +1.5 are quoting opposite markets, and comparing their prices as if
+    they were the same number produces enormous fake edges.
+    """
+    if market_key == "totals":
+        pt = outcomes[0].get("point")
+        return float(pt) if pt is not None else None
+    home = game.get("home_team")
+    for o in outcomes:
+        if o.get("name") == home and o.get("point") is not None:
+            return float(o["point"])
+    return None
+
+
+def _fresh_books(books: list[dict]) -> list[dict]:
+    """Drop books whose prices have gone stale relative to the rest.
+
+    A book that stopped updating — pulled the game, hit a limit, went down —
+    keeps showing its last number. Against a market that has since moved,
+    that stale price reads as a massive edge. It isn't one; it's a price you
+    cannot actually bet.
+    """
+    stamped = []
+    for book in books:
+        raw = book.get("last_update")
+        if not raw:
+            stamped.append((None, book))
+            continue
+        try:
+            stamped.append((datetime.fromisoformat(str(raw).replace("Z", "+00:00")), book))
+        except ValueError:
+            stamped.append((None, book))
+    times = [t for t, _ in stamped if t]
+    if not times:
+        return books
+    newest = max(times)
+    cutoff = newest - timedelta(minutes=config.STALE_MINUTES)
+    return [b for t, b in stamped if t is None or t >= cutoff]
+
+
 def _scan_market(game: dict, books: list[dict], market_key: str) -> list[dict]:
+    books = _fresh_books(books)
+    if len(books) < config.MIN_BOOKS:
+        return []
+
     # Gather each book's two-sided quote for this market.
     quotes: list[tuple[str, str, dict, dict]] = []   # (book_key, book_title, side_a, side_b)
     points: Counter = Counter()
@@ -53,34 +128,31 @@ def _scan_market(game: dict, books: list[dict], market_key: str) -> list[dict]:
         outcomes = [o for o in market.get("outcomes", []) if o.get("price") is not None]
         if len(outcomes) != 2:
             continue
-        quotes.append((book.get("key", ""), book.get("title", ""), outcomes[0], outcomes[1]))
+        anchor = None
         if market_key != "h2h":
-            pt = outcomes[0].get("point")
-            if pt is not None:
-                points[abs(float(pt))] += 1
+            anchor = _anchor_point(outcomes, game, market_key)
+            if anchor is None:
+                continue
+            points[anchor] += 1
+        quotes.append((book.get("key", ""), book.get("title", ""), outcomes[0], outcomes[1], anchor))
 
     if len(quotes) < config.MIN_BOOKS:
         return []
 
-    # For spreads/totals, only compare books sitting on the same number.
-    consensus_point = None
+    # For spreads/totals, only compare books sitting on the same signed number.
     if market_key != "h2h":
         if not points:
             return []
         consensus_point = points.most_common(1)[0][0]
-        quotes = [
-            q for q in quotes
-            if q[2].get("point") is not None
-            and abs(abs(float(q[2]["point"])) - consensus_point) < 1e-9
-        ]
+        quotes = [q for q in quotes if abs(q[4] - consensus_point) < 1e-9]
         if len(quotes) < config.MIN_BOOKS:
             return []
 
     # De-vig every book's pair, keyed by outcome name.
     fair_by_side: dict[str, list[float]] = defaultdict(list)
     prices_by_side: dict[str, list[tuple[str, str, float, float | None]]] = defaultdict(list)
-    for book_key, book_title, a, b in quotes:
-        fa, fb = om.devig_pair(a["price"], b["price"])
+    for book_key, book_title, a, b, _anchor in quotes:
+        fa, fb = om.devig_pair(a["price"], b["price"], config.DEVIG_METHOD)
         for outcome, fair in ((a, fa), (b, fb)):
             name = outcome["name"]
             fair_by_side[name].append(fair)
@@ -109,6 +181,13 @@ def _scan_market(game: dict, books: list[dict], market_key: str) -> list[dict]:
         fair_prob = sum(others) / len(others)
         edge = om.expected_value_pct(fair_prob, price)
         if edge < config.MIN_EDGE_PCT:
+            continue
+        # An edge this large against a market priced by this many books is
+        # not an edge — it's a data problem (stale line, mismatched number,
+        # a book quoting a different game). Drop it rather than post it.
+        if edge > config.MAX_EDGE_PCT:
+            print(f"   ! skipped implausible {edge:.1f}% edge on "
+                  f"{side} {market_key} ({game.get('away_team')} @ {game.get('home_team')})")
             continue
 
         shorter = sum(
@@ -148,20 +227,31 @@ def build_card(candidates: list[dict]) -> list[dict]:
     per_league: Counter = Counter()
     seen_events: set[tuple] = set()
 
+    props_taken = 0
     for cand in ranked:
         if len(card) >= config.MAX_PLAYS_PER_DAY:
             break
-        # One play per game, full stop. Two plays on the same event is
-        # correlated risk dressed up as diversification.
-        key = cand["event_id"]
+        is_prop = bool(cand.get("is_prop"))
+        # One side and at most one prop per game. Two sides on one event is
+        # correlated risk dressed up as diversification; a strikeout prop and
+        # the game total are related but not the same bet, so they're allowed
+        # to coexist — just never two of the same kind.
+        key = (cand["event_id"], is_prop)
         if key in seen_events:
+            continue
+        if is_prop and props_taken >= config.MAX_PROPS_PER_DAY:
             continue
         if per_league[cand["league"]] >= config.MAX_PLAYS_PER_LEAGUE:
             continue
         seen_events.add(key)
         per_league[cand["league"]] += 1
-        cand["pick"] = _pick_label(cand)
-        cand["reasons"] = _reasons(cand)
+        if is_prop:
+            props_taken += 1
+        # Props arrive with their own label and reasoning already attached.
+        if not cand.get("pick"):
+            cand["pick"] = _pick_label(cand)
+        if not cand.get("reasons"):
+            cand["reasons"] = _reasons(cand)
         card.append(cand)
 
     card.sort(key=lambda c: (c.get("commence_time") or "", -c["edge_pct"]))

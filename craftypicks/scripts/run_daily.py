@@ -31,6 +31,7 @@ DATA = ROOT / "data"
 import config              # noqa: E402
 import find_plays          # noqa: E402
 import grade as grader     # noqa: E402
+import props               # noqa: E402
 import stats as statsmod   # noqa: E402
 from odds_client import BudgetExhausted, OddsAPIError, OddsClient  # noqa: E402
 
@@ -117,11 +118,36 @@ def main() -> int:
         print(f"-- in season: {', '.join(in_season) or 'nothing'}")
         candidates = []
         for sport in in_season:
-            games = client.odds(sport)
-            archive_board(sport, today, games)
+            all_games = client.odds(sport)
+            archive_board(sport, today, all_games)
+            games = find_plays.todays_games(all_games)
+            dropped = len(all_games) - len(games)
             found = find_plays.find_candidates(games)
-            print(f"   {sport}: {len(games)} games, {len(found)} qualifying edges")
+            print(f"   {sport}: {len(games)} games today "
+                  f"({dropped} not today, skipped), {len(found)} qualifying edges")
             candidates.extend(found)
+
+            # Props: per-event, so strictly capped. See config.PROP_MAX_EVENTS.
+            if (config.PROP_MARKETS and sport in config.PROP_SPORTS and games
+                    and (client.credits_remaining is None
+                         or client.credits_remaining > config.PROP_CREDIT_FLOOR)):
+                targets = props.pick_events(games, config.PROP_MAX_EVENTS)
+                print(f"   props: {len(targets)} event(s) × "
+                      f"{len(config.PROP_MARKETS)} market(s) = "
+                      f"{len(targets) * len(config.PROP_MARKETS)} credits")
+                for event in targets:
+                    try:
+                        detail = client.event_odds(sport, event["id"], config.PROP_MARKETS)
+                    except (BudgetExhausted, OddsAPIError) as e:
+                        print(f"     !! props for {event.get('id')}: {e}", file=sys.stderr)
+                        break
+                    for market_key in config.PROP_MARKETS:
+                        hits = props.scan_event(detail, market_key)
+                        if hits:
+                            print(f"     {market_key}: {len(hits)} edge(s)")
+                        candidates.extend(hits)
+            elif config.PROP_MARKETS and sport in config.PROP_SPORTS:
+                print("   props: skipped (credits low or no games today)")
         card = find_plays.build_card(candidates)
     except BudgetExhausted as e:
         note = "Credit budget for the month is spent — no new plays until it resets."
