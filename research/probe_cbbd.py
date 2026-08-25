@@ -1,16 +1,16 @@
 #!/usr/bin/env python3
-"""Find out exactly what the free CollegeBasketballData tier actually gives us.
+"""Probe v2 — what the free CollegeBasketballData tier actually gives us.
 
-No analysis here on purpose. Before writing a few hundred lines of testing
-code against a guessed schema, we establish four things:
+v1 had two flaws that this fixes:
 
-  1. Does the free key reach /lines at all, or is it a paid tier?
-  2. How many seasons back do lines go, and how complete are they?
-  3. Do they include OPENING numbers (needed for closing line value) and
-     first-half lines (needed for the first-half angle)?
-  4. What are the real field names on ratings, games, and stats?
+  * it inspected the FIRST game returned, which was a D1-vs-non-D1 blowout
+    nobody prices, so its empty lines array hid every question we cared
+    about. This one hunts for games that actually carry lines.
+  * every endpoint returns at most 3000 rows, so "3000 games" was the cap
+    talking, not the season. This one walks date ranges to find the real
+    coverage.
 
-Everything it learns gets printed. Nothing is assumed.
+Still no analysis. Only facts about the data.
 
     CBBD_API_KEY=xxx python research/probe_cbbd.py
 """
@@ -23,13 +23,14 @@ import time
 import urllib.error
 import urllib.parse
 import urllib.request
+from collections import Counter
+from datetime import date, timedelta
 
 API = "https://api.collegebasketballdata.com"
 KEY = os.environ.get("CBBD_API_KEY", "").strip()
 
 
 def call(path: str, **params) -> tuple[int, object]:
-    """Returns (http_status, parsed_body_or_error_text)."""
     url = f"{API}{path}"
     if params:
         url += "?" + urllib.parse.urlencode(params)
@@ -40,123 +41,146 @@ def call(path: str, **params) -> tuple[int, object]:
     })
     try:
         with urllib.request.urlopen(req, timeout=60) as resp:
-            time.sleep(0.4)
+            time.sleep(0.35)
             return resp.status, json.loads(resp.read().decode("utf-8"))
     except urllib.error.HTTPError as e:
-        return e.code, e.read().decode("utf-8", "replace")[:400]
+        return e.code, e.read().decode("utf-8", "replace")[:300]
     except Exception as e:                                  # noqa: BLE001
         return 0, f"{type(e).__name__}: {e}"
 
 
-def show_fields(label: str, sample: object, limit: int = 40) -> None:
-    if isinstance(sample, list):
-        print(f"   {label}: list of {len(sample)}")
-        sample = sample[0] if sample else None
-    if isinstance(sample, dict):
-        print(f"   {label} fields:")
-        for k, v in list(sample.items())[:limit]:
-            shown = v
-            if isinstance(v, (list, dict)):
-                shown = f"<{type(v).__name__} len={len(v)}>"
-            print(f"     {k:<28} = {shown}")
-    elif sample is not None:
-        print(f"   {label}: {str(sample)[:200]}")
+def dump(label: str, obj: object, indent: str = "     ") -> None:
+    if not isinstance(obj, dict):
+        print(f"{indent}{label}: {str(obj)[:180]}")
+        return
+    print(f"{indent}{label}:")
+    for k, v in obj.items():
+        if isinstance(v, dict):
+            print(f"{indent}  {k}:")
+            for k2, v2 in v.items():
+                print(f"{indent}    {k2:<26} = {v2}")
+        elif isinstance(v, list):
+            print(f"{indent}  {k:<28} = <list len={len(v)}> {str(v[:4])[:90]}")
+        else:
+            print(f"{indent}  {k:<28} = {v}")
 
 
 def section(title: str) -> None:
     print(f"\n{'=' * 74}\n{title}\n{'=' * 74}")
 
 
+def month_ranges(season: int):
+    """A college season labelled 2025 runs Nov 2024 → Apr 2025."""
+    start = date(season - 1, 11, 1)
+    while start < date(season, 4, 30):
+        nxt = (start.replace(day=28) + timedelta(days=8)).replace(day=1)
+        yield start, min(nxt - timedelta(days=1), date(season, 4, 30))
+        start = nxt
+
+
 def main() -> int:
     if not KEY:
-        print("No CBBD_API_KEY set. Add it as a repo secret and pass it through "
-              "the workflow env.", file=sys.stderr)
+        print("No CBBD_API_KEY set.", file=sys.stderr)
         return 1
     print(f"key present: {KEY[:4]}…{KEY[-4:]} ({len(KEY)} chars)")
 
-    # ---------------------------------------------------------------- lines
-    section("1. BETTING LINES — the make-or-break question")
+    # ------------------------------------------------- 1. lines, done right
+    section("1. LINES — hunting for games that actually carry them")
     status, body = call("/lines", season=2025)
-    print(f"   GET /lines?season=2025 → HTTP {status}")
-    if status == 200 and isinstance(body, list):
-        print(f"   got {len(body)} game(s) with lines")
-        if body:
-            show_fields("game", body[0])
-            inner = body[0].get("lines")
-            if isinstance(inner, list) and inner:
-                show_fields("one line entry", inner[0])
-                providers = set()
-                open_spread = open_total = half = 0
-                for g in body[:1500]:
-                    for ln in (g.get("lines") or []):
-                        providers.add(ln.get("provider"))
-                        if ln.get("spreadOpen") is not None:
-                            open_spread += 1
-                        if ln.get("overUnderOpen") is not None:
-                            open_total += 1
-                        if any("alf" in str(k) for k in ln):
-                            half += 1
-                print(f"\n   providers seen: {sorted(p for p in providers if p)}")
-                print(f"   entries carrying an OPENING spread: {open_spread}")
-                print(f"   entries carrying an OPENING total:  {open_total}")
-                print(f"   entries mentioning a half/period line: {half}"
-                      f"   {'← first-half angle is testable' if half else '← NO first-half lines'}")
-    else:
-        print(f"   BLOCKED OR EMPTY: {body}")
-        print("   If this is 401/403, lines are not in the free tier and the "
-              "whole plan needs rethinking. Report this exactly.")
+    print(f"   GET /lines?season=2025 → HTTP {status}, "
+          f"{len(body) if isinstance(body, list) else '?'} rows (3000 = the cap)")
 
-    # how far back do lines go?
-    print("\n   season coverage:")
-    for season in (2019, 2021, 2023, 2024, 2025, 2026):
-        st, bd = call("/lines", season=season)
-        n = len(bd) if st == 200 and isinstance(bd, list) else 0
-        print(f"     {season}: HTTP {st}, {n} games")
+    if status != 200 or not isinstance(body, list):
+        print(f"   BLOCKED: {body}")
+        return 1
 
-    # ------------------------------------------------------------- ratings
-    section("2. ADJUSTED EFFICIENCY RATINGS")
-    status, body = call("/ratings/adjusted", season=2025)
-    print(f"   GET /ratings/adjusted?season=2025 → HTTP {status}")
-    if status == 200:
-        show_fields("rating", body)
-        if isinstance(body, list):
-            print(f"   teams rated: {len(body)}")
-    else:
-        print(f"   {body}")
+    with_lines = [g for g in body if g.get("lines")]
+    print(f"   rows carrying at least one line: {len(with_lines)} of {len(body)}")
 
-    # --------------------------------------------------------------- games
-    section("3. GAMES — results, and whether period scores exist for 1H")
-    status, body = call("/games", season=2025, seasonType="regular")
-    print(f"   GET /games?season=2025 → HTTP {status}")
-    if status == 200 and isinstance(body, list):
-        print(f"   games: {len(body)}")
-        if body:
-            show_fields("game", body[0])
-            periods = [g for g in body[:200]
-                       if any("period" in str(k).lower() or "half" in str(k).lower() for k in g)]
-            print(f"\n   games exposing period/half scores: {len(periods)} of first 200")
+    if not with_lines:
+        print("   None in this batch — trying a mid-January window, when every "
+              "game on the board is priced.")
+        st, bd = call("/lines", season=2025,
+                      startDateRange="2025-01-10T00:00:00.000Z",
+                      endDateRange="2025-01-20T00:00:00.000Z")
+        if st == 200 and isinstance(bd, list):
+            with_lines = [g for g in bd if g.get("lines")]
+            print(f"   mid-January: {len(with_lines)} of {len(bd)} rows carry lines")
 
-    # --------------------------------------------------------------- stats
-    section("4. TEAM & PLAYER SEASON STATS — rebounding, turnovers, balance")
-    status, body = call("/stats/team/season", season=2025)
-    print(f"   GET /stats/team/season?season=2025 → HTTP {status}")
-    if status == 200:
-        show_fields("team stat row", body, limit=60)
+    if with_lines:
+        g = with_lines[0]
+        print(f"\n   example: {g.get('awayTeam')} @ {g.get('homeTeam')} "
+              f"({g.get('awayScore')}-{g.get('homeScore')})")
+        for i, ln in enumerate(g.get("lines", [])[:3]):
+            dump(f"line entry {i}", ln)
 
-    status, body = call("/stats/player/season", season=2025)
-    print(f"\n   GET /stats/player/season?season=2025 → HTTP {status}")
-    if status == 200:
-        show_fields("player stat row", body, limit=45)
-        if isinstance(body, list):
-            print(f"   player rows: {len(body)}")
+        providers, open_spread, open_total, half_keys = Counter(), 0, 0, Counter()
+        priced = 0
+        for game in with_lines:
+            priced += 1
+            for ln in game.get("lines", []):
+                providers[ln.get("provider")] += 1
+                if ln.get("spreadOpen") is not None:
+                    open_spread += 1
+                if ln.get("overUnderOpen") is not None:
+                    open_total += 1
+                for k in ln:
+                    kl = str(k).lower()
+                    if "half" in kl or "period" in kl or "1h" in kl:
+                        half_keys[k] += 1
+        print(f"\n   priced games inspected: {priced}")
+        print(f"   providers: {dict(providers)}")
+        print(f"   entries with an OPENING spread: {open_spread}"
+              f"   {'← CLV measurable' if open_spread else '← no opener, no CLV'}")
+        print(f"   entries with an OPENING total:  {open_total}")
+        print(f"   half/period line fields: {dict(half_keys) or 'NONE — first-half angle needs another source'}")
 
-    section("WHAT THIS DECIDES")
-    print("""   lines present + openers present  → full ROI backtest with closing
-                                        line value. Best case.
-   lines present, no openers        → ROI backtest only, no CLV.
-   half lines present               → the first-half angle is testable.
-   lines 401/403                    → free tier excludes them; we fall back
-                                        to effect-size work and rethink.""")
+    # ------------------------------------- 2. real coverage, past the 3000 cap
+    section("2. REAL COVERAGE — walking date ranges instead of trusting the cap")
+    for season in (2023, 2025, 2026):
+        total = priced_total = 0
+        for a, b in month_ranges(season):
+            st, bd = call("/lines", season=season,
+                          startDateRange=f"{a.isoformat()}T00:00:00.000Z",
+                          endDateRange=f"{b.isoformat()}T23:59:59.000Z")
+            if st == 200 and isinstance(bd, list):
+                total += len(bd)
+                priced_total += sum(1 for x in bd if x.get("lines"))
+                capped = " (CAPPED)" if len(bd) >= 3000 else ""
+                print(f"   {season} {a:%b}: {len(bd):>5} games, "
+                      f"{sum(1 for x in bd if x.get('lines')):>5} priced{capped}")
+        print(f"   → {season} TOTAL: {total} games, {priced_total} with lines\n")
+
+    # ------------------------------------------- 3. the nested bits, expanded
+    section("3. NESTED STRUCTURES v1 printed as '<dict len=N>'")
+    st, bd = call("/ratings/adjusted", season=2025)
+    if st == 200 and isinstance(bd, list) and bd:
+        dump("ratings row (Duke or first)", bd[0])
+
+    st, bd = call("/stats/team/season", season=2025)
+    if st == 200 and isinstance(bd, list) and bd:
+        row = bd[0]
+        print()
+        dump("team season row", {k: v for k, v in row.items()
+                                 if k in ("team", "games", "pace")})
+        dump("teamStats", row.get("teamStats"))
+        dump("opponentStats", row.get("opponentStats"))
+
+    st, bd = call("/stats/player/season", season=2025)
+    if st == 200 and isinstance(bd, list) and bd:
+        row = bd[0]
+        print()
+        dump("player rebounds", row.get("rebounds"))
+        dump("player fieldGoals", row.get("fieldGoals"))
+
+    section("WHAT WE NOW KNOW")
+    print("""   Openers present   → we can measure closing line value, the one
+                         metric that separates edge from luck.
+   Half lines present → your first-half angle is directly testable.
+   Half lines absent  → we can still measure first-half RESULTS from
+                         homePeriodPoints, but cannot grade a 1H bet.
+   Coverage numbers  → decide which seasons we build on and which one
+                         gets held out as the honest test.""")
     return 0
 
 
