@@ -36,16 +36,41 @@ def prob_to_american(prob: float) -> int:
     return decimal_to_american(1.0 / prob)
 
 
-def devig_pair(price_a: int | float, price_b: int | float) -> tuple[float, float]:
-    """Strip the margin from a two-way market, proportionally.
+def devig_pair(price_a: int | float, price_b: int | float,
+               method: str = "power") -> tuple[float, float]:
+    """Strip the margin from a two-way market.
 
-    Returns (fair_prob_a, fair_prob_b), summing to 1.0.
+    'proportional' scales both implied probabilities down by the same factor.
+    It's the textbook method and it is wrong in a specific, costly direction:
+    books load more margin onto longshots than favorites, so scaling evenly
+    leaves the longshot's fair probability too high — which makes underdogs
+    look like value when they aren't.
+
+    'power' (the default) solves for the exponent k where p_a^k + p_b^k = 1.
+    It takes more margin off the longshot than the favorite, which is closer
+    to how books actually price, and stops the card filling up with +300 dogs.
     """
     pa, pb = american_to_prob(price_a), american_to_prob(price_b)
     total = pa + pb
     if total <= 0:
         return 0.5, 0.5
-    return pa / total, pb / total
+    if method == "proportional" or total <= 1.0:
+        return pa / total, pb / total
+
+    # Bisection on k. f(k) = pa^k + pb^k - 1 decreases as k grows.
+    lo, hi = 1.0, 6.0
+    for _ in range(80):
+        k = (lo + hi) / 2
+        if pa ** k + pb ** k > 1.0:
+            lo = k
+        else:
+            hi = k
+    k = (lo + hi) / 2
+    fa, fb = pa ** k, pb ** k
+    total_k = fa + fb
+    if total_k <= 0:
+        return pa / total, pb / total
+    return fa / total_k, fb / total_k
 
 
 def expected_value_pct(fair_prob: float, price: int | float) -> float:
