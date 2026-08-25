@@ -56,16 +56,15 @@
     <div class="scroll-x">
       <table class="tbl">
         <thead>
-          <tr><th>Date</th><th>Play</th><th>League</th><th>Price</th><th>Edge at post</th><th>Result</th><th>Return</th></tr>
+          <tr><th>Date</th><th>Play</th><th>League</th><th>Price</th><th>Edge at post</th><th>vs close</th><th>Result</th><th>Return</th></tr>
         </thead>
         <tbody>{{LOG_ROWS}}</tbody>
       </table>
     </div>
     <div class="note" style="margin-top:26px">
-      <p class="disclaimer"><b style="color:var(--txt)">"Edge at post" is the honest number to judge us on.</b> It's how much better than the vig-free market consensus the play was priced when it was posted &mdash; the thing the process is actually trying to produce. Results swing wildly over any short stretch; the edge column is what should stay positive. A hot month with thin edges is luck, and it gives back.</p>
+      <p class="disclaimer"><b style="color:var(--txt)">"vs close" is the column that actually matters.</b> It compares the price we posted against what the whole market settled on shortly before tip &mdash; vig removed from both. Positive means we got a better number than the market's final opinion, and that shows up in a couple hundred plays. Win-loss records need thousands before they mean anything, which is why every tout can show you a good month. {{DRAWDOWN_LINE}}</p>
     </div>
-  </div>
-</section>
+  </section>
 
 <section class="cta-band">
   <div class="wrap">

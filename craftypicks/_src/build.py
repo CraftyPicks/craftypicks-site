@@ -225,6 +225,12 @@ def build() -> None:
 
     tokens = {
         "{{RECORD_INTRO}}": record_intro,
+        "{{DRAWDOWN_LINE}}": (
+            f"Worst peak-to-trough run so far: {R.u(stats.get('drawdown', 0.0))}."
+            if graded_n else
+            "Average so far across plays with a late line: "
+            f"{R.pct(stats.get('clv_avg', 0.0))}."
+        ),
         "{{MONTHS_LINE}}": months_line,
         "{{LOG_HEADING}}": log_heading,
         "{{DATE_LABEL}}": plays_doc.get("date_label", ""),

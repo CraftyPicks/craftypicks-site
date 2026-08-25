@@ -148,12 +148,16 @@ def result_rows(plays: list[dict], columns: str = "full") -> str:
         tag, label = RESULT_TAG.get(p.get("result", ""), ("", "—"))
         profit = p.get("profit", 0.0)
         if columns == "full":
+            clv = p.get("clv_ev")
+            clv_cell = (f'<td class="m {cls_for(clv)}">{pct(clv)}</td>'
+                        if clv is not None else '<td class="m" style="color:var(--dim)">—</td>')
             rows.append(f"""<tr>
               <td class="m">{esc(_short_date(p))}</td>
               <td class="strong">{esc(p.get('pick',''))}</td>
               <td class="m">{esc(p.get('league',''))}</td>
               <td class="m">{esc(om.format_american(p.get('price',0)))}</td>
               <td class="m">{pct(p.get('edge_pct',0))}</td>
+              {clv_cell}
               <td><span class="tag {tag}">{label}</span></td>
               <td class="m {cls_for(profit)}">{u(profit)}</td></tr>""")
         else:
@@ -227,8 +231,10 @@ def kpi_strip(s: dict, variant: str = "home") -> str:
             ("ROI", pct(roi), cls_for(roi), f"Return on {s.get('risked',0):.0f}u risked"),
             ("Record", esc(s.get("record", "0–0–0")), "",
              f"{s.get('win_pct',0):.1f}% on decided plays"),
-            ("Worst drawdown", u(s.get("drawdown", 0.0)), cls_for(s.get("drawdown", 0.0)),
-             "Peak-to-trough across the log"),
+            ("Beat the close",
+             f"{s.get('clv_beat_pct', 0):.0f}%" if s.get("clv_n") else "—",
+             cls_for(s.get("clv_beat_pct", 0) - 50) if s.get("clv_n") else "",
+             f"On {s.get('clv_n', 0)} plays with a late line"),
         ]
     return "".join(
         f'<div class="kpi"><div class="k">{k}</div>'
