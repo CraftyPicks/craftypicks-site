@@ -105,6 +105,20 @@ class OddsClient:
             },
         )
 
+    def events(self, sport_key: str) -> list[dict]:
+        """Upcoming games with start times and no odds. COSTS NOTHING.
+
+        Checking this first is what stops us paying three credits to pull a
+        272-game NFL board in August and then discarding all of it because
+        none of those games are today.
+        """
+        if self.mock:
+            return [{"id": g["id"], "sport_key": sport_key,
+                     "commence_time": g["commence_time"],
+                     "home_team": g["home_team"], "away_team": g["away_team"]}
+                    for g in _mock_odds(sport_key)]
+        return self._get(f"/sports/{sport_key}/events", {"dateFormat": "iso"})
+
     def event_odds(self, sport_key: str, event_id: str, markets: list[str]) -> dict:
         """Player props for one game. Costs one credit per market, per event.
 

@@ -135,6 +135,19 @@ def main() -> int:
         candidates = []
         prop_events: list[dict] = []
         for sport in in_season:
+            # Free look at the schedule before spending anything. A league
+            # with no games today gets skipped entirely instead of costing
+            # a credit per market for a board we'd throw away.
+            try:
+                upcoming = client.events(sport)
+                if not find_plays.todays_games(upcoming):
+                    print(f"   {sport}: no games today — skipped "
+                          f"({len(upcoming)} upcoming), 0 credits spent")
+                    continue
+            except OddsAPIError as e:
+                print(f"   {sport}: schedule check failed ({e}); pulling odds anyway",
+                      file=sys.stderr)
+
             all_games = client.odds(sport)
             archive_board(sport, today, all_games)
             games = find_plays.todays_games(all_games)
