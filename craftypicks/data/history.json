@@ -286,8 +286,10 @@
       "id": "ccb7afafeeb739ec9623deb9cba63f64-spreads-Pittsburgh_Pirates",
       "posted_date": "2026-08-25",
       "posted_at": "2026-08-25T10:33:58-04:00",
-      "result": null,
-      "profit": 0.0
+      "result": "loss",
+      "profit": -1.0,
+      "graded_at": "2026-08-26T04:12:44+00:00",
+      "final_score": "Pittsburgh Pirates 1 — San Diego Padres 0"
     },
     {
       "event_id": "50491a98ba9ab1b1502809e59c3cd776",
@@ -323,8 +325,10 @@
       "id": "50491a98ba9ab1b1502809e59c3cd776-spreads-Seattle_Mariners",
       "posted_date": "2026-08-25",
       "posted_at": "2026-08-25T10:33:58-04:00",
-      "result": null,
-      "profit": 0.0
+      "result": "win",
+      "profit": 1.9,
+      "graded_at": "2026-08-26T04:12:44+00:00",
+      "final_score": "Philadelphia Phillies 1 — Seattle Mariners 4"
     },
     {
       "event_id": "26d4c80fbedae27b50bb14b2ae483938",
@@ -360,8 +364,10 @@
       "id": "26d4c80fbedae27b50bb14b2ae483938-spreads-San_Francisco_Giants",
       "posted_date": "2026-08-25",
       "posted_at": "2026-08-25T10:33:58-04:00",
-      "result": null,
-      "profit": 0.0
+      "result": "win",
+      "profit": 1.89,
+      "graded_at": "2026-08-26T04:12:44+00:00",
+      "final_score": "Cincinnati Reds 1 — San Francisco Giants 3"
     },
     {
       "event_id": "445352f35687c14580f0c852ad6de72a",
@@ -534,6 +540,43 @@
       "id": "209f31db8e00b79cd7185e2e0d10d825-pitcher_strikeouts-Tyler_Phillips_Over",
       "posted_date": "2026-08-25",
       "posted_at": "2026-08-25T11:10:18-04:00",
+      "result": null,
+      "profit": 0.0
+    },
+    {
+      "event_id": "8e42a5450f35bf142633e40243b30561",
+      "sport_key": "baseball_mlb",
+      "league": "MLB",
+      "league_short": "mlb",
+      "commence_time": "2026-08-26T17:11:00Z",
+      "home_team": "Detroit Tigers",
+      "away_team": "Tampa Bay Rays",
+      "matchup": "Tampa Bay Rays @ Detroit Tigers",
+      "market": "pitcher_strikeouts",
+      "market_label": "Strikeouts · Screen C",
+      "side": "Troy Melton Under",
+      "player": "Troy Melton",
+      "point": 3.5,
+      "price": 130,
+      "book": "FanDuel",
+      "book_key": "fanduel",
+      "fair_prob": 0.40156,
+      "fair_price": 149,
+      "edge_pct": -7.64,
+      "books_counted": 4,
+      "stake": 1.0,
+      "pick": "Troy Melton under 3.5 strikeouts",
+      "reasons": [
+        "<b>Screen C</b> — season K% 21.4%",
+        "<b>Screen C</b> — opponent K/game 7.02"
+      ],
+      "is_prop": true,
+      "source": "screen",
+      "screen": "C",
+      "slot": 1,
+      "id": "8e42a5450f35bf142633e40243b30561-pitcher_strikeouts-Troy_Melton_Under",
+      "posted_date": "2026-08-26",
+      "posted_at": "2026-08-26T00:12:44-04:00",
       "result": null,
       "profit": 0.0
     }
