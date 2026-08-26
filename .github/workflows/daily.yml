@@ -6,8 +6,12 @@ on:
     # different UTC hour in summer than in winter. Both are listed, and the
     # gate step below drops whichever one isn't 9 AM locally — which means
     # this file never needs editing when the clocks change.
-    - cron: "0 13 * * *"    # 9 AM ET while daylight saving is in effect
-    - cron: "0 14 * * *"    # 9 AM ET the rest of the year
+    # Several attempts inside the 9 AM hour, not one. GitHub delays scheduled
+    # runs under load and sometimes drops them entirely, so a single firing is
+    # not a schedule — it is a hope. run_daily.py exits immediately if a card
+    # for today is already committed, so the later attempts cost nothing.
+    - cron: "0,20,40 13 * * *"    # 9 AM ET while daylight saving is in effect
+    - cron: "0,20,40 14 * * *"    # 9 AM ET the rest of the year
   workflow_dispatch:
 
 permissions:
@@ -50,6 +54,9 @@ jobs:
         if: steps.gate.outputs.skip != 'true'
         env:
           ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
+          # A manual run always posts; a scheduled retry stops early if the
+          # card for today is already in the repo.
+          CRAFTYPICKS_FORCE: ${{ github.event_name == 'workflow_dispatch' && '1' || '0' }}
           # Unbuffered, so a crash doesn't swallow the last lines of the log —
           # which is exactly when the log matters most.
           PYTHONUNBUFFERED: "1"
