@@ -1,0 +1,91 @@
+<section style="background:linear-gradient(180deg,#0A0C0F,var(--bg))">
+  <div class="wrap" style="padding:56px 28px 46px">
+    <div class="eyebrow">{{SLATE_DATE}} &middot; every game, rated</div>
+    <h1 style="font-size:clamp(32px,4.2vw,50px);margin:14px 0 16px">Today's full board</h1>
+    <p class="lead">A win probability for every game, not just the ones we'd bet. Our number sits next to the market's own vig-free number so you can see exactly where we disagree &mdash; and every one of these gets graded, whether it became a play or not.</p>
+  </div>
+</section>
+
+<section class="pad-sm">
+  <div class="wrap">
+    <div class="scroll-x">
+      <table class="tbl">
+        <thead>
+          <tr><th>Time</th><th>Game</th><th>Starters</th><th>Our number</th><th>Market</th><th>Gap</th><th>Final</th></tr>
+        </thead>
+        <tbody>{{SLATE_ROWS}}</tbody>
+      </table>
+    </div>
+    <div class="note" style="margin-top:26px">
+      <p class="disclaimer"><b style="color:var(--txt)">Read the gap column carefully.</b> It's our probability minus the market's, in percentage points, and it is the whole point of publishing this. A gap of two or three points is an ordinary disagreement. A gap flagged with a warning marker is one we treat as <i>our</i> error, not an opportunity &mdash; a dozen books pricing a baseball game are not wrong by twelve points, and a model that thinks they are has a bug rather than an edge. Those are never eligible to become plays.</p>
+    </div>
+  </div>
+</section>
+
+<section class="pad-sm" id="calibration">
+  <div class="wrap">
+    <div class="sec-head" style="margin-bottom:26px">
+      <div class="eyebrow">The scoreboard for the numbers</div>
+      <h2 style="font-size:26px;margin-top:10px">Are we calibrated?</h2>
+      <p class="lead" style="margin-top:12px">When we say a team wins 60% of the time, does it? This is the only claim on this site that can be checked in weeks instead of years &mdash; because every rated game counts, not just the handful we bet. Fifteen games a night is 450 data points a month; a two-play card takes over a decade to say anything at all.</p>
+    </div>
+    <div class="scroll-x">
+      <table class="tbl">
+        <thead>
+          <tr><th>We said</th><th>Games</th><th>Average call</th><th>Actually won</th><th>Verdict</th></tr>
+        </thead>
+        <tbody>{{CALIBRATION_ROWS}}</tbody>
+      </table>
+    </div>
+    <div class="note" style="margin-top:26px">
+      <p class="disclaimer">{{BRIER_LINE}}</p>
+    </div>
+  </div>
+</section>
+
+<section class="pad">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">What goes into the number</div>
+      <h2>Two inputs, and a list of things deliberately left out</h2>
+    </div>
+    <div class="grid-2" style="gap:44px;align-items:start">
+      <div class="tile">
+        <div class="num">Input 01</div>
+        <h3>Team strength, learned from results</h3>
+        <p style="margin-top:10px">An Elo rating built by walking every completed game in date order. It needs no training and no fitted coefficients &mdash; it calibrates itself against what actually happened, and a rating never contains information from a game that hadn't been played yet.</p>
+      </div>
+      <div class="tile">
+        <div class="num">Input 02</div>
+        <h3>The starting pitchers</h3>
+        <p style="margin-top:10px">A season-to-date ERA gap between the two starters, converted to win probability and capped so one disastrous outing can't swing a rating. This conversion is an estimate rather than a fitted number, and it's the most likely thing on this page to be wrong. The calibration table above is what will catch it.</p>
+      </div>
+      <div class="tile">
+        <div class="num">Left out</div>
+        <h3>Head-to-head history</h3>
+        <p style="margin-top:10px">Shown on plenty of sites, worth close to nothing. Rosters turn over every year, samples are tiny, and "they've won four of the last five meetings" usually describes different players. It gets zero weight here.</p>
+      </div>
+      <div class="tile">
+        <div class="num">Left out</div>
+        <h3>Recent form and streaks</h3>
+        <p style="margin-top:10px">A team's last ten games are already inside its rating, and weighting them again double-counts the same information while adding noise. Hot and cold streaks are mostly variance wearing a narrative.</p>
+      </div>
+    </div>
+    <div class="note" style="margin-top:30px">
+      <p class="disclaimer"><b style="color:var(--txt)">The expected result is that the market beats us.</b> Closing prices are set by people with better models, better data and money at risk. Publishing a number that gets scored against theirs isn't a claim to be sharper &mdash; it's a claim precise enough to be proven wrong, which is rarer in this industry than being right.</p>
+    </div>
+  </div>
+</section>
+
+<section class="cta-band">
+  <div class="wrap">
+    <div class="eyebrow">Numbers on everything, plays on almost nothing</div>
+    <h2>The board is rated daily. Plays are rarer.</h2>
+    <p>A rating on every game doesn't mean a bet on every game. Most nights the market and our number agree closely enough that there's nothing to do.</p>
+    <div class="hero-cta">
+      <a href="plays.html" class="btn solid">Today's plays</a>
+      <a href="record.html" class="btn ghost">Track record</a>
+    </div>
+    <div class="fineprint" style="margin-top:22px">21+ &middot; Entertainment only &middot; Nothing here is for sale</div>
+  </div>
+</section>

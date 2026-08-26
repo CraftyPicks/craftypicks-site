@@ -1,0 +1,64 @@
+<section style="background:linear-gradient(180deg,#0A0C0F,var(--bg))">
+  <div class="wrap" style="padding:56px 28px 40px">
+    <div class="split">
+      <div>
+        <div class="eyebrow">{{BOARD_EYEBROW}}</div>
+        <h1 style="font-size:clamp(32px,4.2vw,50px);margin:14px 0 14px">Today's plays</h1>
+        <p class="lead">{{COUNT_LINE}}</p>
+      </div>
+      <div class="card" style="padding:18px 22px;min-width:240px">
+        <div class="stamp">Card summary</div>
+        <div class="mono" style="font-size:30px;font-weight:600;margin:8px 0 2px">{{UNITS_RISKED}} <span style="color:var(--dim);font-size:15px">risked</span></div>
+        <div style="font-size:13px;color:var(--muted)">{{LEAGUE_LINE}}</div>
+      </div>
+    </div>
+
+    {{FILTER_BLOCK}}
+  </div>
+</section>
+
+<section class="pad-sm">
+  <div class="wrap">
+    <div class="grid-2" id="board" style="align-items:stretch;gap:22px">{{PLAY_CARDS}}</div>
+
+    <div class="note" style="margin-top:30px">
+      <p class="disclaimer"><b style="color:var(--txt)">Read the price, not just the pick.</b> Each play is only a play at the number and book listed &mdash; that specific price is where the edge lives. If the number has moved against it by the time you look, the edge is gone. Pass on it. Chasing a moved number is how a good process turns into a bad month.</p>
+    </div>
+  </div>
+</section>
+
+<section class="pad-sm" id="results">
+  <div class="wrap">
+    <div class="split" style="margin-bottom:26px">
+      <div>
+        <div class="eyebrow muted">Graded this morning</div>
+        <h2 style="font-size:26px;margin-top:10px">Last card &mdash; {{YESTERDAY_LABEL}}</h2>
+      </div>
+      <div style="text-align:right">
+        <div class="stamp">Net</div>
+        <div class="mono {{YESTERDAY_NET_CLASS}}" style="font-size:24px;font-weight:600">{{YESTERDAY_NET}}</div>
+      </div>
+    </div>
+    <div class="scroll-x">
+      <table class="tbl">
+        <thead>
+          <tr><th>Play</th><th>League</th><th>Market</th><th>Price</th><th>Stake</th><th>Result</th><th>Return</th></tr>
+        </thead>
+        <tbody>{{YESTERDAY_ROWS}}</tbody>
+      </table>
+    </div>
+    <div style="margin-top:24px;display:flex;gap:14px;flex-wrap:wrap">
+      <a href="record.html" class="btn ghost">See every play ever posted</a>
+    </div>
+  </div>
+</section>
+
+<section class="cta-band">
+  <div class="wrap">
+    <div class="eyebrow">Don't want to check the site every day?</div>
+    <h2>Have the card sent to you at {{POST_TIME}}</h2>
+    <p>Same plays, same math, same grading &mdash; delivered before the numbers move. Always free.</p>
+    {{SIGNUP}}
+    <div class="fineprint">Unsubscribe any time &middot; 21+</div>
+  </div>
+</section>
