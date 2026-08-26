@@ -2,7 +2,12 @@ name: Post daily plays
 
 on:
   schedule:
-    - cron: "0 13 * * *"
+    # Cron is UTC and has no timezone support, so 9 AM in New York is a
+    # different UTC hour in summer than in winter. Both are listed, and the
+    # gate step below drops whichever one isn't 9 AM locally — which means
+    # this file never needs editing when the clocks change.
+    - cron: "0 13 * * *"    # 9 AM ET while daylight saving is in effect
+    - cron: "0 14 * * *"    # 9 AM ET the rest of the year
   workflow_dispatch:
 
 permissions:
@@ -15,10 +20,12 @@ concurrency:
 jobs:
   post:
     runs-on: ubuntu-latest
+    # Without this, a hung upstream request can leave the job sitting for the
+    # default six hours, burning Actions minutes for nothing.
+    timeout-minutes: 30
     defaults:
       run:
         working-directory: craftypicks
-
     steps:
       - uses: actions/checkout@v4
 
@@ -26,19 +33,53 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Is it actually 9 AM in New York?
+        id: gate
+        shell: bash
+        run: |
+          hour=$(TZ=America/New_York date +%H)
+          if [ "${GITHUB_EVENT_NAME}" = "schedule" ] && [ "$hour" != "09" ]; then
+            echo "It is ${hour}:00 in New York — this is the off-season half of"
+            echo "the schedule. Skipping so the card posts exactly once a day."
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "Proceeding (local hour ${hour}, event ${GITHUB_EVENT_NAME})."
+          fi
+
       - name: Run the scanner, grade yesterday, rebuild the site
+        if: steps.gate.outputs.skip != 'true'
         env:
           ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
+          # Unbuffered, so a crash doesn't swallow the last lines of the log —
+          # which is exactly when the log matters most.
+          PYTHONUNBUFFERED: "1"
         run: python scripts/run_daily.py
 
       - name: Commit the day's card
+        if: steps.gate.outputs.skip != 'true'
+        shell: bash
         run: |
+          set -euo pipefail
           git config user.name  "craftypicks-bot"
           git config user.email "bot@users.noreply.github.com"
           git add data *.html
           if git diff --staged --quiet; then
             echo "Nothing changed today."
-          else
-            git commit -m "plays: $(date -u +%Y-%m-%d)"
-            git push
+            exit 0
           fi
+          git commit -m "plays: $(date -u +%Y-%m-%d)"
+
+          # The closing-line job pushes to this same branch, so a plain push
+          # can be rejected as non-fast-forward — after the credits have
+          # already been spent. Rebase onto whatever landed and retry.
+          for attempt in 1 2 3; do
+            if git pull --rebase --autostash origin "${GITHUB_REF_NAME}" \
+               && git push origin "HEAD:${GITHUB_REF_NAME}"; then
+              echo "Pushed on attempt ${attempt}."
+              exit 0
+            fi
+            echo "Push attempt ${attempt} failed; retrying in 10s."
+            sleep 10
+          done
+          echo "Could not push after 3 attempts."
+          exit 1
