@@ -289,7 +289,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
 <header class="nav">
   <div class="nav-in">
     <a href="index.html" class="logo">Crafty<span>picks</span></a>
-    <nav class="nav-links"><a href="plays.html" class="">Today's Plays</a><a href="record.html" class="">Track Record</a><a href="about.html" class="">How It Works</a><a href="screens.html" class="on">The Screens</a></nav>
+    <nav class="nav-links"><a href="plays.html" class="">Today's Plays</a><a href="record.html" class="">Track Record</a><a href="about.html" class="">How It Works</a><a href="slate.html" class="">Full Board</a><a href="screens.html" class="on">The Screens</a></nav>
     <div class="nav-cta">
       <a href="about.html" class="link-quiet">Why it's free</a>
       <a href="plays.html" class="btn solid sm">Today's plays</a>
@@ -318,7 +318,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
     <div class="sec-head" style="margin-bottom:24px">
       <div class="eyebrow">Screen A</div>
       <h2 style="font-size:26px;margin-top:10px">Standard over &mdash; the proven core</h2>
-      <p class="lead" style="margin-top:12px">A strikeout pitcher against a lineup that strikes out, at a number low enough to clear on an ordinary start rather than a special one. This is the screen the system trusts most, which is why it's capped hardest &mdash; a good filter applied to too many games stops being a filter.</p>
+      <p class="lead" style="margin-top:12px">A strikeout pitcher against a lineup that strikes out, at a number low enough to clear on an ordinary start rather than a special one. This is the screen the system trusts most, which is why it carries the tightest daily limit &mdash; a good filter applied to too many games stops being a filter.</p>
     </div>
     <div class="scroll-x">
       <table class="tbl">
@@ -342,15 +342,15 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           <td class="strong">Opponent strikeouts per game</td>
           <td>at least</td>
           <td class="m">8.00</td></tr><tr>
-          <td class="strong">Strikeout line</td>
-          <td>at least</td>
-          <td class="m">5</td></tr><tr>
-          <td class="strong">Strikeout line</td>
-          <td>at most</td>
-          <td class="m">5.5</td></tr><tr>
-          <td class="strong">Price</td>
-          <td>no worse than</td>
-          <td class="m">−150</td></tr><tr>
+              <td class="strong" style="color:var(--dim)">Strikeout line</td>
+              <td style="color:var(--dim)">no limit</td>
+              <td class="m" style="color:var(--dim)">off</td></tr><tr>
+              <td class="strong" style="color:var(--dim)">Strikeout line</td>
+              <td style="color:var(--dim)">no limit</td>
+              <td class="m" style="color:var(--dim)">off</td></tr><tr>
+              <td class="strong" style="color:var(--dim)">Price</td>
+              <td style="color:var(--dim)">no limit</td>
+              <td class="m" style="color:var(--dim)">off</td></tr><tr>
           <td class="strong">Plays per day from this screen</td>
           <td>at most</td>
           <td class="m">2</td></tr></tbody>
@@ -363,8 +363,9 @@ footer{background:var(--bg-2);padding:56px 0 40px}
   <div class="wrap">
     <div class="sec-head" style="margin-bottom:24px">
       <div class="eyebrow">Screen B</div>
-      <h2 style="font-size:26px;margin-top:10px">Elite arm at 6.5 &mdash; plus money only</h2>
-      <p class="lead" style="margin-top:12px">The same idea one rung higher: a genuine high-volume strikeout arm at a number most pitchers can't reach. This screen hits close to a coin flip, and that single fact decides everything about it &mdash; at &minus;120 a coin flip loses money, at +110 it makes money. So the price gate isn't a preference here, it's the rule that makes the screen viable at all.</p>
+      <h2 style="font-size:26px;margin-top:10px">Elite arm at the higher number</h2>
+      <p class="lead" style="margin-top:12px">The same idea one rung higher: a genuine high-volume strikeout arm at a number most pitchers can't reach. This screen hits close to a coin flip, and that single fact decides everything about it &mdash; at &minus;120 a coin flip loses money, at +110 it makes money.</p>
+      <p class="lead" style="margin-top:12px">The plus-money requirement is currently switched off, which means this screen can post at negative juice. Given it hits near a coin flip, that is the single most likely way it loses money &mdash; and the reason its closing-line value is worth watching more closely than its record.</p>
     </div>
     <div class="scroll-x">
       <table class="tbl">
@@ -388,12 +389,12 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           <td class="strong">Opponent strikeouts per game</td>
           <td>at least</td>
           <td class="m">8.00</td></tr><tr>
-          <td class="strong">Strikeout line</td>
-          <td>at most</td>
-          <td class="m">6.5</td></tr><tr>
-          <td class="strong">Price</td>
-          <td>plus money only, at least</td>
-          <td class="m">+100</td></tr><tr>
+              <td class="strong" style="color:var(--dim)">Strikeout line</td>
+              <td style="color:var(--dim)">no limit</td>
+              <td class="m" style="color:var(--dim)">off</td></tr><tr>
+              <td class="strong" style="color:var(--dim)">Price</td>
+              <td style="color:var(--dim)">no limit</td>
+              <td class="m" style="color:var(--dim)">off</td></tr><tr>
           <td class="strong">Season K/9</td>
           <td>at least</td>
           <td class="m">9.5</td></tr></tbody>
@@ -410,7 +411,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
     <div class="sec-head" style="margin-bottom:24px">
       <div class="eyebrow">Screen C</div>
       <h2 style="font-size:26px;margin-top:10px">The under &mdash; and the arms it refuses</h2>
-      <p class="lead" style="margin-top:12px">A capable but not overpowering starter against a lineup that doesn't strike out. The important rule here is the exclusion: high-strikeout arms are thrown out of this screen entirely rather than merely discouraged. They beat weak-contact lineups on pure stuff, and betting the under on them has lost repeatedly.</p>
+      <p class="lead" style="margin-top:12px">A capable but not overpowering starter against a lineup that doesn't strike out. This screen was originally built to exclude high-strikeout arms outright &mdash; they beat weak-contact lineups on pure stuff, and betting the under on them lost repeatedly. That exclusion is currently switched off, so high-strikeout arms can now appear here.</p>
     </div>
     <div class="scroll-x">
       <table class="tbl">
@@ -422,18 +423,18 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           <td class="strong">Opponent strikeouts per game</td>
           <td>below</td>
           <td class="m">8.00</td></tr><tr>
-          <td class="strong">Strikeout line</td>
-          <td>at least</td>
-          <td class="m">5.5</td></tr><tr>
+              <td class="strong" style="color:var(--dim)">Strikeout line</td>
+              <td style="color:var(--dim)">no limit</td>
+              <td class="m" style="color:var(--dim)">off</td></tr><tr>
           <td class="strong">Preferred K% band, low end</td>
           <td></td>
           <td class="m">24%</td></tr><tr>
           <td class="strong">Preferred K% band, high end</td>
           <td></td>
           <td class="m">26%</td></tr><tr>
-          <td class="strong">Excluded if season K% reaches</td>
-          <td></td>
-          <td class="m">27%</td></tr></tbody>
+              <td class="strong" style="color:var(--dim)">Excluded if season K% reaches</td>
+              <td style="color:var(--dim)">no limit</td>
+              <td class="m" style="color:var(--dim)">off</td></tr></tbody>
       </table>
     </div>
   </div>
@@ -442,23 +443,23 @@ footer{background:var(--bg-2);padding:56px 0 40px}
 <section class="pad-sm" id="caps">
   <div class="wrap">
     <div class="sec-head" style="margin-bottom:24px">
-      <div class="eyebrow">Hard caps</div>
-      <h2 style="font-size:26px;margin-top:10px">Rules no screen can override</h2>
-      <p class="lead" style="margin-top:12px">These are checked before any screen runs. A play that violates one is rejected no matter how good the spot looks.</p>
+      <div class="eyebrow">Universal rules</div>
+      <h2 style="font-size:26px;margin-top:10px">Rules that apply to every screen</h2>
+      <p class="lead" style="margin-top:12px">These caps are currently switched off. Every one of them &mdash; the ceiling on high numbers, the ban on 4.5 lines, and the limit on how much juice is acceptable &mdash; has been lifted, so a play is judged on the screen conditions alone. That widens the pool considerably and removes protections that were there for a reason; the track record will show whether lifting them was right.</p>
     </div>
     <div class="scroll-x">
       <table class="tbl">
         <thead><tr><th>Condition</th><th></th><th>Threshold</th></tr></thead>
         <tbody><tr>
-          <td class="strong">Any line at or above this</td>
-          <td>never bet</td>
-          <td class="m">7.5</td></tr><tr>
-          <td class="strong">This exact line</td>
-          <td>never bet</td>
-          <td class="m">4.5</td></tr><tr>
-          <td class="strong">Price</td>
-          <td>no worse than</td>
-          <td class="m">−150</td></tr></tbody>
+              <td class="strong" style="color:var(--dim)">Any line at or above this</td>
+              <td style="color:var(--dim)">no limit</td>
+              <td class="m" style="color:var(--dim)">off</td></tr><tr>
+              <td class="strong" style="color:var(--dim)">This exact line</td>
+              <td style="color:var(--dim)">no limit</td>
+              <td class="m" style="color:var(--dim)">off</td></tr><tr>
+              <td class="strong" style="color:var(--dim)">Price</td>
+              <td style="color:var(--dim)">no limit</td>
+              <td class="m" style="color:var(--dim)">off</td></tr></tbody>
       </table>
     </div>
     <div class="note" style="margin-top:22px">

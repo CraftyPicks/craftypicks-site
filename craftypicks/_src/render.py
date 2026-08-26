@@ -348,11 +348,19 @@ def _fmt_threshold(value, kind: str) -> str:
 
 
 def screen_rule_rows(cfg: dict, skip=("fade_list",)) -> str:
+    """A None threshold means the rule is switched off — say so plainly
+    rather than printing 'None' at a reader."""
     rows = []
     for key, value in cfg.items():
         if key in skip or key not in SCREEN_LABELS:
             continue
         label, comparator, kind = SCREEN_LABELS[key]
+        if value is None:
+            rows.append(f"""<tr>
+              <td class="strong" style="color:var(--dim)">{esc(label)}</td>
+              <td style="color:var(--dim)">no limit</td>
+              <td class="m" style="color:var(--dim)">off</td></tr>""")
+            continue
         rows.append(f"""<tr>
           <td class="strong">{esc(label)}</td>
           <td>{esc(comparator)}</td>
@@ -378,3 +386,73 @@ def _breakeven_note(need: float) -> str:
     if abs(need - 0.5) < 1e-9:
         return "a coin flip breaks even"
     return "a coin flip profits"
+
+
+# --------------------------------------------------------------- full slate
+def slate_rows(rows: list[dict]) -> str:
+    if not rows:
+        return ('<tr><td colspan="7" style="text-align:center;padding:34px 18px">'
+                "No games rated today.</td></tr>")
+    out = []
+    for r in rows:
+        ours = r.get("home_win_prob")
+        mkt = r.get("market_home_prob")
+        gap = r.get("disagreement")
+        if gap is None:
+            gap_cell = '<td class="m" style="color:var(--dim)">—</td>'
+        elif r.get("suspect"):
+            gap_cell = (f'<td class="m" style="color:var(--amber)" '
+                        f'title="Bigger than the market can plausibly be wrong by — '
+                        f'treated as our error">{gap:+.1f}&nbsp;⚠</td>')
+        else:
+            gap_cell = f'<td class="m {cls_for(gap)}">{gap:+.1f}</td>'
+        starters = " / ".join(x for x in (r.get("away_starter"), r.get("home_starter")) if x)
+        out.append(f"""<tr>
+          <td class="m">{esc(game_time(r.get('commence_time')))}</td>
+          <td class="strong">{esc(r.get('away',''))} @ {esc(r.get('home',''))}</td>
+          <td style="font-size:13px;color:var(--muted)">{esc(starters) or '—'}</td>
+          <td class="m">{ours*100:.1f}%</td>
+          <td class="m">{f'{mkt*100:.1f}%' if mkt is not None else '—'}</td>
+          {gap_cell}
+          <td class="m" style="color:var(--dim)">{esc(r.get('final') or '')}</td></tr>""")
+    return "".join(out)
+
+
+def calibration_rows(rows: list[dict]) -> str:
+    live = [r for r in rows if r.get("n")]
+    if not live:
+        return ('<tr><td colspan="5" style="text-align:center;padding:34px 18px">'
+                "Nothing graded yet — this table fills in as rated games finish."
+                "</td></tr>")
+    out = []
+    for r in live:
+        gap = r["gap"]
+        # Within the noise band for the sample size, a gap means nothing.
+        import math as _m
+        se = _m.sqrt(0.25 / r["n"]) * 100 * 1.96
+        verdict = "within noise" if abs(gap) <= se else (
+            "we were too low" if gap > 0 else "we were too high")
+        out.append(f"""<tr>
+          <td class="strong">{f"{r['lo']*100:.0f}%+" if r['hi'] > 1.0 else f"{r['lo']*100:.0f}–{r['hi']*100:.0f}%"}</td>
+          <td class="m">{r['n']}</td>
+          <td class="m">{r['predicted']:.1f}%</td>
+          <td class="m">{r['actual']:.1f}%</td>
+          <td style="font-size:13px;color:var(--muted)">{esc(verdict)} (±{se:.1f})</td></tr>""")
+    return "".join(out)
+
+
+def brier_line(summary: dict) -> str:
+    ours, theirs = summary.get("brier"), summary.get("market_brier")
+    if ours is None:
+        return ("No rated game has finished yet. Once they start grading, this "
+                "line reports how far off our probabilities were.")
+    text = (f"Across {summary.get('graded', 0)} graded ratings our Brier score is "
+            f"<b style=\"color:var(--txt)\">{ours:.4f}</b>. Always saying 50% scores 0.250, "
+            "so lower than that is the minimum bar for being worth reading.")
+    if theirs is not None:
+        better = "better than" if ours < theirs else ("worse than" if ours > theirs else "level with")
+        text += (f" The market scored <b style=\"color:var(--txt)\">{theirs:.4f}</b> on the same "
+                 f"{summary.get('market_compared', 0)} games — its own vig-free number taken at "
+                 f"the moment we rated the game, not the closing price — so we are {better} it. "
+                 "Being worse is the expected outcome and we publish it either way.")
+    return text

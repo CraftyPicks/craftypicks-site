@@ -49,6 +49,14 @@ try:
 except Exception as _screen_err:                             # noqa: BLE001
     screen_source = None
     print(f"!! screen system unavailable ({_screen_err})", file=sys.stderr)
+
+# Full-board ratings. Optional like everything else, but this is the piece
+# that makes the numbers checkable in weeks instead of years.
+try:
+    import slate as slate_mod  # noqa: E402
+except Exception as _slate_err:                              # noqa: BLE001
+    slate_mod = None
+    print(f"!! slate rating unavailable ({_slate_err})", file=sys.stderr)
 from odds_client import BudgetExhausted, OddsAPIError, OddsClient  # noqa: E402
 
 
@@ -134,6 +142,7 @@ def main() -> int:
         print(f"-- in season: {', '.join(in_season) or 'nothing'}")
         candidates = []
         prop_events: list[dict] = []
+        slate_rows: list[dict] = []
         for sport in in_season:
             # Free look at the schedule before spending anything. A league
             # with no games today gets skipped entirely instead of costing
@@ -164,6 +173,18 @@ def main() -> int:
                     print(f"      near miss ({gate}) {str(side)[:22]:<22} "
                           f"{price:>5}  EV {ev:>5.2f}%  pp {pp:>5.2f}")
             candidates.extend(found)
+
+            # Rate every game on the board, not just the ones we'd bet.
+            if slate_mod and sport == "baseball_mlb":
+                try:
+                    import screen_config as _scfg
+                    slate_rows = slate_mod.build(
+                        games, now.strftime("%m/%d/%Y"), _scfg.SEASON)
+                    if slate_rows:
+                        print(f"   slate: rated {len(slate_rows)} game(s)")
+                except Exception as e:                       # noqa: BLE001
+                    print(f"   !! slate failed ({type(e).__name__}: {e})",
+                          file=sys.stderr)
 
             # Props: per-event, so strictly capped. See config.PROP_MAX_EVENTS.
             # The whole block is wrapped: a prop market that's missing, shaped
@@ -248,6 +269,47 @@ def main() -> int:
     save_json(DATA / "plays.json", plays_doc)
     save_json(DATA / "history.json", {"plays": history})
     print(f"-- card: {len(card)} play(s), {summary['units_risked']}u risked")
+
+    # ------------------------------------------------------- 3b. rated board
+    if slate_mod:
+        try:
+            ratings = load_json(DATA / "ratings.json", {"games": []})["games"]
+            known = {r.get("event_id") for r in ratings}
+            for row in slate_rows:
+                if row.get("event_id") not in known:
+                    ratings.append(dict(row))
+            # Grade any rated game we now have a final score for.
+            mlb_scores = scores_by_sport.get("baseball_mlb")
+            if mlb_scores is None and any(not r.get("result") for r in ratings):
+                try:
+                    mlb_scores = grader.score_map(client.scores("baseball_mlb"))
+                except (BudgetExhausted, OddsAPIError):
+                    mlb_scores = None
+            if mlb_scores:
+                n = slate_mod.grade(ratings, mlb_scores)
+                print(f"-- slate: graded {n} rated game(s)")
+            summary_doc = slate_mod.summary(ratings)
+            save_json(DATA / "ratings.json", {"games": ratings})
+            # Publish the stored rows, not the freshly built ones: the stored
+            # copy is the one grading writes finals onto, so a late run picks
+            # up scores for games that have already ended today.
+            todays = {r.get("event_id") for r in slate_rows}
+            board = [r for r in ratings if r.get("event_id") in todays] or slate_rows
+            board.sort(key=lambda r: r.get("commence_time") or "")
+            save_json(DATA / "slate.json", {
+                "date": today,
+                "date_label": f"{now:%A, %B %-d, %Y}",
+                "games": board,
+                "summary": summary_doc,
+            })
+            if summary_doc.get("brier") is not None:
+                print(f"-- slate: Brier {summary_doc['brier']} on "
+                      f"{summary_doc['graded']} graded ratings"
+                      + (f" (market {summary_doc['market_brier']})"
+                         if summary_doc.get("market_brier") else ""))
+        except Exception as e:                               # noqa: BLE001
+            print(f"!! slate bookkeeping failed ({type(e).__name__}: {e})",
+                  file=sys.stderr)
 
     # ------------------------------------------------------------- 4. stats
     site_stats = statsmod.compute(history)

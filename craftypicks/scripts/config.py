@@ -38,9 +38,13 @@ SAME_DAY_ONLY = True
 # A full MLB slate of two pitcher markets is ~900 credits a month against a
 # free tier of 500, so on the free plan this has to stay tightly capped.
 # Set PROP_MARKETS = [] to turn props off entirely.
-PROP_MARKETS = ["pitcher_strikeouts", "pitcher_outs"]
+# Strikeouts only. The screens read nothing else, and dropping pitcher_outs
+# buys wider game coverage for fewer credits — more starters evaluated beats
+# more markets on fewer games. Add "pitcher_outs" back if you want the price
+# scanner hunting that market too, and lower PROP_MAX_EVENTS to compensate.
+PROP_MARKETS = ["pitcher_strikeouts"]
 PROP_SPORTS = ["baseball_mlb"]
-PROP_MAX_EVENTS = 5            # games per day to pull props for
+PROP_MAX_EVENTS = 8            # games per day to pull props for
 PROP_MIN_BOOKS = 4             # props are thinner than sides; expect fewer books
 PROP_MIN_EDGE_PCT = 3.0        # and demand a bigger edge to compensate
 PROP_CREDIT_FLOOR = 160        # don't touch props below this many credits left

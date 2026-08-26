@@ -33,11 +33,13 @@ PAGES = {
     "record.html": f"Track Record — {config.SITE_NAME}",
     "about.html": f"How It Works — {config.SITE_NAME}",
     "screens.html": f"The Strikeout Screens — {config.SITE_NAME}",
+    "slate.html": f"Today's Full Board — {config.SITE_NAME}",
 }
 NAV_ITEMS = [
     ("plays.html", "Today's Plays", "plays"),
     ("record.html", "Track Record", "record"),
     ("about.html", "How It Works", "about"),
+    ("slate.html", "Full Board", "slate"),
     ("screens.html", "The Screens", "screens"),
 ]
 
@@ -172,6 +174,48 @@ def pretty_day(stamp: str) -> str:
         return stamp
 
 
+def _caps_status(scfg) -> str:
+    """Describe the universal caps as they actually are right now."""
+    caps = scfg.HARD_CAPS
+    active = [k for k, v in caps.items() if v is not None]
+    if not active:
+        return ("These caps are currently switched off. Every one of them &mdash; the "
+                "ceiling on high numbers, the ban on 4.5 lines, and the limit on how "
+                "much juice is acceptable &mdash; has been lifted, so a play is judged "
+                "on the screen conditions alone. That widens the pool considerably and "
+                "removes protections that were there for a reason; the track record "
+                "will show whether lifting them was right.")
+    parts = []
+    if caps.get("max_line") is not None:
+        parts.append(f"nothing at or above a {caps['max_line']:g} line")
+    if caps.get("banned_line") is not None:
+        parts.append(f"no {caps['banned_line']:g} lines at all")
+    if caps.get("worst_juice") is not None:
+        parts.append(f"no price worse than {int(caps['worst_juice']):+d}")
+    return ("Checked before any screen runs, and a play violating one is rejected no "
+            "matter how good the spot looks: " + "; ".join(parts) + ".")
+
+
+def _price_note(scfg) -> str:
+    min_odds = scfg.SCREEN_B.get("min_odds")
+    if min_odds is None:
+        return ("The plus-money requirement is currently switched off, which means this "
+                "screen can post at negative juice. Given it hits near a coin flip, that "
+                "is the single most likely way it loses money &mdash; and the reason its "
+                "closing-line value is worth watching more closely than its record.")
+    return (f"The price gate is active: this screen only posts at "
+            f"{int(min_odds):+d} or better. It isn't a preference, it's the rule that "
+            "makes a coin-flip screen viable.")
+
+
+def _screen_c_note(scfg) -> str:
+    threshold = scfg.SCREEN_C.get("high_k_exclude_at")
+    if threshold is None:
+        return ("That exclusion is currently switched off, so high-strikeout arms can "
+                "now appear here.")
+    return (f"Arms at or above {threshold * 100:.0f}% season K% are excluded outright.")
+
+
 def net_units(plays: list[dict]) -> float:
     return round(sum(p.get("profit", 0.0) for p in plays), 2)
 
@@ -181,6 +225,7 @@ def build() -> None:
     plays_doc = load("plays.json", {"plays": [], "summary": {}, "date_label": "", "note": ""})
     stats = load("stats.json", {})
     history = load("history.json", {"plays": []})["plays"]
+    slate_doc = load("slate.json", {"date_label": "", "games": [], "summary": {}})
 
     card = plays_doc.get("plays", [])
     today = plays_doc.get("date", datetime.utcnow().date().isoformat())
@@ -211,6 +256,9 @@ def build() -> None:
             "{{SCREEN_C_ROWS}}": R.screen_rule_rows(scfg.SCREEN_C),
             "{{HARD_CAP_ROWS}}": R.screen_rule_rows(scfg.HARD_CAPS),
             "{{SCREEN_DAILY_CAP}}": str(getattr(scfg, "MAX_SCREEN_PLAYS_PER_DAY", 3)),
+            "{{CAPS_STATUS}}": _caps_status(scfg),
+            "{{SCREEN_B_PRICE_NOTE}}": _price_note(scfg),
+            "{{SCREEN_C_NOTE}}": _screen_c_note(scfg),
         }
     except Exception as e:                                   # noqa: BLE001
         print(f"!! screen config unavailable ({e}); methodology page will be thin")
@@ -220,6 +268,9 @@ def build() -> None:
                          ("{{SCREEN_A_ROWS}}", "{{SCREEN_B_ROWS}}",
                           "{{SCREEN_C_ROWS}}", "{{HARD_CAP_ROWS}}")}
         screen_tokens["{{SCREEN_DAILY_CAP}}"] = "3"
+        screen_tokens["{{CAPS_STATUS}}"] = ""
+        screen_tokens["{{SCREEN_B_PRICE_NOTE}}"] = ""
+        screen_tokens["{{SCREEN_C_NOTE}}"] = ""
 
     graded_n = stats.get("graded", 0)
     if graded_n:
@@ -247,6 +298,11 @@ def build() -> None:
     tokens = {
         **screen_tokens,
         "{{BREAKEVEN_ROWS}}": R.breakeven_rows(),
+        "{{SLATE_DATE}}": slate_doc.get("date_label") or "Not yet rated",
+        "{{SLATE_ROWS}}": R.slate_rows(slate_doc.get("games", [])),
+        "{{CALIBRATION_ROWS}}": R.calibration_rows(
+            (slate_doc.get("summary") or {}).get("calibration", [])),
+        "{{BRIER_LINE}}": R.brier_line(slate_doc.get("summary") or {}),
         "{{RECORD_INTRO}}": record_intro,
         "{{DRAWDOWN_LINE}}": (
             f"Worst peak-to-trough run so far: {R.u(stats.get('drawdown', 0.0))}."

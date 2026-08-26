@@ -13,16 +13,21 @@ from screen_models import Play
 # ---- Hard caps: checked before any screen runs -------------------------
 
 def violates_hard_cap(c, side, odds):
-    """Returns a reason string if any universal rule blocks this bet."""
+    """Returns a reason string if any universal rule blocks this bet.
+
+    A threshold of None means the rule is switched off — the check is skipped
+    rather than removed, so any ban can be restored by putting its number
+    back in screen_config.
+    """
     if c.line is None:
         return "no posted line"
-    if c.line >= HARD_CAPS["max_line"]:
+    if HARD_CAPS["max_line"] is not None and c.line >= HARD_CAPS["max_line"]:
         return f"line {c.line} is at/above the {HARD_CAPS['max_line']} coin-flip tier"
-    if c.line == HARD_CAPS["banned_line"]:
+    if HARD_CAPS["banned_line"] is not None and c.line == HARD_CAPS["banned_line"]:
         return f"{HARD_CAPS['banned_line']} lines are never bet"
     if odds is None:
         return "no odds posted"
-    if odds < HARD_CAPS["worst_juice"]:
+    if HARD_CAPS["worst_juice"] is not None and odds < HARD_CAPS["worst_juice"]:
         return f"juice {odds:+d} is worse than {HARD_CAPS['worst_juice']}"
     return None
 
@@ -73,9 +78,11 @@ def screen_a(c):
         return None, f"season K% {_pct(c.k_pct)} below {_pct(cfg['min_pitcher_k_pct'])}"
     if c.opp_k_per_game < cfg["min_opp_k_per_game"]:
         return None, f"opponent K/game {c.opp_k_per_game:.2f} below {cfg['min_opp_k_per_game']}"
-    if not (cfg["line_min"] <= c.line <= cfg["line_max"]):
-        return None, f"line {c.line} outside {cfg['line_min']}–{cfg['line_max']}"
-    if odds < cfg["worst_juice"]:
+    if cfg["line_min"] is not None and c.line < cfg["line_min"]:
+        return None, f"line {c.line} below {cfg['line_min']}"
+    if cfg["line_max"] is not None and c.line > cfg["line_max"]:
+        return None, f"line {c.line} above {cfg['line_max']}"
+    if cfg["worst_juice"] is not None and odds < cfg["worst_juice"]:
         return None, f"juice {odds:+d} worse than {cfg['worst_juice']}"
 
     roster_fail = _roster_check(c, cfg)
@@ -112,11 +119,12 @@ def screen_b(c):
         return None, f"season K% {_pct(c.k_pct)} below {_pct(cfg['min_pitcher_k_pct'])}"
     if c.opp_k_per_game < cfg["min_opp_k_per_game"]:
         return None, f"opponent K/game {c.opp_k_per_game:.2f} below {cfg['min_opp_k_per_game']}"
-    if c.line > cfg["line_max"]:
+    if cfg["line_max"] is not None and c.line > cfg["line_max"]:
         return None, f"line {c.line} above {cfg['line_max']}"
 
-    # The price gate. This screen hits ~50% — negative juice loses money.
-    if odds < cfg["min_odds"]:
+    # The price gate, when it's switched on. This screen hits close to a coin
+    # flip, so negative juice is where it stops being viable.
+    if cfg["min_odds"] is not None and odds < cfg["min_odds"]:
         return None, f"needs plus money, got {odds:+d}"
 
     # "Genuine high-strikeout arm, not an inflated K% ground-baller."
@@ -154,15 +162,16 @@ def screen_c(c):
         return None, f"season K% {_pct(c.k_pct)} below {_pct(cfg['min_pitcher_k_pct'])}"
     if c.opp_k_per_game >= cfg["max_opp_k_per_game"]:
         return None, f"opponent K/game {c.opp_k_per_game:.2f} not below {cfg['max_opp_k_per_game']}"
-    if c.line < cfg["line_min"]:
+    if cfg["line_min"] is not None and c.line < cfg["line_min"]:
         return None, f"line {c.line} below the {cfg['line_min']} floor"
 
     # High-K arms clear low-K matchups on their own stuff. Spec says this
     # has lost repeatedly, so it's a hard exclusion, not a preference.
-    if c.k_pct >= cfg["high_k_exclude_at"]:
+    if cfg["high_k_exclude_at"] is not None and c.k_pct >= cfg["high_k_exclude_at"]:
         return None, f"season K% {_pct(c.k_pct)} is high-K — excluded from unders"
 
-    preferred = cfg["preferred_k_pct_min"] <= c.k_pct <= cfg["preferred_k_pct_max"]
+    preferred = (cfg["preferred_k_pct_min"] is not None
+                 and cfg["preferred_k_pct_min"] <= c.k_pct <= cfg["preferred_k_pct_max"])
     return Play(
         candidate=c, screen="C", side="UNDER", line=c.line, odds=odds,
         reasons=[

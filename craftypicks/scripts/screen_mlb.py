@@ -72,15 +72,20 @@ def pitcher_season(pitcher_id: int, season: int) -> dict:
                 season=season, group="pitching") or {}
     splits = (data.get("stats") or [{}])[0].get("splits") or []
     if not splits:
-        return {"k_pct": None, "k_per_9": None, "innings": 0.0}
+        return {"k_pct": None, "k_per_9": None, "innings": 0.0, "era": None}
     s = splits[0].get("stat", {})
     bf = s.get("battersFaced") or 0
     k = s.get("strikeOuts") or 0
     ip = _innings(s.get("inningsPitched"))
+    try:
+        era = float(s.get("era")) if s.get("era") not in (None, "-.--") else None
+    except (TypeError, ValueError):
+        era = None
     return {
         "k_pct": (k / bf) if bf else None,
         "k_per_9": (k * 9 / ip) if ip else None,
         "innings": ip,
+        "era": era,
     }
 
 
@@ -148,3 +153,16 @@ def vs_roster(pitcher_id: int, opponent_team_id: int, season: int):
         agg.sf += s.get("sacFlies", 0) or 0
         agg.batters_seen += 1
     return agg
+
+
+def team_index(season: int) -> dict:
+    """{normalised team name: mlb team id}, for joining odds-feed names."""
+    data = _get("/teams", sportId=1, season=season) or {}
+    out = {}
+    for team in data.get("teams", []):
+        tid = team.get("id")
+        for label in (team.get("name"), team.get("teamName"),
+                      team.get("clubName"), team.get("shortName")):
+            if label and tid:
+                out[str(label).strip().lower()] = tid
+    return out
