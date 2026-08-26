@@ -1,11 +1,11 @@
-"""The three screens. Pure functions — no network, no state.
+"""The two over screens. Pure functions — no network, no state.
 
 Every rule returns both a verdict and the reason, so a rejected pitcher
 tells you which condition killed it. That matters when you're debugging
 why a play you expected didn't show up.
 """
 
-from screen_config import (SCREEN_A, SCREEN_B, SCREEN_C, HARD_CAPS,
+from screen_config import (SCREEN_A, SCREEN_B, HARD_CAPS,
                            WOBA_WEIGHTS, MAX_SCREEN_PLAYS_PER_DAY)
 from screen_models import Play
 
@@ -37,18 +37,26 @@ def violates_hard_cap(c, side, odds):
 def _roster_check(c, cfg):
     """PA / K% / AVG / wOBA gate used by Screens A and B."""
     v = c.vs_roster
-    if v.pa < cfg["min_vs_pa"]:
+    # Every threshold here honours None as "don't gate on this", the same way
+    # the lifted bans do. That matters more for this block than anywhere else:
+    # these four conditions are evaluated on a sample of a few dozen plate
+    # appearances, where the standard error on a batting average is roughly
+    # eighty points — wide enough that a .270 cutoff sorts noise, not skill.
+    if cfg["min_vs_pa"] is not None and v.pa < cfg["min_vs_pa"]:
         return f"only {v.pa} PA vs this roster (need {cfg['min_vs_pa']})"
 
     k_pct, avg = v.k_pct, v.avg
     woba = v.woba(WOBA_WEIGHTS)
 
-    if k_pct is None or k_pct < cfg["min_vs_k_pct"]:
-        return f"vs-roster K% {_pct(k_pct)} below {_pct(cfg['min_vs_k_pct'])}"
-    if avg is None or avg >= cfg["max_vs_avg"]:
-        return f"vs-roster AVG {_three(avg)} not under {_three(cfg['max_vs_avg'])}"
-    if woba is None or woba >= cfg["max_vs_woba"]:
-        return f"vs-roster wOBA {_three(woba)} not under {_three(cfg['max_vs_woba'])}"
+    if cfg["min_vs_k_pct"] is not None:
+        if k_pct is None or k_pct < cfg["min_vs_k_pct"]:
+            return f"vs-roster K% {_pct(k_pct)} below {_pct(cfg['min_vs_k_pct'])}"
+    if cfg["max_vs_avg"] is not None:
+        if avg is None or avg >= cfg["max_vs_avg"]:
+            return f"vs-roster AVG {_three(avg)} not under {_three(cfg['max_vs_avg'])}"
+    if cfg["max_vs_woba"] is not None:
+        if woba is None or woba >= cfg["max_vs_woba"]:
+            return f"vs-roster wOBA {_three(woba)} not under {_three(cfg['max_vs_woba'])}"
     return None
 
 
@@ -100,7 +108,7 @@ def screen_a(c):
     ), None
 
 
-# ---- Screen B: Elite 6.5 Over (plus money only) ------------------------
+# ---- Screen B: Elite Over ----------------------------------------------
 
 def screen_b(c):
     cfg = SCREEN_B
@@ -122,11 +130,6 @@ def screen_b(c):
     if cfg["line_max"] is not None and c.line > cfg["line_max"]:
         return None, f"line {c.line} above {cfg['line_max']}"
 
-    # The price gate, when it's switched on. This screen hits close to a coin
-    # flip, so negative juice is where it stops being viable.
-    if cfg["min_odds"] is not None and odds < cfg["min_odds"]:
-        return None, f"needs plus money, got {odds:+d}"
-
     # "Genuine high-strikeout arm, not an inflated K% ground-baller."
     if c.k_per_9 is None or c.k_per_9 < cfg["min_k_per_9"]:
         return None, f"K/9 {c.k_per_9 or 0:.1f} below {cfg['min_k_per_9']} — not a volume K arm"
@@ -140,43 +143,7 @@ def screen_b(c):
         reasons=[
             f"season K% {_pct(c.k_pct)}, K/9 {c.k_per_9:.1f}",
             f"opponent K/game {c.opp_k_per_game:.2f}",
-            f"plus money at {odds:+d}",
-        ],
-    ), None
-
-
-# ---- Screen C: Under (no Savant data needed) ---------------------------
-
-def screen_c(c):
-    cfg = SCREEN_C
-    odds = c.under_odds
-
-    if gaps := c.missing():
-        return None, "missing " + ", ".join(gaps)
-
-    blocked = violates_hard_cap(c, "UNDER", odds)
-    if blocked:
-        return None, blocked
-
-    if c.k_pct < cfg["min_pitcher_k_pct"]:
-        return None, f"season K% {_pct(c.k_pct)} below {_pct(cfg['min_pitcher_k_pct'])}"
-    if c.opp_k_per_game >= cfg["max_opp_k_per_game"]:
-        return None, f"opponent K/game {c.opp_k_per_game:.2f} not below {cfg['max_opp_k_per_game']}"
-    if cfg["line_min"] is not None and c.line < cfg["line_min"]:
-        return None, f"line {c.line} below the {cfg['line_min']} floor"
-
-    # High-K arms clear low-K matchups on their own stuff. Spec says this
-    # has lost repeatedly, so it's a hard exclusion, not a preference.
-    if cfg["high_k_exclude_at"] is not None and c.k_pct >= cfg["high_k_exclude_at"]:
-        return None, f"season K% {_pct(c.k_pct)} is high-K — excluded from unders"
-
-    preferred = (cfg["preferred_k_pct_min"] is not None
-                 and cfg["preferred_k_pct_min"] <= c.k_pct <= cfg["preferred_k_pct_max"])
-    return Play(
-        candidate=c, screen="C", side="UNDER", line=c.line, odds=odds,
-        reasons=[
-            f"season K% {_pct(c.k_pct)}" + (" (in preferred band)" if preferred else ""),
-            f"opponent K/game {c.opp_k_per_game:.2f}",
+            f"posted at {odds:+d}",
         ],
     ), None
 
@@ -229,19 +196,10 @@ def evaluate_all(candidates):
         else:
             rejections.append((c, "B", reason))
 
-    for c in candidates:
-        if c.pitcher_id in taken or c.pitcher_id in capped_out:
-            continue
-        play, reason = screen_c(c)
-        if play:
-            plays.append(play)
-            taken.add(c.pitcher_id)
-        else:
-            rejections.append((c, "C", reason))
 
-    # Global cap across all three screens. Overs first (A, then B), then C,
-    # which is the order of how much the spec trusts them.
-    order = {"A": 0, "B": 1, "C": 2}
+    # Global cap across both screens, A first — the order of how much the
+    # spec trusts them.
+    order = {"A": 0, "B": 1}
     plays.sort(key=lambda p: (order.get(p.screen, 9),
                               -(p.candidate.opp_k_per_game or 0)))
     if len(plays) > MAX_SCREEN_PLAYS_PER_DAY:

@@ -50,22 +50,6 @@
   </div>
 </section>
 
-<section class="pad-sm" id="screen-c">
-  <div class="wrap">
-    <div class="sec-head" style="margin-bottom:24px">
-      <div class="eyebrow">Screen C</div>
-      <h2 style="font-size:26px;margin-top:10px">The under &mdash; and the arms it refuses</h2>
-      <p class="lead" style="margin-top:12px">A capable but not overpowering starter against a lineup that doesn't strike out. This screen was originally built to exclude high-strikeout arms outright &mdash; they beat weak-contact lineups on pure stuff, and betting the under on them lost repeatedly. {{SCREEN_C_NOTE}}</p>
-    </div>
-    <div class="scroll-x">
-      <table class="tbl">
-        <thead><tr><th>Condition</th><th></th><th>Threshold</th></tr></thead>
-        <tbody>{{SCREEN_C_ROWS}}</tbody>
-      </table>
-    </div>
-  </div>
-</section>
-
 <section class="pad-sm" id="caps">
   <div class="wrap">
     <div class="sec-head" style="margin-bottom:24px">
@@ -118,7 +102,7 @@
       <div class="tile">
         <div class="num">Suspect</div>
         <h3>The vs-roster data is the weakest input</h3>
-        <p style="margin-top:10px">Screens A and B require a career line against the opposing roster. Those samples are small, they mix seasons where the pitcher was a different pitcher, and they skew toward veterans facing division rivals &mdash; which is a filter on the schedule as much as on the matchup. Screen C uses none of it, so comparing C against A and B over time is itself a test of whether that input earns its place.</p>
+        <p style="margin-top:10px">Both screens require a career line against the opposing roster. Those samples are small, they mix seasons where the pitcher was a different pitcher, and they skew toward veterans facing division rivals &mdash; which is a filter on the schedule as much as on the matchup. At a few dozen plate appearances the error bar on a batting average is wider than the thresholds being applied to it, so this block rejects on noise as often as on signal. It is the first thing that should go if the screens stay too quiet.</p>
       </div>
       <div class="tile">
         <div class="num">Ignored</div>

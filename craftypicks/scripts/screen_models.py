@@ -63,7 +63,7 @@ class Candidate:
     # The market
     line: Optional[float] = None
     over_odds: Optional[int] = None
-    under_odds: Optional[int] = None
+    under_odds: Optional[int] = None   # kept: de-vigging an over needs its under
     book: str = ""
 
     def missing(self) -> list:
@@ -79,8 +79,8 @@ class Candidate:
 class Play:
     """A bet the system says to make, with its full reasoning."""
     candidate: Candidate
-    screen: str                  # "A", "B", or "C"
-    side: str                    # "OVER" or "UNDER"
+    screen: str                  # "A" or "B"
+    side: str                    # always "OVER" — the under screen was removed
     line: float
     odds: int
     reasons: list = field(default_factory=list)

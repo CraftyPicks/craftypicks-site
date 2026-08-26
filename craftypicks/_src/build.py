@@ -197,23 +197,18 @@ def _caps_status(scfg) -> str:
 
 
 def _price_note(scfg) -> str:
-    min_odds = scfg.SCREEN_B.get("min_odds")
-    if min_odds is None:
-        return ("The plus-money requirement is currently switched off, which means this "
-                "screen can post at negative juice. Given it hits near a coin flip, that "
-                "is the single most likely way it loses money &mdash; and the reason its "
-                "closing-line value is worth watching more closely than its record.")
-    return (f"The price gate is active: this screen only posts at "
-            f"{int(min_odds):+d} or better. It isn't a preference, it's the rule that "
-            "makes a coin-flip screen viable.")
-
-
-def _screen_c_note(scfg) -> str:
-    threshold = scfg.SCREEN_C.get("high_k_exclude_at")
-    if threshold is None:
-        return ("That exclusion is currently switched off, so high-strikeout arms can "
-                "now appear here.")
-    return (f"Arms at or above {threshold * 100:.0f}% season K% are excluded outright.")
+    # The plus-money requirement was removed from every screen rather than
+    # switched off. A screen's job is to say the matchup is good; whether the
+    # price is good is a separate question, answered against the vig-free
+    # number rather than against zero. Under the old rule a strong matchup
+    # could be thrown out for being correctly priced, which is backwards.
+    return ("There is no price requirement on this screen. Selecting a matchup and "
+            "judging a price are separate questions, and a rule that demanded plus "
+            "money was answering the second one with a coin-flip heuristic &mdash; a "
+            "good spot at &minus;115 was rejected while a bad one at +105 was not. "
+            "Every screen play still gets its edge measured against the vig-free "
+            "consensus and its closing line recorded, which is the honest version "
+            "of that check.")
 
 
 def net_units(plays: list[dict]) -> float:
@@ -253,12 +248,10 @@ def build() -> None:
         screen_tokens = {
             "{{SCREEN_A_ROWS}}": R.screen_rule_rows(scfg.SCREEN_A),
             "{{SCREEN_B_ROWS}}": R.screen_rule_rows(scfg.SCREEN_B),
-            "{{SCREEN_C_ROWS}}": R.screen_rule_rows(scfg.SCREEN_C),
             "{{HARD_CAP_ROWS}}": R.screen_rule_rows(scfg.HARD_CAPS),
-            "{{SCREEN_DAILY_CAP}}": str(getattr(scfg, "MAX_SCREEN_PLAYS_PER_DAY", 3)),
+            "{{SCREEN_DAILY_CAP}}": str(getattr(scfg, "MAX_SCREEN_PLAYS_PER_DAY", 5)),
             "{{CAPS_STATUS}}": _caps_status(scfg),
             "{{SCREEN_B_PRICE_NOTE}}": _price_note(scfg),
-            "{{SCREEN_C_NOTE}}": _screen_c_note(scfg),
         }
     except Exception as e:                                   # noqa: BLE001
         print(f"!! screen config unavailable ({e}); methodology page will be thin")
@@ -266,11 +259,10 @@ def build() -> None:
                  "Screen configuration not loaded.</td></tr>")
         screen_tokens = {k: blank for k in
                          ("{{SCREEN_A_ROWS}}", "{{SCREEN_B_ROWS}}",
-                          "{{SCREEN_C_ROWS}}", "{{HARD_CAP_ROWS}}")}
-        screen_tokens["{{SCREEN_DAILY_CAP}}"] = "3"
+                          "{{HARD_CAP_ROWS}}")}
+        screen_tokens["{{SCREEN_DAILY_CAP}}"] = "5"
         screen_tokens["{{CAPS_STATUS}}"] = ""
         screen_tokens["{{SCREEN_B_PRICE_NOTE}}"] = ""
-        screen_tokens["{{SCREEN_C_NOTE}}"] = ""
 
     graded_n = stats.get("graded", 0)
     if graded_n:

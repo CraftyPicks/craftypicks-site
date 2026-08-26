@@ -2,6 +2,14 @@
 
 Nothing in screens.py hardcodes a number. If you tune the system,
 you tune it here and the tests tell you what broke.
+
+Two rules are gone rather than switched off. The under screen is removed
+outright — it bet the absence of strikeouts, which is a different claim from
+the one this system is built on. And the plus-money requirement is deleted
+everywhere: a price floor decides whether a bet is worth taking, which is the
+scanner's job on the fair-value side, not a screen's job on the selection
+side. Mixing the two meant a good matchup could be rejected for being
+correctly priced.
 """
 
 SEASON = 2026
@@ -21,7 +29,7 @@ SCREEN_A = {
     "line_min": None,         # was 5.0 — bans lifted, any number allowed
     "line_max": None,         # was 5.5
     "worst_juice": None,        # was -150
-    "max_bets_per_day": 2,      # ranked by opponent K/game, highest first
+    "max_bets_per_day": 3,      # ranked by opponent K/game, highest first
 }
 
 # ---- Screen B: Elite 6.5 Over -----------------------------------------
@@ -33,25 +41,14 @@ SCREEN_B = {
     "max_vs_woba": 0.300,
     "min_opp_k_per_game": 8.00,
     "line_max": None,           # was 6.5
-    "min_odds": None,           # was +100 (plus money only)
     "min_k_per_9": 9.5,         # proxy for "genuine high-strikeout arm"
     "fade_list": [],            # pitcher ids you've flagged as matchup-only
 }
 
-# ---- Screen C: Under ---------------------------------------------------
-SCREEN_C = {
-    "min_pitcher_k_pct": 0.20,
-    "max_opp_k_per_game": 8.00,
-    "line_min": None,           # was 5.5
-    "preferred_k_pct_min": 0.24,
-    "preferred_k_pct_max": 0.26,
-    "high_k_exclude_at": None,  # was 0.27
-}
-
-# Total screen plays per day, across A, B and C together. Screen A's own cap
+# Total screen plays per day, across A and B together. Screen A's own cap
 # only limited Screen A — pitchers it rejected reappeared under B, so five
 # qualifiers produced five bets from a "cap" of two.
-MAX_SCREEN_PLAYS_PER_DAY = 3
+MAX_SCREEN_PLAYS_PER_DAY = 5
 
 # ---- Hard caps: apply to every screen, no exceptions -------------------
 # All lifted. None means "no limit" — every check below is skipped rather

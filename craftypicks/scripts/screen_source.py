@@ -152,8 +152,17 @@ def build_plays(prop_events: list[dict], date_str: str, verbose: bool = True) ->
             )
             # vs_roster is one request per batter, so only pay for it when the
             # cheap gates are already satisfied — same gating as the original.
-            needs_roster = (cand.k_pct is not None and cand.k_pct >= 0.20
-                            and opp_k is not None and opp_k >= 8.00)
+            # This pre-gate exists only to avoid a per-batter fetch for
+            # pitchers no screen could take. It must therefore be looser than
+            # every screen — reading the config rather than repeating its
+            # numbers, or loosening a threshold there would silently starve
+            # the roster data and show up as "missing" instead of a play.
+            min_k = min(s["min_pitcher_k_pct"] for s in
+                        (scfg.SCREEN_A, scfg.SCREEN_B))
+            min_opp = min(scfg.SCREEN_A["min_opp_k_per_game"],
+                          scfg.SCREEN_B["min_opp_k_per_game"])
+            needs_roster = (cand.k_pct is not None and cand.k_pct >= min_k
+                            and opp_k is not None and opp_k >= min_opp)
             if needs_roster:
                 cand.vs_roster = screen_mlb.vs_roster(
                     starter["pitcher_id"], starter["opponent_id"], scfg.SEASON)
@@ -165,9 +174,61 @@ def build_plays(prop_events: list[dict], date_str: str, verbose: bool = True) ->
             print("   screens: no starters matched the posted strikeout lines")
         return []
 
+# Every rejection reason the rules can produce, mapped to the gate that
+# produced it. Counting these is the only way to know which threshold is
+# actually costing plays — guessing at it once already cost a day of tuning
+# the wrong knob.
+GATE_PATTERNS = [
+    ("missing ",              "missing data"),
+    ("PA vs this roster",     "vs-roster sample too small"),
+    ("vs-roster K%",          "vs-roster K% too low"),
+    ("vs-roster AVG",         "vs-roster AVG too high"),
+    ("vs-roster wOBA",        "vs-roster wOBA too high"),
+    ("season K%",             "pitcher season K% too low"),
+    ("K/9",                   "pitcher K/9 too low"),
+    ("opponent K/game",       "opponent K/game"),
+    ("fade",                  "on the fade list"),
+    ("juice",                 "juice worse than allowed"),
+    ("odds",                  "odds below the floor"),
+    ("line",                  "line outside the allowed range"),
+    ("daily cap",             "daily cap reached"),
+    ("cap",                   "daily cap reached"),
+]
+
+
+def gate_of(reason: str) -> str:
+    text = str(reason)
+    for needle, label in GATE_PATTERNS:
+        if needle in text:
+            return label
+    return "other"
+
+
+def report_gates(rejections) -> None:
+    """Which gate stopped how many, worst offender first."""
+    from collections import Counter
+    counts = Counter(gate_of(reason) for _c, _s, reason in rejections)
+    for label, n in counts.most_common():
+        print(f"      gate — {label}: {n}")
+
+    # For the sample gate specifically, how close were they? A wall of
+    # "28 PA, needed 30" is a different problem from "3 PA, needed 30".
+    shortfalls = []
+    for cand, _screen, reason in rejections:
+        if "PA vs this roster" in str(reason):
+            pa = getattr(getattr(cand, "vs_roster", None), "pa", None)
+            if pa is not None:
+                shortfalls.append((pa, cand.name))
+    if shortfalls:
+        shortfalls.sort(reverse=True)
+        best = ", ".join(f"{n} ({pa} PA)" for pa, n in shortfalls[:4])
+        print(f"      closest on sample: {best}")
+
+
     plays, rejections = evaluate_all(candidates)
     if verbose:
         print(f"   screens: {len(candidates)} starters evaluated, {len(plays)} play(s)")
+        report_gates(rejections)
         for cand, screen, reason in rejections[:6]:
             print(f"      [{screen}] {cand.name}: {reason}")
 
