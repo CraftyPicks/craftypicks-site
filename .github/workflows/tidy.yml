@@ -1,0 +1,79 @@
+name: Tidy misplaced uploads
+
+# One-shot repair job. A drag-and-drop upload flattened craftypicks/_src and
+# craftypicks/scripts into the repo root; this puts every one of those files
+# back where it belongs, rebuilds the site and commits the result.
+#
+# Safe to run more than once: a file that is already in the right place is
+# simply not found at the root and gets skipped.
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  tidy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Move stray files back into craftypicks/
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          SRC_FILES="base.css build.py render.py index.body.html plays.body.html record.body.html about.body.html screens.body.html slate.body.html"
+          SCRIPT_FILES="config.py odds_client.py odds_math.py find_plays.py grade.py stats.py props.py closing.py run_daily.py screen_config.py screen_models.py screen_rules.py screen_mlb.py screen_source.py rate_mlb.py slate.py"
+          PAGE_FILES="index.html plays.html record.html about.html screens.html slate.html"
+
+          mkdir -p craftypicks/_src craftypicks/scripts
+          moved=0
+
+          for f in $SRC_FILES; do
+            if [ -f "$f" ]; then mv -f "$f" "craftypicks/_src/$f"; echo "  -> _src/$f"; moved=$((moved+1)); fi
+          done
+          for f in $SCRIPT_FILES; do
+            if [ -f "$f" ]; then mv -f "$f" "craftypicks/scripts/$f"; echo "  -> scripts/$f"; moved=$((moved+1)); fi
+          done
+          for f in $PAGE_FILES; do
+            if [ -f "$f" ]; then mv -f "$f" "craftypicks/$f"; echo "  -> $f"; moved=$((moved+1)); fi
+          done
+
+          echo "moved $moved file(s) out of the repo root"
+
+      - name: Confirm the tree is complete
+        shell: bash
+        run: |
+          set -euo pipefail
+          missing=0
+          for f in scripts/slate.py scripts/rate_mlb.py scripts/run_daily.py \
+                   scripts/screen_config.py scripts/odds_math.py scripts/find_plays.py \
+                   _src/slate.body.html _src/render.py _src/build.py _src/base.css; do
+            if [ ! -f "craftypicks/$f" ]; then echo "MISSING craftypicks/$f"; missing=1; fi
+          done
+          [ "$missing" = "0" ] || { echo "tree is incomplete — not committing"; exit 1; }
+          python3 -m compileall -q craftypicks/scripts craftypicks/_src
+          echo "every expected file is present and every .py parses"
+
+      - name: Rebuild the site
+        working-directory: craftypicks/_src
+        shell: bash
+        run: |
+          set -o pipefail
+          python3 build.py 2>&1
+
+      - name: Commit the repair
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "craftypicks-bot"
+          git config user.email "bot@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "nothing to commit — the tree was already correct"
+            exit 0
+          fi
+          git commit -m "tidy: move uploaded files back into craftypicks/"
+          git push
