@@ -175,3 +175,29 @@ def brier(rated: list[dict]) -> float | None:
     total = sum((g["home_win_prob"] - (1.0 if g["result"] == "home" else 0.0)) ** 2
                 for g in games)
     return round(total / len(games), 4)
+
+
+def records(results: list[dict]) -> dict:
+    """Win-loss for every team, overall and split by venue.
+
+    Free: season_results() is already pulled to build the Elo, so this is
+    arithmetic on data we hold rather than another request.
+    """
+    rec: dict = {}
+
+    def slot(team_id):
+        return rec.setdefault(team_id, {"w": 0, "l": 0, "hw": 0, "hl": 0,
+                                        "aw": 0, "al": 0})
+
+    for g in results:
+        home, away = slot(g["home_id"]), slot(g["away_id"])
+        if g["home_score"] == g["away_score"]:
+            continue
+        home_won = g["home_score"] > g["away_score"]
+        if home_won:
+            home["w"] += 1; home["hw"] += 1
+            away["l"] += 1; away["al"] += 1
+        else:
+            home["l"] += 1; home["hl"] += 1
+            away["w"] += 1; away["aw"] += 1
+    return rec

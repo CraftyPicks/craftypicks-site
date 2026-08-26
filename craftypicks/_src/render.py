@@ -389,55 +389,186 @@ def _breakeven_note(need: float) -> str:
 
 
 # --------------------------------------------------------------- full slate
+def _nickname(team: str | None) -> str:
+    """'San Diego Padres' -> 'Padres'. Enough to name a side in a tight space."""
+    parts = str(team or "").split()
+    if not parts:
+        return ""
+    # Both Chicago and Boston end in "Sox", so the last word alone is ambiguous.
+    if len(parts) > 1 and parts[-1].lower() == "sox":
+        return " ".join(parts[-2:])
+    return parts[-1]
+
+
+def _record_line(rec: dict | None, at_home: bool) -> str:
+    """'78–52 · 44–21 at home'. The venue split is the half that's relevant."""
+    if not rec or (rec.get("w", 0) + rec.get("l", 0)) == 0:
+        return ""
+    overall = f"{rec['w']}&ndash;{rec['l']}"
+    if at_home:
+        split, label = f"{rec.get('hw',0)}&ndash;{rec.get('hl',0)}", "at home"
+    else:
+        split, label = f"{rec.get('aw',0)}&ndash;{rec.get('al',0)}", "on the road"
+    return f'<div class="grec">{overall} &middot; {split} {label}</div>'
+
+
+# Below this many career starts against a club, the split is noise wearing a
+# number, and the card says so rather than letting it read as a trend.
+THIN_VS_STARTS = 3
+
+
+def _vs_line(vs: dict | None, opponent: str | None) -> str:
+    if not vs:
+        return ""
+    who = _nickname(opponent) or "them"
+    starts = vs.get("starts") or 0
+    # No starts but innings on the board means relief work — saying "0 GS"
+    # reads like missing data rather than what it is.
+    stint = f"{starts} GS &middot; " if starts else ""
+    body = (f"vs {esc(who)} &middot; {stint}"
+            f"{vs.get('innings', 0):.1f} IP &middot; {vs.get('era', 0):.2f} ERA")
+    if starts < THIN_VS_STARTS:
+        return f'<div class="gvs thin" title="Too few starts to mean anything">{body} &middot; thin</div>'
+    return f'<div class="gvs">{body}</div>'
+
+
+def _side(team, starter, era, prob, leading, rec=None, at_home=False,
+          vs=None, opponent=None) -> str:
+    sp = esc(starter or "TBA")
+    if era is not None:
+        sp += f" &middot; {era:.2f} ERA"
+    # One decimal, not zero: at 49.8 vs 50.2 a rounded pair both read "50%"
+    # while the footer reports a lean, which looks like a contradiction.
+    return f"""
+        <div class="gside{' lead' if leading else ''}">
+          <div class="tm">{esc(team or '')}</div>
+          <div class="pc">{prob*100:.1f}%</div>
+        </div>
+        {_record_line(rec, at_home)}
+        <div class="gsp">{sp}</div>
+        {_vs_line(vs, opponent)}"""
+
+
 def slate_rows(rows: list[dict]) -> str:
     if not rows:
-        return ('<tr><td colspan="7" style="text-align:center;padding:34px 18px">'
-                "No games rated today.</td></tr>")
+        return ('<div class="empty-board">No games rated today. The board fills '
+                "in every morning there's a slate.</div>")
     out = []
     for r in rows:
-        ours = r.get("home_win_prob")
+        ph = r.get("home_win_prob") or 0.0
+        pa = r.get("away_win_prob")
+        if pa is None:
+            pa = 1.0 - ph
         mkt = r.get("market_home_prob")
         gap = r.get("disagreement")
+        suspect = bool(r.get("suspect"))
+        home_leads = ph >= pa
+
+        # The bar reads left-to-right as away-wins to home-wins. Where the two
+        # segments meet is our number; the tick is where the market put it, so
+        # the disagreement is a distance you can see rather than a figure to
+        # subtract.
+        away_w = max(0.0, min(100.0, pa * 100))
+        tick = ("" if mkt is None else
+                f'<div class="tick" style="left:{max(0.0, min(100.0, (1-mkt)*100)):.1f}%" '
+                f'title="Where the market has it"></div>')
+        bar = f"""
+          <div class="gbar">
+            <div class="seg{'' if home_leads else ' on'}" style="left:0;width:{away_w:.1f}%"></div>
+            <div class="seg{' on' if home_leads else ''}" style="left:{away_w:.1f}%;right:0"></div>
+            {tick}
+          </div>"""
+
+        # Always phrase the disagreement as the side we like more than the
+        # market does. A signed number against the home team makes every
+        # reader do the flip in their head.
         if gap is None:
-            gap_cell = '<td class="m" style="color:var(--dim)">—</td>'
-        elif r.get("suspect"):
-            gap_cell = (f'<td class="m" style="color:var(--amber)" '
-                        f'title="Bigger than the market can plausibly be wrong by — '
-                        f'treated as our error">{gap:+.1f}&nbsp;⚠</td>')
+            lean = '<span>market n/a</span>'
+        elif suspect:
+            # Deliberately not named after a team: a gap this size is our bug,
+            # and phrasing it as a lean would invite reading it as a play.
+            lean = (f'<span class="flagged" title="Bigger than the market can '
+                    f'plausibly be wrong by — treated as our error, never a play">'
+                    f'&#9888; {abs(gap):.1f} off market</span>')
+        elif abs(gap) < 1.0:
+            lean = '<span>in line</span>'
         else:
-            gap_cell = f'<td class="m {cls_for(gap)}">{gap:+.1f}</td>'
-        starters = " / ".join(x for x in (r.get("away_starter"), r.get("home_starter")) if x)
-        out.append(f"""<tr>
-          <td class="m">{esc(game_time(r.get('commence_time')))}</td>
-          <td class="strong">{esc(r.get('away',''))} @ {esc(r.get('home',''))}</td>
-          <td style="font-size:13px;color:var(--muted)">{esc(starters) or '—'}</td>
-          <td class="m">{ours*100:.1f}%</td>
-          <td class="m">{f'{mkt*100:.1f}%' if mkt is not None else '—'}</td>
-          {gap_cell}
-          <td class="m" style="color:var(--dim)">{esc(r.get('final') or '')}</td></tr>""")
+            side = r.get("home") if gap > 0 else r.get("away")
+            lean = f'<span class="lean">+{abs(gap):.1f} on {esc(_nickname(side))}</span>'
+
+        # Quote the market for whichever side carries the big mint number, so
+        # the two figures a reader compares are about the same team.
+        if mkt is None:
+            mkt_cell = "<span>Market &mdash;</span>"
+        else:
+            mkt_side = mkt if home_leads else 1 - mkt
+            mkt_cell = (f'<span>Market <b>{mkt_side*100:.1f}%</b> '
+                        f'{esc(_nickname(r.get("home") if home_leads else r.get("away")))}</span>')
+
+        status = (f'<span class="fin">Final {esc(r["final"])}</span>'
+                  if r.get("final") else "<span>Scheduled</span>")
+        out.append(f"""
+        <div class="gcard{' flag' if suspect else ''}">
+          <div class="gcard-top">
+            <span>{esc(game_time(r.get('commence_time')) or 'TBD')}</span>
+            {status}
+          </div>
+          <div class="gcard-body">
+            {_side(r.get('away'), r.get('away_starter'), r.get('away_starter_era'),
+                   pa, not home_leads, r.get('away_record'), False,
+                   r.get('away_vs_opp'), r.get('home'))}
+            {bar}
+            {_side(r.get('home'), r.get('home_starter'), r.get('home_starter_era'),
+                   ph, home_leads, r.get('home_record'), True,
+                   r.get('home_vs_opp'), r.get('away'))}
+            <div class="gfoot">
+              {mkt_cell}
+              {lean}
+            </div>
+          </div>
+        </div>""")
     return "".join(out)
+
+
+# The calibration plot is drawn on a fixed window so every row shares a scale
+# and the dots line up down the page.
+CALIB_LO, CALIB_HI = 25.0, 85.0
+
+
+def _cpos(value: float) -> float:
+    return max(0.0, min(100.0, (value - CALIB_LO) / (CALIB_HI - CALIB_LO) * 100))
 
 
 def calibration_rows(rows: list[dict]) -> str:
     live = [r for r in rows if r.get("n")]
     if not live:
-        return ('<tr><td colspan="5" style="text-align:center;padding:34px 18px">'
-                "Nothing graded yet — this table fills in as rated games finish."
-                "</td></tr>")
+        return ('<div class="empty-board">Nothing graded yet — this fills in as '
+                "rated games finish.</div>")
+    import math as _m
     out = []
     for r in live:
-        gap = r["gap"]
-        # Within the noise band for the sample size, a gap means nothing.
-        import math as _m
-        se = _m.sqrt(0.25 / r["n"]) * 100 * 1.96
-        verdict = "within noise" if abs(gap) <= se else (
-            "we were too low" if gap > 0 else "we were too high")
-        out.append(f"""<tr>
-          <td class="strong">{f"{r['lo']*100:.0f}%+" if r['hi'] > 1.0 else f"{r['lo']*100:.0f}–{r['hi']*100:.0f}%"}</td>
-          <td class="m">{r['n']}</td>
-          <td class="m">{r['predicted']:.1f}%</td>
-          <td class="m">{r['actual']:.1f}%</td>
-          <td style="font-size:13px;color:var(--muted)">{esc(verdict)} (±{se:.1f})</td></tr>""")
+        gap, n = r["gap"], r["n"]
+        said, actual = r["predicted"], r["actual"]
+        # Within the noise band for this sample size, a gap means nothing.
+        se = _m.sqrt(0.25 / n) * 100 * 1.96
+        outside = abs(gap) > se
+        verdict = ("within noise" if not outside else
+                   ("we were too low" if gap > 0 else "we were too high"))
+        band_l, band_r = _cpos(said - se), _cpos(said + se)
+        label = (f"{r['lo']*100:.0f}%+" if r["hi"] > 1.0
+                 else f"{r['lo']*100:.0f}–{r['hi']*100:.0f}%")
+        out.append(f"""
+        <div class="crow">
+          <div class="cl">{label}</div>
+          <div class="cn">{n} games</div>
+          <div class="ctrack" title="We said {said:.1f}% &middot; they won {actual:.1f}%">
+            <div class="cband" style="left:{band_l:.1f}%;width:{max(0.0, band_r-band_l):.1f}%"></div>
+            <div class="csaid" style="left:{_cpos(said):.1f}%"></div>
+            <div class="cact{' out' if outside else ''}" style="left:{_cpos(actual):.1f}%"></div>
+          </div>
+          <div class="cverdict{' out' if outside else ''}">{esc(verdict)}<br>
+            <span style="color:var(--dim)">said {said:.1f} &middot; won {actual:.1f}</span></div>
+        </div>""")
     return "".join(out)
 
 

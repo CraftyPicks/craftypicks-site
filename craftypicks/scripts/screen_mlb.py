@@ -166,3 +166,90 @@ def team_index(season: int) -> dict:
             if label and tid:
                 out[str(label).strip().lower()] = tid
     return out
+
+
+# --------------------------------------------------- pitcher vs one opponent
+# MLB exposes this split under a few different stat-type names and parameter
+# combinations, and this sandbox cannot reach statsapi to find out which one
+# answers. So rather than hardcode a guess, the first call of a run tries the
+# candidates in order, keeps whichever returns innings, and every later call
+# reuses it. A run where none of them answer costs four wasted requests and
+# then silently stops asking — the board just omits the line.
+_VS_MODES = [
+    ("vsTeamTotal", False),
+    ("vsTeam", False),
+    ("vsTeamTotal", True),
+    ("vsTeam", True),
+]
+_vs_mode: int | None = None      # index into _VS_MODES once resolved
+_vs_dead = False                 # set when every candidate came back empty
+_vs_probe_misses: list = []      # pitchers we asked about during probing
+
+
+def _num(value) -> float:
+    try:
+        return float(value)
+    except (TypeError, ValueError):
+        return 0.0
+
+
+def _vs_request(pitcher_id: int, opponent_team_id: int, season: int,
+                mode: tuple[str, bool]):
+    stat_type, by_season = mode
+    params = {"stats": stat_type, "group": "pitching",
+              "opposingTeamId": opponent_team_id, "sportId": 1}
+    if by_season:
+        params["season"] = season
+    data = _get(f"/people/{pitcher_id}/stats", **params)
+    splits = []
+    for block in (data or {}).get("stats") or []:
+        splits.extend(block.get("splits") or [])
+    return splits
+
+
+def _vs_totals(splits: list) -> dict | None:
+    """Sum however many season rows came back into one career line."""
+    starts = innings = earned = strikeouts = 0.0
+    for sp in splits:
+        s = sp.get("stat") or {}
+        starts += _num(s.get("gamesStarted"))
+        innings += _innings(s.get("inningsPitched"))
+        earned += _num(s.get("earnedRuns"))
+        strikeouts += _num(s.get("strikeOuts"))
+    if innings <= 0:
+        return None
+    return {"starts": int(starts), "innings": round(innings, 1),
+            "era": round(earned * 9 / innings, 2), "strikeouts": int(strikeouts)}
+
+
+def pitcher_vs_team(pitcher_id: int, opponent_team_id: int,
+                    season: int) -> dict | None:
+    """This starter's career line against tonight's opponent, or None.
+
+    Context for a reader only. It is not an input to the rating and must
+    never become one: these samples are small enough that the difference
+    between a 2.10 and a 5.40 is usually four innings of luck.
+    """
+    global _vs_mode, _vs_dead
+    if _vs_dead or not pitcher_id or not opponent_team_id:
+        return None
+
+    if _vs_mode is not None:
+        return _vs_totals(_vs_request(pitcher_id, opponent_team_id, season,
+                                      _VS_MODES[_vs_mode]))
+
+    for i, mode in enumerate(_VS_MODES):
+        splits = _vs_request(pitcher_id, opponent_team_id, season, mode)
+        totals = _vs_totals(splits)
+        if totals:
+            _vs_mode = i
+            print(f"   slate: vs-opponent split resolved via "
+                  f"stats={mode[0]}{' +season' if mode[1] else ''}")
+            return totals
+    # A pitcher can legitimately have never faced this club, so one empty
+    # answer proves nothing. Only give up once we've asked about a few.
+    _vs_probe_misses.append(pitcher_id)
+    if len(_vs_probe_misses) >= 4:
+        _vs_dead = True
+        print("   slate: no vs-opponent split answered; omitting that line")
+    return None

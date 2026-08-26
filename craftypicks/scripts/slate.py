@@ -64,8 +64,10 @@ def build(games: list[dict], date_str: str, season: int,
             print("   slate: no season results available, cannot rate")
         return []
     elo = rate_mlb.build_elo(results)
+    recs = rate_mlb.records(results)
     teams = screen_mlb.team_index(season)
     starters = {s["team_id"]: s for s in screen_mlb.probable_starters(date_str)}
+    want_vs = getattr(config, "SLATE_VS_OPPONENT", True)
     if verbose:
         print(f"   slate: {len(results)} games of history, "
               f"{len(starters)} probable starters")
@@ -77,15 +79,23 @@ def build(games: list[dict], date_str: str, season: int,
         if not home_id or not away_id:
             continue
 
-        def sp(team_id):
+        def sp(team_id, opponent_id):
             s = starters.get(team_id)
             if not s:
-                return {}, None
+                return {}, None, None
             stats = screen_mlb.pitcher_season(s["pitcher_id"], season)
-            return stats, s["name"]
+            vs = None
+            if want_vs:
+                # Never allowed to break the board: this is a display extra.
+                try:
+                    vs = screen_mlb.pitcher_vs_team(s["pitcher_id"],
+                                                    opponent_id, season)
+                except Exception:                            # noqa: BLE001
+                    vs = None
+            return stats, s["name"], vs
 
-        home_stats, home_name = sp(home_id)
-        away_stats, away_name = sp(away_id)
+        home_stats, home_name, home_vs = sp(home_id, away_id)
+        away_stats, away_name, away_vs = sp(away_id, home_id)
         rating = rate_mlb.rate_game(elo, home_id, away_id, home_stats, away_stats)
         market = market_probability(game)
 
@@ -98,6 +108,11 @@ def build(games: list[dict], date_str: str, season: int,
             "home_starter": home_name, "away_starter": away_name,
             "home_starter_era": home_stats.get("era"),
             "away_starter_era": away_stats.get("era"),
+            # Shown on the card, deliberately absent from the rating.
+            "home_record": recs.get(home_id),
+            "away_record": recs.get(away_id),
+            "home_vs_opp": home_vs,
+            "away_vs_opp": away_vs,
             "result": None,
             **rating,
         }

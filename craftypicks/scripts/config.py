@@ -122,3 +122,7 @@ TIMEZONE = "America/New_York"
 # Paste your beehiiv embed URL here after creating the publication.
 # Looks like: https://embeds.beehiiv.com/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
 BEEHIIV_EMBED_URL = ""
+
+# Full-board extras. The vs-opponent line costs two free MLB requests per
+# game and is display-only — set False if it ever slows the morning run.
+SLATE_VS_OPPONENT = True

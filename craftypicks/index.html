@@ -189,6 +189,75 @@ section{border-bottom:1px solid var(--line)}
 .tag.push{color:var(--amber);border-color:rgba(245,196,81,.35);background:rgba(245,196,81,.06)}
 .scroll-x{overflow-x:auto}
 
+/* ---------- rated board ---------- */
+.board{display:grid;grid-template-columns:repeat(auto-fill,minmax(328px,1fr));gap:16px}
+.gcard{background:var(--panel);border:1px solid var(--line);transition:.18s}
+.gcard:hover{border-color:var(--line-2);background:var(--panel-2)}
+.gcard.flag{border-color:rgba(245,196,81,.42)}
+.gcard-top{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding:11px 17px;border-bottom:1px solid var(--line);background:var(--bg-2);
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);
+}
+.gcard-top .fin{color:var(--muted)}
+.gcard-body{padding:17px}
+.gside{display:flex;align-items:baseline;justify-content:space-between;gap:14px}
+.gside .tm{font-size:15.5px;font-weight:700;letter-spacing:-.01em;color:var(--muted);line-height:1.25}
+.gside.lead .tm{color:var(--txt)}
+.gside .pc{font-family:var(--mono);font-size:18px;font-weight:700;color:var(--dim)}
+.gside.lead .pc{color:var(--green)}
+.grec{font-family:var(--mono);font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--muted);margin-top:6px}
+.gsp{font-family:var(--mono);font-size:10.5px;letter-spacing:.05em;color:var(--dim);margin-top:6px}
+.gvs{font-family:var(--mono);font-size:10px;letter-spacing:.07em;text-transform:uppercase;
+  color:var(--dim);margin-top:5px;padding-left:9px;border-left:2px solid var(--line-2)}
+.gvs.thin{color:#4A515B}
+.gbar{position:relative;height:7px;background:var(--line);margin:15px 0 17px}
+.gbar .seg{position:absolute;top:0;bottom:0;background:var(--line-2)}
+.gbar .seg.on{background:var(--green)}
+.gbar .tick{position:absolute;top:-5px;bottom:-5px;width:2px;background:var(--txt);opacity:.8}
+.gfoot{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding-top:13px;margin-top:16px;border-top:1px solid var(--line);
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--dim);
+}
+.gfoot b{color:var(--muted);font-weight:500}
+.gfoot .lean{color:var(--txt)}
+.gfoot .flagged{color:var(--amber)}
+.empty-board{border:1px solid var(--line);background:var(--panel);padding:38px 24px;
+  text-align:center;color:var(--muted);font-size:14.5px}
+
+/* ---------- calibration dot-plot ---------- */
+.calib{border:1px solid var(--line);background:var(--panel)}
+.crow{display:grid;grid-template-columns:96px 84px 1fr 168px;gap:18px;align-items:center;
+  padding:14px 18px;border-bottom:1px solid var(--line)}
+.crow:last-child{border-bottom:0}
+.crow .cl{font-family:var(--mono);font-size:13px;color:var(--txt);font-weight:600}
+.crow .cn{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim)}
+.ctrack{position:relative;height:24px;background:var(--bg-2);border:1px solid var(--line)}
+.cband{position:absolute;top:0;bottom:0;background:rgba(59,224,129,.09);
+  border-left:1px solid rgba(59,224,129,.13);border-right:1px solid rgba(59,224,129,.13)}
+.csaid{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--green);box-shadow:0 0 6px rgba(59,224,129,.55)}
+.cact{position:absolute;top:50%;width:9px;height:9px;margin:-5px 0 0 -5px;border-radius:50%;
+  background:var(--txt);box-shadow:0 0 0 3px var(--panel)}
+.cact.out{background:var(--amber)}
+.cverdict{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--dim);text-align:right}
+.cverdict.out{color:var(--amber)}
+.clegend{display:flex;flex-wrap:wrap;gap:22px;align-items:center;margin-top:18px;
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim)}
+.clegend span{display:flex;align-items:center;gap:8px}
+.clegend i{display:inline-block}
+.key-line{width:2px;height:13px;background:var(--green)}
+.key-dot{width:9px;height:9px;border-radius:50%;background:var(--txt)}
+.key-band{width:26px;height:13px;background:rgba(59,224,129,.09);
+  border-left:1px solid rgba(59,224,129,.25);border-right:1px solid rgba(59,224,129,.25)}
+@media(max-width:820px){
+  .crow{grid-template-columns:1fr 1fr;gap:10px}
+  .crow .ctrack{grid-column:1/-1}
+  .cverdict{text-align:left}
+}
+
 /* ---------- filters ---------- */
 .filters{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 .chip{
@@ -296,7 +365,10 @@ footer{background:var(--bg-2);padding:56px 0 40px}
     </div>
   </div>
 </header>
-
+<div class="mock-banner">
+  <b>Sample data.</b> These plays were generated for testing — no real odds feed is connected yet.
+  Add your ODDS_API_KEY and run the daily job to replace them.
+</div>
 <section class="hero">
   <div class="gridlines"></div>
   <div class="wrap">
@@ -312,14 +384,27 @@ footer{background:var(--bg-2);padding:56px 0 40px}
         <div class="fineprint">No card required &middot; Nothing for sale &middot; 21+</div>
       </div>
       
-      <div class="play" style="grid-column:1/-1">
+      <div class="play" data-league="mlb">
         <div class="play-top">
-          <span class="stamp">No qualifying plays</span>
-          <span class="stamp">Checked every game on the board</span>
+          <div style="display:flex;align-items:center;gap:9px">
+            <span class="dot"></span>
+            <span class="stamp on">Posted 12:09 AM ET</span>
+          </div>
+          <span class="stamp">Play 1 of 6</span>
         </div>
         <div class="play-body">
-          <div class="pick" style="color:var(--muted)">No plays today</div>
-          <p style="margin-top:10px;max-width:60ch">Nothing on the board cleared the edge threshold this morning. A card with no plays is a normal outcome — forcing one is how a good process turns into a bad month.</p>
+          <div class="pick">Tarik Skubal over 4.5 strikeouts</div>
+          <div class="meta">MLB &middot; Strikeouts prop
+            &middot; +120 &middot; BetOnline</div>
+          <div class="matchup-line">Away Team @ Home Team &middot; 3:09 AM ET</div>
+          <ul class="reasons"><li>Vig-free consensus across <b>9 books</b> is +101</li><li>Best number on the board is <b>+120 at BetOnline</b></li><li><b>8 of 9</b> books price this shorter than we're getting it</li><li>Expected value at that price: <b>+9.2%</b> per unit risked</li></ul>
+          <div class="stats">
+            <div class="stat"><div class="k">Stake</div><div class="v">1.0u</div></div>
+            <div class="stat"><div class="k">Edge vs fair</div>
+              <div class="v g">+9.2%</div></div>
+            <div class="stat"><div class="k">Fair price</div>
+              <div class="v">+101</div></div>
+          </div>
         </div>
       </div>
     </div>
@@ -330,12 +415,12 @@ footer{background:var(--bg-2);padding:56px 0 40px}
   <div class="wrap">
     <div class="split" style="margin-bottom:26px">
       <div>
-        <div class="eyebrow muted">Season to date &middot; 3 graded plays</div>
+        <div class="eyebrow muted">Season to date &middot; 0 graded plays</div>
         <h2 style="font-size:26px;margin-top:10px">The numbers, unfiltered</h2>
       </div>
       <a href="record.html" class="link-quiet mono" style="letter-spacing:.12em;text-transform:uppercase;font-size:11px">Full play log &rarr;</a>
     </div>
-    <div class="kpis"><div class="kpi"><div class="k">Units won</div><div class="v r">−0.40u</div><div class="s">Flat 1u stake on every play</div></div><div class="kpi"><div class="k">ROI</div><div class="v r">−13.3%</div><div class="s">Across 3 graded plays</div></div><div class="kpi"><div class="k">Record</div><div class="v ">1–2–0</div><div class="s">33.3% on decided plays</div></div><div class="kpi"><div class="k">Losing months</div><div class="v ">1<span style="color:var(--dim)">/1</span></div><div class="s">We post those too</div></div></div>
+    <div class="kpis"><div class="kpi"><div class="k">Units won</div><div class="v ">0.00u</div><div class="s">Flat 1u stake on every play</div></div><div class="kpi"><div class="k">ROI</div><div class="v ">0.0%</div><div class="s">Across 0 graded plays</div></div><div class="kpi"><div class="k">Record</div><div class="v ">0–0–0</div><div class="s">0.0% on decided plays</div></div><div class="kpi"><div class="k">Losing months</div><div class="v ">0<span style="color:var(--dim)">/1</span></div><div class="s">We post those too</div></div></div>
   </div>
 </section>
 
@@ -381,29 +466,14 @@ footer{background:var(--bg-2);padding:56px 0 40px}
       <div class="card">
         <div class="play-top">
           <span class="stamp">Recently graded</span>
-          <span class="stamp on">Last 3 plays</span>
+          <span class="stamp on">Last 0 plays</span>
         </div>
         <div class="scroll-x">
-          <table class="tbl" style="border:0"><tbody><tr>
-              <td class="strong">Padres −1.5</td>
-              <td class="m">MLB</td>
-              <td class="m">+188</td>
-              <td><span class="tag loss">Loss</span></td>
-              <td class="m r">−1.00u</td></tr><tr>
-              <td class="strong">Rockies ML</td>
-              <td class="m">MLB</td>
-              <td class="m">+216</td>
-              <td><span class="tag loss">Loss</span></td>
-              <td class="m r">−1.00u</td></tr><tr>
-              <td class="strong">Sox ML</td>
-              <td class="m">MLB</td>
-              <td class="m">+160</td>
-              <td><span class="tag win">Win</span></td>
-              <td class="m g">+1.60u</td></tr></tbody></table>
+          <table class="tbl" style="border:0"><tbody><tr><td colspan="5" style="text-align:center;padding:34px 18px">No graded plays yet — the first results land the morning after the first card.</td></tr></tbody></table>
         </div>
         <div style="padding:16px 20px;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center">
           <span class="stamp">Net</span>
-          <span class="mono r" style="font-size:15px;font-weight:600">−0.40u</span>
+          <span class="mono " style="font-size:15px;font-weight:600">0.00u</span>
         </div>
       </div>
     </div>
@@ -488,7 +558,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
     </div>
     <div class="foot-bot">
       <p>&copy; 2026 Craftypicks. Plays are posted before the number moves and graded exactly as posted.</p>
-      <span class="mono" style="letter-spacing:.14em;text-transform:uppercase">Board updated 2026-08-25 23:45</span>
+      <span class="mono" style="letter-spacing:.14em;text-transform:uppercase">Board updated 2026-08-26 00:09</span>
     </div>
   </div>
 </footer>

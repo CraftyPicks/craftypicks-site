@@ -189,6 +189,75 @@ section{border-bottom:1px solid var(--line)}
 .tag.push{color:var(--amber);border-color:rgba(245,196,81,.35);background:rgba(245,196,81,.06)}
 .scroll-x{overflow-x:auto}
 
+/* ---------- rated board ---------- */
+.board{display:grid;grid-template-columns:repeat(auto-fill,minmax(328px,1fr));gap:16px}
+.gcard{background:var(--panel);border:1px solid var(--line);transition:.18s}
+.gcard:hover{border-color:var(--line-2);background:var(--panel-2)}
+.gcard.flag{border-color:rgba(245,196,81,.42)}
+.gcard-top{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding:11px 17px;border-bottom:1px solid var(--line);background:var(--bg-2);
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);
+}
+.gcard-top .fin{color:var(--muted)}
+.gcard-body{padding:17px}
+.gside{display:flex;align-items:baseline;justify-content:space-between;gap:14px}
+.gside .tm{font-size:15.5px;font-weight:700;letter-spacing:-.01em;color:var(--muted);line-height:1.25}
+.gside.lead .tm{color:var(--txt)}
+.gside .pc{font-family:var(--mono);font-size:18px;font-weight:700;color:var(--dim)}
+.gside.lead .pc{color:var(--green)}
+.grec{font-family:var(--mono);font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--muted);margin-top:6px}
+.gsp{font-family:var(--mono);font-size:10.5px;letter-spacing:.05em;color:var(--dim);margin-top:6px}
+.gvs{font-family:var(--mono);font-size:10px;letter-spacing:.07em;text-transform:uppercase;
+  color:var(--dim);margin-top:5px;padding-left:9px;border-left:2px solid var(--line-2)}
+.gvs.thin{color:#4A515B}
+.gbar{position:relative;height:7px;background:var(--line);margin:15px 0 17px}
+.gbar .seg{position:absolute;top:0;bottom:0;background:var(--line-2)}
+.gbar .seg.on{background:var(--green)}
+.gbar .tick{position:absolute;top:-5px;bottom:-5px;width:2px;background:var(--txt);opacity:.8}
+.gfoot{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding-top:13px;margin-top:16px;border-top:1px solid var(--line);
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--dim);
+}
+.gfoot b{color:var(--muted);font-weight:500}
+.gfoot .lean{color:var(--txt)}
+.gfoot .flagged{color:var(--amber)}
+.empty-board{border:1px solid var(--line);background:var(--panel);padding:38px 24px;
+  text-align:center;color:var(--muted);font-size:14.5px}
+
+/* ---------- calibration dot-plot ---------- */
+.calib{border:1px solid var(--line);background:var(--panel)}
+.crow{display:grid;grid-template-columns:96px 84px 1fr 168px;gap:18px;align-items:center;
+  padding:14px 18px;border-bottom:1px solid var(--line)}
+.crow:last-child{border-bottom:0}
+.crow .cl{font-family:var(--mono);font-size:13px;color:var(--txt);font-weight:600}
+.crow .cn{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim)}
+.ctrack{position:relative;height:24px;background:var(--bg-2);border:1px solid var(--line)}
+.cband{position:absolute;top:0;bottom:0;background:rgba(59,224,129,.09);
+  border-left:1px solid rgba(59,224,129,.13);border-right:1px solid rgba(59,224,129,.13)}
+.csaid{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--green);box-shadow:0 0 6px rgba(59,224,129,.55)}
+.cact{position:absolute;top:50%;width:9px;height:9px;margin:-5px 0 0 -5px;border-radius:50%;
+  background:var(--txt);box-shadow:0 0 0 3px var(--panel)}
+.cact.out{background:var(--amber)}
+.cverdict{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--dim);text-align:right}
+.cverdict.out{color:var(--amber)}
+.clegend{display:flex;flex-wrap:wrap;gap:22px;align-items:center;margin-top:18px;
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim)}
+.clegend span{display:flex;align-items:center;gap:8px}
+.clegend i{display:inline-block}
+.key-line{width:2px;height:13px;background:var(--green)}
+.key-dot{width:9px;height:9px;border-radius:50%;background:var(--txt)}
+.key-band{width:26px;height:13px;background:rgba(59,224,129,.09);
+  border-left:1px solid rgba(59,224,129,.25);border-right:1px solid rgba(59,224,129,.25)}
+@media(max-width:820px){
+  .crow{grid-template-columns:1fr 1fr;gap:10px}
+  .crow .ctrack{grid-column:1/-1}
+  .cverdict{text-align:left}
+}
+
 /* ---------- filters ---------- */
 .filters{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 .chip{
@@ -296,7 +365,10 @@ footer{background:var(--bg-2);padding:56px 0 40px}
     </div>
   </div>
 </header>
-
+<div class="mock-banner">
+  <b>Sample data.</b> These plays were generated for testing — no real odds feed is connected yet.
+  Add your ODDS_API_KEY and run the daily job to replace them.
+</div>
 <section style="background:linear-gradient(180deg,#0A0C0F,var(--bg))">
   <div class="wrap" style="padding:56px 28px 46px">
     <div class="eyebrow">How it works</div>
@@ -509,7 +581,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
     </div>
     <div class="foot-bot">
       <p>&copy; 2026 Craftypicks. Plays are posted before the number moves and graded exactly as posted.</p>
-      <span class="mono" style="letter-spacing:.14em;text-transform:uppercase">Board updated 2026-08-25 23:45</span>
+      <span class="mono" style="letter-spacing:.14em;text-transform:uppercase">Board updated 2026-08-26 00:09</span>
     </div>
   </div>
 </footer>
