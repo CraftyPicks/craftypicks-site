@@ -440,7 +440,7 @@ def _side(team, starter, era, prob, leading, rec=None, at_home=False,
     # while the footer reports a lean, which looks like a contradiction.
     return f"""
         <div class="gside{' lead' if leading else ''}">
-          <div class="tm">{esc(team or '')}</div>
+          <div class="tm">{_tdot(team)}{esc(team or '')}</div>
           <div class="pc">{prob*100:.1f}%</div>
         </div>
         {_record_line(rec, at_home)}
@@ -507,7 +507,8 @@ def slate_rows(rows: list[dict]) -> str:
         status = (f'<span class="fin">Final {esc(r["final"])}</span>'
                   if r.get("final") else "<span>Scheduled</span>")
         out.append(f"""
-        <div class="gcard{' flag' if suspect else ''}">
+        <div class="gcard{' flag' if suspect else ''}"
+             style="--accent:{team_color(r.get('home')) or 'var(--line-2)'}">
           <div class="gcard-top">
             <span>{esc(game_time(r.get('commence_time')) or 'TBD')}</span>
             {status}
@@ -666,7 +667,8 @@ def pitcher_cards(rows: list[dict]) -> str:
             prices.append(f"u{om.format_american(r['under_odds'])}")
 
         out.append(f"""
-        <div class="pb-card{' flag' if r.get('suspect') else ''}">
+        <div class="pb-card{' flag' if r.get('suspect') else ''}"
+             style="--accent:{team_color(r.get('opponent')) or 'var(--line-2)'}">
           <div class="pb-top">
             <span>{esc(r.get('team',''))} vs {esc(_nickname(r.get('opponent')))}
               &middot; {esc(game_time(r.get('commence_time')))}</span>
@@ -766,3 +768,65 @@ def pitcher_bucket_rows(summary: dict) -> str:
             <span style="color:var(--dim)">{pct_right:.0f}% right</span></div>
         </div>""")
     return "".join(out)
+
+
+# ------------------------------------------------------------ team colour
+# One primary per club, used only for a 2px card edge and a small dot beside
+# the name. Keyed on the last word of the feed's team name, which is what
+# _nickname() already returns, so a name the feed spells differently simply
+# falls through to the neutral default instead of breaking.
+TEAM_COLOR = {
+    "diamondbacks": "#A71930", "braves": "#CE1141", "orioles": "#DF4601",
+    "red sox": "#BD3039", "cubs": "#0E3386", "white sox": "#C4CED4",
+    "reds": "#C6011F", "guardians": "#00385D", "rockies": "#33006F",
+    "tigers": "#0C2340", "astros": "#EB6E1F", "royals": "#004687",
+    "angels": "#BA0021", "dodgers": "#005A9C", "marlins": "#00A3E0",
+    "brewers": "#12284B", "twins": "#002B5C", "mets": "#FF5910",
+    "yankees": "#1C2841", "athletics": "#003831", "phillies": "#E81828",
+    "pirates": "#FDB827", "padres": "#2F241D", "giants": "#FD5A1E",
+    "mariners": "#005C5C", "cardinals": "#C41E3A", "rays": "#8FBCE6",
+    "rangers": "#003278", "jays": "#134A8E", "nationals": "#AB0003",
+}
+
+
+# Half a dozen clubs wear a navy or a black that is all but invisible on a
+# near-black panel — the Yankees, Padres, Athletics and Brewers among them.
+# Rather than hand-picking substitutes and getting it subtly wrong, every
+# colour is lifted toward white until it clears a contrast floor against the
+# card. Clubs already bright enough are returned untouched.
+PANEL_RGB = (0x10, 0x13, 0x17)
+MIN_CONTRAST = 2.6
+
+
+def _luminance(rgb) -> float:
+    def channel(v):
+        v /= 255.0
+        return v / 12.92 if v <= 0.04045 else ((v + 0.055) / 1.055) ** 2.4
+    r, g, b = (channel(c) for c in rgb)
+    return 0.2126 * r + 0.7152 * g + 0.0722 * b
+
+
+def _contrast(a, b) -> float:
+    la, lb = _luminance(a), _luminance(b)
+    lo, hi = sorted((la, lb))
+    return (hi + 0.05) / (lo + 0.05)
+
+
+def _legible(hex_color: str) -> str:
+    rgb = tuple(int(hex_color[i:i + 2], 16) for i in (1, 3, 5))
+    for step in range(21):                       # up to 100% toward white
+        mix = step / 20.0
+        lifted = tuple(round(c + (255 - c) * mix) for c in rgb)
+        if _contrast(lifted, PANEL_RGB) >= MIN_CONTRAST:
+            return "#%02X%02X%02X" % lifted
+    return "#FFFFFF"
+
+
+def team_color(team: str | None) -> str | None:
+    raw = TEAM_COLOR.get(_nickname(team).lower()) if team else None
+    return _legible(raw) if raw else None
+
+
+def _tdot(team: str | None) -> str:
+    c = team_color(team)
+    return f'<span class="tdot" style="--tc:{c}"></span>' if c else ""

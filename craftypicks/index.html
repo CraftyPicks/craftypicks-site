@@ -283,7 +283,7 @@ section{border-bottom:1px solid var(--line)}
 .pb-rec b{color:var(--txt);font-weight:600}
 .pb-strip{position:relative;display:flex;align-items:flex-end;gap:2px;height:92px;
   padding-right:28px;border-bottom:1px solid var(--line-2)}
-.pb-bar{flex:1;background:#7C8798;border-radius:3px 3px 0 0}
+.pb-bar{flex:1;background:var(--red);border-radius:3px 3px 0 0}
 .pb-bar.hit{background:var(--green)}
 .pb-line{position:absolute;left:0;right:0;height:0;border-top:2px dashed var(--txt);
   opacity:.9;pointer-events:none}
@@ -398,6 +398,88 @@ footer{background:var(--bg-2);padding:56px 0 40px}
   .stat:nth-child(2){border-right:0}
 }
 
+/* ============================================================ motion ======
+   All of it is progressive enhancement and all of it is optional. Every rule
+   below sits inside both a reduced-motion guard and an @supports test for
+   scroll-driven animations, so a browser without the feature — or a visitor
+   who has asked their OS for less movement — gets the finished page with no
+   animation and nothing missing. Nothing here is load-bearing, and no
+   JavaScript was added to the site to do it.
+   ------------------------------------------------------------------------ */
+@media (prefers-reduced-motion: no-preference) {
+
+  /* Bars draw themselves once, on load. The win-probability split and the
+     strikeout strip are the two things a reader is meant to look at, so they
+     are the two things that move. */
+  @keyframes cp-draw-x { from { transform: scaleX(0); } }
+  @keyframes cp-draw-y { from { transform: scaleY(0); } }
+  @keyframes cp-fade   { from { opacity: 0; } }
+
+  .gbar .seg { transform-origin: left center;   animation: cp-draw-x .55s cubic-bezier(.22,.61,.36,1) backwards; }
+  .pb-bar    { transform-origin: center bottom; animation: cp-draw-y .5s  cubic-bezier(.22,.61,.36,1) backwards; }
+  .gbar .tick, .pb-line, .pb-ticks { animation: cp-fade .4s ease-out .45s backwards; }
+
+  /* A short stagger across a row so a grid of cards doesn't snap as one
+     block. Deliberately capped — past a few hundred milliseconds a stagger
+     stops reading as polish and starts reading as a slow page. */
+  .pb-bar:nth-child(2)  { animation-delay: .03s }
+  .pb-bar:nth-child(3)  { animation-delay: .06s }
+  .pb-bar:nth-child(4)  { animation-delay: .09s }
+  .pb-bar:nth-child(5)  { animation-delay: .12s }
+  .pb-bar:nth-child(6)  { animation-delay: .15s }
+  .pb-bar:nth-child(7)  { animation-delay: .18s }
+  .pb-bar:nth-child(8)  { animation-delay: .21s }
+  .pb-bar:nth-child(9)  { animation-delay: .24s }
+  .pb-bar:nth-child(10) { animation-delay: .27s }
+  .pb-bar:nth-child(11) { animation-delay: .30s }
+
+  /* Reveal on scroll. Entry only — animating things as they leave is a
+     nuisance on a page people scan for numbers. */
+  @supports ((animation-timeline: view()) and (animation-range: entry)) {
+    @keyframes cp-rise {
+      from { opacity: 0; transform: translateY(14px); }
+    }
+    .gcard, .pb-card, .tile, .crow, .play, .kpi {
+      animation: cp-rise auto linear backwards;
+      animation-timeline: view();
+      animation-range: entry 0% cover 22%;
+    }
+  }
+
+  .gcard, .pb-card, .tile { transition: transform .18s ease, border-color .18s ease, background .18s ease; }
+  .gcard:hover, .pb-card:hover, .tile:hover { transform: translateY(-2px); }
+}
+
+/* ==================================================== visual richness ===== */
+/* A hairline of the home club's colour along the top of its card. Two pixels
+   at low opacity: enough that a scanned page has landmarks, not enough to
+   turn a results table into a kit catalogue. */
+.gcard, .pb-card { position: relative; }
+.gcard::before, .pb-card::before {
+  content: ""; position: absolute; top: -1px; left: -1px; right: -1px; height: 2px;
+  background: linear-gradient(90deg, var(--accent, var(--line-2)), transparent 78%);
+  opacity: .85; pointer-events: none;
+}
+.tdot {
+  display: inline-block; width: 7px; height: 7px; border-radius: 50%;
+  background: var(--tc, var(--dim)); margin-right: 8px; vertical-align: middle;
+  position: relative; top: -1px; flex: none;
+}
+.gside .tm { display: flex; align-items: center; }
+
+/* Depth, cheaply: a single soft wash inside each panel rather than a shadow,
+   which reads as lift on a near-black background without the muddiness. */
+.gcard, .pb-card, .tile, .kpis, .calib {
+  background-image: linear-gradient(180deg, rgba(255,255,255,.022), transparent 42%);
+}
+
+/* The current page gets a mark in the nav. */
+.nav-links a { position: relative; padding-bottom: 3px; }
+.nav-links a.on::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: -2px; height: 2px;
+  background: var(--green); border-radius: 2px;
+}
+
 </style>
 </head>
 <body>
@@ -411,7 +493,10 @@ footer{background:var(--bg-2);padding:56px 0 40px}
     </div>
   </div>
 </header>
-
+<div class="mock-banner">
+  <b>Sample data.</b> These plays were generated for testing — no real odds feed is connected yet.
+  Add your ODDS_API_KEY and run the daily job to replace them.
+</div>
 <section class="hero">
   <div class="gridlines"></div>
   <div class="wrap">
@@ -427,14 +512,27 @@ footer{background:var(--bg-2);padding:56px 0 40px}
         <div class="fineprint">No card required &middot; Nothing for sale &middot; 21+</div>
       </div>
       
-      <div class="play" style="grid-column:1/-1">
+      <div class="play" data-league="mlb">
         <div class="play-top">
-          <span class="stamp">No qualifying plays</span>
-          <span class="stamp">Checked every game on the board</span>
+          <div style="display:flex;align-items:center;gap:9px">
+            <span class="dot"></span>
+            <span class="stamp on">Posted 1:10 AM ET</span>
+          </div>
+          <span class="stamp">Play 1 of 6</span>
         </div>
         <div class="play-body">
-          <div class="pick" style="color:var(--muted)">No plays today</div>
-          <p style="margin-top:10px;max-width:60ch">Nothing on the board cleared the edge threshold this morning. A card with no plays is a normal outcome — forcing one is how a good process turns into a bad month.</p>
+          <div class="pick">Tarik Skubal over 4.5 strikeouts</div>
+          <div class="meta">MLB &middot; Strikeouts prop
+            &middot; +120 &middot; BetOnline</div>
+          <div class="matchup-line">Away Team @ Home Team &middot; 4:10 AM ET</div>
+          <ul class="reasons"><li>Vig-free consensus across <b>9 books</b> is +101</li><li>Best number on the board is <b>+120 at BetOnline</b></li><li><b>8 of 9</b> books price this shorter than we're getting it</li><li>Expected value at that price: <b>+9.2%</b> per unit risked</li></ul>
+          <div class="stats">
+            <div class="stat"><div class="k">Stake</div><div class="v">1.0u</div></div>
+            <div class="stat"><div class="k">Edge vs fair</div>
+              <div class="v g">+9.2%</div></div>
+            <div class="stat"><div class="k">Fair price</div>
+              <div class="v">+101</div></div>
+          </div>
         </div>
       </div>
     </div>
@@ -588,7 +686,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
     </div>
     <div class="foot-bot">
       <p>&copy; 2026 Craftypicks. Plays are posted before the number moves and graded exactly as posted.</p>
-      <span class="mono" style="letter-spacing:.14em;text-transform:uppercase">Board updated 2026-08-26 10:30</span>
+      <span class="mono" style="letter-spacing:.14em;text-transform:uppercase">Board updated 2026-08-26 01:10</span>
     </div>
   </div>
 </footer>
