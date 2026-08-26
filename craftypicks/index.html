@@ -411,10 +411,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
     </div>
   </div>
 </header>
-<div class="mock-banner">
-  <b>Sample data.</b> These plays were generated for testing — no real odds feed is connected yet.
-  Add your ODDS_API_KEY and run the daily job to replace them.
-</div>
+
 <section class="hero">
   <div class="gridlines"></div>
   <div class="wrap">
@@ -430,27 +427,14 @@ footer{background:var(--bg-2);padding:56px 0 40px}
         <div class="fineprint">No card required &middot; Nothing for sale &middot; 21+</div>
       </div>
       
-      <div class="play" data-league="mlb">
+      <div class="play" style="grid-column:1/-1">
         <div class="play-top">
-          <div style="display:flex;align-items:center;gap:9px">
-            <span class="dot"></span>
-            <span class="stamp on">Posted 1:10 AM ET</span>
-          </div>
-          <span class="stamp">Play 1 of 6</span>
+          <span class="stamp">No qualifying plays</span>
+          <span class="stamp">Checked every game on the board</span>
         </div>
         <div class="play-body">
-          <div class="pick">Tarik Skubal over 4.5 strikeouts</div>
-          <div class="meta">MLB &middot; Strikeouts prop
-            &middot; +120 &middot; BetOnline</div>
-          <div class="matchup-line">Away Team @ Home Team &middot; 4:10 AM ET</div>
-          <ul class="reasons"><li>Vig-free consensus across <b>9 books</b> is +101</li><li>Best number on the board is <b>+120 at BetOnline</b></li><li><b>8 of 9</b> books price this shorter than we're getting it</li><li>Expected value at that price: <b>+9.2%</b> per unit risked</li></ul>
-          <div class="stats">
-            <div class="stat"><div class="k">Stake</div><div class="v">1.0u</div></div>
-            <div class="stat"><div class="k">Edge vs fair</div>
-              <div class="v g">+9.2%</div></div>
-            <div class="stat"><div class="k">Fair price</div>
-              <div class="v">+101</div></div>
-          </div>
+          <div class="pick" style="color:var(--muted)">No plays today</div>
+          <p style="margin-top:10px;max-width:60ch">Nothing on the board cleared the edge threshold this morning. A card with no plays is a normal outcome — forcing one is how a good process turns into a bad month.</p>
         </div>
       </div>
     </div>
@@ -604,7 +588,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
     </div>
     <div class="foot-bot">
       <p>&copy; 2026 Craftypicks. Plays are posted before the number moves and graded exactly as posted.</p>
-      <span class="mono" style="letter-spacing:.14em;text-transform:uppercase">Board updated 2026-08-26 01:10</span>
+      <span class="mono" style="letter-spacing:.14em;text-transform:uppercase">Board updated 2026-08-26 10:30</span>
     </div>
   </div>
 </footer>
