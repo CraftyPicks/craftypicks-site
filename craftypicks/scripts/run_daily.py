@@ -117,6 +117,19 @@ def main() -> int:
     today = now.date().isoformat()
     print(f"== Craftypicks daily run — {now:%Y-%m-%d %H:%M %Z}")
 
+    # Already posted today? Then this is a retry of a scheduled run that
+    # already succeeded, and it must not spend a second set of credits.
+    # GitHub's scheduler is unreliable enough that the workflow fires several
+    # times in the 9 AM hour; this is what makes that safe.
+    posted = load_json(DATA / "plays.json", {})
+    forced = os.environ.get("CRAFTYPICKS_FORCE", "").strip() == "1"
+    if (posted.get("date") == today and not forced
+            and os.environ.get("CRAFTYPICKS_MOCK", "").strip() != "1"):
+        print(f"-- already posted a card for {today} at "
+              f"{posted.get('generated_at', 'an earlier run')}; nothing to do.")
+        print("   (set CRAFTYPICKS_FORCE=1 to re-run anyway)")
+        return 0
+
     history = load_json(DATA / "history.json", {"plays": []})["plays"]
 
     try:
