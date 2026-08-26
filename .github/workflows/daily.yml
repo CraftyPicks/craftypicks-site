@@ -2,14 +2,18 @@ name: Post daily plays
 
 on:
   schedule:
-    # Cron is UTC and has no timezone support, so 9 AM in New York is a
-    # different UTC hour in summer than in winter. Both are listed, and the
-    # gate step below drops whichever one isn't 9 AM locally — which means
-    # this file never needs editing when the clocks change.
-    # Several attempts inside the 9 AM hour, not one. GitHub delays scheduled
-    # runs under load and sometimes drops them entirely, so a single firing is
-    # not a schedule — it is a hope. run_daily.py exits immediately if a card
-    # for today is already committed, so the later attempts cost nothing.
+    # Two facts drive this schedule.
+    #
+    # First, cron is UTC and has no timezone support, so 9 AM in New York is a
+    # different UTC hour in summer than in winter. Both hours are listed.
+    #
+    # Second — and this is the one that matters — GitHub does not run these
+    # when it says it will. This repo's own history has a scheduled run fire
+    # two and a half hours late. So the extra firings below are not "retries"
+    # in the sense of recovering from an error; they are extra chances for a
+    # scheduler that is allowed to be arbitrarily late or to drop a run
+    # outright. run_daily.py exits immediately if today's card is already
+    # committed, so every firing after the first costs nothing.
     - cron: "0,20,40 13 * * *"    # 9 AM ET while daylight saving is in effect
     - cron: "0,20,40 14 * * *"    # 9 AM ET the rest of the year
   workflow_dispatch:
@@ -37,14 +41,20 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Is it actually 9 AM in New York?
+      - name: Is it too early to post?
         id: gate
         shell: bash
         run: |
           hour=$(TZ=America/New_York date +%H)
-          if [ "${GITHUB_EVENT_NAME}" = "schedule" ] && [ "$hour" != "09" ]; then
-            echo "It is ${hour}:00 in New York — this is the off-season half of"
-            echo "the schedule. Skipping so the card posts exactly once a day."
+          # The only thing this gate exists for is the winter half of the
+          # schedule: 13:00 UTC is 8 AM in New York once the clocks go back,
+          # and the site promises 9. It deliberately does NOT check for an
+          # exact hour — a delayed run is still a run, and refusing a late
+          # one because it isn't 9 o'clock any more would throw away the card
+          # entirely. Late is fine. Early is not.
+          if [ "${GITHUB_EVENT_NAME}" = "schedule" ] && [ "$hour" -lt 9 ]; then
+            echo "It is ${hour}:00 in New York — too early. Skipping; the later"
+            echo "firing will post the card."
             echo "skip=true" >> "$GITHUB_OUTPUT"
           else
             echo "Proceeding (local hour ${hour}, event ${GITHUB_EVENT_NAME})."
@@ -54,8 +64,9 @@ jobs:
         if: steps.gate.outputs.skip != 'true'
         env:
           ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
-          # A manual run always posts; a scheduled retry stops early if the
-          # card for today is already in the repo.
+          # A manual run always posts. A scheduled firing stops early, before
+          # spending a credit, if today's card is already in the repo — which
+          # is what makes six firings a day safe.
           CRAFTYPICKS_FORCE: ${{ github.event_name == 'workflow_dispatch' && '1' || '0' }}
           # Unbuffered, so a crash doesn't swallow the last lines of the log —
           # which is exactly when the log matters most.
