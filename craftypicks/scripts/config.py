@@ -126,3 +126,41 @@ BEEHIIV_EMBED_URL = ""
 # Full-board extras. The vs-opponent line costs two free MLB requests per
 # game and is display-only — set False if it ever slows the morning run.
 SLATE_VS_OPPONENT = True
+
+# ---- Credit pacing -----------------------------------------------------
+# The Odds API bills credits as markets x regions per request, and the free
+# tier is 500 a month. The core card (odds + scores) is cheap; player props
+# are not — they are billed per event, so they are the item that decides
+# whether the month lasts.
+#
+# Rather than a flat "stop below N" floor, the daily run reserves enough to
+# post a card every remaining day of the cycle and spends props only out of
+# what is genuinely left over. A quiet first week can no longer bankrupt the
+# last one.
+CREDIT_MONTHLY_ALLOWANCE = 500
+CREDIT_RESET_DAY = 1           # day of month the allowance refills
+CORE_CREDITS_PER_SPORT = len(MARKETS) + 2      # one odds pull + one scores pull
+
+
+def days_until_reset(today) -> int:
+    """Days left in this billing cycle, counting today."""
+    import calendar
+    day = min(CREDIT_RESET_DAY, calendar.monthrange(today.year, today.month)[1])
+    if today.day < day:
+        return day - today.day
+    nxt_y, nxt_m = (today.year + 1, 1) if today.month == 12 else (today.year, today.month + 1)
+    day = min(CREDIT_RESET_DAY, calendar.monthrange(nxt_y, nxt_m)[1])
+    from datetime import date
+    return (date(nxt_y, nxt_m, day) - date(today.year, today.month, today.day)).days
+
+
+def spare_credits(remaining, today, sports_in_season: int) -> int:
+    """What's left after reserving a card for every remaining day.
+
+    Returns a large number when the remaining balance is unknown, so a
+    missing header never silently switches the extras off.
+    """
+    if remaining is None:
+        return 10 ** 6
+    reserve = CORE_CREDITS_PER_SPORT * max(1, sports_in_season) * days_until_reset(today)
+    return int(remaining) - reserve

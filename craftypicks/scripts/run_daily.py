@@ -199,11 +199,19 @@ def main() -> int:
             # The whole block is wrapped: a prop market that's missing, shaped
             # unexpectedly, or unavailable for a given game must never cost us
             # the card.
+            prop_cost = config.PROP_MAX_EVENTS * len(getattr(config, "PROP_MARKETS", []) or [])
+            spare = config.spare_credits(client.credits_remaining,
+                                         now.date(), len(in_season))
             if (props and getattr(config, "PROP_MARKETS", None)
                     and sport in getattr(config, "PROP_SPORTS", [])
                     and games
-                    and (client.credits_remaining is None
-                         or client.credits_remaining > getattr(config, "PROP_CREDIT_FLOOR", 160))):
+                    and spare < prop_cost):
+                print(f"   props: skipped — {client.credits_remaining} credits left, "
+                      f"{config.days_until_reset(now.date())} days to reset, "
+                      f"spare after reserving the card is {spare}, props need {prop_cost}")
+            elif (props and getattr(config, "PROP_MARKETS", None)
+                    and sport in getattr(config, "PROP_SPORTS", [])
+                    and games):
                 try:
                     targets = props.pick_events(games, config.PROP_MAX_EVENTS)
                     print(f"   props: {len(targets)} event(s) × "
@@ -357,6 +365,18 @@ def main() -> int:
     site_stats = statsmod.compute(history)
     save_json(DATA / "stats.json", site_stats)
     print(f"-- record {site_stats['record']} | {site_stats['units']:+}u | ROI {site_stats['roi']:+}%")
+
+    # ------------------------------------------------------ 4b. credit report
+    if not client.mock:
+        left, used = client.credits_remaining, client.credits_used_this_run
+        if left is not None:
+            days = config.days_until_reset(now.date())
+            pace = left / days if days else float(left)
+            print(f"-- credits: {used} spent this run, {left} left, "
+                  f"{days} day(s) to reset — {pace:.1f}/day available")
+            if used > pace:
+                print(f"   !! this run cost more than the daily pace. At {used}/day "
+                      f"the allowance runs out in {left // max(1, used)} day(s).")
 
     # ------------------------------------------------------------- 5. build
     sys.path.insert(0, str(ROOT / "_src"))
