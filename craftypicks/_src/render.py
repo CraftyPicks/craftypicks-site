@@ -318,8 +318,8 @@ SCREEN_LABELS = {
     "max_vs_avg": ("Batting average vs this roster", "under", "three"),
     "max_vs_woba": ("wOBA vs this roster", "under", "three"),
     "min_opp_k_per_game": ("Opponent strikeouts per game", "at least", "two"),
-    "line_min": ("Strikeout line", "at least", "one"),
-    "line_max": ("Strikeout line", "at most", "one"),
+    "line_min": ("Lowest strikeout line allowed", "", "one"),
+    "line_max": ("Highest strikeout line allowed", "", "one"),
     "worst_juice": ("Price", "no worse than", "odds"),
     "min_k_per_9": ("Season K/9", "at least", "one"),
     "max_bets_per_day": ("Plays per day from this screen", "at most", "int"),
@@ -586,3 +586,183 @@ def brier_line(summary: dict) -> str:
                  f"the moment we rated the game, not the closing price — so we are {better} it. "
                  "Being worse is the expected outcome and we publish it either way.")
     return text
+
+
+# ----------------------------------------------------------- pitchers prop
+# The bar strip stays anchored at zero. Zooming the axis would make small
+# differences look big, which is the opposite of what this page argues.
+PITCH_MAX_K = 14
+
+
+def _ordinal(n: int) -> str:
+    if 10 <= n % 100 <= 20:
+        return "th"
+    return {1: "st", 2: "nd", 3: "rd"}.get(n % 10, "th")
+
+
+def _strip(recent: list[dict], line: float) -> str:
+    if not recent:
+        return ('<div class="pb-nostrip">No starts logged yet this season.</div>')
+    bars, ticks = [], []
+    for i, start in enumerate(recent):
+        k = start.get("strikeouts") or 0
+        h = max(6.0, min(100.0, k / PITCH_MAX_K * 100))
+        ago = len(recent) - i
+        when = esc(start.get("date") or "")
+        opp = esc(start.get("opponent") or "")
+        bars.append(f'<div class="pb-bar{" hit" if k > line else ""}" '
+                    f'style="height:{h:.1f}%" '
+                    f'title="{when} vs {opp} — {k} K in {start.get("innings", 0)} IP"></div>')
+        ticks.append(f"<span>{k}</span>")
+    pos = max(0.0, min(100.0, line / PITCH_MAX_K * 100))
+    return f"""
+      <div class="pb-strip">
+        <div class="pb-line" style="bottom:{pos:.1f}%"><span class="pb-linelab">{line:g}</span></div>
+        {''.join(bars)}
+      </div>
+      <div class="pb-ticks">{''.join(ticks)}</div>"""
+
+
+def pitcher_cards(rows: list[dict]) -> str:
+    if not rows:
+        return ('<div class="empty-board">No starter had a posted strikeout line '
+                "today. This board fills in whenever prop odds are available.</div>")
+    out = []
+    for r in rows:
+        line = r.get("line") or 0
+        proj = r.get("projection") or 0
+        gap = r.get("gap")
+
+        if r.get("suspect"):
+            lean = (f'<span class="flagged" title="Further from the posted number than '
+                    f'the market can plausibly be wrong — treated as our error">'
+                    f'&#9888; {abs(gap):.1f} off the line</span>')
+        elif gap is None or abs(gap) < 0.4:
+            lean = "<span>in line</span>"
+        else:
+            lean = (f'<span class="lean">{abs(gap):.1f} '
+                    f'{"over" if gap > 0 else "under"} the line</span>')
+
+        actual = r.get("actual")
+        if actual is None:
+            status = "<span>Rated</span>"
+        else:
+            went = "over" if actual > line else "under"
+            status = (f'<span class="fin">Final {actual} K &middot; {went}</span>')
+
+        vs = r.get("vs_opp")
+        vs_html = _vs_line(vs, r.get("opponent")) if vs else (
+            f'<div class="gvs thin">vs {esc(_nickname(r.get("opponent")))} '
+            "&middot; never faced them</div>")
+
+        rank = r.get("opp_k_rank")
+        rank_txt = (f" &middot; {rank}{_ordinal(rank)} of {r.get('opp_teams_ranked', 30)}"
+                    if rank else "")
+        opp_rate = r.get("opp_k_per_game")
+        prices = []
+        if r.get("over_odds") is not None:
+            prices.append(f"o{om.format_american(r['over_odds'])}")
+        if r.get("under_odds") is not None:
+            prices.append(f"u{om.format_american(r['under_odds'])}")
+
+        out.append(f"""
+        <div class="pb-card{' flag' if r.get('suspect') else ''}">
+          <div class="pb-top">
+            <span>{esc(r.get('team',''))} vs {esc(_nickname(r.get('opponent')))}
+              &middot; {esc(game_time(r.get('commence_time')))}</span>
+            {status}
+          </div>
+          <div class="pb-body">
+            <div class="pb-name">{esc(r.get('name',''))}</div>
+            <div class="pb-head">
+              <div class="pb-num"><div class="k">Our projection</div>
+                <div class="v">{proj:.1f}<span class="unit">K</span></div></div>
+              <div class="pb-num alt"><div class="k">Posted line</div>
+                <div class="v">{line:g}<span class="unit">K</span></div></div>
+            </div>
+            <div class="pb-striphead">
+              <span>Last {r.get('recent_n', 0)} starts</span>
+              <span class="pb-rec"><b>{r.get('recent_over',0)}&ndash;{max(0,(r.get('recent_n',0)-r.get('recent_over',0)))}</b>
+                over {line:g} &middot; L5 <b>{r.get('last5_over',0)}&ndash;{max(0,(r.get('last5_n',0)-r.get('last5_over',0)))}</b></span>
+            </div>
+            {_strip(r.get('recent') or [], line)}
+            <div class="pb-rows">
+              <div class="pb-row"><span>Season</span><b>{_season_line(r)}</b></div>
+              <div class="pb-row"><span>{esc(_nickname(r.get('opponent')))} strikeouts</span>
+                <b>{f'{opp_rate:.1f} per game' if opp_rate else '&mdash;'}{rank_txt}</b></div>
+            </div>
+            {vs_html}
+            <div class="pb-foot">
+              <span>{esc(' / '.join(prices)) or '&mdash;'}</span>
+              {lean}
+            </div>
+          </div>
+        </div>""")
+    return "".join(out)
+
+
+def _season_line(r: dict) -> str:
+    bits = []
+    if r.get("k_pct") is not None:
+        bits.append(f"{r['k_pct']*100:.1f}% K")
+    if r.get("k_per_9") is not None:
+        bits.append(f"{r['k_per_9']:.1f} K/9")
+    if r.get("era") is not None:
+        bits.append(f"{r['era']:.2f} ERA")
+    return " &middot; ".join(bits) or "&mdash;"
+
+
+def pitcher_accuracy(summary: dict) -> str:
+    """How far off the projections have been, against the line's own miss."""
+    mae, line_mae = summary.get("mae"), summary.get("line_mae")
+    if mae is None:
+        return ("Nothing graded yet. Once these starts finish, this line reports "
+                "how far off the projections were &mdash; and how that compares to "
+                "simply reading the posted number.")
+    n = summary.get("graded", 0)
+    text = (f"Across {n} graded projection{'s' if n != 1 else ''} the average miss is "
+            f"<b style=\"color:var(--txt)\">{mae:.2f}</b> strikeouts. Taking the posted "
+            f"line at face value missed by <b style=\"color:var(--txt)\">{line_mae:.2f}</b>.")
+    if line_mae is not None:
+        if mae < line_mae:
+            text += (" We are closer than the line, which after a few hundred starts "
+                     "would be worth something. It is far too early to mean anything.")
+        else:
+            text += (" The line is closer than we are, which is the expected result "
+                     "and is published either way.")
+    called = summary.get("called_right")
+    if called is not None:
+        text += (f" Of the {summary.get('calls', 0)} starters we actually leaned on, "
+                 f"{called:.1f}% landed on the side we called &mdash; 50% is a coin flip.")
+    return text
+
+
+def pitcher_bucket_rows(summary: dict) -> str:
+    buckets = [b for b in summary.get("buckets", []) if b.get("n")]
+    if not buckets:
+        return ('<div class="empty-board">Nothing graded yet &mdash; this fills in as '
+                "rated starts finish.</div>")
+    import math as _m
+    out = []
+    for b in buckets:
+        n, pct_right = b["n"], b["pct"]
+        se = _m.sqrt(0.25 / n) * 100 * 1.96
+        if abs(pct_right - 50.0) <= se:
+            verdict = "within noise"
+        else:
+            verdict = "better than a coin flip" if pct_right > 50 else "worse than a coin flip"
+        width = max(0.0, min(100.0, pct_right))
+        out.append(f"""
+        <div class="crow">
+          <div class="cl">{esc(b['label'])}</div>
+          <div class="cn">{n} start{'s' if n != 1 else ''}</div>
+          <div class="ctrack" title="{b['right']} of {n} landed on our side">
+            <div class="cband" style="left:{max(0.0,50-se):.1f}%;width:{min(100.0,2*se):.1f}%"></div>
+            <div class="csaid" style="left:50%"></div>
+            <div class="cact{'' if verdict == 'within noise' else ' out'}"
+                 style="left:{width:.1f}%"></div>
+          </div>
+          <div class="cverdict{'' if verdict == 'within noise' else ' out'}">{esc(verdict)}<br>
+            <span style="color:var(--dim)">{pct_right:.0f}% right</span></div>
+        </div>""")
+    return "".join(out)

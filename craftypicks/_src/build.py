@@ -33,13 +33,15 @@ PAGES = {
     "record.html": f"Track Record — {config.SITE_NAME}",
     "about.html": f"How It Works — {config.SITE_NAME}",
     "screens.html": f"The Strikeout Screens — {config.SITE_NAME}",
-    "slate.html": f"Today's Full Board — {config.SITE_NAME}",
+    "slate.html": f"MLB Board — {config.SITE_NAME}",
+    "pitchers.html": f"Pitchers Prop — {config.SITE_NAME}",
 }
 NAV_ITEMS = [
     ("plays.html", "Today's Plays", "plays"),
+    ("slate.html", "MLB Board", "slate"),
+    ("pitchers.html", "Pitchers Prop", "pitchers"),
     ("record.html", "Track Record", "record"),
     ("about.html", "How It Works", "about"),
-    ("slate.html", "Full Board", "slate"),
     ("screens.html", "The Screens", "screens"),
 ]
 
@@ -221,6 +223,7 @@ def build() -> None:
     stats = load("stats.json", {})
     history = load("history.json", {"plays": []})["plays"]
     slate_doc = load("slate.json", {"date_label": "", "games": [], "summary": {}})
+    pitch_doc = load("pitchers.json", {"date_label": "", "pitchers": [], "summary": {}})
 
     card = plays_doc.get("plays", [])
     today = plays_doc.get("date", datetime.utcnow().date().isoformat())
@@ -292,6 +295,10 @@ def build() -> None:
         "{{BREAKEVEN_ROWS}}": R.breakeven_rows(),
         "{{SLATE_DATE}}": slate_doc.get("date_label") or "Not yet rated",
         "{{SLATE_ROWS}}": R.slate_rows(slate_doc.get("games", [])),
+        "{{PITCH_DATE}}": pitch_doc.get("date_label") or "Not yet rated",
+        "{{PITCHER_CARDS}}": R.pitcher_cards(pitch_doc.get("pitchers", [])),
+        "{{PITCH_BUCKETS}}": R.pitcher_bucket_rows(pitch_doc.get("summary", {})),
+        "{{PITCH_ACCURACY}}": R.pitcher_accuracy(pitch_doc.get("summary", {})),
         "{{CALIBRATION_ROWS}}": R.calibration_rows(
             (slate_doc.get("summary") or {}).get("calibration", [])),
         "{{BRIER_LINE}}": R.brier_line(slate_doc.get("summary") or {}),

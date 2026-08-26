@@ -50,8 +50,15 @@ except Exception as _screen_err:                             # noqa: BLE001
     screen_source = None
     print(f"!! screen system unavailable ({_screen_err})", file=sys.stderr)
 
-# Full-board ratings. Optional like everything else, but this is the piece
-# that makes the numbers checkable in weeks instead of years.
+# Pitcher projections. Optional like everything else.
+try:
+    import pitchers as pitch_mod  # noqa: E402
+except Exception as _pitch_err:                              # noqa: BLE001
+    pitch_mod = None
+    print(f"!! pitcher board unavailable ({_pitch_err})", file=sys.stderr)
+
+# Full-board ratings. Optional too, but this is the piece that makes the
+# numbers checkable in weeks instead of years.
 try:
     import slate as slate_mod  # noqa: E402
 except Exception as _slate_err:                              # noqa: BLE001
@@ -137,12 +144,14 @@ def main() -> int:
     # -------------------------------------------------------------- 2. odds
     card: list[dict] = []
     note = ""
+    # Declared out here on purpose: sections 3b and 3c read them, and an odds
+    # failure inside the try must not leave those names undefined.
+    candidates: list[dict] = []
+    prop_events: list[dict] = []
+    slate_rows: list[dict] = []
     try:
         in_season = client.in_season_sports()
         print(f"-- in season: {', '.join(in_season) or 'nothing'}")
-        candidates = []
-        prop_events: list[dict] = []
-        slate_rows: list[dict] = []
         for sport in in_season:
             # Free look at the schedule before spending anything. A league
             # with no games today gets skipped entirely instead of costing
@@ -269,6 +278,39 @@ def main() -> int:
     save_json(DATA / "plays.json", plays_doc)
     save_json(DATA / "history.json", {"plays": history})
     print(f"-- card: {len(card)} play(s), {summary['units_risked']}u risked")
+
+    # --------------------------------------------------- 3c. pitcher board
+    if pitch_mod and prop_events:
+        try:
+            import screen_config as _scfg
+            history = load_json(DATA / "pitcher_ratings.json", {"pitchers": []})["pitchers"]
+            todays = pitch_mod.build(prop_events, now.strftime("%m/%d/%Y"),
+                                     _scfg.SEASON)
+            known = {(r.get("pitcher_id"), r.get("date")) for r in history}
+            for row in todays:
+                if (row.get("pitcher_id"), row.get("date")) not in known:
+                    history.append(dict(row))
+            pitch_mod.grade(history, _scfg.SEASON)
+            pitch_summary = pitch_mod.summary(history)
+            save_json(DATA / "pitcher_ratings.json", {"pitchers": history})
+
+            keys = {(r.get("pitcher_id"), r.get("date")) for r in todays}
+            board = [r for r in history
+                     if (r.get("pitcher_id"), r.get("date")) in keys] or todays
+            board.sort(key=lambda r: r.get("commence_time") or "")
+            save_json(DATA / "pitchers.json", {
+                "date": today,
+                "date_label": f"{now:%A, %B %-d, %Y}",
+                "pitchers": board,
+                "summary": pitch_summary,
+            })
+            if pitch_summary.get("mae") is not None:
+                print(f"-- pitchers: avg miss {pitch_summary['mae']} K on "
+                      f"{pitch_summary['graded']} graded "
+                      f"(line missed by {pitch_summary['line_mae']})")
+        except Exception as e:                               # noqa: BLE001
+            print(f"!! pitcher board failed ({type(e).__name__}: {e})",
+                  file=sys.stderr)
 
     # ------------------------------------------------------- 3b. rated board
     if slate_mod:

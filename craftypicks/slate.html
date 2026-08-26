@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Today's Full Board — Craftypicks</title>
+<title>MLB Board — Craftypicks</title>
 <meta name="description" content="Craftypicks posts free NBA, NFL, MLB and college basketball plays every day — the number, the price, the reasoning, and a fully public track record. Nothing for sale.">
-<meta property="og:title" content="Today's Full Board — Craftypicks">
+<meta property="og:title" content="MLB Board — Craftypicks">
 <meta property="og:description" content="Free daily plays with receipts on every one.">
 <meta property="og:type" content="website">
 <meta name="theme-color" content="#08090B">
@@ -259,6 +259,51 @@ section{border-bottom:1px solid var(--line)}
   .cverdict{text-align:left}
 }
 
+/* ---------- pitchers prop ---------- */
+.pb-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(336px,1fr));gap:16px}
+.pb-card{background:var(--panel);border:1px solid var(--line);transition:.18s}
+.pb-card:hover{border-color:var(--line-2);background:var(--panel-2)}
+.pb-card.flag{border-color:rgba(245,196,81,.42)}
+.pb-top{display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding:11px 17px;border-bottom:1px solid var(--line);background:var(--bg-2);
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--sub)}
+.pb-top .fin{color:var(--txt);white-space:nowrap}
+.pb-body{padding:17px}
+.pb-name{font-size:20px;font-weight:800;letter-spacing:-.02em;color:var(--txt);margin-bottom:15px}
+.pb-head{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--line);margin-bottom:18px}
+.pb-num{padding:12px 14px;border-right:1px solid var(--line)}
+.pb-num.alt{border-right:0;background:var(--bg-2)}
+.pb-num .k{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--sub)}
+.pb-num .v{font-family:var(--mono);font-size:27px;font-weight:700;color:var(--green);margin-top:5px}
+.pb-num.alt .v{color:var(--txt)}
+.pb-num .unit{font-size:13px;color:var(--dim);margin-left:4px;font-weight:500}
+.pb-striphead{display:flex;justify-content:space-between;align-items:baseline;gap:10px;
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--sub);margin-bottom:9px}
+.pb-rec b{color:var(--txt);font-weight:600}
+.pb-strip{position:relative;display:flex;align-items:flex-end;gap:2px;height:92px;
+  padding-right:28px;border-bottom:1px solid var(--line-2)}
+.pb-bar{flex:1;background:#7C8798;border-radius:3px 3px 0 0}
+.pb-bar.hit{background:var(--green)}
+.pb-line{position:absolute;left:0;right:0;height:0;border-top:2px dashed var(--txt);
+  opacity:.9;pointer-events:none}
+.pb-linelab{position:absolute;right:0;top:-9px;font-family:var(--mono);font-size:10.5px;
+  font-weight:600;color:var(--txt);background:var(--panel);padding:0 4px}
+.pb-ticks{display:flex;gap:2px;padding-right:28px;margin-top:5px;
+  font-family:var(--mono);font-size:10px;color:var(--sub)}
+.pb-ticks span{flex:1;text-align:center}
+.pb-nostrip{font-family:var(--mono);font-size:11px;color:var(--muted);
+  padding:24px 0;text-align:center;border-bottom:1px solid var(--line-2)}
+.pb-rows{margin-top:16px;display:grid;gap:7px}
+.pb-row{display:flex;justify-content:space-between;gap:12px;
+  font-family:var(--mono);font-size:11px;letter-spacing:.04em;color:var(--sub)}
+.pb-row b{color:var(--txt);font-weight:500;text-align:right}
+.pb-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding-top:13px;margin-top:15px;border-top:1px solid var(--line);
+  font-family:var(--mono);font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--sub)}
+.pb-foot .lean{color:var(--txt)}
+.pb-foot .flagged{color:var(--amber)}
+
 /* ---------- filters ---------- */
 .filters{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 .chip{
@@ -359,7 +404,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
 <header class="nav">
   <div class="nav-in">
     <a href="index.html" class="logo">Crafty<span>picks</span></a>
-    <nav class="nav-links"><a href="plays.html" class="">Today's Plays</a><a href="record.html" class="">Track Record</a><a href="about.html" class="">How It Works</a><a href="slate.html" class="on">Full Board</a><a href="screens.html" class="">The Screens</a></nav>
+    <nav class="nav-links"><a href="plays.html" class="">Today's Plays</a><a href="slate.html" class="on">MLB Board</a><a href="pitchers.html" class="">Pitchers Prop</a><a href="record.html" class="">Track Record</a><a href="about.html" class="">How It Works</a><a href="screens.html" class="">The Screens</a></nav>
     <div class="nav-cta">
       <a href="about.html" class="link-quiet">Why it's free</a>
       <a href="plays.html" class="btn solid sm">Today's plays</a>
@@ -373,7 +418,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
 <section style="background:linear-gradient(180deg,#0A0C0F,var(--bg))">
   <div class="wrap" style="padding:56px 28px 46px">
     <div class="eyebrow">Not yet rated &middot; every game, rated</div>
-    <h1 style="font-size:clamp(32px,4.2vw,50px);margin:14px 0 16px">Today's full board</h1>
+    <h1 style="font-size:clamp(32px,4.2vw,50px);margin:14px 0 16px">Tonight's MLB board</h1>
     <p class="lead">A win probability for every game, not just the ones we'd bet. Our number sits next to the market's own vig-free number so you can see exactly where we disagree &mdash; and every one of these gets graded, whether it became a play or not.</p>
   </div>
 </section>
@@ -452,6 +497,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
     <p>A rating on every game doesn't mean a bet on every game. Most nights the market and our number agree closely enough that there's nothing to do.</p>
     <div class="hero-cta">
       <a href="plays.html" class="btn solid">Today's plays</a>
+      <a href="pitchers.html" class="btn ghost">Pitchers prop</a>
       <a href="record.html" class="btn ghost">Track record</a>
     </div>
     <div class="fineprint" style="margin-top:22px">21+ &middot; Entertainment only &middot; Nothing here is for sale</div>
@@ -490,7 +536,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
     </div>
     <div class="foot-bot">
       <p>&copy; 2026 Craftypicks. Plays are posted before the number moves and graded exactly as posted.</p>
-      <span class="mono" style="letter-spacing:.14em;text-transform:uppercase">Board updated 2026-08-26 00:37</span>
+      <span class="mono" style="letter-spacing:.14em;text-transform:uppercase">Board updated 2026-08-26 01:05</span>
     </div>
   </div>
 </footer>

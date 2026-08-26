@@ -266,6 +266,18 @@ def _try_direct(pitcher_id: int, opponent_team_id: int, season: int,
     return None
 
 
+def season_game_log(pitcher_id: int, season: int) -> list:
+    """Every appearance this season, newest last. Cached per pitcher-season,
+    so the vs-opponent line and the last-ten strip share one request."""
+    data = _get(f"/people/{pitcher_id}/stats", stats="gameLog",
+                group="pitching", season=season, sportId=1)
+    rows = []
+    for block in (data or {}).get("stats") or []:
+        rows.extend(block.get("splits") or [])
+    rows.sort(key=lambda sp: str(sp.get("date") or ""))
+    return rows
+
+
 def _from_game_log(pitcher_id: int, opponent_team_id: int,
                    seasons: list[int]) -> dict | None:
     """Rebuild the same line by filtering this pitcher's appearances.
@@ -275,16 +287,12 @@ def _from_game_log(pitcher_id: int, opponent_team_id: int,
     """
     rows, spanned = [], []
     for year in seasons:
-        data = _get(f"/people/{pitcher_id}/stats", stats="gameLog",
-                    group="pitching", season=year, sportId=1)
-        blocks = (data or {}).get("stats") or []
-        if blocks:
+        appearances = season_game_log(pitcher_id, year)
+        if appearances:
             spanned.append(year)
-        for block in blocks:
-            for sp in block.get("splits") or []:
-                opponent = sp.get("opponent") or {}
-                if opponent.get("id") == opponent_team_id:
-                    rows.append(sp)
+        for sp in appearances:
+            if (sp.get("opponent") or {}).get("id") == opponent_team_id:
+                rows.append(sp)
     totals = _totals(rows)
     if totals and spanned:
         totals["span"] = (f"{min(spanned)}" if min(spanned) == max(spanned)
