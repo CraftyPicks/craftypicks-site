@@ -24,6 +24,7 @@
   --txt:#E9EDF2;
   --muted:#8B939E;
   --dim:#5D6570;
+  --sub:#AEB7C3;      /* readable small print — the card sub-lines */
   --green:#3BE081;
   --green-dim:#1F7F4B;
   --red:#FF5C5C;
@@ -197,31 +198,31 @@ section{border-bottom:1px solid var(--line)}
 .gcard-top{
   display:flex;align-items:center;justify-content:space-between;gap:10px;
   padding:11px 17px;border-bottom:1px solid var(--line);background:var(--bg-2);
-  font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);
+  font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--sub);
 }
-.gcard-top .fin{color:var(--muted)}
+.gcard-top .fin{color:var(--txt)}
 .gcard-body{padding:17px}
 .gside{display:flex;align-items:baseline;justify-content:space-between;gap:14px}
-.gside .tm{font-size:15.5px;font-weight:700;letter-spacing:-.01em;color:var(--muted);line-height:1.25}
+.gside .tm{font-size:15.5px;font-weight:700;letter-spacing:-.01em;color:var(--sub);line-height:1.25}
 .gside.lead .tm{color:var(--txt)}
-.gside .pc{font-family:var(--mono);font-size:18px;font-weight:700;color:var(--dim)}
+.gside .pc{font-family:var(--mono);font-size:18px;font-weight:700;color:var(--sub)}
 .gside.lead .pc{color:var(--green)}
-.grec{font-family:var(--mono);font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;
-  color:var(--muted);margin-top:6px}
-.gsp{font-family:var(--mono);font-size:10.5px;letter-spacing:.05em;color:var(--dim);margin-top:6px}
-.gvs{font-family:var(--mono);font-size:10px;letter-spacing:.07em;text-transform:uppercase;
-  color:var(--dim);margin-top:5px;padding-left:9px;border-left:2px solid var(--line-2)}
-.gvs.thin{color:#4A515B}
+.grec{font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--txt);margin-top:7px}
+.gsp{font-family:var(--mono);font-size:11.5px;letter-spacing:.04em;color:var(--sub);margin-top:6px}
+.gvs{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--sub);margin-top:7px;padding-left:10px;border-left:2px solid var(--green-dim)}
+.gvs.thin{color:var(--muted);border-left-color:var(--line-2)}
 .gbar{position:relative;height:7px;background:var(--line);margin:15px 0 17px}
 .gbar .seg{position:absolute;top:0;bottom:0;background:var(--line-2)}
 .gbar .seg.on{background:var(--green)}
-.gbar .tick{position:absolute;top:-5px;bottom:-5px;width:2px;background:var(--txt);opacity:.8}
+.gbar .tick{position:absolute;top:-5px;bottom:-5px;width:2px;background:#FFF;opacity:.95;box-shadow:0 0 5px rgba(255,255,255,.5)}
 .gfoot{
   display:flex;align-items:center;justify-content:space-between;gap:10px;
   padding-top:13px;margin-top:16px;border-top:1px solid var(--line);
-  font-family:var(--mono);font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--dim);
+  font-family:var(--mono);font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--sub);
 }
-.gfoot b{color:var(--muted);font-weight:500}
+.gfoot b{color:var(--txt);font-weight:600}
 .gfoot .lean{color:var(--txt)}
 .gfoot .flagged{color:var(--amber)}
 .empty-board{border:1px solid var(--line);background:var(--panel);padding:38px 24px;
@@ -233,7 +234,7 @@ section{border-bottom:1px solid var(--line)}
   padding:14px 18px;border-bottom:1px solid var(--line)}
 .crow:last-child{border-bottom:0}
 .crow .cl{font-family:var(--mono);font-size:13px;color:var(--txt);font-weight:600}
-.crow .cn{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim)}
+.crow .cn{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--sub)}
 .ctrack{position:relative;height:24px;background:var(--bg-2);border:1px solid var(--line)}
 .cband{position:absolute;top:0;bottom:0;background:rgba(59,224,129,.09);
   border-left:1px solid rgba(59,224,129,.13);border-right:1px solid rgba(59,224,129,.13)}
@@ -241,11 +242,11 @@ section{border-bottom:1px solid var(--line)}
 .cact{position:absolute;top:50%;width:9px;height:9px;margin:-5px 0 0 -5px;border-radius:50%;
   background:var(--txt);box-shadow:0 0 0 3px var(--panel)}
 .cact.out{background:var(--amber)}
-.cverdict{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;
-  color:var(--dim);text-align:right}
+.cverdict{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--sub);text-align:right}
 .cverdict.out{color:var(--amber)}
 .clegend{display:flex;flex-wrap:wrap;gap:22px;align-items:center;margin-top:18px;
-  font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim)}
+  font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--sub)}
 .clegend span{display:flex;align-items:center;gap:8px}
 .clegend i{display:inline-block}
 .key-line{width:2px;height:13px;background:var(--green)}
@@ -365,18 +366,21 @@ footer{background:var(--bg-2);padding:56px 0 40px}
     </div>
   </div>
 </header>
-
+<div class="mock-banner">
+  <b>Sample data.</b> These plays were generated for testing — no real odds feed is connected yet.
+  Add your ODDS_API_KEY and run the daily job to replace them.
+</div>
 <section style="background:linear-gradient(180deg,#0A0C0F,var(--bg))">
   <div class="wrap" style="padding:56px 28px 46px">
     <div class="eyebrow">Every play, since day one</div>
     <h1 style="font-size:clamp(32px,4.2vw,50px);margin:14px 0 16px">Track record</h1>
-    <p class="lead">6 graded plays, 8 still in flight. Nothing removed, nothing re-priced after the fact. The losing stretches are on this page too — they're the point.</p>
+    <p class="lead">This log starts empty, on purpose. Every play the scanner posts lands here the next morning — graded against the final score, winners and losers alike, and never edited afterward. Check back once the first cards have run.</p>
   </div>
 </section>
 
 <section class="pad-sm">
   <div class="wrap">
-    <div class="kpis"><div class="kpi"><div class="k">Units won</div><div class="v g">+2.39u</div><div class="s">Flat 1u stake on every play</div></div><div class="kpi"><div class="k">ROI</div><div class="v g">+39.8%</div><div class="s">Return on 6u risked</div></div><div class="kpi"><div class="k">Record</div><div class="v ">3–3–0</div><div class="s">50.0% on decided plays</div></div><div class="kpi"><div class="k">Beat the close</div><div class="v ">—</div><div class="s">On 0 plays with a late line</div></div></div>
+    <div class="kpis"><div class="kpi"><div class="k">Units won</div><div class="v ">0.00u</div><div class="s">Flat 1u stake on every play</div></div><div class="kpi"><div class="k">ROI</div><div class="v ">0.0%</div><div class="s">Return on 0u risked</div></div><div class="kpi"><div class="k">Record</div><div class="v ">0–0–0</div><div class="s">0.0% on decided plays</div></div><div class="kpi"><div class="k">Beat the close</div><div class="v ">—</div><div class="s">On 0 plays with a late line</div></div></div>
   </div>
 </section>
 
@@ -385,11 +389,11 @@ footer{background:var(--bg-2);padding:56px 0 40px}
     <div class="sec-head" style="margin-bottom:30px">
       <div class="eyebrow muted">Month by month</div>
       <h2 style="font-size:26px;margin-top:10px">Units won and lost</h2>
-      <p style="font-size:15px;margin-top:10px">0 losing months out of 1. Any record without red months has been edited.</p>
+      <p style="font-size:15px;margin-top:10px">The monthly chart fills in as soon as the first month of plays has been graded.</p>
     </div>
 
     <figure class="card" style="padding:30px 26px 22px;margin:0">
-      <div class="chart" role="img" aria-label="Monthly units: Aug +2.39u"><div class="bars"><div class="col" title="Aug 2026 · +2.39u · 6 plays"><div class="pos"><span class="val g">+2.4u</span><i style="height:150px"></i></div><div class="neg"></div><span class="mlab">Aug</span></div></div></div>
+      <p style="padding:40px 0;text-align:center;color:var(--dim)">The monthly chart fills in once the first month of plays is graded.</p>
       <figcaption class="up" style="margin-top:18px;color:var(--dim);text-transform:none;letter-spacing:.04em;font-size:11.5px">Units, flat 1u stakes. Green bars are winning months, red bars losing months. The current month is partial.</figcaption>
     </figure>
   </div>
@@ -408,17 +412,11 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           <tr><th>Source</th><th>Posted</th><th>Record</th><th>Units</th><th>ROI</th><th>Beat close</th></tr>
         </thead>
         <tbody><tr>
-          <td class="strong">Strikeout screens</td>
-          <td class="m">1</td>
+          <td class="strong">Price scanner</td>
+          <td class="m">6</td>
           <td class="m">0–0–0</td>
           <td class="m ">0.00u</td>
           <td class="m ">0.0%</td>
-          <td class="m" style="color:var(--dim)">—</td></tr><tr>
-          <td class="strong">Price scanner</td>
-          <td class="m">13</td>
-          <td class="m">3–3–0</td>
-          <td class="m g">+2.39u</td>
-          <td class="m g">+39.8%</td>
           <td class="m" style="color:var(--dim)">—</td></tr></tbody>
       </table>
     </div>
@@ -436,13 +434,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
         <thead>
           <tr><th>League</th><th>Plays</th><th>Record</th><th>Win %</th><th>Units</th><th>ROI</th></tr>
         </thead>
-        <tbody><tr>
-          <td class="strong">MLB</td>
-          <td class="m">6</td>
-          <td class="m">3–3–0</td>
-          <td class="m">50.0%</td>
-          <td class="m g">+2.39u</td>
-          <td class="m g">+39.8%</td></tr></tbody>
+        <tbody><tr><td colspan="6" style="text-align:center;padding:34px 18px">No graded plays yet.</td></tr></tbody>
       </table>
     </div>
   </div>
@@ -453,7 +445,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
     <div class="split" style="margin-bottom:26px">
       <div>
         <div class="eyebrow muted">Play log</div>
-        <h2 style="font-size:26px;margin-top:10px">The last 6 graded plays</h2>
+        <h2 style="font-size:26px;margin-top:10px">Play log</h2>
       </div>
       <span class="up">Updated daily at 9:00 AM ET</span>
     </div>
@@ -462,59 +454,11 @@ footer{background:var(--bg-2);padding:56px 0 40px}
         <thead>
           <tr><th>Date</th><th>Play</th><th>League</th><th>Price</th><th>Edge at post</th><th>vs close</th><th>Result</th><th>Return</th></tr>
         </thead>
-        <tbody><tr>
-              <td class="m">Aug 25</td>
-              <td class="strong">Giants −1.5</td>
-              <td class="m">MLB</td>
-              <td class="m">+189</td>
-              <td class="m">+49.4%</td>
-              <td class="m" style="color:var(--dim)">—</td>
-              <td><span class="tag win">Win</span></td>
-              <td class="m g">+1.89u</td></tr><tr>
-              <td class="m">Aug 25</td>
-              <td class="strong">Mariners −1.5</td>
-              <td class="m">MLB</td>
-              <td class="m">+190</td>
-              <td class="m">+51.5%</td>
-              <td class="m" style="color:var(--dim)">—</td>
-              <td><span class="tag win">Win</span></td>
-              <td class="m g">+1.90u</td></tr><tr>
-              <td class="m">Aug 25</td>
-              <td class="strong">Pirates −1.5</td>
-              <td class="m">MLB</td>
-              <td class="m">+185</td>
-              <td class="m">+65.2%</td>
-              <td class="m" style="color:var(--dim)">—</td>
-              <td><span class="tag loss">Loss</span></td>
-              <td class="m r">−1.00u</td></tr><tr>
-              <td class="m">Aug 24</td>
-              <td class="strong">Padres −1.5</td>
-              <td class="m">MLB</td>
-              <td class="m">+188</td>
-              <td class="m">+53.0%</td>
-              <td class="m" style="color:var(--dim)">—</td>
-              <td><span class="tag loss">Loss</span></td>
-              <td class="m r">−1.00u</td></tr><tr>
-              <td class="m">Aug 24</td>
-              <td class="strong">Rockies ML</td>
-              <td class="m">MLB</td>
-              <td class="m">+216</td>
-              <td class="m">+9.2%</td>
-              <td class="m" style="color:var(--dim)">—</td>
-              <td><span class="tag loss">Loss</span></td>
-              <td class="m r">−1.00u</td></tr><tr>
-              <td class="m">Aug 24</td>
-              <td class="strong">Sox ML</td>
-              <td class="m">MLB</td>
-              <td class="m">+160</td>
-              <td class="m">+7.2%</td>
-              <td class="m" style="color:var(--dim)">—</td>
-              <td><span class="tag win">Win</span></td>
-              <td class="m g">+1.60u</td></tr></tbody>
+        <tbody><tr><td colspan="7" style="text-align:center;padding:34px 18px">No graded plays yet — the first results land the morning after the first card.</td></tr></tbody>
       </table>
     </div>
     <div class="note" style="margin-top:26px">
-      <p class="disclaimer"><b style="color:var(--txt)">"vs close" is the column that actually matters.</b> It compares the price we posted against what the whole market settled on shortly before tip &mdash; vig removed from both. Positive means we got a better number than the market's final opinion, and that shows up in a couple hundred plays. Win-loss records need thousands before they mean anything, which is why every tout can show you a good month. Worst peak-to-trough run so far: −3.00u.</p>
+      <p class="disclaimer"><b style="color:var(--txt)">"vs close" is the column that actually matters.</b> It compares the price we posted against what the whole market settled on shortly before tip &mdash; vig removed from both. Positive means we got a better number than the market's final opinion, and that shows up in a couple hundred plays. Win-loss records need thousands before they mean anything, which is why every tout can show you a good month. Average so far across plays with a late line: 0.0%.</p>
     </div>
   </section>
 
@@ -564,7 +508,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
     </div>
     <div class="foot-bot">
       <p>&copy; 2026 Craftypicks. Plays are posted before the number moves and graded exactly as posted.</p>
-      <span class="mono" style="letter-spacing:.14em;text-transform:uppercase">Board updated 2026-08-26 00:12</span>
+      <span class="mono" style="letter-spacing:.14em;text-transform:uppercase">Board updated 2026-08-26 00:18</span>
     </div>
   </div>
 </footer>

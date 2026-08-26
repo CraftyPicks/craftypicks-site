@@ -427,9 +427,13 @@ def _vs_line(vs: dict | None, opponent: str | None) -> str:
     stint = f"{starts} GS &middot; " if starts else ""
     body = (f"vs {esc(who)} &middot; {stint}"
             f"{vs.get('innings', 0):.1f} IP &middot; {vs.get('era', 0):.2f} ERA")
+    span = vs.get("span")
+    tip = (f"{span} regular season" if span else "career") + \
+          " — shown as context, not used in the number"
     if starts < THIN_VS_STARTS:
-        return f'<div class="gvs thin" title="Too few starts to mean anything">{body} &middot; thin</div>'
-    return f'<div class="gvs">{body}</div>'
+        return (f'<div class="gvs thin" title="{esc(tip)}. Too few starts to mean '
+                f'anything.">{body} &middot; thin</div>')
+    return f'<div class="gvs" title="{esc(tip)}">{body}</div>'
 
 
 def _side(team, starter, era, prob, leading, rec=None, at_home=False,

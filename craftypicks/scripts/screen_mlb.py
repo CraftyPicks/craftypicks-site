@@ -168,24 +168,8 @@ def team_index(season: int) -> dict:
     return out
 
 
+
 # --------------------------------------------------- pitcher vs one opponent
-# MLB exposes this split under a few different stat-type names and parameter
-# combinations, and this sandbox cannot reach statsapi to find out which one
-# answers. So rather than hardcode a guess, the first call of a run tries the
-# candidates in order, keeps whichever returns innings, and every later call
-# reuses it. A run where none of them answer costs four wasted requests and
-# then silently stops asking — the board just omits the line.
-_VS_MODES = [
-    ("vsTeamTotal", False),
-    ("vsTeam", False),
-    ("vsTeamTotal", True),
-    ("vsTeam", True),
-]
-_vs_mode: int | None = None      # index into _VS_MODES once resolved
-_vs_dead = False                 # set when every candidate came back empty
-_vs_probe_misses: list = []      # pitchers we asked about during probing
-
-
 def _num(value) -> float:
     try:
         return float(value)
@@ -193,24 +177,32 @@ def _num(value) -> float:
         return 0.0
 
 
-def _vs_request(pitcher_id: int, opponent_team_id: int, season: int,
-                mode: tuple[str, bool]):
-    stat_type, by_season = mode
-    params = {"stats": stat_type, "group": "pitching",
-              "opposingTeamId": opponent_team_id, "sportId": 1}
-    if by_season:
-        params["season"] = season
-    data = _get(f"/people/{pitcher_id}/stats", **params)
-    splits = []
-    for block in (data or {}).get("stats") or []:
-        splits.extend(block.get("splits") or [])
-    return splits
+def _get_reporting(path: str, **params):
+    """Like _get, but says why it failed. Used only by the vs-opponent probe,
+    where a silent None is the difference between 'never faced them' and
+    'we're calling this endpoint wrong'."""
+    url = f"{BASE}{path}?{urllib.parse.urlencode(params)}"
+    req = urllib.request.Request(url, headers={"User-Agent": "craftypicks-screens/1.0"})
+    try:
+        with urllib.request.urlopen(req, timeout=25) as resp:
+            return json.loads(resp.read().decode("utf-8")), None
+    except urllib.error.HTTPError as e:
+        body = ""
+        try:
+            body = e.read().decode("utf-8", "replace")[:180]
+        except Exception:                                    # noqa: BLE001
+            pass
+        return None, f"HTTP {e.code} {body}"
+    except (urllib.error.URLError, TimeoutError) as e:
+        return None, f"{type(e).__name__}: {e}"
+    except json.JSONDecodeError:
+        return None, "response was not JSON"
 
 
-def _vs_totals(splits: list) -> dict | None:
-    """Sum however many season rows came back into one career line."""
+def _totals(rows: list) -> dict | None:
+    """Sum however many appearance rows into one line."""
     starts = innings = earned = strikeouts = 0.0
-    for sp in splits:
+    for sp in rows:
         s = sp.get("stat") or {}
         starts += _num(s.get("gamesStarted"))
         innings += _innings(s.get("inningsPitched"))
@@ -222,34 +214,97 @@ def _vs_totals(splits: list) -> dict | None:
             "era": round(earned * 9 / innings, 2), "strikeouts": int(strikeouts)}
 
 
-def pitcher_vs_team(pitcher_id: int, opponent_team_id: int,
-                    season: int) -> dict | None:
-    """This starter's career line against tonight's opponent, or None.
+# The vsTeam split family is the direct way to ask this question, but the
+# exact stat-type and parameter combination that answers is something this
+# repo has never been able to verify — statsapi is unreachable from where
+# these files get written. So it is tried first and, when it stays silent,
+# the same figure is rebuilt from the game log, which is a far more ordinary
+# endpoint and filters on an opponent field rather than a query parameter.
+_VS_CANDIDATES = [
+    {"stats": "vsTeamTotal", "group": "pitching"},
+    {"stats": "vsTeam", "group": "pitching"},
+    {"stats": "vsTeamTotal", "group": "pitching", "_season": True},
+    {"stats": "vsTeam", "group": "pitching", "_season": True},
+]
+_vs_direct: dict | None = None   # the candidate that answered, once known
+_vs_direct_dead = False
+_vs_probe_done = False
+
+
+def _try_direct(pitcher_id: int, opponent_team_id: int, season: int,
+                verbose: bool) -> dict | None:
+    global _vs_direct, _vs_direct_dead, _vs_probe_done
+    if _vs_direct_dead:
+        return None
+
+    candidates = [_vs_direct] if _vs_direct else _VS_CANDIDATES
+    for cand in candidates:
+        params = {k: v for k, v in cand.items() if not k.startswith("_")}
+        params.update(opposingTeamId=opponent_team_id, sportId=1)
+        if cand.get("_season"):
+            params["season"] = season
+        data, err = _get_reporting(f"/people/{pitcher_id}/stats", **params)
+        rows = []
+        for block in (data or {}).get("stats") or []:
+            rows.extend(block.get("splits") or [])
+        if verbose and not _vs_probe_done:
+            label = f"stats={cand['stats']}{'+season' if cand.get('_season') else ''}"
+            print(f"      vs-probe {label}: "
+                  + (err if err else f"{len(rows)} split(s)"))
+        totals = _totals(rows)
+        if totals:
+            if not _vs_direct:
+                _vs_direct = cand
+                print(f"   slate: vs-opponent via stats={cand['stats']}")
+            return totals
+
+    if not _vs_direct:
+        _vs_direct_dead = True
+        if verbose:
+            print("   slate: vsTeam split gave nothing; using the game log instead")
+    _vs_probe_done = True
+    return None
+
+
+def _from_game_log(pitcher_id: int, opponent_team_id: int,
+                   seasons: list[int]) -> dict | None:
+    """Rebuild the same line by filtering this pitcher's appearances.
+
+    One request per pitcher-season regardless of opponent, and the season's
+    log is cached, so both halves of a matchup share the fetch.
+    """
+    rows, spanned = [], []
+    for year in seasons:
+        data = _get(f"/people/{pitcher_id}/stats", stats="gameLog",
+                    group="pitching", season=year, sportId=1)
+        blocks = (data or {}).get("stats") or []
+        if blocks:
+            spanned.append(year)
+        for block in blocks:
+            for sp in block.get("splits") or []:
+                opponent = sp.get("opponent") or {}
+                if opponent.get("id") == opponent_team_id:
+                    rows.append(sp)
+    totals = _totals(rows)
+    if totals and spanned:
+        totals["span"] = (f"{min(spanned)}" if min(spanned) == max(spanned)
+                          else f"{min(spanned)}–{max(spanned)}")
+        totals["source"] = "gameLog"
+    return totals
+
+
+def pitcher_vs_team(pitcher_id: int, opponent_team_id: int, season: int,
+                    verbose: bool = True) -> dict | None:
+    """This starter's line against tonight's opponent, or None.
 
     Context for a reader only. It is not an input to the rating and must
     never become one: these samples are small enough that the difference
     between a 2.10 and a 5.40 is usually four innings of luck.
     """
-    global _vs_mode, _vs_dead
-    if _vs_dead or not pitcher_id or not opponent_team_id:
+    if not pitcher_id or not opponent_team_id:
         return None
-
-    if _vs_mode is not None:
-        return _vs_totals(_vs_request(pitcher_id, opponent_team_id, season,
-                                      _VS_MODES[_vs_mode]))
-
-    for i, mode in enumerate(_VS_MODES):
-        splits = _vs_request(pitcher_id, opponent_team_id, season, mode)
-        totals = _vs_totals(splits)
-        if totals:
-            _vs_mode = i
-            print(f"   slate: vs-opponent split resolved via "
-                  f"stats={mode[0]}{' +season' if mode[1] else ''}")
-            return totals
-    # A pitcher can legitimately have never faced this club, so one empty
-    # answer proves nothing. Only give up once we've asked about a few.
-    _vs_probe_misses.append(pitcher_id)
-    if len(_vs_probe_misses) >= 4:
-        _vs_dead = True
-        print("   slate: no vs-opponent split answered; omitting that line")
-    return None
+    direct = _try_direct(pitcher_id, opponent_team_id, season, verbose)
+    if direct:
+        direct.setdefault("source", "vsTeam")
+        return direct
+    return _from_game_log(pitcher_id, opponent_team_id, [season - 1, season])
