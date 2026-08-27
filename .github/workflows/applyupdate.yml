@@ -21,7 +21,7 @@ on:
   workflow_dispatch:
     inputs:
       zip:
-        description: "Zip file at the repo root (blank = use the newest one)"
+        description: "Path to the zip (blank = find the newest one anywhere)"
         required: false
         default: ""
 
@@ -41,10 +41,12 @@ jobs:
 
       - name: Show what we are starting from
         run: |
-          echo "--- repository root"
-          ls -la
-          echo "--- craftypicks/"
-          ls -la craftypicks || echo "(no craftypicks directory yet)"
+          echo "--- everything tracked in this repo"
+          git ls-files
+          echo
+          echo "--- any zip files present"
+          find . -name '*.zip' -not -path './.git/*' -printf '%p  (%s bytes)\n' \
+            || echo "(none — that is why the next step will stop)"
 
       - name: Unpack and tidy
         env:
@@ -59,22 +61,31 @@ jobs:
           root = pathlib.Path(".").resolve()
 
           # ---------------------------------------------------------------- pick
+          # The zip is searched for anywhere in the repository, not just at the
+          # root. Requiring an exact drop location is the same failure mode this
+          # workflow exists to eliminate — if the upload lands in a subfolder,
+          # that should still work.
           name = (os.environ.get("ZIP_INPUT") or "").strip()
           if name:
               chosen = root / name
               if not chosen.is_file():
-                  sys.exit(f"No file named {name!r} at the repository root.")
+                  sys.exit(f"No file at {name!r}. Check the path and re-run.")
           else:
-              zips = sorted(root.glob("*.zip"), key=lambda p: p.stat().st_mtime,
-                            reverse=True)
+              zips = [p for p in root.rglob("*.zip") if ".git" not in p.parts]
+              zips.sort(key=lambda p: p.stat().st_mtime, reverse=True)
               if not zips:
-                  sys.exit("No .zip at the repository root. Upload one and re-run.")
+                  sys.exit(
+                      "No .zip anywhere in this repository.\n"
+                      "Upload the .zip file itself — do not unzip it first — "
+                      "and be sure to click 'Commit changes' so it appears in "
+                      "the repo's file list. Then run this workflow again."
+                  )
               chosen = zips[0]
               if len(zips) > 1:
-                  print("More than one zip present; using the newest:")
+                  print("More than one zip present; using the most recent:")
                   for z in zips:
-                      print(f"   {z.name}")
-          print(f"Using {chosen.name}")
+                      print(f"   {z.relative_to(root)}")
+          print(f"Using {chosen.relative_to(root)}")
 
           # -------------------------------------------------------------- inspect
           with zipfile.ZipFile(chosen) as zf:
@@ -115,8 +126,9 @@ jobs:
                   swept += 1
           print(f"swept {swept} stray file(s) from the root")
 
+          rel = chosen.relative_to(root)
           chosen.unlink()
-          print(f"removed {chosen.name}")
+          print(f"removed {rel}")
           PYTHON
 
       - name: Commit
