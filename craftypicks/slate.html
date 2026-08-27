@@ -239,6 +239,24 @@ section{border-bottom:1px solid var(--line)}
 .gfoot b{color:var(--txt);font-weight:600}
 .gfoot .lean{color:var(--txt)}
 .gfoot .flagged{color:var(--amber)}
+/* ---------- evidence: profit vs the closing line ---------- */
+/* Two columns, deliberately unequal in emphasis. The closing-line side is the
+   one carrying information on a young record, so it gets the accent and the
+   left rule; the profit side is greyed to say "not yet" without hiding it. */
+.ev{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media(max-width:720px){ .ev{grid-template-columns:1fr} }
+.ev-col{background:var(--panel);border:1px solid var(--line);padding:20px 22px 22px}
+.ev-col.lead{border-left:3px solid var(--green)}
+.ev-k{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--dim);margin-bottom:12px}
+.ev-n{font-family:var(--mono);font-size:38px;font-weight:700;letter-spacing:-.02em;
+  line-height:1;color:var(--sub);margin-bottom:12px}
+.ev-n.g{color:var(--green)}
+.ev-col p{font-size:14.5px;line-height:1.6;margin:0;color:var(--muted)}
+.ev-col p b{color:var(--txt);font-weight:600}
+.ev-note{margin-top:14px;padding:14px 18px;border:1px solid var(--line);
+  background:var(--bg-2);font-size:13.5px;line-height:1.6;color:var(--dim)}
+
 .empty-board{border:1px solid var(--line);background:var(--panel);padding:38px 24px;
   text-align:center;color:var(--muted);font-size:14.5px}
 
@@ -559,7 +577,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
     </div>
   </div>
 </header>
-<div class="statbar"><div class="sb-cell"><span class="sb-live"><span class="dot"></span>Board live</span></div><div class="sb-cell"><b>7</b> games rated</div><div class="sb-cell"><b>0</b> flagged</div><div class="sb-cell">Median disagreement <b>2.7 pts</b></div><div class="sb-cell">Updated <b>2026-08-27 11:44</b> ET</div></div>
+<div class="statbar"><div class="sb-cell"><span class="sb-live"><span class="dot"></span>Board live</span></div><div class="sb-cell"><b>7</b> games rated</div><div class="sb-cell"><b>0</b> flagged</div><div class="sb-cell">Median disagreement <b>2.7 pts</b></div><div class="sb-cell">Updated <b>2026-08-27 12:46</b> ET</div></div>
 
 <section style="background:linear-gradient(180deg,#0A0C0F,var(--bg))">
   <div class="wrap" style="padding:64px 28px 40px">
