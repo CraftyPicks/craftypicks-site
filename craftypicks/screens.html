@@ -9,28 +9,41 @@
 <meta property="og:description" content="Free daily plays with receipts on every one.">
 <meta property="og:type" content="website">
 <meta name="theme-color" content="#08090B">
+<link rel="alternate" hreflang="en" href="/screens.html">
+<link rel="alternate" hreflang="es" href="/es/screens.html">
+<link rel="alternate" hreflang="x-default" href="/screens.html">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%2308090B'/><path d='M8 20 L14 12 L18 17 L24 9' stroke='%233BE081' stroke-width='2.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>">
 <style>
 :root{
+  /* Sampled from the reference render rather than eyeballed. The surfaces
+     barely moved; the accent did — a softer, lighter mint. */
   --bg:#08090B;
-  --bg-2:#0C0E11;
-  --panel:#101317;
-  --panel-2:#141821;
-  --line:#1D222A;
+  --bg-2:#0B0D11;
+  --nav:#060A0D;
+  --panel:#0E1014;
+  --panel-2:#13161C;
+  --line:#1C2029;
   --line-2:#272D37;
-  --txt:#E9EDF2;
+  --txt:#F5F6F8;
   --muted:#8B939E;
   --dim:#5D6570;
   --sub:#AEB7C3;      /* readable small print — the card sub-lines */
-  --green:#3BE081;
+  --green:#5BE39C;
+  --green-deep:#3D8D68;   /* the dark end of the probability-bar gradient */
   --green-dim:#1F7F4B;
   --red:#FF5C5C;
   --amber:#F5C451;
+
+  /* Three roles, kept strictly separate: mono labels the data, the serif
+     carries the argument, the grotesque shouts the headline. Matched by eye
+     from a raster reference — no font data was embedded to read — so each
+     stack names a fallback that is close enough to survive being wrong. */
   --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
-  --sans:"Inter","Helvetica Neue",Helvetica,Arial,sans-serif;
+  --serif:"Newsreader","Source Serif 4",Georgia,"Times New Roman",serif;
+  --sans:"Archivo","Inter Tight","Inter","Helvetica Neue",Helvetica,Arial,sans-serif;
   --maxw:1220px;
 }
 *{box-sizing:border-box;margin:0;padding:0}
@@ -49,12 +62,15 @@ img{max-width:100%;display:block}
   color:var(--green);font-weight:500;
 }
 .eyebrow.muted{color:var(--dim)}
-h1,h2,h3,h4{font-weight:800;letter-spacing:-.03em;line-height:1.05}
-h1{font-size:clamp(38px,5.4vw,68px)}
-h2{font-size:clamp(28px,3.4vw,42px)}
-h3{font-size:20px;letter-spacing:-.02em}
-p{color:var(--muted);font-size:16px}
-.lead{font-size:18px;max-width:56ch}
+h1,h2,h3,h4{font-family:var(--sans);font-weight:800;letter-spacing:-.038em;line-height:1.0}
+h1{font-size:clamp(40px,5.8vw,72px)}
+h2{font-size:clamp(30px,3.6vw,44px)}
+h3{font-family:var(--sans);font-size:20px;font-weight:700;letter-spacing:-.022em;line-height:1.14}
+/* Body copy is the serif. It is the single change that stops this reading as
+   another dark dashboard, so it applies to prose everywhere — not just heroes. */
+p{font-family:var(--serif);color:var(--muted);font-size:16.5px;line-height:1.62}
+.lead{font-size:19px;max-width:54ch;line-height:1.6}
+.tile p,.disclaimer{font-family:var(--serif)}
 .mono{font-family:var(--mono)}
 .up{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim)}
 .g{color:var(--green)}
@@ -62,15 +78,18 @@ p{color:var(--muted);font-size:16px}
 
 /* ---------- nav ---------- */
 header.nav{
-  position:sticky;top:0;z-index:50;background:rgba(8,9,11,.82);
+  position:sticky;top:0;z-index:50;background:rgba(6,10,13,.86);
   backdrop-filter:blur(14px);border-bottom:1px solid var(--line);
 }
 .nav-in{max-width:var(--maxw);margin:0 auto;padding:0 28px;height:68px;
   display:flex;align-items:center;gap:38px}
-.logo{font-weight:800;font-size:16px;letter-spacing:.24em;text-transform:uppercase}
-.logo span{color:var(--green)}
+/* "Craftypicks." — mixed case with a full stop, not letterspaced caps. The
+   period is the whole logo; it reads as a statement rather than a wordmark. */
+.logo{font-family:var(--sans);font-weight:800;font-size:19px;letter-spacing:-.03em;
+  text-transform:none;color:var(--txt)}
+.logo em{font-style:normal;color:var(--green)}
 .nav-links{display:flex;gap:28px;margin-right:auto}
-.nav-links a{font-size:14px;color:var(--muted);transition:color .15s}
+.nav-links a{font-family:var(--mono);font-size:11.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);transition:color .15s}
 .nav-links a:hover,.nav-links a.on{color:var(--txt)}
 .nav-cta{display:flex;align-items:center;gap:18px}
 .btn{
@@ -79,9 +98,9 @@ header.nav{
   font-weight:500;padding:13px 22px;border:1px solid var(--green);color:var(--green);
   background:transparent;cursor:pointer;transition:.15s;white-space:nowrap;
 }
-.btn:hover{background:rgba(59,224,129,.08)}
+.btn:hover{background:rgba(91,227,156,.09)}
 .btn.solid{background:var(--green);color:#04150C;border-color:var(--green);font-weight:700}
-.btn.solid:hover{background:#59EA95}
+.btn.solid:hover{background:#74E9AC}
 .btn.ghost{border-color:var(--line-2);color:var(--txt)}
 .btn.ghost:hover{border-color:var(--muted);background:rgba(255,255,255,.03)}
 .btn.sm{padding:10px 16px;font-size:11px}
@@ -103,7 +122,7 @@ section{border-bottom:1px solid var(--line)}
 .hero{
   position:relative;overflow:hidden;
   background:
-    radial-gradient(900px 420px at 76% 22%,rgba(59,224,129,.09),transparent 62%),
+    radial-gradient(900px 420px at 76% 22%,rgba(91,227,156,.08),transparent 62%),
     linear-gradient(180deg,#0A0C0F 0%,var(--bg) 100%);
 }
 .hero .wrap{padding-top:104px;padding-bottom:104px}
@@ -129,7 +148,7 @@ section{border-bottom:1px solid var(--line)}
   padding:14px 20px;border-bottom:1px solid var(--line);
 }
 .dot{width:6px;height:6px;border-radius:50%;background:var(--green);display:inline-block;
-  box-shadow:0 0 0 3px rgba(59,224,129,.16);animation:pulse 2.4s infinite}
+  box-shadow:0 0 0 3px rgba(91,227,156,.16);animation:pulse 2.4s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
 .stamp{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim)}
 .stamp.on{color:var(--green)}
@@ -191,7 +210,11 @@ section{border-bottom:1px solid var(--line)}
 .scroll-x{overflow-x:auto}
 
 /* ---------- rated board ---------- */
-.board{display:grid;grid-template-columns:repeat(auto-fill,minmax(328px,1fr));gap:16px}
+/* align-items:start so a card sizes to its own content. Stretching them
+   to match the tallest sibling leaves dead space under the short ones,
+   and a flagged card is always taller than a clean one. */
+.board{display:grid;grid-template-columns:repeat(auto-fill,minmax(358px,1fr));
+  gap:18px;align-items:start}
 .gcard{background:var(--panel);border:1px solid var(--line);transition:.18s}
 .gcard:hover{border-color:var(--line-2);background:var(--panel-2)}
 .gcard.flag{border-color:rgba(245,196,81,.42)}
@@ -480,23 +503,117 @@ footer{background:var(--bg-2);padding:56px 0 40px}
   background: var(--green); border-radius: 2px;
 }
 
+
+/* ====================================================== status strip =====
+   A row of live facts directly under the nav. It exists to answer "is this
+   thing actually running?" before a reader has to trust any of the numbers
+   underneath it — which is the same argument the rest of the site makes. */
+.statbar{
+  display:grid;grid-auto-flow:column;grid-auto-columns:1fr;
+  border-bottom:1px solid var(--line);background:var(--bg-2);
+}
+.sb-cell{
+  padding:13px 22px;border-right:1px solid var(--line);
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--dim);white-space:nowrap;
+  overflow:hidden;text-overflow:ellipsis;
+}
+.sb-cell:last-child{border-right:0}
+.statbar b{color:var(--txt);font-weight:600}
+.sb-live{color:var(--green);display:flex;align-items:center;gap:9px}
+@media(max-width:900px){
+  .statbar{grid-auto-flow:row;grid-auto-columns:auto}
+  .sb-cell{border-right:0;border-bottom:1px solid var(--line)}
+  .sb-cell:last-child{border-bottom:0}
+}
+
+/* ======================================================== game card =====
+   Rebuilt around one number. The old card gave both teams a probability,
+   which made a reader do the subtraction; this one names a single side and
+   shows the market's disagreement as a distance along the bar. */
+.gcard2{background:var(--panel);border:1px solid var(--line);padding:22px 24px 20px;
+  transition:border-color .18s ease,background .18s ease}
+.gcard2:hover{border-color:var(--line-2);background:var(--panel-2)}
+.gcard2.flag{border-color:rgba(245,196,81,.4)}
+.g2-top{display:flex;align-items:baseline;justify-content:space-between;gap:14px;margin-bottom:20px}
+.g2-match{font-family:var(--sans);font-size:23px;font-weight:800;letter-spacing:-.03em;
+  display:flex;align-items:center;gap:11px}
+.g2-at{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;
+  border-radius:50%;background:rgba(91,227,156,.13);color:var(--green);
+  font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:0}
+.g2-time{font-family:var(--mono);font-size:11px;letter-spacing:.11em;color:var(--dim);white-space:nowrap}
+.g2-arms{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-bottom:22px}
+.g2-arm{padding-left:12px;border-left:2px solid var(--green-deep)}
+.g2-nm{font-family:var(--mono);font-size:12px;color:var(--txt);margin-bottom:5px}
+.g2-ln{font-family:var(--mono);font-size:11px;color:var(--dim);line-height:1.55}
+.g2-probrow{display:flex;align-items:baseline;justify-content:space-between;gap:14px;margin-bottom:9px}
+.g2-plabel{font-family:var(--mono);font-size:10.5px;letter-spacing:.15em;text-transform:uppercase;color:var(--sub)}
+.g2-pct{font-family:var(--sans);font-size:31px;font-weight:800;letter-spacing:-.035em;color:var(--green)}
+.g2-bar{position:relative;height:11px;background:var(--line);overflow:visible}
+.g2-fill{position:absolute;left:0;top:0;bottom:0;
+  background:linear-gradient(90deg,var(--green-deep),var(--green));transform-origin:left center}
+.g2-tick{position:absolute;top:-3px;bottom:-3px;width:2px;background:#F5F6F8;opacity:.9}
+.g2-foot{display:flex;align-items:baseline;justify-content:space-between;gap:12px;
+  margin-top:16px;padding-top:14px;border-top:1px solid var(--line);
+  font-family:var(--mono);font-size:11px;letter-spacing:.04em;color:var(--dim)}
+.g2-foot b{color:var(--txt);font-weight:600}
+/* Namespaced: bare .pos/.neg already exist as 180px chart columns
+   elsewhere in this stylesheet, and a plain span picking those up
+   silently inflated every card by 150px. */
+.g2-up{color:var(--green)}
+.g2-down{color:var(--sub)}
+.g2-vs{font-family:var(--mono);font-size:11px;color:var(--dim);margin-top:11px;letter-spacing:.03em}
+.g2-vs.thin{color:#4A515B}
+.g2-flagnote{margin-top:15px;padding:13px 15px;border:1px solid rgba(245,196,81,.32);
+  background:rgba(245,196,81,.07);color:var(--amber);
+  font-family:var(--mono);font-size:11px;line-height:1.6;letter-spacing:.02em}
+@media(max-width:520px){ .g2-arms{grid-template-columns:1fr;gap:14px} }
+
+
+/* The nav outgrew the viewport once the labels went uppercase mono and a
+   sixth item arrived: on a phone the last three links were being clipped by
+   the body's overflow-x:hidden, which made them unreachable rather than just
+   ugly. Let the strip scroll itself instead. */
+.nav-links a{white-space:nowrap}
+@media(max-width:860px){
+  /* Logo and CTA keep the first row; the links get a full-width second row
+     they can scroll inside. Squeezing them onto the first row leaves about
+     70px of usable width, which is worse than clipping them. */
+  .nav-in{flex-wrap:wrap;height:auto;padding-top:12px;padding-bottom:0;gap:14px}
+  .logo{margin-right:auto}
+  .nav-links{order:3;flex-basis:100%;margin-right:0;gap:22px;
+    overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;
+    padding:4px 0 12px}
+  .nav-links::-webkit-scrollbar{display:none}
+  .nav-cta .link-quiet{display:none}
+}
+
+/* ---------- language switch ---------- */
+.lang-switch{
+  font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--muted);border:1px solid var(--line-2);padding:8px 12px;
+  transition:.15s;white-space:nowrap;
+}
+.lang-switch:hover{color:var(--txt);border-color:var(--muted);background:rgba(255,255,255,.03)}
+@media(max-width:860px){ .lang-switch{padding:7px 10px;font-size:10.5px} }
+
 </style>
 </head>
 <body>
 <header class="nav">
   <div class="nav-in">
-    <a href="index.html" class="logo">Crafty<span>picks</span></a>
-    <nav class="nav-links"><a href="plays.html" class="">Today's Plays</a><a href="slate.html" class="">MLB Board</a><a href="pitchers.html" class="">Pitchers Prop</a><a href="record.html" class="">Track Record</a><a href="about.html" class="">How It Works</a><a href="screens.html" class="on">The Screens</a></nav>
+    <a href="index.html" class="logo">Craftypicks<em>.</em></a>
+    <nav class="nav-links"><a href="plays.html" class="">Today's Plays</a><a href="slate.html" class="">MLB Board</a><a href="pitchers.html" class="">Pitchers Prop</a><a href="record.html" class="">Track Record</a><a href="about.html" class="">How It Works</a><a href="screens.html" class="">The Screens</a></nav>
     <div class="nav-cta">
       <a href="about.html" class="link-quiet">Why it's free</a>
+      <a href="es/screens.html" class="lang-switch" hreflang="es"
+         lang="es">Español</a>
       <a href="plays.html" class="btn solid sm">Today's plays</a>
     </div>
   </div>
 </header>
-<div class="mock-banner">
-  <b>Sample data.</b> These plays were generated for testing — no real odds feed is connected yet.
-  Add your ODDS_API_KEY and run the daily job to replace them.
-</div>
+<div class="statbar"><div class="sb-cell"><span class="sb-live"><span class="dot"></span>Board live</span></div><div class="sb-cell"><b>7</b> games rated</div><div class="sb-cell"><b>0</b> flagged</div><div class="sb-cell">Median disagreement <b>2.7 pts</b></div><div class="sb-cell">Updated <b>2026-08-27 11:14</b> ET</div></div>
+
 <section style="background:linear-gradient(180deg,#0A0C0F,var(--bg))">
   <div class="wrap" style="padding:56px 28px 46px">
     <div class="eyebrow">The second system</div>
@@ -721,7 +838,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
   <div class="wrap">
     <div class="foot-grid">
       <div>
-        <a href="index.html" class="logo" style="display:inline-block;margin-bottom:14px">Crafty<span>picks</span></a>
+        <a href="index.html" class="logo" style="display:inline-block;margin-bottom:14px">Craftypicks<em>.</em></a>
         <p style="font-size:14px;max-width:34ch">Free plays, posted daily, graded in public. No packages, no premium tier, no DMs.</p>
       </div>
       <div>
@@ -732,47 +849,20 @@ footer{background:var(--bg-2);padding:56px 0 40px}
       </div>
       <div>
         <h4>Transparency</h4>
-        <a href="record.html">Track record</a>
+        <a href="record.html">Track Record</a>
         <a href="about.html#method">Methodology</a>
-        <a href="screens.html">The strikeout screens</a>
-        <a href="about.html#units">Units &amp; bankroll</a>
+        <a href="screens.html">The Screens</a>
       </div>
       <div>
         <h4>About</h4>
-        <a href="about.html">How it works</a>
+        <a href="about.html">How It Works</a>
         <a href="about.html#faq">FAQ</a>
         <a href="about.html#responsible">Play responsibly</a>
       </div>
     </div>
-    <div class="note" style="margin-bottom:26px">
-      <p class="disclaimer"><b style="color:var(--txt)">21+ only. For entertainment purposes.</b> Craftypicks is not a sportsbook and does not accept wagers, hold funds, or facilitate betting of any kind. Nothing here is financial advice or a guarantee of profit &mdash; every play posted can lose, and most winning stretches are followed by losing ones. Never wager money you cannot afford to lose. If gambling stops being fun, call <b style="color:var(--txt)">1-800-GAMBLER</b> or text 800GAM to 800177.</p>
-    </div>
-    <div class="foot-bot">
+    <div class="foot-legal">
+      <p class="disclaimer"><b>21+ only. For entertainment purposes.</b> Craftypicks is not a sportsbook and does not accept wagers, hold funds, or facilitate betting of any kind. Nothing here is financial advice or a guarantee of profit — every play posted can lose, and most winning stretches are followed by losing ones. Never wager money you cannot afford to lose. If gambling stops being fun, call <b>1-800-GAMBLER</b> or text 800GAM to 800177.</p>
       <p>&copy; 2026 Craftypicks. Plays are posted before the number moves and graded exactly as posted.</p>
-      <span class="mono" style="letter-spacing:.14em;text-transform:uppercase">Board updated 2026-08-26 01:10</span>
     </div>
   </div>
 </footer>
-<script>
-document.querySelectorAll('.chip[data-filter]').forEach(function(chip){
-  if(chip.disabled) return;
-  chip.addEventListener('click',function(){
-    document.querySelectorAll('.chip[data-filter]').forEach(function(c){c.classList.remove('on')});
-    chip.classList.add('on');
-    var f=chip.dataset.filter;
-    document.querySelectorAll('#board .play').forEach(function(card){
-      card.style.display=(f==='all'||card.dataset.league===f)?'':'none';
-    });
-  });
-});
-document.querySelectorAll('form[data-signup]').forEach(function(form){
-  form.addEventListener('submit',function(e){
-    e.preventDefault();
-    var msg=form.parentElement.querySelector('.form-msg');
-    form.reset();
-    if(msg) msg.textContent='Email signup isn\u2019t connected yet \u2014 check back shortly.';
-  });
-});
-</script>
-</body>
-</html>
