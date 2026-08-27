@@ -374,6 +374,7 @@ def build() -> None:
             "{{YESTERDAY_NET_CLASS}}": R.cls_for(net_units(y_plays)),
             "{{KPI_HOME}}": R.kpi_strip(stats, "home"),
             "{{KPI_RECORD}}": R.kpi_strip(stats, "record"),
+            "{{EVIDENCE}}": R.evidence_block(stats),
             "{{RECENT_ROWS}}": R.result_rows(recent[:6], "compact"),
             "{{RECENT_NET}}": R.u(net_units(recent[:6])),
             "{{RECENT_NET_CLASS}}": R.cls_for(net_units(recent[:6])),

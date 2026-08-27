@@ -256,6 +256,77 @@ T = {
     "kpi_clv_sub":    {"en": "On {n} plays with a late line",
                        "es": "En {n} jugadas con línea tardía"},
 
+    # ---- the evidence block: profit vs the closing line
+    "kpi_clv_sigma": {"en": "{v}\u03c3 from chance on {n} plays",
+                      "es": "{v}\u03c3 del azar en {n} jugadas"},
+    "kpi_roi_range": {"en": "consistent with {lo} to {hi}",
+                      "es": "compatible con {lo} a {hi}"},
+    "ev_by_profit":  {"en": "Graded on profit", "es": "Calificadas por ganancia"},
+    "ev_by_close":   {"en": "Measured against the close",
+                      "es": "Medidas contra el cierre"},
+    "ev_profit_none": {
+        "en": "Nothing is graded yet. When it is, this column will still be the "
+              "slower of the two — a win rate needs thousands of plays before it "
+              "separates a real edge from a warm streak.",
+        "es": "Aún no hay nada calificado. Cuando lo haya, esta columna seguirá "
+              "siendo la más lenta de las dos.",
+    },
+    "ev_profit_thin": {
+        "en": "{n} graded. Far too few to compute anything honest about — a "
+              "record this short is consistent with almost any true edge, "
+              "including none.",
+        "es": "{n} calificadas. Muy pocas para calcular nada honesto.",
+    },
+    "ev_profit_losing": {
+        "en": "{n} graded, and currently losing. There is no sample size that "
+              "turns a negative edge positive, so no target is shown — the "
+              "number has to move first.",
+        "es": "{n} calificadas, y perdiendo. Ningún tamaño de muestra convierte "
+              "una ventaja negativa en positiva.",
+    },
+    "ev_profit_needs": {
+        "en": "{n} graded. At this rate of return it would take roughly "
+              "<b>{more} more</b> before the profit alone is 99% unlikely to be "
+              "luck. Until then this column is a story, not evidence.",
+        "es": "{n} calificadas. A este ritmo harían falta unas <b>{more} más</b> "
+              "para que la ganancia por sí sola tenga 99% de no ser suerte.",
+    },
+    "ev_profit_proven": {
+        "en": "{n} graded — enough that the return itself is now unlikely to be "
+              "luck at 99% confidence. That took a long time, which is the point.",
+        "es": "{n} calificadas — suficientes para que el retorno ya sea poco "
+              "probable por suerte con 99% de confianza.",
+    },
+    "ev_clv_none": {
+        "en": "No play has a recorded closing line yet. This is the column that "
+              "will mean something first.",
+        "es": "Ninguna jugada tiene línea de cierre registrada todavía.",
+    },
+    "ev_clv_early": {
+        "en": "{n} plays measured against the number the market settled on. Not "
+              "yet far enough from a coin flip to claim anything — but this is "
+              "the figure that gets there in dozens of plays rather than "
+              "thousands.",
+        "es": "{n} jugadas medidas contra el número final del mercado. Todavía no "
+              "lo bastante lejos de un volado para afirmar nada.",
+    },
+    "ev_clv_strong": {
+        "en": "{n} plays measured against the number the market settled on, and "
+              "the rate we beat it sits <b>{v} standard deviations</b> from "
+              "chance. This is the evidence that arrives first, and the one "
+              "worth judging us on.",
+        "es": "{n} jugadas medidas contra el número final del mercado, y la tasa "
+              "a la que le ganamos está a <b>{v} desviaciones estándar</b> del azar.",
+    },
+    "ev_approx": {
+        "en": "Under 30 graded plays the interval above is a normal "
+              "approximation applied to a distinctly non-normal thing — a single "
+              "play either loses its stake or wins it times the price. Treat the "
+              "range as indicative until the sample grows.",
+        "es": "Con menos de 30 jugadas calificadas el intervalo de arriba es una "
+              "aproximación normal aplicada a algo que no lo es.",
+    },
+
     # ---- tables, continued
     "no_graded_short": {"en": "No graded plays yet.",
                         "es": "Aún no hay jugadas calificadas."},

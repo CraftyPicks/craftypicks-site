@@ -277,22 +277,81 @@ def kpi_strip(s: dict, variant: str = "home") -> str:
              f"{max(s.get('total_months',0),1)}</span>", "", _("kpi_losing_sub")),
         ]
     else:
+        # Beat-the-close leads. It converges in tens of plays where win/loss
+        # needs thousands, so on any record this site will realistically have
+        # it is the only figure carrying real information — putting ROI first
+        # would be leading with the number that means least.
+        ci = s.get("roi_interval") or {}
+        clv_n = s.get("clv_n", 0)
+        sigma = s.get("clv_sigma")
         cards = [
+            (_("kpi_clv"),
+             f"{s.get('clv_beat_pct', 0):.0f}%" if clv_n else "—",
+             cls_for(s.get("clv_beat_pct", 0) - 50) if clv_n else "",
+             _("kpi_clv_sigma", v=f"{sigma:.1f}", n=clv_n)
+             if clv_n and sigma is not None else _("kpi_clv_sub", n=clv_n)),
             (_("kpi_units"), u(units), cls_for(units), _("kpi_units_sub")),
             (_("kpi_roi"), pct(roi), cls_for(roi),
-             _("kpi_roi_rec", v=f"{s.get('risked',0):.0f}")),
+             _("kpi_roi_range", lo=pct(ci["lo"]), hi=pct(ci["hi"]))
+             if ci.get("lo") is not None
+             else _("kpi_roi_rec", v=f"{s.get('risked',0):.0f}")),
             (_("kpi_record"), esc(s.get("record", "0–0–0")), "",
              _("kpi_record_sub", v=f"{s.get('win_pct',0):.1f}")),
-            (_("kpi_clv"),
-             f"{s.get('clv_beat_pct', 0):.0f}%" if s.get("clv_n") else "—",
-             cls_for(s.get("clv_beat_pct", 0) - 50) if s.get("clv_n") else "",
-             _("kpi_clv_sub", n=s.get("clv_n", 0))),
         ]
     return "".join(
         f'<div class="kpi"><div class="k">{k}</div>'
         f'<div class="v {c}">{v}</div><div class="s">{esc(sub)}</div></div>'
         for k, v, c, sub in cards
     )
+
+
+def evidence_block(s: dict) -> str:
+    """Why this page leads with the closing line instead of the profit.
+
+    The argument is arithmetic and the arithmetic moves with the data, so it
+    is rendered from the numbers rather than written into the page copy. A
+    static sentence claiming the record proves something would become a lie
+    the first time the sample changed.
+    """
+    ci = s.get("roi_interval") or {}
+    clv_n, sigma = s.get("clv_n", 0), s.get("clv_sigma")
+    needed, n = ci.get("needed"), ci.get("n", 0)
+
+    # Left: what the profit column can and cannot support yet.
+    if not n:
+        profit_line = _("ev_profit_none")
+    elif ci.get("lo") is None:
+        profit_line = _("ev_profit_thin", n=n)
+    elif needed is None:
+        profit_line = _("ev_profit_losing", n=n)
+    elif needed > 0:
+        profit_line = _("ev_profit_needs", n=n, more=f"{needed:,}")
+    else:
+        profit_line = _("ev_profit_proven", n=n)
+
+    # Right: what the closing line already supports.
+    if not clv_n:
+        clv_line = _("ev_clv_none")
+    elif sigma is None or sigma < 2:
+        clv_line = _("ev_clv_early", n=clv_n)
+    else:
+        clv_line = _("ev_clv_strong", n=clv_n, v=f"{sigma:.1f}")
+
+    approx = (f'<div class="ev-note">{_("ev_approx")}</div>'
+              if ci.get("approximate") and n else "")
+    return f"""
+      <div class="ev">
+        <div class="ev-col">
+          <div class="ev-k">{_("ev_by_profit")}</div>
+          <div class="ev-n">{esc(f"{n:,}") if n else "&mdash;"}</div>
+          <p>{profit_line}</p>
+        </div>
+        <div class="ev-col lead">
+          <div class="ev-k">{_("ev_by_close")}</div>
+          <div class="ev-n g">{esc(f"{clv_n:,}") if clv_n else "&mdash;"}</div>
+          <p>{clv_line}</p>
+        </div>
+      </div>{approx}"""
 
 
 # --------------------------------------------------------------------- chart
