@@ -100,8 +100,6 @@ HEAD = """<!DOCTYPE html>
     <nav class="nav-links">{links}</nav>
     <div class="nav-cta">
       <a href="{about_href}" class="link-quiet">{why_free}</a>
-      <a href="{lang_href}" class="lang-switch" hreflang="{other_lang}"
-         lang="{other_lang}">{lang_label}</a>
       <a href="{plays_href}" class="btn solid sm">{cta}</a>
     </div>
   </div>
@@ -403,18 +401,24 @@ def build() -> None:
     updated = plays_doc.get("generated_at", "")[:16].replace("T", " ") or "—"
     year = datetime.utcnow().year
 
-    # English at the root, Spanish under /es/. Two full passes rather than one
-    # pass with swapped strings: the renderers hold a module-level language, so
-    # a page must be finished in one language before the next begins.
+    # Any language tree we are no longer publishing is removed here rather
+    # than left on disk. The built pages are committed, so a directory that
+    # simply stops being written stays live forever otherwise.
+    for stale in (l for l in i18n.ALL_LANGS if l not in i18n.LANGS and l != "en"):
+        old_tree = ROOT / stale
+        if old_tree.is_dir():
+            for f in sorted(old_tree.glob("*.html")):
+                f.unlink()
+            try:
+                old_tree.rmdir()
+                print(f"removed stale {stale}/ tree")
+            except OSError:
+                print(f"!! {stale}/ still has files in it; left in place")
+
     for lang in i18n.LANGS:
         R.set_lang(lang)
         out_dir = ROOT if lang == "en" else ROOT / lang
         out_dir.mkdir(parents=True, exist_ok=True)
-        other = "es" if lang == "en" else "en"
-        # Relative hop between the two trees, so the switch works on any host
-        # and on the .pages.dev domain as well as the custom one.
-        to_other = (lambda f: f"{other}/{f}") if lang == "en" else (lambda f: f"../{f}")
-        prefix = "" if lang == "en" else "../"
 
         tokens = build_tokens(lang, plays_doc, stats, history,
                               slate_doc, pitch_doc)
@@ -427,12 +431,7 @@ def build() -> None:
                 f'{i18n.t(label, lang)}</a>'
                 for href, label, k in NAV_ITEMS
             )
-            canon = fname if fname != "index.html" else ""
-            hreflang = (
-                f'<link rel="alternate" hreflang="en" href="/{canon}">\n'
-                f'<link rel="alternate" hreflang="es" href="/es/{canon}">\n'
-                f'<link rel="alternate" hreflang="x-default" href="/{canon}">'
-            )
+            hreflang = ""
             body_file = SRC / (fname.replace(".html", "") + (".body.html" if lang == "en"
                                                             else f".body.{lang}.html"))
             if not body_file.exists():          # untranslated page falls back
@@ -448,8 +447,6 @@ def build() -> None:
                 hreflang=hreflang,
                 about_href="about.html", plays_href="plays.html",
                 why_free=i18n.t("nav_why", lang), cta=i18n.t("cta_plays", lang),
-                lang_href=to_other(fname), other_lang=other,
-                lang_label=i18n.t("lang_other", lang),
                 statbar=_statbar(slate_doc, plays_doc, lang),
                 banner=mock_banner(lang) if plays_doc.get("mock") else "",
             )

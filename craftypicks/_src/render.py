@@ -443,10 +443,15 @@ def _record_line(rec: dict | None, at_home: bool) -> str:
         return ""
     overall = f"{rec['w']}&ndash;{rec['l']}"
     if at_home:
-        split, label = f"{rec.get('hw',0)}&ndash;{rec.get('hl',0)}", "at home"
+        w, l, label = rec.get("hw", 0), rec.get("hl", 0), _("at_home")
     else:
-        split, label = f"{rec.get('aw',0)}&ndash;{rec.get('al',0)}", "on the road"
-    return f'<div class="grec">{overall} &middot; {split} {label}</div>'
+        w, l, label = rec.get("aw", 0), rec.get("al", 0), _("on_the_road")
+    # An older stats file carries the overall record without the venue split.
+    # Printing "0-0 on the road" beside a real record looks like the number is
+    # broken; showing the overall record alone just looks shorter.
+    if w + l == 0:
+        return f'<div class="grec">{overall}</div>'
+    return f'<div class="grec">{overall} &middot; {w}&ndash;{l} {label}</div>'
 
 
 # Below this many career starts against a club, the split is noise wearing a
@@ -477,7 +482,7 @@ def _side(team, starter, era, prob, leading, rec=None, at_home=False,
           vs=None, opponent=None) -> str:
     sp = esc(starter or "TBA")
     if era is not None:
-        sp += f" &middot; {era:.2f} ERA"
+        sp += f' &middot; {era:.2f} {_("era")}'
     # One decimal, not zero: at 49.8 vs 50.2 a rounded pair both read "50%"
     # while the footer reports a lean, which looks like a contradiction.
     return f"""
@@ -503,94 +508,89 @@ def _short_name(name: str | None) -> str:
     return f"{parts[0][0]}. {' '.join(parts[1:])}"
 
 
-def _arm(name, era, record, innings, hand="") -> str:
-    """One starter column. Absent figures are simply left out rather than
-    printed as a dash, so a thin row reads as short instead of broken."""
-    bits = []
-    if record:
-        bits.append(f"{record.get('w', 0)}&ndash;{record.get('l', 0)}")
-    if era is not None:
-        bits.append(f'{era:.2f} {_("era")}')
-    if innings:
-        bits.append(f'{innings:.0f} {_("ip")}')
-    return f"""
-        <div class="g2-arm">
-          <div class="g2-nm">{esc(_short_name(name))}{f' {esc(hand)}' if hand else ''}</div>
-          <div class="g2-ln">{' &middot; '.join(bits) or '&mdash;'}</div>
-        </div>"""
-
-
 def slate_rows(rows: list[dict]) -> str:
+    """One card per game: both clubs, both numbers, the market's tick.
+
+    Showing only our side of the number and abbreviating the clubs made the
+    card shorter but cost the two things a reader actually compares — who is
+    playing, and how far apart the two opinions are. Both sides are named in
+    full and both percentages are printed; the bar carries the market's own
+    number as a tick so the gap is visible without arithmetic.
+    """
     if not rows:
         return f'<div class="empty-board">{_("empty_board")}</div>'
     out = []
     for r in rows:
         ph = r.get("home_win_prob") or 0.0
-        mkt = r.get("market_home_prob")
+        pa = 1.0 - ph
+        mkt_home = r.get("market_home_prob")
         gap = r.get("disagreement")
         suspect = bool(r.get("suspect"))
+        home, away = r.get("home"), r.get("away")
 
-        # One number, named. The old card printed both sides and left the
-        # reader to work out which one the market disagreed about.
-        tick = ("" if mkt is None else
-                f'<div class="g2-tick" style="left:{max(0.0, min(100.0, mkt * 100)):.1f}%" '
-                f'title="Where the market has it"></div>')
+        # The bar reads left-to-right as the away club's chance, so the
+        # market's tick has to be expressed on that same side.
+        tick = ("" if mkt_home is None else
+                f'<div class="tick" style="left:{max(0.0, min(100.0, (1 - mkt_home) * 100)):.1f}%" '
+                f'title="{_("market_tick")}"></div>')
+
+        if mkt_home is None:
+            foot_left = f'<span>{_("market_na")}</span>'
+        else:
+            # Name the club the market makes the favourite, rather than a bare
+            # percentage the reader has to attach to a side themselves.
+            fav, fav_pct = ((home, mkt_home) if mkt_home >= 0.5
+                            else (away, 1 - mkt_home))
+            foot_left = (f'<span>' + _("market_fav", pct=f"<b>{fav_pct * 100:.1f}%</b>",
+                                        team=esc(_nickname(fav))) + '</span>')
 
         if gap is None:
-            foot_right = f'<span>{_("market_na")}</span>'
+            foot_right = ""
         elif suspect:
-            foot_right = f'<span style="color:var(--amber)">{_("off_market", v=f"{abs(gap):.1f}")}</span>'
+            foot_right = (f'<span class="flagged">'
+                          f'{_("off_market", v=f"{abs(gap):.1f}")}</span>')
+        elif abs(gap) < 1.0:
+            # Under a point the two numbers are the same number wearing
+            # different rounding. Calling that a lean would be noise.
+            foot_right = f'<span>{_("in_line")}</span>'
         else:
-            cls = "up" if gap > 0 else "down"
-            foot_right = f'<span class="g2-{cls}">{_("vs_market", v=f"{gap:+.1f}")}</span>'
+            side = home if gap > 0 else away
+            foot_right = ('<span class="lean">'
+                          + _("lean_on", v=f"+{abs(gap):.1f}", team=esc(_nickname(side)))
+                          + '</span>')
 
-        vs = r.get("home_vs_opp")
-        if vs:
-            thin = (vs.get("starts") or 0) < THIN_VS_STARTS
-            body = (f"{esc(str(r.get('home_starter') or '').split()[-1] or 'Starter')} "
-                    f'vs {esc(_abbr(r.get("away")))}: '
-                    + _("starts", n=vs.get("starts", 0), s=_pl(vs.get("starts", 0))))
-            body += (f' &middot; {_("thin_sample")}' if thin
-                     else f' &middot; {vs.get("era", 0):.2f} {_("era")}')
-            vs_html = f'<div class="g2-vs{" thin" if thin else ""}">{body}</div>'
-        else:
-            vs_html = ""
+        when = esc(game_time(r.get("commence_time")) or "")
+        # The left of the header already carries the start time. Repeating it
+        # on the right for an ungraded game reads as a rendering fault, so the
+        # right side says what state the game is in instead.
+        final = (f'<span class="fin">{_("final", v=esc(r["final"]))}</span>'
+                 if r.get("final") else
+                 f'<span style="color:var(--dim)">{_("scheduled")}</span>')
 
-        flagnote = ""
-        if suspect and gap is not None:
-            flagnote = (f'<div class="g2-flagnote">'
-                        f'{_("flagnote", v=f"{abs(gap):.1f}")}</div>')
-
-        final = (f'<span style="color:var(--sub)">{_("final", v=esc(r["final"]))}</span>'
-                 if r.get("final") else esc(game_time(r.get("commence_time")) or _("tbd")))
-
+        accent = team_color(home) or "var(--line-2)"
         out.append(f"""
-        <div class="gcard2{' flag' if suspect else ''}">
-          <div class="g2-top">
-            <div class="g2-match">{esc(_abbr(r.get('away')))}
-              <span class="g2-at">@</span>{esc(_abbr(r.get('home')))}</div>
-            <div class="g2-time">{final}</div>
+        <div class="gcard{' flag' if suspect else ''}" style="--accent:{accent}">
+          <div class="gcard-top">
+            <span>{when}</span>
+            {final}
           </div>
-          <div class="g2-arms">
-            {_arm(r.get('away_starter'), r.get('away_starter_era'), r.get('away_record'),
-                  r.get('away_sp_innings') or 0, r.get('away_hand') or '')}
-            {_arm(r.get('home_starter'), r.get('home_starter_era'), r.get('home_record'),
-                  r.get('home_sp_innings') or 0, r.get('home_hand') or '')}
+          <div class="gcard-body">
+            {_side(away, r.get('away_starter'), r.get('away_starter_era'), pa,
+                   pa > ph, r.get('away_record'), False,
+                   r.get('away_vs_opp'), home)}
+            <div class="gbar">
+              <div class="seg on" style="left:0;width:{max(0.0, min(100.0, pa * 100)):.1f}%"></div>
+              <div class="seg" style="left:{max(0.0, min(100.0, pa * 100)):.1f}%;right:0"></div>
+              {tick}
+            </div>
+            {_side(home, r.get('home_starter'), r.get('home_starter_era'), ph,
+                   ph >= pa, r.get('home_record'), True,
+                   r.get('home_vs_opp'), away)}
+            <div class="gfoot">
+              {foot_left}
+              {foot_right}
+            </div>
           </div>
-          <div class="g2-probrow">
-            <span class="g2-plabel">{_("winprob", team=esc(_abbr(r.get("home"))))}</span>
-            <span class="g2-pct">{ph * 100:.1f}%</span>
-          </div>
-          <div class="g2-bar">
-            <div class="g2-fill" style="width:{max(0.0, min(100.0, ph * 100)):.1f}%"></div>
-            {tick}
-          </div>
-          <div class="g2-foot">
-            <span>{_("market")} <b>{f"{mkt * 100:.1f}%" if mkt is not None else "&mdash;"}</b></span>
-            {foot_right}
-          </div>
-          {vs_html}
-          {flagnote}
         </div>""")
     return "".join(out)
 

@@ -18,7 +18,12 @@ a site look abandoned.
 """
 from __future__ import annotations
 
-LANGS = ("en", "es")
+# Only English is published. The Spanish column below is kept rather than
+# deleted: every string already has a translation, so switching the site back
+# to two languages is one entry in this tuple — but nothing renders it today,
+# and a half-built /es/ tree is worse than none.
+LANGS = ("en",)
+ALL_LANGS = ("en", "es")
 
 # The play card's argument, assembled from the structured reasons that
 # find_plays stores. Same numbers, two languages.
@@ -78,6 +83,7 @@ T = {
     "off_market":   {"en": "{v} pts off market", "es": "{v} pts fuera del mercado"},
     "market_na":    {"en": "market n/a",      "es": "sin mercado"},
     "final":        {"en": "Final {v}",       "es": "Final {v}"},
+    "scheduled":    {"en": "Scheduled",       "es": "Programado"},
     "tbd":          {"en": "TBD",             "es": "Por definir"},
     "starts":       {"en": "{n} start{s}",    "es": "{n} apertura{s}"},
     "thin_sample":  {"en": "thin sample",     "es": "muestra escasa"},
@@ -89,6 +95,14 @@ T = {
         "es": "&#9888; Marcado como error nuestro — {v} pts de discrepancia es un "
               "fallo, no una oportunidad. No puede convertirse en jugada.",
     },
+    "at_home":     {"en": "at home",     "es": "en casa"},
+    "on_the_road": {"en": "on the road", "es": "de visita"},
+    "rec_line":    {"en": "{wl} &middot; {split} {venue}",
+                    "es": "{wl} &middot; {split} {venue}"},
+    "market_tick": {"en": "Where the market has it",
+                    "es": "Dónde lo tiene el mercado"},
+    "market_fav":  {"en": "Market {pct} {team}", "es": "Mercado {pct} {team}"},
+    "lean_on":     {"en": "{v} on {team}",       "es": "{v} en {team}"},
     "empty_board": {
         "en": "No games rated today. The board fills in every morning there's a slate.",
         "es": "Hoy no hay juegos evaluados. La pizarra se llena cada mañana que haya cartelera.",
