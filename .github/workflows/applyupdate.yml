@@ -1,0 +1,146 @@
+name: Apply update
+
+# Why this exists
+# ----------------
+# Uploading a folder through the GitHub web UI keeps flattening: the files
+# land at the repository root instead of inside craftypicks/, and the site
+# build then can't find them. This workflow removes the folder-dragging step
+# entirely.
+#
+# How to use it
+#   1. Drag the .zip onto the repo's file list and commit it. One file, at the
+#      root — there is no folder structure left for the uploader to lose.
+#   2. Actions -> "Apply update" -> "Run workflow".
+#
+# The unpacking is Python rather than shell on purpose. The first version of
+# this workflow was a shell script and failed on the runner; zipfile is in the
+# standard library, behaves the same everywhere, and can be run locally against
+# a copy of the repo before it is ever pushed.
+
+on:
+  workflow_dispatch:
+    inputs:
+      zip:
+        description: "Zip file at the repo root (blank = use the newest one)"
+        required: false
+        default: ""
+
+permissions:
+  contents: write
+
+concurrency:
+  group: apply-update
+  cancel-in-progress: false
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Show what we are starting from
+        run: |
+          echo "--- repository root"
+          ls -la
+          echo "--- craftypicks/"
+          ls -la craftypicks || echo "(no craftypicks directory yet)"
+
+      - name: Unpack and tidy
+        env:
+          ZIP_INPUT: ${{ inputs.zip }}
+        run: |
+          python3 - <<'PYTHON'
+          import os
+          import pathlib
+          import sys
+          import zipfile
+
+          root = pathlib.Path(".").resolve()
+
+          # ---------------------------------------------------------------- pick
+          name = (os.environ.get("ZIP_INPUT") or "").strip()
+          if name:
+              chosen = root / name
+              if not chosen.is_file():
+                  sys.exit(f"No file named {name!r} at the repository root.")
+          else:
+              zips = sorted(root.glob("*.zip"), key=lambda p: p.stat().st_mtime,
+                            reverse=True)
+              if not zips:
+                  sys.exit("No .zip at the repository root. Upload one and re-run.")
+              chosen = zips[0]
+              if len(zips) > 1:
+                  print("More than one zip present; using the newest:")
+                  for z in zips:
+                      print(f"   {z.name}")
+          print(f"Using {chosen.name}")
+
+          # -------------------------------------------------------------- inspect
+          with zipfile.ZipFile(chosen) as zf:
+              members = [n for n in zf.namelist() if not n.endswith("/")]
+              if not members:
+                  sys.exit("The archive contains no files.")
+
+              # A zip is untrusted input even when we wrote it. Reject anything
+              # that would land outside the repository before extracting a byte.
+              for n in members:
+                  target = (root / n).resolve()
+                  if not str(target).startswith(str(root) + os.sep):
+                      sys.exit(f"Refusing: {n!r} would write outside the repo.")
+
+              print(f"--- {len(members)} file(s) in the archive")
+              for n in members:
+                  print(f"   {n}")
+
+              zf.extractall(root)
+
+          # ---------------------------------------------------------------- sweep
+          # For every file the archive places at, say, craftypicks/_src/render.py,
+          # delete a stray render.py sitting loose at the repository root. Only
+          # basenames the archive just wrote somewhere deeper are considered, so
+          # nothing is removed that does not now exist in its correct place.
+          PROTECTED = {"README.md", "LICENSE", ".gitignore", ".gitattributes"}
+          swept = 0
+          for n in members:
+              if "/" not in n:
+                  continue                      # archive puts this at the root
+              base = os.path.basename(n)
+              if base in PROTECTED:
+                  continue
+              stray = root / base
+              if stray.is_file():
+                  print(f"sweeping stray ./{base}")
+                  stray.unlink()
+                  swept += 1
+          print(f"swept {swept} stray file(s) from the root")
+
+          chosen.unlink()
+          print(f"removed {chosen.name}")
+          PYTHON
+
+      - name: Commit
+        run: |
+          git config user.name  "craftypicks-bot"
+          git config user.email "craftypicks-bot@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "Nothing changed — the repo already matches the archive."
+            exit 0
+          fi
+          git commit -m "Apply update from uploaded archive"
+          # The daily job commits to this branch too, so a push can lose a race.
+          # Rebase and retry once rather than failing the run.
+          git push || { git pull --rebase && git push; }
+
+      - name: Show the result
+        if: always()
+        run: |
+          echo "--- repository root"
+          ls -1
+          echo "--- craftypicks/"
+          ls -1 craftypicks || echo "(missing)"
+          echo "--- craftypicks/_src"
+          ls -1 craftypicks/_src || echo "(missing)"
+          echo "--- craftypicks/scripts"
+          ls -1 craftypicks/scripts || echo "(missing)"
