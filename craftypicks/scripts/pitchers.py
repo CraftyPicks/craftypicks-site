@@ -236,14 +236,17 @@ def summary(history: list[dict]) -> dict:
     # counting it in the sample while it can never be scored as correct
     # would drag the tightest bucket down for no reason.
     buckets = []
-    for lo, hi, label in ((0.0, 0.5, "within half a strikeout"),
-                          (0.5, 1.0, "half to one"),
-                          (1.0, 2.0, "one to two"),
-                          (2.0, 99.0, "more than two")):
+    # The id is what the site renders from; the English label stays in the
+    # file so an old stats reader (or a human opening the JSON) still gets a
+    # sentence rather than a key.
+    for lo, hi, bid, label in ((0.0, 0.5, "bk_half", "within half a strikeout"),
+                               (0.5, 1.0, "bk_half_one", "half to one"),
+                               (1.0, 2.0, "bk_one_two", "one to two"),
+                               (2.0, 99.0, "bk_two_plus", "more than two")):
         inside = [r for r in calls if lo <= abs(r["projection"] - r["line"]) < hi]
         hit = sum(1 for r in inside
                   if (r["projection"] > r["line"]) == (r["actual"] > r["line"]))
-        buckets.append({"label": label, "n": len(inside), "right": hit,
+        buckets.append({"id": bid, "label": label, "n": len(inside), "right": hit,
                         "pct": round(hit / len(inside) * 100, 1) if inside else 0.0})
 
     return {

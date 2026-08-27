@@ -307,18 +307,27 @@ def _pick_label(play: dict) -> str:
     return f"{play['matchup_short']} {letter}{om._trim(abs(point))}"
 
 
-def _reasons(play: dict) -> list[str]:
-    fair = om.format_american(play.get("fair_price", 0))
-    price = om.format_american(play.get("price", 0))
-    pct = f"{play.get('fair_prob', 0) * 100:.1f}%"
+def _reasons(play: dict) -> list[dict]:
+    """The argument for a play, stored as data rather than as a sentence.
+
+    Each entry is a key plus the numbers it needs. The renderer turns that
+    into English or Spanish at build time, which is the only way a play
+    posted this morning can read correctly in both. Baking the sentence here
+    would permanently fix the language of every play in the archive.
+    """
     reasons = [
-        f"Vig-free consensus across <b>{play['books_counted']} books</b> is {fair} ({pct} to win)",
-        f"Best number on the board is <b>{price} at {play['book']}</b>",
-        f"<b>{play['books_shorter']} of {play['books_counted']}</b> books price this shorter than we're getting it",
-        f"Expected value at that price: <b>+{play['edge_pct']:.1f}%</b> per unit risked",
+        {"k": "consensus", "books": play["books_counted"],
+         "fair": om.format_american(play.get("fair_price", 0)),
+         "pct": f"{play.get('fair_prob', 0) * 100:.1f}%"},
+        {"k": "best_price", "price": om.format_american(play.get("price", 0)),
+         "book": play["book"]},
+        {"k": "books_shorter", "shorter": play["books_shorter"],
+         "books": play["books_counted"]},
+        {"k": "edge", "edge": f"{play['edge_pct']:.1f}"},
     ]
     if play["market"] != "h2h":
-        reasons.insert(2, f"Consensus number is {om._trim(abs(play['point']))} — books off that number were excluded")
+        reasons.insert(2, {"k": "consensus_number",
+                           "point": om._trim(abs(play["point"]))})
     return reasons[:4]
 
 

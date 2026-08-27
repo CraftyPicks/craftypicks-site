@@ -53,6 +53,7 @@ def probable_starters(date_str: str) -> list[dict]:
                     out.append({
                         "pitcher_id": pitcher["id"],
                         "name": pitcher.get("fullName", "?"),
+                        "hand": (pitcher.get("pitchHand") or {}).get("code", ""),
                         "team": teams[side]["team"].get("abbreviation")
                                 or teams[side]["team"]["name"],
                         "team_id": teams[side]["team"]["id"],

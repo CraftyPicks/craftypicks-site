@@ -82,7 +82,7 @@ def build(games: list[dict], date_str: str, season: int,
         def sp(team_id, opponent_id):
             s = starters.get(team_id)
             if not s:
-                return {}, None, None
+                return {}, None, None, ""
             stats = screen_mlb.pitcher_season(s["pitcher_id"], season)
             vs = None
             if want_vs:
@@ -92,10 +92,10 @@ def build(games: list[dict], date_str: str, season: int,
                                                     opponent_id, season)
                 except Exception:                            # noqa: BLE001
                     vs = None
-            return stats, s["name"], vs
+            return stats, s["name"], vs, s.get("hand", "")
 
-        home_stats, home_name, home_vs = sp(home_id, away_id)
-        away_stats, away_name, away_vs = sp(away_id, home_id)
+        home_stats, home_name, home_vs, home_hand = sp(home_id, away_id)
+        away_stats, away_name, away_vs, away_hand = sp(away_id, home_id)
         rating = rate_mlb.rate_game(elo, home_id, away_id, home_stats, away_stats)
         market = market_probability(game)
 
@@ -108,6 +108,9 @@ def build(games: list[dict], date_str: str, season: int,
             "home_starter": home_name, "away_starter": away_name,
             "home_starter_era": home_stats.get("era"),
             "away_starter_era": away_stats.get("era"),
+            "home_sp_innings": home_stats.get("innings"),
+            "away_sp_innings": away_stats.get("innings"),
+            "home_hand": home_hand, "away_hand": away_hand,
             # Shown on the card, deliberately absent from the rating.
             "home_record": recs.get(home_id),
             "away_record": recs.get(away_id),
