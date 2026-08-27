@@ -9,9 +9,7 @@
 <meta property="og:description" content="Free daily plays with receipts on every one.">
 <meta property="og:type" content="website">
 <meta name="theme-color" content="#08090B">
-<link rel="alternate" hreflang="en" href="/slate.html">
-<link rel="alternate" hreflang="es" href="/es/slate.html">
-<link rel="alternate" hreflang="x-default" href="/slate.html">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -21,29 +19,25 @@
   /* Sampled from the reference render rather than eyeballed. The surfaces
      barely moved; the accent did — a softer, lighter mint. */
   --bg:#08090B;
-  --bg-2:#0B0D11;
+  --bg-2:#0C0E11;
   --nav:#060A0D;
-  --panel:#0E1014;
-  --panel-2:#13161C;
-  --line:#1C2029;
+  --panel:#101317;
+  --panel-2:#141821;
+  --line:#1D222A;
   --line-2:#272D37;
-  --txt:#F5F6F8;
+  --txt:#E9EDF2;
   --muted:#8B939E;
   --dim:#5D6570;
   --sub:#AEB7C3;      /* readable small print — the card sub-lines */
-  --green:#5BE39C;
+  --green:#3BE081;
   --green-deep:#3D8D68;   /* the dark end of the probability-bar gradient */
   --green-dim:#1F7F4B;
   --red:#FF5C5C;
   --amber:#F5C451;
 
-  /* Three roles, kept strictly separate: mono labels the data, the serif
-     carries the argument, the grotesque shouts the headline. Matched by eye
-     from a raster reference — no font data was embedded to read — so each
-     stack names a fallback that is close enough to survive being wrong. */
+  /* Two roles: mono labels the data, the sans carries everything else. */
   --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
-  --serif:"Newsreader","Source Serif 4",Georgia,"Times New Roman",serif;
-  --sans:"Archivo","Inter Tight","Inter","Helvetica Neue",Helvetica,Arial,sans-serif;
+  --sans:"Inter","Helvetica Neue",Helvetica,Arial,sans-serif;
   --maxw:1220px;
 }
 *{box-sizing:border-box;margin:0;padding:0}
@@ -62,15 +56,12 @@ img{max-width:100%;display:block}
   color:var(--green);font-weight:500;
 }
 .eyebrow.muted{color:var(--dim)}
-h1,h2,h3,h4{font-family:var(--sans);font-weight:800;letter-spacing:-.038em;line-height:1.0}
-h1{font-size:clamp(40px,5.8vw,72px)}
-h2{font-size:clamp(30px,3.6vw,44px)}
-h3{font-family:var(--sans);font-size:20px;font-weight:700;letter-spacing:-.022em;line-height:1.14}
-/* Body copy is the serif. It is the single change that stops this reading as
-   another dark dashboard, so it applies to prose everywhere — not just heroes. */
-p{font-family:var(--serif);color:var(--muted);font-size:16.5px;line-height:1.62}
-.lead{font-size:19px;max-width:54ch;line-height:1.6}
-.tile p,.disclaimer{font-family:var(--serif)}
+h1,h2,h3,h4{font-weight:800;letter-spacing:-.03em;line-height:1.05}
+h1{font-size:clamp(38px,5.4vw,68px)}
+h2{font-size:clamp(28px,3.4vw,42px)}
+h3{font-size:20px;letter-spacing:-.02em}
+p{color:var(--muted);font-size:16px}
+.lead{font-size:18px;max-width:56ch}
 .mono{font-family:var(--mono)}
 .up{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim)}
 .g{color:var(--green)}
@@ -531,43 +522,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
    Rebuilt around one number. The old card gave both teams a probability,
    which made a reader do the subtraction; this one names a single side and
    shows the market's disagreement as a distance along the bar. */
-.gcard2{background:var(--panel);border:1px solid var(--line);padding:22px 24px 20px;
-  transition:border-color .18s ease,background .18s ease}
-.gcard2:hover{border-color:var(--line-2);background:var(--panel-2)}
-.gcard2.flag{border-color:rgba(245,196,81,.4)}
-.g2-top{display:flex;align-items:baseline;justify-content:space-between;gap:14px;margin-bottom:20px}
-.g2-match{font-family:var(--sans);font-size:23px;font-weight:800;letter-spacing:-.03em;
-  display:flex;align-items:center;gap:11px}
-.g2-at{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;
-  border-radius:50%;background:rgba(91,227,156,.13);color:var(--green);
-  font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:0}
-.g2-time{font-family:var(--mono);font-size:11px;letter-spacing:.11em;color:var(--dim);white-space:nowrap}
-.g2-arms{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-bottom:22px}
-.g2-arm{padding-left:12px;border-left:2px solid var(--green-deep)}
-.g2-nm{font-family:var(--mono);font-size:12px;color:var(--txt);margin-bottom:5px}
-.g2-ln{font-family:var(--mono);font-size:11px;color:var(--dim);line-height:1.55}
-.g2-probrow{display:flex;align-items:baseline;justify-content:space-between;gap:14px;margin-bottom:9px}
-.g2-plabel{font-family:var(--mono);font-size:10.5px;letter-spacing:.15em;text-transform:uppercase;color:var(--sub)}
-.g2-pct{font-family:var(--sans);font-size:31px;font-weight:800;letter-spacing:-.035em;color:var(--green)}
-.g2-bar{position:relative;height:11px;background:var(--line);overflow:visible}
-.g2-fill{position:absolute;left:0;top:0;bottom:0;
-  background:linear-gradient(90deg,var(--green-deep),var(--green));transform-origin:left center}
-.g2-tick{position:absolute;top:-3px;bottom:-3px;width:2px;background:#F5F6F8;opacity:.9}
-.g2-foot{display:flex;align-items:baseline;justify-content:space-between;gap:12px;
-  margin-top:16px;padding-top:14px;border-top:1px solid var(--line);
-  font-family:var(--mono);font-size:11px;letter-spacing:.04em;color:var(--dim)}
-.g2-foot b{color:var(--txt);font-weight:600}
-/* Namespaced: bare .pos/.neg already exist as 180px chart columns
-   elsewhere in this stylesheet, and a plain span picking those up
-   silently inflated every card by 150px. */
-.g2-up{color:var(--green)}
-.g2-down{color:var(--sub)}
-.g2-vs{font-family:var(--mono);font-size:11px;color:var(--dim);margin-top:11px;letter-spacing:.03em}
-.g2-vs.thin{color:#4A515B}
-.g2-flagnote{margin-top:15px;padding:13px 15px;border:1px solid rgba(245,196,81,.32);
-  background:rgba(245,196,81,.07);color:var(--amber);
-  font-family:var(--mono);font-size:11px;line-height:1.6;letter-spacing:.02em}
-@media(max-width:520px){ .g2-arms{grid-template-columns:1fr;gap:14px} }
+
 
 
 /* The nav outgrew the viewport once the labels went uppercase mono and a
@@ -589,13 +544,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
 }
 
 /* ---------- language switch ---------- */
-.lang-switch{
-  font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
-  color:var(--muted);border:1px solid var(--line-2);padding:8px 12px;
-  transition:.15s;white-space:nowrap;
-}
-.lang-switch:hover{color:var(--txt);border-color:var(--muted);background:rgba(255,255,255,.03)}
-@media(max-width:860px){ .lang-switch{padding:7px 10px;font-size:10.5px} }
+
 
 </style>
 </head>
@@ -606,13 +555,11 @@ footer{background:var(--bg-2);padding:56px 0 40px}
     <nav class="nav-links"><a href="plays.html" class="">Today's Plays</a><a href="slate.html" class="">MLB Board</a><a href="pitchers.html" class="">Pitchers Prop</a><a href="record.html" class="">Track Record</a><a href="about.html" class="">How It Works</a><a href="screens.html" class="">The Screens</a></nav>
     <div class="nav-cta">
       <a href="about.html" class="link-quiet">Why it's free</a>
-      <a href="es/slate.html" class="lang-switch" hreflang="es"
-         lang="es">Español</a>
       <a href="plays.html" class="btn solid sm">Today's plays</a>
     </div>
   </div>
 </header>
-<div class="statbar"><div class="sb-cell"><span class="sb-live"><span class="dot"></span>Board live</span></div><div class="sb-cell"><b>7</b> games rated</div><div class="sb-cell"><b>0</b> flagged</div><div class="sb-cell">Median disagreement <b>2.7 pts</b></div><div class="sb-cell">Updated <b>2026-08-27 11:14</b> ET</div></div>
+<div class="statbar"><div class="sb-cell"><span class="sb-live"><span class="dot"></span>Board live</span></div><div class="sb-cell"><b>7</b> games rated</div><div class="sb-cell"><b>0</b> flagged</div><div class="sb-cell">Median disagreement <b>2.7 pts</b></div><div class="sb-cell">Updated <b>2026-08-27 11:44</b> ET</div></div>
 
 <section style="background:linear-gradient(180deg,#0A0C0F,var(--bg))">
   <div class="wrap" style="padding:64px 28px 40px">
@@ -639,236 +586,236 @@ footer{background:var(--bg-2);padding:56px 0 40px}
 <section class="pad-sm">
   <div class="wrap">
     <div class="board">
-        <div class="gcard2">
-          <div class="g2-top">
-            <div class="g2-match">COL
-              <span class="g2-at">@</span>WSH</div>
-            <div class="g2-time">1:06 PM ET</div>
+        <div class="gcard" style="--accent:#B31A1C">
+          <div class="gcard-top">
+            <span>1:06 PM ET</span>
+            <span style="color:var(--dim)">Scheduled</span>
           </div>
-          <div class="g2-arms">
+          <div class="gcard-body">
             
-        <div class="g2-arm">
-          <div class="g2-nm">G. Hughes</div>
-          <div class="g2-ln">52&ndash;81 &middot; 6.54 ERA &middot; 43 IP</div>
+        <div class="gside">
+          <div class="tm"><span class="tdot" style="--tc:#704C9A"></span>Colorado Rockies</div>
+          <div class="pc">40.6%</div>
         </div>
+        <div class="grec">52&ndash;81 &middot; 25&ndash;43 on the road</div>
+        <div class="gsp">Gabriel Hughes &middot; 6.54 ERA</div>
+        <div class="gvs thin" title="2026 regular season — shown as context, not used in the number. Too few starts to mean anything.">vs Nationals &middot; 1 GS &middot; 5.0 IP &middot; 1.80 ERA &middot; thin</div>
+            <div class="gbar">
+              <div class="seg on" style="left:0;width:40.6%"></div>
+              <div class="seg" style="left:40.6%;right:0"></div>
+              <div class="tick" style="left:42.6%" title="Where the market has it"></div>
+            </div>
             
-        <div class="g2-arm">
-          <div class="g2-nm">J. Irvin</div>
-          <div class="g2-ln">62&ndash;73 &middot; 5.82 ERA &middot; 77 IP</div>
+        <div class="gside lead">
+          <div class="tm"><span class="tdot" style="--tc:#B31A1C"></span>Washington Nationals</div>
+          <div class="pc">59.4%</div>
         </div>
+        <div class="grec">62&ndash;73 &middot; 28&ndash;38 at home</div>
+        <div class="gsp">Jake Irvin &middot; 5.82 ERA</div>
+        <div class="gvs thin" title="2025–2026 regular season — shown as context, not used in the number. Too few starts to mean anything.">vs Rockies &middot; 2 GS &middot; 12.3 IP &middot; 3.65 ERA &middot; thin</div>
+            <div class="gfoot">
+              <span>Market <b>57.4%</b> Nationals</span>
+              <span class="lean">+2.1 on Nationals</span>
+            </div>
           </div>
-          <div class="g2-probrow">
-            <span class="g2-plabel">WSH win prob</span>
-            <span class="g2-pct">59.4%</span>
-          </div>
-          <div class="g2-bar">
-            <div class="g2-fill" style="width:59.4%"></div>
-            <div class="g2-tick" style="left:57.4%" title="Where the market has it"></div>
-          </div>
-          <div class="g2-foot">
-            <span>market <b>57.4%</b></span>
-            <span class="g2-up">+2.1 pts vs market</span>
-          </div>
-          <div class="g2-vs thin">Irvin vs COL: 2 starts &middot; thin sample</div>
-          
         </div>
-        <div class="gcard2">
-          <div class="g2-top">
-            <div class="g2-match">BAL
-              <span class="g2-at">@</span>STL</div>
-            <div class="g2-time">2:16 PM ET</div>
+        <div class="gcard" style="--accent:#C41E3A">
+          <div class="gcard-top">
+            <span>2:16 PM ET</span>
+            <span style="color:var(--dim)">Scheduled</span>
           </div>
-          <div class="g2-arms">
+          <div class="gcard-body">
             
-        <div class="g2-arm">
-          <div class="g2-nm">T. Rogers</div>
-          <div class="g2-ln">65&ndash;68 &middot; 4.14 ERA &middot; 133 IP</div>
+        <div class="gside">
+          <div class="tm"><span class="tdot" style="--tc:#DF4601"></span>Baltimore Orioles</div>
+          <div class="pc">47.4%</div>
         </div>
+        <div class="grec">65&ndash;68 &middot; 31&ndash;34 on the road</div>
+        <div class="gsp">Trevor Rogers &middot; 4.14 ERA</div>
+        
+            <div class="gbar">
+              <div class="seg on" style="left:0;width:47.4%"></div>
+              <div class="seg" style="left:47.4%;right:0"></div>
+              <div class="tick" style="left:53.5%" title="Where the market has it"></div>
+            </div>
             
-        <div class="g2-arm">
-          <div class="g2-nm">TBA</div>
-          <div class="g2-ln">66&ndash;68</div>
+        <div class="gside lead">
+          <div class="tm"><span class="tdot" style="--tc:#C41E3A"></span>St. Louis Cardinals</div>
+          <div class="pc">52.6%</div>
         </div>
+        <div class="grec">66&ndash;68 &middot; 32&ndash;36 at home</div>
+        <div class="gsp">TBA</div>
+        
+            <div class="gfoot">
+              <span>Market <b>53.5%</b> Orioles</span>
+              <span class="lean">+6.1 on Cardinals</span>
+            </div>
           </div>
-          <div class="g2-probrow">
-            <span class="g2-plabel">STL win prob</span>
-            <span class="g2-pct">52.6%</span>
-          </div>
-          <div class="g2-bar">
-            <div class="g2-fill" style="width:52.6%"></div>
-            <div class="g2-tick" style="left:46.5%" title="Where the market has it"></div>
-          </div>
-          <div class="g2-foot">
-            <span>market <b>46.5%</b></span>
-            <span class="g2-up">+6.1 pts vs market</span>
-          </div>
-          
-          
         </div>
-        <div class="gcard2">
-          <div class="g2-top">
-            <div class="g2-match">HOU
-              <span class="g2-at">@</span>NYY</div>
-            <div class="g2-time">7:06 PM ET</div>
+        <div class="gcard" style="--accent:#555E70">
+          <div class="gcard-top">
+            <span>7:06 PM ET</span>
+            <span style="color:var(--dim)">Scheduled</span>
           </div>
-          <div class="g2-arms">
+          <div class="gcard-body">
             
-        <div class="g2-arm">
-          <div class="g2-nm">H. Wesneski</div>
-          <div class="g2-ln">66&ndash;67 &middot; 4.23 ERA &middot; 28 IP</div>
+        <div class="gside">
+          <div class="tm"><span class="tdot" style="--tc:#EB6E1F"></span>Houston Astros</div>
+          <div class="pc">37.8%</div>
         </div>
+        <div class="grec">66&ndash;67 &middot; 33&ndash;32 on the road</div>
+        <div class="gsp">Hayden Wesneski &middot; 4.23 ERA</div>
+        
+            <div class="gbar">
+              <div class="seg on" style="left:0;width:37.8%"></div>
+              <div class="seg" style="left:37.8%;right:0"></div>
+              <div class="tick" style="left:40.5%" title="Where the market has it"></div>
+            </div>
             
-        <div class="g2-arm">
-          <div class="g2-nm">G. Cole</div>
-          <div class="g2-ln">75&ndash;57 &middot; 3.11 ERA &middot; 93 IP</div>
+        <div class="gside lead">
+          <div class="tm"><span class="tdot" style="--tc:#555E70"></span>New York Yankees</div>
+          <div class="pc">62.2%</div>
         </div>
+        <div class="grec">75&ndash;57 &middot; 34&ndash;29 at home</div>
+        <div class="gsp">Gerrit Cole &middot; 3.11 ERA</div>
+        
+            <div class="gfoot">
+              <span>Market <b>59.5%</b> Yankees</span>
+              <span class="lean">+2.7 on Yankees</span>
+            </div>
           </div>
-          <div class="g2-probrow">
-            <span class="g2-plabel">NYY win prob</span>
-            <span class="g2-pct">62.2%</span>
-          </div>
-          <div class="g2-bar">
-            <div class="g2-fill" style="width:62.2%"></div>
-            <div class="g2-tick" style="left:59.5%" title="Where the market has it"></div>
-          </div>
-          <div class="g2-foot">
-            <span>market <b>59.5%</b></span>
-            <span class="g2-up">+2.7 pts vs market</span>
-          </div>
-          
-          
         </div>
-        <div class="gcard2">
-          <div class="g2-top">
-            <div class="g2-match">KC
-              <span class="g2-at">@</span>TOR</div>
-            <div class="g2-time">7:08 PM ET</div>
+        <div class="gcard" style="--accent:#2B5C99">
+          <div class="gcard-top">
+            <span>7:08 PM ET</span>
+            <span style="color:var(--dim)">Scheduled</span>
           </div>
-          <div class="g2-arms">
+          <div class="gcard-body">
             
-        <div class="g2-arm">
-          <div class="g2-nm">N. Cameron</div>
-          <div class="g2-ln">59&ndash;75 &middot; 4.02 ERA &middot; 143 IP</div>
+        <div class="gside">
+          <div class="tm"><span class="tdot" style="--tc:#266299"></span>Kansas City Royals</div>
+          <div class="pc">47.2%</div>
         </div>
+        <div class="grec">59&ndash;75 &middot; 23&ndash;45 on the road</div>
+        <div class="gsp">Noah Cameron &middot; 4.02 ERA</div>
+        <div class="gvs thin" title="2025–2026 regular season — shown as context, not used in the number. Too few starts to mean anything.">vs Jays &middot; 2 GS &middot; 13.0 IP &middot; 3.46 ERA &middot; thin</div>
+            <div class="gbar">
+              <div class="seg on" style="left:0;width:47.2%"></div>
+              <div class="seg" style="left:47.2%;right:0"></div>
+              <div class="tick" style="left:50.5%" title="Where the market has it"></div>
+            </div>
             
-        <div class="g2-arm">
-          <div class="g2-nm">S. Arrighetti</div>
-          <div class="g2-ln">65&ndash;69 &middot; 4.73 ERA &middot; 91 IP</div>
+        <div class="gside lead">
+          <div class="tm"><span class="tdot" style="--tc:#2B5C99"></span>Toronto Blue Jays</div>
+          <div class="pc">52.8%</div>
         </div>
+        <div class="grec">65&ndash;69 &middot; 34&ndash;34 at home</div>
+        <div class="gsp">Spencer Arrighetti &middot; 4.73 ERA</div>
+        <div class="gvs thin" title="2025–2026 regular season — shown as context, not used in the number. Too few starts to mean anything.">vs Royals &middot; 1 GS &middot; 6.0 IP &middot; 6.00 ERA &middot; thin</div>
+            <div class="gfoot">
+              <span>Market <b>50.5%</b> Royals</span>
+              <span class="lean">+3.4 on Jays</span>
+            </div>
           </div>
-          <div class="g2-probrow">
-            <span class="g2-plabel">TOR win prob</span>
-            <span class="g2-pct">52.8%</span>
-          </div>
-          <div class="g2-bar">
-            <div class="g2-fill" style="width:52.8%"></div>
-            <div class="g2-tick" style="left:49.5%" title="Where the market has it"></div>
-          </div>
-          <div class="g2-foot">
-            <span>market <b>49.5%</b></span>
-            <span class="g2-up">+3.4 pts vs market</span>
-          </div>
-          <div class="g2-vs thin">Arrighetti vs KC: 1 start &middot; thin sample</div>
-          
         </div>
-        <div class="gcard2">
-          <div class="g2-top">
-            <div class="g2-match">MIL
-              <span class="g2-at">@</span>NYM</div>
-            <div class="g2-time">7:11 PM ET</div>
+        <div class="gcard" style="--accent:#FF5910">
+          <div class="gcard-top">
+            <span>7:11 PM ET</span>
+            <span style="color:var(--dim)">Scheduled</span>
           </div>
-          <div class="g2-arms">
+          <div class="gcard-body">
             
-        <div class="g2-arm">
-          <div class="g2-nm">J. Misiorowski</div>
-          <div class="g2-ln">82&ndash;51 &middot; 1.68 ERA &middot; 145 IP</div>
+        <div class="gside lead">
+          <div class="tm"><span class="tdot" style="--tc:#4D5E78"></span>Milwaukee Brewers</div>
+          <div class="pc">63.3%</div>
         </div>
+        <div class="grec">82&ndash;51 &middot; 37&ndash;27 on the road</div>
+        <div class="gsp">Jacob Misiorowski &middot; 1.68 ERA</div>
+        <div class="gvs thin" title="2025–2026 regular season — shown as context, not used in the number. Too few starts to mean anything.">vs Mets &middot; 2 GS &middot; 7.7 IP &middot; 5.87 ERA &middot; thin</div>
+            <div class="gbar">
+              <div class="seg on" style="left:0;width:63.3%"></div>
+              <div class="seg" style="left:63.3%;right:0"></div>
+              <div class="tick" style="left:64.8%" title="Where the market has it"></div>
+            </div>
             
-        <div class="g2-arm">
-          <div class="g2-nm">S. Manaea</div>
-          <div class="g2-ln">60&ndash;73 &middot; 4.31 ERA &middot; 117 IP</div>
+        <div class="gside">
+          <div class="tm"><span class="tdot" style="--tc:#FF5910"></span>New York Mets</div>
+          <div class="pc">36.7%</div>
         </div>
+        <div class="grec">60&ndash;73 &middot; 31&ndash;36 at home</div>
+        <div class="gsp">Sean Manaea &middot; 4.31 ERA</div>
+        <div class="gvs thin" title="2025–2026 regular season — shown as context, not used in the number. Too few starts to mean anything.">vs Brewers &middot; 1 GS &middot; 4.0 IP &middot; 9.00 ERA &middot; thin</div>
+            <div class="gfoot">
+              <span>Market <b>64.8%</b> Brewers</span>
+              <span class="lean">+1.5 on Mets</span>
+            </div>
           </div>
-          <div class="g2-probrow">
-            <span class="g2-plabel">NYM win prob</span>
-            <span class="g2-pct">36.7%</span>
-          </div>
-          <div class="g2-bar">
-            <div class="g2-fill" style="width:36.7%"></div>
-            <div class="g2-tick" style="left:35.2%" title="Where the market has it"></div>
-          </div>
-          <div class="g2-foot">
-            <span>market <b>35.2%</b></span>
-            <span class="g2-up">+1.5 pts vs market</span>
-          </div>
-          <div class="g2-vs thin">Manaea vs MIL: 1 start &middot; thin sample</div>
-          
         </div>
-        <div class="gcard2">
-          <div class="g2-top">
-            <div class="g2-match">LAD
-              <span class="g2-at">@</span>ATL</div>
-            <div class="g2-time">7:16 PM ET</div>
+        <div class="gcard" style="--accent:#CE1141">
+          <div class="gcard-top">
+            <span>7:16 PM ET</span>
+            <span style="color:var(--dim)">Scheduled</span>
           </div>
-          <div class="g2-arms">
+          <div class="gcard-body">
             
-        <div class="g2-arm">
-          <div class="g2-nm">Y. Yamamoto</div>
-          <div class="g2-ln">80&ndash;53 &middot; 2.61 ERA &middot; 152 IP</div>
+        <div class="gside">
+          <div class="tm"><span class="tdot" style="--tc:#005A9C"></span>Los Angeles Dodgers</div>
+          <div class="pc">45.8%</div>
         </div>
+        <div class="grec">80&ndash;53 &middot; 40&ndash;27 on the road</div>
+        <div class="gsp">Yoshinobu Yamamoto &middot; 2.61 ERA</div>
+        <div class="gvs thin" title="2025–2026 regular season — shown as context, not used in the number. Too few starts to mean anything.">vs Braves &middot; 1 GS &middot; 6.0 IP &middot; 0.00 ERA &middot; thin</div>
+            <div class="gbar">
+              <div class="seg on" style="left:0;width:45.8%"></div>
+              <div class="seg" style="left:45.8%;right:0"></div>
+              <div class="tick" style="left:46.1%" title="Where the market has it"></div>
+            </div>
             
-        <div class="g2-arm">
-          <div class="g2-nm">C. Sale</div>
-          <div class="g2-ln">78&ndash;56 &middot; 2.20 ERA &middot; 135 IP</div>
+        <div class="gside lead">
+          <div class="tm"><span class="tdot" style="--tc:#CE1141"></span>Atlanta Braves</div>
+          <div class="pc">54.2%</div>
         </div>
+        <div class="grec">78&ndash;56 &middot; 44&ndash;24 at home</div>
+        <div class="gsp">Chris Sale &middot; 2.20 ERA</div>
+        <div class="gvs thin" title="2025–2026 regular season — shown as context, not used in the number. Too few starts to mean anything.">vs Dodgers &middot; 2 GS &middot; 12.0 IP &middot; 3.75 ERA &middot; thin</div>
+            <div class="gfoot">
+              <span>Market <b>53.9%</b> Braves</span>
+              <span>in line</span>
+            </div>
           </div>
-          <div class="g2-probrow">
-            <span class="g2-plabel">ATL win prob</span>
-            <span class="g2-pct">54.2%</span>
-          </div>
-          <div class="g2-bar">
-            <div class="g2-fill" style="width:54.2%"></div>
-            <div class="g2-tick" style="left:53.9%" title="Where the market has it"></div>
-          </div>
-          <div class="g2-foot">
-            <span>market <b>53.9%</b></span>
-            <span class="g2-up">+0.2 pts vs market</span>
-          </div>
-          <div class="g2-vs thin">Sale vs LAD: 2 starts &middot; thin sample</div>
-          
         </div>
-        <div class="gcard2">
-          <div class="g2-top">
-            <div class="g2-match">ARI
-              <span class="g2-at">@</span>SF</div>
-            <div class="g2-time">9:46 PM ET</div>
+        <div class="gcard" style="--accent:#FD5A1E">
+          <div class="gcard-top">
+            <span>9:46 PM ET</span>
+            <span style="color:var(--dim)">Scheduled</span>
           </div>
-          <div class="g2-arms">
+          <div class="gcard-body">
             
-        <div class="g2-arm">
-          <div class="g2-nm">J. Cabrera</div>
-          <div class="g2-ln">71&ndash;63 &middot; 5.60 ERA &middot; 18 IP</div>
+        <div class="gside lead">
+          <div class="tm"><span class="tdot" style="--tc:#AB243A"></span>Arizona Diamondbacks</div>
+          <div class="pc">53.5%</div>
         </div>
+        <div class="grec">71&ndash;63 &middot; 31&ndash;34 on the road</div>
+        <div class="gsp">Jose Cabrera &middot; 5.60 ERA</div>
+        
+            <div class="gbar">
+              <div class="seg on" style="left:0;width:53.5%"></div>
+              <div class="seg" style="left:53.5%;right:0"></div>
+              <div class="tick" style="left:50.1%" title="Where the market has it"></div>
+            </div>
             
-        <div class="g2-arm">
-          <div class="g2-nm">L. Roupp</div>
-          <div class="g2-ln">55&ndash;79 &middot; 4.34 ERA &middot; 135 IP</div>
+        <div class="gside">
+          <div class="tm"><span class="tdot" style="--tc:#FD5A1E"></span>San Francisco Giants</div>
+          <div class="pc">46.5%</div>
         </div>
+        <div class="grec">55&ndash;79 &middot; 31&ndash;34 at home</div>
+        <div class="gsp">Landen Roupp &middot; 4.34 ERA</div>
+        <div class="gvs" title="2025–2026 regular season — shown as context, not used in the number">vs Diamondbacks &middot; 4 GS &middot; 17.7 IP &middot; 5.60 ERA</div>
+            <div class="gfoot">
+              <span>Market <b>50.1%</b> Diamondbacks</span>
+              <span class="lean">+3.4 on Diamondbacks</span>
+            </div>
           </div>
-          <div class="g2-probrow">
-            <span class="g2-plabel">SF win prob</span>
-            <span class="g2-pct">46.5%</span>
-          </div>
-          <div class="g2-bar">
-            <div class="g2-fill" style="width:46.5%"></div>
-            <div class="g2-tick" style="left:49.9%" title="Where the market has it"></div>
-          </div>
-          <div class="g2-foot">
-            <span>market <b>49.9%</b></span>
-            <span class="g2-down">-3.4 pts vs market</span>
-          </div>
-          <div class="g2-vs">Roupp vs ARI: 4 starts &middot; 5.60 ERA</div>
-          
         </div></div>
     <div class="note" style="margin-top:26px">
       <p class="disclaimer"><b style="color:var(--txt)">The bar is the whole idea.</b> Where the two shaded halves meet is our win probability; the pale vertical tick is where the market put the same game. The distance between them is the disagreement, and on most nights it's barely visible &mdash; which is the honest picture. A dozen books pricing a baseball game land very close to where any decent model lands. A card flagged in amber is one we treat as <i>our</i> error rather than an opportunity: the market is not wrong by twelve points, and a model that thinks it is has a bug. Those are never eligible to become plays.</p>
