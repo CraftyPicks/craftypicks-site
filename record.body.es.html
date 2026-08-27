@@ -1,0 +1,95 @@
+<section style="background:linear-gradient(180deg,#0A0C0F,var(--bg))">
+  <div class="wrap" style="padding:56px 28px 46px">
+    <div class="eyebrow">Cada jugada, desde el primer día</div>
+    <h1 style="font-size:clamp(32px,4.2vw,50px);margin:14px 0 16px">Historial</h1>
+    <p class="lead">{{RECORD_INTRO}}</p>
+  </div>
+</section>
+
+<section class="pad-sm">
+  <div class="wrap">
+    <div class="kpis">{{KPI_RECORD}}</div>
+  </div>
+</section>
+
+<section class="pad-sm">
+  <div class="wrap">
+    <div class="sec-head" style="margin-bottom:30px">
+      <div class="eyebrow muted">Mes a mes</div>
+      <h2 style="font-size:26px;margin-top:10px">Unidades ganadas y perdidas</h2>
+      <p style="font-size:15px;margin-top:10px">{{MONTHS_LINE}}</p>
+    </div>
+
+    <figure class="card" style="padding:30px 26px 22px;margin:0">
+      {{MONTH_CHART}}
+      <figcaption class="up" style="margin-top:18px;color:var(--dim);text-transform:none;letter-spacing:.04em;font-size:11.5px">Unidades, con riesgo fijo de 1u. Las barras verdes son meses ganadores, las rojas meses perdedores. El mes en curso está incompleto.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="pad-sm">
+  <div class="wrap">
+    <div class="sec-head" style="margin-bottom:26px">
+      <div class="eyebrow muted">Dos métodos, el mismo marcador</div>
+      <h2 style="font-size:26px;margin-top:10px">De dónde salen las jugadas</h2>
+      <p style="font-size:15px;margin-top:10px">Dos sistemas publican en esta cartelera. Uno busca números mal valuados en todo el mercado; el otro es un filtro de ponches basado en reglas. Se rastrean por separado a propósito &mdash; la columna "le gana al cierre" es la que decide cuál vale la pena conservar.</p>
+    </div>
+    <div class="scroll-x">
+      <table class="tbl">
+        <thead>
+          <tr><th>Fuente</th><th>Publicadas</th><th>Récord</th><th>Unidades</th><th>ROI</th><th>Le gana al cierre</th></tr>
+        </thead>
+        <tbody>{{SOURCE_ROWS}}</tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="pad-sm">
+  <div class="wrap">
+    <div class="sec-head" style="margin-bottom:26px">
+      <div class="eyebrow muted">Por liga</div>
+      <h2 style="font-size:26px;margin-top:10px">De dónde viene la ventaja en realidad</h2>
+    </div>
+    <div class="scroll-x">
+      <table class="tbl">
+        <thead>
+          <tr><th>Liga</th><th>Jugadas</th><th>Récord</th><th>% acierto</th><th>Unidades</th><th>ROI</th></tr>
+        </thead>
+        <tbody>{{LEAGUE_ROWS}}</tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="pad-sm">
+  <div class="wrap">
+    <div class="split" style="margin-bottom:26px">
+      <div>
+        <div class="eyebrow muted">Registro de jugadas</div>
+        <h2 style="font-size:26px;margin-top:10px">{{LOG_HEADING}}</h2>
+      </div>
+      <span class="up">Actualizado a diario a las {{POST_TIME}}</span>
+    </div>
+    <div class="scroll-x">
+      <table class="tbl">
+        <thead>
+          <tr><th>Fecha</th><th>Jugada</th><th>Liga</th><th>Precio</th><th>Ventaja al publicar</th><th>vs cierre</th><th>Resultado</th><th>Retorno</th></tr>
+        </thead>
+        <tbody>{{LOG_ROWS}}</tbody>
+      </table>
+    </div>
+    <div class="note" style="margin-top:26px">
+      <p class="disclaimer"><b style="color:var(--txt)">"vs cierre" es la columna que de verdad importa.</b> Compara el precio que publicamos contra el que todo el mercado terminó fijando poco antes del inicio &mdash; sin vigorish en ninguno de los dos. Positivo significa que conseguimos un número mejor que la opinión final del mercado, y eso se nota en un par de cientos de jugadas. Los récords de ganadas y perdidas necesitan miles antes de significar algo, y por eso cualquier vendedor de picks puede enseñarte un buen mes. {{DRAWDOWN_LINE}}</p>
+    </div>
+  </section>
+
+<section class="cta-band">
+  <div class="wrap">
+    <div class="eyebrow">Aquí no hay nada detrás de un muro de pago</div>
+    <h2>Sigue las jugadas y juzga el historial por tu cuenta</h2>
+    <p>La cartelera sale a las {{POST_TIME}} todos los días, con las calificaciones del día anterior incluidas. Gratis, para siempre.</p>
+    {{SIGNUP}}
+    <div class="fineprint">Los resultados pasados nunca garantizan resultados futuros &middot; 21+</div>
+  </div>
+</section>

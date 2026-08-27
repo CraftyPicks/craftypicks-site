@@ -1,0 +1,895 @@
+"""Render the site's data-driven pieces as HTML fragments.
+
+Every function here takes plain dicts loaded from data/*.json and returns a
+string. No template engine, no dependencies — that keeps the free hosting
+story simple and the build instant.
+"""
+from __future__ import annotations
+
+import html
+import sys
+from datetime import datetime
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
+
+import config          # noqa: E402
+import odds_math as om  # noqa: E402
+import i18n             # noqa: E402
+
+BOOK_NOTE = "Odds shown are the price at post time"
+
+# The language of the page currently being rendered. build.py sets it once
+# per pass and every string below reads it. A module-level value rather than
+# a parameter on twenty signatures: the build is single-threaded and renders
+# one language to completion before starting the next, so there is nothing
+# for two languages to race over.
+LANG = "en"
+
+
+def set_lang(lang: str) -> None:
+    global LANG
+    LANG = lang if lang in i18n.LANGS else "en"
+
+
+def _(key: str, **kw) -> str:
+    """Shorthand for a translated string in the current language."""
+    return i18n.t(key, LANG, **kw)
+
+
+def _pl(n: int) -> str:
+    return i18n.plural(n, LANG)
+
+
+def esc(text) -> str:
+    return html.escape(str(text), quote=False)
+
+
+def u(value: float, decimals: int = 2) -> str:
+    """Signed unit figure, using a real minus sign."""
+    value = round(float(value), decimals)
+    sign = "+" if value > 0 else ("−" if value < 0 else "")
+    return f"{sign}{abs(value):.{decimals}f}u"
+
+
+def pct(value: float, decimals: int = 1) -> str:
+    value = round(float(value), decimals)
+    sign = "+" if value > 0 else ("−" if value < 0 else "")
+    return f"{sign}{abs(value):.{decimals}f}%"
+
+
+def cls_for(value: float) -> str:
+    return "g" if value > 0 else ("r" if value < 0 else "")
+
+
+def game_time(iso: str | None) -> str:
+    if not iso:
+        return ""
+    try:
+        from zoneinfo import ZoneInfo
+        dt = datetime.fromisoformat(iso.replace("Z", "+00:00")).astimezone(
+            ZoneInfo(config.TIMEZONE))
+        return f"{dt:%-I:%M %p} ET"
+    except Exception:
+        return ""
+
+
+def posted_time(iso: str | None) -> str:
+    if not iso:
+        return config.POST_TIME_LABEL
+    try:
+        dt = datetime.fromisoformat(iso)
+        return f"{dt:%-I:%M %p} ET"
+    except Exception:
+        return config.POST_TIME_LABEL
+
+
+# ------------------------------------------------------------------ play card
+def play_card(play: dict, index: int, total: int) -> str:
+    reasons = "".join(f"<li>{i18n.reason_text(r, LANG)}</li>"
+                      for r in play.get("reasons", []))
+    tip = game_time(play.get("commence_time"))
+    return f"""
+      <div class="play" data-league="{esc(play.get('league_short',''))}">
+        <div class="play-top">
+          <div style="display:flex;align-items:center;gap:9px">
+            <span class="dot"></span>
+            <span class="stamp on">{_("posted", v=esc(posted_time(play.get("posted_at"))))}</span>
+          </div>
+          <span class="stamp">{_("play_n_of", i=index, n=total)}</span>
+        </div>
+        <div class="play-body">
+          <div class="pick">{esc(play.get('pick',''))}</div>
+          <div class="meta">{esc(play.get('league',''))} &middot; {esc(play.get('market_label',''))}
+            &middot; {esc(om.format_american(play['price']))} &middot; {esc(play.get('book',''))}</div>
+          <div class="matchup-line">{esc(play.get('matchup',''))}{f' &middot; {tip}' if tip else ''}</div>
+          <ul class="reasons">{reasons}</ul>
+          <div class="stats">
+            <div class="stat"><div class="k">{_("stake")}</div><div class="v">{play.get('stake',1.0):.1f}u</div></div>
+            <div class="stat"><div class="k">{_("edge_vs_fair")}</div>
+              <div class="v {cls_for(play.get('edge_pct',0))}">{pct(play.get('edge_pct',0))}</div></div>
+            <div class="stat"><div class="k">{_("fair_price")}</div>
+              <div class="v">{esc(om.format_american(play.get('fair_price',0)))}</div></div>
+          </div>
+        </div>
+      </div>"""
+
+
+def empty_card(note: str = "") -> str:
+    body = note or _("no_plays_body")
+    return f"""
+      <div class="play" style="grid-column:1/-1">
+        <div class="play-top">
+          <span class="stamp">{_("no_plays_h")}</span>
+          <span class="stamp">{_("no_plays_sub")}</span>
+        </div>
+        <div class="play-body">
+          <div class="pick" style="color:var(--muted)">{_("no_plays_t")}</div>
+          <p style="margin-top:10px;max-width:60ch">{esc(body)}</p>
+        </div>
+      </div>"""
+
+
+def play_cards(plays: list[dict], note: str = "") -> str:
+    if not plays:
+        return empty_card(note)
+    return "".join(play_card(p, i, len(plays)) for i, p in enumerate(plays, 1))
+
+
+# --------------------------------------------------------------------- chips
+def filter_chips(plays: list[dict]) -> str:
+    if len(plays) < 2:
+        return ""
+    counts: dict[str, tuple[str, int]] = {}
+    for p in plays:
+        short = p.get("league_short", "")
+        label, n = counts.get(short, (p.get("league", short), 0))
+        counts[short] = (label, n + 1)
+    chips = [f'<button class="chip on" data-filter="all">{_("all_plays")}</button>']
+    for short, (label, n) in sorted(counts.items(), key=lambda kv: -kv[1][1]):
+        chips.append(
+            f'<button class="chip" data-filter="{esc(short)}">{esc(label)} &middot; {n}</button>')
+    return "".join(chips)
+
+
+# -------------------------------------------------------------------- tables
+# The tag class is stable; the label is looked up at render time so it
+# follows the page's language rather than being frozen at import.
+RESULT_CLASS = {"win": "win", "loss": "loss", "push": "push"}
+RESULT_KEY = {"win": "res_win", "loss": "res_loss", "push": "res_push"}
+
+
+def _result_tag(result: str, fallback: str = "&mdash;") -> tuple[str, str]:
+    cls = RESULT_CLASS.get(result, "")
+    key = RESULT_KEY.get(result)
+    return cls, (_(key) if key else fallback)
+
+
+def result_rows(plays: list[dict], columns: str = "full") -> str:
+    if not plays:
+        colspan = 7 if columns == "full" else 5
+        return (f'<tr><td colspan="{colspan}" style="text-align:center;padding:34px 18px">'
+                f'{_("no_graded")}</td></tr>')
+    rows = []
+    for p in plays:
+        tag, label = _result_tag(p.get("result", ""))
+        profit = p.get("profit", 0.0)
+        if columns == "full":
+            clv = p.get("clv_ev")
+            clv_cell = (f'<td class="m {cls_for(clv)}">{pct(clv)}</td>'
+                        if clv is not None else '<td class="m" style="color:var(--dim)">—</td>')
+            rows.append(f"""<tr>
+              <td class="m">{esc(_short_date(p))}</td>
+              <td class="strong">{esc(p.get('pick',''))}</td>
+              <td class="m">{esc(p.get('league',''))}</td>
+              <td class="m">{esc(om.format_american(p.get('price',0)))}</td>
+              <td class="m">{pct(p.get('edge_pct',0))}</td>
+              {clv_cell}
+              <td><span class="tag {tag}">{label}</span></td>
+              <td class="m {cls_for(profit)}">{u(profit)}</td></tr>""")
+        else:
+            rows.append(f"""<tr>
+              <td class="strong">{esc(p.get('pick',''))}</td>
+              <td class="m">{esc(p.get('league',''))}</td>
+              <td class="m">{esc(om.format_american(p.get('price',0)))}</td>
+              <td><span class="tag {tag}">{label}</span></td>
+              <td class="m {cls_for(profit)}">{u(profit)}</td></tr>""")
+    return "".join(rows)
+
+
+def yesterday_rows(plays: list[dict]) -> str:
+    if not plays:
+        return ('<tr><td colspan="7" style="text-align:center;padding:34px 18px">'
+                f'{_("nothing_yesterday")}</td></tr>')
+    rows = []
+    for p in plays:
+        tag, label = _result_tag(p.get("result", ""), _("res_pending"))
+        profit = p.get("profit", 0.0)
+        rows.append(f"""<tr>
+          <td class="strong">{esc(p.get('pick',''))}</td>
+          <td class="m">{esc(p.get('league',''))}</td>
+          <td class="m">{esc(p.get('market_label',''))}</td>
+          <td class="m">{esc(om.format_american(p.get('price',0)))}</td>
+          <td class="m">{p.get('stake',1.0):.1f}u</td>
+          <td><span class="tag {tag}">{label}</span></td>
+          <td class="m {cls_for(profit)}">{u(profit)}</td></tr>""")
+    return "".join(rows)
+
+
+def league_rows(rows: list[dict]) -> str:
+    if not rows:
+        return ('<tr><td colspan="6" style="text-align:center;padding:34px 18px">'
+                f'{_("no_graded_short")}</td></tr>')
+    out = []
+    for r in rows:
+        out.append(f"""<tr>
+          <td class="strong">{esc(r['league'])}</td>
+          <td class="m">{r['plays']}</td>
+          <td class="m">{esc(r['record'])}</td>
+          <td class="m">{r['win_pct']:.1f}%</td>
+          <td class="m {cls_for(r['units'])}">{u(r['units'])}</td>
+          <td class="m {cls_for(r['roi'])}">{pct(r['roi'])}</td></tr>""")
+    return "".join(out)
+
+
+SOURCE_KEY = {"value": "src_value", "screen": "src_screen"}
+
+
+def source_rows(rows: list[dict]) -> str:
+    """Head-to-head: which approach is actually beating the closing number."""
+    if not rows:
+        return ('<tr><td colspan="6" style="text-align:center;padding:34px 18px">'
+                f'{_("nothing_posted")}</td></tr>')
+    out = []
+    for r in rows:
+        clv = r.get("clv_beat_pct", 0.0)
+        clv_cell = (f'<td class="m {cls_for(clv - 50)}">{clv:.0f}%</td>'
+                    if r.get("clv_n") else '<td class="m" style="color:var(--dim)">—</td>')
+        out.append(f"""<tr>
+          <td class="strong">{esc(_(SOURCE_KEY[r['source']]) if r['source'] in SOURCE_KEY else r['source'])}</td>
+          <td class="m">{r['posted']}</td>
+          <td class="m">{esc(r['record'])}</td>
+          <td class="m {cls_for(r['units'])}">{u(r['units'])}</td>
+          <td class="m {cls_for(r['roi'])}">{pct(r['roi'])}</td>
+          {clv_cell}</tr>""")
+    return "".join(out)
+
+
+def _short_date(play: dict) -> str:
+    stamp = play.get("posted_date") or (play.get("commence_time") or "")[:10]
+    try:
+        return i18n.short_date(datetime.fromisoformat(stamp), LANG)
+    except Exception:
+        return stamp
+
+
+# ---------------------------------------------------------------------- KPIs
+def kpi_strip(s: dict, variant: str = "home") -> str:
+    units, roi = s.get("units", 0.0), s.get("roi", 0.0)
+    if variant == "home":
+        cards = [
+            (_("kpi_units"), u(units), cls_for(units), _("kpi_units_sub")),
+            (_("kpi_roi"), pct(roi), cls_for(roi),
+             _("kpi_roi_home", n=s.get("graded", 0))),
+            (_("kpi_record"), esc(s.get("record", "0–0–0")), "",
+             _("kpi_record_sub", v=f"{s.get('win_pct',0):.1f}")),
+            (_("kpi_losing"), f"{s.get('losing_months',0)}<span style=\"color:var(--dim)\">/"
+             f"{max(s.get('total_months',0),1)}</span>", "", _("kpi_losing_sub")),
+        ]
+    else:
+        cards = [
+            (_("kpi_units"), u(units), cls_for(units), _("kpi_units_sub")),
+            (_("kpi_roi"), pct(roi), cls_for(roi),
+             _("kpi_roi_rec", v=f"{s.get('risked',0):.0f}")),
+            (_("kpi_record"), esc(s.get("record", "0–0–0")), "",
+             _("kpi_record_sub", v=f"{s.get('win_pct',0):.1f}")),
+            (_("kpi_clv"),
+             f"{s.get('clv_beat_pct', 0):.0f}%" if s.get("clv_n") else "—",
+             cls_for(s.get("clv_beat_pct", 0) - 50) if s.get("clv_n") else "",
+             _("kpi_clv_sub", n=s.get("clv_n", 0))),
+        ]
+    return "".join(
+        f'<div class="kpi"><div class="k">{k}</div>'
+        f'<div class="v {c}">{v}</div><div class="s">{esc(sub)}</div></div>'
+        for k, v, c, sub in cards
+    )
+
+
+# --------------------------------------------------------------------- chart
+def month_chart(months: list[dict]) -> str:
+    if not months:
+        return ('<p style="padding:40px 0;text-align:center;color:var(--dim)">'
+                f'{_("chart_empty")}</p>')
+    def mlabel(m: dict) -> str:
+        key = m.get("key") or ""
+        try:
+            return i18n.MONTHS_SHORT[LANG][int(key.split("-")[1]) - 1]
+        except (IndexError, ValueError):
+            return str(m.get("label", ""))
+
+    peak = max((abs(m["units"]) for m in months), default=1.0) or 1.0
+    up_px, down_px = 150.0, 66.0
+    cols, described = [], []
+    for m in months:
+        val = m["units"]
+        described.append(f"{mlabel(m)} {u(val)}")
+        if val >= 0:
+            h = max(3, round(val / peak * up_px))
+            body = (f'<div class="pos"><span class="val g">{u(val,1)}</span>'
+                    f'<i style="height:{h}px"></i></div><div class="neg"></div>')
+        else:
+            h = max(3, round(abs(val) / peak * down_px))
+            body = (f'<div class="pos"></div><div class="neg">'
+                    f'<i class="down" style="height:{h}px"></i>'
+                    f'<span class="val r">{u(val,1)}</span></div>')
+        cols.append(
+            f'<div class="col" title="{esc(_("chart_tip", month=mlabel(m), year=m["year"], units=u(val), n=m["plays"]))}">'
+            f'{body}<span class="mlab">{esc(mlabel(m))}</span></div>')
+    label = _("chart_alt", v=", ".join(described))
+    return (f'<div class="chart" role="img" aria-label="{esc(label)}">'
+            f'<div class="bars">{"".join(cols)}</div></div>')
+
+
+# -------------------------------------------------------------------- signup
+def signup_form(button: str | None = None) -> str:
+    button = button or _("signup_btn")
+    if config.BEEHIIV_EMBED_URL:
+        return (f'<iframe src="{esc(config.BEEHIIV_EMBED_URL)}" class="signup-embed" '
+                f'title="{_("signup_title")}" scrolling="no" frameborder="0"></iframe>')
+    return f"""<form class="form-row" data-signup>
+      <input type="email" required placeholder="you@email.com" aria-label="{_("signup_aria")}">
+      <button class="btn solid" type="submit">{esc(button)}</button>
+    </form>
+    <p class="form-msg" role="status"></p>"""
+
+
+# ------------------------------------------------------- screen methodology
+# Labels for the screen thresholds. The page renders straight from
+# screen_config.py, so the rules shown to readers can never drift from the
+# rules the scanner actually applies — a published methodology that quietly
+# disagrees with the code is worse than none.
+# (label key, comparator key, number format). Both label and comparator are
+# i18n keys rather than English text, so the published methodology translates
+# with the rest of the page while still coming from screen_config.py.
+SCREEN_LABELS = {
+    "min_pitcher_k_pct": ("sl_min_pitcher_k_pct", "cmp_at_least", "pct"),
+    "min_vs_pa": ("sl_min_vs_pa", "cmp_at_least", "int"),
+    "min_vs_k_pct": ("sl_min_vs_k_pct", "cmp_at_least", "pct"),
+    "max_vs_avg": ("sl_max_vs_avg", "cmp_under", "three"),
+    "max_vs_woba": ("sl_max_vs_woba", "cmp_under", "three"),
+    "min_opp_k_per_game": ("sl_min_opp_k_per_game", "cmp_at_least", "two"),
+    "line_min": ("sl_line_min", "", "one"),
+    "line_max": ("sl_line_max", "", "one"),
+    "worst_juice": ("sl_worst_juice", "cmp_no_worse", "odds"),
+    "min_k_per_9": ("sl_min_k_per_9", "cmp_at_least", "one"),
+    "max_bets_per_day": ("sl_max_bets_per_day", "cmp_at_most", "int"),
+    "max_line": ("sl_max_line", "cmp_never", "one"),
+    "banned_line": ("sl_banned_line", "cmp_never", "one"),
+}
+
+
+def _fmt_threshold(value, kind: str) -> str:
+    if kind == "pct":
+        return f"{value * 100:.0f}%"
+    if kind == "three":
+        return f"{value:.3f}"
+    if kind == "two":
+        return f"{value:.2f}"
+    if kind == "one":
+        return f"{value:g}"
+    if kind == "odds":
+        return om.format_american(value)
+    return str(value)
+
+
+def screen_rule_rows(cfg: dict, skip=("fade_list",)) -> str:
+    """A None threshold means the rule is switched off — say so plainly
+    rather than printing 'None' at a reader."""
+    rows = []
+    for key, value in cfg.items():
+        if key in skip or key not in SCREEN_LABELS:
+            continue
+        label_key, cmp_key, kind = SCREEN_LABELS[key]
+        label = _(label_key)
+        comparator = _(cmp_key) if cmp_key else ""
+        if value is None:
+            rows.append(f"""<tr>
+              <td class="strong" style="color:var(--dim)">{esc(label)}</td>
+              <td style="color:var(--dim)">{_("rule_nolimit")}</td>
+              <td class="m" style="color:var(--dim)">{_("rule_off")}</td></tr>""")
+            continue
+        rows.append(f"""<tr>
+          <td class="strong">{esc(label)}</td>
+          <td>{esc(comparator)}</td>
+          <td class="m">{esc(_fmt_threshold(value, kind))}</td></tr>""")
+    return "".join(rows)
+
+
+def breakeven_rows(prices=(-150, -130, -120, -110, 100, 110, 120, 140)) -> str:
+    """What each price has to hit just to break even."""
+    rows = []
+    for price in prices:
+        need = (100 / (price + 100)) if price > 0 else (abs(price) / (abs(price) + 100))
+        rows.append(f"""<tr>
+          <td class="m strong">{esc(om.format_american(price))}</td>
+          <td class="m">{need * 100:.1f}%</td>
+          <td>{_breakeven_note(need)}</td></tr>""")
+    return "".join(rows)
+
+
+def _breakeven_note(need: float) -> str:
+    if need > 0.5:
+        return _("be_edge")
+    if abs(need - 0.5) < 1e-9:
+        return _("be_even")
+    return _("be_profit")
+
+
+# --------------------------------------------------------------- full slate
+def _nickname(team: str | None) -> str:
+    """'San Diego Padres' -> 'Padres'. Enough to name a side in a tight space."""
+    parts = str(team or "").split()
+    if not parts:
+        return ""
+    # Both Chicago and Boston end in "Sox", so the last word alone is ambiguous.
+    if len(parts) > 1 and parts[-1].lower() == "sox":
+        return " ".join(parts[-2:])
+    return parts[-1]
+
+
+def _record_line(rec: dict | None, at_home: bool) -> str:
+    """'78–52 · 44–21 at home'. The venue split is the half that's relevant."""
+    if not rec or (rec.get("w", 0) + rec.get("l", 0)) == 0:
+        return ""
+    overall = f"{rec['w']}&ndash;{rec['l']}"
+    if at_home:
+        split, label = f"{rec.get('hw',0)}&ndash;{rec.get('hl',0)}", "at home"
+    else:
+        split, label = f"{rec.get('aw',0)}&ndash;{rec.get('al',0)}", "on the road"
+    return f'<div class="grec">{overall} &middot; {split} {label}</div>'
+
+
+# Below this many career starts against a club, the split is noise wearing a
+# number, and the card says so rather than letting it read as a trend.
+THIN_VS_STARTS = 3
+
+
+def _vs_line(vs: dict | None, opponent: str | None) -> str:
+    if not vs:
+        return ""
+    who = _nickname(opponent) or _("them")
+    starts = vs.get("starts") or 0
+    # No starts but innings on the board means relief work — saying "0 GS"
+    # reads like missing data rather than what it is.
+    stint = f'{starts} {_("gs")} &middot; ' if starts else ""
+    body = _("vs_body", team=esc(who), stint=stint,
+             ip=f"{vs.get('innings', 0):.1f}", ipu=_("ip"),
+             era=f"{vs.get('era', 0):.2f}", erau=_("era"))
+    span = vs.get("span")
+    tip = _("vs_tip", span=(_("span_season", v=span) if span else _("span_career")))
+    if starts < THIN_VS_STARTS:
+        return (f'<div class="gvs thin" title="{esc(_("vs_tip_thin", tip=tip))}">'
+                f'{body} &middot; {_("vs_thin")}</div>')
+    return f'<div class="gvs" title="{esc(tip)}">{body}</div>'
+
+
+def _side(team, starter, era, prob, leading, rec=None, at_home=False,
+          vs=None, opponent=None) -> str:
+    sp = esc(starter or "TBA")
+    if era is not None:
+        sp += f" &middot; {era:.2f} ERA"
+    # One decimal, not zero: at 49.8 vs 50.2 a rounded pair both read "50%"
+    # while the footer reports a lean, which looks like a contradiction.
+    return f"""
+        <div class="gside{' lead' if leading else ''}">
+          <div class="tm">{_tdot(team)}{esc(team or '')}</div>
+          <div class="pc">{prob*100:.1f}%</div>
+        </div>
+        {_record_line(rec, at_home)}
+        <div class="gsp">{sp}</div>
+        {_vs_line(vs, opponent)}"""
+
+
+def _abbr(team: str | None) -> str:
+    """MIL, CHC, NYY. Falls back to the nickname when a club isn't listed."""
+    return TEAM_ABBR.get(_nickname(team).lower()) or _nickname(team).upper()[:3]
+
+
+def _short_name(name: str | None) -> str:
+    """'Freddy Peralta' -> 'F. Peralta'. A card has room for a surname."""
+    parts = str(name or "").split()
+    if len(parts) < 2:
+        return parts[0] if parts else "TBA"
+    return f"{parts[0][0]}. {' '.join(parts[1:])}"
+
+
+def _arm(name, era, record, innings, hand="") -> str:
+    """One starter column. Absent figures are simply left out rather than
+    printed as a dash, so a thin row reads as short instead of broken."""
+    bits = []
+    if record:
+        bits.append(f"{record.get('w', 0)}&ndash;{record.get('l', 0)}")
+    if era is not None:
+        bits.append(f'{era:.2f} {_("era")}')
+    if innings:
+        bits.append(f'{innings:.0f} {_("ip")}')
+    return f"""
+        <div class="g2-arm">
+          <div class="g2-nm">{esc(_short_name(name))}{f' {esc(hand)}' if hand else ''}</div>
+          <div class="g2-ln">{' &middot; '.join(bits) or '&mdash;'}</div>
+        </div>"""
+
+
+def slate_rows(rows: list[dict]) -> str:
+    if not rows:
+        return f'<div class="empty-board">{_("empty_board")}</div>'
+    out = []
+    for r in rows:
+        ph = r.get("home_win_prob") or 0.0
+        mkt = r.get("market_home_prob")
+        gap = r.get("disagreement")
+        suspect = bool(r.get("suspect"))
+
+        # One number, named. The old card printed both sides and left the
+        # reader to work out which one the market disagreed about.
+        tick = ("" if mkt is None else
+                f'<div class="g2-tick" style="left:{max(0.0, min(100.0, mkt * 100)):.1f}%" '
+                f'title="Where the market has it"></div>')
+
+        if gap is None:
+            foot_right = f'<span>{_("market_na")}</span>'
+        elif suspect:
+            foot_right = f'<span style="color:var(--amber)">{_("off_market", v=f"{abs(gap):.1f}")}</span>'
+        else:
+            cls = "up" if gap > 0 else "down"
+            foot_right = f'<span class="g2-{cls}">{_("vs_market", v=f"{gap:+.1f}")}</span>'
+
+        vs = r.get("home_vs_opp")
+        if vs:
+            thin = (vs.get("starts") or 0) < THIN_VS_STARTS
+            body = (f"{esc(str(r.get('home_starter') or '').split()[-1] or 'Starter')} "
+                    f'vs {esc(_abbr(r.get("away")))}: '
+                    + _("starts", n=vs.get("starts", 0), s=_pl(vs.get("starts", 0))))
+            body += (f' &middot; {_("thin_sample")}' if thin
+                     else f' &middot; {vs.get("era", 0):.2f} {_("era")}')
+            vs_html = f'<div class="g2-vs{" thin" if thin else ""}">{body}</div>'
+        else:
+            vs_html = ""
+
+        flagnote = ""
+        if suspect and gap is not None:
+            flagnote = (f'<div class="g2-flagnote">'
+                        f'{_("flagnote", v=f"{abs(gap):.1f}")}</div>')
+
+        final = (f'<span style="color:var(--sub)">{_("final", v=esc(r["final"]))}</span>'
+                 if r.get("final") else esc(game_time(r.get("commence_time")) or _("tbd")))
+
+        out.append(f"""
+        <div class="gcard2{' flag' if suspect else ''}">
+          <div class="g2-top">
+            <div class="g2-match">{esc(_abbr(r.get('away')))}
+              <span class="g2-at">@</span>{esc(_abbr(r.get('home')))}</div>
+            <div class="g2-time">{final}</div>
+          </div>
+          <div class="g2-arms">
+            {_arm(r.get('away_starter'), r.get('away_starter_era'), r.get('away_record'),
+                  r.get('away_sp_innings') or 0, r.get('away_hand') or '')}
+            {_arm(r.get('home_starter'), r.get('home_starter_era'), r.get('home_record'),
+                  r.get('home_sp_innings') or 0, r.get('home_hand') or '')}
+          </div>
+          <div class="g2-probrow">
+            <span class="g2-plabel">{_("winprob", team=esc(_abbr(r.get("home"))))}</span>
+            <span class="g2-pct">{ph * 100:.1f}%</span>
+          </div>
+          <div class="g2-bar">
+            <div class="g2-fill" style="width:{max(0.0, min(100.0, ph * 100)):.1f}%"></div>
+            {tick}
+          </div>
+          <div class="g2-foot">
+            <span>{_("market")} <b>{f"{mkt * 100:.1f}%" if mkt is not None else "&mdash;"}</b></span>
+            {foot_right}
+          </div>
+          {vs_html}
+          {flagnote}
+        </div>""")
+    return "".join(out)
+
+
+# The calibration plot is drawn on a fixed window so every row shares a scale
+# and the dots line up down the page.
+CALIB_LO, CALIB_HI = 25.0, 85.0
+
+
+def _cpos(value: float) -> float:
+    return max(0.0, min(100.0, (value - CALIB_LO) / (CALIB_HI - CALIB_LO) * 100))
+
+
+def calibration_rows(rows: list[dict]) -> str:
+    live = [r for r in rows if r.get("n")]
+    if not live:
+        return f'<div class="empty-board">{_("cal_empty")}</div>' 
+    import math as _m
+    out = []
+    for r in live:
+        gap, n = r["gap"], r["n"]
+        said, actual = r["predicted"], r["actual"]
+        # Within the noise band for this sample size, a gap means nothing.
+        se = _m.sqrt(0.25 / n) * 100 * 1.96
+        outside = abs(gap) > se
+        verdict = (_("within_noise") if not outside else
+                   (_("too_low") if gap > 0 else _("too_high")))
+        band_l, band_r = _cpos(said - se), _cpos(said + se)
+        label = (f"{r['lo']*100:.0f}%+" if r["hi"] > 1.0
+                 else f"{r['lo']*100:.0f}–{r['hi']*100:.0f}%")
+        out.append(f"""
+        <div class="crow">
+          <div class="cl">{label}</div>
+          <div class="cn">{_("cal_games", n=n)}</div>
+          <div class="ctrack" title="{_("cal_tip", a=f"{said:.1f}", b=f"{actual:.1f}")}">
+            <div class="cband" style="left:{band_l:.1f}%;width:{max(0.0, band_r-band_l):.1f}%"></div>
+            <div class="csaid" style="left:{_cpos(said):.1f}%"></div>
+            <div class="cact{' out' if outside else ''}" style="left:{_cpos(actual):.1f}%"></div>
+          </div>
+          <div class="cverdict{' out' if outside else ''}">{esc(verdict)}<br>
+            <span style="color:var(--dim)">{_("said_won", a=f"{said:.1f}", b=f"{actual:.1f}")}</span></div>
+        </div>""")
+    return "".join(out)
+
+
+def brier_line(summary: dict) -> str:
+    ours, theirs = summary.get("brier"), summary.get("market_brier")
+    if ours is None:
+        return _("brier_empty")
+    text = _("brier_main", n=summary.get("graded", 0), v=f"{ours:.4f}")
+    if theirs is not None:
+        rel = ("rel_better" if ours < theirs
+               else ("rel_worse" if ours > theirs else "rel_level"))
+        text += _("brier_market", v=f"{theirs:.4f}",
+                  n=summary.get("market_compared", 0), rel=_(rel))
+    return text
+
+
+# ----------------------------------------------------------- pitchers prop
+# The bar strip stays anchored at zero. Zooming the axis would make small
+# differences look big, which is the opposite of what this page argues.
+PITCH_MAX_K = 14
+
+
+def _ordinal(n: int) -> str:
+    if 10 <= n % 100 <= 20:
+        return "th"
+    return {1: "st", 2: "nd", 3: "rd"}.get(n % 10, "th")
+
+
+def _strip(recent: list[dict], line: float) -> str:
+    if not recent:
+        return f'<div class="pb-nostrip">{_("no_starts")}</div>' 
+    bars, ticks = [], []
+    for i, start in enumerate(recent):
+        k = start.get("strikeouts") or 0
+        h = max(6.0, min(100.0, k / PITCH_MAX_K * 100))
+        ago = len(recent) - i
+        when = esc(start.get("date") or "")
+        opp = esc(start.get("opponent") or "")
+        bars.append(f'<div class="pb-bar{" hit" if k > line else ""}" '
+                    f'style="height:{h:.1f}%" '
+                    f'title="{_("pb_tip", when=when, opp=opp, k=k, ip=start.get("innings", 0))}"></div>')
+        ticks.append(f"<span>{k}</span>")
+    pos = max(0.0, min(100.0, line / PITCH_MAX_K * 100))
+    return f"""
+      <div class="pb-strip">
+        <div class="pb-line" style="bottom:{pos:.1f}%"><span class="pb-linelab">{line:g}</span></div>
+        {''.join(bars)}
+      </div>
+      <div class="pb-ticks">{''.join(ticks)}</div>"""
+
+
+def pitcher_cards(rows: list[dict]) -> str:
+    if not rows:
+        return f'<div class="empty-board">{_("pitch_empty")}</div>' 
+    out = []
+    for r in rows:
+        line = r.get("line") or 0
+        proj = r.get("projection") or 0
+        gap = r.get("gap")
+
+        if r.get("suspect"):
+            lean = (f'<span class="flagged" title="{_("pb_flagtip")}">'
+                    f'{_("off_the_line", v=f"{abs(gap):.1f}")}</span>')
+        elif gap is None or abs(gap) < 0.4:
+            lean = f'<span>{_("in_line")}</span>'
+        else:
+            key = "over_the_line" if gap > 0 else "under_the_line"
+            lean = f'<span class="lean">{_(key, v=f"{abs(gap):.1f}")}</span>' 
+
+        actual = r.get("actual")
+        if actual is None:
+            status = f'<span>{_("rated")}</span>'
+        else:
+            went = _("over") if actual > line else _("under")
+            status = f'<span class="fin">{_("final_k", n=actual, side=went)}</span>' 
+
+        vs = r.get("vs_opp")
+        vs_html = _vs_line(vs, r.get("opponent")) if vs else (
+            f'<div class="gvs thin">'
+            f'{_("never_faced", team=esc(_nickname(r.get("opponent"))))}</div>')
+
+        rank = r.get("opp_k_rank")
+        rank_txt = (" &middot; " + _("pb_rank", r=rank, ord=_ordinal(rank),
+                                     n=r.get("opp_teams_ranked", 30))
+                    if rank else "")
+        opp_rate = r.get("opp_k_per_game")
+        prices = []
+        if r.get("over_odds") is not None:
+            prices.append(f"o{om.format_american(r['over_odds'])}")
+        if r.get("under_odds") is not None:
+            prices.append(f"u{om.format_american(r['under_odds'])}")
+
+        out.append(f"""
+        <div class="pb-card{' flag' if r.get('suspect') else ''}"
+             style="--accent:{team_color(r.get('opponent')) or 'var(--line-2)'}">
+          <div class="pb-top">
+            <span>{esc(r.get('team',''))} vs {esc(_nickname(r.get('opponent')))}
+              &middot; {esc(game_time(r.get('commence_time')))}</span>
+            {status}
+          </div>
+          <div class="pb-body">
+            <div class="pb-name">{esc(r.get('name',''))}</div>
+            <div class="pb-head">
+              <div class="pb-num"><div class="k">{_("our_projection")}</div>
+                <div class="v">{proj:.1f}<span class="unit">{_("k_unit")}</span></div></div>
+              <div class="pb-num alt"><div class="k">{_("posted_line")}</div>
+                <div class="v">{line:g}<span class="unit">{_("k_unit")}</span></div></div>
+            </div>
+            <div class="pb-striphead">
+              <span>{_("last_n_starts", n=r.get('recent_n', 0))}</span>
+              <span class="pb-rec"><b>{r.get('recent_over',0)}&ndash;{max(0,(r.get('recent_n',0)-r.get('recent_over',0)))}</b>
+                {_("over_line", v=f"{line:g}")} &middot; {_("l5")} <b>{r.get('last5_over',0)}&ndash;{max(0,(r.get('last5_n',0)-r.get('last5_over',0)))}</b></span>
+            </div>
+            {_strip(r.get('recent') or [], line)}
+            <div class="pb-rows">
+              <div class="pb-row"><span>{_("season")}</span><b>{_season_line(r)}</b></div>
+              <div class="pb-row"><span>{_("opp_ks", team=esc(_nickname(r.get('opponent'))))}</span>
+                <b>{_("per_game", v=f"{opp_rate:.1f}") if opp_rate else '&mdash;'}{rank_txt}</b></div>
+            </div>
+            {vs_html}
+            <div class="pb-foot">
+              <span>{esc(' / '.join(prices)) or '&mdash;'}</span>
+              {lean}
+            </div>
+          </div>
+        </div>""")
+    return "".join(out)
+
+
+def _season_line(r: dict) -> str:
+    bits = []
+    if r.get("k_pct") is not None:
+        bits.append(_("k_rate", v=f"{r['k_pct']*100:.1f}"))
+    if r.get("k_per_9") is not None:
+        bits.append(f"{r['k_per_9']:.1f} K/9")
+    if r.get("era") is not None:
+        bits.append(f"{r['era']:.2f} {_('era')}")
+    return " &middot; ".join(bits) or "&mdash;"
+
+
+def pitcher_accuracy(summary: dict) -> str:
+    """How far off the projections have been, against the line's own miss."""
+    mae, line_mae = summary.get("mae"), summary.get("line_mae")
+    if mae is None:
+        return _("pa_empty")
+    n = summary.get("graded", 0)
+    text = _("pa_main", n=n, noun=_("pa_noun_one" if n == 1 else "pa_noun_many"),
+             mae=f"{mae:.2f}", lmae=f"{line_mae:.2f}")
+    if line_mae is not None:
+        text += _("pa_closer") if mae < line_mae else _("pa_line_closer")
+    called = summary.get("called_right")
+    if called is not None:
+        text += _("pa_called", n=summary.get("calls", 0), v=f"{called:.1f}")
+    return text
+
+
+def pitcher_bucket_rows(summary: dict) -> str:
+    buckets = [b for b in summary.get("buckets", []) if b.get("n")]
+    if not buckets:
+        return f'<div class="empty-board">{_("pb_empty")}</div>' 
+    import math as _m
+    out = []
+    for b in buckets:
+        n, pct_right = b["n"], b["pct"]
+        se = _m.sqrt(0.25 / n) * 100 * 1.96
+        noise = abs(pct_right - 50.0) <= se
+        if noise:
+            verdict = _("within_noise")
+        else:
+            verdict = _("better_coin") if pct_right > 50 else _("worse_coin")
+        width = max(0.0, min(100.0, pct_right))
+        out.append(f"""
+        <div class="crow">
+          <div class="cl">{esc(_(b["id"]) if b.get("id") else b.get("label", ""))}</div>
+          <div class="cn">{_("n_starts", n=n, s=_pl(n))}</div>
+          <div class="ctrack" title="{_("bucket_tip", a=b['right'], b=n)}">
+            <div class="cband" style="left:{max(0.0,50-se):.1f}%;width:{min(100.0,2*se):.1f}%"></div>
+            <div class="csaid" style="left:50%"></div>
+            <div class="cact{'' if noise else ' out'}"
+                 style="left:{width:.1f}%"></div>
+          </div>
+          <div class="cverdict{'' if noise else ' out'}">{esc(verdict)}<br>
+            <span style="color:var(--dim)">{_("pct_right", v=f"{pct_right:.0f}")}</span></div>
+        </div>""")
+    return "".join(out)
+
+
+# ------------------------------------------------------------ team colour
+# One primary per club, used only for a 2px card edge and a small dot beside
+# the name. Keyed on the last word of the feed's team name, which is what
+# _nickname() already returns, so a name the feed spells differently simply
+# falls through to the neutral default instead of breaking.
+TEAM_COLOR = {
+    "diamondbacks": "#A71930", "braves": "#CE1141", "orioles": "#DF4601",
+    "red sox": "#BD3039", "cubs": "#0E3386", "white sox": "#C4CED4",
+    "reds": "#C6011F", "guardians": "#00385D", "rockies": "#33006F",
+    "tigers": "#0C2340", "astros": "#EB6E1F", "royals": "#004687",
+    "angels": "#BA0021", "dodgers": "#005A9C", "marlins": "#00A3E0",
+    "brewers": "#12284B", "twins": "#002B5C", "mets": "#FF5910",
+    "yankees": "#1C2841", "athletics": "#003831", "phillies": "#E81828",
+    "pirates": "#FDB827", "padres": "#2F241D", "giants": "#FD5A1E",
+    "mariners": "#005C5C", "cardinals": "#C41E3A", "rays": "#8FBCE6",
+    "rangers": "#003278", "jays": "#134A8E", "nationals": "#AB0003",
+}
+
+
+# Half a dozen clubs wear a navy or a black that is all but invisible on a
+# near-black panel — the Yankees, Padres, Athletics and Brewers among them.
+# Rather than hand-picking substitutes and getting it subtly wrong, every
+# colour is lifted toward white until it clears a contrast floor against the
+# card. Clubs already bright enough are returned untouched.
+PANEL_RGB = (0x10, 0x13, 0x17)
+MIN_CONTRAST = 2.6
+
+
+def _luminance(rgb) -> float:
+    def channel(v):
+        v /= 255.0
+        return v / 12.92 if v <= 0.04045 else ((v + 0.055) / 1.055) ** 2.4
+    r, g, b = (channel(c) for c in rgb)
+    return 0.2126 * r + 0.7152 * g + 0.0722 * b
+
+
+def _contrast(a, b) -> float:
+    la, lb = _luminance(a), _luminance(b)
+    lo, hi = sorted((la, lb))
+    return (hi + 0.05) / (lo + 0.05)
+
+
+def _legible(hex_color: str) -> str:
+    rgb = tuple(int(hex_color[i:i + 2], 16) for i in (1, 3, 5))
+    for step in range(21):                       # up to 100% toward white
+        mix = step / 20.0
+        lifted = tuple(round(c + (255 - c) * mix) for c in rgb)
+        if _contrast(lifted, PANEL_RGB) >= MIN_CONTRAST:
+            return "#%02X%02X%02X" % lifted
+    return "#FFFFFF"
+
+
+# Three-letter codes, keyed the same way as TEAM_COLOR so both maps agree.
+TEAM_ABBR = {
+    "diamondbacks": "ARI", "braves": "ATL", "orioles": "BAL", "red sox": "BOS",
+    "cubs": "CHC", "white sox": "CWS", "reds": "CIN", "guardians": "CLE",
+    "rockies": "COL", "tigers": "DET", "astros": "HOU", "royals": "KC",
+    "angels": "LAA", "dodgers": "LAD", "marlins": "MIA", "brewers": "MIL",
+    "twins": "MIN", "mets": "NYM", "yankees": "NYY", "athletics": "ATH",
+    "phillies": "PHI", "pirates": "PIT", "padres": "SD", "giants": "SF",
+    "mariners": "SEA", "cardinals": "STL", "rays": "TB", "rangers": "TEX",
+    "jays": "TOR", "nationals": "WSH",
+}
+
+
+def team_color(team: str | None) -> str | None:
+    raw = TEAM_COLOR.get(_nickname(team).lower()) if team else None
+    return _legible(raw) if raw else None
+
+
+def _tdot(team: str | None) -> str:
+    c = team_color(team)
+    return f'<span class="tdot" style="--tc:{c}"></span>' if c else ""
