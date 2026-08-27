@@ -1,0 +1,129 @@
+<section class="hero">
+  <div class="gridlines"></div>
+  <div class="wrap">
+    <div class="grid-2">
+      <div>
+        <div class="eyebrow">Free daily plays &middot; NBA &middot; NFL &middot; MLB &middot; NCAAB</div>
+        <h1>Free plays.<br>Posted daily.<br>Receipts on<br>every one.</h1>
+        <p class="lead">Every morning at {{POST_TIME}} the board gets scanned automatically. Where a book is offering a materially better price than the rest of the market, the play gets posted here &mdash; with the math attached. Everything is graded the next day, win or lose. Nothing is for sale.</p>
+        <div class="hero-cta">
+          <a href="plays.html" class="btn solid">See today's plays</a>
+          <a href="record.html" class="btn ghost">View the track record</a>
+        </div>
+        <div class="fineprint">No card required &middot; Nothing for sale &middot; 21+</div>
+      </div>
+      {{HERO_CARD}}
+    </div>
+  </div>
+</section>
+
+<section class="pad-sm">
+  <div class="wrap">
+    <div class="split" style="margin-bottom:26px">
+      <div>
+        <div class="eyebrow muted">Season to date &middot; {{GRADED_COUNT}} graded plays</div>
+        <h2 style="font-size:26px;margin-top:10px">The numbers, unfiltered</h2>
+      </div>
+      <a href="record.html" class="link-quiet mono" style="letter-spacing:.12em;text-transform:uppercase;font-size:11px">Full play log &rarr;</a>
+    </div>
+    <div class="kpis">{{KPI_HOME}}</div>
+  </div>
+</section>
+
+<section class="pad">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">How it works</div>
+      <h2>Three steps. No group chat, no upsell.</h2>
+      <p class="lead">Most touts sell you the pick and hide the record. We do the opposite: the card is free and the record is the product.</p>
+    </div>
+    <div class="grid-3">
+      <div class="tile">
+        <div class="num">01</div>
+        <h3>The whole board gets priced</h3>
+        <p>Every game is pulled from {{MIN_BOOKS}}+ sportsbooks each morning. Both sides of each market get the vig stripped out, which turns a book's price into its honest opinion of the odds.</p>
+      </div>
+      <div class="tile">
+        <div class="num">02</div>
+        <h3>Only real outliers get posted</h3>
+        <p>Average those honest opinions and you have a consensus fair price. A play posts only when the best number on the board beats that consensus by {{MIN_EDGE}} or more. Cap is {{MAX_PLAYS}} plays a day.</p>
+      </div>
+      <div class="tile">
+        <div class="num">03</div>
+        <h3>Everything gets graded</h3>
+        <p>The next morning every play is marked win, loss, or push against the final score and added to the permanent log. Nothing is deleted, re-priced, or quietly disappeared.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="pad">
+  <div class="wrap">
+    <div class="grid-2">
+      <div>
+        <div class="eyebrow">Built for the grind</div>
+        <h2 style="margin:14px 0 20px">You've been burned by pick sellers. That's the whole reason this exists.</h2>
+        <p class="lead" style="margin-bottom:26px">Deleted losers. Screenshots of "5&ndash;0 days" that never happened. $299 for a "lock of the month." If you've been chasing plays for a while, you know the pattern.</p>
+        <div class="quote">Every play ever posted is still on the site, graded exactly as it was posted. You can scroll the losing days yourself.</div>
+        <div style="margin-top:30px">
+          <a href="record.html" class="btn ghost">Check the losing months</a>
+        </div>
+      </div>
+      <div class="card">
+        <div class="play-top">
+          <span class="stamp">Recently graded</span>
+          <span class="stamp on">Last {{RECENT_COUNT}} plays</span>
+        </div>
+        <div class="scroll-x">
+          <table class="tbl" style="border:0"><tbody>{{RECENT_ROWS}}</tbody></table>
+        </div>
+        <div style="padding:16px 20px;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center">
+          <span class="stamp">Net</span>
+          <span class="mono {{RECENT_NET_CLASS}}" style="font-size:15px;font-weight:600">{{RECENT_NET}}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="pad">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Coverage</div>
+      <h2>Four leagues, year round</h2>
+      <p class="lead">The scanner runs on whichever of these is in season, so the card follows the calendar without anyone touching it.</p>
+    </div>
+    <div class="grid-4">
+      <div class="tile">
+        <div class="num">NBA</div>
+        <h3>Sides, totals, moneylines</h3>
+        <p style="margin-top:8px">Highest book count of any league, which makes the consensus sharper and the outliers easier to trust.</p>
+      </div>
+      <div class="tile">
+        <div class="num">NFL</div>
+        <h3>Spreads, totals, ML</h3>
+        <p style="margin-top:8px">The most heavily priced market in North America. Edges are rarer here and worth more when they show up.</p>
+      </div>
+      <div class="tile">
+        <div class="num">MLB</div>
+        <h3>Moneylines and totals</h3>
+        <p style="margin-top:8px">Daily volume means the scanner sees a lot of games &mdash; and books disagree with each other more often.</p>
+      </div>
+      <div class="tile">
+        <div class="num">NCAAB</div>
+        <h3>Sides and totals</h3>
+        <p style="margin-top:8px">Where the softest numbers live. Smaller schools get less attention from the books that set the market.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-band">
+  <div class="wrap">
+    <div class="eyebrow">Free, and staying free</div>
+    <h2>Get the card in your inbox at {{POST_TIME}}</h2>
+    <p>One email a day: the plays, the math behind them, and yesterday's graded results. No promo codes, no affiliate links, no "premium tier" waiting behind it.</p>
+    {{SIGNUP}}
+    <div class="fineprint">Unsubscribe any time &middot; We never sell your email &middot; 21+</div>
+  </div>
+</section>

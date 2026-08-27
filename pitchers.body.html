@@ -1,0 +1,90 @@
+<section style="background:linear-gradient(180deg,#0A0C0F,var(--bg))">
+  <div class="wrap" style="padding:56px 28px 46px">
+    <div class="eyebrow">{{PITCH_DATE}} &middot; every starter with a line</div>
+    <h1 style="font-size:clamp(32px,4.2vw,50px);margin:14px 0 16px">Pitchers prop</h1>
+    <p class="lead">A projected strikeout total for every starter we can see a posted line for, sitting next to the number a book is offering. Same rule as the MLB board: every projection is graded afterwards, whether or not it became a play.</p>
+  </div>
+</section>
+
+<section class="pad-sm">
+  <div class="wrap">
+    <div class="pb-grid">{{PITCHER_CARDS}}</div>
+
+    <div class="clegend" style="margin-top:22px">
+      <span><i style="display:inline-block;width:10px;height:13px;background:var(--green);border-radius:2px 2px 0 0"></i> start cleared tonight's line</span>
+      <span><i style="display:inline-block;width:10px;height:13px;background:var(--red);border-radius:2px 2px 0 0"></i> start stayed under</span>
+      <span><i style="display:inline-block;width:22px;height:0;border-top:2px dashed var(--txt)"></i> tonight's posted line</span>
+    </div>
+
+    <div class="note" style="margin-top:26px">
+      <p class="disclaimer"><b style="color:var(--txt)">The bars are strikeout totals, not a trend.</b> Every past start is scored against <i>tonight's</i> line, not the number that was posted on the night, so a 6&ndash;4 record doesn't mean a pitcher is hot &mdash; it means six of his last ten outings would have cleared the number a book is offering today. Ten starts is a small sample: the distance between 6&ndash;4 and 4&ndash;6 is two ordinary nights, and the record on its own is not a reason to bet anything. A card flagged in amber sits further from the posted line than the market can plausibly be wrong, which we treat as our bug rather than an opportunity.</p>
+    </div>
+  </div>
+</section>
+
+<section class="pad-sm" id="accuracy">
+  <div class="wrap">
+    <div class="sec-head" style="margin-bottom:26px">
+      <div class="eyebrow">The scoreboard for the projections</div>
+      <h2 style="font-size:26px;margin-top:10px">How far off are we?</h2>
+      <p class="lead" style="margin-top:12px">Every projection here gets compared to what the pitcher actually did, and to how close the posted line was to the same result. If reading the line off a screen beats our arithmetic, that's the number this page reports.</p>
+    </div>
+    <div class="calib">{{PITCH_BUCKETS}}</div>
+    <div class="clegend">
+      <span><i class="key-line"></i> a coin flip</span>
+      <span><i class="key-dot"></i> how often we landed on the right side</span>
+      <span><i class="key-band"></i> the range chance alone explains</span>
+    </div>
+    <div class="note" style="margin-top:26px">
+      <p class="disclaimer">{{PITCH_ACCURACY}}</p>
+    </div>
+  </div>
+</section>
+
+<section class="pad">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">What the projection is</div>
+      <h2>One line of arithmetic, published so it can be wrong</h2>
+    </div>
+    <div class="grid-2" style="gap:44px;align-items:start">
+      <div class="tile">
+        <div class="num">The formula</div>
+        <h3>Rate &times; workload &times; matchup</h3>
+        <p style="margin-top:10px">Season strikeouts per nine innings, times the innings a starter is expected to go, adjusted for how often tonight's lineup strikes out relative to the other teams on the board. That is the entire model. No fitted coefficients, nothing that couldn't be checked on paper.</p>
+      </div>
+      <div class="tile">
+        <div class="num">The fragile part</div>
+        <h3>The innings assumption</h3>
+        <p style="margin-top:10px">Expected innings does more work here than anything else. Assume six innings instead of five and a third, and every projection on the page moves half a strikeout &mdash; enough to invent disagreements that aren't there. It's a flat assumption by starter type rather than a per-pitcher estimate, and it is the first thing to suspect when a number looks wrong.</p>
+      </div>
+      <div class="tile">
+        <div class="num">Left out</div>
+        <h3>Park, weather, catcher, umpire</h3>
+        <p style="margin-top:10px">All of them nudge strikeout totals. None nudge it as far as which lineup he faces and how long he stays in, and every additional input is another thing that can be quietly wrong without anyone noticing for a month.</p>
+      </div>
+      <div class="tile">
+        <div class="num">Shown, not counted</div>
+        <h3>The vs-opponent line</h3>
+        <p style="margin-top:10px">How a starter has fared against tonight's club is on every card because it's the first thing anyone looks for. It is not in the projection. A handful of starts against one team is mostly luck, which is why any sample under three starts is greyed out and labelled thin.</p>
+      </div>
+    </div>
+    <div class="note" style="margin-top:30px">
+      <p class="disclaimer"><b style="color:var(--txt)">A rating is not a bet.</b> Most of these sit close enough to the posted number that there is nothing to do. Only the starters that clear the screens get posted as plays, and those are capped at five a day &mdash; the rest are here so the arithmetic can be checked in public.</p>
+    </div>
+  </div>
+</section>
+
+<section class="cta-band">
+  <div class="wrap">
+    <div class="eyebrow">Numbers on everything, plays on almost nothing</div>
+    <h2>Rated nightly. Bet rarely.</h2>
+    <p>A projection on every starter doesn't mean a bet on every starter. The screens decide what gets posted, and most nights they say nothing.</p>
+    <div class="hero-cta">
+      <a href="plays.html" class="btn solid">Today's plays</a>
+      <a href="screens.html" class="btn ghost">The screens</a>
+      <a href="slate.html" class="btn ghost">MLB board</a>
+    </div>
+    <div class="fineprint" style="margin-top:22px">21+ &middot; Entertainment only &middot; Nothing here is for sale</div>
+  </div>
+</section>
