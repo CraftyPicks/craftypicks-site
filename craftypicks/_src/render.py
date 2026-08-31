@@ -7,6 +7,7 @@ story simple and the build instant.
 from __future__ import annotations
 
 import html
+import re
 import sys
 from datetime import datetime
 from pathlib import Path
@@ -177,7 +178,7 @@ def result_rows(plays: list[dict], columns: str = "full") -> str:
         if columns == "full":
             clv = p.get("clv_ev")
             clv_cell = (f'<td class="m {cls_for(clv)}">{pct(clv)}</td>'
-                        if clv is not None else '<td class="m" style="color:var(--dim)">—</td>')
+                        if clv is not None else '<td class="m" style="color:var(--muted)">—</td>')
             rows.append(f"""<tr>
               <td class="m">{esc(_short_date(p))}</td>
               <td class="strong">{esc(p.get('pick',''))}</td>
@@ -244,7 +245,7 @@ def source_rows(rows: list[dict]) -> str:
     for r in rows:
         clv = r.get("clv_beat_pct", 0.0)
         clv_cell = (f'<td class="m {cls_for(clv - 50)}">{clv:.0f}%</td>'
-                    if r.get("clv_n") else '<td class="m" style="color:var(--dim)">—</td>')
+                    if r.get("clv_n") else '<td class="m" style="color:var(--muted)">—</td>')
         out.append(f"""<tr>
           <td class="strong">{esc(_(SOURCE_KEY[r['source']]) if r['source'] in SOURCE_KEY else r['source'])}</td>
           <td class="m">{r['posted']}</td>
@@ -273,7 +274,7 @@ def kpi_strip(s: dict, variant: str = "home") -> str:
              _("kpi_roi_home", n=s.get("graded", 0))),
             (_("kpi_record"), esc(s.get("record", "0–0–0")), "",
              _("kpi_record_sub", v=f"{s.get('win_pct',0):.1f}")),
-            (_("kpi_losing"), f"{s.get('losing_months',0)}<span style=\"color:var(--dim)\">/"
+            (_("kpi_losing"), f"{s.get('losing_months',0)}<span style=\"color:var(--muted)\">/"
              f"{max(s.get('total_months',0),1)}</span>", "", _("kpi_losing_sub")),
         ]
     else:
@@ -357,7 +358,7 @@ def evidence_block(s: dict) -> str:
 # --------------------------------------------------------------------- chart
 def month_chart(months: list[dict]) -> str:
     if not months:
-        return ('<p style="padding:40px 0;text-align:center;color:var(--dim)">'
+        return ('<p style="padding:40px 0;text-align:center;color:var(--muted)">'
                 f'{_("chart_empty")}</p>')
     def mlabel(m: dict) -> str:
         key = m.get("key") or ""
@@ -453,9 +454,9 @@ def screen_rule_rows(cfg: dict, skip=("fade_list",)) -> str:
         comparator = _(cmp_key) if cmp_key else ""
         if value is None:
             rows.append(f"""<tr>
-              <td class="strong" style="color:var(--dim)">{esc(label)}</td>
-              <td style="color:var(--dim)">{_("rule_nolimit")}</td>
-              <td class="m" style="color:var(--dim)">{_("rule_off")}</td></tr>""")
+              <td class="strong" style="color:var(--muted)">{esc(label)}</td>
+              <td style="color:var(--muted)">{_("rule_nolimit")}</td>
+              <td class="m" style="color:var(--muted)">{_("rule_off")}</td></tr>""")
             continue
         rows.append(f"""<tr>
           <td class="strong">{esc(label)}</td>
@@ -624,7 +625,7 @@ def slate_rows(rows: list[dict]) -> str:
         # right side says what state the game is in instead.
         final = (f'<span class="fin">{_("final", v=esc(r["final"]))}</span>'
                  if r.get("final") else
-                 f'<span style="color:var(--dim)">{_("scheduled")}</span>')
+                 f'<span style="color:var(--muted)">{_("scheduled")}</span>')
 
         accent = team_color(home) or "var(--line-2)"
         out.append(f"""
@@ -690,7 +691,7 @@ def calibration_rows(rows: list[dict]) -> str:
             <div class="cact{' out' if outside else ''}" style="left:{_cpos(actual):.1f}%"></div>
           </div>
           <div class="cverdict{' out' if outside else ''}">{esc(verdict)}<br>
-            <span style="color:var(--dim)">{_("said_won", a=f"{said:.1f}", b=f"{actual:.1f}")}</span></div>
+            <span style="color:var(--muted)">{_("said_won", a=f"{said:.1f}", b=f"{actual:.1f}")}</span></div>
         </div>""")
     return "".join(out)
 
@@ -874,7 +875,7 @@ def pitcher_bucket_rows(summary: dict) -> str:
                  style="left:{width:.1f}%"></div>
           </div>
           <div class="cverdict{'' if noise else ' out'}">{esc(verdict)}<br>
-            <span style="color:var(--dim)">{_("pct_right", v=f"{pct_right:.0f}")}</span></div>
+            <span style="color:var(--muted)">{_("pct_right", v=f"{pct_right:.0f}")}</span></div>
         </div>""")
     return "".join(out)
 
@@ -898,12 +899,22 @@ TEAM_COLOR = {
 }
 
 
-# Half a dozen clubs wear a navy or a black that is all but invisible on a
-# near-black panel — the Yankees, Padres, Athletics and Brewers among them.
-# Rather than hand-picking substitutes and getting it subtly wrong, every
-# colour is lifted toward white until it clears a contrast floor against the
-# card. Clubs already bright enough are returned untouched.
-PANEL_RGB = (0x10, 0x13, 0x17)
+# Some clubs wear a colour that all but disappears against the card. Rather
+# than hand-picking substitutes and getting it subtly wrong, every colour is
+# moved away from the card until it clears a contrast floor; clubs already
+# legible are returned untouched. Which way "away" points depends on the card,
+# so the panel colour is read from the palette rather than written out again
+# here — two copies of one colour is how the bar tick ended up white on a
+# white card. On the slate palette three clubs move: the White Sox' silver,
+# the Pirates' gold and the Rays' light blue.
+def _panel_rgb() -> tuple[int, int, int]:
+    css = (Path(__file__).resolve().parent / "base.css").read_text(encoding="utf-8")
+    m = re.search(r":root\s*\{.*?--panel\s*:\s*(#[0-9A-Fa-f]{6})", css, re.S)
+    value = m.group(1) if m else "#FFFFFF"
+    return tuple(int(value[i:i + 2], 16) for i in (1, 3, 5))
+
+
+PANEL_RGB = _panel_rgb()
 MIN_CONTRAST = 2.6
 
 
@@ -922,13 +933,27 @@ def _contrast(a, b) -> float:
 
 
 def _legible(hex_color: str) -> str:
+    """Move a club's colour away from the card until it is legible on it.
+
+    Which way is "away" depends on the card. On a dark panel the colour is
+    lifted toward white; on a white one it is pushed toward black. The earlier
+    version only ever lifted, because it was written when the panel was
+    #101317 — run against a white card it made the palest clubs paler still.
+
+    Does not preserve hue exactly. Mixing toward black or white desaturates, so
+    a club needing heavy mixing stops looking quite like itself; legibility
+    wins. Against a white card three clubs move at all: the White Sox, the
+    Pirates and the Rays.
+    """
     rgb = tuple(int(hex_color[i:i + 2], 16) for i in (1, 3, 5))
-    for step in range(21):                       # up to 100% toward white
+    target = (0, 0, 0) if _luminance(PANEL_RGB) > 0.5 else (255, 255, 255)
+    for step in range(21):                       # up to 100% toward target
         mix = step / 20.0
-        lifted = tuple(round(c + (255 - c) * mix) for c in rgb)
-        if _contrast(lifted, PANEL_RGB) >= MIN_CONTRAST:
-            return "#%02X%02X%02X" % lifted
-    return "#FFFFFF"
+        moved = tuple(round(c + (target[i] - c) * mix)
+                      for i, c in enumerate(rgb))
+        if _contrast(moved, PANEL_RGB) >= MIN_CONTRAST:
+            return "#%02X%02X%02X" % moved
+    return "#%02X%02X%02X" % target
 
 
 # Three-letter codes, keyed the same way as TEAM_COLOR so both maps agree.

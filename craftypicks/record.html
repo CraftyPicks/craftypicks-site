@@ -16,29 +16,39 @@
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%2308090B'/><path d='M8 20 L14 12 L18 17 L24 9' stroke='%233BE081' stroke-width='2.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>">
 <style>
 :root{
-  /* Sampled from the reference render rather than eyeballed. The surfaces
-     barely moved; the accent did — a softer, lighter mint. */
-  --bg:#08090B;
-  --bg-2:#0C0E11;
-  --nav:#060A0D;
-  --panel:#101317;
-  --panel-2:#141821;
-  --line:#1D222A;
-  --line-2:#272D37;
-  --txt:#E9EDF2;
-  --muted:#8B939E;
-  --dim:#5D6570;
-  --sub:#AEB7C3;      /* readable small print — the card sub-lines */
-  --green:#3BE081;
-  --green-deep:#3D8D68;   /* the dark end of the probability-bar gradient */
+  /* Slate. Every value below was checked with scripts/palette.py rather than
+     eyeballed; the ratios in the spec's table are reproduced exactly by that
+     module, so a change here that breaks legibility fails the build. */
+  --bg:#EEF1F4;
+  --bg-2:#EEF1F4;
+  --panel:#FFFFFF;
+  --panel-2:#F7F9FB;
+  --line:#D8DEE4;
+  --line-2:#BFC7D0;
+
+  /* The type hierarchy, in the order a reader meets it. --dim is the only
+     token below 5:1 and is valid only for a caption under a figure that
+     already carries the meaning — never for a name, a price or a percentage.
+     See the --dim allowlist at the bottom of this file. */
+  --txt:#14181D;      /* club names, primary numbers, best price        15.7:1 */
+  --sub:#333A42;      /* records, starter, ERA, supporting stats        10.2:1 */
+  --muted:#525B65;    /* market labels, card headers, units              6.1:1 */
+  --dim:#828C97;      /* footnote captions only                          3.0:1 */
+
+  --green:#106E42;
+  --green-deep:#3D8D68;   /* the light end of the probability-bar gradient */
+  --green-hover:#0C5533;   /* solid-button hover: darker than rest on a light ground */
   --green-dim:#1F7F4B;
-  --red:#FF5C5C;
-  --amber:#F5C451;
+  --red:#BE2F2F;
+  --amber:#734C00;
 
   /* Two roles: mono labels the data, the sans carries everything else. */
   --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
   --sans:"Inter","Helvetica Neue",Helvetica,Arial,sans-serif;
   --maxw:1220px;
+
+  /* --dim allowlist: see DIM_ALLOWED in scripts/palette.py. Adding a selector
+     there is the only way to use this token, and the test will tell you so. */
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
@@ -55,7 +65,7 @@ img{max-width:100%;display:block}
   font-family:var(--mono);font-size:11px;letter-spacing:.22em;text-transform:uppercase;
   color:var(--green);font-weight:500;
 }
-.eyebrow.muted{color:var(--dim)}
+.eyebrow.muted{color:var(--muted)}
 h1,h2,h3,h4{font-weight:800;letter-spacing:-.03em;line-height:1.05}
 h1{font-size:clamp(38px,5.4vw,68px)}
 h2{font-size:clamp(28px,3.4vw,42px)}
@@ -63,13 +73,13 @@ h3{font-size:20px;letter-spacing:-.02em}
 p{color:var(--muted);font-size:16px}
 .lead{font-size:18px;max-width:56ch}
 .mono{font-family:var(--mono)}
-.up{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim)}
+.up{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
 .g{color:var(--green)}
 .r{color:var(--red)}
 
 /* ---------- nav ---------- */
 header.nav{
-  position:sticky;top:0;z-index:50;background:rgba(6,10,13,.86);
+  position:sticky;top:0;z-index:50;background:rgba(255,255,255,.86);
   backdrop-filter:blur(14px);border-bottom:1px solid var(--line);
 }
 .nav-in{max-width:var(--maxw);margin:0 auto;padding:0 28px;height:68px;
@@ -89,11 +99,11 @@ header.nav{
   font-weight:500;padding:13px 22px;border:1px solid var(--green);color:var(--green);
   background:transparent;cursor:pointer;transition:.15s;white-space:nowrap;
 }
-.btn:hover{background:rgba(91,227,156,.09)}
-.btn.solid{background:var(--green);color:#04150C;border-color:var(--green);font-weight:700}
-.btn.solid:hover{background:#74E9AC}
+.btn:hover{background:rgba(16,110,66,.09)}
+.btn.solid{background:var(--green);color:#FFFFFF;border-color:var(--green);font-weight:700}
+.btn.solid:hover{background:var(--green-hover)}
 .btn.ghost{border-color:var(--line-2);color:var(--txt)}
-.btn.ghost:hover{border-color:var(--muted);background:rgba(255,255,255,.03)}
+.btn.ghost:hover{border-color:var(--muted);background:rgba(20,24,29,.03)}
 .btn.sm{padding:10px 16px;font-size:11px}
 .link-quiet{font-size:14px;color:var(--muted)}
 .link-quiet:hover{color:var(--txt)}
@@ -112,14 +122,12 @@ section{border-bottom:1px solid var(--line)}
 /* ---------- hero ---------- */
 .hero{
   position:relative;overflow:hidden;
-  background:
-    radial-gradient(900px 420px at 76% 22%,rgba(91,227,156,.08),transparent 62%),
-    linear-gradient(180deg,#0A0C0F 0%,var(--bg) 100%);
+  background:var(--bg-2);
 }
 .hero .wrap{padding-top:104px;padding-bottom:104px}
 .hero h1{margin:22px 0 24px}
 .hero-cta{display:flex;gap:14px;margin:36px 0 18px;flex-wrap:wrap}
-.fineprint{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim)}
+.fineprint{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
 .gridlines{
   position:absolute;inset:0;pointer-events:none;opacity:.5;
   background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);
@@ -139,15 +147,15 @@ section{border-bottom:1px solid var(--line)}
   padding:14px 20px;border-bottom:1px solid var(--line);
 }
 .dot{width:6px;height:6px;border-radius:50%;background:var(--green);display:inline-block;
-  box-shadow:0 0 0 3px rgba(91,227,156,.16);animation:pulse 2.4s infinite}
+  box-shadow:0 0 0 3px rgba(16,110,66,.16);animation:pulse 2.4s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
-.stamp{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim)}
+.stamp{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
 .stamp.on{color:var(--green)}
 .play-body{padding:22px 20px 20px}
 .pick{font-size:26px;font-weight:800;letter-spacing:-.02em;margin-bottom:8px}
-.meta{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin-bottom:18px}
+.meta{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:18px}
 .mock-banner{
-  background:rgba(245,196,81,.12);border-bottom:1px solid rgba(245,196,81,.35);
+  background:rgba(115,76,0,.12);border-bottom:1px solid rgba(115,76,0,.35);
   color:var(--amber);font-family:var(--mono);font-size:11.5px;letter-spacing:.04em;
   padding:11px 28px;text-align:center;
 }
@@ -161,7 +169,7 @@ section{border-bottom:1px solid var(--line)}
 .stats{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--line);}
 .stat{padding:14px 16px;border-right:1px solid var(--line)}
 .stat:last-child{border-right:0}
-.stat .k{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim)}
+.stat .k{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
 .stat .v{font-family:var(--mono);font-size:19px;font-weight:600;margin-top:6px}
 
 /* ---------- feature tiles ---------- */
@@ -177,15 +185,15 @@ section{border-bottom:1px solid var(--line)}
 .kpis{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line);background:var(--panel)}
 .kpi{padding:28px 24px;border-right:1px solid var(--line)}
 .kpi:last-child{border-right:0}
-.kpi .k{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim)}
+.kpi .k{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
 .kpi .v{font-size:34px;font-weight:800;letter-spacing:-.03em;margin-top:10px;font-family:var(--mono)}
-.kpi .s{font-size:12.5px;color:var(--dim);margin-top:4px}
+.kpi .s{font-size:12.5px;color:var(--muted);margin-top:4px}
 
 /* ---------- table ---------- */
 .tbl{width:100%;border-collapse:collapse;border:1px solid var(--line);background:var(--panel)}
 .tbl th{
   font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;
-  color:var(--dim);text-align:left;padding:14px 18px;border-bottom:1px solid var(--line);font-weight:500;
+  color:var(--muted);text-align:left;padding:14px 18px;border-bottom:1px solid var(--line);font-weight:500;
   background:var(--bg-2);white-space:nowrap;
 }
 .tbl td{padding:15px 18px;border-bottom:1px solid var(--line);font-size:14px;color:var(--muted)}
@@ -195,9 +203,9 @@ section{border-bottom:1px solid var(--line)}
 .tbl tbody tr:hover{background:var(--panel-2)}
 .tag{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;
   padding:4px 8px;border:1px solid var(--line-2);color:var(--muted)}
-.tag.win{color:var(--green);border-color:rgba(59,224,129,.4);background:rgba(59,224,129,.07)}
-.tag.loss{color:var(--red);border-color:rgba(255,92,92,.35);background:rgba(255,92,92,.06)}
-.tag.push{color:var(--amber);border-color:rgba(245,196,81,.35);background:rgba(245,196,81,.06)}
+.tag.win{color:var(--green);border-color:rgba(16,110,66,.4);background:rgba(16,110,66,.10)}
+.tag.loss{color:var(--red);border-color:rgba(190,47,47,.35);background:rgba(190,47,47,.08)}
+.tag.push{color:var(--amber);border-color:rgba(115,76,0,.35);background:rgba(115,76,0,.08)}
 .scroll-x{overflow-x:auto}
 
 /* ---------- rated board ---------- */
@@ -208,7 +216,7 @@ section{border-bottom:1px solid var(--line)}
   gap:18px;align-items:start}
 .gcard{background:var(--panel);border:1px solid var(--line);transition:.18s}
 .gcard:hover{border-color:var(--line-2);background:var(--panel-2)}
-.gcard.flag{border-color:rgba(245,196,81,.42)}
+.gcard.flag{border-color:rgba(115,76,0,.42)}
 .gcard-top{
   display:flex;align-items:center;justify-content:space-between;gap:10px;
   padding:11px 17px;border-bottom:1px solid var(--line);background:var(--bg-2);
@@ -217,9 +225,11 @@ section{border-bottom:1px solid var(--line)}
 .gcard-top .fin{color:var(--txt)}
 .gcard-body{padding:17px}
 .gside{display:flex;align-items:baseline;justify-content:space-between;gap:14px}
-.gside .tm{font-size:15.5px;font-weight:700;letter-spacing:-.01em;color:var(--sub);line-height:1.25}
-.gside.lead .tm{color:var(--txt)}
-.gside .pc{font-family:var(--mono);font-size:18px;font-weight:700;color:var(--sub)}
+/* Both clubs are named at full strength. An earlier draft dimmed the side we
+   did not favour, which made one of the two teams harder to read on every
+   card; the green percentage already says which side we are on. */
+.gside .tm{font-size:15.5px;font-weight:700;letter-spacing:-.01em;color:var(--txt);line-height:1.25}
+.gside .pc{font-family:var(--mono);font-size:18px;font-weight:700;color:var(--txt)}
 .gside.lead .pc{color:var(--green)}
 .grec{font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;
   color:var(--txt);margin-top:7px}
@@ -230,7 +240,7 @@ section{border-bottom:1px solid var(--line)}
 .gbar{position:relative;height:7px;background:var(--line);margin:15px 0 17px}
 .gbar .seg{position:absolute;top:0;bottom:0;background:var(--line-2)}
 .gbar .seg.on{background:var(--green)}
-.gbar .tick{position:absolute;top:-5px;bottom:-5px;width:2px;background:#FFF;opacity:.95;box-shadow:0 0 5px rgba(255,255,255,.5)}
+.gbar .tick{position:absolute;top:-5px;bottom:-5px;width:2px;background:var(--txt);opacity:.95}
 .gfoot{
   display:flex;align-items:center;justify-content:space-between;gap:10px;
   padding-top:13px;margin-top:16px;border-top:1px solid var(--line);
@@ -248,14 +258,14 @@ section{border-bottom:1px solid var(--line)}
 .ev-col{background:var(--panel);border:1px solid var(--line);padding:20px 22px 22px}
 .ev-col.lead{border-left:3px solid var(--green)}
 .ev-k{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;
-  color:var(--dim);margin-bottom:12px}
+  color:var(--muted);margin-bottom:12px}
 .ev-n{font-family:var(--mono);font-size:38px;font-weight:700;letter-spacing:-.02em;
   line-height:1;color:var(--sub);margin-bottom:12px}
 .ev-n.g{color:var(--green)}
 .ev-col p{font-size:14.5px;line-height:1.6;margin:0;color:var(--muted)}
 .ev-col p b{color:var(--txt);font-weight:600}
 .ev-note{margin-top:14px;padding:14px 18px;border:1px solid var(--line);
-  background:var(--bg-2);font-size:13.5px;line-height:1.6;color:var(--dim)}
+  background:var(--bg-2);font-size:13.5px;line-height:1.6;color:var(--muted)}
 
 .empty-board{border:1px solid var(--line);background:var(--panel);padding:38px 24px;
   text-align:center;color:var(--muted);font-size:14.5px}
@@ -268,9 +278,9 @@ section{border-bottom:1px solid var(--line)}
 .crow .cl{font-family:var(--mono);font-size:13px;color:var(--txt);font-weight:600}
 .crow .cn{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--sub)}
 .ctrack{position:relative;height:24px;background:var(--bg-2);border:1px solid var(--line)}
-.cband{position:absolute;top:0;bottom:0;background:rgba(59,224,129,.09);
-  border-left:1px solid rgba(59,224,129,.13);border-right:1px solid rgba(59,224,129,.13)}
-.csaid{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--green);box-shadow:0 0 6px rgba(59,224,129,.55)}
+.cband{position:absolute;top:0;bottom:0;background:rgba(16,110,66,.09);
+  border-left:1px solid rgba(16,110,66,.18);border-right:1px solid rgba(16,110,66,.18)}
+.csaid{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--green);box-shadow:0 0 6px rgba(16,110,66,.55)}
 .cact{position:absolute;top:50%;width:9px;height:9px;margin:-5px 0 0 -5px;border-radius:50%;
   background:var(--txt);box-shadow:0 0 0 3px var(--panel)}
 .cact.out{background:var(--amber)}
@@ -283,8 +293,8 @@ section{border-bottom:1px solid var(--line)}
 .clegend i{display:inline-block}
 .key-line{width:2px;height:13px;background:var(--green)}
 .key-dot{width:9px;height:9px;border-radius:50%;background:var(--txt)}
-.key-band{width:26px;height:13px;background:rgba(59,224,129,.09);
-  border-left:1px solid rgba(59,224,129,.25);border-right:1px solid rgba(59,224,129,.25)}
+.key-band{width:26px;height:13px;background:rgba(16,110,66,.09);
+  border-left:1px solid rgba(16,110,66,.25);border-right:1px solid rgba(16,110,66,.25)}
 @media(max-width:820px){
   .crow{grid-template-columns:1fr 1fr;gap:10px}
   .crow .ctrack{grid-column:1/-1}
@@ -295,7 +305,7 @@ section{border-bottom:1px solid var(--line)}
 .pb-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(336px,1fr));gap:16px}
 .pb-card{background:var(--panel);border:1px solid var(--line);transition:.18s}
 .pb-card:hover{border-color:var(--line-2);background:var(--panel-2)}
-.pb-card.flag{border-color:rgba(245,196,81,.42)}
+.pb-card.flag{border-color:rgba(115,76,0,.42)}
 .pb-top{display:flex;align-items:center;justify-content:space-between;gap:10px;
   padding:11px 17px;border-bottom:1px solid var(--line);background:var(--bg-2);
   font-family:var(--mono);font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--sub)}
@@ -308,6 +318,10 @@ section{border-bottom:1px solid var(--line)}
 .pb-num .k{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--sub)}
 .pb-num .v{font-family:var(--mono);font-size:27px;font-weight:700;color:var(--green);margin-top:5px}
 .pb-num.alt .v{color:var(--txt)}
+/* A unit or noun trailing a large figure — "risked", "K". The figure beside
+   it already carries the meaning, which is the only thing that makes --dim
+   valid anywhere. See DIM_ALLOWED in scripts/palette.py. */
+.unit{color:var(--dim)}
 .pb-num .unit{font-size:13px;color:var(--dim);margin-left:4px;font-weight:500}
 .pb-striphead{display:flex;justify-content:space-between;align-items:baseline;gap:10px;
   font-family:var(--mono);font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;
@@ -344,7 +358,7 @@ section{border-bottom:1px solid var(--line)}
   cursor:pointer;transition:.15s;
 }
 .chip:hover{color:var(--txt);border-color:var(--muted)}
-.chip.on{background:var(--green);border-color:var(--green);color:#04150C;font-weight:700}
+.chip.on{background:var(--green);border-color:var(--green);color:#FFFFFF;font-weight:700}
 
 /* ---------- misc ---------- */
 .split{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap}
@@ -359,8 +373,8 @@ section{border-bottom:1px solid var(--line)}
 .faq p{margin-top:12px;max-width:75ch;font-size:15px}
 .note{border:1px solid var(--line);background:var(--bg-2);padding:22px 24px}
 .note p{font-size:13.5px}
-.cta-band{background:
-  radial-gradient(700px 300px at 50% 0%,rgba(59,224,129,.10),transparent 65%),var(--bg-2);
+.cta-band{
+  background:var(--bg-2);
   text-align:center}
 .cta-band .wrap{padding:88px 28px}
 .cta-band h2{margin:16px auto 18px;max-width:20ch}
@@ -372,7 +386,7 @@ section{border-bottom:1px solid var(--line)}
   padding:13px 16px;font-family:var(--mono);font-size:13px;outline:none;
 }
 .form-row input:focus{border-color:var(--green)}
-.form-row input::placeholder{color:var(--dim)}
+.form-row input::placeholder{color:var(--muted)}
 
 /* ---------- monthly units chart ---------- */
 .chart{width:100%}
@@ -387,7 +401,7 @@ section{border-bottom:1px solid var(--line)}
 .col:hover i{filter:brightness(1.18)}
 .col .val{font-family:var(--mono);font-size:12px;font-weight:500;letter-spacing:.02em}
 .col .mlab{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
-  color:var(--dim);text-align:center;margin-top:10px}
+  color:var(--muted);text-align:center;margin-top:10px}
 @media(max-width:620px){
   .bars{gap:6px}
   .col .val{font-size:10px}
@@ -398,13 +412,13 @@ section{border-bottom:1px solid var(--line)}
 footer{background:var(--bg-2);padding:56px 0 40px}
 .foot-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:36px;margin-bottom:44px}
 .foot-grid h4{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;
-  color:var(--dim);font-weight:500;margin-bottom:16px}
+  color:var(--muted);font-weight:500;margin-bottom:16px}
 .foot-grid a{display:block;font-size:14px;color:var(--muted);margin-bottom:10px}
 .foot-grid a:hover{color:var(--txt)}
 .foot-bot{border-top:1px solid var(--line);padding-top:26px;display:flex;justify-content:space-between;
   gap:20px;flex-wrap:wrap}
-.foot-bot p,.foot-bot span{font-size:12px;color:var(--dim)}
-.disclaimer{font-size:12px;color:var(--dim);line-height:1.7;max-width:70ch}
+.foot-bot p,.foot-bot span{font-size:12px;color:var(--muted)}
+.disclaimer{font-size:12px;color:var(--muted);line-height:1.7;max-width:70ch}
 
 /* ---------- responsive ---------- */
 @media(max-width:960px){
@@ -499,12 +513,6 @@ footer{background:var(--bg-2);padding:56px 0 40px}
 }
 .gside .tm { display: flex; align-items: center; }
 
-/* Depth, cheaply: a single soft wash inside each panel rather than a shadow,
-   which reads as lift on a near-black background without the muddiness. */
-.gcard, .pb-card, .tile, .kpis, .calib {
-  background-image: linear-gradient(180deg, rgba(255,255,255,.022), transparent 42%);
-}
-
 /* The current page gets a mark in the nav. */
 .nav-links a { position: relative; padding-bottom: 3px; }
 .nav-links a.on::after {
@@ -524,7 +532,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
 .sb-cell{
   padding:13px 22px;border-right:1px solid var(--line);
   font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;
-  text-transform:uppercase;color:var(--dim);white-space:nowrap;
+  text-transform:uppercase;color:var(--muted);white-space:nowrap;
   overflow:hidden;text-overflow:ellipsis;
 }
 .sb-cell:last-child{border-right:0}
@@ -579,7 +587,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
 </header>
 <div class="statbar"><div class="sb-cell"><span class="sb-live"><span class="dot"></span>Board live</span></div><div class="sb-cell"><b>12</b> games rated</div><div class="sb-cell"><b>0</b> flagged</div><div class="sb-cell">Median disagreement <b>2.1 pts</b></div><div class="sb-cell">Updated <b>2026-08-31 09:01</b> ET</div></div>
 
-<section style="background:linear-gradient(180deg,#0A0C0F,var(--bg))">
+<section style="background:var(--bg-2)">
   <div class="wrap" style="padding:56px 28px 46px">
     <div class="eyebrow">Every play, since day one</div>
     <h1 style="font-size:clamp(32px,4.2vw,50px);margin:14px 0 16px">Track record</h1>
@@ -625,8 +633,8 @@ footer{background:var(--bg-2);padding:56px 0 40px}
     </div>
 
     <figure class="card" style="padding:30px 26px 22px;margin:0">
-      <p style="padding:40px 0;text-align:center;color:var(--dim)">The monthly chart fills in once the first month of plays is graded.</p>
-      <figcaption class="up" style="margin-top:18px;color:var(--dim);text-transform:none;letter-spacing:.04em;font-size:11.5px">Units, flat 1u stakes. Green bars are winning months, red bars losing months. The current month is partial.</figcaption>
+      <p style="padding:40px 0;text-align:center;color:var(--muted)">The monthly chart fills in once the first month of plays is graded.</p>
+      <figcaption class="up" style="margin-top:18px;color:var(--muted);text-transform:none;letter-spacing:.04em;font-size:11.5px">Units, flat 1u stakes. Green bars are winning months, red bars losing months. The current month is partial.</figcaption>
     </figure>
   </div>
 </section>
@@ -649,7 +657,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           <td class="m">0–0–0</td>
           <td class="m ">0.00u</td>
           <td class="m ">0.0%</td>
-          <td class="m" style="color:var(--dim)">—</td></tr></tbody>
+          <td class="m" style="color:var(--muted)">—</td></tr></tbody>
       </table>
     </div>
   </div>

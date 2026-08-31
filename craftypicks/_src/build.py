@@ -26,7 +26,7 @@ import config   # noqa: E402
 import render as R  # noqa: E402
 import i18n         # noqa: E402
 
-CSS = (SRC / "base.css").read_text()
+CSS = (SRC / "base.css").read_text(encoding="utf-8")
 
 PAGES = {
     "index.html": (f"{config.SITE_NAME} — Free daily sports betting plays with receipts", "home"),
