@@ -1,53 +1,71 @@
 name: Apply update
-
+ 
 # Why this exists
 # ----------------
-# Uploading a folder through the GitHub web UI keeps flattening: the files
-# land at the repository root instead of inside craftypicks/, and the site
-# build then can't find them. This workflow removes the folder-dragging step
-# entirely.
+# Uploading a folder through the GitHub web UI keeps flattening: the files land
+# at the repository root instead of inside craftypicks/, and the build then
+# can't find them. Uploading a single archive and unpacking it here removes the
+# folder-dragging step entirely.
 #
 # How to use it
-#   1. Drag the .zip onto the repo's file list and commit it. One file, at the
-#      root — there is no folder structure left for the uploader to lose.
-#   2. Actions -> "Apply update" -> "Run workflow".
+#   1. Drag the archive onto the repo's file list and commit it. One file, at
+#      the root — there is no folder structure left for the uploader to lose.
+#   2. Actions -> "Apply update" -> "Run workflow". Leave the input blank.
+#
+# What changed on 2026-08-31, and why
+# -----------------------------------
+# Three consecutive runs failed, none of them for a reason to do with the code
+# being shipped:
+#
+#   * The archive contained .github/workflows/probe.yml. GITHUB_TOKEN is not
+#     permitted to create or update anything under .github/workflows, and no
+#     permission setting grants it — the scope exists only for PATs and GitHub
+#     Apps. The unpack succeeded and the push was rejected, so the run died at
+#     the very last step with a git error nobody would connect to the real
+#     cause. This version refuses such an archive up front and says why.
+#
+#   * Safari's "Open safe files after downloading" expanded the .zip before it
+#     was ever uploaded, so what reached the repo was a handful of loose files
+#     and no archive at all. This version finds an archive by reading it rather
+#     than trusting its extension, so the file can be named anything at all —
+#     .zipdata, .bin, no extension — and still work.
+#
+#   * The uploader silently stripped the hyphens out of the filename, so the
+#     path typed into the input box did not exist. This version needs no input
+#     when there is exactly one archive, and when the input is wrong it prints
+#     the archives it actually found instead of only saying "no file".
+#
+# Selection is deliberately no longer "newest by modification time". Every file
+# in a fresh checkout carries the same timestamp, so with two archives present
+# that rule picked one at random. It now refuses to guess.
 #
 # The unpacking is Python rather than shell on purpose. The first version of
 # this workflow was a shell script and failed on the runner; zipfile is in the
 # standard library, behaves the same everywhere, and can be run locally against
 # a copy of the repo before it is ever pushed.
-
+ 
 on:
   workflow_dispatch:
     inputs:
       zip:
-        description: "Path to the zip (blank = find the newest one anywhere)"
+        description: "Archive to apply (blank = find the only one automatically)"
         required: false
         default: ""
-
+ 
 permissions:
   contents: write
-
+ 
 concurrency:
   group: apply-update
   cancel-in-progress: false
-
+ 
 jobs:
   apply:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
-
-      - name: Show what we are starting from
-        run: |
-          echo "--- everything tracked in this repo"
-          git ls-files
-          echo
-          echo "--- any zip files present"
-          find . -name '*.zip' -not -path './.git/*' -printf '%p  (%s bytes)\n' \
-            || echo "(none — that is why the next step will stop)"
-
+ 
       - name: Unpack and tidy
         env:
           ZIP_INPUT: ${{ inputs.zip }}
@@ -57,61 +75,124 @@ jobs:
           import pathlib
           import sys
           import zipfile
-
+ 
           root = pathlib.Path(".").resolve()
-
-          # ---------------------------------------------------------------- pick
-          # The zip is searched for anywhere in the repository, not just at the
-          # root. Requiring an exact drop location is the same failure mode this
-          # workflow exists to eliminate — if the upload lands in a subfolder,
-          # that should still work.
+ 
+          def rel(p):
+              return p.relative_to(root).as_posix()
+ 
+          # ------------------------------------------------------------- find
+          # An archive is identified by reading it, not by its name. A browser
+          # that renames the download, or a user who saves it without an
+          # extension, must not be able to break this.
+          #
+          # data/ and research/ are skipped because they hold .json.gz and other
+          # committed payloads; nothing uploaded for unpacking ever lives there,
+          # and scanning them would only invite a false positive.
+          SKIP_DIRS = {".git", "craftypicks/data", "research"}
+ 
+          def searchable(p):
+              r = rel(p)
+              return not any(r == d or r.startswith(d + "/") for d in SKIP_DIRS)
+ 
+          candidates = sorted(
+              p for p in root.rglob("*")
+              if p.is_file() and searchable(p) and zipfile.is_zipfile(p)
+          )
+ 
           name = (os.environ.get("ZIP_INPUT") or "").strip()
+          if name.startswith("./"):
+              name = name[2:]
+ 
           if name:
               chosen = root / name
               if not chosen.is_file():
-                  sys.exit(f"No file at {name!r}. Check the path and re-run.")
+                  print(f"No file at {name!r}.")
+                  if candidates:
+                      print("\nArchives that ARE present:")
+                      for c in candidates:
+                          print(f"   {rel(c)}")
+                      print("\nRe-run naming one of those, or leave the input")
+                      print("blank to detect it automatically.")
+                  else:
+                      print("\nThere is no archive anywhere in the repository.")
+                  sys.exit(1)
+              if not zipfile.is_zipfile(chosen):
+                  sys.exit(f"{name!r} exists but is not an archive. It was "
+                           "probably expanded before it was uploaded.")
+          elif not candidates:
+              print("No archive anywhere in this repository.")
+              print()
+              print("Upload the archive file ITSELF — do not open or expand it")
+              print("first — and click 'Commit changes' so it appears in the")
+              print("file list. Its name and extension do not matter.")
+              print()
+              print("Files currently at the repository root:")
+              for p in sorted(root.iterdir()):
+                  if p.name != ".git":
+                      print(f"   {p.name}{'/' if p.is_dir() else ''}")
+              sys.exit(1)
+          elif len(candidates) > 1:
+              print("More than one archive is present, so I will not guess:")
+              for c in candidates:
+                  print(f"   {rel(c)}")
+              print()
+              print("Delete the ones you do not want, or re-run naming the one")
+              print("you do. Every file in a fresh checkout has the same")
+              print("timestamp, so 'the newest' is not a real answer here.")
+              sys.exit(1)
           else:
-              zips = [p for p in root.rglob("*.zip") if ".git" not in p.parts]
-              zips.sort(key=lambda p: p.stat().st_mtime, reverse=True)
-              if not zips:
-                  sys.exit(
-                      "No .zip anywhere in this repository.\n"
-                      "Upload the .zip file itself — do not unzip it first — "
-                      "and be sure to click 'Commit changes' so it appears in "
-                      "the repo's file list. Then run this workflow again."
-                  )
-              chosen = zips[0]
-              if len(zips) > 1:
-                  print("More than one zip present; using the most recent:")
-                  for z in zips:
-                      print(f"   {z.relative_to(root)}")
-          print(f"Using {chosen.relative_to(root)}")
-
-          # -------------------------------------------------------------- inspect
+              chosen = candidates[0]
+ 
+          print(f"Using {rel(chosen)}")
+ 
+          # ---------------------------------------------------------- inspect
           with zipfile.ZipFile(chosen) as zf:
               members = [n for n in zf.namelist() if not n.endswith("/")]
               if not members:
                   sys.exit("The archive contains no files.")
-
-              # A zip is untrusted input even when we wrote it. Reject anything
-              # that would land outside the repository before extracting a byte.
+ 
+              # An archive is untrusted input even when we wrote it. Reject
+              # anything that would land outside the repo before extracting a
+              # single byte.
               for n in members:
                   target = (root / n).resolve()
                   if not str(target).startswith(str(root) + os.sep):
                       sys.exit(f"Refusing: {n!r} would write outside the repo.")
-
+ 
+              # GITHUB_TOKEN cannot write workflow files and cannot be given
+              # permission to. Catching that here turns a baffling push
+              # rejection at the last step into a clear message at the first.
+              blocked = [n for n in members
+                         if n.startswith(".github/workflows/")]
+              if blocked:
+                  print("This archive contains workflow files:")
+                  for n in blocked:
+                      print(f"   {n}")
+                  print()
+                  print("GITHUB_TOKEN may not create or change anything under")
+                  print(".github/workflows, so this push would be rejected")
+                  print("after doing all the work. Your own commits have no")
+                  print("such restriction: add these by hand through")
+                  print("'Add file -> Create new file', and re-cut the archive")
+                  print("without them.")
+                  sys.exit(1)
+ 
+              print()
               print(f"--- {len(members)} file(s) in the archive")
               for n in members:
                   print(f"   {n}")
-
+ 
               zf.extractall(root)
-
-          # ---------------------------------------------------------------- sweep
-          # For every file the archive places at, say, craftypicks/_src/render.py,
-          # delete a stray render.py sitting loose at the repository root. Only
-          # basenames the archive just wrote somewhere deeper are considered, so
-          # nothing is removed that does not now exist in its correct place.
-          PROTECTED = {"README.md", "LICENSE", ".gitignore", ".gitattributes"}
+ 
+          # ------------------------------------------------------------ sweep
+          # For every file the archive places at, say,
+          # craftypicks/scripts/fair.py, delete a stray fair.py sitting loose at
+          # the repository root. Only basenames the archive just wrote somewhere
+          # deeper are considered, so nothing is removed that does not now exist
+          # in its correct place.
+          PROTECTED = {"README.md", "LICENSE", ".gitignore", ".gitattributes",
+                       "CNAME"}
           swept = 0
           for n in members:
               if "/" not in n:
@@ -124,13 +205,13 @@ jobs:
                   print(f"sweeping stray ./{base}")
                   stray.unlink()
                   swept += 1
+          print()
           print(f"swept {swept} stray file(s) from the root")
-
-          rel = chosen.relative_to(root)
+ 
           chosen.unlink()
-          print(f"removed {rel}")
+          print(f"removed {rel(chosen)}")
           PYTHON
-
+ 
       - name: Commit
         run: |
           git config user.name  "craftypicks-bot"
@@ -140,19 +221,20 @@ jobs:
             echo "Nothing changed — the repo already matches the archive."
             exit 0
           fi
+          echo "--- what is being committed"
+          git diff --cached --stat
           git commit -m "Apply update from uploaded archive"
           # The daily job commits to this branch too, so a push can lose a race.
           # Rebase and retry once rather than failing the run.
           git push || { git pull --rebase && git push; }
-
+ 
       - name: Show the result
         if: always()
         run: |
           echo "--- repository root"
-          ls -1
-          echo "--- craftypicks/"
-          ls -1 craftypicks || echo "(missing)"
-          echo "--- craftypicks/_src"
-          ls -1 craftypicks/_src || echo "(missing)"
+          ls -1a | grep -v '^\.git$'
           echo "--- craftypicks/scripts"
           ls -1 craftypicks/scripts || echo "(missing)"
+ 
+
+
