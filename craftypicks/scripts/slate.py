@@ -20,7 +20,7 @@ import config
 import find_plays
 import odds_math as om
 import rate_mlb
-import screen_mlb
+import mlb_api
 
 SPORT = "baseball_mlb"
 
@@ -65,8 +65,8 @@ def build(games: list[dict], date_str: str, season: int,
         return []
     elo = rate_mlb.build_elo(results)
     recs = rate_mlb.records(results)
-    teams = screen_mlb.team_index(season)
-    starters = {s["team_id"]: s for s in screen_mlb.probable_starters(date_str)}
+    teams = mlb_api.team_index(season)
+    starters = {s["team_id"]: s for s in mlb_api.probable_starters(date_str)}
     want_vs = getattr(config, "SLATE_VS_OPPONENT", True)
     if verbose:
         print(f"   slate: {len(results)} games of history, "
@@ -83,12 +83,12 @@ def build(games: list[dict], date_str: str, season: int,
             s = starters.get(team_id)
             if not s:
                 return {}, None, None, ""
-            stats = screen_mlb.pitcher_season(s["pitcher_id"], season)
+            stats = mlb_api.pitcher_season(s["pitcher_id"], season)
             vs = None
             if want_vs:
                 # Never allowed to break the board: this is a display extra.
                 try:
-                    vs = screen_mlb.pitcher_vs_team(s["pitcher_id"],
+                    vs = mlb_api.pitcher_vs_team(s["pitcher_id"],
                                                     opponent_id, season)
                 except Exception:                            # noqa: BLE001
                     vs = None

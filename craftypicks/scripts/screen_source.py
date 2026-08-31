@@ -24,7 +24,7 @@ from collections import Counter, defaultdict
 import find_plays
 import odds_math as om
 import screen_config as scfg
-import screen_mlb
+import mlb_api
 from screen_models import Candidate
 from screen_rules import evaluate_all
 
@@ -124,7 +124,7 @@ def build_plays(prop_events: list[dict], date_str: str, verbose: bool = True) ->
     if not prop_events:
         return []
 
-    starters = screen_mlb.probable_starters(date_str)
+    starters = mlb_api.probable_starters(date_str)
     if not starters:
         if verbose:
             print("   screens: no probable starters listed")
@@ -137,8 +137,8 @@ def build_plays(prop_events: list[dict], date_str: str, verbose: bool = True) ->
             starter = by_name.get(player)
             if not starter:
                 continue
-            season_stats = screen_mlb.pitcher_season(starter["pitcher_id"], scfg.SEASON)
-            opp_k = screen_mlb.team_k_per_game(starter["opponent_id"], scfg.SEASON)
+            season_stats = mlb_api.pitcher_season(starter["pitcher_id"], scfg.SEASON)
+            opp_k = mlb_api.team_k_per_game(starter["opponent_id"], scfg.SEASON)
 
             cand = Candidate(
                 pitcher_id=starter["pitcher_id"], name=starter["name"],
@@ -164,7 +164,7 @@ def build_plays(prop_events: list[dict], date_str: str, verbose: bool = True) ->
             needs_roster = (cand.k_pct is not None and cand.k_pct >= min_k
                             and opp_k is not None and opp_k >= min_opp)
             if needs_roster:
-                cand.vs_roster = screen_mlb.vs_roster(
+                cand.vs_roster = mlb_api.vs_roster(
                     starter["pitcher_id"], starter["opponent_id"], scfg.SEASON)
             candidates.append(cand)
             event_of[cand.pitcher_id] = (event, player, quote)

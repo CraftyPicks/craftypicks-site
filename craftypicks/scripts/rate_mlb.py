@@ -22,7 +22,7 @@ import math
 from collections import defaultdict
 from datetime import date, timedelta
 
-import screen_mlb
+import mlb_api
 
 # Elo settings. K is deliberately low — baseball is high-variance and a
 # single game should barely move a rating.
@@ -54,7 +54,7 @@ def season_results(season: int, through: date | None = None) -> list[dict]:
         end = nxt - timedelta(days=1)
         if through and start > through:
             break
-        data = screen_mlb._get("/schedule", sportId=1,
+        data = mlb_api._get("/schedule", sportId=1,
                                startDate=start.isoformat(),
                                endDate=min(end, through).isoformat() if through else end.isoformat(),
                                gameType="R") or {}
@@ -123,7 +123,7 @@ def rate_game(elo: dict, home_id: int, away_id: int,
 
 
 def era_from_stats(stats: dict) -> dict:
-    """Turn screen_mlb.pitcher_season output into what rate_game wants."""
+    """Turn mlb_api.pitcher_season output into what rate_game wants."""
     innings = stats.get("innings", 0.0) or 0.0
     k9 = stats.get("k_per_9")
     era = stats.get("era")

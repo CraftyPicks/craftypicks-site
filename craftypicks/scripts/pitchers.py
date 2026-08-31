@@ -25,7 +25,7 @@ from datetime import datetime, timezone
 
 import config
 import screen_config as scfg
-import screen_mlb
+import mlb_api
 import screen_source
 
 # Expected innings for a starting pitcher. Modern starters average a shade
@@ -59,7 +59,7 @@ def _num(value) -> float:
 def recent_starts(pitcher_id: int, season: int, limit: int = RECENT_STARTS) -> list[dict]:
     """The pitcher's most recent starts, oldest first."""
     out = []
-    for sp in screen_mlb.season_game_log(pitcher_id, season):
+    for sp in mlb_api.season_game_log(pitcher_id, season):
         stat = sp.get("stat") or {}
         if _num(stat.get("gamesStarted")) < 1:
             continue                       # relief outings aren't comparable
@@ -67,7 +67,7 @@ def recent_starts(pitcher_id: int, season: int, limit: int = RECENT_STARTS) -> l
             "date": sp.get("date"),
             "opponent": (sp.get("opponent") or {}).get("name"),
             "strikeouts": int(_num(stat.get("strikeOuts"))),
-            "innings": round(screen_mlb._innings(stat.get("inningsPitched")), 1),
+            "innings": round(mlb_api._innings(stat.get("inningsPitched")), 1),
         })
     return out[-limit:]
 
@@ -87,7 +87,7 @@ def build(prop_events: list[dict], date_str: str, season: int,
     if not prop_events:
         return []
 
-    starters = screen_mlb.probable_starters(date_str)
+    starters = mlb_api.probable_starters(date_str)
     if not starters:
         if verbose:
             print("   pitchers: no probable starters listed")
@@ -98,7 +98,7 @@ def build(prop_events: list[dict], date_str: str, season: int,
     # to the teams actually on the board rather than a stale constant.
     opp_rates: dict[int, float] = {}
     for s in starters:
-        rate = screen_mlb.team_k_per_game(s["opponent_id"], season)
+        rate = mlb_api.team_k_per_game(s["opponent_id"], season)
         if rate:
             opp_rates[s["opponent_id"]] = rate
     league = (sum(opp_rates.values()) / len(opp_rates)) if opp_rates else LEAGUE_K_PER_GAME
@@ -112,7 +112,7 @@ def build(prop_events: list[dict], date_str: str, season: int,
             if not starter:
                 continue
             pid = starter["pitcher_id"]
-            season_stats = screen_mlb.pitcher_season(pid, season)
+            season_stats = mlb_api.pitcher_season(pid, season)
             opp_rate = opp_rates.get(starter["opponent_id"])
             projection = project(season_stats.get("k_per_9"), opp_rate, league)
             if projection is None:
@@ -124,7 +124,7 @@ def build(prop_events: list[dict], date_str: str, season: int,
             gap = round(projection - line, 1)
 
             try:
-                vs = screen_mlb.pitcher_vs_team(pid, starter["opponent_id"],
+                vs = mlb_api.pitcher_vs_team(pid, starter["opponent_id"],
                                                 season, verbose=False)
             except Exception:                                # noqa: BLE001
                 vs = None
@@ -177,7 +177,7 @@ def grade(history: list[dict], season: int, verbose: bool = True) -> int:
         target = _iso_date(row.get("commence_time")) or _us_date(row.get("date"))
         if not target:
             continue
-        for sp in screen_mlb.season_game_log(row["pitcher_id"], season):
+        for sp in mlb_api.season_game_log(row["pitcher_id"], season):
             if str(sp.get("date")) != target:
                 continue
             stat = sp.get("stat") or {}
@@ -185,7 +185,7 @@ def grade(history: list[dict], season: int, verbose: bool = True) -> int:
                 continue
             row["actual"] = int(_num(stat.get("strikeOuts")))
             row["actual_innings"] = round(
-                screen_mlb._innings(stat.get("inningsPitched")), 1)
+                mlb_api._innings(stat.get("inningsPitched")), 1)
             row["graded_at"] = datetime.now(timezone.utc).isoformat(timespec="seconds")
             graded += 1
             break
