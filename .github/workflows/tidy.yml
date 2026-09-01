@@ -12,6 +12,15 @@ name: Tidy misplaced uploads
 # Loop safety: commits made with GITHUB_TOKEN do not trigger workflows, so
 # this job's own push cannot re-trigger it. That is a GitHub guarantee, not a
 # trick with commit messages.
+#
+# Two steps, in order. The first files a stray by name — that is what lands a
+# genuinely new module in scripts/. The second deletes any stray whose CONTENT
+# already exists somewhere in the tree, which is what clears the pile the web
+# uploader leaves behind: it renames a second copy to "index (12).html", so
+# matching on name never catches it and matching on content always does.
+#
+# On 2026-09-01 a flattened upload left 49 duplicate files at the root. Every
+# one of them had a correct copy already in place; none was noticed for days.
 
 on:
   push:
@@ -98,6 +107,62 @@ jobs:
           for s in skipped:
               print("left   ", s, "(no rule for this filename)")
           print(f"\n{len(moved)} moved, {len(skipped)} left in place")
+          PYTHON
+
+      - name: Delete strays that already exist in the tree
+        run: |
+          python3 - <<'PYTHON'
+          import hashlib
+          import pathlib
+
+          root = pathlib.Path(".").resolve()
+          site = root / "craftypicks"
+
+          KEEP = {
+              "README.md", "LICENSE", ".gitignore", ".gitattributes",
+              "CNAME", "_config.yml", "package.json", "package-lock.json",
+          }
+          SEARCH = ("craftypicks", "research", ".github")
+
+
+          def digest(p):
+              return hashlib.sha256(p.read_bytes()).hexdigest()
+
+
+          # Every file that already lives somewhere sensible, indexed by content. Name
+          # is deliberately not part of the key: the web uploader renames a second copy
+          # to "index (12).html", and that is exactly the case this has to catch.
+          index = {}
+          for top in SEARCH:
+              d = root / top
+              if not d.is_dir():
+                  continue
+              for f in d.rglob("*"):
+                  if f.is_file() and ".git" not in f.parts:
+                      index.setdefault(digest(f), f.relative_to(root).as_posix())
+          for name in KEEP:
+              f = root / name
+              if f.is_file():
+                  index.setdefault(digest(f), name)
+
+          removed, kept = [], []
+          for f in sorted(root.iterdir()):
+              if not f.is_file() or f.name in KEEP or f.suffix == ".zip":
+                  continue
+              if f.name.startswith(".") and f.name not in {"download"}:
+                  continue
+              where = index.get(digest(f))
+              if where:
+                  f.unlink()
+                  removed.append(f"{f.name}  (already at {where})")
+              else:
+                  kept.append(f.name)
+
+          for r in removed:
+              print("removed", r)
+          for k in kept:
+              print("kept   ", k, "(no copy of this content in the tree)")
+          print(f"\n{len(removed)} duplicate(s) removed, {len(kept)} left for a human")
           PYTHON
 
       - name: Commit if anything moved
