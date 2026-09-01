@@ -1,0 +1,68 @@
+name: Layout check
+
+# Why this is a workflow rather than part of the build
+# ---------------------------------------------------
+# Measuring horizontal overflow needs a real browser. The site build is
+# stdlib-only on purpose — that is what keeps it hosted for free with nothing
+# to install — so the browser lives here instead, where a runner can install
+# one and nothing the site ships depends on it.
+#
+# This file cannot be delivered through the update archive: GITHUB_TOKEN may
+# not write anything under .github/workflows and no permission grants it.
+
+on:
+  push:
+    paths:
+      - "craftypicks/**.html"
+      - "craftypicks/_src/**"
+  workflow_dispatch:
+
+jobs:
+  overflow:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: pip install playwright && playwright install --with-deps chromium
+
+      - name: No horizontal overflow at 390px
+        working-directory: craftypicks
+        run: |
+          python3 - <<'PY'
+          from playwright.sync_api import sync_playwright
+          import pathlib, sys
+
+          pages = sorted(str(p) for p in pathlib.Path(".").glob("*.html"))
+          pages += sorted(str(p) for p in pathlib.Path(".").glob("*/index.html"))
+          if not pages:
+              sys.exit("No built pages found — did the build run?")
+
+          bad = []
+          with sync_playwright() as p:
+              b = p.chromium.launch()
+              pg = b.new_page(viewport={"width": 390, "height": 844})
+              for f in pages:
+                  pg.goto(f"file://{pathlib.Path(f).resolve()}")
+                  # Entrance animations finish at about 850ms. Measuring
+                  # before that reports the pre-animation layout, which is a
+                  # different page from the one a reader sees.
+                  pg.wait_for_timeout(1600)
+                  over = pg.evaluate(
+                      "Math.max(0, document.documentElement.scrollWidth"
+                      " - document.documentElement.clientWidth)")
+                  print(f"{f:28} {over}px")
+                  if over > 0:
+                      bad.append((f, over))
+              b.close()
+
+          if bad:
+              print("\nThese pages push the document wider than the phone:")
+              for f, over in bad:
+                  print(f"  {f}  +{over}px")
+              sys.exit(1)
+          print("\nno horizontal overflow at 390px")
+          PY

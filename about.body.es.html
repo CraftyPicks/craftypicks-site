@@ -1,0 +1,179 @@
+<section style="background:var(--bg-2)">
+  <div class="wrap" style="padding:56px 28px 46px">
+    <div class="eyebrow">Cómo funciona</div>
+    <h1 style="font-size:clamp(32px,4.2vw,50px);margin:14px 0 16px">Jugadas gratis,<br>y por qué van a seguir siéndolo.</h1>
+    <p class="lead">Craftypicks existe porque el negocio de la información en las apuestas deportivas está casi todo roto. Alguien te vende una selección, esconde el historial y te echa la culpa cuando pierde. Esta es la versión sin nada de eso &mdash; incluso sin la parte donde fingimos saber quién gana.</p>
+  </div>
+</section>
+
+<section class="pad" id="method">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Metodología</div>
+      <h2>No predecimos juegos. Les ponemos precio.</h2>
+      <p class="lead">Esta es la versión honesta de lo que hace el sistema, y vale la pena entenderla antes de seguir una sola jugada. Craftypicks no tiene modelo de lesiones, ni motor de simulación, ni opinión sobre quién va a ganar esta noche. Tiene una sola cosa: el precio en cada casa de apuestas, y la aritmética para saber cuándo una de ellas está fuera de línea.</p>
+    </div>
+    <div class="grid-2" style="gap:44px;align-items:start">
+      <div class="tile">
+        <div class="num">Paso 01</div>
+        <h3>Extraer cada precio de la pizarra</h3>
+        <p style="margin-top:10px">Cada mañana el escáner lee la línea de dinero, el hándicap y el total en cada casa importante de Estados Unidos para cada juego en temporada. Un juego con precio en menos de {{MIN_BOOKS}} casas se descarta &mdash; un consenso delgado no es consenso, es ruido.</p>
+      </div>
+      <div class="tile">
+        <div class="num">Paso 02</div>
+        <h3>Quitar el vigorish</h3>
+        <p style="margin-top:10px">El precio de una casa incluye su margen, así que los dos lados de un mercado siempre suman más de 100%. Al retirar ese margen de forma proporcional, el precio de cada casa se convierte en su estimación honesta de las probabilidades reales.</p>
+      </div>
+      <div class="tile">
+        <div class="num">Paso 03</div>
+        <h3>Promediar el mercado y excluir al atípico</h3>
+        <p style="margin-top:10px">Esas estimaciones honestas se promedian en un precio justo de consenso. La casa en la que realmente apostaríamos queda fuera de su propio promedio &mdash; si se incluye, el atípico jala el precio "justo" hacia sí mismo y fabrica una ventaja que no existe.</p>
+      </div>
+      <div class="tile">
+        <div class="num">Paso 04</div>
+        <h3>Publicar solo lo que pasa la barra</h3>
+        <p style="margin-top:10px">Si el mejor número disponible le gana al consenso por {{MIN_EDGE}} o más en valor esperado, entra a la cartelera con un riesgo fijo de 1 unidad. Máximo {{MAX_PLAYS}} jugadas al día. Después se califica contra el marcador final y nunca se vuelve a tocar.</p>
+      </div>
+    </div>
+
+    <div class="note" style="margin-top:34px">
+      <p class="disclaimer"><b style="color:var(--txt)">Lo que este método puede y no puede hacer.</b> Puede encontrar situaciones donde una casa va lenta, recibió acción desbalanceada o simplemente discrepa del mercado &mdash; y esas situaciones sí son rentables sobre una muestra lo bastante grande. No puede avisarte de que acaban de borrar a un abridor, de que un equipo viene de un viaje brutal, o de que el total está mal por el viento. Si tú tienes esa información, va encima de lo que ves aquí, no debajo.</p>
+    </div>
+
+    <div class="note" style="margin-top:16px">
+      <p class="disclaimer"><b style="color:var(--txt)">Lo que no hacemos:</b> parlays vendidos como "candados", jugadas de 10u del "juego del año", jugadas publicadas después de que el número ya se movió, ni historiales que empiezan a contar desde la última racha buena. Si un día no hay ninguna ventaja que califique, la cartelera dice cero jugadas &mdash; eso pasa más seguido de lo que uno creería, y es la característica que más cuesta mantener.</p>
+    </div>
+  </div>
+</section>
+
+<section class="pad" id="units">
+  <div class="wrap">
+    <div class="grid-2">
+      <div>
+        <div class="eyebrow">Unidades y banca</div>
+        <h2 style="margin:14px 0 20px">Una unidad es el 1% de tu banca. No 100 dólares.</h2>
+        <p class="lead" style="margin-bottom:20px">Cada jugada de este sitio es de 1 unidad fija. Es a propósito &mdash; el riesgo fijo es lo que hace honesto un historial, porque no puedes esconder una mala racha subiendo el tamaño en silencio sobre las ganadoras después del hecho.</p>
+        <p style="margin-bottom:18px">Si tu banca es de $1,000, una unidad son $10. Si es de $300, una unidad son $3. El número que importa son las unidades ganadas, no los dólares, porque las unidades son lo único que se puede comparar entre bancas distintas.</p>
+        <div class="quote">Un método que produce una ventaja de {{MIN_EDGE}} pierde de todos modos cerca de la mitad de sus jugadas. Una racha de 20 jugadas perdidas es completamente normal &mdash; dimensiona tu unidad pensando en eso, no en una buena semana.</div>
+      </div>
+      <div class="card" style="padding:0">
+        <div class="play-top"><span class="stamp">Aritmética de banca</span><span class="stamp on">1u = 1%</span></div>
+        <div class="scroll-x">
+          <table class="tbl" style="border:0">
+            <thead><tr><th>Banca</th><th>1 unidad</th><th>Día típico de {{MAX_PLAYS}} jugadas</th><th>Mala semana (&minus;8u)</th></tr></thead>
+            <tbody>
+              <tr><td class="strong">$200</td><td class="m">$2</td><td class="m">$12 arriesgados</td><td class="m r">&minus;$16</td></tr>
+              <tr><td class="strong">$500</td><td class="m">$5</td><td class="m">$30 arriesgados</td><td class="m r">&minus;$40</td></tr>
+              <tr><td class="strong">$1,000</td><td class="m">$10</td><td class="m">$60 arriesgados</td><td class="m r">&minus;$80</td></tr>
+              <tr><td class="strong">$2,500</td><td class="m">$25</td><td class="m">$150 arriesgados</td><td class="m r">&minus;$200</td></tr>
+              <tr><td class="strong">$5,000</td><td class="m">$50</td><td class="m">$300 arriesgados</td><td class="m r">&minus;$400</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div style="padding:16px 20px;border-top:1px solid var(--line)">
+          <span class="stamp">Si la columna de la mala semana te asusta, tu unidad es demasiado grande.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="pad">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">El modelo de negocio</div>
+      <h2>"¿Entonces cuál es la trampa?"</h2>
+    </div>
+    <div class="grid-3">
+      <div class="tile">
+        <div class="num">01</div>
+        <h3>No hay nivel premium</h3>
+        <p style="margin-top:8px">Cada jugada que encuentra el sistema está en la cartelera. No hay un grupo de pago recibiendo jugadas distintas ni más temprano &mdash; esa es exactamente la estafa contra la que se construyó esto.</p>
+      </div>
+      <div class="tile">
+        <div class="num">02</div>
+        <h3>No vendemos tu correo</h3>
+        <p style="margin-top:8px">La lista se usa para una sola cosa: enviar la cartelera diaria. Sin intermediarios de datos, sin "ofertas de socios", sin spam de casas de apuestas ajenas.</p>
+      </div>
+      <div class="tile">
+        <div class="num">03</div>
+        <h3>Cuesta casi nada operarlo</h3>
+        <p style="margin-top:8px">Un escáner, un sitio estático y un alojamiento gratuito. No hay infraestructura cara que necesite un muro de pago para justificarse, así que no hay presión para construir uno.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="pad" id="faq">
+  <div class="wrap">
+    <div class="sec-head" style="margin-bottom:20px">
+      <div class="eyebrow">Preguntas frecuentes</div>
+      <h2>Respuestas directas</h2>
+    </div>
+    <div class="faq">
+      <details open>
+        <summary>¿Puedo apostar en este sitio?</summary>
+        <p>No. Craftypicks no es una casa de apuestas. No recibimos apuestas, no manejamos dinero ni procesamos ninguna transacción. El sitio publica jugadas y sus resultados &mdash; tú apuestas donde ya lo hagas, si es que decides hacerlo.</p>
+      </details>
+      <details>
+        <summary>¿A qué hora se publican las jugadas?</summary>
+        <p>A las {{POST_TIME}} todos los días. El escáner corre, se escribe la cartelera y el sitio se vuelve a compilar solo &mdash; no hay una persona decidiendo qué incluir o qué dejar fuera después de ver los resultados.</p>
+      </details>
+      <details>
+        <summary>La línea se movió desde que la publicaron. ¿Todavía la apuesto?</summary>
+        <p>Probablemente no. Toda la ventaja es la distancia entre el precio publicado y el consenso del mercado. Si el número se movió en contra de la jugada, esa distancia se cerró y ya no queda nada que apostar. Tomar un número peor que el que calificó es como un método ganador se convierte en un mes perdedor.</p>
+      </details>
+      <details>
+        <summary>¿Necesito cuenta en la casa que aparece?</summary>
+        <p>Para conseguir la jugada exacta, sí &mdash; la ventaja existe en el número de esa casa, no en el promedio del mercado. Esta es la verdad poco glamorosa de apostar por precio: comparar líneas entre varias casas es la mayor parte del trabajo. Ninguna nos paga y no enlazamos a ninguna.</p>
+      </details>
+      <details>
+        <summary>¿Por qué muestran las perdedoras tan a la vista?</summary>
+        <p>Porque un historial sin perdedoras es ficción. Un método con una ventaja real de {{MIN_EDGE}} pierde de todas formas una buena parte de sus jugadas &mdash; la ganancia viene de que el precio esté bien, no de acertar juegos. Quien te enseñe 70% de aciertos está escogiendo lo que le conviene o está mintiendo.</p>
+      </details>
+      <details>
+        <summary>¿Tengo que apostar todas las jugadas?</summary>
+        <p>No, y mucha gente no lo hace. Algunos lectores usan la cartelera solo como fuente para comparar líneas. Seguir la cartelera completa es simplemente la única versión que se puede calificar con honestidad.</p>
+      </details>
+      <details>
+        <summary>¿Esto siempre va a ser gratis?</summary>
+        <p>Sí. Y si eso llegara a cambiar, el registro existente seguiría siendo público y gratuito de todos modos &mdash; poner el historial detrás de un muro de pago acabaría con la razón misma de llevarlo.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<section class="pad-sm" id="responsible">
+  <div class="wrap">
+    <div class="grid-2" style="gap:44px;align-items:start">
+      <div>
+        <div class="eyebrow">Juega con responsabilidad</div>
+        <h2 style="font-size:28px;margin:14px 0 18px">Lee esta parte con cuidado</h2>
+        <p style="margin-bottom:16px">Apostar en deportes es entretenimiento con valor esperado negativo para casi todo el que lo hace. Un buen proceso reduce cuánto pierdes &mdash; no convierte las apuestas en un ingreso, y nadie debería tratarlas así.</p>
+        <p>Si estás apostando para recuperar pérdidas, apostando dinero apartado para la renta o las cuentas, escondiéndolo de la gente cercana a ti, o sintiendo ansiedad cuando no tienes una apuesta viva &mdash; esos no son problemas de estrategia. Aléjate y habla con alguien.</p>
+      </div>
+      <div class="card" style="padding:28px 26px">
+        <div class="stamp" style="margin-bottom:16px">Ayuda gratuita y confidencial</div>
+        <p style="color:var(--txt);font-size:20px;font-weight:700;margin-bottom:6px">1-800-GAMBLER</p>
+        <p style="font-size:14px;margin-bottom:20px">Línea Nacional de Ayuda para la Ludopatía &mdash; 24/7, en los 50 estados. Hay atención en español.</p>
+        <p style="color:var(--txt);font-size:16px;font-weight:600;margin-bottom:6px">Envía 800GAM por mensaje al 800177</p>
+        <p style="font-size:14px;margin-bottom:20px">Si prefieres no hablar por teléfono.</p>
+        <div class="bar" style="margin:18px 0"></div>
+        <p class="disclaimer">Casi todas las casas de apuestas ofrecen límites de depósito, pausas y autoexclusión en la configuración de la cuenta. Usarlos no es admitir nada &mdash; es lo mismo que el riesgo fijo, solo que aplicado a tu tiempo en lugar de a tu dinero.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-band">
+  <div class="wrap">
+    <div class="eyebrow">Cuando quieras</div>
+    <h2>Empieza por la cartelera de hoy</h2>
+    <p>Las jugadas de hoy, la aritmética detrás de cada una, y la cartelera anterior ya calificada.</p>
+    <div class="hero-cta">
+      <a href="plays.html" class="btn solid">Ver las jugadas de hoy</a>
+      <a href="record.html" class="btn ghost">Leer el historial</a>
+    </div>
+    <div class="fineprint" style="margin-top:22px">Gratis &middot; Aquí no se vende nada &middot; 21+</div>
+  </div>
+</section>

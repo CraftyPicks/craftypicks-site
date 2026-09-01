@@ -1,0 +1,64 @@
+<section style="background:var(--bg-2)">
+  <div class="wrap" style="padding:56px 28px 40px">
+    <div class="split">
+      <div>
+        <div class="eyebrow">{{BOARD_EYEBROW}}</div>
+        <h1 style="font-size:clamp(32px,4.2vw,50px);margin:14px 0 14px">Jugadas de hoy</h1>
+        <p class="lead">{{COUNT_LINE}}</p>
+      </div>
+      <div class="card" style="padding:18px 22px;min-width:240px">
+        <div class="stamp">Resumen de la cartelera</div>
+        <div class="mono" style="font-size:30px;font-weight:600;margin:8px 0 2px">{{UNITS_RISKED}} <span class="unit" style="font-size:15px">arriesgadas</span></div>
+        <div style="font-size:13px;color:var(--muted)">{{LEAGUE_LINE}}</div>
+      </div>
+    </div>
+
+    {{FILTER_BLOCK}}
+  </div>
+</section>
+
+<section class="pad-sm">
+  <div class="wrap">
+    <div class="grid-2" id="board" style="align-items:stretch;gap:22px">{{PLAY_CARDS}}</div>
+
+    <div class="note" style="margin-top:30px">
+      <p class="disclaimer"><b style="color:var(--txt)">Lee el precio, no solo la selección.</b> Cada jugada solo es jugada al número y en la casa que aparecen &mdash; ese precio concreto es donde vive la ventaja. Si para cuando lo mires el número ya se movió en contra, la ventaja desapareció. Déjala pasar. Perseguir un número que ya se movió es como un buen proceso se convierte en un mal mes.</p>
+    </div>
+  </div>
+</section>
+
+<section class="pad-sm" id="results">
+  <div class="wrap">
+    <div class="split" style="margin-bottom:26px">
+      <div>
+        <div class="eyebrow muted">Calificadas esta mañana</div>
+        <h2 style="font-size:26px;margin-top:10px">Última cartelera &mdash; {{YESTERDAY_LABEL}}</h2>
+      </div>
+      <div style="text-align:right">
+        <div class="stamp">Neto</div>
+        <div class="mono {{YESTERDAY_NET_CLASS}}" style="font-size:24px;font-weight:600">{{YESTERDAY_NET}}</div>
+      </div>
+    </div>
+    <div class="scroll-x">
+      <table class="tbl">
+        <thead>
+          <tr><th>Jugada</th><th>Liga</th><th>Mercado</th><th>Precio</th><th>Riesgo</th><th>Resultado</th><th>Retorno</th></tr>
+        </thead>
+        <tbody>{{YESTERDAY_ROWS}}</tbody>
+      </table>
+    </div>
+    <div style="margin-top:24px;display:flex;gap:14px;flex-wrap:wrap">
+      <a href="record.html" class="btn ghost">Ver todas las jugadas publicadas</a>
+    </div>
+  </div>
+</section>
+
+<section class="cta-band">
+  <div class="wrap">
+    <div class="eyebrow">¿No quieres entrar al sitio todos los días?</div>
+    <h2>Recibe la cartelera a las {{POST_TIME}}</h2>
+    <p>Las mismas jugadas, las mismas cuentas, la misma calificación &mdash; entregadas antes de que se muevan los números. Siempre gratis.</p>
+    {{SIGNUP}}
+    <div class="fineprint">Cancela cuando quieras &middot; 21+</div>
+  </div>
+</section>

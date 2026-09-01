@@ -1,0 +1,132 @@
+<section style="background:var(--bg-2)">
+  <div class="wrap" style="padding:56px 28px 46px">
+    <div class="eyebrow">El segundo sistema</div>
+    <h1 style="font-size:clamp(32px,4.2vw,50px);margin:14px 0 16px">Los filtros de ponches</h1>
+    <p class="lead">Craftypicks corre dos métodos que discrepan entre sí a propósito. El escáner busca precios que el mercado tiene mal. Estos filtros ignoran el precio casi por completo y buscan una situación: el brazo correcto contra la alineación correcta. Los dos publican en la misma cartelera, los dos se califican en público, y el historial los reporta por separado para que veas cuál está funcionando de verdad.</p>
+  </div>
+</section>
+
+<section class="pad-sm">
+  <div class="wrap">
+    <div class="note">
+      <p class="disclaimer"><b style="color:var(--txt)">Todo en esta página se genera a partir del archivo de configuración que lee el escáner.</b> Los umbrales de abajo no son una descripción de las reglas — <i>son</i> las reglas, tomadas de los mismos valores que corrieron esta mañana. Si un número cambia en el código, cambia aquí en la siguiente compilación. Una metodología publicada que se aleja del código en silencio es peor que no publicar nada.</p>
+    </div>
+  </div>
+</section>
+
+<section class="pad-sm" id="screen-a">
+  <div class="wrap">
+    <div class="sec-head" style="margin-bottom:24px">
+      <div class="eyebrow">Filtro A</div>
+      <h2 style="font-size:26px;margin-top:10px">Sobre estándar &mdash; el núcleo probado</h2>
+      <p class="lead" style="margin-top:12px">Un ponchador contra una alineación que se poncha, en un número lo bastante bajo como para superarse en una apertura corriente y no en una excepcional. Este es el filtro en el que más confía el sistema, y por eso lleva el límite diario más estricto &mdash; un buen filtro aplicado a demasiados juegos deja de ser un filtro.</p>
+    </div>
+    <div class="scroll-x">
+      <table class="tbl">
+        <thead><tr><th>Condición</th><th></th><th>Umbral</th></tr></thead>
+        <tbody>{{SCREEN_A_ROWS}}</tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="pad-sm" id="screen-b">
+  <div class="wrap">
+    <div class="sec-head" style="margin-bottom:24px">
+      <div class="eyebrow">Filtro B</div>
+      <h2 style="font-size:26px;margin-top:10px">Brazo de élite en el número más alto</h2>
+      <p class="lead" style="margin-top:12px">La misma idea un escalón más arriba: un ponchador de verdadero volumen en un número que casi ningún lanzador alcanza. Este filtro acierta cerca de un volado, y ese solo hecho lo decide todo &mdash; a &minus;120 un volado pierde dinero, a +110 lo gana.</p>
+      <p class="lead" style="margin-top:12px">{{SCREEN_B_PRICE_NOTE}}</p>
+    </div>
+    <div class="scroll-x">
+      <table class="tbl">
+        <thead><tr><th>Condición</th><th></th><th>Umbral</th></tr></thead>
+        <tbody>{{SCREEN_B_ROWS}}</tbody>
+      </table>
+    </div>
+    <div class="note" style="margin-top:22px">
+      <p class="disclaimer">El requisito de ponches por nueve entradas existe para separar a un ponchador real de una tasa inflada. Un abridor de rodados que trabaja cinco entradas puede tener un buen porcentaje de ponches sin acercarse nunca a siete &mdash; la tasa dice que domina cuando está en el montículo, y el volumen dice que no está ahí el tiempo suficiente para que importe.</p>
+    </div>
+  </div>
+</section>
+
+<section class="pad-sm" id="caps">
+  <div class="wrap">
+    <div class="sec-head" style="margin-bottom:24px">
+      <div class="eyebrow">Reglas universales</div>
+      <h2 style="font-size:26px;margin-top:10px">Reglas que aplican a todos los filtros</h2>
+      <p class="lead" style="margin-top:12px">{{CAPS_STATUS}}</p>
+    </div>
+    <div class="scroll-x">
+      <table class="tbl">
+        <thead><tr><th>Condición</th><th></th><th>Umbral</th></tr></thead>
+        <tbody>{{HARD_CAP_ROWS}}</tbody>
+      </table>
+    </div>
+    <div class="note" style="margin-top:22px">
+      <p class="disclaimer"><b style="color:var(--txt)">Total de jugadas de filtro por día: {{SCREEN_DAILY_CAP}}.</b> Ese total cubre todos los filtros juntos. Una versión anterior limitaba cada filtro por separado, lo que significaba que los lanzadores rechazados por el límite del Filtro A simplemente reaparecían bajo el Filtro B &mdash; cinco que calificaban producían cinco apuestas con un tope de dos. Un tope que otro filtro puede rodear no es un tope.</p>
+    </div>
+  </div>
+</section>
+
+<section class="pad-sm" id="price">
+  <div class="wrap">
+    <div class="sec-head" style="margin-bottom:24px">
+      <div class="eyebrow">Qué exige un precio</div>
+      <h2 style="font-size:26px;margin-top:10px">Lo que cada número tiene que acertar solo para no perder</h2>
+    </div>
+    <div class="scroll-x">
+      <table class="tbl">
+        <thead><tr><th>Precio</th><th>Tasa de acierto necesaria</th><th></th></tr></thead>
+        <tbody>{{BREAKEVEN_ROWS}}</tbody>
+      </table>
+    </div>
+    <div class="note" style="margin-top:22px">
+      <p class="disclaimer">Esta tabla es todo el argumento a favor de los topes de vigorish. Un filtro que gana el 55% de las veces es excelente a &minus;110 y apenas aceptable a &minus;150. Pagar de más borra la ventaja en silencio, sin aparecer nunca como un día perdedor &mdash; simplemente sigues ganando y poco a poco dejas de hacer dinero.</p>
+    </div>
+  </div>
+</section>
+
+<section class="pad" id="honest">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Lo que todavía no sabemos</div>
+      <h2>La parte que casi ningún sitio incluye</h2>
+    </div>
+    <div class="grid-2" style="gap:44px;align-items:start">
+      <div class="tile">
+        <div class="num">Sin probar</div>
+        <h3>Estos filtros no han sido validados</h3>
+        <p style="margin-top:10px">Son un conjunto de reglas, corriendo en vivo, con cada jugada calificada en público desde el primer día. Esa es la prueba. Nadie ha demostrado que le ganen al número de cierre sobre una muestra significativa, nosotros incluidos &mdash; y hasta que el historial diga lo contrario, así es exactamente como deben tratarse.</p>
+      </div>
+      <div class="tile">
+        <div class="num">Sospechoso</div>
+        <h3>Los datos vs. la alineación son la entrada más débil</h3>
+        <p style="margin-top:10px">Los dos filtros exigen una línea de por vida contra la alineación rival. Esas muestras son pequeñas, mezclan temporadas en las que el lanzador era otro lanzador, y se inclinan hacia veteranos enfrentando rivales de división &mdash; lo cual filtra el calendario tanto como el enfrentamiento. Con unas pocas docenas de turnos al bate, el margen de error de un promedio de bateo es más ancho que los umbrales que se le aplican, así que este bloque rechaza por ruido tan seguido como por señal. Es lo primero que debería quitarse si los filtros se quedan demasiado callados.</p>
+      </div>
+      <div class="tile">
+        <div class="num">Ignorado</div>
+        <h3>Los filtros casi no miran el precio</h3>
+        <p style="margin-top:10px">Más allá de los topes de vigorish, una jugada de filtro puede publicarse en un número que el mercado considera de mal valor. Eso es deliberado &mdash; lo que se está poniendo a prueba es que la situación vale más de lo que el precio implica. También es la forma más probable en que este sistema pierda dinero, y la columna "vs cierre" es la que lo va a detectar.</p>
+      </div>
+      <div class="tile">
+        <div class="num">Limitado</div>
+        <h3>La cobertura son unos pocos juegos al día</h3>
+        <p style="margin-top:10px">Las cuotas de props se cobran juego por juego, así que los filtros solo ven los juegos de los que ya extraemos props. No están escaneando la cartelera completa, y una jugada que les encantaría podría quedar sin revisar simplemente porque no estuvo entre los juegos consultados.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-band">
+  <div class="wrap">
+    <div class="eyebrow">Dos métodos, un marcador</div>
+    <h2>Míralos competir</h2>
+    <p>El historial reporta cada sistema por separado &mdash; récord, unidades y qué tan seguido cada uno le ganó al número de cierre. El que pierda esa comparación sobre una muestra real se elimina.</p>
+    <div class="hero-cta">
+      <a href="record.html" class="btn solid">Ver la comparación</a>
+      <a href="plays.html" class="btn ghost">Pizarra de hoy</a>
+    </div>
+    <div class="fineprint" style="margin-top:22px">21+ &middot; Solo entretenimiento &middot; Aquí no se vende nada</div>
+  </div>
+</section>

@@ -1,0 +1,106 @@
+<section style="background:var(--bg-2)">
+  <div class="wrap" style="padding:56px 28px 46px">
+    <div class="eyebrow">Every play, since day one</div>
+    <h1 style="font-size:clamp(32px,4.2vw,50px);margin:14px 0 16px">Track record</h1>
+    <p class="lead">{{RECORD_INTRO}}</p>
+  </div>
+</section>
+
+<section class="pad-sm">
+  <div class="wrap">
+    <div class="kpis">{{KPI_RECORD}}</div>
+  </div>
+</section>
+
+<section class="pad-sm" id="evidence">
+  <div class="wrap">
+    <div class="sec-head" style="margin-bottom:24px">
+      <div class="eyebrow muted">What this record can actually prove</div>
+      <h2 style="font-size:26px;margin-top:10px">Two ways to be judged, and one of them is far faster</h2>
+      <p class="lead" style="margin-top:12px">A win-loss record is the slowest possible evidence of a betting edge. Proving a real 5% edge from profit alone takes on the order of a few thousand bets. Proving the same thing by consistently beating the number the market closes at takes closer to fifty, because it measures the price rather than the outcome &mdash; and the price is what we actually claim to be good at.</p>
+    </div>
+    {{EVIDENCE}}
+  </div>
+</section>
+
+<section class="pad-sm">
+  <div class="wrap">
+    <div class="sec-head" style="margin-bottom:30px">
+      <div class="eyebrow muted">Month by month</div>
+      <h2 style="font-size:26px;margin-top:10px">Units won and lost</h2>
+      <p style="font-size:15px;margin-top:10px">{{MONTHS_LINE}}</p>
+    </div>
+
+    <figure class="card" style="padding:30px 26px 22px;margin:0">
+      {{MONTH_CHART}}
+      <figcaption class="up" style="margin-top:18px;color:var(--muted);text-transform:none;letter-spacing:.04em;font-size:11.5px">Units, flat 1u stakes. Green bars are winning months, red bars losing months. The current month is partial.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="pad-sm">
+  <div class="wrap">
+    <div class="sec-head" style="margin-bottom:26px">
+      <div class="eyebrow muted">Two methods, same scoreboard</div>
+      <h2 style="font-size:26px;margin-top:10px">Where the plays come from</h2>
+      <p style="font-size:15px;margin-top:10px">Two systems post to this card. One hunts mispriced numbers across the market; the other is a rules-based strikeout screen. They're tracked separately on purpose &mdash; the "beat close" column decides which one is worth keeping.</p>
+    </div>
+    <div class="scroll-x">
+      <table class="tbl">
+        <thead>
+          <tr><th>Source</th><th>Posted</th><th>Record</th><th>Units</th><th>ROI</th><th>Beat close</th></tr>
+        </thead>
+        <tbody>{{SOURCE_ROWS}}</tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="pad-sm">
+  <div class="wrap">
+    <div class="sec-head" style="margin-bottom:26px">
+      <div class="eyebrow muted">By league</div>
+      <h2 style="font-size:26px;margin-top:10px">Where the edge actually comes from</h2>
+    </div>
+    <div class="scroll-x">
+      <table class="tbl">
+        <thead>
+          <tr><th>League</th><th>Plays</th><th>Record</th><th>Win %</th><th>Units</th><th>ROI</th></tr>
+        </thead>
+        <tbody>{{LEAGUE_ROWS}}</tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="pad-sm">
+  <div class="wrap">
+    <div class="split" style="margin-bottom:26px">
+      <div>
+        <div class="eyebrow muted">Play log</div>
+        <h2 style="font-size:26px;margin-top:10px">{{LOG_HEADING}}</h2>
+      </div>
+      <span class="up">Updated daily at {{POST_TIME}}</span>
+    </div>
+    <div class="scroll-x">
+      <table class="tbl">
+        <thead>
+          <tr><th>Date</th><th>Play</th><th>League</th><th>Price</th><th>Edge at post</th><th>vs close</th><th>Result</th><th>Return</th></tr>
+        </thead>
+        <tbody>{{LOG_ROWS}}</tbody>
+      </table>
+    </div>
+    <div class="note" style="margin-top:26px">
+      <p class="disclaimer"><b style="color:var(--txt)">"vs close" is the column that actually matters.</b> It compares the price we posted against what the whole market settled on shortly before tip &mdash; vig removed from both. Positive means we got a better number than the market's final opinion, and that shows up in a couple hundred plays. Win-loss records need thousands before they mean anything, which is why every tout can show you a good month. {{DRAWDOWN_LINE}}</p>
+    </div>
+  </section>
+
+<section class="cta-band">
+  <div class="wrap">
+    <div class="eyebrow">Nothing here is behind a paywall</div>
+    <h2>Follow the plays, judge the record yourself</h2>
+    <p>The card goes out at {{POST_TIME}} every day, with the previous day's grades attached. Free, permanently.</p>
+    {{SIGNUP}}
+    <div class="fineprint">Past results never guarantee future results &middot; 21+</div>
+  </div>
+</section>

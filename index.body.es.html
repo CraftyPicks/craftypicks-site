@@ -1,0 +1,129 @@
+<section class="hero">
+  <div class="gridlines"></div>
+  <div class="wrap">
+    <div class="grid-2">
+      <div>
+        <div class="eyebrow">Jugadas gratis a diario &middot; NBA &middot; NFL &middot; MLB &middot; NCAAB</div>
+        <h1>Jugadas gratis.<br>Publicadas a diario.<br>Con recibos en<br>todas.</h1>
+        <p class="lead">Cada mañana a las {{POST_TIME}} la pizarra se escanea automáticamente. Donde una casa ofrece un precio bastante mejor que el resto del mercado, la jugada se publica aquí &mdash; con las cuentas incluidas. Todo se califica al día siguiente, gane o pierda. Nada está a la venta.</p>
+        <div class="hero-cta">
+          <a href="plays.html" class="btn solid">Ver las jugadas de hoy</a>
+          <a href="record.html" class="btn ghost">Ver el historial</a>
+        </div>
+        <div class="fineprint">Sin tarjeta &middot; Nada a la venta &middot; 21+</div>
+      </div>
+      {{HERO_CARD}}
+    </div>
+  </div>
+</section>
+
+<section class="pad-sm">
+  <div class="wrap">
+    <div class="split" style="margin-bottom:26px">
+      <div>
+        <div class="eyebrow muted">Temporada en curso &middot; {{GRADED_COUNT}} jugadas calificadas</div>
+        <h2 style="font-size:26px;margin-top:10px">Los números, sin filtro</h2>
+      </div>
+      <a href="record.html" class="link-quiet mono" style="letter-spacing:.12em;text-transform:uppercase;font-size:11px">Registro completo &rarr;</a>
+    </div>
+    <div class="kpis">{{KPI_HOME}}</div>
+  </div>
+</section>
+
+<section class="pad">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Cómo funciona</div>
+      <h2>Tres pasos. Sin grupo de chat, sin venta adicional.</h2>
+      <p class="lead">Casi todos los vendedores de picks te venden la selección y esconden el historial. Nosotros hacemos lo contrario: la cartelera es gratis y el historial es el producto.</p>
+    </div>
+    <div class="grid-3">
+      <div class="tile">
+        <div class="num">01</div>
+        <h3>Se le pone precio a toda la pizarra</h3>
+        <p>Cada mañana se extrae cada juego de {{MIN_BOOKS}}+ casas de apuestas. A los dos lados de cada mercado se les quita el vigorish, lo que convierte el precio de una casa en su opinión honesta sobre las probabilidades.</p>
+      </div>
+      <div class="tile">
+        <div class="num">02</div>
+        <h3>Solo se publican los verdaderos atípicos</h3>
+        <p>Al promediar esas opiniones honestas obtienes un precio justo de consenso. Una jugada se publica solo cuando el mejor número de la pizarra le gana a ese consenso por {{MIN_EDGE}} o más. El tope es de {{MAX_PLAYS}} jugadas al día.</p>
+      </div>
+      <div class="tile">
+        <div class="num">03</div>
+        <h3>Todo se califica</h3>
+        <p>A la mañana siguiente cada jugada se marca como ganada, perdida o empatada contra el marcador final y se agrega al registro permanente. Nada se borra, se reajusta ni desaparece en silencio.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="pad">
+  <div class="wrap">
+    <div class="grid-2">
+      <div>
+        <div class="eyebrow">Hecho para el día a día</div>
+        <h2 style="margin:14px 0 20px">Ya te quemaron los vendedores de picks. Esa es justamente la razón de que esto exista.</h2>
+        <p class="lead" style="margin-bottom:26px">Perdedoras borradas. Capturas de "días de 5&ndash;0" que nunca pasaron. 299 dólares por el "candado del mes". Si llevas tiempo persiguiendo jugadas, ya conoces el patrón.</p>
+        <div class="quote">Cada jugada que se ha publicado sigue en el sitio, calificada exactamente como se publicó. Puedes recorrer los días perdedores tú mismo.</div>
+        <div style="margin-top:30px">
+          <a href="record.html" class="btn ghost">Revisa los meses perdedores</a>
+        </div>
+      </div>
+      <div class="card">
+        <div class="play-top">
+          <span class="stamp">Calificadas hace poco</span>
+          <span class="stamp on">Últimas {{RECENT_COUNT}} jugadas</span>
+        </div>
+        <div class="scroll-x">
+          <table class="tbl" style="border:0"><tbody>{{RECENT_ROWS}}</tbody></table>
+        </div>
+        <div style="padding:16px 20px;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center">
+          <span class="stamp">Neto</span>
+          <span class="mono {{RECENT_NET_CLASS}}" style="font-size:15px;font-weight:600">{{RECENT_NET}}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="pad">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Cobertura</div>
+      <h2>Cuatro ligas, todo el año</h2>
+      <p class="lead">El escáner corre sobre la que esté en temporada, así que la cartelera sigue el calendario sin que nadie la toque.</p>
+    </div>
+    <div class="grid-4">
+      <div class="tile">
+        <div class="num">NBA</div>
+        <h3>Hándicaps, totales, líneas de dinero</h3>
+        <p style="margin-top:8px">El mayor número de casas de todas las ligas, lo que hace el consenso más nítido y los atípicos más confiables.</p>
+      </div>
+      <div class="tile">
+        <div class="num">NFL</div>
+        <h3>Hándicaps, totales, ML</h3>
+        <p style="margin-top:8px">El mercado con precios más trabajados de Norteamérica. Las ventajas son más raras aquí y valen más cuando aparecen.</p>
+      </div>
+      <div class="tile">
+        <div class="num">MLB</div>
+        <h3>Líneas de dinero y totales</h3>
+        <p style="margin-top:8px">El volumen diario hace que el escáner vea muchos juegos &mdash; y que las casas discrepen entre sí con más frecuencia.</p>
+      </div>
+      <div class="tile">
+        <div class="num">NCAAB</div>
+        <h3>Hándicaps y totales</h3>
+        <p style="margin-top:8px">Donde viven los números más blandos. Las universidades pequeñas reciben menos atención de las casas que fijan el mercado.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-band">
+  <div class="wrap">
+    <div class="eyebrow">Gratis, y va a seguir siendo gratis</div>
+    <h2>Recibe la cartelera en tu correo a las {{POST_TIME}}</h2>
+    <p>Un correo al día: las jugadas, las cuentas detrás de ellas y los resultados calificados de ayer. Sin códigos promocionales, sin enlaces de afiliado, sin ningún "nivel premium" esperando detrás.</p>
+    {{SIGNUP}}
+    <div class="fineprint">Cancela cuando quieras &middot; Nunca vendemos tu correo &middot; 21+</div>
+  </div>
+</section>

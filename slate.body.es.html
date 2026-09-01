@@ -1,0 +1,97 @@
+<section style="background:var(--bg-2)">
+  <div class="wrap" style="padding:64px 28px 40px">
+    <div class="grid-2" style="gap:56px;align-items:start">
+      <div>
+        <div class="eyebrow">{{SLATE_DATE}} &middot; cada juego, evaluado</div>
+        <h1 style="font-size:clamp(42px,6vw,76px);margin:18px 0 0">La pizarra<br>MLB de hoy</h1>
+      </div>
+      <p class="lead" style="margin-top:34px">Una probabilidad de victoria para cada juego, no solo para los que apostaríamos. Nuestro número va junto al número sin vigorish del propio mercado, para que veas exactamente dónde discrepamos &mdash; y todos se califican después, se hayan convertido en jugada o no.</p>
+    </div>
+  </div>
+</section>
+
+<section class="pad-sm" style="padding:20px 0">
+  <div class="wrap">
+    <div class="clegend">
+      <span><i style="display:inline-block;width:26px;height:9px;background:linear-gradient(90deg,var(--green-deep),var(--green))"></i> nuestro número</span>
+      <span><i class="key-line" style="background:var(--txt)"></i> dónde lo tiene el mercado</span>
+      <span style="color:var(--amber)">&#9888; marcado como error nuestro</span>
+    </div>
+  </div>
+</section>
+
+<section class="pad-sm">
+  <div class="wrap">
+    <div class="board">{{SLATE_ROWS}}</div>
+    <div class="note" style="margin-top:26px">
+      <p class="disclaimer"><b style="color:var(--txt)">La barra es toda la idea.</b> Donde se juntan las dos mitades sombreadas está nuestra probabilidad de victoria; la marca vertical oscura es donde el mercado puso ese mismo juego. La distancia entre ambas es la discrepancia, y casi todas las noches apenas se nota &mdash; que es la imagen honesta. Una docena de casas fijando el precio de un juego de béisbol terminan muy cerca de donde termina cualquier modelo decente. Una tarjeta marcada en ámbar es una que tratamos como error <i>nuestro</i> y no como oportunidad: el mercado no se equivoca por doce puntos, y un modelo que cree que sí tiene un fallo. Esas nunca pueden convertirse en jugadas.</p>
+    </div>
+  </div>
+</section>
+
+<section class="pad-sm" id="calibration">
+  <div class="wrap">
+    <div class="sec-head" style="margin-bottom:26px">
+      <div class="eyebrow">El marcador de los números</div>
+      <h2 style="font-size:26px;margin-top:10px">¿Estamos calibrados?</h2>
+      <p class="lead" style="margin-top:12px">Cuando decimos que un equipo gana el 60% de las veces, ¿lo hace? Esta es la única afirmación de este sitio que puede comprobarse en semanas en lugar de años &mdash; porque cuenta cada juego evaluado, no solo el puñado que apostamos. Quince juegos por noche son 450 datos al mes; una cartelera de dos jugadas tarda más de una década en decir absolutamente nada.</p>
+    </div>
+    <div class="calib">{{CALIBRATION_ROWS}}</div>
+    <div class="clegend">
+      <span><i class="key-line"></i> lo que dijimos</span>
+      <span><i class="key-dot"></i> lo que pasó de verdad</span>
+      <span><i class="key-band"></i> el rango que explica el puro azar</span>
+    </div>
+    <div class="note" style="margin-top:26px">
+      <p class="disclaimer">{{BRIER_LINE}}</p>
+    </div>
+  </div>
+</section>
+
+<section class="pad">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Qué entra en el número</div>
+      <h2>Dos entradas, y una lista de cosas deliberadamente excluidas</h2>
+    </div>
+    <div class="grid-2" style="gap:44px;align-items:start">
+      <div class="tile">
+        <div class="num">Entrada 01</div>
+        <h3>Fuerza del equipo, aprendida de los resultados</h3>
+        <p style="margin-top:10px">Un rating Elo construido recorriendo cada juego terminado en orden de fecha. No necesita entrenamiento ni coeficientes ajustados &mdash; se calibra solo contra lo que realmente ocurrió, y un rating nunca contiene información de un juego que todavía no se había jugado.</p>
+      </div>
+      <div class="tile">
+        <div class="num">Entrada 02</div>
+        <h3>Los abridores</h3>
+        <p style="margin-top:10px">La diferencia de efectividad en lo que va de temporada entre los dos abridores, convertida a probabilidad de victoria y con tope, para que una sola salida desastrosa no mueva un rating. Esa conversión es una estimación y no un número ajustado, y es lo más probable que esté mal en esta página. La tabla de calibración de arriba es lo que lo va a detectar.</p>
+      </div>
+      <div class="tile">
+        <div class="num">Se muestra, no cuenta</div>
+        <h3>Récords y la línea vs. el rival</h3>
+        <p style="margin-top:10px">Cada tarjeta lleva el récord de los dos equipos y cómo le ha ido históricamente a ese abridor contra el equipo de esta noche, porque es lo primero que cualquiera quiere ver. Ninguno de los dos toca el número. Un récord ya está dentro del rating &mdash; contarlo dos veces es contarlo doble &mdash; y una línea de por vida contra un solo equipo suele ser una docena de entradas de suerte, por eso cualquier muestra de menos de tres aperturas aparece atenuada y etiquetada como escasa.</p>
+      </div>
+      <div class="tile">
+        <div class="num">Excluido</div>
+        <h3>Forma reciente y rachas</h3>
+        <p style="margin-top:10px">Los últimos diez juegos de un equipo ya están dentro de su rating, y ponderarlos otra vez cuenta dos veces la misma información mientras agrega ruido. Las rachas buenas y malas son casi siempre varianza disfrazada de narrativa.</p>
+      </div>
+    </div>
+    <div class="note" style="margin-top:30px">
+      <p class="disclaimer"><b style="color:var(--txt)">El resultado esperado es que el mercado nos gane.</b> Los precios de cierre los fijan personas con mejores modelos, mejores datos y dinero en riesgo. Publicar un número que se califica contra el suyo no es afirmar que somos más agudos &mdash; es hacer una afirmación lo bastante precisa como para que se demuestre que está equivocada, algo más raro en esta industria que tener razón.</p>
+    </div>
+  </div>
+</section>
+
+<section class="cta-band">
+  <div class="wrap">
+    <div class="eyebrow">Números en todo, jugadas en casi nada</div>
+    <h2>La pizarra se evalúa a diario. Las jugadas son más raras.</h2>
+    <p>Evaluar cada juego no significa apostar cada juego. Casi todas las noches el mercado y nuestro número coinciden lo suficiente como para que no haya nada que hacer.</p>
+    <div class="hero-cta">
+      <a href="plays.html" class="btn solid">Jugadas de hoy</a>
+      <a href="pitchers.html" class="btn ghost">Props de lanzadores</a>
+      <a href="record.html" class="btn ghost">Historial</a>
+    </div>
+    <div class="fineprint" style="margin-top:22px">21+ &middot; Solo entretenimiento &middot; Aquí no se vende nada</div>
+  </div>
+</section>

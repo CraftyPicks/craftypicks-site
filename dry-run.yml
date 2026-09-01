@@ -1,0 +1,50 @@
+name: Dry run (0 credits)
+
+# Runs the whole daily job against synthetic odds. Spends nothing, commits
+# nothing, touches no live data. Use this while changing code — a manual
+# "Post daily plays" costs real credits every time, and fifteen of those is
+# most of a free month.
+
+on:
+  workflow_dispatch:
+
+jobs:
+  dry:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run with mock data
+        working-directory: craftypicks
+        shell: bash
+        env:
+          CRAFTYPICKS_MOCK: "1"
+        run: |
+          set -o pipefail
+          python3 scripts/run_daily.py 2>&1
+
+      - name: Confirm every page rendered
+        working-directory: craftypicks
+        shell: bash
+        run: |
+          set -euo pipefail
+          for f in index plays record about screens slate pitchers; do
+            test -s "$f.html" || { echo "MISSING $f.html"; exit 1; }
+            if grep -q '{{' "$f.html"; then
+              echo "$f.html still has an unreplaced token:"
+              grep -o '{{[A-Z_]*}}' "$f.html" | sort -u
+              exit 1
+            fi
+          done
+          echo "all 7 pages built with no leftover tokens"
+
+      - name: Discard everything the dry run wrote
+        shell: bash
+        run: |
+          git checkout -- . || true
+          git clean -fd craftypicks/data || true
+          echo "working tree restored — nothing committed"

@@ -1,0 +1,51 @@
+name: Capture closing lines
+
+# 21:00 UTC = 5:00 PM Eastern Daylight Time — late enough that evening games
+# are within a few hours of tip, early enough to catch them before they start.
+# When the US falls back in November, change this to "0 22 * * *".
+#
+# Games that start earlier in the day will fall outside the scoring window and
+# simply show no CLV. That's deliberate: a "closing" number taken eight hours
+# out isn't a closing number, and counting it would flatter the record.
+on:
+  schedule:
+    - cron: "0 21 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: closing-lines
+  cancel-in-progress: false
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: craftypicks
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Capture the late line on today's plays
+        env:
+          ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
+        run: python scripts/closing.py
+
+      - name: Commit
+        run: |
+          git config user.name  "craftypicks-bot"
+          git config user.email "bot@users.noreply.github.com"
+          git add data *.html
+          if git diff --staged --quiet; then
+            echo "No change."
+          else
+            git commit -m "clv: $(date -u +%Y-%m-%d)"
+            git push
+          fi

@@ -1,0 +1,123 @@
+name: Tidy misplaced uploads
+
+# Why this exists
+# ----------------
+# Uploading through the GitHub web UI keeps flattening the folder: files land
+# at the repository root instead of inside craftypicks/, and the site build
+# then can't see them. Earlier attempts fixed this with a workflow you had to
+# remember to run. This one runs itself on every push, so a flattened upload
+# repairs itself within a minute of being committed and there is no step left
+# to forget.
+#
+# Loop safety: commits made with GITHUB_TOKEN do not trigger workflows, so
+# this job's own push cannot re-trigger it. That is a GitHub guarantee, not a
+# trick with commit messages.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: tidy
+  cancel-in-progress: false
+
+jobs:
+  tidy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Move stray files into place
+        run: |
+          python3 - <<'PYTHON'
+          import pathlib
+          import shutil
+
+          root = pathlib.Path(".").resolve()
+          site = root / "craftypicks"
+
+          # Files that legitimately live at the repository root. Everything
+          # else loose at the top level is treated as a misplaced upload.
+          KEEP = {
+              "README.md", "LICENSE", ".gitignore", ".gitattributes",
+              "CNAME", "_config.yml", "package.json", "package-lock.json",
+          }
+
+          if not site.is_dir():
+              raise SystemExit("No craftypicks/ directory — nothing to tidy into.")
+
+          # Where a given filename belongs. An existing copy inside the tree is
+          # the strongest signal, so that wins; otherwise fall back to naming
+          # rules, which is what lets a genuinely new file (i18n.py the first
+          # time it shipped) still land correctly.
+          known = {}
+          for sub in ("_src", "scripts"):
+              d = site / sub
+              if d.is_dir():
+                  for f in d.iterdir():
+                      if f.is_file():
+                          known.setdefault(f.name, sub)
+
+          SRC_NAMES = {"build.py", "render.py", "i18n.py", "base.css"}
+
+          def destination(name: str) -> str | None:
+              if name in known:
+                  return known[name]
+              if name in SRC_NAMES or name.endswith((".body.html", ".css")):
+                  return "_src"
+              if name.endswith(".py"):
+                  return "scripts"
+              return None
+
+          moved, skipped = [], []
+          for f in sorted(root.iterdir()):
+              if not f.is_file() or f.name in KEEP or f.name.startswith("."):
+                  continue
+              # A zip at the root is an upload we have not unpacked; leave it
+              # for the Apply update workflow rather than filing it as source.
+              if f.suffix == ".zip":
+                  continue
+              sub = destination(f.name)
+              if sub is None:
+                  skipped.append(f.name)
+                  continue
+              target = site / sub / f.name
+              target.parent.mkdir(parents=True, exist_ok=True)
+              # The stray is the newer upload; the copy already in the tree is
+              # the stale one. Overwrite, do not preserve.
+              shutil.move(str(f), str(target))
+              moved.append(f"{f.name} -> craftypicks/{sub}/")
+
+          for m in moved:
+              print("moved  ", m)
+          for s in skipped:
+              print("left   ", s, "(no rule for this filename)")
+          print(f"\n{len(moved)} moved, {len(skipped)} left in place")
+          PYTHON
+
+      - name: Commit if anything moved
+        run: |
+          git config user.name  "craftypicks-bot"
+          git config user.email "craftypicks-bot@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "Root was already clean."
+            exit 0
+          fi
+          git commit -m "Tidy: move misplaced uploads into craftypicks/"
+          git push || { git pull --rebase && git push; }
+
+      - name: Show the tree
+        if: always()
+        run: |
+          echo "--- repository root"
+          ls -1
+          echo "--- craftypicks/_src"
+          ls -1 craftypicks/_src 2>/dev/null | head -30 || echo "(missing)"
+          echo "--- craftypicks/scripts"
+          ls -1 craftypicks/scripts 2>/dev/null | head -30 || echo "(missing)"
