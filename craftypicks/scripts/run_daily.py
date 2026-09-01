@@ -64,6 +64,16 @@ try:
 except Exception as _slate_err:                              # noqa: BLE001
     slate_mod = None
     print(f"!! slate rating unavailable ({_slate_err})", file=sys.stderr)
+
+# The board is the site's main page. It is still guarded like everything else
+# here: a failure to price must not stop the card going out.
+try:
+    import board as board_mod   # noqa: E402
+    import leagues              # noqa: E402
+except Exception as _board_err:                              # noqa: BLE001
+    board_mod = None
+    leagues = None
+    print(f"!! board unavailable ({_board_err})", file=sys.stderr)
 from odds_client import BudgetExhausted, OddsAPIError, OddsClient  # noqa: E402
 
 
@@ -162,6 +172,7 @@ def main() -> int:
     candidates: list[dict] = []
     prop_events: list[dict] = []
     slate_rows: list[dict] = []
+    boards: dict[str, list[dict]] = {}
     try:
         in_season = client.in_season_sports()
         print(f"-- in season: {', '.join(in_season) or 'nothing'}")
@@ -195,6 +206,19 @@ def main() -> int:
                     print(f"      near miss ({gate}) {str(side)[:22]:<22} "
                           f"{price:>5}  EV {ev:>5.2f}%  pp {pp:>5.2f}")
             candidates.extend(found)
+
+            # Price the whole board for this league, not only the plays. This is
+            # free: the odds were already pulled above, and nothing here calls
+            # the API.
+            if board_mod:
+                lg = leagues.by_sport_key(sport)
+                if lg:
+                    try:
+                        boards[lg.short] = board_mod.build(games, lg.short)
+                        print(f"   board: {len(boards[lg.short])} {lg.short} "
+                              f"game(s) priced")
+                    except Exception as e:                       # noqa: BLE001
+                        print(f"!! board failed for {sport}: {e}", file=sys.stderr)
 
             # Rate every game on the board, not just the ones we'd bet.
             if slate_mod and sport == "baseball_mlb":
@@ -373,6 +397,15 @@ def main() -> int:
         except Exception as e:                               # noqa: BLE001
             print(f"!! slate bookkeeping failed ({type(e).__name__}: {e})",
                   file=sys.stderr)
+
+    if board_mod and boards:
+        doc = board_mod.document(
+            boards, now.isoformat(timespec="seconds"), today)
+        (DATA / "board.json").write_text(
+            json.dumps(doc, indent=1), encoding="utf-8")
+        total = sum(doc["counts"].values())
+        print(f"-- board.json: {total} game(s) across "
+              f"{len(doc['leagues'])} league(s)")
 
     # ------------------------------------------------------------- 4. stats
     site_stats = statsmod.compute(history)

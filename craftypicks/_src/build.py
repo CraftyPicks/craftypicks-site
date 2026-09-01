@@ -12,8 +12,8 @@ from __future__ import annotations
 
 import json
 import sys
-from collections import defaultdict
-from datetime import datetime
+from collections import defaultdict, namedtuple
+from datetime import date, datetime
 from pathlib import Path
 
 SRC = Path(__file__).resolve().parent
@@ -23,34 +23,149 @@ sys.path.insert(0, str(SRC))
 sys.path.insert(0, str(ROOT / "scripts"))
 
 import config   # noqa: E402
+import leagues      # noqa: E402
 import render as R  # noqa: E402
 import i18n         # noqa: E402
 
 CSS = (SRC / "base.css").read_text(encoding="utf-8")
 
-PAGES = {
-    "index.html": (f"{config.SITE_NAME} — Free daily sports betting plays with receipts", "home"),
-    "plays.html": f"Today's Plays — {config.SITE_NAME}",
-    "record.html": f"Track Record — {config.SITE_NAME}",
-    "about.html": f"How It Works — {config.SITE_NAME}",
-    "screens.html": f"The Strikeout Screens — {config.SITE_NAME}",
-    "slate.html": f"MLB Board — {config.SITE_NAME}",
-    "pitchers.html": f"Pitchers Prop — {config.SITE_NAME}",
+# out    — path relative to the output root; the subdirectory is in here
+# body   — stem of the _src/<stem>.body.html file this page renders
+# key    — nav identity, used to mark the current page active
+# league — the league short name for a league page, else None
+Page = namedtuple("Page", "out body key league")
+
+_LEAGUE_PAGES = {
+    f"{short}/index.html": Page(f"{short}/index.html", "league", short, short)
+    for short in leagues.ORDER
 }
-# Labels come from i18n so the nav translates with everything else.
-NAV_ITEMS = [
-    ("plays.html", "nav_plays", "plays"),
-    ("slate.html", "nav_board", "slate"),
-    ("pitchers.html", "nav_pitchers", "pitchers"),
-    ("record.html", "nav_record", "record"),
-    ("about.html", "nav_about", "about"),
-    ("screens.html", "nav_screens", "screens"),
-]
+
+PAGES: dict[str, Page] = {
+    "index.html":    Page("index.html",    "tonight",  "tonight",  None),
+    **_LEAGUE_PAGES,
+    "record.html":   Page("record.html",   "record",   "record",   None),
+    "about.html":    Page("about.html",    "about",    "about",    None),
+    "plays.html":    Page("plays.html",    "plays",    "plays",    None),
+    "screens.html":  Page("screens.html",  "screens",  "screens",  None),
+    "pitchers.html": Page("pitchers.html", "pitchers", "pitchers", None),
+    "slate.html":    Page("slate.html",    "slate",    "slate",    None),
+}
+
+
+def page_url(page: Page) -> str:
+    """The href to reach this page from the output root.
+
+    Does not produce a directory-style URL. Cloudflare Pages will serve
+    /mlb/ for /mlb/index.html, but the committed pages are also opened
+    straight off disk during development, where only the filename works.
+    """
+    return page.out
+
+
+def rel_root(page: Page) -> str:
+    """The prefix a page needs on every link to reach back to the root.
+
+    Empty at the top level, "../" one directory down. Every href in the head
+    and nav is built with this, which is what lets /mlb/index.html and
+    /index.html share one template.
+
+    Does not handle more than one level of nesting; nothing on this site is
+    deeper, and a silent wrong answer would be worse than an obvious one.
+    """
+    return "../" * page.out.count("/")
+
+
+# The views each league actually has. A league is not listed with a props tab
+# until its props page is built — four tabs that 404 look worse than one tab
+# that works.
+VIEWS: dict[str, list[tuple[str, str]]] = {
+    short: ([(f"{short}/index.html", "nav_board")]
+            + ([("pitchers.html", "nav_pitchers")]
+               if leagues.LEAGUES[short].has_props
+               and leagues.LEAGUES[short].short == "mlb" else []))
+    for short in leagues.ORDER
+}
+
+
+def sport_row(page: Page, lang: str) -> str:
+    """The first navigation row: Tonight, then one tab per league.
+
+    Marks at most one tab active. A page belonging to no sport — How it works,
+    the track record — leaves the whole row inactive rather than guessing.
+
+    Does not hide a league that is out of season. A reader who clicks NFL in
+    June should find an NFL page saying nothing is on, not a missing tab that
+    makes them wonder whether the site still covers it.
+    """
+    up = rel_root(page)
+    items = [("index.html", i18n.t("nav_tonight", lang), "tonight")]
+    for short in leagues.ORDER:
+        items.append((f"{short}/index.html", leagues.LEAGUES[short].label,
+                      short))
+    out = []
+    for href, label, key in items:
+        active = " on" if (page.key == key or page.league == key) else ""
+        out.append(f'<a href="{up}{href}" class="{active.strip()}">{label}</a>')
+    return "".join(out)
+
+
+def view_row(page: Page, lang: str) -> str:
+    """The second row: the views within the sport the reader is looking at.
+
+    Returns an empty string for a page that belongs to no sport, so the row
+    collapses rather than rendering an empty bar.
+
+    Does not repeat the sport's name. The row above already says which sport
+    this is, and saying it twice costs a line of vertical space that a phone
+    cannot spare.
+    """
+    if not page.league:
+        return ""
+    up = rel_root(page)
+    out = []
+    for href, key in VIEWS[page.league]:
+        active = " on" if href == page.out else ""
+        out.append(f'<a href="{up}{href}" class="{active.strip()}">'
+                   f'{i18n.t(key, lang)}</a>')
+    return "".join(out)
+
+
+def tonight_rows(doc: dict) -> list[dict]:
+    """Every league's games merged into one list, earliest first.
+
+    Does not group by league. Tonight's whole point is that a reader sees what
+    is starting soonest regardless of sport; grouping would bury a 7pm NBA
+    game under twelve baseball games starting later.
+    """
+    rows = []
+    for entry in (doc.get("leagues") or {}).values():
+        rows.extend(entry.get("games") or [])
+    rows.sort(key=lambda r: (r.get("commence_time") or "",
+                             r.get("home") or ""))
+    return rows
+
+
+def _board_day(iso: str, lang: str) -> str:
+    """The board's date as a reader's phrase, or an empty string.
+
+    Does not fall back to today. An empty eyebrow is a visible sign that
+    board.json is missing or malformed; a date invented here would make a
+    stale board look current, which is the one thing a pricing page must
+    never do.
+    """
+    try:
+        return i18n.day_and_date(date.fromisoformat(iso), lang)
+    except (ValueError, TypeError):
+        return ""
 
 # Page titles per language. The English half is what the site shipped with.
 TITLES = {
-    "index.html": {"en": f"{config.SITE_NAME} — Free daily sports betting plays with receipts",
-                   "es": f"{config.SITE_NAME} — Jugadas deportivas gratis, con recibos"},
+    "index.html": {"en": f"Tonight — {config.SITE_NAME}",
+                   "es": f"Esta noche — {config.SITE_NAME}"},
+    **{f"{short}/index.html": {
+        "en": f"{leagues.LEAGUES[short].label} board — {config.SITE_NAME}",
+        "es": f"Tablero {leagues.LEAGUES[short].label} — {config.SITE_NAME}"}
+       for short in leagues.ORDER},
     "plays.html": {"en": f"Today's Plays — {config.SITE_NAME}",
                    "es": f"Jugadas de hoy — {config.SITE_NAME}"},
     "record.html": {"en": f"Track Record — {config.SITE_NAME}",
@@ -77,7 +192,7 @@ HEAD = """<!DOCTYPE html>
 <html lang="{lang}">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>{title}</title>
 <meta name="description" content="{desc}">
 <meta property="og:title" content="{title}">
@@ -96,7 +211,7 @@ HEAD = """<!DOCTYPE html>
 <body>
 <header class="nav">
   <div class="nav-in">
-    <a href="index.html" class="logo">Craftypicks<em>.</em></a>
+    <a href="{up}index.html" class="logo">Craftypicks<em>.</em></a>
     <nav class="nav-links">{links}</nav>
     <div class="nav-cta">
       <a href="{about_href}" class="link-quiet">{why_free}</a>
@@ -104,6 +219,7 @@ HEAD = """<!DOCTYPE html>
     </div>
   </div>
 </header>
+<div class="nav-views{views_empty}"><div class="nav-in">{views}</div></div>
 {statbar}
 {banner}
 """
@@ -111,7 +227,7 @@ HEAD = """<!DOCTYPE html>
 def mock_banner(lang: str) -> str:
     return f'<div class="mock-banner">{i18n.t("sample_data", lang)}</div>' 
 
-def footer_html(lang: str, year: int) -> str:
+def footer_html(lang: str, year: int, up: str = "") -> str:
     """The footer, per language. Links point inside the same language tree."""
     L = lambda k: i18n.t(k, lang)
     return f"""
@@ -119,26 +235,26 @@ def footer_html(lang: str, year: int) -> str:
   <div class="wrap">
     <div class="foot-grid">
       <div>
-        <a href="index.html" class="logo" style="display:inline-block;margin-bottom:14px">Craftypicks<em>.</em></a>
+        <a href="{up}index.html" class="logo" style="display:inline-block;margin-bottom:14px">Craftypicks<em>.</em></a>
         <p style="font-size:14px;max-width:34ch">{L("foot_tagline")}</p>
       </div>
       <div>
         <h4>{L("foot_plays")}</h4>
-        <a href="plays.html">{L("foot_today")}</a>
-        <a href="plays.html#results">{L("foot_yest")}</a>
-        <a href="record.html">{L("foot_log")}</a>
+        <a href="{up}plays.html">{L("foot_today")}</a>
+        <a href="{up}plays.html#results">{L("foot_yest")}</a>
+        <a href="{up}record.html">{L("foot_log")}</a>
       </div>
       <div>
         <h4>{L("foot_trans")}</h4>
-        <a href="record.html">{L("nav_record")}</a>
-        <a href="about.html#method">{L("foot_method")}</a>
-        <a href="screens.html">{L("nav_screens")}</a>
+        <a href="{up}record.html">{L("nav_record")}</a>
+        <a href="{up}about.html#method">{L("foot_method")}</a>
+        <a href="{up}screens.html">{L("nav_screens")}</a>
       </div>
       <div>
         <h4>{L("foot_about")}</h4>
-        <a href="about.html">{L("nav_about")}</a>
-        <a href="about.html#faq">{L("foot_faq")}</a>
-        <a href="about.html#responsible">{L("foot_resp")}</a>
+        <a href="{up}about.html">{L("nav_about")}</a>
+        <a href="{up}about.html#faq">{L("foot_faq")}</a>
+        <a href="{up}about.html#responsible">{L("foot_resp")}</a>
       </div>
     </div>
     <div class="foot-legal">
@@ -279,6 +395,7 @@ def build() -> None:
     history = load("history.json", {"plays": []})["plays"]
     slate_doc = load("slate.json", {"date_label": "", "games": [], "summary": {}})
     pitch_doc = load("pitchers.json", {"date_label": "", "pitchers": [], "summary": {}})
+    board_doc = load("board.json", {})
 
     def build_tokens(lang, plays_doc, stats, history, slate_doc,
                      pitch_doc, closing_doc=None):
@@ -394,6 +511,9 @@ def build() -> None:
             "{{POST_TIME}}": config.POST_TIME_LABEL,
             "{{SIGNUP}}": R.signup_form(),
             "{{YEAR}}": str(datetime.utcnow().year),
+            "{{TONIGHT_BOARD}}": R.board_cards(tonight_rows(board_doc)),
+            "{{LEAGUE_BOARD}}": "",
+            "{{LEAGUE_NAME}}": "",
         }
 
 
@@ -424,37 +544,145 @@ def build() -> None:
         tokens = build_tokens(lang, plays_doc, stats, history,
                               slate_doc, pitch_doc)
 
-        for fname in PAGES:
-            key = PAGES[fname]
-            title = TITLES[fname][lang]
-            links = "".join(
-                f'<a href="{href}" class="{"on" if k == key else ""}">'
-                f'{i18n.t(label, lang)}</a>'
-                for href, label, k in NAV_ITEMS
-            )
+        for out_name, page in PAGES.items():
+            key = page.key
+            title = TITLES[out_name][lang]
+            up = rel_root(page)
+            links = sport_row(page, lang)
+            views = view_row(page, lang)
             hreflang = ""
-            body_file = SRC / (fname.replace(".html", "") + (".body.html" if lang == "en"
-                                                            else f".body.{lang}.html"))
-            if not body_file.exists():          # untranslated page falls back
-                body_file = SRC / fname.replace(".html", ".body.html")
-                print(f"!! {fname} has no {lang} copy; using English")
+            body_file = SRC / (page.body + (".body.html" if lang == "en"
+                                            else f".body.{lang}.html"))
+            if not body_file.exists():
+                body_file = SRC / f"{page.body}.body.html"
+                print(f"!! {out_name} has no {lang} copy; using English")
             body = body_file.read_text()
-            for token, value in tokens.items():
-                body = body.replace(token, value)
+            page_tokens = dict(tokens)
+            if page.key == "tonight":
+                page_tokens["{{BOARD_EYEBROW}}"] = i18n.t(
+                    "board_eyebrow", lang,
+                    n=sum((board_doc.get("counts") or {}).values()),
+                    d=_board_day(board_doc.get("date", ""), lang))
+            if page.league:
+                entry = (board_doc.get("leagues") or {}).get(page.league, {})
+                page_tokens["{{LEAGUE_NAME}}"] = entry.get(
+                    "label", leagues.LEAGUES[page.league].label)
+                page_tokens["{{LEAGUE_BOARD}}"] = R.board_cards(
+                    entry.get("games") or [])
+                page_tokens["{{BOARD_EYEBROW}}"] = i18n.t(
+                    "board_eyebrow", lang,
+                    n=(board_doc.get("counts") or {}).get(page.league, 0),
+                    d=_board_day(board_doc.get("date", ""), lang))
+            for token, value in page_tokens.items():
+                body = body.replace(token, str(value))
 
             head = HEAD.format(
                 title=title, css=CSS, links=links, site=config.SITE_NAME,
                 lang=lang, desc=META_DESC[lang].format(site=config.SITE_NAME),
-                hreflang=hreflang,
-                about_href="about.html", plays_href="plays.html",
+                hreflang=hreflang, up=up, views=views,
+                views_empty=("" if views else " is-empty"),
+                about_href=f"{up}about.html", plays_href=f"{up}plays.html",
                 why_free=i18n.t("nav_why", lang), cta=i18n.t("cta_plays", lang),
                 statbar=_statbar(slate_doc, plays_doc, lang),
                 banner=mock_banner(lang) if plays_doc.get("mock") else "",
             )
-            html_out = head + body + footer_html(lang, year)
-            (out_dir / fname).write_text(html_out)
-            print(f"built {lang}/{fname}  ({len(html_out)//1024} KB)")
+            html_out = head + body + footer_html(lang, year, up)
+            target = out_dir / out_name
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_text(html_out, encoding="utf-8")
+            print(f"built {lang}/{out_name}  ({len(html_out)//1024} KB)")
+
+
+def _self_test() -> None:
+    # Every registry entry is a Page, and the key matches its output path.
+    for out, page in PAGES.items():
+        assert isinstance(page, Page), f"{out} is not a Page: {page!r}"
+        assert page.out == out, f"{out} is filed under {page.out}"
+
+    # Every league in the nav has a page, and every league page is a league.
+    for short in leagues.ORDER:
+        out = f"{short}/index.html"
+        assert out in PAGES, f"{short} has no board page"
+        assert PAGES[out].league == short
+
+    # Depth. A page one level down has to reach back up for every link.
+    assert rel_root(PAGES["index.html"]) == ""
+    assert rel_root(PAGES["mlb/index.html"]) == "../"
+
+    # And the links themselves resolve from either depth.
+    assert page_url(PAGES["index.html"]) == "index.html"
+    assert page_url(PAGES["mlb/index.html"]) == "mlb/index.html"
+
+    # Every page has a title in every published language, or the <title>
+    # renders as a Python KeyError at build time.
+    for out in PAGES:
+        for lang in i18n.LANGS:
+            assert out in TITLES and lang in TITLES[out], \
+                f"{out} has no {lang} title"
+
+    # The sport row is the same everywhere and always marks exactly one item
+    # active — or none, on a page that belongs to no sport.
+    for out, page in PAGES.items():
+        row = sport_row(page, "en")
+        assert row.count('class="on"') <= 1, f"{out}: two active sport tabs"
+        assert 'href="' in row, f"{out}: sport row has no links"
+
+    assert sport_row(PAGES["mlb/index.html"], "en").count('class="on"') == 1
+    assert sport_row(PAGES["about.html"], "en").count('class="on"') == 0
+
+    # A league page shows its own views; MLB has props and NCAAB does not.
+    mlb = view_row(PAGES["mlb/index.html"], "en")
+    assert "pitchers.html" in mlb, "MLB's props page is missing from its views"
+    assert mlb.count('class="on"') == 1, "the board tab should be active"
+
+    ncaab = view_row(PAGES["ncaab/index.html"], "en")
+    assert "pitchers.html" not in ncaab, \
+        "NCAAB has no props page and must not link to one"
+
+    # A page outside the sports has no second row at all, rather than an
+    # empty bar taking up space.
+    assert view_row(PAGES["about.html"], "en") == ""
+
+    # Every href in either row points at a page that exists. A link to a page
+    # the build does not emit is a 404 nobody notices until a reader does.
+    import re as _re
+    known = set(PAGES) | {"pitchers.html"}
+    for page in PAGES.values():
+        for href in _re.findall(r'href="([^"]+)"',
+                                sport_row(page, "en") + view_row(page, "en")):
+            target = href.replace(rel_root(page), "", 1)
+            assert target in known, f"{page.out} links to missing {target}"
+
+    doc = {
+        "generated_at": "2026-08-31T13:00:00", "date": "2026-08-31",
+        "leagues": {
+            "mlb": {"label": "MLB", "games": [
+                {"event_id": "b", "league": "mlb", "home": "H1", "away": "A1",
+                 "commence_time": "2026-08-31T23:05:00Z", "markets": {},
+                 "model": None}]},
+            "nfl": {"label": "NFL", "games": [
+                {"event_id": "a", "league": "nfl", "home": "H2", "away": "A2",
+                 "commence_time": "2026-08-31T17:00:00Z", "markets": {},
+                 "model": None}]},
+        },
+        "counts": {"mlb": 1, "nfl": 1},
+    }
+
+    merged = tonight_rows(doc)
+    assert [r["event_id"] for r in merged] == ["a", "b"], \
+        "Tonight is in start-time order across leagues, not grouped by league"
+    assert all("league" in r for r in merged)
+
+    # A missing or unreadable board.json yields an empty board, never a crash.
+    assert tonight_rows({}) == []
+    assert tonight_rows({"leagues": {}}) == []
+
+    print("build self-test: all invariants hold")
 
 
 if __name__ == "__main__":
-    build()
+    if "--test" in sys.argv:
+        _self_test()
+    else:
+        build()
+

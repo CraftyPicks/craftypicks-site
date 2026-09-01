@@ -15,6 +15,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
 
 import config          # noqa: E402
+import leagues          # noqa: E402
 import odds_math as om  # noqa: E402
 import i18n             # noqa: E402
 
@@ -977,3 +978,206 @@ def team_color(team: str | None) -> str | None:
 def _tdot(team: str | None) -> str:
     c = team_color(team)
     return f'<span class="tdot" style="--tc:{c}"></span>' if c else ""
+
+
+def market_rows(row: dict) -> str:
+    """The card's market block: one row per market this game actually has.
+
+    Each row is the league's own name for the market, the best price with the
+    book offering it, and the edge against the vig-free fair number. A total
+    shows the market's line and says "market only" where the edge would be.
+
+    Does not show a Craftypicks number for a total. Elo produces a win
+    probability, not a run distribution; inventing a total here would be the
+    one number on the page with nothing behind it.
+    """
+    short = row.get("league", "")
+    out = []
+    for market in ("h2h", "spreads", "totals"):
+        m = (row.get("markets") or {}).get(market)
+        if not m:
+            continue
+        label = _(leagues.market_label_key(short, market))
+
+        point = m.get("point")
+        if market == "totals":
+            side = f'{om.format_point(point)} &middot; o'
+            price = m["best_home"]["price"]
+            book = m["best_home"]["book"]
+        elif market == "spreads":
+            side = f'{_nickname(row.get("home"))} {om.format_point(point)} '
+            price = m["best_home"]["price"]
+            book = m["best_home"]["book"]
+        else:
+            side = f'{_nickname(row.get("home"))} '
+            price = m["best_home"]["price"]
+            book = m["best_home"]["book"]
+
+        if market == "totals":
+            edge_cell = f'<span class="mk-note">{_("market_only")}</span>'
+        else:
+            edge = m.get("edge_home", 0.0)
+            edge_cell = f'<span class="mk-edge {cls_for(edge)}">{pct(edge)}</span>'
+
+        out.append(
+            f'<div class="mk-row">'
+            f'<span class="mk-label">{esc(label)}</span>'
+            f'<span class="mk-line">{side}<b>{esc(om.format_american(price))}</b>'
+            f' <span class="mk-book">{esc(book)}</span></span>'
+            f'{edge_cell}</div>')
+    return "".join(out)
+
+
+def board_card(row: dict) -> str:
+    """One game, priced, with the deep material behind a disclosure.
+
+    The disclosure is a <details> rather than a card flip: a flipped card's
+    back is exactly the footprint of its front, and the detail does not fit —
+    a ten-row prototype needed its own scrollbar before books or props were
+    added. <details> also stays findable by Ctrl+F and by search engines, and
+    works with no JavaScript at all.
+
+    Does not decide whether the game is worth betting. Every game on the
+    board is rendered the same way; the edge column is what varies.
+    """
+    model = row.get("model") or {}
+    tip = game_time(row.get("commence_time"))
+    accent = team_color(row.get("home"))
+    style = f' style="--accent:{accent}"' if accent else ""
+    lg = leagues.LEAGUES.get(row.get("league") or "")
+    league_tag = f"{esc(lg.label)} &middot; " if lg else ""
+
+    def side(team: str, prob: float | None, leading: bool) -> str:
+        pc = (f'<span class="pc">{prob * 100:.1f}<span class="pcs">%</span>'
+              f'</span>') if prob is not None else ""
+        return (f'<div class="gside{" lead" if leading else ""}">'
+                f'<span class="tm">{_tdot(team)}{esc(team)}</span>{pc}</div>')
+
+    hp = model.get("home_win_prob")
+    ap = model.get("away_win_prob")
+    lead_home = hp is not None and ap is not None and hp >= ap
+
+    return f"""
+      <article class="gcard"{style} id="g-{esc(row.get('event_id',''))}">
+        <div class="gcard-top">
+          <span>{league_tag}{esc(tip)}</span><span>{_("scheduled")}</span>
+        </div>
+        <div class="gcard-body">
+          {side(row.get('away',''), ap, not lead_home and ap is not None)}
+          {side(row.get('home',''), hp, lead_home)}
+          <div class="mk">{market_rows(row)}</div>
+          <details class="gmore">
+            <summary>{_("card_more")}</summary>
+            <div class="gmore-in">{_book_table(row)}</div>
+          </details>
+        </div>
+      </article>"""
+
+
+def _book_table(row: dict) -> str:
+    """Every market's fair price, width and book count, for the disclosure.
+
+    Does not list each individual book's price yet. That needs the raw quotes
+    carried through into board.json, which the board plan deliberately left
+    out until there is a page that shows them.
+    """
+    short = row.get("league", "")
+    rows = []
+    for market in ("h2h", "spreads", "totals"):
+        m = (row.get("markets") or {}).get(market)
+        if not m:
+            continue
+        rows.append(
+            f"<tr><td>{esc(_(leagues.market_label_key(short, market)))}</td>"
+            f"<td class=\"m\">"
+            f"{esc(om.format_american(m['fair_price_home']))}</td>"
+            f"<td class=\"m\">{m['width']}</td>"
+            f"<td class=\"m\">{_('n_books', n=m['books'])}</td></tr>")
+    return ('<table class="gtbl"><tbody>' + "".join(rows) + "</tbody></table>")
+
+
+def board_cards(rows: list[dict], empty_key: str = "board_empty") -> str:
+    """Every game on a board, or a line saying there are none.
+
+    Does not group by league. A caller wanting per-league headings renders
+    each league's rows in its own call, which keeps this function ignorant of
+    page layout.
+    """
+    if not rows:
+        return f'<p class="empty-board">{_(empty_key)}</p>'
+    return '<div class="board">' + "".join(board_card(r) for r in rows) + "</div>"
+
+
+def _self_test() -> None:
+    row = {
+        "event_id": "evt1", "league": "mlb",
+        "commence_time": "2026-08-31T23:05:00Z",
+        "home": "Milwaukee Brewers", "away": "Chicago Cubs",
+        "model": {"home_win_prob": 0.556, "away_win_prob": 0.444},
+        "markets": {
+            "h2h": {"point": None, "fair_home": 0.548, "fair_away": 0.452,
+                    "fair_price_home": -121, "fair_price_away": 121,
+                    "best_home": {"book": "Caesars", "price": -125},
+                    "best_away": {"book": "FanDuel", "price": 114},
+                    "edge_home": 0.9, "edge_away": -2.1,
+                    "books": 6, "width": 14},
+            "spreads": {"point": -1.5, "fair_home": 0.41, "fair_away": 0.59,
+                        "fair_price_home": 144, "fair_price_away": -144,
+                        "best_home": {"book": "FanDuel", "price": 134},
+                        "best_away": {"book": "BetMGM", "price": -155},
+                        "edge_home": 2.2, "edge_away": -1.0,
+                        "books": 5, "width": 20},
+            "totals": {"point": 8.5, "fair_home": 0.503, "fair_away": 0.497,
+                       "fair_price_home": -101, "fair_price_away": 101,
+                       "best_home": {"book": "BetMGM", "price": -105},
+                       "best_away": {"book": "Caesars", "price": -110},
+                       "edge_home": 0.4, "edge_away": -0.8,
+                       "books": 6, "width": 10, "model": None},
+        },
+    }
+
+    html_out = board_card(row)
+
+    # Both clubs are named at full strength. The card must not mark our side
+    # by making the other one harder to read.
+    assert row["home"] in html_out and row["away"] in html_out
+    assert "--dim" not in html_out, \
+        "--dim may not appear in a card; it is 3:1 and this is all content"
+
+    # The league's own word for a spread, resolved through i18n.
+    assert i18n.t("mkt_run_line", LANG) in html_out, "MLB says run line"
+    assert i18n.t("mkt_spread", LANG) not in html_out, \
+        "a baseball card must not say 'spread'"
+
+    # A total carries the market's number and never one of ours.
+    assert "8.5" in html_out
+    assert i18n.t("market_only", LANG) in html_out, \
+        "the total row must say it is market-only"
+
+    # The disclosure is a details element, not a flip.
+    assert "<details" in html_out and "<summary" in html_out
+    assert "onclick" not in html_out, "the card needs no JavaScript"
+
+    # The best price and the book offering it both appear.
+    assert "Caesars" in html_out and "−125" in html_out, \
+        "prices use a real minus sign"
+
+    # A game with only a moneyline still renders, rather than raising on the
+    # markets it does not have. Half the NCAAB board looks like this.
+    thin = {**row, "markets": {"h2h": row["markets"]["h2h"]}}
+    thin_html = board_card(thin)
+    assert "8.5" not in thin_html
+
+    # A game with no model has no win probability rather than a made-up one.
+    unrated = {**row, "model": None}
+    assert "55.6" not in board_cards([unrated])
+
+    # An empty board says so instead of rendering nothing at all.
+    assert i18n.t("board_empty", LANG) in board_cards([])
+
+    print("render self-test: all invariants hold")
+
+
+if __name__ == "__main__":
+    _self_test()
+

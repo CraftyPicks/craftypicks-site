@@ -58,7 +58,8 @@ WEEKDAYS = {
 T = {
     # ---- navigation and chrome
     "nav_plays":    {"en": "Today's Plays",  "es": "Jugadas de hoy"},
-    "nav_board":    {"en": "MLB Board",      "es": "Pizarra MLB"},
+    "nav_tonight":  {"en": "Tonight",        "es": "Esta noche"},
+    "nav_board":    {"en": "Board",          "es": "Pizarra"},
     "nav_pitchers": {"en": "Pitchers Prop",  "es": "Props de lanzadores"},
     "nav_record":   {"en": "Track Record",   "es": "Historial"},
     "nav_about":    {"en": "How It Works",   "es": "Cómo funciona"},
@@ -107,6 +108,24 @@ T = {
         "en": "No games rated today. The board fills in every morning there's a slate.",
         "es": "Hoy no hay juegos evaluados. La pizarra se llena cada mañana que haya cartelera.",
     },
+
+    # Market names. Baseball calls a spread a run line; nothing else does.
+    # These are keys rather than literals so the renderer never has to know
+    # which sport it is drawing.
+    "mkt_moneyline": {"en": "Moneyline",  "es": "Línea de dinero"},
+    "mkt_spread":    {"en": "Spread",     "es": "Hándicap"},
+    "mkt_run_line":  {"en": "Run line",   "es": "Línea de carreras"},
+    "mkt_total":     {"en": "Total",      "es": "Total"},
+    "market_only":   {"en": "market only", "es": "solo mercado"},
+    "board_empty":   {"en": "No games on the board tonight.",
+                      "es": "No hay partidos en el tablero esta noche."},
+    "card_more":     {"en": "Books, matchup history and props",
+                      "es": "Casas, historial del duelo y props"},
+    "best_at":       {"en": "best at {book}", "es": "mejor en {book}"},
+    "fair_is":       {"en": "fair {price}",   "es": "justo {price}"},
+    "n_books":       {"en": "{n} books",      "es": "{n} casas"},
+    "board_eyebrow": {"en": "{d} · {n} games priced",
+                      "es": "{d} · {n} partidos con precio"},
 
     # ---- play cards
     "posted":       {"en": "Posted {v}",      "es": "Publicada {v}"},
