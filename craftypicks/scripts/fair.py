@@ -89,8 +89,27 @@ def price_market(quotes: list[dict], method: str = DEFAULT_METHOD,
     """Fair price, best available number, and the edge between them.
 
     The book holding the best price is excluded from the consensus it is
-    compared against. Including it lets an outlier pull the 'fair' number
-    toward itself and manufacture an edge that is not there.
+    compared against, because a book must not be marked against a benchmark
+    that contains its own opinion. That is the whole justification — it is
+    not a conservatism.
+
+    Be clear about which way the exclusion moves the number: it RAISES the
+    reported edge, it does not damp it. The best price on a side is by
+    definition the book with the lowest devigged probability for that side,
+    so dropping it lifts the mean of what remains, and the edge measured
+    against that higher fair probability is larger. Measured on an outlier
+    fixture: 4.56% with the best book excluded against 3.08% with it left in.
+    Anyone tuning this from an "excluding the outlier is the safe direction"
+    model is reasoning from the opposite of what the code does.
+
+    So the leave-one-out estimator is mildly OPTIMISTIC. The lift is roughly
+    range/n — the spread of the books' devigged probabilities divided by the
+    number of quotes — which shrinks as the market thickens but is real at
+    six books and larger the more one book disagrees. It matters because
+    find_plays gates at config.MIN_EDGE_PCT = 2.5 on exactly this number, so
+    a market whose books disagree by a couple of points can be pushed over
+    the posting threshold by the estimator's own bias. If that gate is ever
+    retuned, retune it knowing the input leans high.
 
     `books` restricts only the best-price search, not the consensus. This
     is intentional, not an oversight: the fair price must be drawn from the

@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>How It Works — Craftypicks</title>
+<title>NBA board — Craftypicks</title>
 <meta name="description" content="Craftypicks posts free NBA, NFL, MLB and college basketball plays every day — the number, the price, the reasoning, and a fully public track record. Nothing for sale.">
-<meta property="og:title" content="How It Works — Craftypicks">
+<meta property="og:title" content="NBA board — Craftypicks">
 <meta property="og:description" content="Free daily plays with receipts on every one.">
 <meta property="og:type" content="website">
 <meta name="theme-color" content="#08090B">
@@ -662,221 +662,51 @@ footer{background:var(--bg-2);padding:56px 0 40px}
 <body>
 <header class="nav">
   <div class="nav-in">
-    <a href="index.html" class="logo">Craftypicks<em>.</em></a>
-    <nav class="nav-links"><a href="index.html" class="">Tonight</a><a href="mlb/index.html" class="">MLB</a><a href="nba/index.html" class="">NBA</a><a href="nfl/index.html" class="">NFL</a><a href="ncaab/index.html" class="">NCAAB</a></nav>
+    <a href="../index.html" class="logo">Craftypicks<em>.</em></a>
+    <nav class="nav-links"><a href="../index.html" class="">Tonight</a><a href="../mlb/index.html" class="">MLB</a><a href="../nba/index.html" class="on">NBA</a><a href="../nfl/index.html" class="">NFL</a><a href="../ncaab/index.html" class="">NCAAB</a></nav>
     <div class="nav-cta">
-      <a href="about.html" class="link-quiet">Why it's free</a>
-      <a href="plays.html" class="btn solid sm">Today's plays</a>
+      <a href="../about.html" class="link-quiet">Why it's free</a>
+      <a href="../plays.html" class="btn solid sm">Today's plays</a>
     </div>
   </div>
 </header>
-<div class="nav-views is-empty"><div class="nav-in"></div></div>
-<div class="statbar"><div class="sb-cell"><span class="sb-live"><span class="dot"></span>Board live</span></div><div class="sb-cell"><b>12</b> games rated</div><div class="sb-cell"><b>0</b> flagged</div><div class="sb-cell">Median disagreement <b>2.1 pts</b></div><div class="sb-cell">Updated <b>2026-08-31 09:01</b> ET</div></div>
+<div class="nav-views"><div class="nav-in"><a href="../nba/index.html" class="on">Board</a></div></div>
+<div class="statbar"><div class="sb-cell"><span class="sb-live"><span class="dot"></span>Board live</span></div><div class="sb-cell"><b>15</b> games rated</div><div class="sb-cell"><b>0</b> flagged</div><div class="sb-cell">Median disagreement <b>4.0 pts</b></div><div class="sb-cell">Updated <b>2026-09-01 09:01</b> ET</div></div>
 
-<section style="background:var(--bg-2)">
-  <div class="wrap" style="padding:56px 28px 46px">
-    <div class="eyebrow">How it works</div>
-    <h1 style="font-size:clamp(32px,4.2vw,50px);margin:14px 0 16px">Free plays,<br>and why they stay free.</h1>
-    <p class="lead">Craftypicks exists because the sports betting information business is mostly broken. Someone sells you a pick, hides the record, and blames you when it loses. This is the version without any of that &mdash; including without the part where we pretend to know who wins.</p>
+<section class="board-hero">
+  <div class="wrap">
+    <div class="eyebrow">Tuesday, September 1 · 0 games priced</div>
+    <h1>NBA</h1>
   </div>
 </section>
-
-<section class="pad" id="method">
-  <div class="wrap">
-    <div class="sec-head">
-      <div class="eyebrow">Methodology</div>
-      <h2>We don't predict games. We price them.</h2>
-      <p class="lead">This is the honest version of what the system does, and it's worth understanding before you follow a single play. Craftypicks has no injury model, no simulation engine, and no opinion about who's going to win tonight. It has one thing: the price at every sportsbook, and the math to tell when one of them is out of line.</p>
-    </div>
-    <div class="grid-2" style="gap:44px;align-items:start">
-      <div class="tile">
-        <div class="num">Step 01</div>
-        <h3>Pull every price on the board</h3>
-        <p style="margin-top:10px">Each morning the scanner reads the moneyline, spread and total at every major US book for every game in season. A game priced by fewer than 6 books is skipped &mdash; a thin consensus isn't a consensus, it's noise.</p>
-      </div>
-      <div class="tile">
-        <div class="num">Step 02</div>
-        <h3>Strip out the vig</h3>
-        <p style="margin-top:10px">A book's price includes its margin, so the two sides of a market always add up to more than 100%. Removing that margin proportionally turns each book's price into its honest estimate of the real odds.</p>
-      </div>
-      <div class="tile">
-        <div class="num">Step 03</div>
-        <h3>Average the market, exclude the outlier</h3>
-        <p style="margin-top:10px">Those honest estimates get averaged into a consensus fair price. The book we'd actually be betting is left out of its own average &mdash; include it and the outlier drags the "fair" price toward itself and manufactures an edge that isn't there.</p>
-      </div>
-      <div class="tile">
-        <div class="num">Step 04</div>
-        <h3>Post only what clears the bar</h3>
-        <p style="margin-top:10px">If the best number available beats consensus by 2.5% or more in expected value, it goes on the card at a flat 1 unit. Maximum 6 plays a day. Then it's graded against the final score and never touched again.</p>
-      </div>
-    </div>
-
-    <div class="note" style="margin-top:34px">
-      <p class="disclaimer"><b style="color:var(--txt)">What this method can and can't do.</b> It can find spots where one book is slow, has taken lopsided action, or simply disagrees with the market &mdash; and those spots are genuinely profitable over a large enough sample. It cannot tell you a starter just got scratched, that a team is on a brutal travel spot, or that the total is wrong because of the wind. If you have that information, it belongs on top of what you see here, not underneath it.</p>
-    </div>
-
-    <div class="note" style="margin-top:16px">
-      <p class="disclaimer"><b style="color:var(--txt)">What we don't do:</b> parlays sold as "locks," 10u "game of the year" plays, plays posted after the number already moved, or records that start counting from the last hot streak. If a day has no qualifying edge, the board says zero plays &mdash; that happens more often than you'd think, and it's the feature that costs the most to keep.</p>
-    </div>
-  </div>
-</section>
-
-<section class="pad" id="units">
-  <div class="wrap">
-    <div class="grid-2">
-      <div>
-        <div class="eyebrow">Units &amp; bankroll</div>
-        <h2 style="margin:14px 0 20px">A unit is 1% of your bankroll. Not $100.</h2>
-        <p class="lead" style="margin-bottom:20px">Every play on this site is a flat 1 unit. That's deliberate &mdash; flat staking is what makes a record honest, because you can't hide a bad run by quietly sizing up on the winners after the fact.</p>
-        <p style="margin-bottom:18px">If your bankroll is $1,000, a unit is $10. If it's $300, a unit is $3. The number that matters is units won, not dollars, because units are the only thing that compares across bankrolls.</p>
-        <div class="quote">A method that produces a 2.5% edge still loses close to half its plays. A 20-play losing stretch is completely normal &mdash; size your unit around that, not around a good week.</div>
-      </div>
-      <div class="card" style="padding:0">
-        <div class="play-top"><span class="stamp">Bankroll math</span><span class="stamp on">1u = 1%</span></div>
-        <div class="scroll-x">
-          <table class="tbl" style="border:0">
-            <thead><tr><th>Bankroll</th><th>1 unit</th><th>Typical 6-play day</th><th>Bad week (&minus;8u)</th></tr></thead>
-            <tbody>
-              <tr><td class="strong">$200</td><td class="m">$2</td><td class="m">$12 risked</td><td class="m r">&minus;$16</td></tr>
-              <tr><td class="strong">$500</td><td class="m">$5</td><td class="m">$30 risked</td><td class="m r">&minus;$40</td></tr>
-              <tr><td class="strong">$1,000</td><td class="m">$10</td><td class="m">$60 risked</td><td class="m r">&minus;$80</td></tr>
-              <tr><td class="strong">$2,500</td><td class="m">$25</td><td class="m">$150 risked</td><td class="m r">&minus;$200</td></tr>
-              <tr><td class="strong">$5,000</td><td class="m">$50</td><td class="m">$300 risked</td><td class="m r">&minus;$400</td></tr>
-            </tbody>
-          </table>
-        </div>
-        <div style="padding:16px 20px;border-top:1px solid var(--line)">
-          <span class="stamp">If the bad-week column scares you, your unit is too big.</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="pad">
-  <div class="wrap">
-    <div class="sec-head">
-      <div class="eyebrow">The business model</div>
-      <h2>"So what's the catch?"</h2>
-    </div>
-    <div class="grid-3">
-      <div class="tile">
-        <div class="num">01</div>
-        <h3>There is no premium tier</h3>
-        <p style="margin-top:8px">Every play the system finds is on the board. There isn't a paid group getting different or earlier plays &mdash; that's the exact scam this was built against.</p>
-      </div>
-      <div class="tile">
-        <div class="num">02</div>
-        <h3>We don't sell your email</h3>
-        <p style="margin-top:8px">The list is used for one thing: sending the daily card. No data brokers, no "partner offers," no third-party sportsbook spam.</p>
-      </div>
-      <div class="tile">
-        <div class="num">03</div>
-        <h3>It costs almost nothing to run</h3>
-        <p style="margin-top:8px">A scanner, a static site, and a free host. There's no expensive infrastructure that needs a paywall to justify itself, so there's no pressure to build one.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="pad" id="faq">
-  <div class="wrap">
-    <div class="sec-head" style="margin-bottom:20px">
-      <div class="eyebrow">FAQ</div>
-      <h2>Straight answers</h2>
-    </div>
-    <div class="faq">
-      <details open>
-        <summary>Can I bet on this site?</summary>
-        <p>No. Craftypicks is not a sportsbook. We don't take wagers, hold money, or process any transaction. The site publishes plays and their results &mdash; you place bets wherever you already do, if you choose to at all.</p>
-      </details>
-      <details>
-        <summary>What time do the plays go up?</summary>
-        <p>9:00 AM ET every day. The scanner runs, the card gets written, and the site rebuilds itself &mdash; there's no human deciding what to include or leave out after seeing the results.</p>
-      </details>
-      <details>
-        <summary>The line moved since you posted. Should I still bet it?</summary>
-        <p>Probably not. The entire edge is the gap between the posted price and the market consensus. If the number moved against the play, that gap has closed and there's nothing left to bet. Taking a worse number than the one that qualified is how a winning method turns into a losing month.</p>
-      </details>
-      <details>
-        <summary>Do I need an account at the book listed?</summary>
-        <p>To get the exact play, yes &mdash; the edge exists at that book's number, not at the market average. This is the unglamorous truth of price-based betting: line shopping across a few books is most of the work. We don't get paid by any of them and don't link to them.</p>
-      </details>
-      <details>
-        <summary>Why do you show losses so prominently?</summary>
-        <p>Because a record without losses is fiction. A method with a real 2.5% edge still loses a large share of its plays &mdash; the profit comes from the price being right, not from being right about games. Anyone showing you 70% winners is either cherry-picking or lying.</p>
-      </details>
-      <details>
-        <summary>Do I have to bet every play?</summary>
-        <p>No, and plenty of people don't. Some readers use the card purely as a line-shopping feed. Following the whole card is just the only version that can be graded honestly.</p>
-      </details>
-      <details>
-        <summary>Will this always be free?</summary>
-        <p>Yes. If that ever changed, the existing log would stay public and free regardless &mdash; paywalling the record would defeat the entire point of keeping it.</p>
-      </details>
-    </div>
-  </div>
-</section>
-
-<section class="pad-sm" id="responsible">
-  <div class="wrap">
-    <div class="grid-2" style="gap:44px;align-items:start">
-      <div>
-        <div class="eyebrow">Play responsibly</div>
-        <h2 style="font-size:28px;margin:14px 0 18px">Read this part carefully</h2>
-        <p style="margin-bottom:16px">Sports betting is entertainment with a negative expected value for almost everyone who does it. A good process reduces how much you lose &mdash; it does not turn betting into income, and nobody should be treating it that way.</p>
-        <p>If you're betting to make back losses, betting money set aside for rent or bills, hiding it from people close to you, or feeling anxious when you're not in action &mdash; those aren't strategy problems. Step away and talk to someone.</p>
-      </div>
-      <div class="card" style="padding:28px 26px">
-        <div class="stamp" style="margin-bottom:16px">Free, confidential help</div>
-        <p style="color:var(--txt);font-size:20px;font-weight:700;margin-bottom:6px">1-800-GAMBLER</p>
-        <p style="font-size:14px;margin-bottom:20px">National Problem Gambling Helpline &mdash; 24/7, all 50 states.</p>
-        <p style="color:var(--txt);font-size:16px;font-weight:600;margin-bottom:6px">Text 800GAM to 800177</p>
-        <p style="font-size:14px;margin-bottom:20px">If you'd rather not talk on the phone.</p>
-        <div class="bar" style="margin:18px 0"></div>
-        <p class="disclaimer">Most sportsbooks offer deposit limits, time-outs, and self-exclusion in their account settings. Using them is not an admission of anything &mdash; it's the same thing as flat staking, just applied to your time instead of your money.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="cta-band">
-  <div class="wrap">
-    <div class="eyebrow">Ready when you are</div>
-    <h2>Start with today's board</h2>
-    <p>Today's plays, the math behind each one, and the previous card already graded.</p>
-    <div class="hero-cta">
-      <a href="plays.html" class="btn solid">See today's plays</a>
-      <a href="record.html" class="btn ghost">Read the track record</a>
-    </div>
-    <div class="fineprint" style="margin-top:22px">Free &middot; Nothing for sale &middot; 21+</div>
-  </div>
+<section class="wrap board-page">
+  <p class="empty-board">No games on the board tonight.</p>
 </section>
 
 <footer>
   <div class="wrap">
     <div class="foot-grid">
       <div>
-        <a href="index.html" class="logo" style="display:inline-block;margin-bottom:14px">Craftypicks<em>.</em></a>
+        <a href="../index.html" class="logo" style="display:inline-block;margin-bottom:14px">Craftypicks<em>.</em></a>
         <p style="font-size:14px;max-width:34ch">Free plays, posted daily, graded in public. No packages, no premium tier, no DMs.</p>
       </div>
       <div>
         <h4>Plays</h4>
-        <a href="plays.html">Today's board</a>
-        <a href="plays.html#results">Yesterday's results</a>
-        <a href="record.html">Full play log</a>
+        <a href="../plays.html">Today's board</a>
+        <a href="../plays.html#results">Yesterday's results</a>
+        <a href="../record.html">Full play log</a>
       </div>
       <div>
         <h4>Transparency</h4>
-        <a href="record.html">Track Record</a>
-        <a href="about.html#method">Methodology</a>
-        <a href="screens.html">The Screens</a>
+        <a href="../record.html">Track Record</a>
+        <a href="../about.html#method">Methodology</a>
+        <a href="../screens.html">The Screens</a>
       </div>
       <div>
         <h4>About</h4>
-        <a href="about.html">How It Works</a>
-        <a href="about.html#faq">FAQ</a>
-        <a href="about.html#responsible">Play responsibly</a>
+        <a href="../about.html">How It Works</a>
+        <a href="../about.html#faq">FAQ</a>
+        <a href="../about.html#responsible">Play responsibly</a>
       </div>
     </div>
     <div class="foot-legal">

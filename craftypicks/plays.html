@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Today's Plays — Craftypicks</title>
 <meta name="description" content="Craftypicks posts free NBA, NFL, MLB and college basketball plays every day — the number, the price, the reasoning, and a fully public track record. Nothing for sale.">
 <meta property="og:title" content="Today's Plays — Craftypicks">
@@ -89,9 +89,23 @@ header.nav{
 .logo{font-family:var(--sans);font-weight:800;font-size:19px;letter-spacing:-.03em;
   text-transform:none;color:var(--txt)}
 .logo em{font-style:normal;color:var(--green)}
-.nav-links{display:flex;gap:28px;margin-right:auto}
+.nav-links{display:flex;gap:28px;margin-right:auto;flex:1;min-width:0}
 .nav-links a{font-family:var(--mono);font-size:11.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);transition:color .15s}
 .nav-links a:hover,.nav-links a.on{color:var(--txt)}
+/* Both rows scroll sideways rather than pushing the document wider. The old
+   nav overflowed the page by 367px on a 390px phone; a scrollable row is the
+   fix that does not require dropping items. */
+.nav-links,.nav-views .nav-in{overflow-x:auto;overflow-y:hidden;
+  -webkit-overflow-scrolling:touch;scrollbar-width:none;white-space:nowrap}
+.nav-links::-webkit-scrollbar,.nav-views .nav-in::-webkit-scrollbar{display:none}
+.nav-views{border-bottom:1px solid var(--line);background:var(--panel)}
+.nav-views.is-empty{display:none}
+.nav-views .nav-in{display:flex;gap:20px;max-width:var(--maxw);
+  margin:0 auto;padding:0 28px;height:auto}
+.nav-views a{display:inline-block;padding:11px 0;font-size:13px;
+  color:var(--muted);text-decoration:none;border-bottom:2px solid transparent}
+.nav-views a:hover{color:var(--txt)}
+.nav-views a.on{color:var(--txt);border-bottom-color:var(--green)}
 .nav-cta{display:flex;align-items:center;gap:18px}
 .btn{
   display:inline-flex;align-items:center;justify-content:center;gap:8px;
@@ -224,6 +238,43 @@ section{border-bottom:1px solid var(--line)}
 }
 .gcard-top .fin{color:var(--txt)}
 .gcard-body{padding:17px}
+/* The market block. A fixed label column keeps the three rows aligned; 62px
+   is what "RUN LINE" needs without wrapping, which it did at 52. */
+.mk{border-top:1px solid var(--line);margin-top:14px;padding-top:12px}
+.mk-row{display:flex;align-items:baseline;gap:12px;padding:5px 0}
+.mk-label{flex:0 0 62px;white-space:nowrap;font-family:var(--mono);
+  font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--muted)}
+.mk-line{flex:1 1 auto;font-size:13.5px;color:var(--sub)}
+.mk-line b{color:var(--txt);font-family:var(--mono)}
+.mk-book{color:var(--muted);font-size:12.5px}
+.mk-edge{flex:0 0 auto;font-family:var(--mono);font-size:13px;
+  font-weight:700;color:var(--txt)}
+.mk-edge.g{color:var(--green)}
+.mk-edge.r{color:var(--red)}
+.mk-note{flex:0 0 auto;font-size:12.5px;color:var(--muted)}
+
+/* Disclosure, not a flip: the back of a card is the size of its front, and
+   this content does not fit there. interpolate-size lets it animate to its
+   natural height, and prefers-reduced-motion turns that off. */
+.gmore{margin-top:12px;border-top:1px solid var(--line)}
+.gmore>summary{cursor:pointer;list-style:none;padding:10px 0 2px;
+  font-size:12.5px;color:var(--muted)}
+.gmore>summary::-webkit-details-marker{display:none}
+.gmore>summary::after{content:" ▾";color:var(--muted)}
+.gmore[open]>summary::after{content:" ▴"}
+.gmore>summary:hover{color:var(--txt)}
+.gmore-in{padding:4px 0 12px}
+.gtbl{width:100%;border-collapse:collapse;font-size:12.5px}
+.gtbl td{padding:5px 0;color:var(--sub);border-top:1px solid var(--line)}
+.gtbl td.m{font-family:var(--mono);text-align:right;color:var(--txt)}
+@media (prefers-reduced-motion:no-preference){
+  @supports (interpolate-size:allow-keywords){
+    :root{interpolate-size:allow-keywords}
+    .gmore{transition:height .25s ease}
+  }
+}
+.empty-board{color:var(--muted);padding:30px 0;text-align:center}
 .gside{display:flex;align-items:baseline;justify-content:space-between;gap:14px}
 /* Both clubs are named at full strength. An earlier draft dimmed the side we
    did not favour, which made one of the two teams harder to read on every
@@ -436,12 +487,46 @@ footer{background:var(--bg-2);padding:56px 0 40px}
   .pad{padding:68px 0}
 }
 @media(max-width:620px){
-  .wrap,.nav-in{padding-left:20px;padding-right:20px}
+  .wrap,.nav-in{padding-left:16px;padding-right:16px}
   .grid-3,.grid-4{grid-template-columns:1fr}
   .hero .wrap{padding-top:64px;padding-bottom:72px}
   .nav-cta .link-quiet{display:none}
+  .nav-cta .btn{padding:8px 12px;font-size:10px}
   .stats{grid-template-columns:1fr 1fr}
   .stat:nth-child(2){border-right:0}
+}
+
+/* Phone board. 390px is the layout contract: zero document overflow,
+   one card per row, nav rows scroll instead of wrapping the page. */
+.board-hero{background:var(--bg-2)}
+.board-hero .wrap{padding:44px 28px 30px}
+.board-hero h1{font-size:clamp(30px,8vw,52px);line-height:1.04;margin:10px 0 0}
+.board-page{padding:26px 28px 60px}
+@media(max-width:760px){
+  .board{grid-template-columns:1fr;gap:12px}
+  .board-hero .wrap{padding:28px 16px 20px}
+  .board-page{padding:16px 16px 48px}
+  .gcard-top{padding:10px 14px;font-size:10px;letter-spacing:.1em;gap:8px}
+  .gcard-body{padding:14px}
+  .gside .tm{font-size:15px;min-width:0}
+  .gside .pc{font-size:16px}
+  .mk-row{flex-wrap:wrap;gap:6px 10px;padding:6px 0}
+  .mk-label{flex:0 0 auto;min-width:4.8em}
+  .mk-line{flex:1 1 140px;min-width:0}
+  .mk-book{display:inline-block}
+  .gmore>summary{padding:12px 0 4px;min-height:44px}
+  .nav-views .nav-in{padding:0 16px;gap:16px}
+  .nav-views a{padding:12px 0;min-height:44px}
+  .statbar{display:flex;overflow-x:auto;-webkit-overflow-scrolling:touch;
+    scrollbar-width:none}
+  .statbar::-webkit-scrollbar{display:none}
+  .sb-cell{flex:0 0 auto;white-space:nowrap;padding:10px 14px}
+  .foot-grid{grid-template-columns:1fr 1fr;gap:22px}
+}
+@media(max-width:390px){
+  html,body{overflow-x:hidden;max-width:100%}
+  .wrap,.nav-in,.nav-views .nav-in{padding-left:14px;padding-right:14px}
+  .board-hero .wrap,.board-page{padding-left:14px;padding-right:14px}
 }
 
 /* ============================================================ motion ======
@@ -578,13 +663,14 @@ footer{background:var(--bg-2);padding:56px 0 40px}
 <header class="nav">
   <div class="nav-in">
     <a href="index.html" class="logo">Craftypicks<em>.</em></a>
-    <nav class="nav-links"><a href="plays.html" class="">Today's Plays</a><a href="slate.html" class="">MLB Board</a><a href="pitchers.html" class="">Pitchers Prop</a><a href="record.html" class="">Track Record</a><a href="about.html" class="">How It Works</a><a href="screens.html" class="">The Screens</a></nav>
+    <nav class="nav-links"><a href="index.html" class="">Tonight</a><a href="mlb/index.html" class="">MLB</a><a href="nba/index.html" class="">NBA</a><a href="nfl/index.html" class="">NFL</a><a href="ncaab/index.html" class="">NCAAB</a></nav>
     <div class="nav-cta">
       <a href="about.html" class="link-quiet">Why it's free</a>
       <a href="plays.html" class="btn solid sm">Today's plays</a>
     </div>
   </div>
 </header>
+<div class="nav-views is-empty"><div class="nav-in"></div></div>
 <div class="statbar"><div class="sb-cell"><span class="sb-live"><span class="dot"></span>Board live</span></div><div class="sb-cell"><b>15</b> games rated</div><div class="sb-cell"><b>0</b> flagged</div><div class="sb-cell">Median disagreement <b>4.0 pts</b></div><div class="sb-cell">Updated <b>2026-09-01 09:01</b> ET</div></div>
 
 <section style="background:var(--bg-2)">
