@@ -230,17 +230,25 @@ def dim_inline_uses_in_sources() -> list[tuple[str, int]]:
     they are scanned here too; ten of them were carrying --dim on real content
     while the body-only version of this check reported nothing.
 
-    Does not parse the HTML or the Python. A colour set by JavaScript after
-    load, or assembled from fragments, would not be caught; nothing here does
-    either.
+    Only flags a line where var(--dim) sits inside an HTML style="..."
+    attribute — that is the only shape this check exists to catch. The same
+    characters show up legitimately in a docstring, a comment, or a test
+    assertion (this file's own module docstring above, and render.py's self
+    -test, both name "var(--dim)" without ever setting it); a bare substring
+    scan cannot tell those apart from the real thing and used to flag them
+    too. Still a line-based scan — no HTML or Python parser — so a style
+    attribute split across lines, or one using single quotes, would slip
+    through; nothing here does either, and every inline style in these files
+    is written as style="..." on one line.
     """
     found = []
+    style_dim = re.compile(r'style="[^"]*var\(--dim\)')
     paths = sorted(SRC.glob("*.body*.html")) + [SRC / "render.py",
                                                 SRC / "build.py"]
     for path in paths:
         for n, line in enumerate(path.read_text(encoding="utf-8").splitlines(),
                                  start=1):
-            if "var(--dim)" in line:
+            if style_dim.search(line):
                 found.append((path.name, n))
     return found
 

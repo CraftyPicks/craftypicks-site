@@ -76,6 +76,14 @@ except Exception as _board_err:                              # noqa: BLE001
     print(f"!! board unavailable ({_board_err})", file=sys.stderr)
 from odds_client import BudgetExhausted, OddsAPIError, OddsClient  # noqa: E402
 
+# Yesterday's finals, from the free sources. Optional like everything else:
+# the card must go out whether or not ESPN answered.
+try:
+    import results_store  # noqa: E402
+except Exception as _rs_err:                                 # noqa: BLE001
+    results_store = None
+    print(f"!! results store unavailable ({_rs_err})", file=sys.stderr)
+
 
 def load_json(path: Path, default):
     if not path.exists():
@@ -231,6 +239,21 @@ def main() -> int:
                 except Exception as e:                       # noqa: BLE001
                     print(f"   !! slate failed ({type(e).__name__}: {e})",
                           file=sys.stderr)
+
+                # The board already has this game priced; slate has it rated.
+                # Same event ids, so the two join cleanly.
+                # Guarded like every other module call in this loop. The board
+                # going out without our number is a worse day than usual; the
+                # card not going out at all is a broken morning.
+                if board_mod and lg and boards.get(lg.short):
+                    try:
+                        n = board_mod.merge_model(boards[lg.short],
+                                                  slate_rows, "slate")
+                        print(f"   board: {n} {lg.short} game(s) carry "
+                              f"our number")
+                    except Exception as e:                   # noqa: BLE001
+                        print(f"   !! merge failed ({type(e).__name__}: {e})",
+                              file=sys.stderr)
 
             # Props: per-event, so strictly capped. See config.PROP_MAX_EVENTS.
             # The whole block is wrapped: a prop market that's missing, shaped
@@ -397,6 +420,51 @@ def main() -> int:
         except Exception as e:                               # noqa: BLE001
             print(f"!! slate bookkeeping failed ({type(e).__name__}: {e})",
                   file=sys.stderr)
+
+    if results_store and leagues:
+        yesterday = (now.date() - timedelta(days=1)).isoformat()
+        for short in leagues.ORDER:
+            # append_day swallows a failed fetch itself, but not a bug in its
+            # own merge. Nothing below this line catches an exception, and the
+            # card has to go out.
+            try:
+                gained = results_store.append_day(short, yesterday)
+                if gained:
+                    print(f"-- results: +{gained} {short} final(s) "
+                          f"for {yesterday}")
+            except Exception as e:                           # noqa: BLE001
+                print(f"!! storing {short} results failed "
+                      f"({type(e).__name__}: {e})", file=sys.stderr)
+
+    # MLB already carries a richer number from the slate -- Elo plus the
+    # starting pitcher -- so it is rated above and deliberately skipped here.
+    # Everything else gets plain Elo once its store is deep enough.
+    if board_mod and results_store and leagues:
+        for short, rows in boards.items():
+            if short == "mlb" or not rows:
+                continue
+            # Guarded like every other module call in this file. A league
+            # going unrated is a worse board; an exception here is no card
+            # at all, because nothing below this catches it.
+            try:
+                # Named `stored`, not `history`: `history` is the play log
+                # this function writes to stats.json further down.
+                stored = results_store.load(short)
+                rated, skipped = board_mod.elo_model(rows, stored, short)
+                # Printed whenever there is a store to rate from, including
+                # when nothing was rated. The likeliest reason for a zero is
+                # that ESPN and the Odds API spell the clubs differently, and
+                # that failure is otherwise completely silent — the feature
+                # just never appears.
+                if stored:
+                    n = board_mod.merge_model(rows, rated, "elo") if rated else 0
+                    print(f"-- ratings: {n} {short} game(s) rated from "
+                          f"{len(stored)} stored result(s)"
+                          + (f", {skipped} skipped for unknown or thin clubs"
+                             if skipped else ""))
+            except Exception as e:                           # noqa: BLE001
+                print(f"!! rating {short} failed "
+                      f"({type(e).__name__}: {e})", file=sys.stderr)
 
     if board_mod and boards:
         doc = board_mod.document(

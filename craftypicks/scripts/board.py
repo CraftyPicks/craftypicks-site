@@ -12,6 +12,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import config    # noqa: E402
 import fair      # noqa: E402
 import leagues   # noqa: E402
+import rate_mlb  # noqa: E402
+import ratings   # noqa: E402
 
 # Which outcome is side "a" for each market:
 #   h2h/spreads — a is the home team, b is the away team
@@ -298,6 +300,151 @@ def _book(key: str, title: str, h2h: tuple[int, int],
     return {"key": key, "title": title, "markets": markets}
 
 
+# The sport-specific extras a card may show beneath a club's name. Kept apart
+# from `model` on purpose: every league has a win probability, only baseball
+# has a starting pitcher, and mixing them would make the general path carry
+# baseball's vocabulary into leagues that have no use for it.
+DETAIL_KEYS = (
+    "home_record", "away_record",
+    "home_starter", "away_starter",
+    "home_starter_era", "away_starter_era",
+    "home_hand", "away_hand",
+    "home_vs_opp", "away_vs_opp",
+)
+
+
+def merge_model(rows: list[dict], rated: list[dict], source: str) -> int:
+    """Attach a rating to each board row that has one, by event id.
+
+    Returns the number of rows matched. A rated game missing from the board is
+    ignored rather than appended — the board is the list of games we could
+    price, and a game with no price has nothing to compare a number against.
+
+    Deliberately does not invent a rating for an unmatched row. A card with no
+    percentage is honest; a card showing the market's number in our colour, or
+    a neighbour's number, is not.
+
+    market_home_prob comes from the rating when the rating supplies one — the
+    slate devigs its own book set and that number wins. When it does not (the
+    Elo path knows nothing about prices) it is filled from the row's own h2h
+    fair price, which is already on the row. Without it the card draws a bare
+    fill with no tick and no footer, and the comparison between the two
+    numbers is the entire point of the card.
+    """
+    by_id = {}
+    for r in rated:
+        eid = r.get("event_id")
+        if eid:
+            by_id[eid] = r
+
+    matched = 0
+    for row in rows:
+        rating = by_id.get(row.get("event_id"))
+        if not rating:
+            continue
+
+        hp, ap = rating.get("home_win_prob"), rating.get("away_win_prob")
+        if hp is None or ap is None:
+            continue
+        # A pair that does not sum to 1 means something upstream went wrong.
+        # Better to show no number than a number we cannot explain. Logged,
+        # not merely skipped: this gate is the only thing standing between a
+        # genuine upstream bug and a board that is quietly one card short.
+        if abs(hp + ap - 1.0) > 1e-6:
+            print(f"!! {source} rating for {row.get('event_id')} does not sum "
+                  f"to 1 ({hp} + {ap}); no number on that card",
+                  file=sys.stderr)
+            continue
+
+        market = rating.get("market_home_prob")
+        if market is None:
+            market = ((row.get("markets") or {}).get("h2h") or {}).get("fair_home")
+
+        row["model"] = {
+            "home_win_prob": hp,
+            "away_win_prob": ap,
+            "market_home_prob": market,
+            "disagreement": rating.get("disagreement"),
+            "suspect": bool(rating.get("suspect")),
+            "source": source,
+        }
+        detail = {k: rating[k] for k in DETAIL_KEYS if rating.get(k) is not None}
+        if detail:
+            row["detail"] = detail
+        matched += 1
+    return matched
+
+
+# A club needs this many games of its own before its rating means anything.
+# The league-wide min_games gate cannot stand in for it: one day of ESPN's
+# college-basketball scoreboard is 100+ rows, so a 100-row store is satisfied
+# on its very first morning while every club in it has played exactly once —
+# and ratings.run() calls setdefault on both clubs before the tie check, so
+# even a club whose only appearance was a draw sits in the table at the 1500
+# starting value with zero information behind it. Ten games is where a K of
+# 20-24 has moved a rating far enough from 1500 to be saying something.
+MIN_CLUB_GAMES = 10
+
+
+def elo_model(rows: list[dict], history: list[dict], short: str,
+              min_games: int = 100) -> tuple[list[dict], int]:
+    """Rate a league's upcoming games from its stored results.
+
+    Returns (rating rows shaped for merge_model, rows skipped for want of
+    history). A league with fewer than min_games of history is not rated at
+    all: Elo needs a season to say anything, and a number built on a handful
+    of games is noise wearing a percentage sign. A game is skipped unless
+    BOTH clubs appear in at least MIN_CLUB_GAMES stored games — presence in
+    the rating table is not evidence, only participation is.
+
+    The skip count is returned rather than swallowed because the most likely
+    cause is not a thin store but a name mismatch: the store is filled from
+    ESPN and the board from the Odds API, and results.py's own docstring
+    flags that spelling question as unresolved. A total mismatch makes the
+    feature silently absent and a partial one rates half a board, so the
+    caller gets a number it can print.
+
+    Probabilities are clamped to rate_mlb's floor and ceiling. An Elo with no
+    regression, no margin of victory and no backtest behind it is not
+    trustworthy at the tails: the gap that produces 95% is a handful of
+    results away from the gap that produces 80%, and printing the extreme
+    number states a confidence this model has not earned.
+
+    Deliberately carries no market comparison. merge_model fills
+    market_home_prob from whatever rated the game, falling back to the row's
+    own h2h fair price; Elo alone does not know what the market thinks.
+    """
+    cfg = ratings.LEAGUE_CONFIG.get(short)
+    if not cfg or len(history) < min_games:
+        return [], 0
+
+    played: Counter = Counter()
+    for g in history:
+        played[g.get("home")] += 1
+        played[g.get("away")] += 1
+
+    table = ratings.run(history, cfg)
+    out, skipped = [], 0
+    for row in rows:
+        home, away = row.get("home"), row.get("away")
+        if (home not in table or away not in table
+                or played[home] < MIN_CLUB_GAMES
+                or played[away] < MIN_CLUB_GAMES):
+            skipped += 1
+            continue
+        hp = ratings.win_probability(table[home], table[away], cfg)
+        hp = max(rate_mlb.PROB_FLOOR, min(rate_mlb.PROB_CEIL, hp))
+        # Rounded to the same 4dp the slate path uses: full-precision floats
+        # would rewrite board.json every morning on noise in the last digit.
+        hp = round(hp, 4)
+        out.append({
+            "event_id": row.get("event_id"),
+            "home_win_prob": hp,
+            "away_win_prob": round(1.0 - hp, 4),
+        })
+    return out, skipped
+
+
 def _self_test() -> None:
     import io                        # noqa: PLC0415
     import contextlib                # noqa: PLC0415
@@ -546,6 +693,176 @@ def _self_test() -> None:
     assert "mlb" not in empty["leagues"] and "mlb" not in empty["counts"], \
         "a league with no games must be omitted, not written empty"
     assert empty["counts"] == {"nba": 1}
+
+    # --- merging a rating onto a priced board -------------------------------
+    board_rows = [
+        {"event_id": "e1", "league": "mlb", "home": "H", "away": "A",
+         "commence_time": "2026-09-01T23:00:00Z", "markets": {}, "model": None},
+        {"event_id": "e2", "league": "mlb", "home": "H2", "away": "A2",
+         "commence_time": "2026-09-01T23:00:00Z", "markets": {}, "model": None},
+    ]
+    rated = [
+        {"event_id": "e1", "home_win_prob": 0.4425, "away_win_prob": 0.5575,
+         "market_home_prob": 0.4376, "disagreement": 0.5, "suspect": False,
+         "home_record": {"w": 70, "l": 60}, "away_record": {"w": 65, "l": 65},
+         "home_starter": "Hunter Greene", "home_starter_era": 3.11,
+         "home_hand": "R", "away_starter": "Yu Darvish",
+         "away_starter_era": 4.02, "away_hand": "R",
+         "home_vs_opp": None, "away_vs_opp": None},
+        # A rated game that is not on the board at all — a postponement, or a
+        # game the pricing dropped for want of books. It must be ignored, not
+        # appended: the board is the list of games we can price.
+        {"event_id": "gone", "home_win_prob": 0.5, "away_win_prob": 0.5},
+    ]
+
+    matched = merge_model(board_rows, rated, "slate")
+    assert matched == 1, matched
+    assert len(board_rows) == 2, "merging must not add or drop rows"
+
+    m = board_rows[0]["model"]
+    assert m["home_win_prob"] == 0.4425 and m["away_win_prob"] == 0.5575
+    assert m["market_home_prob"] == 0.4376
+    assert m["disagreement"] == 0.5
+    assert m["suspect"] is False
+    assert m["source"] == "slate", "the card has to say where the number came from"
+
+    d = board_rows[0]["detail"]
+    assert d["home_starter"] == "Hunter Greene"
+    assert d["home_record"] == {"w": 70, "l": 60}
+    assert "home_win_prob" not in d, \
+        "the general numbers live in model; detail is the sport-specific extra"
+
+    # An unmatched game keeps its empty model rather than inheriting a
+    # neighbour's. Showing one game's number on another is worse than none.
+    assert board_rows[1]["model"] is None
+    assert board_rows[1].get("detail") is None
+
+    # A rating with no probability is not a rating.
+    half = [{"event_id": "e2", "market_home_prob": 0.5}]
+    assert merge_model(board_rows, half, "slate") == 0
+    assert board_rows[1]["model"] is None
+
+    # The probabilities must be a coherent pair; a rating that does not sum
+    # to 1 is a bug upstream and must not reach a card — and must say so,
+    # because a silently short board looks exactly like a quiet day.
+    bad = [{"event_id": "e2", "home_win_prob": 0.6, "away_win_prob": 0.6}]
+    sum_err = io.StringIO()
+    with contextlib.redirect_stderr(sum_err):
+        assert merge_model(board_rows, half + bad, "slate") == 0
+    assert board_rows[1]["model"] is None
+    assert "e2" in sum_err.getvalue(), \
+        "a rejected rating must name the event it dropped"
+
+    # The market's tick comes off the row itself when the rating has no
+    # opinion about prices, which is every Elo-rated card.
+    priced = [{"event_id": "e3", "league": "nba", "home": "H3", "away": "A3",
+               "markets": {"h2h": {"fair_home": 0.62, "fair_away": 0.38}},
+               "model": None}]
+    assert merge_model(priced, [{"event_id": "e3", "home_win_prob": 0.55,
+                                 "away_win_prob": 0.45}], "elo") == 1
+    assert priced[0]["model"]["market_home_prob"] == 0.62, \
+        "an Elo card must still get the market's tick from its own h2h price"
+
+    # And the rating's own number wins when it has one: the slate devigs its
+    # own book set and that is the number its card is about.
+    priced[0]["model"] = None
+    assert merge_model(priced, [{"event_id": "e3", "home_win_prob": 0.55,
+                                 "away_win_prob": 0.45,
+                                 "market_home_prob": 0.5}], "slate") == 1
+    assert priced[0]["model"]["market_home_prob"] == 0.5
+
+    # --- rating a league from its stored results ---------------------------
+    # Built through results_store.merge rather than by hand, so the fixture is
+    # a shape the store could actually hold: merge dedups on
+    # (date, home, away), and the old fixture repeated one pairing on one date
+    # sixty times — a history this module can never be handed in production.
+    import results_store                                     # noqa: PLC0415
+
+    raw = []
+    for i in range(60):
+        day = f"2026-{i // 28 + 4:02d}-{i % 28 + 1:02d}"
+        # Alpha beats Bravo consistently; Charlie and Delta split.
+        raw.append({"date": day, "home": "Alpha", "away": "Bravo",
+                    "home_score": 5, "away_score": 3, "completed": True})
+        raw.append({"date": day, "home": "Charlie", "away": "Delta",
+                    "home_score": 4 + i % 2, "away_score": 5 - i % 2,
+                    "completed": True})
+    history = results_store.merge([], raw)
+    assert len(history) == 120, "the fixture must survive the store's own rules"
+
+    upcoming = [{"event_id": "n1", "league": "nba", "home": "Alpha",
+                 "away": "Bravo", "markets": {}, "model": None}]
+
+    rated, skipped = elo_model(upcoming, history, "nba", min_games=100)
+    assert len(rated) == 1 and skipped == 0, (rated, skipped)
+    r = rated[0]
+    assert r["event_id"] == "n1"
+    assert r["home_win_prob"] > 0.5, "Alpha has beaten Bravo sixty times"
+
+    # The number is clamped. An unregressed Elo with no backtest behind it
+    # runs past 92% on a fixture like this one, and printing that states a
+    # confidence the model has not earned. (Asserting 0 < p < 1 could not
+    # fail — the logistic is always in (0, 1) — and neither could a
+    # sum-to-one check on a pair built as p and 1 - p.)
+    assert r["home_win_prob"] == rate_mlb.PROB_CEIL, \
+        "a sixty-game sweep must be clamped, not published at its raw value"
+    assert rate_mlb.PROB_FLOOR <= r["away_win_prob"] <= rate_mlb.PROB_CEIL
+    assert r["home_win_prob"] == round(r["home_win_prob"], 4), \
+        "full-precision floats rewrite board.json every morning"
+
+    # The direction survives the clamp: reverse the fixture's home and away
+    # and it is the away side that sits at the ceiling.
+    flipped = [{"event_id": "n1b", "league": "nba", "home": "Bravo",
+                "away": "Alpha", "markets": {}, "model": None}]
+    flip_rated, _flip_skipped = elo_model(flipped, history, "nba",
+                                          min_games=100)
+    fr = flip_rated[0]
+    assert fr["away_win_prob"] > fr["home_win_prob"], fr
+    assert fr["away_win_prob"] > 0.8, \
+        "Alpha is still the strong club when it plays on the road"
+    assert fr["away_win_prob"] <= rate_mlb.PROB_CEIL
+
+    # The row gate is a boundary, so test it AT the boundary: min_games - 1
+    # rows rate nothing, min_games rows rate.
+    assert elo_model(upcoming, history[:99], "nba", min_games=100) == ([], 0)
+    assert elo_model(upcoming, history[:100], "nba", min_games=100)[0] != []
+
+    # A club can clear the row gate and still have played almost nothing.
+    # One day of ESPN's college board is 100+ games with every club at a
+    # single appearance, which is exactly the case that must NOT publish.
+    one_each = results_store.merge(history, [
+        {"date": "2026-11-10", "home": f"C{i}", "away": f"D{i}",
+         "home_score": 70, "away_score": 65, "completed": True}
+        for i in range(60)])
+    assert len(one_each) >= 100, "the thin fixture must clear the row gate"
+    single = [{"event_id": "n3", "league": "nba", "home": "C0",
+               "away": "D0", "markets": {}, "model": None}]
+    assert elo_model(single, one_each, "nba", min_games=100) == ([], 1), \
+        "a club with one game must not be published at 1500"
+
+    # Including a club whose only appearance was a tie: ratings.run puts it
+    # in the table via setdefault before the tie check, so membership in the
+    # table is not evidence that anything is known about it.
+    drawn = results_store.merge(history, [
+        {"date": "2026-11-11", "home": "Golf", "away": "Hotel",
+         "home_score": 80, "away_score": 80, "completed": True}])
+    tie_row = [{"event_id": "n4", "league": "nba", "home": "Golf",
+                "away": "Hotel", "markets": {}, "model": None}]
+    assert elo_model(tie_row, drawn, "nba", min_games=100) == ([], 1)
+
+    # A game whose clubs are absent from the history is skipped, and the skip
+    # is COUNTED: the likeliest cause is ESPN and the Odds API spelling the
+    # clubs differently, and without a count that failure is invisible.
+    stranger = [{"event_id": "n2", "league": "nba", "home": "Echo",
+                 "away": "Foxtrot", "markets": {}, "model": None}]
+    assert elo_model(stranger, history, "nba", min_games=100) == ([], 1)
+
+    # An unknown league has no Elo settings and must not borrow another's.
+    assert elo_model(upcoming, history, "cricket", min_games=1) == ([], 0)
+
+    # And the output slots straight into merge_model.
+    assert merge_model(upcoming, rated, "elo") == 1
+    assert upcoming[0]["model"]["source"] == "elo"
 
     print("board self-test: all invariants hold")
 

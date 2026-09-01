@@ -541,18 +541,30 @@ def _vs_line(vs: dict | None, opponent: str | None) -> str:
 
 def _side(team, starter, era, prob, leading, rec=None, at_home=False,
           vs=None, opponent=None) -> str:
-    sp = esc(starter or "TBA")
-    if era is not None:
-        sp += f' &middot; {era:.2f} {_("era")}'
+    # No starter, no starter line. The old "TBA" was a hardcoded English
+    # string — the only reader-facing word on a card not routed through _()
+    # — and it is now reached by every Elo league, printing a pitcher slot on
+    # a basketball card. slate_rows, the other caller, does not depend on the
+    # line being present: .gsp is a margin-top only, so a baseball card whose
+    # starter is not yet announced simply closes up. An ERA without a starter
+    # cannot be labelled and goes with it.
+    sp = f'<div class="gsp">{esc(starter)}' if starter else ""
+    if sp:
+        if era is not None:
+            sp += f' &middot; {era:.2f} {_("era")}'
+        sp += "</div>"
     # One decimal, not zero: at 49.8 vs 50.2 a rounded pair both read "50%"
     # while the footer reports a lean, which looks like a contradiction.
+    # No probability means no model for this game yet — the club's name still
+    # gets its slot, but the percentage is left off rather than faked as 0%.
+    pc = f'<div class="pc">{prob*100:.1f}%</div>' if prob is not None else ""
     return f"""
         <div class="gside{' lead' if leading else ''}">
           <div class="tm">{_tdot(team)}{esc(team or '')}</div>
-          <div class="pc">{prob*100:.1f}%</div>
+          {pc}
         </div>
         {_record_line(rec, at_home)}
-        <div class="gsp">{sp}</div>
+        {sp}
         {_vs_line(vs, opponent)}"""
 
 
@@ -1028,6 +1040,68 @@ def market_rows(row: dict) -> str:
     return "".join(out)
 
 
+def _prob_bar(model: dict | None) -> str:
+    """The two numbers as one bar, with the market's own number as a tick.
+
+    The bar fills left to right with the away club's chance, so the tick sits
+    at 1 - market_home_prob. Printing the two percentages alone makes a reader
+    do the subtraction; the distance between fill and tick is the disagreement
+    without arithmetic.
+
+    Does not scale the tick's prominence by how large the gap is. A two-point
+    disagreement and a ten-point one are drawn identically, because the bar is
+    a measurement and not an argument.
+
+    Returns only the bar, not its caption — see _prob_foot() below. The two
+    used to come back as one string that board_card rendered between the away
+    and home clubs, which put the caption directly above the home club's name
+    and made it read as that club's label rather than a caption on the bar.
+    Two functions (instead of one returning a tuple) keep each call site
+    reading as plain HTML-in, HTML-out, matching every other renderer here.
+    board_card now places _prob_bar between the clubs and _prob_foot after
+    both of them, which is the slot .gfoot's CSS (border-top, nothing below)
+    was built for — the same slot slate_rows already uses.
+    """
+    if not model:
+        return ""
+    away = model.get("away_win_prob")
+    if away is None:
+        return ""
+    fill = max(0.0, min(100.0, away * 100))
+
+    market_home = model.get("market_home_prob")
+    tick = ""
+    if market_home is not None:
+        at = max(0.0, min(100.0, (1.0 - market_home) * 100))
+        tick = (f'<div class="tick" style="left:{at:.1f}%" '
+                f'title="{_("market_tick")}"></div>')
+
+    return (f'<div class="gbar"><div class="seg on" '
+            f'style="width:{fill:.1f}%"></div>{tick}</div>')
+
+
+def _prob_foot(model: dict | None) -> str:
+    """The bar's caption: how far the model and market disagree.
+
+    Companion to _prob_bar() — see that docstring for why the bar and its
+    caption are returned separately. Renders after both clubs.
+    """
+    if not model:
+        return ""
+    if model.get("away_win_prob") is None:
+        return ""
+    gap = model.get("disagreement")
+    if gap is None:
+        return ""
+    if abs(gap) < 1.0:
+        # Under a point the two numbers are the same number wearing different
+        # rounding, and calling that a disagreement would cry wolf.
+        return f'<div class="gfoot"><span>{_("agree_market")}</span></div>'
+    cls = " flagged" if model.get("suspect") else ""
+    return (f'<div class="gfoot"><span class="lean{cls}">'
+            f'{_("off_market", v=f"{abs(gap):.1f}")}</span></div>')
+
+
 def board_card(row: dict) -> str:
     """One game, priced, with the deep material behind a disclosure.
 
@@ -1041,17 +1115,26 @@ def board_card(row: dict) -> str:
     board is rendered the same way; the edge column is what varies.
     """
     model = row.get("model") or {}
+    detail = row.get("detail") or {}
     tip = game_time(row.get("commence_time"))
     accent = team_color(row.get("home"))
     style = f' style="--accent:{accent}"' if accent else ""
     lg = leagues.LEAGUES.get(row.get("league") or "")
     league_tag = f"{esc(lg.label)} &middot; " if lg else ""
 
-    def side(team: str, prob: float | None, leading: bool) -> str:
-        pc = (f'<span class="pc">{prob * 100:.1f}<span class="pcs">%</span>'
-              f'</span>') if prob is not None else ""
-        return (f'<div class="gside{" lead" if leading else ""}">'
-                f'<span class="tm">{_tdot(team)}{esc(team)}</span>{pc}</div>')
+    def side(which: str, team: str, prob: float | None,
+             leading: bool) -> str:
+        return _side(
+            team,
+            detail.get(f"{which}_starter"),
+            detail.get(f"{which}_starter_era"),
+            prob,
+            leading,
+            rec=detail.get(f"{which}_record"),
+            at_home=(which == "home"),
+            vs=detail.get(f"{which}_vs_opp"),
+            opponent=row.get("home" if which == "away" else "away"),
+        )
 
     hp = model.get("home_win_prob")
     ap = model.get("away_win_prob")
@@ -1063,8 +1146,10 @@ def board_card(row: dict) -> str:
           <span>{league_tag}{esc(tip)}</span><span>{_("scheduled")}</span>
         </div>
         <div class="gcard-body">
-          {side(row.get('away',''), ap, not lead_home and ap is not None)}
-          {side(row.get('home',''), hp, lead_home)}
+          {side("away", row.get('away',''), ap, not lead_home and ap is not None)}
+          {_prob_bar(model)}
+          {side("home", row.get('home',''), hp, lead_home)}
+          {_prob_foot(model)}
           <div class="mk">{market_rows(row)}</div>
           <details class="gmore">
             <summary>{_("card_more")}</summary>
@@ -1174,6 +1259,72 @@ def _self_test() -> None:
 
     # An empty board says so instead of rendering nothing at all.
     assert i18n.t("board_empty", LANG) in board_cards([])
+
+    # --- the probability bar ------------------------------------------------
+    rated = {**row, "model": {
+        "home_win_prob": 0.556, "away_win_prob": 0.444,
+        "market_home_prob": 0.503, "disagreement": 5.3,
+        "suspect": False, "source": "slate"},
+        "detail": {"home_record": {"w": 74, "l": 56},
+                   "away_record": {"w": 77, "l": 53},
+                   "home_starter": "Freddy Peralta", "home_starter_era": 3.47,
+                   "away_starter": "Shota Imanaga", "away_starter_era": 3.24}}
+
+    bar = _prob_bar(rated["model"])
+    assert 'class="gbar"' in bar
+    assert 'class="tick"' in bar, "the market's own number has to be marked"
+    # The bar reads left to right as the away club's chance, so the market's
+    # tick sits at 1 - market_home_prob.
+    assert "49.7%" in bar, "the tick is placed on the away side of the bar"
+
+    # No market number means no tick, rather than a tick at zero.
+    assert 'class="tick"' not in _prob_bar(
+        {**rated["model"], "market_home_prob": None})
+
+    # No model at all means no bar, rather than an empty one.
+    assert _prob_bar(None) == ""
+
+    card = board_card(rated)
+    assert "55.6" in card and "44.4" in card, "both percentages are printed"
+    # The whole record line, not the digits: "74" and "56" on their own also
+    # appear in event ids, prices and percentages, so the old two-substring
+    # assertion passed whether or not a record ever reached the card.
+    assert '<div class="grec">74&ndash;56</div>' in card, \
+        "the home club's record reaches the card as a record line"
+    assert '<div class="grec">77&ndash;53</div>' in card
+    assert "Freddy Peralta" in card and "3.47" in card
+
+    # A card with no starter shows no starter line at all, rather than a
+    # hardcoded English "TBA" — which every basketball and football card
+    # would otherwise carry under a club that has no pitcher.
+    hoops = board_card({**row, "league": "nba", "detail": {},
+                        "model": {"home_win_prob": 0.55, "away_win_prob": 0.45}})
+    assert "TBA" not in hoops, "no pitcher slot on a card with no pitcher"
+    assert 'class="gsp"' not in hoops, \
+        "the starter line is suppressed, not emitted empty"
+    # ...and a card that does have one still prints it.
+    assert 'class="gsp"' in card
+    assert "var(--dim)" not in card, "everything on a card is content"
+
+    # The bar's caption is a closing line after both clubs (matching
+    # slate_rows and .gfoot's border-top-only styling), not a label sitting
+    # between them. Pin the order so a future edit that moves it back fails.
+    foot_text = i18n.t("off_market", LANG, v="5.3")
+    assert card.index(rated["home"]) < card.index(foot_text), (
+        "the bar's footer must render after the home club's name, not "
+        "between the two clubs")
+
+    # The gap-under-a-point wording ("in line with the market") is the exact
+    # phrase that used to read as a label on the club above it.
+    agree_card = board_card({**rated, "model": {**rated["model"], "disagreement": 0.4}})
+    agree_text = i18n.t("agree_market", LANG)
+    assert agree_card.index(rated["home"]) < agree_card.index(agree_text)
+
+    # A game we have not rated shows the market block and no percentages,
+    # rather than a placeholder or the market's number in our place.
+    plain = board_card({**row, "model": None, "detail": None})
+    assert "55.6" not in plain and "class=\"gbar\"" not in plain
+    assert "MONEYLINE" in plain.upper() or i18n.t("mkt_moneyline", LANG) in plain
 
     print("render self-test: all invariants hold")
 

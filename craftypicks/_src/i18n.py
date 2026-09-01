@@ -82,6 +82,8 @@ T = {
     "market":       {"en": "market",          "es": "mercado"},
     "vs_market":    {"en": "{v} pts vs market", "es": "{v} pts vs mercado"},
     "off_market":   {"en": "{v} pts off market", "es": "{v} pts fuera del mercado"},
+    "agree_market": {"en": "in line with the market",
+                     "es": "en línea con el mercado"},
     "market_na":    {"en": "market n/a",      "es": "sin mercado"},
     "final":        {"en": "Final {v}",       "es": "Final {v}"},
     "scheduled":    {"en": "Scheduled",       "es": "Programado"},
