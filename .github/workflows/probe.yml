@@ -2,16 +2,28 @@ name: Probe score sources
 
 # Why this exists
 # ---------------
-# scripts/results.py reads finals from two free sources — MLB's own StatsAPI
-# for baseball and ESPN's scoreboard for everything else. Neither is reachable
-# from the development sandbox, so the parsers are tested against recorded
-# fixtures and the live endpoints are checked here, from a runner that can
+# scripts/results.py reads finals from two places now, and neither is reachable
+# from the sandbox this project is developed in. The parsers are tested against
+# recorded fixtures; this checks the live sources from a runner that can
 # actually reach them.
 #
-# The reachability answer is the easy half. The half that matters is whether
-# the two sources spell team names identically: ratings.py keys Elo on the name
-# string, so one fallback day mid-season would create a second club and split
-# that team's rating history with nothing in the output looking wrong.
+# What changed on 2026-09-01
+# --------------------------
+# The first version of this probe checked ESPN's free scoreboard for the three
+# non-baseball leagues. ESPN answers a GitHub runner with 403 Forbidden. A
+# browser User-Agent did not change it, and the same URL serves valid JSON from
+# elsewhere, so it is our address being refused and no header fixes it. Those
+# leagues now buy their scores from the Odds API instead.
+#
+# So this probe spends credits: two per in-season league that is not baseball.
+# It is workflow_dispatch only and must stay that way — a scheduled probe would
+# quietly bill you for asking whether the bill works.
+#
+# The team-name question has narrowed. The three paid leagues take both their
+# odds and their scores from the Odds API, so their club names agree by
+# construction. Baseball does not: the board's names come from the Odds API and
+# its finals come from MLB StatsAPI. That is the one remaining pair that can
+# disagree, and it is what the comparison below checks.
 #
 # This file cannot be delivered through the update archive — GITHUB_TOKEN may
 # not write anything under .github/workflows — so it is pasted in by hand.
@@ -38,11 +50,13 @@ jobs:
         working-directory: craftypicks
         env:
           PROBE_DATE: ${{ inputs.date }}
+          ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
         run: |
           python3 - <<'PY'
-          import datetime, gzip, json, os, sys
+          import datetime, os, sys
           sys.path.insert(0, "scripts")
           import results
+          from odds_client import OddsClient
 
           day = (os.environ.get("PROBE_DATE") or "").strip()
           if not day:
@@ -50,64 +64,74 @@ jobs:
                      - datetime.timedelta(days=1)).isoformat()
           print(f"probing {day}\n")
 
-          # Only leagues plausibly playing on this date are treated as
-          # must-have. A legitimate zero out of season is not a failure, and a
-          # probe that cries wolf every June gets ignored by July.
-          MONTHS = {"mlb": range(3, 11), "nfl": list(range(9, 13)) + [1, 2],
-                    "nba": list(range(10, 13)) + list(range(1, 7)),
-                    "ncaab": list(range(11, 13)) + list(range(1, 5))}
-          month = int(day[5:7])
+          client = OddsClient()
+          in_season = set(client.in_season_sports())
+          print(f"in season: {', '.join(sorted(in_season)) or 'nothing'}\n")
 
           failures = []
-          rows_by_league = {}
           for league in ("mlb", "nfl", "nba", "ncaab"):
+              sport_key = results.SPORT_KEY[league]
+              playing = sport_key in in_season
+              source = "statsapi (free)" if league == "mlb" else "odds api (2cr)"
+              if not playing:
+                  print(f"{league:6} skipped — out of season")
+                  continue
               try:
-                  rows = results.finals(league, day)
-              except Exception as e:                        # noqa: BLE001
+                  rows = results.finals(league, day, client=client)
+              except Exception as e:                          # noqa: BLE001
                   print(f"{league:6} RAISED  {type(e).__name__}: {e}")
                   failures.append(f"{league} raised {type(e).__name__}")
                   continue
-              rows_by_league[league] = rows
-              in_season = month in MONTHS[league]
-              note = "" if rows else ("  <-- expected games" if in_season
-                                      else "  (out of season)")
-              print(f"{league:6} {len(rows):3} final(s){note}")
-              if in_season and not rows:
-                  failures.append(f"{league} returned nothing in season")
+              note = "" if rows else "  <-- in season but nothing came back"
+              print(f"{league:6} {len(rows):3} final(s)  via {source}{note}")
+              if not rows:
+                  failures.append(f"{league} returned nothing while in season")
 
-          # The name question. Ask both sources for the same MLB day and
-          # compare the sets; anything in one and not the other is a club whose
-          # rating history would split the first time we fell back.
-          print("\n--- MLB team names: StatsAPI vs ESPN")
+          # The one pair of sources that can still disagree: baseball's board
+          # names come from the Odds API, its finals from MLB StatsAPI. Nothing
+          # consumes both today — MLB is rated by slate.py, not from the results
+          # store — but the moment something does, a spelling difference would
+          # split a club's rating history with nothing looking wrong.
+          print("\n--- MLB club names: StatsAPI (finals) vs Odds API (board)")
           try:
-              stats_rows = results.parse_statsapi(
-                  results._get(results.STATSAPI.format(date=day)))
-              url = f"{results.ESPN_BASE}/{results.ESPN_PATH['mlb']}/scoreboard"
-              espn_rows = results.parse_espn(
-                  results._get(f"{url}?dates={day.replace('-', '')}"))
-              a = {r[k] for r in stats_rows for k in ("home", "away")}
-              b = {r[k] for r in espn_rows for k in ("home", "away")}
-              print(f"  StatsAPI: {len(a)} club(s)   ESPN: {len(b)} club(s)")
-              only_a, only_b = sorted(a - b), sorted(b - a)
-              if not a or not b:
+              stats_rows = results.finals("mlb", day)
+              stats_names = {r[k] for r in stats_rows for k in ("home", "away")}
+              odds_rows = client.scores("baseball_mlb")
+              odds_names = set()
+              for ev in odds_rows:
+                  for k in ("home_team", "away_team"):
+                      if ev.get(k):
+                          odds_names.add(ev[k])
+
+              print(f"  StatsAPI: {len(stats_names)} club(s)   "
+                    f"Odds API: {len(odds_names)} club(s)")
+              if not stats_names or not odds_names:
                   print("  one source returned no games; cannot compare today")
-              elif only_a or only_b:
-                  print("  MISMATCH — these do not appear in both:")
-                  for n in only_a:
-                      print(f"    StatsAPI only: {n!r}")
-                  for n in only_b:
-                      print(f"    ESPN only:     {n!r}")
-                  failures.append("team names differ between sources")
+                  print("  (re-run against a date both cover before trusting this)")
               else:
-                  print("  every club spelled identically in both")
-          except Exception as e:                            # noqa: BLE001
+                  only_stats = sorted(stats_names - odds_names)
+                  only_odds = sorted(odds_names - stats_names)
+                  if only_stats or only_odds:
+                      print("  MISMATCH — these do not appear in both:")
+                      for n in only_stats:
+                          print(f"    StatsAPI only: {n!r}")
+                      for n in only_odds:
+                          print(f"    Odds API only: {n!r}")
+                      failures.append("MLB club names differ between sources")
+                  else:
+                      print("  every club spelled identically in both")
+          except Exception as e:                              # noqa: BLE001
               print(f"  comparison failed: {type(e).__name__}: {e}")
               failures.append("name comparison raised")
+
+          print(f"\ncredits used this run: {client.credits_used_this_run}")
+          if client.credits_remaining is not None:
+              print(f"credits remaining: {client.credits_remaining}")
 
           if failures:
               print("\nFAILED:")
               for f in failures:
                   print(f"  {f}")
               sys.exit(1)
-          print("\nboth sources reachable and in agreement")
+          print("\nevery in-season source answered, and the names agree")
           PY
