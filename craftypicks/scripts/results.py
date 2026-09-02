@@ -4,6 +4,7 @@ from __future__ import annotations
 import http.client
 import json
 import urllib.error
+import urllib.parse
 import urllib.request
 
 ESPN_BASE = "https://site.api.espn.com/apis/site/v2/sports"
@@ -15,6 +16,33 @@ ESPN_PATH = {
 }
 STATSAPI = "https://statsapi.mlb.com/api/v1/schedule?sportId=1&date={date}"
 TIMEOUT = 15
+
+
+# ESPN's CDN refuses a request that does not look like a browser. The first
+# probe run on 2026-09-01 got StatsAPI's eight finals and an HTTPError from
+# ESPN on all four leagues, with the same URL returning valid JSON when
+# fetched normally — so the URL was never the problem, the User-Agent was.
+# "craftypicks/1.0" is honest and got us blocked; this is the smallest string
+# that does not.
+HEADERS = {
+    "User-Agent": ("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "
+                   "(KHTML, like Gecko) Chrome/124.0 Safari/537.36"),
+    "Accept": "application/json,text/plain,*/*",
+}
+
+
+def _request(url: str) -> urllib.request.Request:
+    """The request this module sends, without sending it.
+
+    Split out from _get purely so the headers can be asserted in a self-test
+    without network access — the sandbox this is developed in cannot reach
+    either source, so the header policy would otherwise be untested until it
+    failed in production, which is exactly what happened once already.
+
+    Does not vary by host. StatsAPI is happy with anything and ESPN is not, so
+    both get the same headers rather than a per-source table nobody maintains.
+    """
+    return urllib.request.Request(url, headers=dict(HEADERS))
 
 
 def _get(url: str) -> dict:
@@ -29,15 +57,24 @@ def _get(url: str) -> dict:
     slipped through the old tuple and propagated out of a function whose
     whole contract is that it never raises.
 
+    The message names the status code and the host. The first probe run
+    reported only "HTTPError" four times over, which took a separate
+    investigation to turn into "ESPN is returning 403" — a diagnosis the log
+    line should have handed over on its own.
+
     Returning {} is the failure signal callers key on — see finals().
     """
     try:
-        req = urllib.request.Request(url, headers={"User-Agent": "craftypicks/1.0"})
-        with urllib.request.urlopen(req, timeout=TIMEOUT) as resp:
+        with urllib.request.urlopen(_request(url), timeout=TIMEOUT) as resp:
             return json.loads(resp.read().decode("utf-8"))
+    except urllib.error.HTTPError as e:
+        print(f"!! score source refused us: HTTP {e.code} {e.reason} "
+              f"from {urllib.parse.urlsplit(url).netloc}; skipping")
+        return {}
     except (urllib.error.URLError, http.client.HTTPException,
             TimeoutError, ValueError, OSError) as e:
-        print(f"!! score source unreachable ({type(e).__name__}); skipping")
+        print(f"!! score source unreachable ({type(e).__name__}: {e}) "
+              f"at {urllib.parse.urlsplit(url).netloc}; skipping")
         return {}
 
 
@@ -274,6 +311,23 @@ def _self_test() -> None:
     with unittest.mock.patch("urllib.request.urlopen",
                              side_effect=http.client.IncompleteRead(b"")):
         assert _get("https://example.invalid/x") == {}
+
+    # --- what we actually send -------------------------------------------
+    # ESPN blocked us on 2026-09-01 for looking like a script. There is no
+    # network here, so the header policy is asserted on the Request object
+    # rather than on a response; that is the only way this can be caught
+    # before it fails in production, which is how it was found last time.
+    req = _request("https://site.api.espn.com/x")
+    ua = req.get_header("User-agent") or ""
+    assert "Mozilla" in ua, f"ESPN refuses a non-browser User-Agent, got {ua!r}"
+    assert "craftypicks" not in ua.lower(), \
+        "the honest User-Agent is the one that got us a 403"
+    assert req.get_header("Accept"), "ESPN wants an Accept header too"
+
+    # Deliberately not asserted here: that no caller bypasses _request. Every
+    # version of that check scanned this file for its own needle and tripped
+    # over the assertion's own source. A test that keeps outsmarting itself is
+    # worse than the convention it was guarding.
 
     print("results self-test: all invariants hold")
 
