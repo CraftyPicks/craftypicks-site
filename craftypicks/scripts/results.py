@@ -134,6 +134,53 @@ def parse_statsapi(payload: dict) -> list[dict]:
     return out
 
 
+def parse_odds_scores(events: list[dict], date_str: str) -> list[dict]:
+    """Pull finals out of an Odds API /scores response.
+
+    ESPN's scoreboard was the free source for every league but baseball, and
+    it answers a GitHub runner with 403 Forbidden — a browser User-Agent did
+    not change that, and the same URL serves fine from elsewhere, so it is the
+    caller's address being refused rather than the request. Rather than fight
+    a CDN indefinitely, the three non-baseball leagues buy their scores: two
+    credits per league per day, about 180 a month against a 20,000 allowance.
+    The free-source detour existed to save credits, and credits turned out not
+    to be the scarce thing.
+
+    Rows are filtered to the requested date and stamped with it, matching what
+    finals() guarantees. Deliberately does not use the event's own
+    commence_time as the row's date: a late West Coast game kicks off after
+    midnight UTC and would land on the wrong slate.
+
+    Does not grade anything. grade.py reads the same endpoint for its own
+    purposes and keys on event id; this returns the flat shape the results
+    store and the Elo engine consume.
+    """
+    out = []
+    for ev in events or []:
+        try:
+            if not ev.get("completed"):
+                continue
+            if (ev.get("commence_time") or "")[:10] != date_str:
+                continue
+            home, away = ev.get("home_team"), ev.get("away_team")
+            by_name = {}
+            for s in ev.get("scores") or []:
+                by_name[s["name"]] = int(float(s["score"]))
+            if home not in by_name or away not in by_name:
+                continue
+            out.append({
+                "home": home,
+                "away": away,
+                "home_score": by_name[home],
+                "away_score": by_name[away],
+                "completed": True,
+                "date": date_str,
+            })
+        except (KeyError, TypeError, ValueError, AttributeError):
+            continue
+    return out
+
+
 def finals(league: str, date_str: str) -> list[dict]:
     """Completed games for one league on one date, from a free source.
 
@@ -328,6 +375,49 @@ def _self_test() -> None:
     # version of that check scanned this file for its own needle and tripped
     # over the assertion's own source. A test that keeps outsmarting itself is
     # worse than the convention it was guarding.
+
+    # --- the paid path, for the leagues ESPN refuses ----------------------
+    paid = [
+        {"id": "a", "commence_time": "2026-09-01T17:00:00Z", "completed": True,
+         "home_team": "Chicago Bears", "away_team": "Green Bay Packers",
+         "scores": [{"name": "Chicago Bears", "score": "24"},
+                    {"name": "Green Bay Packers", "score": "17"}]},
+        # Still in progress: not a result, and Elo would read a 0-0 as a tie.
+        {"id": "b", "commence_time": "2026-09-01T20:00:00Z", "completed": False,
+         "home_team": "Buffalo Bills", "away_team": "Houston Texans",
+         "scores": [{"name": "Buffalo Bills", "score": "3"},
+                    {"name": "Houston Texans", "score": "0"}]},
+        # A different day. /scores returns a window, not a single date, so
+        # this filter is what keeps a row off the wrong slate.
+        {"id": "c", "commence_time": "2026-08-31T17:00:00Z", "completed": True,
+         "home_team": "Detroit Lions", "away_team": "Minnesota Vikings",
+         "scores": [{"name": "Detroit Lions", "score": "10"},
+                    {"name": "Minnesota Vikings", "score": "20"}]},
+    ]
+    rows = parse_odds_scores(paid, "2026-09-01")
+    assert len(rows) == 1, rows
+    r = rows[0]
+    assert r["home"] == "Chicago Bears" and r["home_score"] == 24
+    assert r["away_score"] == 17 and r["completed"] is True
+    assert r["date"] == "2026-09-01", "the row carries the slate date asked for"
+
+    # A score list that does not name both clubs is not a result.
+    half = [{"id": "d", "commence_time": "2026-09-01T17:00:00Z",
+             "completed": True, "home_team": "A", "away_team": "B",
+             "scores": [{"name": "A", "score": "7"}]}]
+    assert parse_odds_scores(half, "2026-09-01") == []
+
+    # Malformed entries are skipped, not raised on — this runs unattended.
+    assert parse_odds_scores([{"completed": True}], "2026-09-01") == []
+    assert parse_odds_scores(None, "2026-09-01") == []
+    assert parse_odds_scores([{"id": "e", "commence_time": "2026-09-01T1",
+                               "completed": True, "home_team": "A",
+                               "away_team": "B",
+                               "scores": "not a list"}], "2026-09-01") == []
+
+    # The same shape both parsers produce, so the store cannot tell them apart.
+    assert set(rows[0]) == {"home", "away", "home_score", "away_score",
+                            "completed", "date"}
 
     print("results self-test: all invariants hold")
 

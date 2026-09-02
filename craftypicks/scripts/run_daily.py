@@ -79,8 +79,10 @@ from odds_client import BudgetExhausted, OddsAPIError, OddsClient  # noqa: E402
 # Yesterday's finals, from the free sources. Optional like everything else:
 # the card must go out whether or not ESPN answered.
 try:
-    import results_store  # noqa: E402
+    import results         # noqa: E402
+    import results_store   # noqa: E402
 except Exception as _rs_err:                                 # noqa: BLE001
+    results = None
     results_store = None
     print(f"!! results store unavailable ({_rs_err})", file=sys.stderr)
 
@@ -181,6 +183,10 @@ def main() -> int:
     prop_events: list[dict] = []
     slate_rows: list[dict] = []
     boards: dict[str, list[dict]] = {}
+    # Declared out here for the same reason as the names above: the results
+    # store reads it long after this try block, and an odds failure must not
+    # leave it undefined.
+    in_season: list[str] = []
     try:
         in_season = client.in_season_sports()
         print(f"-- in season: {', '.join(in_season) or 'nothing'}")
@@ -421,14 +427,39 @@ def main() -> int:
             print(f"!! slate bookkeeping failed ({type(e).__name__}: {e})",
                   file=sys.stderr)
 
-    if results_store and leagues:
+    if results and results_store and leagues:
         yesterday = (now.date() - timedelta(days=1)).isoformat()
+
+        def paid_finals(short: str, day: str) -> list[dict]:
+            """Yesterday's finals for one league, bought from the Odds API.
+
+            ESPN's free scoreboard answers a GitHub runner with 403 Forbidden
+            and a browser User-Agent did not change it, so the three leagues
+            that relied on it buy their scores instead: two credits each, per
+            day, against a 20,000 allowance.
+
+            Does not fall back to ESPN. A source that refuses us from this
+            machine is not a fallback, it is a second failure and a wasted
+            fifteen-second timeout every morning.
+            """
+            return results.parse_odds_scores(
+                client.scores(leagues.LEAGUES[short].sport_key), day)
+
         for short in leagues.ORDER:
+            # Only leagues that actually played. Two credits a day for a sport
+            # that is out of season buys an empty list.
+            sport_key = leagues.LEAGUES[short].sport_key
+            if sport_key not in in_season:
+                continue
+            # MLB's own API is free, documented and working; only the leagues
+            # ESPN blocks are worth spending on.
+            fetch = results.finals if short == "mlb" else paid_finals
             # append_day swallows a failed fetch itself, but not a bug in its
             # own merge. Nothing below this line catches an exception, and the
             # card has to go out.
             try:
-                gained = results_store.append_day(short, yesterday)
+                gained = results_store.append_day(short, yesterday,
+                                                  fetch=fetch)
                 if gained:
                     print(f"-- results: +{gained} {short} final(s) "
                           f"for {yesterday}")
