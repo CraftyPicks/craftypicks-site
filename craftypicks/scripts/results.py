@@ -15,6 +15,17 @@ ESPN_PATH = {
     "ncaab": "basketball/mens-college-basketball",
 }
 STATSAPI = "https://statsapi.mlb.com/api/v1/schedule?sportId=1&date={date}"
+
+# The Odds API's own sport keys, duplicated here rather than imported from
+# leagues.py so this module stays a leaf: it is imported by the daily job, by
+# the results store and by a probe workflow, and none of them should have to
+# drag the site's league configuration along to ask for a score.
+SPORT_KEY = {
+    "mlb":   "baseball_mlb",
+    "nba":   "basketball_nba",
+    "nfl":   "americanfootball_nfl",
+    "ncaab": "basketball_ncaab",
+}
 TIMEOUT = 15
 
 
@@ -181,13 +192,26 @@ def parse_odds_scores(events: list[dict], date_str: str) -> list[dict]:
     return out
 
 
-def finals(league: str, date_str: str) -> list[dict]:
-    """Completed games for one league on one date, from a free source.
+def finals(league: str, date_str: str, client=None) -> list[dict]:
+    """Completed games for one league on one date.
 
-    Baseball uses MLB's official API because it is documented and stable.
-    Everything else uses ESPN, which is neither, hence the tolerant parsing.
+    Baseball uses MLB's official API: free, documented, and stable. The other
+    three used ESPN's scoreboard until 2026-09-01, when it began answering a
+    GitHub runner with 403 Forbidden — a browser User-Agent did not change it
+    and the same URL serves fine from elsewhere, so it is our address being
+    refused and no header will fix it. They now buy their scores instead, at
+    two credits a league a day, which needs a client.
+
+    Pass `client` (an OddsClient) to enable the paid path. Without one the
+    non-baseball leagues return nothing rather than reaching for ESPN: a
+    source that refuses us is not a fallback, it is a second failure and a
+    wasted fifteen-second timeout. This is the ONE place that knows where a
+    league's scores come from — an earlier version put the paid path in the
+    caller, and the probe workflow went on testing ESPN and reporting a
+    failure that no longer meant anything.
+
     Does not retry a failed fetch; _get has already given up by the time it
-    returns.
+    returns, and the paid client has its own budget guard.
 
     Each returned row's "date" is the SLATE date that was asked for, not the
     kickoff timestamp's UTC date. The parsers stay pure and keep reporting
@@ -198,36 +222,32 @@ def finals(league: str, date_str: str) -> list[dict]:
     and any caller matching results back to a slate by date would silently
     miss every late game.
 
-    MLB falls back to ESPN only when the StatsAPI FETCH FAILED (_get returned
-    {}), never when StatsAPI answered and simply had no games scheduled. An
-    off-day is routine; treating it as a failure meant a spurious "falling
-    back" log line and a second HTTP call on every MLB off-day — and, worse,
-    a day of MLB rows carrying ESPN's team names instead of StatsAPI's.
-
-    UNRESOLVED RISK: the two sources spell team names differently in kind —
-    parse_statsapi emits teams.home.team.name, parse_espn emits
-    team.displayName — and those two name sets have NOT been diffed. Anything
-    keyed on the string (ratings.run() keys team history on it) would split a
-    club's rating history in two the first time one league drew rows from
-    both sources, with nothing in the output looking wrong. The guard above
-    makes that impossible today for MLB. Before anything consumes both
-    sources for one league, run .github/workflows/probe.yml against a date
-    both sources cover and diff the name sets.
+    REMAINING NAME RISK, now narrowed to one league: the three paid leagues
+    draw both their odds and their scores from the Odds API, so their club
+    names agree by construction. Baseball does not — the board names come
+    from the Odds API and these rows come from MLB StatsAPI, and those two
+    sets have not been diffed. Nothing consumes both today, because MLB is
+    rated by slate.py rather than from this store. Before anything does, run
+    .github/workflows/probe.yml and compare them.
     """
     if league == "mlb":
         # {} is _get's failure signal. StatsAPI never returns a bare {} on
         # success — a scheduled-nothing day still carries "dates": [].
         payload = _get(STATSAPI.format(date=date_str))
-        if payload != {}:
-            return _stamp([r for r in parse_statsapi(payload) if r["completed"]],
-                          date_str)
-        print("!! StatsAPI fetch failed; falling back to ESPN for MLB")
+        if payload == {}:
+            print("!! StatsAPI fetch failed; no baseball finals today")
+            return []
+        return _stamp([r for r in parse_statsapi(payload) if r["completed"]],
+                      date_str)
 
-    path = ESPN_PATH.get(league)
-    if not path:
+    if client is None:
+        print(f"!! no client given, so no paid scores for {league}; skipping")
         return []
-    url = f"{ESPN_BASE}/{path}/scoreboard?dates={date_str.replace('-', '')}"
-    return _stamp([r for r in parse_espn(_get(url)) if r["completed"]], date_str)
+
+    sport_key = SPORT_KEY.get(league)
+    if not sport_key:
+        return []
+    return parse_odds_scores(client.scores(sport_key), date_str)
 
 
 def _stamp(rows: list[dict], date_str: str) -> list[dict]:
@@ -321,32 +341,41 @@ def _self_test() -> None:
         assert rows[0]["date"] == "2026-08-26", \
             f"late game filed under {rows[0]['date']}, not the slate date"
 
-        # Same for the ESPN path, whose timestamps roll the same way.
-        espn_late = {"events": [{"date": "2026-08-27T02:10Z",
-              "status": {"type": {"completed": True}},
-              "competitions": [{"competitors": [
-                  {"homeAway": "home", "score": "110", "team": {"displayName": "A"}},
-                  {"homeAway": "away", "score": "101", "team": {"displayName": "B"}}]}]}]}
-        _get = lambda url: (calls.append(url), espn_late)[1]   # noqa: E731
-        assert finals("nba", "2026-08-26")[0]["date"] == "2026-08-26"
+        # The paid path rolls the same way. A 10:10pm PT tip-off is 02:10Z the
+        # next day, and parse_odds_scores filters on commence_time, so the
+        # late game has to be asked for under ITS OWN UTC date and then filed
+        # under the slate date the caller wanted. This is the seam where an
+        # off-by-one-day bug would hide.
+        class LateClient:
+            def scores(self, sport_key, days_from=2):
+                return [{"id": "L", "commence_time": "2026-08-26T23:10:00Z",
+                         "completed": True, "home_team": "A", "away_team": "B",
+                         "scores": [{"name": "A", "score": "110"},
+                                    {"name": "B", "score": "101"}]}]
 
-        # A StatsAPI off-day (fetch SUCCEEDED, no games) must not fall back
-        # to ESPN: that is one HTTP call and one bogus log line per off-day,
-        # and it would mix ESPN's team spellings into MLB's rating history.
+        late_rows = finals("nba", "2026-08-26", client=LateClient())
+        assert len(late_rows) == 1
+        assert late_rows[0]["date"] == "2026-08-26"
+
+        # A StatsAPI off-day (fetch SUCCEEDED, no games) is not a failure and
+        # must not reach for anything else. There is no fallback left, so the
+        # thing to pin is that it makes exactly one call and returns nothing.
         calls.clear()
         _get = lambda url: (calls.append(url), {"dates": []})[1]  # noqa: E731
         assert finals("mlb", "2026-08-26") == []
-        assert len(calls) == 1, \
-            "a StatsAPI off-day must not trigger the ESPN fallback"
+        assert len(calls) == 1, "an MLB off-day must make exactly one call"
         assert "statsapi" in calls[0]
 
-        # A StatsAPI FETCH FAILURE ({} from _get) still does fall back.
+        # A StatsAPI FETCH FAILURE ({} from _get) used to fall back to ESPN.
+        # It no longer does, because ESPN refuses this machine: the fallback
+        # was a guaranteed second failure and a fifteen-second timeout on top
+        # of the first. Baseball simply has no finals that morning.
         calls.clear()
         _get = lambda url: (calls.append(url), {})[1]            # noqa: E731
         assert finals("mlb", "2026-08-26") == []
-        assert len(calls) == 2, \
-            "a failed StatsAPI fetch must still fall back to ESPN"
-        assert "espn" in calls[1]
+        assert len(calls) == 1, \
+            "a failed StatsAPI fetch must not chase a source that blocks us"
+        assert "statsapi" in calls[0]
     finally:
         _get = real_get
 
@@ -418,6 +447,38 @@ def _self_test() -> None:
     # The same shape both parsers produce, so the store cannot tell them apart.
     assert set(rows[0]) == {"home", "away", "home_score", "away_score",
                             "completed", "date"}
+
+    # --- finals() is the one place that knows where scores come from ------
+    class FakeClient:
+        def __init__(self): self.asked = []
+        def scores(self, sport_key, days_from=2):
+            self.asked.append(sport_key)
+            return [{"id": "z", "commence_time": "2026-09-01T17:00:00Z",
+                     "completed": True, "home_team": "Chicago Bears",
+                     "away_team": "Green Bay Packers",
+                     "scores": [{"name": "Chicago Bears", "score": "24"},
+                                {"name": "Green Bay Packers", "score": "17"}]}]
+
+    fc = FakeClient()
+    rows = finals("nfl", "2026-09-01", client=fc)
+    assert fc.asked == ["americanfootball_nfl"], fc.asked
+    assert len(rows) == 1 and rows[0]["home_score"] == 24
+
+    # Without a client the paid leagues return nothing rather than reaching
+    # for ESPN, which refuses us and costs a fifteen-second timeout to learn.
+    assert finals("nfl", "2026-09-01") == []
+
+    # Baseball never touches the client — its source is free.
+    fc2 = FakeClient()
+    finals("mlb", "2026-09-01", client=fc2)
+    assert fc2.asked == [], "MLB must not spend credits; StatsAPI is free"
+
+    # An unknown league is not an error and does not spend anything.
+    fc3 = FakeClient()
+    assert finals("cricket", "2026-09-01", client=fc3) == []
+    assert fc3.asked == []
+
+    assert set(SPORT_KEY) == {"mlb", "nba", "nfl", "ncaab"}
 
     print("results self-test: all invariants hold")
 

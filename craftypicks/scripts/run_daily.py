@@ -430,30 +430,16 @@ def main() -> int:
     if results and results_store and leagues:
         yesterday = (now.date() - timedelta(days=1)).isoformat()
 
-        def paid_finals(short: str, day: str) -> list[dict]:
-            """Yesterday's finals for one league, bought from the Odds API.
-
-            ESPN's free scoreboard answers a GitHub runner with 403 Forbidden
-            and a browser User-Agent did not change it, so the three leagues
-            that relied on it buy their scores instead: two credits each, per
-            day, against a 20,000 allowance.
-
-            Does not fall back to ESPN. A source that refuses us from this
-            machine is not a fallback, it is a second failure and a wasted
-            fifteen-second timeout every morning.
-            """
-            return results.parse_odds_scores(
-                client.scores(leagues.LEAGUES[short].sport_key), day)
-
         for short in leagues.ORDER:
             # Only leagues that actually played. Two credits a day for a sport
             # that is out of season buys an empty list.
             sport_key = leagues.LEAGUES[short].sport_key
             if sport_key not in in_season:
                 continue
-            # MLB's own API is free, documented and working; only the leagues
-            # ESPN blocks are worth spending on.
-            fetch = results.finals if short == "mlb" else paid_finals
+            # finals() knows which source each league uses; it only needs
+            # the client for the paid ones, and MLB never touches it.
+            def fetch(lg, day, _c=client):
+                return results.finals(lg, day, client=_c)
             # append_day swallows a failed fetch itself, but not a bug in its
             # own merge. Nothing below this line catches an exception, and the
             # card has to go out.
