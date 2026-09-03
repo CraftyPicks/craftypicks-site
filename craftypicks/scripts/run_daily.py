@@ -357,19 +357,26 @@ def main() -> int:
     if pitch_mod and prop_events:
         try:
             import screen_config as _scfg
-            history = load_json(DATA / "pitcher_ratings.json", {"pitchers": []})["pitchers"]
+            # Not `history`, and not `ratings` either. `history` holds the play
+            # log loaded at the top of this function and statsmod.compute()
+            # below builds the whole track-record page from it -- rebinding it
+            # here fed 101 pitcher rows to the record page, which is why the
+            # site read "0-0-0, 101 pending" while history.json held seven
+            # graded plays. `ratings` is taken by the slate block further down.
+            # Every list in this function gets its own name from now on.
+            pitch_ratings = load_json(DATA / "pitcher_ratings.json", {"pitchers": []})["pitchers"]
             todays = pitch_mod.build(prop_events, now.strftime("%m/%d/%Y"),
                                      _scfg.SEASON)
-            known = {(r.get("pitcher_id"), r.get("date")) for r in history}
+            known = {(r.get("pitcher_id"), r.get("date")) for r in pitch_ratings}
             for row in todays:
                 if (row.get("pitcher_id"), row.get("date")) not in known:
-                    history.append(dict(row))
-            pitch_mod.grade(history, _scfg.SEASON)
-            pitch_summary = pitch_mod.summary(history)
-            save_json(DATA / "pitcher_ratings.json", {"pitchers": history})
+                    pitch_ratings.append(dict(row))
+            pitch_mod.grade(pitch_ratings, _scfg.SEASON)
+            pitch_summary = pitch_mod.summary(pitch_ratings)
+            save_json(DATA / "pitcher_ratings.json", {"pitchers": pitch_ratings})
 
             keys = {(r.get("pitcher_id"), r.get("date")) for r in todays}
-            board = [r for r in history
+            board = [r for r in pitch_ratings
                      if (r.get("pitcher_id"), r.get("date")) in keys] or todays
             board.sort(key=lambda r: r.get("commence_time") or "")
             save_json(DATA / "pitchers.json", {

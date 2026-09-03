@@ -21,7 +21,7 @@ from __future__ import annotations
 import json
 import sys
 from collections import defaultdict
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
@@ -182,16 +182,65 @@ def minutes_until(iso: str | None, now: datetime) -> float | None:
     return round((start - now).total_seconds() / 60.0, 1)
 
 
+# A play may only be captured once -- close_status is set and never cleared --
+# so capturing early spends the only chance on a number that is not a closing
+# number. Six NFL plays were snapshotted nineteen days before kickoff in
+# August; the scoring gate below correctly threw all six away, and because they
+# were already marked captured they could never be re-taken. The window is now
+# enforced at capture time, not only at scoring time.
+CAPTURE_WINDOW_MINUTES = MAX_MINUTES_BEFORE
+
+
+def awaiting_close(history: list[dict], now: datetime) -> list[dict]:
+    """Plays whose closing line should be taken on this run.
+
+    Ungraded, not yet captured, and inside the window: at most
+    CAPTURE_WINDOW_MINUTES before first pitch and no more than an hour after
+    it. A play outside the window is left alone so a later run can take it,
+    rather than being spent on a number taken days out.
+    """
+    out = []
+    for p in history:
+        if p.get("result") or p.get("close_status") is not None:
+            continue
+        mins = minutes_until(p.get("commence_time"), now)
+        if mins is None:
+            continue
+        if -60 < mins <= CAPTURE_WINDOW_MINUTES:
+            out.append(p)
+    return out
+
+
+def _self_test() -> None:
+    base = datetime(2026, 9, 1, 21, 0, tzinfo=timezone.utc)
+
+    def play(hours_ahead, **kw):
+        start = base + timedelta(hours=hours_ahead)
+        return {"commence_time": start.isoformat().replace("+00:00", "Z"),
+                "pick": f"+{hours_ahead}h", **kw}
+
+    hist = [
+        play(2),            # inside the window -- take it
+        play(0.5),          # about to start -- take it
+        play(-0.5),         # just started -- still counts
+        play(-3),           # long underway -- too late
+        play(5),            # tonight but not yet close -- leave for a later run
+        play(19 * 24),      # the August NFL case -- must never be taken now
+        play(2, result="win"),          # already graded
+        play(2, close_status="captured"),  # already taken
+    ]
+    got = [p["pick"] for p in awaiting_close(hist, base)]
+    assert got == ["+2h", "+0.5h", "+-0.5h"], got
+    assert "+456h" not in got, "a game nineteen days out is not a closing line"
+    assert "+5h" not in got, "leave it pending; a later run can still take it"
+    print("closing self-test: the capture window holds")
+
+
 def main() -> int:
     now = datetime.now(timezone.utc)
     history = load(DATA / "history.json", {"plays": []})["plays"]
 
-    pending = [
-        p for p in history
-        if not p.get("result")
-        and p.get("close_status") is None
-        and (minutes_until(p.get("commence_time"), now) or -999) > -60
-    ]
+    pending = awaiting_close(history, now)
     if not pending:
         print("-- nothing to snapshot: no ungraded plays awaiting a late line")
         return 0
@@ -293,4 +342,7 @@ def main() -> int:
 
 
 if __name__ == "__main__":
+    if "--self-test" in sys.argv:
+        _self_test()
+        raise SystemExit(0)
     raise SystemExit(main())
