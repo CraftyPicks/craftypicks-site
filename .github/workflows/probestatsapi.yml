@@ -1,0 +1,114 @@
+name: Probe StatsAPI extras
+
+# Four free endpoints this plan depends on. Free means no Odds API credits:
+# StatsAPI is unauthenticated and uncounted. workflow_dispatch only.
+
+on:
+  workflow_dispatch:
+    inputs:
+      date:
+        description: "Board date, YYYY-MM-DD (blank = today)"
+        required: false
+        default: ""
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Reach the four endpoints
+        working-directory: craftypicks
+        env:
+          PROBE_DATE: ${{ inputs.date }}
+        run: |
+          python3 - <<'PY'
+          import datetime, json, os, sys, urllib.parse, urllib.request
+
+          BASE = "https://statsapi.mlb.com/api/v1"
+          day = (os.environ.get("PROBE_DATE") or "").strip() \
+                or datetime.date.today().isoformat()
+          season = int(day[:4])
+          fails = []
+
+          def get(path, **params):
+              url = f"{BASE}{path}?{urllib.parse.urlencode(params)}"
+              req = urllib.request.Request(
+                  url, headers={"User-Agent": "craftypicks-probe/1.0"})
+              with urllib.request.urlopen(req, timeout=25) as r:
+                  return json.loads(r.read().decode("utf-8"))
+
+          # 1. handedness -- the schedule's probablePitcher hydration does NOT
+          #    carry pitchHand, which is why home_hand has been empty all along.
+          try:
+              d = get("/people", personIds="681190,666157")
+              hands = {p["id"]: (p.get("pitchHand") or {}).get("code")
+                       for p in d.get("people", [])}
+              print(f"people      {hands}")
+              if hands.get(681190) != "R" or hands.get(666157) != "L":
+                  fails.append("pitchHand missing or wrong")
+              # The comma is url-encoded by urlencode. If StatsAPI ever stops
+              # accepting %2C this is where it shows up.
+          except Exception as e:
+              print(f"people      RAISED {type(e).__name__}: {e}")
+              fails.append("people raised")
+
+          # 2. standings -- ?date= must return the table as of that MORNING.
+          try:
+              d = get("/standings", leagueId="103,104", season=season,
+                      date=day, standingsTypes="regularSeason")
+              n = sum(len(r.get("teamRecords", [])) for r in d.get("records", []))
+              tr = d["records"][0]["teamRecords"][0]
+              l10 = [s for s in tr["records"]["splitRecords"]
+                     if s["type"] == "lastTen"]
+              print(f"standings   {n} clubs, streak {tr['streak']['streakCode']}, "
+                    f"lastTen {l10[0]['wins']}-{l10[0]['losses']}")
+              if n != 30:
+                  fails.append(f"standings returned {n} clubs, expected 30")
+              if not l10:
+                  fails.append("standings has no lastTen split record")
+          except Exception as e:
+              print(f"standings   RAISED {type(e).__name__}: {e}")
+              fails.append("standings raised")
+
+          # 3. season series -- gameType=R or an exhibition leads the list.
+          try:
+              d = get("/schedule", sportId=1, gameType="R",
+                      startDate=f"{season}-01-01", endDate=day,
+                      teamId=135, opponentId=113)
+              games = [g for day_ in d.get("dates", [])
+                       for g in day_.get("games", [])]
+              months = sorted({(day_.get("date") or "")[5:7]
+                               for day_ in d.get("dates", [])})
+              print(f"series      {len(games)} SD-CIN games, months {months}")
+              if "03" in months:
+                  fails.append("gameType=R did not exclude spring training")
+          except Exception as e:
+              print(f"series      RAISED {type(e).__name__}: {e}")
+              fails.append("series raised")
+
+          # 4. league-wide K% splits -- 60 rows, and only with limit=100.
+          try:
+              d = get("/teams/stats", stats="statSplits", sitCodes="vr,vl",
+                      season=season, group="hitting", sportIds=1, limit=100)
+              splits = d["stats"][0]["splits"]
+              teams = {s["team"]["id"] for s in splits}
+              print(f"k splits    {len(splits)} rows, {len(teams)} clubs")
+              if len(splits) != 60:
+                  fails.append(f"statSplits returned {len(splits)} rows, "
+                               f"expected 60 -- check limit=100")
+          except Exception as e:
+              print(f"k splits    RAISED {type(e).__name__}: {e}")
+              fails.append("statSplits raised")
+
+          if fails:
+              print("\nFAILED:")
+              for f in fails:
+                  print(f"  {f}")
+              sys.exit(1)
+          print("\nall four endpoints answer this runner")
+          PY
