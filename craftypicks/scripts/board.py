@@ -311,6 +311,7 @@ DETAIL_KEYS = (
     "series",
     "home_starter", "away_starter",
     "home_starter_era", "away_starter_era",
+    "home_starter_wl", "away_starter_wl",
     "home_hand", "away_hand",
     "home_vs_opp", "away_vs_opp",
 )

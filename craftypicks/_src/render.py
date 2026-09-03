@@ -540,7 +540,7 @@ def _vs_line(vs: dict | None, opponent: str | None) -> str:
 
 
 def _side(team, starter, era, prob, leading, rec=None, at_home=False,
-          vs=None, opponent=None) -> str:
+          vs=None, opponent=None, wl=None) -> str:
     # No starter, no starter line. The old "TBA" was a hardcoded English
     # string — the only reader-facing word on a card not routed through _()
     # — and it is now reached by every Elo league, printing a pitcher slot on
@@ -550,6 +550,12 @@ def _side(team, starter, era, prob, leading, rec=None, at_home=False,
     # cannot be labelled and goes with it.
     sp = f'<div class="gsp">{esc(starter)}' if starter else ""
     if sp:
+        # Win-loss sits between the name and the ERA, the order every
+        # scoreboard uses. It is display-only: a starter's record is mostly a
+        # report on the lineup behind him, which is why the ERA follows it
+        # immediately rather than the other way round.
+        if wl and wl[0] is not None and wl[1] is not None:
+            sp += f' &middot; <span class="gwl">{wl[0]}&ndash;{wl[1]}</span>'
         if era is not None:
             sp += f' &middot; {era:.2f} {_("era")}'
         sp += "</div>"
@@ -893,7 +899,7 @@ def pitcher_cards(rows: list[dict]) -> str:
             {status}
           </div>
           <div class="pb-body">
-            <div class="pb-name">{esc(r.get('name',''))}</div>
+            <div class="pb-name">{esc(r.get('name',''))}{_wl_tag(r)}</div>
             <div class="pb-head">
               <div class="pb-num"><div class="k">{_("our_projection")}</div>
                 <div class="v">{proj:.1f}<span class="unit">{_("k_unit")}</span></div></div>
@@ -919,6 +925,18 @@ def pitcher_cards(rows: list[dict]) -> str:
           {_matchup_panel(r)}
         </div>""")
     return "".join(out)
+
+
+def _wl_tag(r: dict) -> str:
+    """A starter's win-loss beside his name, the way a scoreboard prints it.
+
+    Display-only. Cleveland's Bibee is 5-14 with a 3.88 ERA, which is the
+    whole reason this number never reaches the projection.
+    """
+    w, l = r.get("w"), r.get("l")
+    if w is None or l is None:
+        return ""
+    return f' <span class="pb-wl">{w}&ndash;{l}</span>'
 
 
 def _season_line(r: dict) -> str:
@@ -1218,6 +1236,7 @@ def board_card(row: dict) -> str:
             leading,
             rec=detail.get(f"{which}_record"),
             at_home=(which == "home"),
+            wl=detail.get(f"{which}_starter_wl"),
             vs=detail.get(f"{which}_vs_opp"),
             opponent=row.get("home" if which == "away" else "away"),
         )

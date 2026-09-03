@@ -151,6 +151,11 @@ def build(games: list[dict], date_str: str, season: int,
             "home_starter": home_name, "away_starter": away_name,
             "home_starter_era": home_stats.get("era"),
             "away_starter_era": away_stats.get("era"),
+            # Display-only, like the club records beside it.
+            "home_starter_wl": ([home_stats.get("w"), home_stats.get("l")]
+                                if home_stats.get("w") is not None else None),
+            "away_starter_wl": ([away_stats.get("w"), away_stats.get("l")]
+                                if away_stats.get("w") is not None else None),
             "home_sp_innings": home_stats.get("innings"),
             "away_sp_innings": away_stats.get("innings"),
             "home_hand": home_hand, "away_hand": away_hand,

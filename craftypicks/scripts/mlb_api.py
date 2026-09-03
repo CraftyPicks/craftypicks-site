@@ -73,12 +73,19 @@ def probable_starters(date_str: str) -> list[dict]:
 
 
 def pitcher_season(pitcher_id: int, season: int) -> dict:
-    """Season K%, K/9 and innings. K% is strikeouts / batters faced."""
+    """Season K%, K/9, innings, ERA and win-loss record.
+
+    The record is display-only and deliberately so: a starter's W-L says more
+    about the lineup behind him than about him. Cleveland's Bibee sits at
+    5-14 with a 3.88 ERA. It is on the card because readers look for it, and
+    nowhere near the projection.
+    """
     data = _get(f"/people/{pitcher_id}/stats", stats="season",
                 season=season, group="pitching") or {}
     splits = (data.get("stats") or [{}])[0].get("splits") or []
     if not splits:
-        return {"k_pct": None, "k_per_9": None, "innings": 0.0, "era": None}
+        return {"k_pct": None, "k_per_9": None, "innings": 0.0, "era": None,
+                "w": None, "l": None}
     s = splits[0].get("stat", {})
     bf = s.get("battersFaced") or 0
     k = s.get("strikeOuts") or 0
@@ -87,11 +94,14 @@ def pitcher_season(pitcher_id: int, season: int) -> dict:
         era = float(s.get("era")) if s.get("era") not in (None, "-.--") else None
     except (TypeError, ValueError):
         era = None
+    wins, losses = s.get("wins"), s.get("losses")
     return {
         "k_pct": (k / bf) if bf else None,
         "k_per_9": (k * 9 / ip) if ip else None,
         "innings": ip,
         "era": era,
+        "w": int(wins) if wins is not None else None,
+        "l": int(losses) if losses is not None else None,
     }
 
 
