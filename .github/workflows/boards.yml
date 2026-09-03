@@ -1,0 +1,79 @@
+name: Build home-run boards
+
+# Fills in the two home-run pages -- Home runs (batters) and HR allowed
+# (starters) -- from MLB's free StatsAPI. It never touches The Odds API, so
+# it costs nothing and is safe to run as often as you like.
+#
+# Why this is separate from the daily job: run_daily.py refuses to run twice
+# in a day, because a second run would re-buy the odds. That guard is right,
+# but it also means that on any day these boards are added or changed after
+# 9 AM, they stay empty until tomorrow. This job is the way past that without
+# spending a credit.
+#
+# It also runs on its own schedule, because MLB posts probable pitchers
+# through the morning and adds late ones all afternoon. The 9 AM board is
+# always the thinnest one of the day.
+
+on:
+  schedule:
+    - cron: "30 15 * * *"   # 11:30 AM ET, daylight saving
+    - cron: "30 19 * * *"   #  3:30 PM ET -- most probables are posted by now
+    - cron: "30 22 * * *"   #  6:30 PM ET -- last call before first pitch
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: home-run-boards
+  cancel-in-progress: false
+
+jobs:
+  boards:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: craftypicks
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Build the boards from StatsAPI
+        run: python3 scripts/run_boards.py
+
+      - name: Rebuild the pages that show them
+        run: python3 _src/build.py
+
+      - name: Commit whatever changed
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name  "craftypicks-bot"
+          git config user.email "bot@users.noreply.github.com"
+          git add -- data '*.html' ':(exclude)_src/**'
+          # Git expands these, not the shell, so '*.html' reaches every
+          # directory depth. A bare shell glob would match only the root
+          # pages and silently drop mlb/form.html and its siblings.
+          left=$(git status --porcelain -- '*.html' | grep -v '^[AMD]' || true)
+          if [ -n "$left" ]; then
+            echo "Built pages that were not staged:"; echo "$left"; exit 1
+          fi
+          if git diff --staged --quiet; then
+            echo "No probables posted yet, or nothing moved. Nothing to commit."
+            exit 0
+          fi
+          git commit -m "boards: home runs for $(date -u +%Y-%m-%d)"
+          for attempt in 1 2 3; do
+            if git pull --rebase --autostash origin "${GITHUB_REF_NAME}" \
+               && git push origin "HEAD:${GITHUB_REF_NAME}"; then
+              exit 0
+            fi
+            sleep 5
+          done
+          echo "Could not push after three attempts."
+          exit 1
