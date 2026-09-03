@@ -45,6 +45,7 @@ PAGES: dict[str, Page] = {
     **_LEAGUE_PAGES,
     "record.html":   Page("record.html",   "record",   "record",   None),
     "about.html":    Page("about.html",    "about",    "about",    None),
+    "ev.html":       Page("ev.html",       "ev",       "ev",       None),
     "plays.html":    Page("plays.html",    "plays",    "plays",    None),
     "screens.html":  Page("screens.html",  "screens",  "screens",  None),
     "pitchers.html": Page("pitchers.html", "pitchers", "pitchers", None),
@@ -172,6 +173,8 @@ TITLES = {
                     "es": f"Historial — {config.SITE_NAME}"},
     "about.html": {"en": f"How It Works — {config.SITE_NAME}",
                    "es": f"Cómo funciona — {config.SITE_NAME}"},
+    "ev.html":    {"en": f"+EV — {config.SITE_NAME}",
+                   "es": f"+EV — {config.SITE_NAME}"},
     "screens.html": {"en": f"The Strikeout Screens — {config.SITE_NAME}",
                      "es": f"Los filtros de ponches — {config.SITE_NAME}"},
     "slate.html": {"en": f"MLB Board — {config.SITE_NAME}",
@@ -214,6 +217,7 @@ HEAD = """<!DOCTYPE html>
     <a href="{up}index.html" class="logo">Craftypicks<em>.</em></a>
     <nav class="nav-links">{links}</nav>
     <div class="nav-cta">
+      <a href="{ev_href}" class="link-quiet">+EV</a>
       <a href="{about_href}" class="link-quiet">{why_free}</a>
       <a href="{plays_href}" class="btn solid sm">{cta}</a>
     </div>
@@ -512,6 +516,18 @@ def build() -> None:
             "{{SIGNUP}}": R.signup_form(),
             "{{YEAR}}": str(datetime.utcnow().year),
             "{{TONIGHT_BOARD}}": R.board_cards(tonight_rows(board_doc)),
+            # ---- the +EV page, generated so it cannot drift from config
+            "{{EV_PRICES}}": R.ev_price_table(),
+            "{{EV_EXAMPLE}}": R.ev_example(board_doc),
+            "{{EV_GATES}}": R.ev_gates(),
+            "{{EV_CARD}}": R.ev_card_rules(),
+            "{{EV_FUNNEL}}": R.ev_funnel(board_doc),
+            "{{EV_HOLD}}": f"{R.ev_numbers(board_doc)['hold']:.2f}",
+            "{{EV_SIDES}}": str(R.ev_numbers(board_doc)["sides"]),
+            "{{EV_NEGATIVE}}": str(R.ev_numbers(board_doc)["negative"]),
+            "{{EV_PLAYS}}": L("ev_n_plays", n=len(plays_doc.get("plays") or []),
+                              s=pl(len(plays_doc.get("plays") or []))),
+            "{{EV_DAY}}": _board_day(board_doc.get("date", ""), lang) or "&mdash;",
             "{{LEAGUE_BOARD}}": "",
             "{{LEAGUE_NAME}}": "",
         }
@@ -585,6 +601,7 @@ def build() -> None:
                 hreflang=hreflang, up=up, views=views,
                 views_empty=("" if views else " is-empty"),
                 about_href=f"{up}about.html", plays_href=f"{up}plays.html",
+                ev_href=f"{up}ev.html",
                 why_free=i18n.t("nav_why", lang), cta=i18n.t("cta_plays", lang),
                 statbar=_statbar(slate_doc, plays_doc, lang),
                 banner=mock_banner(lang) if plays_doc.get("mock") else "",

@@ -1,0 +1,47 @@
+<section style="background:var(--bg-2)">
+  <div class="wrap" style="padding:56px 28px 46px">
+    <div class="eyebrow">What we look for</div>
+    <h1 style="font-size:clamp(32px,4.2vw,50px);margin:14px 0 16px">+EV</h1>
+    <p class="lead">Expected value: the average result if you could make the same bet a thousand times. Positive means that average is a profit. It is the only thing this site selects for, and this page is what that means and what it costs.</p>
+  </div>
+</section>
+
+<section class="pad">
+  <div class="wrap">
+    <div class="sp">
+    <h2>A price is a probability wearing a costume</h2>
+    <p>Every price implies a chance. That is all it is. Strip the costume off and you can compare it against what you actually think &mdash; and a bet is only worth taking when you believe the real chance is higher than the number in the <em>implies</em> column.</p>
+    {{EV_PRICES}}
+    <p>A coin flip is a 50% shot. At <span class="ek">+100</span> that is exactly break-even &mdash; zero EV, forever. At <span class="ek">&minus;110</span> it is <b class="shl">&minus;4.55%</b>: you lose four and a half cents on the dollar every time, and being right half the time does not save you. At <span class="ek">+110</span> the same coin is <b class="shl">+5.00%</b>. Nothing changed about the coin. Only the price.</p>
+
+    <h2>So where does a real edge come from</h2>
+    <p>Not from picking winners. From finding a price that implies a chance you think is wrong. Here is the best-priced side anywhere on the board of {{EV_DAY}}:</p>
+    {{EV_EXAMPLE}}
+
+    <h2>The hurdle before any of it counts</h2>
+    <p>Both sides of every market are priced to add up to more than 100%. The overflow is the house&rsquo;s margin, and on this board it runs about <b class="shl">{{EV_HOLD}}%</b>. You have to be better than the market by more than that before you have made a penny.</p>
+    <p>Which is why so little clears it. Of the <b class="shl">{{EV_SIDES}}</b> sides priced on {{EV_DAY}}, taking the best number available at any of the books, <b class="shl">{{EV_NEGATIVE}}</b> were still &minus;EV.</p>
+
+    <h2>What a price has to survive to be posted</h2>
+    {{EV_GATES}}
+
+    <h2>And what fits on the card</h2>
+    {{EV_CARD}}
+
+    <h2>The same price, all the way through</h2>
+    {{EV_FUNNEL}}
+    <p>It was +EV and it still did not go up. Being on the right side of the price is the beginning of the test, not the end of it.</p>
+
+    <h2>Which is why the card is sometimes empty</h2>
+    <p class="sbig">{{EV_PLAYS}}<small>from {{EV_SIDES}} priced sides on {{EV_DAY}}</small></p>
+    <p>An empty card is not the system failing. It is the system working on a night when no book was far enough out of line to be worth taking. Anyone posting five plays every single day is not finding five edges every single day. They are filling a quota.</p>
+
+    <h2>What the word &ldquo;+EV&rdquo; is resting on</h2>
+    <div class="snote">
+      <p><b class="shl">Our fair price being right.</b> Every number on this page compares the market against our estimate. If the estimate is wrong, &ldquo;+EV&rdquo; is decoration. That is not a hypothetical: the strikeout projection on this site has been measured against 86 finished starts and it is <b class="shl">0.20 strikeouts less accurate</b> than the line it was trying to beat. The game markets have not been measured yet.</p>
+      <p><b class="shl">So check us on the closing line.</b> Whether a play beat the number the market settled on is a verdict on the bet rather than on the bounce, and it converges in tens of plays where profit needs thousands. It is the first figure on the <a href="record.html">track record</a> page for that reason, and if it does not turn positive over a few hundred plays then nothing on this page is worth anything.</p>
+      <p><b class="shl">Nothing here is discretionary.</b> No override, no gut call, no tidying the list afterwards. Every threshold above is read out of the configuration when this page is built, so changing a rule changes this page in the same commit.</p>
+      </div>
+    </div>
+  </div>
+</section>

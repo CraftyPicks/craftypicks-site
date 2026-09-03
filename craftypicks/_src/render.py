@@ -1507,6 +1507,192 @@ def board_cards(rows: list[dict], empty_key: str = "board_empty") -> str:
     return '<div class="board">' + "".join(board_card(r) for r in rows) + "</div>"
 
 
+# ------------------------------------------------------------------ +EV ---
+# The page is generated rather than written because every threshold on it is
+# a live value from config.py and every figure a live value from the board.
+# A page that restated them in prose would be wrong the first time either
+# moved, and this is the one page whose whole claim is that it is not.
+
+EV_PRICES = (-200, -110, 100, 150, 900)
+
+
+def ev_price_table() -> str:
+    """What five prices imply, and what $100 returns on each."""
+    rows = "".join(
+        f'<tr><th>{om.format_american(p)}</th>'
+        f'<td class="en">{om.american_to_decimal(p):.2f}</td>'
+        f'<td class="en">{om.american_to_prob(p) * 100:.1f}%</td>'
+        f'<td class="en">${100 * om.american_to_decimal(p):,.0f}</td></tr>'
+        for p in EV_PRICES)
+    return (f'<div class="sscroll"><table class="stbl num">'
+            f'<tr><th></th>'
+            f'<td class="en hd">{_("ev_decimal")}</td>'
+            f'<td class="en hd">{_("ev_implies")}</td>'
+            f'<td class="en hd">{_("ev_returns")}</td></tr>'
+            f'{rows}</table></div>')
+
+
+def _ev_hold(width) -> float:
+    """Hold implied by a two-way market that wide, quoted symmetrically."""
+    if not width:
+        return 0.0
+    p = 100.0 + width / 2.0
+    imp = p / (p + 100.0)
+    return (2 * imp - 1) / (2 * imp)
+
+
+def ev_numbers(board: dict) -> dict:
+    """The board's own arithmetic, for the prose to quote."""
+    import statistics
+    holds, edges = [], []
+    for entry in (board.get("leagues") or {}).values():
+        for game in entry.get("games") or []:
+            for m in (game.get("markets") or {}).values():
+                if m.get("width"):
+                    holds.append(_ev_hold(m["width"]))
+                for k in ("edge_home", "edge_away"):
+                    if m.get(k) is not None:
+                        edges.append(m[k])
+    return {
+        "hold": statistics.median(holds) * 100 if holds else 0.0,
+        "sides": len(edges),
+        "negative": sum(1 for e in edges if e < 0),
+        "best": max(edges) if edges else 0.0,
+    }
+
+
+def _ev_best_side(board: dict):
+    """The best-priced side anywhere on the board, or None."""
+    best = None
+    for entry in (board.get("leagues") or {}).values():
+        for game in entry.get("games") or []:
+            for market, m in (game.get("markets") or {}).items():
+                for tag in ("home", "away"):
+                    edge = m.get(f"edge_{tag}")
+                    if edge is None:
+                        continue
+                    if best is None or edge > best["edge"]:
+                        best = {"edge": edge, "game": game, "market": market,
+                                "tag": tag, "best": m.get(f"best_{tag}") or {},
+                                "fair": m.get(f"fair_{tag}"),
+                                "books": m.get("books"),
+                                "point": m.get("point")}
+    return best
+
+
+def ev_example(board: dict) -> str:
+    """One real price, with the multiplication shown rather than asserted."""
+    b = _ev_best_side(board)
+    if not b or b["best"].get("price") is None:
+        return f'<p class="pnl-note">{_("ev_no_board")}</p>'
+    price = b["best"]["price"]
+    dec = om.american_to_decimal(price)
+    implied = om.american_to_prob(price) * 100
+    fair = (b["fair"] or 0.0)
+    game = b["game"]
+    club = _nickname(game.get("away") if b["tag"] == "away" else game.get("home"))
+    point = b["point"]
+    if point is not None:
+        point = -point if b["tag"] == "away" else point
+    label = f"{esc(club)}" + (f" {point:+g}" if point is not None else "")
+    market = _(leagues.market_label_key(game.get("league", ""), b["market"]))
+    return f"""<div class="sum">
+      <div><span>{label} &middot; {esc(market.lower())}, {_("ev_best_price")}</span>
+        <span>{esc(om.format_american(price))}</span></div>
+      <div><span>{_("ev_which_implies")}</span><span>{implied:.2f}%</span></div>
+      <div><span>{_("ev_books_say", n=b["books"] or 0)}</span>
+        <span>{fair * 100:.2f}%</span></div>
+      <div class="tot"><span>{_("ev_chance_paid", pct=f"{fair * 100:.2f}",
+                              dec=f"{dec:.4f}")}</span>
+        <span>{fair:.4f} &times; {dec:.4f} = {fair * dec:.4f}</span></div>
+    </div>
+    <p>{_("ev_example_read", back=f"{100 * fair * dec:.2f}",
+          ev=f"{b['edge']:+.2f}")}</p>"""
+
+
+def ev_gates() -> str:
+    """Every gate a price has to survive, read out of config."""
+    gates = [
+        ("ev_g_today", "SAME_DAY_ONLY", str(config.SAME_DAY_ONLY)),
+        ("ev_g_stale", "STALE_MINUTES", _("ev_minutes", n=config.STALE_MINUTES)),
+        ("ev_g_books", "MIN_BOOKS", str(config.MIN_BOOKS)),
+        ("ev_g_point", "&mdash;", _("ev_consensus_point")),
+        ("ev_g_devig", "DEVIG_METHOD", config.DEVIG_METHOD),
+        ("ev_g_band", "MIN_PRICE / MAX_PRICE",
+         f"{config.MIN_PRICE:+d} to {config.MAX_PRICE:+d}"),
+        ("ev_g_loo", "&mdash;", _("ev_n_others", n=config.MIN_BOOKS - 1)),
+        ("ev_g_ev", "MIN_EDGE_PCT", f"{config.MIN_EDGE_PCT:.1f}%"),
+        ("ev_g_pp", "MIN_EDGE_PP", f"{config.MIN_EDGE_PP:.1f} pp"),
+        ("ev_g_ceiling", "MAX_EDGE_PCT", f"{config.MAX_EDGE_PCT:.1f}%"),
+    ]
+    rows = "".join(
+        f'<tr><th><span class="gn">{i:02d}</span>{_(key + "_n")}</th>'
+        f'<td class="sval"><span class="skey">{const}</span>'
+        f'<span class="snum">{val}</span></td>'
+        f'<td class="swhy">{_(key + "_w")}</td></tr>'
+        for i, (key, const, val) in enumerate(gates, 1))
+    return f'<div class="sscroll"><table class="stbl">{rows}</table></div>'
+
+
+def ev_card_rules() -> str:
+    """And what fits on the card once a price has cleared."""
+    rules = [
+        ("ev_c_side", "&mdash;"),
+        ("ev_c_league", str(config.MAX_PLAYS_PER_LEAGUE)),
+        ("ev_c_day", str(config.MAX_PLAYS_PER_DAY)),
+        ("ev_c_stake", _("ev_one_unit")),
+    ]
+    rows = "".join(
+        f'<tr><th>{_(key + "_n")}</th><td class="snum">{val}</td>'
+        f'<td class="swhy">{_(key + "_w")}</td></tr>' for key, val in rules)
+    return f'<div class="sscroll"><table class="stbl">{rows}</table></div>'
+
+
+def ev_funnel(board: dict) -> str:
+    """The same real price, walked through every gate until it stops."""
+    b = _ev_best_side(board)
+    if not b or b["best"].get("price") is None:
+        return ""
+    price = b["best"]["price"]
+    fair = b["fair"] or 0.0
+    edge = b["edge"]
+    pp = (fair - om.american_to_prob(price)) * 100
+    game = b["game"]
+    market = _(leagues.market_label_key(game.get("league", ""), b["market"]))
+    ok = (b["books"] or 0) >= config.MIN_BOOKS
+    rows = [
+        (_("ev_f_books"), f'{b["books"]} &ge; {config.MIN_BOOKS}', ok),
+        (_("ev_f_best"),
+         f'{esc(om.format_american(price))} {_("ev_at")} '
+         f'{esc(b["best"].get("book", ""))}', True),
+        (_("ev_f_band"), f"{config.MIN_PRICE:+d} to {config.MAX_PRICE:+d}", True),
+        (_("ev_f_fair", book=esc(b["best"].get("book", ""))),
+         esc(om.format_american(om.prob_to_american(fair))), True),
+        (_("ev_f_ev"),
+         f'{edge:+.2f}% &lt; {config.MIN_EDGE_PCT:.1f}%'
+         if edge < config.MIN_EDGE_PCT
+         else f'{edge:+.2f}% &ge; {config.MIN_EDGE_PCT:.1f}%',
+         edge >= config.MIN_EDGE_PCT),
+        (_("ev_f_pp"),
+         f'{pp:+.2f} pp &lt; {config.MIN_EDGE_PP:.1f} pp'
+         if pp < config.MIN_EDGE_PP
+         else f'{pp:+.2f} pp &ge; {config.MIN_EDGE_PP:.1f} pp',
+         pp >= config.MIN_EDGE_PP),
+    ]
+    posted = all(good for _lab, _v, good in rows)
+    body = "".join(
+        f'<div class="swork-r{"" if good else " fail"}">'
+        f'<span>{lab}</span><span>{val}</span></div>'
+        for lab, val, good in rows)
+    body += (f'<div class="swork-r{"" if posted else " fail"}">'
+             f'<span>{_("ev_f_posted")}</span>'
+             f'<span>{_("ev_yes") if posted else _("ev_no")}</span></div>')
+    return (f'<div class="swork"><div class="swork-h">'
+            f'{esc(game.get("away",""))} {_("ev_at")} '
+            f'{esc(game.get("home",""))} &middot; {esc(market.lower())}</div>'
+            f'{body}</div>')
+
+
 def _self_test() -> None:
     row = {
         "event_id": "evt1", "league": "mlb",

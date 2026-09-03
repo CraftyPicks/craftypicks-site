@@ -124,6 +124,142 @@ T = {
     "card_more":     {"en": "Form, head to head and props",
                       "es": "Forma, historial y props"},
 
+    # ---- the +EV page. The prose lives in ev.body.html; these are the
+    # strings render.py builds tables and worked examples out of.
+    "ev_n_plays":    {"en": "{n} play{s}", "es": "{n} jugada{s}"},
+    "ev_decimal":    {"en": "decimal", "es": "decimal"},
+    "ev_implies":    {"en": "implies", "es": "implica"},
+    "ev_returns":    {"en": "$100 returns", "es": "$100 devuelve"},
+    "ev_no_board":   {"en": "No board priced yet today.",
+                      "es": "Hoy todavía no hay pizarra."},
+    "ev_best_price": {"en": "best price", "es": "mejor precio"},
+    "ev_which_implies": {"en": "which implies", "es": "lo que implica"},
+    "ev_books_say":  {"en": "what {n} books say once the vig is stripped out",
+                      "es": "lo que dicen {n} casas sin el vigorish"},
+    "ev_chance_paid": {"en": "a {pct}% chance, paid at {dec}",
+                       "es": "una probabilidad de {pct}%, pagada a {dec}"},
+    "ev_example_read": {"en": "That is <b>${back}</b> back for every $100 "
+                              "risked, on average &mdash; <b>{ev}% EV</b>. It "
+                              "says nothing whatever about whether this "
+                              "particular bet wins.",
+                        "es": "Son <b>${back}</b> por cada $100 arriesgados, "
+                              "en promedio &mdash; <b>{ev}% de EV</b>. No dice "
+                              "absolutamente nada sobre si esta apuesta gana."},
+    "ev_minutes":    {"en": "{n} min", "es": "{n} min"},
+    "ev_consensus_point": {"en": "consensus point", "es": "número de consenso"},
+    "ev_n_others":   {"en": "{n} others", "es": "{n} otras"},
+    "ev_one_unit":   {"en": "1 unit", "es": "1 unidad"},
+    "ev_at":         {"en": "at", "es": "en"},
+    "ev_yes":        {"en": "Yes", "es": "Sí"},
+    "ev_no":         {"en": "No", "es": "No"},
+
+    "ev_g_today_n":  {"en": "Today only", "es": "Solo hoy"},
+    "ev_g_today_w":  {"en": "An edge measured four days out is mostly noise, "
+                            "and it can never land inside the closing-line "
+                            "window, so it could never be graded honestly.",
+                      "es": "Una ventaja medida con cuatro días de "
+                            "anticipación es casi todo ruido, y nunca cae "
+                            "dentro de la ventana de la línea de cierre."},
+    "ev_g_stale_n":  {"en": "Drop stale books", "es": "Descartar casas viejas"},
+    "ev_g_stale_w":  {"en": "A book that has not moved in this long is not "
+                            "quoting today&rsquo;s market. Stale prices are "
+                            "the single biggest source of edges that are not "
+                            "there.",
+                      "es": "Una casa que no se ha movido en este tiempo no "
+                            "está cotizando el mercado de hoy. Los precios "
+                            "viejos son la mayor fuente de ventajas falsas."},
+    "ev_g_books_n":  {"en": "Enough books", "es": "Suficientes casas"},
+    "ev_g_books_w":  {"en": "Below this there is no consensus to measure "
+                            "against, only noise wearing a "
+                            "consensus&rsquo;s clothes.",
+                      "es": "Por debajo de esto no hay consenso contra el cual "
+                            "medir, solo ruido disfrazado de consenso."},
+    "ev_g_point_n":  {"en": "One number at a time", "es": "Un número a la vez"},
+    "ev_g_point_w":  {"en": "For run lines and totals, only books sitting on "
+                            "the most common number are compared. Measuring "
+                            "&minus;1.5 against &minus;2.5 is not a "
+                            "measurement.",
+                      "es": "En hándicaps y totales solo se comparan las casas "
+                            "sobre el número más común. Medir &minus;1.5 "
+                            "contra &minus;2.5 no es una medición."},
+    "ev_g_devig_n":  {"en": "Strip the vig", "es": "Quitar el vigorish"},
+    "ev_g_devig_w":  {"en": "Both sides of every book&rsquo;s quote are "
+                            "converted to a vig-free pair. The power method "
+                            "corrects for books loading extra margin onto "
+                            "longshots; the naive method would fill the card "
+                            "with +300 dogs.",
+                      "es": "Ambos lados de cada cotización se convierten a un "
+                            "par sin vigorish. El método de potencia corrige "
+                            "el margen extra que las casas cargan sobre los no "
+                            "favoritos."},
+    "ev_g_band_n":   {"en": "Price band", "es": "Rango de precio"},
+    "ev_g_band_w":   {"en": "Taste, and admitted as taste. Outside this band "
+                            "are prices this site does not want to be in the "
+                            "business of recommending.",
+                      "es": "Gusto, y admitido como gusto. Fuera de este rango "
+                            "hay precios que este sitio no quiere recomendar."},
+    "ev_g_loo_n":    {"en": "Leave one out", "es": "Excluir la casa apostada"},
+    "ev_g_loo_w":    {"en": "The fair price averages every book <em>except the "
+                            "one we would be betting</em>. Include it and the "
+                            "outlier drags the consensus toward itself, "
+                            "manufacturing the very edge being measured.",
+                      "es": "El precio justo promedia todas las casas "
+                            "<em>menos aquella en la que apostaríamos</em>. "
+                            "Incluirla arrastra el consenso hacia el valor "
+                            "atípico y fabrica la ventaja que se mide."},
+    "ev_g_ev_n":     {"en": "Expected value", "es": "Valor esperado"},
+    "ev_g_ev_w":     {"en": "The gap between the best price and the fair "
+                            "price, as a ratio. This is the +EV number.",
+                      "es": "La diferencia entre el mejor precio y el precio "
+                            "justo, como proporción. Este es el número +EV."},
+    "ev_g_pp_n":     {"en": "Probability points", "es": "Puntos de probabilidad"},
+    "ev_g_pp_w":     {"en": "And the same gap in percentage points. Both have "
+                            "to clear. Ratios flatter longshots: a +200 dog "
+                            "reaches 5% EV on a 1.7-point edge while a "
+                            "&minus;200 favourite needs nearly three.",
+                      "es": "Y la misma diferencia en puntos porcentuales. "
+                            "Ambos deben superarse. Las proporciones favorecen "
+                            "a los no favoritos: un +200 llega a 5% de EV con "
+                            "1.7 puntos, un &minus;200 necesita casi tres."},
+    "ev_g_ceiling_n": {"en": "Sanity ceiling", "es": "Techo de cordura"},
+    "ev_g_ceiling_w": {"en": "Above this it is not an edge, it is a data "
+                             "problem &mdash; a stale line, a mismatched "
+                             "number, a book quoting a different game. Logged "
+                             "and thrown away rather than posted.",
+                       "es": "Por encima de esto no es una ventaja, es un "
+                             "problema de datos. Se registra y se descarta."},
+
+    "ev_c_side_n":   {"en": "One side per game", "es": "Un lado por juego"},
+    "ev_c_side_w":   {"en": "Two sides of one event is correlated risk dressed "
+                            "up as diversification.",
+                      "es": "Dos lados del mismo evento es riesgo "
+                            "correlacionado disfrazado de diversificación."},
+    "ev_c_league_n": {"en": "Per league", "es": "Por liga"},
+    "ev_c_league_w": {"en": "No league can take over the card, however good "
+                            "its slate looks.",
+                      "es": "Ninguna liga puede acaparar la cartelera."},
+    "ev_c_day_n":    {"en": "Per day", "es": "Por día"},
+    "ev_c_day_w":    {"en": "A short card is a feature. It stops a bad day "
+                            "becoming fifteen losses.",
+                      "es": "Una cartelera corta es una virtud. Evita que un "
+                            "mal día se convierta en quince derrotas."},
+    "ev_c_stake_n":  {"en": "Stake", "es": "Monto"},
+    "ev_c_stake_w":  {"en": "Flat, on every play, always. Sizing by confidence "
+                            "would make the record a story about the sizing.",
+                      "es": "Plano, en cada jugada, siempre. Ajustar por "
+                            "confianza convertiría el historial en una "
+                            "historia sobre el monto."},
+
+    "ev_f_books":    {"en": "Books pricing it, after the stale ones went",
+                      "es": "Casas que lo cotizan, tras descartar las viejas"},
+    "ev_f_best":     {"en": "Best price available", "es": "Mejor precio disponible"},
+    "ev_f_band":     {"en": "Inside the price band", "es": "Dentro del rango"},
+    "ev_f_fair":     {"en": "Fair price, excluding {book}",
+                      "es": "Precio justo, excluyendo {book}"},
+    "ev_f_ev":       {"en": "Expected value", "es": "Valor esperado"},
+    "ev_f_pp":       {"en": "Probability points", "es": "Puntos de probabilidad"},
+    "ev_f_posted":   {"en": "Posted?", "es": "¿Publicada?"},
+
     # ---- board card detail panel
     "pnl_form":      {"en": "Form", "es": "Forma"},
     "pnl_record":    {"en": "Record", "es": "Récord"},

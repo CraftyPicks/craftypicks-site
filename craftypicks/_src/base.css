@@ -742,3 +742,73 @@ footer{background:var(--bg-2);padding:56px 0 40px}
 .gwl{font-family:var(--mono);color:var(--muted)}
 .pb-wl{font-family:var(--mono);font-size:12px;color:var(--muted);
   font-weight:400;margin-left:2px}
+
+/* ==================================================================== +EV = */
+/* The methodology page. Its tables are generated from config.py, so the
+   styling has to survive a threshold changing length under it. */
+.sp{max-width:78ch}
+.sp h2{font-size:19px;margin:40px 0 6px;letter-spacing:-.01em}
+.sp h2:first-child{margin-top:0}
+.sp p{font-size:15px;line-height:1.66;color:var(--sub);margin:10px 0}
+.sp b.shl{color:var(--txt);font-weight:600}
+.sp .ek{font-family:var(--mono);color:var(--txt)}
+.stbl{width:100%;border-collapse:collapse;margin:16px 0;font-size:13.5px}
+.stbl th{text-align:left;font-weight:400;color:var(--txt);
+  padding:11px 14px 11px 0;vertical-align:top;white-space:nowrap;width:1%;
+  border-top:1px solid var(--line)}
+.stbl td{padding:11px 0 11px 14px;vertical-align:top;
+  border-top:1px solid var(--line)}
+.stbl td.en{font-family:var(--mono);color:var(--txt);white-space:nowrap;
+  width:1%;text-align:right}
+.stbl td.en.hd{color:var(--muted);font-size:11px}
+.gn{font-family:var(--mono);font-size:10px;color:var(--muted);margin-right:9px}
+.sval{white-space:nowrap;width:1%}
+.skey{display:block;font-family:var(--mono);font-size:10px;color:var(--muted);
+  letter-spacing:.04em}
+.snum{display:block;font-family:var(--mono);font-size:13px;color:var(--green);
+  margin-top:2px;white-space:nowrap}
+.stbl td.snum{width:1%;padding-top:11px}
+.swhy{color:var(--sub);line-height:1.6;font-size:13.5px}
+.sscroll{overflow-x:auto}
+.sum{border:1px solid var(--line);background:var(--panel);margin:18px 0;
+  font-size:14px}
+.sum div{display:flex;justify-content:space-between;gap:16px;padding:10px 16px;
+  align-items:baseline}
+.sum div+div{border-top:1px solid var(--line)}
+.sum div span:last-child{font-family:var(--mono);color:var(--txt);
+  white-space:nowrap}
+.sum div.tot{background:var(--panel-2)}
+.sum div.tot span:last-child{color:var(--green);font-size:15px}
+.swork{border:1px solid var(--line);background:var(--panel);margin:18px 0}
+.swork-h{padding:11px 15px;border-bottom:1px solid var(--line);
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--muted)}
+.swork-r{display:flex;justify-content:space-between;gap:14px;padding:8px 15px;
+  font-size:13.5px;align-items:baseline}
+.swork-r+.swork-r{border-top:1px solid var(--line)}
+.swork-r span:last-child{font-family:var(--mono);color:var(--green);
+  white-space:nowrap}
+.swork-r.fail{background:var(--panel-2)}
+.swork-r.fail span:last-child{color:var(--red)}
+.swork-r.fail span:first-child{color:var(--txt)}
+.snote{border-left:2px solid var(--line-2);padding:2px 0 2px 16px;margin:18px 0}
+.snote p{font-size:14px;margin:8px 0}
+.sp p.sbig{font-family:var(--mono);font-size:34px;color:var(--txt);
+  letter-spacing:-.02em;margin:14px 0 0}
+.sp p.sbig small{display:block;font-family:var(--sans);font-size:13px;
+  color:var(--muted);letter-spacing:0;margin-top:4px}
+@media (max-width:560px){
+  /* The prose tables stack -- a full sentence cannot share a row with a
+     label at this width. The numeric one must NOT: four short columns fit,
+     and stacking them makes the column of unlabelled figures this page
+     exists to argue against. */
+  .stbl:not(.num),.stbl:not(.num) tbody,.stbl:not(.num) tr,
+  .stbl:not(.num) th,.stbl:not(.num) td{display:block;width:auto}
+  .stbl:not(.num) th{border-top:1px solid var(--line);padding:12px 0 2px;
+    white-space:normal}
+  .stbl:not(.num) td{border-top:none;padding:2px 0}
+  .stbl.num{font-size:12.5px}
+  .stbl.num th{padding-right:0}
+  .stbl.num td{padding-left:10px}
+  .skey,.snum{display:inline-block;margin-right:10px}
+}
