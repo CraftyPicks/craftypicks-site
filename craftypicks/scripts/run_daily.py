@@ -56,7 +56,13 @@ try:
     import homers as homers_mod   # noqa: E402
     import batters as batters_mod # noqa: E402
 except Exception as _pitch_err:                              # noqa: BLE001
+    # All three are cleared, not just the first. They are imported together
+    # for brevity, but a failure part-way through would otherwise leave the
+    # later names undefined, and `if homers_mod` further down would raise
+    # NameError -- turning an optional board into a broken daily run.
     pitch_mod = None
+    homers_mod = None
+    batters_mod = None
     print(f"!! pitcher board unavailable ({_pitch_err})", file=sys.stderr)
 
 # Full-board ratings. Optional too, but this is the piece that makes the

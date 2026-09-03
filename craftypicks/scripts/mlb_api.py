@@ -15,6 +15,7 @@ gate it behind the cheap filters, which is what screen_source does.
 from __future__ import annotations
 
 import json
+import sys
 import time
 import urllib.error
 import urllib.parse
@@ -34,7 +35,13 @@ def _get(path: str, **params):
     try:
         with urllib.request.urlopen(req, timeout=25) as resp:
             data = json.loads(resp.read().decode("utf-8"))
-    except (urllib.error.HTTPError, urllib.error.URLError, TimeoutError):
+    except (urllib.error.HTTPError, urllib.error.URLError, TimeoutError) as e:
+        # Swallowed on purpose -- a board that is missing tonight is better
+        # than a daily run that dies. But it is said out loud, because an
+        # unreachable endpoint and a genuinely empty slate produce the same
+        # empty list downstream, and only this line tells them apart.
+        print(f"!! statsapi {path} failed ({type(e).__name__}: {e})",
+              file=sys.stderr)
         _cache[key] = None
         return None
     _cache[key] = data
