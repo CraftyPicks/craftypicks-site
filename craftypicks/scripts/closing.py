@@ -31,6 +31,7 @@ DATA = ROOT / "data"
 
 import config              # noqa: E402
 import find_plays          # noqa: E402
+import leagues             # noqa: E402
 import odds_math as om     # noqa: E402
 from odds_client import BudgetExhausted, OddsAPIError, OddsClient  # noqa: E402
 
@@ -211,6 +212,112 @@ def awaiting_close(history: list[dict], now: datetime) -> list[dict]:
     return out
 
 
+# ---------------------------------------------------------------- board ---
+# The card posts 0-3 plays on a good day and has posted two in the last nine.
+# Closing-line value needs tens of observations before it says anything, so at
+# that rate the site could not know whether its prices are any good until next
+# spring.
+#
+# The snapshot request below already returns every game in the league, not
+# only the ones we bet. Scoring the whole board against the same response
+# costs no extra credits and turns two observations a week into roughly ninety
+# a day. It also tests a better thing: the card measures the gate, the board
+# measures the pricing the gate sits on top of.
+BOARD_CLV = DATA / "board_clv.json"
+
+
+def board_sides(board: dict, now: datetime) -> list[dict]:
+    """Every priced side whose game is inside the capture window.
+
+    One row per side per market, carrying the morning's numbers so the close
+    has something to be compared against.
+    """
+    out = []
+    for short, entry in (board.get("leagues") or {}).items():
+        for game in entry.get("games") or []:
+            mins = minutes_until(game.get("commence_time"), now)
+            if mins is None or not (-60 < mins <= CAPTURE_WINDOW_MINUTES):
+                continue
+            model = game.get("model") or {}
+            for market, m in (game.get("markets") or {}).items():
+                for tag in ("home", "away"):
+                    best = m.get(f"best_{tag}") or {}
+                    if best.get("price") is None:
+                        continue
+                    out.append({
+                        "date": board.get("date", ""),
+                        "league": short,
+                        "event_id": game.get("event_id"),
+                        "commence_time": game.get("commence_time"),
+                        "market": market,
+                        "tag": tag,
+                        # The name the odds feed uses for this outcome: the
+                        # club for a moneyline or spread, Over/Under for a
+                        # total. Carried here so the snapshot loop does not
+                        # have to reach back into the board to find it.
+                        "side": ("Over" if tag == "home" else "Under")
+                                if market == "totals"
+                                else game.get(tag),
+                        "point": m.get("point"),
+                        "open_fair_prob": m.get(f"fair_{tag}"),
+                        "open_best_price": best.get("price"),
+                        "open_book": best.get("book"),
+                        "open_edge": m.get(f"edge_{tag}"),
+                        # Only MLB carries an independent opinion. Where it
+                        # exists it is stored so the model can be scored
+                        # separately from the shopping.
+                        "model_prob": (model.get("home_win_prob")
+                                       if tag == "home"
+                                       else model.get("away_win_prob"))
+                        if market == "h2h" else None,
+                        "minutes_before": mins,
+                    })
+    return out
+
+
+def score_board_side(row: dict, close_fair_prob: float,
+                     close_books: int) -> dict:
+    """Attach what the closing consensus says about a morning price.
+
+    close_edge is what the morning's best number is worth against the late
+    consensus. Positive means the market came toward that number after we
+    wrote it down. It is the same measure the card uses, applied to a side we
+    did not have to bet.
+    """
+    row = dict(row)
+    row["close_fair_prob"] = round(close_fair_prob, 5)
+    row["close_books"] = close_books
+    row["close_edge"] = round(
+        om.expected_value_pct(close_fair_prob, row["open_best_price"]), 2)
+    if row.get("open_edge") is not None:
+        row["clv_ev"] = round(row["close_edge"] - row["open_edge"], 2)
+    if row.get("open_fair_prob") is not None:
+        row["market_drift_pp"] = round(
+            (close_fair_prob - row["open_fair_prob"]) * 100, 2)
+    if row.get("model_prob") is not None:
+        # Did our own number predict where the market ended up better than
+        # the market's own morning number did? Positive means yes.
+        ours = abs(row["model_prob"] - close_fair_prob)
+        theirs = abs((row["open_fair_prob"] or 0) - close_fair_prob)
+        row["model_closer_pp"] = round((theirs - ours) * 100, 2)
+    return row
+
+
+def merge_board_clv(store: list[dict], rows: list[dict]) -> int:
+    """Append rows we have not already recorded. Returns how many were new."""
+    seen = {(r.get("date"), r.get("event_id"), r.get("market"), r.get("tag"))
+            for r in store}
+    added = 0
+    for r in rows:
+        key = (r.get("date"), r.get("event_id"), r.get("market"), r.get("tag"))
+        if key in seen:
+            continue
+        seen.add(key)
+        store.append(r)
+        added += 1
+    return added
+
+
 def _self_test() -> None:
     base = datetime(2026, 9, 1, 21, 0, tzinfo=timezone.utc)
 
@@ -233,7 +340,42 @@ def _self_test() -> None:
     assert got == ["+2h", "+0.5h", "+-0.5h"], got
     assert "+456h" not in got, "a game nineteen days out is not a closing line"
     assert "+5h" not in got, "leave it pending; a later run can still take it"
-    print("closing self-test: the capture window holds")
+    # The board is scored whether or not anything was bet.
+    board = {"date": "2026-09-01", "leagues": {"mlb": {"games": [
+        {"event_id": "e1",
+         "commence_time": (base + timedelta(hours=2)).isoformat().replace("+00:00", "Z"),
+         "model": {"home_win_prob": 0.58, "away_win_prob": 0.42},
+         "markets": {"h2h": {"fair_home": 0.55, "fair_away": 0.47,
+                             "best_home": {"book": "X", "price": -120},
+                             "best_away": {"book": "Y", "price": 115},
+                             "edge_home": -1.0, "edge_away": -1.4}}},
+        {"event_id": "e2",   # tomorrow: not due yet
+         "commence_time": (base + timedelta(hours=30)).isoformat().replace("+00:00", "Z"),
+         "markets": {"h2h": {"fair_home": 0.5, "fair_away": 0.5,
+                             "best_home": {"book": "X", "price": 100},
+                             "best_away": {"book": "Y", "price": 100},
+                             "edge_home": 0.0, "edge_away": 0.0}}},
+    ]}}}
+    sides = board_sides(board, base)
+    assert len(sides) == 2, sides           # two sides of one game, not four
+    assert {s["event_id"] for s in sides} == {"e1"}
+    assert sides[0]["open_best_price"] == -120
+    assert sides[0]["side"] is None or isinstance(sides[0]["side"], str)
+
+    # The market moved toward the home side: 0.55 -> 0.60.
+    scored = score_board_side(sides[0], 0.60, 9)
+    assert scored["market_drift_pp"] == 5.0, scored["market_drift_pp"]
+    assert scored["clv_ev"] > 0, "the market came to our number, so CLV is positive"
+    # Our model said 0.58, the close said 0.60, the morning market said 0.55.
+    # We missed by 2 points and the morning market missed by 5, so ours was
+    # closer by 3.
+    assert scored["model_closer_pp"] == 3.0, scored["model_closer_pp"]
+
+    store = []
+    assert merge_board_clv(store, sides) == 2
+    assert merge_board_clv(store, sides) == 0, "the same day is not recorded twice"
+
+    print("closing self-test: the capture window holds, the board scores")
 
 
 def main() -> int:
@@ -241,17 +383,33 @@ def main() -> int:
     history = load(DATA / "history.json", {"plays": []})["plays"]
 
     pending = awaiting_close(history, now)
-    if not pending:
-        print("-- nothing to snapshot: no ungraded plays awaiting a late line")
-        return 0
+    board = load(DATA / "board.json", {})
+    due = board_sides(board, now)
 
     needed: dict[str, set] = defaultdict(set)
     for p in pending:
         needed[p["sport_key"]].add(p["market"])
-    print(f"-- {len(pending)} play(s) awaiting a late line across "
-          f"{len(needed)} sport(s)")
+    # The board is snapshotted from the same responses. Its leagues are added
+    # to the request whether or not anything was bet -- which is the point:
+    # on most days nothing was.
+    for row in due:
+        lg = leagues.LEAGUES.get(row["league"])
+        if lg:
+            needed[lg.sport_key].add(row["market"])
+
+    if not needed:
+        print("-- nothing to snapshot: no plays awaiting a late line and no "
+              "board game inside the window")
+        return 0
+
+    print(f"-- {len(pending)} play(s) and {len(due)} board side(s) awaiting a "
+          f"late line across {len(needed)} sport(s)")
     for sport, markets in needed.items():
         print(f"   {sport}: {', '.join(sorted(markets))}")
+
+    by_sport_short = {lg.sport_key: short
+                      for short, lg in leagues.LEAGUES.items()}
+    board_scored: list[dict] = []
 
     try:
         client = OddsClient()
@@ -271,6 +429,18 @@ def main() -> int:
         except (BudgetExhausted, OddsAPIError) as e:
             print(f"!! {sport} snapshot failed: {e}", file=sys.stderr)
             continue
+
+        # The whole board first, from the response we already paid for.
+        short = by_sport_short.get(sport)
+        for row in [r for r in due if r["league"] == short]:
+            game = games.get(row["event_id"])
+            if not game:
+                continue
+            snap = closing_consensus(game, row["market"], row["side"],
+                                     row.get("point"))
+            if snap:
+                board_scored.append(score_board_side(row, snap["fair_prob"],
+                                                     snap["books"]))
 
         for play in [p for p in pending if p["sport_key"] == sport]:
             game = games.get(play.get("event_id"))
@@ -312,6 +482,31 @@ def main() -> int:
                   f"  ({mins:.0f} min out)")
 
     save(DATA / "history.json", {"plays": history})
+
+    # The board log. This is the one that will actually reach a usable sample:
+    # the card posts a play every few days, the board prices ninety sides a
+    # night, and both are scored off the same request.
+    if board_scored:
+        store = load(BOARD_CLV, {"rows": []})["rows"]
+        added = merge_board_clv(store, board_scored)
+        save(BOARD_CLV, {"rows": store})
+        beat = sum(1 for r in store if (r.get("clv_ev") or 0) > 0)
+        print(f"-- board: {added} new side(s) scored, {len(store)} stored")
+        if store:
+            avg = sum(r.get("clv_ev") or 0 for r in store) / len(store)
+            print(f"   {beat}/{len(store)} beat the close "
+                  f"({beat/len(store)*100:.1f}%), average {avg:+.2f}%")
+            model = [r["model_closer_pp"] for r in store
+                     if r.get("model_closer_pp") is not None]
+            if model:
+                closer = sum(1 for v in model if v > 0)
+                print(f"   our number landed closer to the close than the "
+                      f"morning market on {closer}/{len(model)} "
+                      f"({closer/len(model)*100:.1f}%)")
+        if len(store) < 300:
+            print(f"   ({len(store)} sides — this needs a few hundred before "
+                  "it means anything)")
+
     print(f"-- captured {captured}, unavailable {skipped}")
     if client.credits_remaining is not None:
         print(f"-- credits: {client.credits_used_this_run} used, "
