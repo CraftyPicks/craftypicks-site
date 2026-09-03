@@ -486,6 +486,12 @@ def main() -> int:
                           f"{len(stored)} stored result(s)"
                           + (f", {skipped} skipped for unknown or thin clubs"
                              if skipped else ""))
+                # MLB fills these from StatsAPI in slate.py. Every other
+                # league has no free source, so it uses the same stored
+                # finals the Elo model just read.
+                f = board_mod.merge_form(rows, stored)
+                print(f"-- form: {f} {short} card(s) carry a streak and a "
+                      f"season series")
             except Exception as e:                           # noqa: BLE001
                 print(f"!! rating {short} failed "
                       f"({type(e).__name__}: {e})", file=sys.stderr)

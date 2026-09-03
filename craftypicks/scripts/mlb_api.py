@@ -322,3 +322,234 @@ def pitcher_vs_team(pitcher_id: int, opponent_team_id: int, season: int,
         direct.setdefault("source", "vsTeam")
         return direct
     return _from_game_log(pitcher_id, opponent_team_id, [season - 1, season])
+
+
+def parse_hands(payload) -> dict[int, str]:
+    """Pitcher id -> "L" / "R" / "". A person with no pitchHand is blank."""
+    out = {}
+    for person in (payload or {}).get("people", []) or []:
+        pid = person.get("id")
+        if pid is None:
+            continue
+        out[int(pid)] = (person.get("pitchHand") or {}).get("code") or ""
+    return out
+
+
+def pitch_hands(pitcher_ids) -> dict[int, str]:
+    """Which way each of these pitchers throws. One free request for the slate.
+
+    Not folded into probable_starters(): the schedule's probablePitcher
+    hydration carries no pitchHand at all, which is why every card's
+    home_hand has been an empty string since the board shipped. Asking per
+    pitcher would be a request each; /people takes the whole day at once.
+    """
+    ids = sorted({int(p) for p in pitcher_ids if p})
+    if not ids:
+        return {}
+    return parse_hands(_get("/people", personIds=",".join(str(i) for i in ids)))
+
+
+# The last-ten record hides among sixteen split records; this is its type.
+LAST_TEN = "lastTen"
+
+
+def parse_standings(payload) -> dict[int, dict]:
+    """Team id -> record, streak and last ten."""
+    out = {}
+    for record in (payload or {}).get("records", []) or []:
+        for tr in record.get("teamRecords", []) or []:
+            tid = (tr.get("team") or {}).get("id")
+            if tid is None:
+                continue
+            last10 = {}
+            for sr in ((tr.get("records") or {}).get("splitRecords") or []):
+                if sr.get("type") == LAST_TEN:
+                    last10 = sr
+                    break
+            out[int(tid)] = {
+                "w": int(tr.get("wins") or 0),
+                "l": int(tr.get("losses") or 0),
+                "streak": (tr.get("streak") or {}).get("streakCode") or "",
+                "l10_w": int(last10.get("wins") or 0),
+                "l10_l": int(last10.get("losses") or 0),
+            }
+    return out
+
+
+def standings(season: int, date_str: str) -> dict[int, dict]:
+    """The table as it stood on the MORNING of date_str (YYYY-MM-DD).
+
+    Verified: date=2026-09-01 returns the Padres at 73-65, which is what the
+    board recorded at 9am that day; date=2026-08-31 returns 72-65. So the
+    board passes its own date and gets the table its reader expects, with
+    that evening's games still unplayed.
+
+    One free request covers all thirty clubs across both leagues.
+    """
+    return parse_standings(_get("/standings", leagueId="103,104",
+                                season=season, date=date_str,
+                                standingsTypes="regularSeason"))
+
+
+def parse_series(payload) -> list[dict]:
+    """Completed meetings, oldest first."""
+    out = []
+    for day in (payload or {}).get("dates", []) or []:
+        date = day.get("date") or ""
+        for game in day.get("games", []) or []:
+            if (game.get("status") or {}).get("abstractGameState") != "Final":
+                continue
+            teams = game.get("teams") or {}
+            away, home = teams.get("away") or {}, teams.get("home") or {}
+            a_id = (away.get("team") or {}).get("id")
+            h_id = (home.get("team") or {}).get("id")
+            if a_id is None or h_id is None:
+                continue
+            out.append({
+                "date": date or (game.get("gameDate") or "")[:10],
+                "away_id": int(a_id), "away_runs": int(away.get("score") or 0),
+                "home_id": int(h_id), "home_runs": int(home.get("score") or 0),
+            })
+    out.sort(key=lambda g: g["date"])
+    return out
+
+
+def season_series(team_id: int, opponent_id: int, season: int,
+                  through: str) -> list[dict]:
+    """Regular-season meetings on or before `through` (YYYY-MM-DD).
+
+    gameType="R" is not optional. Without it the Padres-Reds series came back
+    with an extra game and the first was a 14-3 exhibition on 8 March 2026.
+    The runner probe checks for a March game precisely to catch its removal.
+    """
+    return parse_series(_get("/schedule", sportId=1, gameType="R",
+                             startDate=f"{season}-01-01", endDate=through,
+                             teamId=team_id, opponentId=opponent_id))
+
+
+# 30 clubs x 2 splits = 60 rows, and this endpoint pages at 50 by default.
+# The first read of it in development came back ten rows short with no error
+# and no warning; the missing clubs were simply absent.
+SPLIT_PAGE_LIMIT = 100
+
+
+def parse_k_splits(payload) -> dict[int, dict]:
+    """Team id -> strikeout rate against each hand.
+
+    A club missing either half is dropped rather than half-reported: a card
+    showing a rate against righties and nothing against lefties invites the
+    reader to assume the missing one is zero.
+    """
+    splits = (((payload or {}).get("stats") or [{}])[0] or {}).get("splits") or []
+    out: dict[int, dict] = {}
+    for split in splits:
+        tid = (split.get("team") or {}).get("id")
+        code = (split.get("split") or {}).get("code")
+        stat = split.get("stat") or {}
+        pa = stat.get("plateAppearances")
+        if tid is None or code not in ("vr", "vl") or not pa:
+            continue
+        k = float(stat.get("strikeOuts") or 0)
+        out.setdefault(int(tid), {})["vR" if code == "vr" else "vL"] = {
+            "k_pct": 100.0 * k / float(pa),
+            "k": int(k),
+            "pa": int(pa),
+        }
+    return {tid: v for tid, v in out.items() if "vL" in v and "vR" in v}
+
+
+def team_k_splits(season: int) -> dict[int, dict]:
+    """Every club's strikeout rate against right- and left-handers.
+
+    One free request for the whole league. limit is mandatory --
+    see SPLIT_PAGE_LIMIT.
+    """
+    return parse_k_splits(_get("/teams/stats", stats="statSplits",
+                               sitCodes="vr,vl", season=season,
+                               group="hitting", sportIds=1,
+                               limit=SPLIT_PAGE_LIMIT))
+
+
+def _self_test() -> None:
+    """Parsers only. Every fetch is split from its parser so this needs no
+    network -- the live endpoints are checked by the probe workflow instead."""
+    # ---- handedness. The schedule does not carry pitchHand; /people does.
+    people = {"people": [
+        {"id": 681190, "fullName": "Randy Vasquez", "pitchHand": {"code": "R"}},
+        {"id": 666157, "fullName": "Nick Lodolo", "pitchHand": {"code": "L"}},
+        {"id": 999999, "fullName": "No Hand Listed"},
+    ]}
+    hands = parse_hands(people)
+    assert hands[681190] == "R" and hands[666157] == "L", hands
+    assert hands[999999] == "", "a missing pitchHand is blank, not a crash"
+    assert parse_hands({}) == {} and parse_hands(None) == {}
+
+    # ---- standings: the last ten hides among sixteen splitRecords.
+    st = {"records": [{"teamRecords": [
+        {"team": {"id": 135}, "wins": 73, "losses": 65,
+         "streak": {"streakCode": "W1"},
+         "records": {"splitRecords": [
+             {"type": "home", "wins": 41, "losses": 28},
+             {"type": "lastTen", "wins": 5, "losses": 5}]}},
+        {"team": {"id": 113}, "wins": 65, "losses": 73,
+         "streak": {"streakCode": "L1"},
+         "records": {"splitRecords": [{"type": "lastTen",
+                                       "wins": 4, "losses": 6}]}}]}]}
+    table = parse_standings(st)
+    assert table[135] == {"w": 73, "l": 65, "streak": "W1",
+                          "l10_w": 5, "l10_l": 5}, table[135]
+    assert table[113]["streak"] == "L1"
+    bare = parse_standings({"records": [{"teamRecords": [
+        {"team": {"id": 1}, "wins": 1, "losses": 2,
+         "streak": {}, "records": {}}]}]})
+    assert bare[1] == {"w": 1, "l": 2, "streak": "",
+                       "l10_w": 0, "l10_l": 0}, bare
+    assert parse_standings(None) == {}
+
+    # ---- the season series. Only finals, oldest first.
+    sched = {"dates": [
+        {"date": "2026-08-31", "games": [{
+            "status": {"abstractGameState": "Final"},
+            "teams": {"away": {"team": {"id": 135}, "score": 5},
+                      "home": {"team": {"id": 113}, "score": 0}}}]},
+        {"date": "2026-06-08", "games": [{
+            "status": {"abstractGameState": "Final"},
+            "teams": {"away": {"team": {"id": 113}, "score": 2},
+                      "home": {"team": {"id": 135}, "score": 6}}}]},
+        {"date": "2026-09-02", "games": [{
+            "status": {"abstractGameState": "Preview"},
+            "teams": {"away": {"team": {"id": 135}, "score": None},
+                      "home": {"team": {"id": 113}, "score": None}}}]}]}
+    series = parse_series(sched)
+    assert [g["date"] for g in series] == ["2026-06-08", "2026-08-31"], series
+    assert series[0]["home_id"] == 135 and series[0]["home_runs"] == 6
+    assert series[1]["away_runs"] == 5
+    assert len(series) == 2, "a Preview game is not a result"
+    assert parse_series({}) == []
+
+    # ---- K% splits. Real 2026 figures, so these are checkable on the site.
+    raw = {"stats": [{"splits": [
+        {"team": {"id": 113}, "split": {"code": "vr"},
+         "stat": {"strikeOuts": 1015, "plateAppearances": 3989}},
+        {"team": {"id": 113}, "split": {"code": "vl"},
+         "stat": {"strikeOuts": 307, "plateAppearances": 1230}},
+        {"team": {"id": 141}, "split": {"code": "vr"},
+         "stat": {"strikeOuts": 693, "plateAppearances": 3665}},
+        {"team": {"id": 141}, "split": {"code": "vl"},
+         "stat": {"strikeOuts": 311, "plateAppearances": 1510}},
+        {"team": {"id": 999}, "split": {"code": "vr"},
+         "stat": {"strikeOuts": 1, "plateAppearances": 10}}]}]}
+    ks = parse_k_splits(raw)
+    assert round(ks[113]["vR"]["k_pct"], 1) == 25.4, ks[113]
+    assert ks[113]["vR"]["pa"] == 3989
+    assert ks[113]["vR"]["k"] == 1015, "the raw count is kept so the combined "\
+                                       "rate can be summed rather than averaged"
+    assert round(ks[141]["vL"]["k_pct"], 1) == 20.6, ks[141]
+    assert 999 not in ks, "a club with only one of the two splits is dropped"
+    assert parse_k_splits({}) == {}
+
+    print("mlb_api self-test: every parser holds")
+
+
+if __name__ == "__main__":
+    _self_test()

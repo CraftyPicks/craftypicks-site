@@ -26,6 +26,7 @@ from datetime import datetime, timezone
 import config
 import screen_config as scfg
 import mlb_api
+import matchup
 import screen_source
 
 # Expected innings for a starting pitcher. Modern starters average a shade
@@ -81,6 +82,34 @@ def project(k_per_9: float | None, opp_k_per_game: float | None,
     return round((k_per_9 / 9.0) * innings * factor, 1)
 
 
+def opponent_split(table: dict, summary: dict, team_id: int,
+                   hand: str) -> dict | None:
+    """This lineup's strikeout rate against the hand the starter throws.
+
+    None when there is no hand to measure against or the club is missing from
+    the table, because a card that guesses is worse than a card that omits.
+
+    rank_all rides along because it is what makes the split worth printing:
+    Washington is 18th against everybody and 24th against right-handers, and
+    only the second number applies to a right-hander.
+    """
+    hand_key = matchup.key_for(hand)
+    if not hand_key:
+        return None
+    club = (table or {}).get(team_id) or {}
+    if hand_key not in club:
+        return None
+    stats = (summary or {}).get(hand_key) or {}
+    return {
+        "k_pct": club[hand_key]["k_pct"],
+        "pa": club[hand_key]["pa"],
+        "rank": (stats.get("rank") or {}).get(team_id),
+        "rank_all": ((summary or {}).get("all") or {}).get("rank", {}).get(team_id),
+        "of": stats.get("n"),
+        "league_mean": stats.get("mean"),
+    }
+
+
 def build(prop_events: list[dict], date_str: str, season: int,
           verbose: bool = True) -> list[dict]:
     """One rated row per starter who has a posted strikeout line."""
@@ -93,6 +122,21 @@ def build(prop_events: list[dict], date_str: str, season: int,
             print("   pitchers: no probable starters listed")
         return []
     by_name = {screen_source.normalize(s["name"]): s for s in starters}
+
+    # The hand each starter throws with, and how every club hits that hand.
+    # Both are single free requests. The projection does not use either --
+    # scripts/study_matchup.py measured the signal against 86 finished starts
+    # and found no detectable edge over the posted line -- so these are shown
+    # to the reader and kept out of the number.
+    try:
+        hands = mlb_api.pitch_hands(s["pitcher_id"] for s in starters)
+    except Exception:                                        # noqa: BLE001
+        hands = {}
+    try:
+        k_table = mlb_api.team_k_splits(season)
+    except Exception:                                        # noqa: BLE001
+        k_table = {}
+    k_summary = matchup.summarise(k_table)
 
     # League average from tonight's opponents, so the multiplier is relative
     # to the teams actually on the board rather than a stale constant.
@@ -158,6 +202,13 @@ def build(prop_events: list[dict], date_str: str, season: int,
                 "last5_over": sum(cleared[-5:]),
                 "last5_n": len(cleared[-5:]),
                 "vs_opp": vs,
+                "hand": hands.get(pid, ""),
+                "opp_split": opponent_split(k_table, k_summary,
+                                            starter["opponent_id"],
+                                            hands.get(pid, "")),
+                "matchup": matchup.verdict(k_table, k_summary,
+                                           starter["opponent_id"],
+                                           hands.get(pid, "")),
                 "actual": None,
             })
 

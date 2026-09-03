@@ -52,6 +52,12 @@ def market_probability(game: dict) -> dict | None:
             "best_home_price": best_home, "best_away_price": best_away}
 
 
+def _iso(us_date: str) -> str:
+    """'09/01/2026' -> '2026-09-01'. The schedule wants one, standings the other."""
+    month, day, year = us_date.split("/")
+    return f"{year}-{month}-{day}"
+
+
 def build(games: list[dict], date_str: str, season: int,
           verbose: bool = True) -> list[dict]:
     """One rated row per game on today's board."""
@@ -67,6 +73,23 @@ def build(games: list[dict], date_str: str, season: int,
     recs = rate_mlb.records(results)
     teams = mlb_api.team_index(season)
     starters = {s["team_id"]: s for s in mlb_api.probable_starters(date_str)}
+    # The schedule's probablePitcher hydration carries no pitchHand, which is
+    # why home_hand was an empty string on every card the board ever drew.
+    # One /people call covers the whole slate.
+    try:
+        hands = mlb_api.pitch_hands(s["pitcher_id"] for s in starters.values())
+    except Exception:                                        # noqa: BLE001
+        hands = {}
+    for s_ in starters.values():
+        s_["hand"] = hands.get(s_["pitcher_id"], "")
+
+    # Record, streak and last ten for all thirty clubs in one free request,
+    # dated so the reader gets the table as it stood this morning rather than
+    # one that already counts tonight.
+    try:
+        form = mlb_api.standings(season, _iso(date_str))
+    except Exception:                                        # noqa: BLE001
+        form = {}
     want_vs = getattr(config, "SLATE_VS_OPPONENT", True)
     if verbose:
         print(f"   slate: {len(results)} games of history, "
@@ -96,6 +119,26 @@ def build(games: list[dict], date_str: str, season: int,
 
         home_stats, home_name, home_vs, home_hand = sp(home_id, away_id)
         away_stats, away_name, away_vs, away_hand = sp(away_id, home_id)
+
+        # The season series, one free request per game and display-only, so
+        # guarded exactly like the vs-opponent line above it. StatsAPI answers
+        # in club ids and the stored-finals path answers in club names; this
+        # is the one place that knows both, so the conversion happens here and
+        # the renderer only ever sees names.
+        try:
+            raw_series = mlb_api.season_series(home_id, away_id, season,
+                                               _iso(date_str))
+        except Exception:                                    # noqa: BLE001
+            raw_series = []
+        name_of = {home_id: game.get("home_team"),
+                   away_id: game.get("away_team")}
+        series = [{"date": g["date"],
+                   "away": name_of.get(g["away_id"], ""),
+                   "away_runs": g["away_runs"],
+                   "home": name_of.get(g["home_id"], ""),
+                   "home_runs": g["home_runs"]}
+                  for g in raw_series
+                  if g["away_id"] in name_of and g["home_id"] in name_of]
         rating = rate_mlb.rate_game(elo, home_id, away_id, home_stats, away_stats)
         market = market_probability(game)
 
@@ -114,6 +157,9 @@ def build(games: list[dict], date_str: str, season: int,
             # Shown on the card, deliberately absent from the rating.
             "home_record": recs.get(home_id),
             "away_record": recs.get(away_id),
+            "home_form": form.get(home_id),
+            "away_form": form.get(away_id),
+            "series": series,
             "home_vs_opp": home_vs,
             "away_vs_opp": away_vs,
             "result": None,

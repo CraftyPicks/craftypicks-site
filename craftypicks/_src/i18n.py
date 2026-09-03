@@ -121,8 +121,98 @@ T = {
     "market_only":   {"en": "market only", "es": "solo mercado"},
     "board_empty":   {"en": "No games on the board tonight.",
                       "es": "No hay partidos en el tablero esta noche."},
-    "card_more":     {"en": "Books, matchup history and props",
-                      "es": "Casas, historial del duelo y props"},
+    "card_more":     {"en": "Form, head to head and props",
+                      "es": "Forma, historial y props"},
+
+    # ---- board card detail panel
+    "pnl_form":      {"en": "Form", "es": "Forma"},
+    "pnl_record":    {"en": "Record", "es": "Récord"},
+    "pnl_last10":    {"en": "Last 10", "es": "Últimos 10"},
+    "pnl_streak":    {"en": "Streak", "es": "Racha"},
+    "pnl_won_n":     {"en": "won {n} in a row", "es": "{n} victorias seguidas"},
+    "pnl_lost_n":    {"en": "lost {n} in a row", "es": "{n} derrotas seguidas"},
+    "pnl_won_last":  {"en": "won its last", "es": "ganó el último"},
+    "pnl_lost_last": {"en": "lost its last", "es": "perdió el último"},
+    "pnl_h2h":       {"en": "Head to head", "es": "Historial"},
+    "pnl_h2h_none":  {"en": "They have not met yet this season.",
+                      "es": "Aún no se han enfrentado esta temporada."},
+    "pnl_h2h_lead":  {"en": "{team} lead the season series <b>{w}&ndash;{l}</b>",
+                      "es": "{team} domina la serie <b>{w}&ndash;{l}</b>"},
+    "pnl_h2h_even":  {"en": "The season series is level at <b>{w}&ndash;{l}</b>",
+                      "es": "La serie está empatada <b>{w}&ndash;{l}</b>"},
+    "pnl_h2h_more":  {"en": "{n} earlier meeting{s} not shown",
+                      "es": "{n} enfrentamiento{s} anterior{s} no mostrado{s}"},
+    "pnl_h2h_at":    {"en": "at {place}", "es": "en {place}"},
+    "pnl_starters":  {"en": "Tonight&rsquo;s starters", "es": "Abridores de hoy"},
+    "pnl_vs_line":   {"en": "{n} start{s} against the {team}: {ip} innings, "
+                            "{k} strikeouts ({k9} per nine), {era} ERA",
+                      "es": "{n} apertura{s} ante {team}: {ip} entradas, "
+                            "{k} ponches ({k9} por nueve), efectividad {era}"},
+    "pnl_vs_never":  {"en": "has not faced the {team} in {span}",
+                      "es": "no ha enfrentado a {team} en {span}"},
+    "pnl_props":     {"en": "Tonight&rsquo;s strikeout props",
+                      "es": "Props de ponches de hoy"},
+    "pnl_prop_line": {"en": "strikeouts &middot; ours <b>{ours}</b> &middot; "
+                            "line <b>{line}</b> &middot; {prices}",
+                      "es": "ponches &middot; nuestro <b>{ours}</b> &middot; "
+                            "línea <b>{line}</b> &middot; {prices}"},
+
+    # ---- the matchup verdict, shared by both panels
+    "mx_favourable": {"en": "favourable matchup", "es": "duelo favorable"},
+    "mx_tough":      {"en": "tough matchup", "es": "duelo difícil"},
+    "mx_neutral":    {"en": "ordinary matchup", "es": "duelo normal"},
+
+    # ---- prop card matchup panel
+    "mx_open":       {"en": "matchup detail", "es": "detalle del duelo"},
+    "mx_hist":       {"en": "{who} against {team}, {span}",
+                      "es": "{who} ante {team}, {span}"},
+    "mx_never":      {"en": "{who} has never faced {team}",
+                      "es": "{who} nunca ha enfrentado a {team}"},
+    "mx_never_v":    {"en": "No starts against them in 2025 or 2026, so there "
+                            "is nothing here to read. The projection does not "
+                            "use this line either way &mdash; it is context, "
+                            "not an input.",
+                      "es": "Sin aperturas ante ellos en 2025 ni 2026, así que "
+                            "aquí no hay nada que leer. La proyección no usa "
+                            "esta línea de todos modos &mdash; es contexto, no "
+                            "un insumo."},
+    "mx_starts":     {"en": "starts", "es": "aperturas"},
+    "mx_innings":    {"en": "innings", "es": "entradas"},
+    "mx_k":          {"en": "K", "es": "P"},
+    "mx_k9":         {"en": "K per 9", "es": "P por 9"},
+    "mx_era":        {"en": "ERA", "es": "EFE"},
+    "mx_read":       {"en": "{k9} per nine against them, against {season} all "
+                            "season.",
+                      "es": "{k9} por nueve ante ellos, contra {season} en la "
+                            "temporada."},
+    "mx_thin":       {"en": "{n} start{s} is not evidence. It is shown because "
+                            "it is the kind of thing you want to see, not "
+                            "because it moves the number.",
+                      "es": "{n} apertura{s} no es evidencia. Se muestra porque "
+                            "es lo que uno quiere ver, no porque mueva el "
+                            "número."},
+    "mx_how":        {"en": "How {team} strike out",
+                      "es": "Cómo se poncha {team}"},
+    "mx_vs_r":       {"en": "vs right-handers", "es": "ante derechos"},
+    "mx_vs_l":       {"en": "vs left-handers", "es": "ante zurdos"},
+    # The table row label and the sentence noun are not the same string:
+    # "and 24th against vs right-handers" is what sharing one produces.
+    "mx_righties":   {"en": "right-handers", "es": "los derechos"},
+    "mx_lefties":    {"en": "left-handers", "es": "los zurdos"},
+    "mx_league":     {"en": "league average", "es": "promedio de la liga"},
+    "mx_pa":         {"en": "{n} PA", "es": "{n} AP"},
+    "mx_applies":    {"en": "{who} throws {hand}, so this is the rate that "
+                            "applies to him. {team} rank {overall} against "
+                            "everybody",
+                      "es": "{who} lanza con la {hand}, así que esta es la tasa "
+                            "que aplica. {team} es {overall} ante todos"},
+    "mx_and_hand":   {"en": " and {split} against {hand_word}.",
+                      "es": " y {split} ante {hand_word}."},
+    "mx_same":       {"en": ", the same as against {hand_word} alone.",
+                      "es": ", igual que solo ante {hand_word}."},
+    "mx_right":      {"en": "right", "es": "derecha"},
+    "mx_left":       {"en": "left", "es": "zurda"},
+    "mx_delta":      {"en": "{v} points vs league", "es": "{v} puntos vs la liga"},
     "best_at":       {"en": "best at {book}", "es": "mejor en {book}"},
     "fair_is":       {"en": "fair {price}",   "es": "justo {price}"},
     "n_books":       {"en": "{n} books",      "es": "{n} casas"},

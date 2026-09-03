@@ -757,6 +757,96 @@ def _strip(recent: list[dict], line: float) -> str:
       <div class="pb-ticks">{''.join(ticks)}</div>"""
 
 
+def _matchup_panel(row: dict) -> str:
+    """The prop card's collapsible detail.
+
+    Three things, in this order: how this starter has done against this
+    opponent, how that opponent strikes out against the hand he throws with,
+    and the verdict. Only the applicable hand is shown -- printing both
+    columns made the reader do the selection the card already knows how to do.
+    """
+    who = esc((row.get("name") or "").split()[-1] or "?")
+    team = esc(_nickname(row.get("opponent")))
+    parts = []
+
+    vs = row.get("vs_opp")
+    if vs and vs.get("innings"):
+        k9 = vs["strikeouts"] * 9 / vs["innings"]
+        season_k9 = row.get("k_per_9") or 0.0
+        parts.append(
+            f'<div class="mxh">'
+            f'{_("mx_hist", who=who, team=team, span=esc(vs.get("span", "")))}'
+            f'</div>'
+            f'<div class="mxg">'
+            f'<div><span>{_("mx_starts")}</span><b>{vs["starts"]}</b></div>'
+            f'<div><span>{_("mx_innings")}</span><b>{vs["innings"]:g}</b></div>'
+            f'<div><span>{_("mx_k")}</span><b>{vs["strikeouts"]}</b></div>'
+            f'<div><span>{_("mx_k9")}</span><b>{k9:.1f}</b></div>'
+            f'<div><span>{_("mx_era")}</span><b>{vs["era"]:.2f}</b></div>'
+            f'</div>'
+            f'<p class="mxn">'
+            f'{_("mx_read", k9=f"{k9:.1f}", season=f"{season_k9:.1f}")}</p>')
+        if vs["starts"] <= 2:
+            parts.append(f'<p class="mxn warn">'
+                         f'{_("mx_thin", n=vs["starts"], s=_pl(vs["starts"]))}'
+                         f'</p>')
+    else:
+        parts.append(f'<div class="mxh">{_("mx_never", who=who, team=team)}</div>'
+                     f'<p class="mxn">{_("mx_never_v")}</p>')
+
+    split = row.get("opp_split")
+    hand = row.get("hand") or ""
+    if split and hand:
+        row_label = _("mx_vs_l") if hand == "L" else _("mx_vs_r")
+        noun = _("mx_lefties") if hand == "L" else _("mx_righties")
+        rank = split.get("rank")
+        rank_all = split.get("rank_all")
+        of = split.get("of")
+        # Every value is formatted before it enters the f-string. Python 3.11
+        # cannot reuse the outer quote character inside an f-string
+        # expression, so a nested f'{split["pa"]:,}' is a syntax error on the
+        # runner even though it parses on 3.12.
+        rank_cell = (_("pb_rank", r=rank, ord=_ordinal(rank), n=of)
+                     if rank and of else "")
+        pa_txt = format(split["pa"], ",")
+        pct_txt = f'{split["k_pct"]:.1f}'
+        mean_txt = f'{split.get("league_mean") or 0.0:.1f}'
+        # _ordinal returns the suffix alone -- "th", not "28th" -- because
+        # pb_rank composes it as "{r}{ord} of {n}". Compose it here too.
+        def _nth(n):
+            return f"{n}{_ordinal(n)}"
+
+        note = _("mx_applies", who=who, team=team,
+                 hand=_("mx_left") if hand == "L" else _("mx_right"),
+                 overall=_nth(rank_all) if rank_all else "&mdash;")
+        if rank_all and rank and rank_all != rank:
+            note += _("mx_and_hand", split=_nth(rank), hand_word=noun)
+        else:
+            note += _("mx_same", hand_word=noun)
+        parts.append(
+            f'<div class="mxh">{_("mx_how", team=team)}</div>'
+            f'<table class="mxt">'
+            f'<tr class="on"><th>{row_label}</th>'
+            f'<td class="n">{pct_txt}%</td>'
+            f'<td class="r">{rank_cell}</td>'
+            f'<td class="p">{_("mx_pa", n=pa_txt)}</td></tr>'
+            f'<tr class="avg"><th>{_("mx_league")}</th>'
+            f'<td class="n">{mean_txt}%</td>'
+            f'<td class="r"></td><td class="p"></td></tr>'
+            f'</table>'
+            f'<p class="mxn">{note}</p>')
+
+    verdict = row.get("matchup") or "neutral"
+    delta = ""
+    if split and split.get("league_mean") is not None:
+        gap = split["k_pct"] - split["league_mean"]
+        delta = f'<span class="vd">{_("mx_delta", v=f"{gap:+.1f}")}</span>'
+    return (f'<details class="mx"><summary><span class="mxs">{_("mx_open")}'
+            f'</span></summary><div class="mxb">{"".join(parts)}</div></details>'
+            f'<div class="verdict {MX_CLASS[verdict]}">'
+            f'{_(MX_LABEL[verdict])}{delta}</div>')
+
+
 def pitcher_cards(rows: list[dict]) -> str:
     if not rows:
         return f'<div class="empty-board">{_("pitch_empty")}</div>' 
@@ -782,10 +872,6 @@ def pitcher_cards(rows: list[dict]) -> str:
             went = _("over") if actual > line else _("under")
             status = f'<span class="fin">{_("final_k", n=actual, side=went)}</span>' 
 
-        vs = r.get("vs_opp")
-        vs_html = _vs_line(vs, r.get("opponent")) if vs else (
-            f'<div class="gvs thin">'
-            f'{_("never_faced", team=esc(_nickname(r.get("opponent"))))}</div>')
 
         rank = r.get("opp_k_rank")
         rank_txt = (" &middot; " + _("pb_rank", r=rank, ord=_ordinal(rank),
@@ -825,12 +911,12 @@ def pitcher_cards(rows: list[dict]) -> str:
               <div class="pb-row"><span>{_("opp_ks", team=esc(_nickname(r.get('opponent'))))}</span>
                 <b>{_("per_game", v=f"{opp_rate:.1f}") if opp_rate else '&mdash;'}{rank_txt}</b></div>
             </div>
-            {vs_html}
             <div class="pb-foot">
               <span>{esc(' / '.join(prices)) or '&mdash;'}</span>
               {lean}
             </div>
           </div>
+          {_matchup_panel(r)}
         </div>""")
     return "".join(out)
 
@@ -1151,34 +1237,243 @@ def board_card(row: dict) -> str:
           {side("home", row.get('home',''), hp, lead_home)}
           {_prob_foot(model)}
           <div class="mk">{market_rows(row)}</div>
-          <details class="gmore">
-            <summary>{_("card_more")}</summary>
-            <div class="gmore-in">{_book_table(row)}</div>
-          </details>
+          {_disclosure(row)}
         </div>
       </article>"""
 
 
-def _book_table(row: dict) -> str:
-    """Every market's fair price, width and book count, for the disclosure.
+# Division rivals meet thirteen times a season. Listing every meeting buries
+# the starters and the props underneath it, so the panel shows the most recent
+# few and counts the rest.
+SERIES_SHOWN = 5
 
-    Does not list each individual book's price yet. That needs the raw quotes
-    carried through into board.json, which the board plan deliberately left
-    out until there is a page that shows them.
-    """
-    short = row.get("league", "")
-    rows = []
-    for market in ("h2h", "spreads", "totals"):
-        m = (row.get("markets") or {}).get(market)
-        if not m:
+MX_LABEL = {"favourable": "mx_favourable", "tough": "mx_tough",
+            "neutral": "mx_neutral"}
+MX_CLASS = {"favourable": "good", "tough": "bad", "neutral": ""}
+
+# Tonight's strikeout props, indexed by event id. Module-level for the same
+# reason LANG is: build.py sets it once before rendering, and threading a
+# props argument down through board_cards -> board_card -> panel would put
+# baseball's vocabulary into a signature every league has to use.
+_PROPS: dict[str, list[dict]] = {}
+
+
+def set_props(rows) -> None:
+    """Hand render the day's prop rows. Call before drawing any board."""
+    global _PROPS
+    index: dict[str, list[dict]] = {}
+    for r in rows or []:
+        eid = r.get("event_id")
+        if eid:
+            index.setdefault(eid, []).append(r)
+    _PROPS = index
+
+
+def _city(full_name: str) -> str:
+    """'San Diego Padres' -> 'San Diego'. A venue should read as a place."""
+    nick = _nickname(full_name)
+    if nick and full_name.endswith(nick):
+        return full_name[:-len(nick)].strip()
+    return full_name
+
+
+def _md(iso_date: str) -> str:
+    """'2026-06-08' -> 'Jun 8', in the reader's language."""
+    try:
+        _y, month, day = (int(part) for part in iso_date.split("-"))
+    except (ValueError, AttributeError):
+        return iso_date or ""
+    return f"{i18n.MONTHS[LANG][month - 1][:3]} {day}"
+
+
+def _streak_cell(code: str) -> str:
+    """'W3' with its meaning spelled out underneath."""
+    if not code or len(code) < 2 or not code[1:].isdigit():
+        return "&mdash;"
+    n = int(code[1:])
+    won = code.startswith("W")
+    if n == 1:
+        words = _("pnl_won_last") if won else _("pnl_lost_last")
+    else:
+        words = _("pnl_won_n", n=n) if won else _("pnl_lost_n", n=n)
+    return (f'<b class="{"good" if won else "bad"}">{esc(code)}</b>'
+            f'<i>{words}</i>')
+
+
+def _form_block(row: dict, detail: dict) -> str:
+    home, away = detail.get("home_form"), detail.get("away_form")
+    if not home or not away:
+        return ""
+    rows = [
+        (_("pnl_record"), f'{away["w"]}&ndash;{away["l"]}',
+                          f'{home["w"]}&ndash;{home["l"]}'),
+        (_("pnl_last10"), f'{away["l10_w"]}&ndash;{away["l10_l"]}',
+                          f'{home["l10_w"]}&ndash;{home["l10_l"]}'),
+        (_("pnl_streak"), _streak_cell(away.get("streak", "")),
+                          _streak_cell(home.get("streak", ""))),
+    ]
+    # No home/road split here: the card face already prints exactly that line
+    # under each club's name, two inches above.
+    body = "".join(f"<tr><th>{lab}</th><td>{a}</td><td>{h}</td></tr>"
+                   for lab, a, h in rows)
+    return (f'<section class="pk"><h4>{_("pnl_form")}</h4>'
+            f'<table class="pkt fm">'
+            f'<tr class="hd"><th></th>'
+            f'<td>{esc(_nickname(row.get("away")))}</td>'
+            f'<td>{esc(_nickname(row.get("home")))}</td></tr>'
+            f'{body}</table></section>')
+
+
+def _h2h_block(row: dict, detail: dict) -> str:
+    """The season series. Club names throughout -- slate.py converts
+    StatsAPI's ids before they reach here, so this draws all four leagues
+    identically."""
+    games = detail.get("series") or []
+    home, away = row.get("home"), row.get("away")
+    home_nick, away_nick = _nickname(home), _nickname(away)
+    head = f'<section class="pk"><h4>{_("pnl_h2h")}</h4>'
+    if not games or not home or not away:
+        return head + f'<p class="pnl-note">{_("pnl_h2h_none")}</p></section>'
+
+    wins = {home: 0, away: 0}
+    for g in games:
+        winner = g["away"] if g["away_runs"] > g["home_runs"] else g["home"]
+        if winner in wins:
+            wins[winner] += 1
+    aw, hw = wins[away], wins[home]
+    if aw > hw:
+        lead = _("pnl_h2h_lead", team=esc(away_nick), w=aw, l=hw)
+    elif hw > aw:
+        lead = _("pnl_h2h_lead", team=esc(home_nick), w=hw, l=aw)
+    else:
+        lead = _("pnl_h2h_even", w=aw, l=hw)
+
+    nick = {home: home_nick, away: away_nick}
+    place = {home: _city(home), away: _city(away)}
+    shown = games[-SERIES_SHOWN:]
+    lines = []
+    hidden = len(games) - len(shown)
+    if hidden:
+        lines.append(f'<div class="h2more">'
+                     f'{_("pnl_h2h_more", n=hidden, s=_pl(hidden))}</div>')
+    for g in shown:
+        winner = g["away"] if g["away_runs"] > g["home_runs"] else g["home"]
+        hi = max(g["away_runs"], g["home_runs"])
+        lo = min(g["away_runs"], g["home_runs"])
+        lines.append(
+            f'<div class="h2g"><span class="h2d">{esc(_md(g["date"]))}</span>'
+            f'<span class="h2s"><b>{esc(nick.get(winner, "?"))}</b> '
+            f'{hi}&ndash;{lo}</span>'
+            f'<span class="h2w">'
+            f'{_("pnl_h2h_at", place=esc(place.get(g["home"], "?")))}'
+            f'</span></div>')
+    return head + f'<p class="pnl-note">{lead}</p>' + "".join(lines) + "</section>"
+
+
+def _starters_block(row: dict, detail: dict) -> str:
+    out = []
+    for which, other in (("away", "home"), ("home", "away")):
+        name = detail.get(f"{which}_starter")
+        if not name:
             continue
-        rows.append(
-            f"<tr><td>{esc(_(leagues.market_label_key(short, market)))}</td>"
-            f"<td class=\"m\">"
-            f"{esc(om.format_american(m['fair_price_home']))}</td>"
-            f"<td class=\"m\">{m['width']}</td>"
-            f"<td class=\"m\">{_('n_books', n=m['books'])}</td></tr>")
-    return ('<table class="gtbl"><tbody>' + "".join(rows) + "</tbody></table>")
+        era = detail.get(f"{which}_starter_era")
+        opp = _nickname(row.get(other))
+        vs = detail.get(f"{which}_vs_opp")
+        if vs and vs.get("innings"):
+            k9 = vs["strikeouts"] * 9 / vs["innings"]
+            line = _("pnl_vs_line", n=vs["starts"], s=_pl(vs["starts"]),
+                     team=esc(opp), ip=f'{vs["innings"]:g}',
+                     k=vs["strikeouts"], k9=f"{k9:.1f}",
+                     era=f'{vs["era"]:.2f}')
+        else:
+            line = _("pnl_vs_never", team=esc(opp), span="2025&ndash;2026")
+        head = esc(name) + (f" &middot; {era:.2f} ERA" if era else "")
+        out.append(f'<div class="pst"><div class="pst-n">{head}</div>'
+                   f'<div class="pst-v">{line}</div></div>')
+    if not out:
+        return ""
+    return (f'<section class="pk"><h4>{_("pnl_starters")}</h4>'
+            + "".join(out) + "</section>")
+
+
+def _props_block(row: dict) -> str:
+    """The strikeout props for this game, joined to it by event id.
+
+    The props already exist on their own page. Repeating them here is the
+    point: a reader looking at the game should not have to go and find them.
+    """
+    props = _PROPS.get(row.get("event_id") or "") or []
+    if not props:
+        return ""
+    out = []
+    for p in props:
+        gap = p.get("gap") or 0.0
+        # Reuses the pitcher board's own three words rather than inventing a
+        # fourth vocabulary for the same judgement.
+        if abs(gap) < 0.4:
+            lean, lean_cls = _("in_line"), ""
+        elif gap > 0:
+            lean, lean_cls = _("over_the_line", v=f"{abs(gap):.1f}"), "good"
+        else:
+            lean, lean_cls = _("under_the_line", v=f"{abs(gap):.1f}"), "bad"
+        prices = []
+        if p.get("over_odds") is not None:
+            prices.append("o" + om.format_american(p["over_odds"]))
+        if p.get("under_odds") is not None:
+            prices.append("u" + om.format_american(p["under_odds"]))
+        # esc() escapes '&', so the em-dash entity is substituted after
+        # escaping rather than passed through it.
+        price_txt = esc(" / ".join(prices)) if prices else "&mdash;"
+        verdict = p.get("matchup") or "neutral"
+        line = _("pnl_prop_line",
+                 ours=f'{p.get("projection") or 0:.1f}',
+                 line=f'{p.get("line") or 0:g}',
+                 prices=price_txt)
+        out.append(
+            f'<div class="ppr"><div class="ppr-top">'
+            f'<span class="ppr-n">{esc(p.get("name", ""))}</span>'
+            f'<span class="ppr-v {MX_CLASS[verdict]}">'
+            f'{_(MX_LABEL[verdict])}</span></div>'
+            f'<div class="ppr-line">{line} &middot; '
+            f'<span class="{lean_cls}">{lean}</span></div></div>')
+    return (f'<section class="pk"><h4>{_("pnl_props")}</h4>'
+            + "".join(out) + "</section>")
+
+
+def _detail_panel(row: dict) -> str:
+    """Everything behind the card's disclosure.
+
+    Replaced a table of the home side's fair price, the market width in cents
+    and a book count, none of which were labelled. A reader could not tell
+    what the middle number was, and the summary promised matchup history and
+    props that were never there.
+    """
+    detail = row.get("detail") or {}
+    form = _form_block(row, detail)
+    starters = _starters_block(row, detail)
+    props = _props_block(row)
+    # The head-to-head block is the only one that speaks when it has nothing
+    # ("they have not met yet this season"), which is worth saying on a card
+    # that has other material and is just noise on a card that has none. So it
+    # is included only alongside something else.
+    if not (form or starters or props):
+        return ""
+    return (f'<div class="pnl">{form}{_h2h_block(row, detail)}'
+            f'{starters}{props}</div>')
+
+
+def _disclosure(row: dict) -> str:
+    """The card's expandable half, or nothing.
+
+    College basketball has no starters, no props and -- until enough finals
+    are stored -- no form. A <details> that opens onto an empty box reads as
+    a broken page, so a card with nothing behind it gets no control at all.
+    """
+    panel = _detail_panel(row)
+    if not panel:
+        return ""
+    return (f'<details class="gmore"><summary>{_("card_more")}</summary>'
+            f'<div class="gmore-in">{panel}</div></details>')
 
 
 def board_cards(rows: list[dict], empty_key: str = "board_empty") -> str:
@@ -1239,8 +1534,13 @@ def _self_test() -> None:
     assert i18n.t("market_only", LANG) in html_out, \
         "the total row must say it is market-only"
 
-    # The disclosure is a details element, not a flip.
-    assert "<details" in html_out and "<summary" in html_out
+    # A card with nothing behind it renders no disclosure at all. This row
+    # has no detail block yet, which is the state of a college basketball
+    # card and of an NFL card before enough finals are stored. The details
+    # element is asserted further down, once the fixture has something to
+    # disclose.
+    assert "<details" not in html_out, \
+        "an empty disclosure reads as a broken page"
     assert "onclick" not in html_out, "the card needs no JavaScript"
 
     # The best price and the book offering it both appear.
@@ -1325,6 +1625,82 @@ def _self_test() -> None:
     plain = board_card({**row, "model": None, "detail": None})
     assert "55.6" not in plain and "class=\"gbar\"" not in plain
     assert "MONEYLINE" in plain.upper() or i18n.t("mkt_moneyline", LANG) in plain
+
+    # ---- the detail panel is the card's whole second half.
+    row["detail"] = {
+        "home_form": {"w": 85, "l": 53, "streak": "L2", "l10_w": 6, "l10_l": 4},
+        "away_form": {"w": 78, "l": 60, "streak": "W1", "l10_w": 4, "l10_l": 6},
+        "series": [
+            {"date": "2026-06-23", "away": "Chicago Cubs", "away_runs": 1,
+             "home": "Milwaukee Brewers", "home_runs": 4},
+            {"date": "2026-06-29", "away": "Milwaukee Brewers", "away_runs": 7,
+             "home": "Chicago Cubs", "home_runs": 2},
+        ],
+        "home_starter": "Robert Gasser", "away_starter": "Matthew Boyd",
+        "home_vs_opp": None,
+        "away_vs_opp": {"starts": 2, "innings": 10.3, "era": 7.84,
+                        "strikeouts": 5, "span": "2025-2026"},
+    }
+    set_props([
+        {"event_id": "evt1", "name": "Matthew Boyd", "line": 4.5,
+         "projection": 4.2, "gap": -0.3, "over_odds": 112, "under_odds": -120,
+         "matchup": "tough"},
+        {"event_id": "other", "name": "Nobody At All", "line": 1.5,
+         "projection": 1.5, "gap": 0.0, "matchup": "neutral"},
+    ])
+    panel = _detail_panel(row)
+    assert "Last 10" in panel, panel
+    assert "L2" in panel and "W1" in panel
+    assert "Brewers lead the season series" in panel, panel
+    assert "Matthew Boyd" in panel
+    # A starter with no history says so rather than rendering a blank line.
+    assert "has not faced" in panel
+    # Props join by event id, and only this game's appear.
+    assert "Nobody At All" not in panel, panel
+    assert "tough matchup" in panel
+    assert "[[" not in panel, panel
+
+    # A card whose rating never merged has no detail, and must still render.
+    bare = dict(row)
+    bare.pop("detail")
+    set_props([])
+    assert _detail_panel(bare) == "", "no detail means no panel, not a crash"
+    assert _disclosure(bare) == "", "and no panel means no disclosure control"
+    # This is the college basketball card, and the NFL card on the first
+    # morning after the scores fix lands: games priced, nothing to expand.
+    assert "<details" not in board_card(bare), board_card(bare)
+    # And with a detail block it is a details element, not a flip.
+    with_detail = board_card(row)
+    assert "<details" in with_detail and "<summary" in with_detail
+    assert "onclick" not in with_detail, "still no JavaScript"
+
+    # ---- the prop card's matchup panel
+    prop = {
+        "name": "Gavin Williams", "team": "CLE", "opponent": "TOR",
+        "hand": "R", "matchup": "tough", "k_per_9": 11.77,
+        "opp_split": {"k_pct": 18.9, "pa": 3665, "rank": 29, "rank_all": 28,
+                      "of": 30, "league_mean": 21.85},
+        "vs_opp": {"starts": 3, "innings": 15.3, "era": 6.46,
+                   "strikeouts": 15, "span": "2025-2026"},
+    }
+    mx = _matchup_panel(prop)
+    assert "18.9%" in mx, mx
+    assert "vs right-handers" in mx and "vs left-handers" not in mx, \
+        "only the hand that applies is shown"
+    # The overall rank and the split rank differ, so the sentence names both
+    # -- that contrast is the whole argument for showing the split.
+    assert "28th" in mx and "29th" in mx, mx
+    assert "3,665 PA" in mx, "the sample size prints with a thousands mark"
+    assert "tough matchup" in mx
+    assert "[[" not in mx, mx
+
+    # No split and no history still renders, and claims nothing.
+    thin = {"name": "Nobody", "opponent": "TOR", "hand": "",
+            "matchup": "neutral", "k_per_9": 8.0, "opp_split": None,
+            "vs_opp": None}
+    out = _matchup_panel(thin)
+    assert "has never faced" in out, out
+    assert "%" not in out, "no split means no percentage invented"
 
     print("render self-test: all invariants hold")
 

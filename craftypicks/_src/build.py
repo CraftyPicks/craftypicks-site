@@ -538,6 +538,9 @@ def build() -> None:
 
     for lang in i18n.LANGS:
         R.set_lang(lang)
+        # The board's cards carry each game's strikeout props. render holds
+        # them the same way it holds the language: set once, before drawing.
+        R.set_props(pitch_doc.get("pitchers", []))
         out_dir = ROOT if lang == "en" else ROOT / lang
         out_dir.mkdir(parents=True, exist_ok=True)
 

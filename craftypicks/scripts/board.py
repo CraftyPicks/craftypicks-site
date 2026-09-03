@@ -11,6 +11,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import config    # noqa: E402
 import fair      # noqa: E402
+import form_store # noqa: E402
 import leagues   # noqa: E402
 import rate_mlb  # noqa: E402
 import ratings   # noqa: E402
@@ -306,6 +307,8 @@ def _book(key: str, title: str, h2h: tuple[int, int],
 # baseball's vocabulary into leagues that have no use for it.
 DETAIL_KEYS = (
     "home_record", "away_record",
+    "home_form", "away_form",
+    "series",
     "home_starter", "away_starter",
     "home_starter_era", "away_starter_era",
     "home_hand", "away_hand",
@@ -371,6 +374,35 @@ def merge_model(rows: list[dict], rated: list[dict], source: str) -> int:
         detail = {k: rating[k] for k in DETAIL_KEYS if rating.get(k) is not None}
         if detail:
             row["detail"] = detail
+        matched += 1
+    return matched
+
+
+def merge_form(rows: list[dict], games: list[dict]) -> int:
+    """Attach record, streak, last ten and the season series to each row.
+
+    For the three leagues MLB's free API does not cover. ESPN answers a
+    GitHub runner with 403 and the paid scores endpoint reaches back three
+    days, not a season, so these come from the finals this project stores for
+    itself -- which costs nothing further and depends on no outside party
+    staying friendly.
+
+    A club we have stored no finished games for is left alone entirely: an
+    empty form block renders as a panel with three blank rows, which reads as
+    a broken page rather than as a young season.
+    """
+    if not games:
+        return 0
+    form = form_store.table(games)
+    matched = 0
+    for row in rows:
+        home, away = row.get("home"), row.get("away")
+        if home not in form or away not in form:
+            continue
+        detail = row.setdefault("detail", {})
+        detail["home_form"] = form[home]
+        detail["away_form"] = form[away]
+        detail["series"] = form_store.series(games, home, away)
         matched += 1
     return matched
 
@@ -863,6 +895,50 @@ def _self_test() -> None:
     # And the output slots straight into merge_model.
     assert merge_model(upcoming, rated, "elo") == 1
     assert upcoming[0]["model"]["source"] == "elo"
+
+    # The detail block has to carry the form and the series, or the panel
+    # renders an empty section on a card whose rating merged fine.
+    for key in ("home_form", "away_form", "series"):
+        assert key in DETAIL_KEYS, f"{key} missing from DETAIL_KEYS"
+    rows = [{"event_id": "e1", "league": "mlb",
+             "markets": {"h2h": {"fair_home": 0.5}}}]
+    rated = [{"event_id": "e1", "home_win_prob": 0.6, "away_win_prob": 0.4,
+              "home_form": {"w": 73, "l": 65, "streak": "W1",
+                            "l10_w": 5, "l10_l": 5},
+              "away_form": {"w": 65, "l": 73, "streak": "L1",
+                            "l10_w": 4, "l10_l": 6},
+              "series": [{"date": "2026-06-08",
+                          "away": "Cincinnati Reds", "away_runs": 2,
+                          "home": "San Diego Padres", "home_runs": 6}]}]
+    assert merge_model(rows, rated, "slate") == 1
+    detail = rows[0]["detail"]
+    assert detail["home_form"]["streak"] == "W1", detail
+    assert detail["series"][0]["home"] == "San Diego Padres", detail["series"]
+
+    # Leagues with no free standings source take their form from the finals
+    # the daily job stores. A league we have stored nothing for leaves the
+    # rows untouched rather than attaching an empty block.
+    nfl = [{"event_id": "n1", "league": "nfl",
+            "home": "Chicago Bears", "away": "Green Bay Packers",
+            "markets": {"h2h": {"fair_home": 0.5}}}]
+    stored = [
+        {"date": "2026-09-06", "away": "Chicago Bears", "away_score": 10,
+         "home": "Green Bay Packers", "home_score": 24, "completed": True},
+        {"date": "2026-09-13", "away": "Green Bay Packers", "away_score": 13,
+         "home": "Chicago Bears", "home_score": 20, "completed": True},
+    ]
+    assert merge_form(nfl, stored) == 1
+    d = nfl[0]["detail"]
+    assert d["home_form"]["streak"] == "W1", d["home_form"]
+    assert d["away_form"]["w"] == 1
+    assert len(d["series"]) == 2
+    assert d["series"][0]["home"] == "Green Bay Packers", d["series"]
+
+    empty = [{"event_id": "n2", "league": "nfl", "home": "A", "away": "B",
+              "markets": {}}]
+    assert merge_form(empty, []) == 0
+    assert "detail" not in empty[0], \
+        "an empty store attaches nothing rather than an empty panel"
 
     print("board self-test: all invariants hold")
 
