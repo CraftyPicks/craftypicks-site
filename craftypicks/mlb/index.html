@@ -657,6 +657,103 @@ footer{background:var(--bg-2);padding:56px 0 40px}
 /* ---------- language switch ---------- */
 
 
+/* ============================================ board card detail panel ===== */
+.pnl{padding:2px 0 4px}
+.pk{margin:0 0 16px}
+.pk h4{font-family:var(--mono);font-size:10px;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--muted);margin:0 0 7px;font-weight:400}
+.pkt{width:100%;border-collapse:collapse;font-size:12.5px}
+.pkt th{text-align:left;font-weight:400;color:var(--muted);
+  padding:5px 10px 5px 0;white-space:nowrap;width:1%}
+.pkt td{padding:5px 0 5px 10px;color:var(--txt);width:38%}
+.pkt tr+tr th,.pkt tr+tr td{border-top:1px solid var(--line)}
+.pkt tr.hd th,.pkt tr.hd td{font-family:var(--mono);font-size:10px;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--muted);
+  padding-bottom:2px}
+.pkt.fm td b{font-family:var(--mono);font-size:13px}
+.pkt.fm td b.good{color:var(--green)} .pkt.fm td b.bad{color:var(--red)}
+.pkt.fm td i{display:block;font-style:normal;color:var(--muted);
+  font-size:11px;margin-top:1px}
+.pnl-note{font-size:12.5px;color:var(--muted);margin:0 0 8px;line-height:1.5}
+.pnl-note b{color:var(--txt);font-family:var(--mono)}
+.h2g{display:grid;grid-template-columns:52px 1fr auto;gap:8px;
+  font-size:12.5px;padding:4px 0;border-top:1px solid var(--line);
+  align-items:baseline}
+.h2d{font-family:var(--mono);font-size:11px;color:var(--muted)}
+.h2s{color:var(--muted)} .h2s b{color:var(--txt);font-weight:500}
+.h2w{color:var(--muted);font-size:11px}
+.h2more{font-size:11px;color:var(--muted);padding:3px 0}
+.pst{padding:6px 0;border-top:1px solid var(--line)}
+.pst:first-of-type{border-top:none}
+.pst-n{font-size:13px;color:var(--txt)}
+.pst-v{font-size:12.5px;color:var(--muted);line-height:1.5;margin-top:2px}
+.ppr{padding:7px 0;border-top:1px solid var(--line)}
+.ppr:first-of-type{border-top:none}
+.ppr-top{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.ppr-n{font-size:13px;color:var(--txt)}
+.ppr-v{font-size:11px;letter-spacing:.03em;color:var(--muted);white-space:nowrap}
+.ppr-v.good{color:var(--green)} .ppr-v.bad{color:var(--red)}
+.ppr-line{font-size:12.5px;color:var(--muted);line-height:1.6;margin-top:2px}
+.ppr-line b{font-family:var(--mono);color:var(--txt);font-weight:500}
+.ppr-line .good{color:var(--green)} .ppr-line .bad{color:var(--red)}
+@media (max-width:560px){
+  .pkt th{white-space:nowrap;width:1%}
+  .h2g{grid-template-columns:46px 1fr auto}
+}
+
+/* ============================================= prop card matchup panel ==== */
+.mx{border-top:1px solid var(--line)}
+.mx summary{list-style:none;cursor:pointer;padding:10px 15px;
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--muted);display:flex;
+  align-items:center;justify-content:space-between;gap:8px}
+.mx summary::-webkit-details-marker{display:none}
+.mx summary::after{content:"";width:7px;height:7px;
+  border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;
+  transform:rotate(45deg) translate(-2px,-2px);transition:transform .18s ease}
+.mx[open] summary::after{transform:rotate(-135deg) translate(-2px,-2px)}
+.mx summary:hover{color:var(--txt);background:var(--panel-2)}
+.mx summary:focus-visible{outline:2px solid var(--green);outline-offset:-2px}
+.mxb{padding:2px 15px 14px}
+.mxh{font-family:var(--mono);font-size:10px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--muted);margin:12px 0 8px}
+.mxg{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;
+  background:var(--line);border:1px solid var(--line)}
+.mxg>div{background:var(--panel);padding:7px 6px;display:flex;
+  flex-direction:column;gap:3px;min-width:0}
+.mxg span{font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--muted)}
+.mxg b{font-family:var(--mono);font-size:14px;color:var(--txt);font-weight:500}
+.mxn{font-size:12.5px;line-height:1.55;color:var(--muted);margin:8px 0 0}
+.mxn.warn{font-style:italic}
+.mxt{width:100%;border-collapse:collapse;font-size:12.5px}
+.mxt th{text-align:left;font-weight:400;color:var(--muted);padding:6px 8px 6px 0}
+.mxt td{padding:6px 0 6px 8px;text-align:right;font-family:var(--mono);
+  color:var(--txt)}
+.mxt td.r,.mxt td.p{color:var(--muted);font-size:11.5px;white-space:nowrap}
+.mxt tr{border-bottom:1px solid var(--line)}
+.mxt tr.on{background:var(--panel-2)}
+.mxt tr.on th{color:var(--txt);box-shadow:inset 2px 0 0 var(--green);
+  padding-left:8px}
+.mxt tr.avg{border-bottom:none}
+.mxt tr.avg th,.mxt tr.avg td{color:var(--muted);font-size:11.5px;padding-top:8px}
+.verdict{display:flex;justify-content:space-between;align-items:baseline;
+  gap:10px;margin:0;padding:9px 15px;font-family:var(--mono);font-size:10.5px;
+  letter-spacing:.13em;text-transform:uppercase;color:var(--muted);
+  border-top:1px solid var(--line);background:var(--panel-2)}
+.verdict.good{color:var(--green)} .verdict.bad{color:var(--red)}
+.verdict .vd{font-size:10px;letter-spacing:.06em;text-transform:none;
+  color:var(--muted)}
+.pb-card{display:flex;flex-direction:column}
+.pb-card .verdict{margin-top:auto}
+@media (max-width:520px){
+  .mxg>div{padding:6px 4px}
+  .mxg span{font-size:8.5px;letter-spacing:.02em}
+  .mxg b{font-size:12.5px}
+  .mxt{font-size:11.5px}
+  .mxt td.r,.mxt td.p{font-size:10.5px}
+}
+
 </style>
 </head>
 <body>
@@ -705,10 +802,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
         <div class="gvs thin" title="2025–2026 regular season — shown as context, not used in the number. Too few starts to mean anything.">vs Jays &middot; 1 GS &middot; 5.3 IP &middot; 1.69 ERA &middot; thin</div>
           <div class="gfoot"><span class="lean">2.4 pts off market</span></div>
           <div class="mk"><div class="mk-row"><span class="mk-label">Moneyline</span><span class="mk-line">Guardians <b>+118</b> <span class="mk-book">BetRivers</span></span><span class="mk-edge r">−1.9%</span></div><div class="mk-row"><span class="mk-label">Run line</span><span class="mk-line">Guardians +1.5 <b>−152</b> <span class="mk-book">BetRivers</span></span><span class="mk-edge r">−1.4%</span></div><div class="mk-row"><span class="mk-label">Total</span><span class="mk-line">+7 &middot; o<b>−120</b> <span class="mk-book">MyBookie.ag</span></span><span class="mk-note">market only</span></div></div>
-          <details class="gmore">
-            <summary>Books, matchup history and props</summary>
-            <div class="gmore-in"><table class="gtbl"><tbody><tr><td>Moneyline</td><td class="m">+122</td><td class="m">20</td><td class="m">9 books</td></tr><tr><td>Run line</td><td class="m">−147</td><td class="m">25</td><td class="m">9 books</td></tr><tr><td>Total</td><td class="m">−114</td><td class="m">20.5</td><td class="m">6 books</td></tr></tbody></table></div>
-          </details>
+          <details class="gmore"><summary>Form, head to head and props</summary><div class="gmore-in"><div class="pnl"><section class="pk"><h4>Head to head</h4><p class="pnl-note">They have not met yet this season.</p></section><section class="pk"><h4>Tonight&rsquo;s starters</h4><div class="pst"><div class="pst-n">Dylan Cease &middot; 2.33 ERA</div><div class="pst-v">1 start against the Guardians: 6.3 innings, 7 strikeouts (10.0 per nine), 1.42 ERA</div></div><div class="pst"><div class="pst-n">Joey Cantillo &middot; 3.70 ERA</div><div class="pst-v">1 start against the Jays: 5.3 innings, 4 strikeouts (6.8 per nine), 1.69 ERA</div></div></section><section class="pk"><h4>Tonight&rsquo;s strikeout props</h4><div class="ppr"><div class="ppr-top"><span class="ppr-n">Joey Cantillo</span><span class="ppr-v ">ordinary matchup</span></div><div class="ppr-line">strikeouts &middot; ours <b>4.9</b> &middot; line <b>4.5</b> &middot; o−115 / u−108 &middot; <span class="good">0.4 over the line</span></div></div><div class="ppr"><div class="ppr-top"><span class="ppr-n">Dylan Cease</span><span class="ppr-v ">ordinary matchup</span></div><div class="ppr-line">strikeouts &middot; ours <b>7.6</b> &middot; line <b>6.5</b> &middot; o−103 / u−118 &middot; <span class="good">1.1 over the line</span></div></div></section></div></div></details>
         </div>
       </article>
       <article class="gcard" style="--accent:#CA931F" id="g-a081961893797b7b0bda834791610d56">
@@ -735,10 +829,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
         <div class="gvs thin" title="2025–2026 regular season — shown as context, not used in the number. Too few starts to mean anything.">vs Giants &middot; 1 GS &middot; 5.0 IP &middot; 3.60 ERA &middot; thin</div>
           <div class="gfoot"><span class="lean">1.0 pts off market</span></div>
           <div class="mk"><div class="mk-row"><span class="mk-label">Moneyline</span><span class="mk-line">Pirates <b>−150</b> <span class="mk-book">BetOnline.ag</span></span><span class="mk-edge r">−2.0%</span></div><div class="mk-row"><span class="mk-label">Run line</span><span class="mk-line">Pirates −1.5 <b>+136</b> <span class="mk-book">LowVig.ag</span></span><span class="mk-edge r">−4.3%</span></div><div class="mk-row"><span class="mk-label">Total</span><span class="mk-line">+8.5 &middot; o<b>−114</b> <span class="mk-book">BetRivers</span></span><span class="mk-note">market only</span></div></div>
-          <details class="gmore">
-            <summary>Books, matchup history and props</summary>
-            <div class="gmore-in"><table class="gtbl"><tbody><tr><td>Moneyline</td><td class="m">−143</td><td class="m">24</td><td class="m">9 books</td></tr><tr><td>Run line</td><td class="m">+147</td><td class="m">25</td><td class="m">9 books</td></tr><tr><td>Total</td><td class="m">−110</td><td class="m">21</td><td class="m">7 books</td></tr></tbody></table></div>
-          </details>
+          <details class="gmore"><summary>Form, head to head and props</summary><div class="gmore-in"><div class="pnl"><section class="pk"><h4>Head to head</h4><p class="pnl-note">They have not met yet this season.</p></section><section class="pk"><h4>Tonight&rsquo;s starters</h4><div class="pst"><div class="pst-n">Landen Roupp &middot; 4.25 ERA</div><div class="pst-v">1 start against the Pirates: 4 innings, 8 strikeouts (18.0 per nine), 2.25 ERA</div></div><div class="pst"><div class="pst-n">Bubba Chandler &middot; 4.26 ERA</div><div class="pst-v">1 start against the Giants: 5 innings, 3 strikeouts (5.4 per nine), 3.60 ERA</div></div></section><section class="pk"><h4>Tonight&rsquo;s strikeout props</h4><div class="ppr"><div class="ppr-top"><span class="ppr-n">Landen Roupp</span><span class="ppr-v ">ordinary matchup</span></div><div class="ppr-line">strikeouts &middot; ours <b>5.8</b> &middot; line <b>4.5</b> &middot; o−154 / u+124 &middot; <span class="good">1.3 over the line</span></div></div><div class="ppr"><div class="ppr-top"><span class="ppr-n">Bubba Chandler</span><span class="ppr-v ">ordinary matchup</span></div><div class="ppr-line">strikeouts &middot; ours <b>4.5</b> &middot; line <b>4.5</b> &middot; o+125 / u−133 &middot; <span class="">in line</span></div></div></section></div></div></details>
         </div>
       </article>
       <article class="gcard" style="--accent:#7AA0C4" id="g-0f008463e07ac89253cf7559eae28606">
@@ -765,10 +856,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
         <div class="gvs thin" title="2025–2026 regular season — shown as context, not used in the number. Too few starts to mean anything.">vs Mets &middot; 2.0 IP &middot; 13.50 ERA &middot; thin</div>
           <div class="gfoot"><span class="lean">2.0 pts off market</span></div>
           <div class="mk"><div class="mk-row"><span class="mk-label">Moneyline</span><span class="mk-line">Rays <b>−171</b> <span class="mk-book">BetUS</span></span><span class="mk-edge r">−0.8%</span></div><div class="mk-row"><span class="mk-label">Run line</span><span class="mk-line">Rays −1.5 <b>+122</b> <span class="mk-book">FanDuel</span></span><span class="mk-edge r">−3.5%</span></div><div class="mk-row"><span class="mk-label">Total</span><span class="mk-line">+8 &middot; o<b>−109</b> <span class="mk-book">LowVig.ag</span></span><span class="mk-note">market only</span></div></div>
-          <details class="gmore">
-            <summary>Books, matchup history and props</summary>
-            <div class="gmore-in"><table class="gtbl"><tbody><tr><td>Moneyline</td><td class="m">−168</td><td class="m">28</td><td class="m">9 books</td></tr><tr><td>Run line</td><td class="m">+130</td><td class="m">20</td><td class="m">9 books</td></tr><tr><td>Total</td><td class="m">−101</td><td class="m">20</td><td class="m">9 books</td></tr></tbody></table></div>
-          </details>
+          <details class="gmore"><summary>Form, head to head and props</summary><div class="gmore-in"><div class="pnl"><section class="pk"><h4>Head to head</h4><p class="pnl-note">They have not met yet this season.</p></section><section class="pk"><h4>Tonight&rsquo;s starters</h4><div class="pst"><div class="pst-n">Justin Hagenman</div><div class="pst-v">has not faced the Rays in 2025&ndash;2026</div></div><div class="pst"><div class="pst-n">Griffin Jax &middot; 3.63 ERA</div><div class="pst-v">0 starts against the Mets: 2 innings, 2 strikeouts (9.0 per nine), 13.50 ERA</div></div></section><section class="pk"><h4>Tonight&rsquo;s strikeout props</h4><div class="ppr"><div class="ppr-top"><span class="ppr-n">Griffin Jax</span><span class="ppr-v ">ordinary matchup</span></div><div class="ppr-line">strikeouts &middot; ours <b>5.9</b> &middot; line <b>4.5</b> &middot; o−115 / u+107 &middot; <span class="good">1.4 over the line</span></div></div></section></div></div></details>
         </div>
       </article>
       <article class="gcard" style="--accent:#0E3386" id="g-e5573b0492ef2f689b729412d3bde508">
@@ -795,10 +883,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
         <div class="gvs thin" title="2025–2026 regular season — shown as context, not used in the number. Too few starts to mean anything.">vs Brewers &middot; 2 GS &middot; 12.3 IP &middot; 2.19 ERA &middot; thin</div>
           <div class="gfoot"><span>in line with the market</span></div>
           <div class="mk"><div class="mk-row"><span class="mk-label">Moneyline</span><span class="mk-line">Cubs <b>+135</b> <span class="mk-book">BetRivers</span></span><span class="mk-edge r">−0.9%</span></div><div class="mk-row"><span class="mk-label">Run line</span><span class="mk-line">Cubs +1.5 <b>−128</b> <span class="mk-book">DraftKings</span></span><span class="mk-edge r">−1.9%</span></div><div class="mk-row"><span class="mk-label">Total</span><span class="mk-line">+8.5 &middot; o<b>−102</b> <span class="mk-book">LowVig.ag</span></span><span class="mk-note">market only</span></div></div>
-          <details class="gmore">
-            <summary>Books, matchup history and props</summary>
-            <div class="gmore-in"><table class="gtbl"><tbody><tr><td>Moneyline</td><td class="m">+137</td><td class="m">22</td><td class="m">9 books</td></tr><tr><td>Run line</td><td class="m">−123</td><td class="m">20</td><td class="m">9 books</td></tr><tr><td>Total</td><td class="m">+102</td><td class="m">20.0</td><td class="m">8 books</td></tr></tbody></table></div>
-          </details>
+          <details class="gmore"><summary>Form, head to head and props</summary><div class="gmore-in"><div class="pnl"><section class="pk"><h4>Head to head</h4><p class="pnl-note">They have not met yet this season.</p></section><section class="pk"><h4>Tonight&rsquo;s starters</h4><div class="pst"><div class="pst-n">Jacob Misiorowski &middot; 1.73 ERA</div><div class="pst-v">4 starts against the Cubs: 20 innings, 28 strikeouts (12.6 per nine), 2.70 ERA</div></div><div class="pst"><div class="pst-n">David Peterson &middot; 5.11 ERA</div><div class="pst-v">2 starts against the Brewers: 12.3 innings, 6 strikeouts (4.4 per nine), 2.19 ERA</div></div></section><section class="pk"><h4>Tonight&rsquo;s strikeout props</h4><div class="ppr"><div class="ppr-top"><span class="ppr-n">David Peterson</span><span class="ppr-v ">ordinary matchup</span></div><div class="ppr-line">strikeouts &middot; ours <b>4.7</b> &middot; line <b>4.5</b> &middot; o+120 / u−137 &middot; <span class="">in line</span></div></div><div class="ppr"><div class="ppr-top"><span class="ppr-n">Jacob Misiorowski</span><span class="ppr-v ">ordinary matchup</span></div><div class="ppr-line">strikeouts &middot; ours <b>8.2</b> &middot; line <b>7.5</b> &middot; o−107 / u+105 &middot; <span class="good">0.7 over the line</span></div></div></section></div></div></details>
         </div>
       </article>
       <article class="gcard" style="--accent:#004687" id="g-865b5161840c3b0f959eaa526c8ac629">
@@ -825,10 +910,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
         
           <div class="gfoot"><span class="lean">2.6 pts off market</span></div>
           <div class="mk"><div class="mk-row"><span class="mk-label">Moneyline</span><span class="mk-line">Royals <b>−109</b> <span class="mk-book">LowVig.ag</span></span><span class="mk-edge r">−2.0%</span></div><div class="mk-row"><span class="mk-label">Run line</span><span class="mk-line">Royals +1.5 <b>−181</b> <span class="mk-book">DraftKings</span></span><span class="mk-edge r">−2.2%</span></div><div class="mk-row"><span class="mk-label">Total</span><span class="mk-line">+9 &middot; o<b>+100</b> <span class="mk-book">Bovada</span></span><span class="mk-note">market only</span></div></div>
-          <details class="gmore">
-            <summary>Books, matchup history and props</summary>
-            <div class="gmore-in"><table class="gtbl"><tbody><tr><td>Moneyline</td><td class="m">−105</td><td class="m">16</td><td class="m">9 books</td></tr><tr><td>Run line</td><td class="m">−170</td><td class="m">32</td><td class="m">5 books</td></tr><tr><td>Total</td><td class="m">+105</td><td class="m">20</td><td class="m">9 books</td></tr></tbody></table></div>
-          </details>
+          <details class="gmore"><summary>Form, head to head and props</summary><div class="gmore-in"><div class="pnl"><section class="pk"><h4>Head to head</h4><p class="pnl-note">They have not met yet this season.</p></section><section class="pk"><h4>Tonight&rsquo;s starters</h4><div class="pst"><div class="pst-n">Eury Pérez &middot; 3.44 ERA</div><div class="pst-v">has not faced the Royals in 2025&ndash;2026</div></div><div class="pst"><div class="pst-n">Noah Cameron &middot; 3.98 ERA</div><div class="pst-v">has not faced the Marlins in 2025&ndash;2026</div></div></section><section class="pk"><h4>Tonight&rsquo;s strikeout props</h4><div class="ppr"><div class="ppr-top"><span class="ppr-n">Eury Pérez</span><span class="ppr-v ">ordinary matchup</span></div><div class="ppr-line">strikeouts &middot; ours <b>5.4</b> &middot; line <b>4.5</b> &middot; o−142 / u+120 &middot; <span class="good">0.9 over the line</span></div></div><div class="ppr"><div class="ppr-top"><span class="ppr-n">Noah Cameron</span><span class="ppr-v ">ordinary matchup</span></div><div class="ppr-line">strikeouts &middot; ours <b>4.6</b> &middot; line <b>4.5</b> &middot; o−118 / u+102 &middot; <span class="">in line</span></div></div></section></div></div></details>
         </div>
       </article>
       <article class="gcard" style="--accent:#002B5C" id="g-af7b25a4d0428e7f04b74c6c3a75c59d">
@@ -855,10 +937,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
         <div class="gvs thin" title="2025–2026 regular season — shown as context, not used in the number. Too few starts to mean anything.">vs Tigers &middot; 2 GS &middot; 16.7 IP &middot; 9.18 ERA &middot; thin</div>
           <div class="gfoot"><span class="lean">4.7 pts off market</span></div>
           <div class="mk"><div class="mk-row"><span class="mk-label">Moneyline</span><span class="mk-line">Twins <b>−111</b> <span class="mk-book">MyBookie.ag</span></span><span class="mk-edge r">−1.3%</span></div><div class="mk-row"><span class="mk-label">Run line</span><span class="mk-line">Twins −1.5 <b>+175</b> <span class="mk-book">LowVig.ag</span></span><span class="mk-edge r">−4.6%</span></div><div class="mk-row"><span class="mk-label">Total</span><span class="mk-line">+8.5 &middot; o<b>−113</b> <span class="mk-book">LowVig.ag</span></span><span class="mk-note">market only</span></div></div>
-          <details class="gmore">
-            <summary>Books, matchup history and props</summary>
-            <div class="gmore-in"><table class="gtbl"><tbody><tr><td>Moneyline</td><td class="m">−108</td><td class="m">18</td><td class="m">9 books</td></tr><tr><td>Run line</td><td class="m">+188</td><td class="m">28</td><td class="m">5 books</td></tr><tr><td>Total</td><td class="m">−106</td><td class="m">20.0</td><td class="m">8 books</td></tr></tbody></table></div>
-          </details>
+          <details class="gmore"><summary>Form, head to head and props</summary><div class="gmore-in"><div class="pnl"><section class="pk"><h4>Head to head</h4><p class="pnl-note">They have not met yet this season.</p></section><section class="pk"><h4>Tonight&rsquo;s starters</h4><div class="pst"><div class="pst-n">Drew Anderson &middot; 3.87 ERA</div><div class="pst-v">0 starts against the Twins: 3.7 innings, 6 strikeouts (14.6 per nine), 2.45 ERA</div></div><div class="pst"><div class="pst-n">Dean Kremer &middot; 5.60 ERA</div><div class="pst-v">2 starts against the Tigers: 16.7 innings, 15 strikeouts (8.1 per nine), 9.18 ERA</div></div></section><section class="pk"><h4>Tonight&rsquo;s strikeout props</h4><div class="ppr"><div class="ppr-top"><span class="ppr-n">Drew Anderson</span><span class="ppr-v ">ordinary matchup</span></div><div class="ppr-line">strikeouts &middot; ours <b>5.6</b> &middot; line <b>4.5</b> &middot; o+128 / u−160 &middot; <span class="good">1.1 over the line</span></div></div><div class="ppr"><div class="ppr-top"><span class="ppr-n">Dean Kremer</span><span class="ppr-v ">ordinary matchup</span></div><div class="ppr-line">strikeouts &middot; ours <b>5.3</b> &middot; line <b>4.5</b> &middot; o+120 / u−140 &middot; <span class="good">0.8 over the line</span></div></div></section></div></div></details>
         </div>
       </article>
       <article class="gcard" style="--accent:#EB6E1F" id="g-5315049742364f1f962411a129153260">
@@ -885,10 +964,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
         
           <div class="gfoot"><span class="lean">2.5 pts off market</span></div>
           <div class="mk"><div class="mk-row"><span class="mk-label">Moneyline</span><span class="mk-line">Astros <b>−135</b> <span class="mk-book">BetUS</span></span><span class="mk-edge r">−1.7%</span></div><div class="mk-row"><span class="mk-label">Run line</span><span class="mk-line">Astros −1.5 <b>+152</b> <span class="mk-book">LowVig.ag</span></span><span class="mk-edge r">−4.7%</span></div><div class="mk-row"><span class="mk-label">Total</span><span class="mk-line">+8.5 &middot; o<b>−113</b> <span class="mk-book">LowVig.ag</span></span><span class="mk-note">market only</span></div></div>
-          <details class="gmore">
-            <summary>Books, matchup history and props</summary>
-            <div class="gmore-in"><table class="gtbl"><tbody><tr><td>Moneyline</td><td class="m">−130</td><td class="m">22</td><td class="m">9 books</td></tr><tr><td>Run line</td><td class="m">+165</td><td class="m">27</td><td class="m">9 books</td></tr><tr><td>Total</td><td class="m">−106</td><td class="m">20</td><td class="m">9 books</td></tr></tbody></table></div>
-          </details>
+          <details class="gmore"><summary>Form, head to head and props</summary><div class="gmore-in"><div class="pnl"><section class="pk"><h4>Head to head</h4><p class="pnl-note">They have not met yet this season.</p></section><section class="pk"><h4>Tonight&rsquo;s starters</h4><div class="pst"><div class="pst-n">Davis Martin &middot; 4.32 ERA</div><div class="pst-v">3 starts against the Astros: 16 innings, 13 strikeouts (7.3 per nine), 6.19 ERA</div></div><div class="pst"><div class="pst-n">Hayden Wesneski &middot; 3.86 ERA</div><div class="pst-v">has not faced the White Sox in 2025&ndash;2026</div></div></section><section class="pk"><h4>Tonight&rsquo;s strikeout props</h4><div class="ppr"><div class="ppr-top"><span class="ppr-n">Hayden Wesneski</span><span class="ppr-v ">ordinary matchup</span></div><div class="ppr-line">strikeouts &middot; ours <b>4.9</b> &middot; line <b>4.5</b> &middot; o−143 / u+125 &middot; <span class="good">0.4 over the line</span></div></div><div class="ppr"><div class="ppr-top"><span class="ppr-n">Davis Martin</span><span class="ppr-v ">ordinary matchup</span></div><div class="ppr-line">strikeouts &middot; ours <b>4.6</b> &middot; line <b>3.5</b> &middot; o+110 / u−125 &middot; <span class="good">1.1 over the line</span></div></div></section></div></div></details>
         </div>
       </article>
       <article class="gcard" style="--accent:#BA0021" id="g-6467c41d2b7da8c9e8efcda4c5d5f7b8">
@@ -915,10 +991,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
         <div class="gvs thin" title="2025–2026 regular season — shown as context, not used in the number. Too few starts to mean anything.">vs Yankees &middot; 1 GS &middot; 11.0 IP &middot; 0.82 ERA &middot; thin</div>
           <div class="gfoot"><span class="lean">3.3 pts off market</span></div>
           <div class="mk"><div class="mk-row"><span class="mk-label">Moneyline</span><span class="mk-line">Angels <b>+145</b> <span class="mk-book">LowVig.ag</span></span><span class="mk-edge r">−2.9%</span></div><div class="mk-row"><span class="mk-label">Run line</span><span class="mk-line">Angels +1.5 <b>−129</b> <span class="mk-book">LowVig.ag</span></span><span class="mk-edge r">−2.0%</span></div><div class="mk-row"><span class="mk-label">Total</span><span class="mk-line">+6.5 &middot; o<b>−110</b> <span class="mk-book">LowVig.ag</span></span><span class="mk-note">market only</span></div></div>
-          <details class="gmore">
-            <summary>Books, matchup history and props</summary>
-            <div class="gmore-in"><table class="gtbl"><tbody><tr><td>Moneyline</td><td class="m">+152</td><td class="m">25</td><td class="m">9 books</td></tr><tr><td>Run line</td><td class="m">−123</td><td class="m">21</td><td class="m">9 books</td></tr><tr><td>Total</td><td class="m">−103</td><td class="m">20</td><td class="m">9 books</td></tr></tbody></table></div>
-          </details>
+          <details class="gmore"><summary>Form, head to head and props</summary><div class="gmore-in"><div class="pnl"><section class="pk"><h4>Head to head</h4><p class="pnl-note">They have not met yet this season.</p></section><section class="pk"><h4>Tonight&rsquo;s starters</h4><div class="pst"><div class="pst-n">Cam Schlittler &middot; 2.09 ERA</div><div class="pst-v">has not faced the Angels in 2025&ndash;2026</div></div><div class="pst"><div class="pst-n">Reid Detmers &middot; 3.54 ERA</div><div class="pst-v">1 start against the Yankees: 11 innings, 16 strikeouts (13.1 per nine), 0.82 ERA</div></div></section><section class="pk"><h4>Tonight&rsquo;s strikeout props</h4><div class="ppr"><div class="ppr-top"><span class="ppr-n">Cam Schlittler</span><span class="ppr-v ">ordinary matchup</span></div><div class="ppr-line">strikeouts &middot; ours <b>7.6</b> &middot; line <b>7.5</b> &middot; o−132 / u+115 &middot; <span class="">in line</span></div></div><div class="ppr"><div class="ppr-top"><span class="ppr-n">Reid Detmers</span><span class="ppr-v ">ordinary matchup</span></div><div class="ppr-line">strikeouts &middot; ours <b>6.5</b> &middot; line <b>6.5</b> &middot; o−113 / u−111 &middot; <span class="">in line</span></div></div></section></div></div></details>
         </div>
       </article>
       <article class="gcard" style="--accent:#005A9C" id="g-8cc27a7b0c6903978e605ba541bed625">
@@ -945,10 +1018,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
         <div class="gvs thin" title="2025–2026 regular season — shown as context, not used in the number. Too few starts to mean anything.">vs Cardinals &middot; 1 GS &middot; 6.0 IP &middot; 0.00 ERA &middot; thin</div>
           <div class="gfoot"><span class="lean">11.2 pts off market</span></div>
           <div class="mk"><div class="mk-row"><span class="mk-label">Moneyline</span><span class="mk-line">Dodgers <b>−240</b> <span class="mk-book">BetUS</span></span><span class="mk-edge r">−1.0%</span></div><div class="mk-row"><span class="mk-label">Run line</span><span class="mk-line">Dodgers −1.5 <b>−108</b> <span class="mk-book">BetRivers</span></span><span class="mk-edge r">−0.6%</span></div><div class="mk-row"><span class="mk-label">Total</span><span class="mk-line">+8 &middot; o<b>+103</b> <span class="mk-book">LowVig.ag</span></span><span class="mk-note">market only</span></div></div>
-          <details class="gmore">
-            <summary>Books, matchup history and props</summary>
-            <div class="gmore-in"><table class="gtbl"><tbody><tr><td>Moneyline</td><td class="m">−232</td><td class="m">45</td><td class="m">9 books</td></tr><tr><td>Run line</td><td class="m">−107</td><td class="m">20</td><td class="m">9 books</td></tr><tr><td>Total</td><td class="m">+106</td><td class="m">20.0</td><td class="m">8 books</td></tr></tbody></table></div>
-          </details>
+          <details class="gmore"><summary>Form, head to head and props</summary><div class="gmore-in"><div class="pnl"><section class="pk"><h4>Head to head</h4><p class="pnl-note">They have not met yet this season.</p></section><section class="pk"><h4>Tonight&rsquo;s starters</h4><div class="pst"><div class="pst-n">Yoshinobu Yamamoto &middot; 2.56 ERA</div><div class="pst-v">1 start against the Cardinals: 6 innings, 9 strikeouts (13.5 per nine), 0.00 ERA</div></div></section></div></div></details>
         </div>
       </article></div>
 </section>

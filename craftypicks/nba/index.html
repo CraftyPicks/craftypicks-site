@@ -657,6 +657,103 @@ footer{background:var(--bg-2);padding:56px 0 40px}
 /* ---------- language switch ---------- */
 
 
+/* ============================================ board card detail panel ===== */
+.pnl{padding:2px 0 4px}
+.pk{margin:0 0 16px}
+.pk h4{font-family:var(--mono);font-size:10px;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--muted);margin:0 0 7px;font-weight:400}
+.pkt{width:100%;border-collapse:collapse;font-size:12.5px}
+.pkt th{text-align:left;font-weight:400;color:var(--muted);
+  padding:5px 10px 5px 0;white-space:nowrap;width:1%}
+.pkt td{padding:5px 0 5px 10px;color:var(--txt);width:38%}
+.pkt tr+tr th,.pkt tr+tr td{border-top:1px solid var(--line)}
+.pkt tr.hd th,.pkt tr.hd td{font-family:var(--mono);font-size:10px;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--muted);
+  padding-bottom:2px}
+.pkt.fm td b{font-family:var(--mono);font-size:13px}
+.pkt.fm td b.good{color:var(--green)} .pkt.fm td b.bad{color:var(--red)}
+.pkt.fm td i{display:block;font-style:normal;color:var(--muted);
+  font-size:11px;margin-top:1px}
+.pnl-note{font-size:12.5px;color:var(--muted);margin:0 0 8px;line-height:1.5}
+.pnl-note b{color:var(--txt);font-family:var(--mono)}
+.h2g{display:grid;grid-template-columns:52px 1fr auto;gap:8px;
+  font-size:12.5px;padding:4px 0;border-top:1px solid var(--line);
+  align-items:baseline}
+.h2d{font-family:var(--mono);font-size:11px;color:var(--muted)}
+.h2s{color:var(--muted)} .h2s b{color:var(--txt);font-weight:500}
+.h2w{color:var(--muted);font-size:11px}
+.h2more{font-size:11px;color:var(--muted);padding:3px 0}
+.pst{padding:6px 0;border-top:1px solid var(--line)}
+.pst:first-of-type{border-top:none}
+.pst-n{font-size:13px;color:var(--txt)}
+.pst-v{font-size:12.5px;color:var(--muted);line-height:1.5;margin-top:2px}
+.ppr{padding:7px 0;border-top:1px solid var(--line)}
+.ppr:first-of-type{border-top:none}
+.ppr-top{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.ppr-n{font-size:13px;color:var(--txt)}
+.ppr-v{font-size:11px;letter-spacing:.03em;color:var(--muted);white-space:nowrap}
+.ppr-v.good{color:var(--green)} .ppr-v.bad{color:var(--red)}
+.ppr-line{font-size:12.5px;color:var(--muted);line-height:1.6;margin-top:2px}
+.ppr-line b{font-family:var(--mono);color:var(--txt);font-weight:500}
+.ppr-line .good{color:var(--green)} .ppr-line .bad{color:var(--red)}
+@media (max-width:560px){
+  .pkt th{white-space:nowrap;width:1%}
+  .h2g{grid-template-columns:46px 1fr auto}
+}
+
+/* ============================================= prop card matchup panel ==== */
+.mx{border-top:1px solid var(--line)}
+.mx summary{list-style:none;cursor:pointer;padding:10px 15px;
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--muted);display:flex;
+  align-items:center;justify-content:space-between;gap:8px}
+.mx summary::-webkit-details-marker{display:none}
+.mx summary::after{content:"";width:7px;height:7px;
+  border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;
+  transform:rotate(45deg) translate(-2px,-2px);transition:transform .18s ease}
+.mx[open] summary::after{transform:rotate(-135deg) translate(-2px,-2px)}
+.mx summary:hover{color:var(--txt);background:var(--panel-2)}
+.mx summary:focus-visible{outline:2px solid var(--green);outline-offset:-2px}
+.mxb{padding:2px 15px 14px}
+.mxh{font-family:var(--mono);font-size:10px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--muted);margin:12px 0 8px}
+.mxg{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;
+  background:var(--line);border:1px solid var(--line)}
+.mxg>div{background:var(--panel);padding:7px 6px;display:flex;
+  flex-direction:column;gap:3px;min-width:0}
+.mxg span{font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--muted)}
+.mxg b{font-family:var(--mono);font-size:14px;color:var(--txt);font-weight:500}
+.mxn{font-size:12.5px;line-height:1.55;color:var(--muted);margin:8px 0 0}
+.mxn.warn{font-style:italic}
+.mxt{width:100%;border-collapse:collapse;font-size:12.5px}
+.mxt th{text-align:left;font-weight:400;color:var(--muted);padding:6px 8px 6px 0}
+.mxt td{padding:6px 0 6px 8px;text-align:right;font-family:var(--mono);
+  color:var(--txt)}
+.mxt td.r,.mxt td.p{color:var(--muted);font-size:11.5px;white-space:nowrap}
+.mxt tr{border-bottom:1px solid var(--line)}
+.mxt tr.on{background:var(--panel-2)}
+.mxt tr.on th{color:var(--txt);box-shadow:inset 2px 0 0 var(--green);
+  padding-left:8px}
+.mxt tr.avg{border-bottom:none}
+.mxt tr.avg th,.mxt tr.avg td{color:var(--muted);font-size:11.5px;padding-top:8px}
+.verdict{display:flex;justify-content:space-between;align-items:baseline;
+  gap:10px;margin:0;padding:9px 15px;font-family:var(--mono);font-size:10.5px;
+  letter-spacing:.13em;text-transform:uppercase;color:var(--muted);
+  border-top:1px solid var(--line);background:var(--panel-2)}
+.verdict.good{color:var(--green)} .verdict.bad{color:var(--red)}
+.verdict .vd{font-size:10px;letter-spacing:.06em;text-transform:none;
+  color:var(--muted)}
+.pb-card{display:flex;flex-direction:column}
+.pb-card .verdict{margin-top:auto}
+@media (max-width:520px){
+  .mxg>div{padding:6px 4px}
+  .mxg span{font-size:8.5px;letter-spacing:.02em}
+  .mxg b{font-size:12.5px}
+  .mxt{font-size:11.5px}
+  .mxt td.r,.mxt td.p{font-size:10.5px}
+}
+
 </style>
 </head>
 <body>

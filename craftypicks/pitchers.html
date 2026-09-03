@@ -657,6 +657,103 @@ footer{background:var(--bg-2);padding:56px 0 40px}
 /* ---------- language switch ---------- */
 
 
+/* ============================================ board card detail panel ===== */
+.pnl{padding:2px 0 4px}
+.pk{margin:0 0 16px}
+.pk h4{font-family:var(--mono);font-size:10px;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--muted);margin:0 0 7px;font-weight:400}
+.pkt{width:100%;border-collapse:collapse;font-size:12.5px}
+.pkt th{text-align:left;font-weight:400;color:var(--muted);
+  padding:5px 10px 5px 0;white-space:nowrap;width:1%}
+.pkt td{padding:5px 0 5px 10px;color:var(--txt);width:38%}
+.pkt tr+tr th,.pkt tr+tr td{border-top:1px solid var(--line)}
+.pkt tr.hd th,.pkt tr.hd td{font-family:var(--mono);font-size:10px;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--muted);
+  padding-bottom:2px}
+.pkt.fm td b{font-family:var(--mono);font-size:13px}
+.pkt.fm td b.good{color:var(--green)} .pkt.fm td b.bad{color:var(--red)}
+.pkt.fm td i{display:block;font-style:normal;color:var(--muted);
+  font-size:11px;margin-top:1px}
+.pnl-note{font-size:12.5px;color:var(--muted);margin:0 0 8px;line-height:1.5}
+.pnl-note b{color:var(--txt);font-family:var(--mono)}
+.h2g{display:grid;grid-template-columns:52px 1fr auto;gap:8px;
+  font-size:12.5px;padding:4px 0;border-top:1px solid var(--line);
+  align-items:baseline}
+.h2d{font-family:var(--mono);font-size:11px;color:var(--muted)}
+.h2s{color:var(--muted)} .h2s b{color:var(--txt);font-weight:500}
+.h2w{color:var(--muted);font-size:11px}
+.h2more{font-size:11px;color:var(--muted);padding:3px 0}
+.pst{padding:6px 0;border-top:1px solid var(--line)}
+.pst:first-of-type{border-top:none}
+.pst-n{font-size:13px;color:var(--txt)}
+.pst-v{font-size:12.5px;color:var(--muted);line-height:1.5;margin-top:2px}
+.ppr{padding:7px 0;border-top:1px solid var(--line)}
+.ppr:first-of-type{border-top:none}
+.ppr-top{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.ppr-n{font-size:13px;color:var(--txt)}
+.ppr-v{font-size:11px;letter-spacing:.03em;color:var(--muted);white-space:nowrap}
+.ppr-v.good{color:var(--green)} .ppr-v.bad{color:var(--red)}
+.ppr-line{font-size:12.5px;color:var(--muted);line-height:1.6;margin-top:2px}
+.ppr-line b{font-family:var(--mono);color:var(--txt);font-weight:500}
+.ppr-line .good{color:var(--green)} .ppr-line .bad{color:var(--red)}
+@media (max-width:560px){
+  .pkt th{white-space:nowrap;width:1%}
+  .h2g{grid-template-columns:46px 1fr auto}
+}
+
+/* ============================================= prop card matchup panel ==== */
+.mx{border-top:1px solid var(--line)}
+.mx summary{list-style:none;cursor:pointer;padding:10px 15px;
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--muted);display:flex;
+  align-items:center;justify-content:space-between;gap:8px}
+.mx summary::-webkit-details-marker{display:none}
+.mx summary::after{content:"";width:7px;height:7px;
+  border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;
+  transform:rotate(45deg) translate(-2px,-2px);transition:transform .18s ease}
+.mx[open] summary::after{transform:rotate(-135deg) translate(-2px,-2px)}
+.mx summary:hover{color:var(--txt);background:var(--panel-2)}
+.mx summary:focus-visible{outline:2px solid var(--green);outline-offset:-2px}
+.mxb{padding:2px 15px 14px}
+.mxh{font-family:var(--mono);font-size:10px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--muted);margin:12px 0 8px}
+.mxg{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;
+  background:var(--line);border:1px solid var(--line)}
+.mxg>div{background:var(--panel);padding:7px 6px;display:flex;
+  flex-direction:column;gap:3px;min-width:0}
+.mxg span{font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--muted)}
+.mxg b{font-family:var(--mono);font-size:14px;color:var(--txt);font-weight:500}
+.mxn{font-size:12.5px;line-height:1.55;color:var(--muted);margin:8px 0 0}
+.mxn.warn{font-style:italic}
+.mxt{width:100%;border-collapse:collapse;font-size:12.5px}
+.mxt th{text-align:left;font-weight:400;color:var(--muted);padding:6px 8px 6px 0}
+.mxt td{padding:6px 0 6px 8px;text-align:right;font-family:var(--mono);
+  color:var(--txt)}
+.mxt td.r,.mxt td.p{color:var(--muted);font-size:11.5px;white-space:nowrap}
+.mxt tr{border-bottom:1px solid var(--line)}
+.mxt tr.on{background:var(--panel-2)}
+.mxt tr.on th{color:var(--txt);box-shadow:inset 2px 0 0 var(--green);
+  padding-left:8px}
+.mxt tr.avg{border-bottom:none}
+.mxt tr.avg th,.mxt tr.avg td{color:var(--muted);font-size:11.5px;padding-top:8px}
+.verdict{display:flex;justify-content:space-between;align-items:baseline;
+  gap:10px;margin:0;padding:9px 15px;font-family:var(--mono);font-size:10.5px;
+  letter-spacing:.13em;text-transform:uppercase;color:var(--muted);
+  border-top:1px solid var(--line);background:var(--panel-2)}
+.verdict.good{color:var(--green)} .verdict.bad{color:var(--red)}
+.verdict .vd{font-size:10px;letter-spacing:.06em;text-transform:none;
+  color:var(--muted)}
+.pb-card{display:flex;flex-direction:column}
+.pb-card .verdict{margin-top:auto}
+@media (max-width:520px){
+  .mxg>div{padding:6px 4px}
+  .mxg span{font-size:8.5px;letter-spacing:.02em}
+  .mxg b{font-size:12.5px}
+  .mxt{font-size:11.5px}
+  .mxt td.r,.mxt td.p{font-size:10.5px}
+}
+
 </style>
 </head>
 <body>
@@ -715,12 +812,12 @@ footer{background:var(--bg-2);padding:56px 0 40px}
               <div class="pb-row"><span>TOR strikeouts</span>
                 <b>7.2 per game &middot; 28th of 29</b></div>
             </div>
-            <div class="gvs thin" title="2025–2026 regular season — shown as context, not used in the number. Too few starts to mean anything.">vs TOR &middot; 1 GS &middot; 5.3 IP &middot; 1.69 ERA &middot; thin</div>
             <div class="pb-foot">
               <span>o−115 / u−108</span>
               <span class="lean">0.4 over the line</span>
             </div>
           </div>
+          <details class="mx"><summary><span class="mxs">matchup detail</span></summary><div class="mxb"><div class="mxh">Cantillo against TOR, 2025–2026</div><div class="mxg"><div><span>starts</span><b>1</b></div><div><span>innings</span><b>5.3</b></div><div><span>K</span><b>4</b></div><div><span>K per 9</span><b>6.8</b></div><div><span>ERA</span><b>1.69</b></div></div><p class="mxn">6.8 per nine against them, against 9.6 all season.</p><p class="mxn warn">1 start is not evidence. It is shown because it is the kind of thing you want to see, not because it moves the number.</p></div></details><div class="verdict ">ordinary matchup</div>
         </div>
         <div class="pb-card"
              style="--accent:var(--line-2)">
@@ -753,12 +850,12 @@ footer{background:var(--bg-2);padding:56px 0 40px}
               <div class="pb-row"><span>CLE strikeouts</span>
                 <b>8.1 per game &middot; 22nd of 29</b></div>
             </div>
-            <div class="gvs thin" title="2025–2026 regular season — shown as context, not used in the number. Too few starts to mean anything.">vs CLE &middot; 1 GS &middot; 6.3 IP &middot; 1.42 ERA &middot; thin</div>
             <div class="pb-foot">
               <span>o−103 / u−118</span>
               <span class="lean">1.1 over the line</span>
             </div>
           </div>
+          <details class="mx"><summary><span class="mxs">matchup detail</span></summary><div class="mxb"><div class="mxh">Cease against CLE, 2025–2026</div><div class="mxg"><div><span>starts</span><b>1</b></div><div><span>innings</span><b>6.3</b></div><div><span>K</span><b>7</b></div><div><span>K per 9</span><b>10.0</b></div><div><span>ERA</span><b>1.42</b></div></div><p class="mxn">10.0 per nine against them, against 13.0 all season.</p><p class="mxn warn">1 start is not evidence. It is shown because it is the kind of thing you want to see, not because it moves the number.</p></div></details><div class="verdict ">ordinary matchup</div>
         </div>
         <div class="pb-card"
              style="--accent:var(--line-2)">
@@ -791,12 +888,12 @@ footer{background:var(--bg-2);padding:56px 0 40px}
               <div class="pb-row"><span>NYM strikeouts</span>
                 <b>8.5 per game &middot; 11th of 29</b></div>
             </div>
-            <div class="gvs thin" title="2025–2026 regular season — shown as context, not used in the number. Too few starts to mean anything.">vs NYM &middot; 2.0 IP &middot; 13.50 ERA &middot; thin</div>
             <div class="pb-foot">
               <span>o−115 / u+107</span>
               <span class="lean">1.4 over the line</span>
             </div>
           </div>
+          <details class="mx"><summary><span class="mxs">matchup detail</span></summary><div class="mxb"><div class="mxh">Jax against NYM, 2025–2026</div><div class="mxg"><div><span>starts</span><b>0</b></div><div><span>innings</span><b>2</b></div><div><span>K</span><b>2</b></div><div><span>K per 9</span><b>9.0</b></div><div><span>ERA</span><b>13.50</b></div></div><p class="mxn">9.0 per nine against them, against 9.8 all season.</p><p class="mxn warn">0 starts is not evidence. It is shown because it is the kind of thing you want to see, not because it moves the number.</p></div></details><div class="verdict ">ordinary matchup</div>
         </div>
         <div class="pb-card"
              style="--accent:var(--line-2)">
@@ -829,12 +926,12 @@ footer{background:var(--bg-2);padding:56px 0 40px}
               <div class="pb-row"><span>PIT strikeouts</span>
                 <b>9.5 per game &middot; 1st of 29</b></div>
             </div>
-            <div class="gvs thin" title="2025–2026 regular season — shown as context, not used in the number. Too few starts to mean anything.">vs PIT &middot; 1 GS &middot; 4.0 IP &middot; 2.25 ERA &middot; thin</div>
             <div class="pb-foot">
               <span>o−154 / u+124</span>
               <span class="lean">1.3 over the line</span>
             </div>
           </div>
+          <details class="mx"><summary><span class="mxs">matchup detail</span></summary><div class="mxb"><div class="mxh">Roupp against PIT, 2025–2026</div><div class="mxg"><div><span>starts</span><b>1</b></div><div><span>innings</span><b>4</b></div><div><span>K</span><b>8</b></div><div><span>K per 9</span><b>18.0</b></div><div><span>ERA</span><b>2.25</b></div></div><p class="mxn">18.0 per nine against them, against 8.6 all season.</p><p class="mxn warn">1 start is not evidence. It is shown because it is the kind of thing you want to see, not because it moves the number.</p></div></details><div class="verdict ">ordinary matchup</div>
         </div>
         <div class="pb-card"
              style="--accent:var(--line-2)">
@@ -867,12 +964,12 @@ footer{background:var(--bg-2);padding:56px 0 40px}
               <div class="pb-row"><span>SF strikeouts</span>
                 <b>8.0 per game &middot; 23rd of 29</b></div>
             </div>
-            <div class="gvs thin" title="2025–2026 regular season — shown as context, not used in the number. Too few starts to mean anything.">vs SF &middot; 1 GS &middot; 5.0 IP &middot; 3.60 ERA &middot; thin</div>
             <div class="pb-foot">
               <span>o+125 / u−133</span>
               <span>in line</span>
             </div>
           </div>
+          <details class="mx"><summary><span class="mxs">matchup detail</span></summary><div class="mxb"><div class="mxh">Chandler against SF, 2025–2026</div><div class="mxg"><div><span>starts</span><b>1</b></div><div><span>innings</span><b>5</b></div><div><span>K</span><b>3</b></div><div><span>K per 9</span><b>5.4</b></div><div><span>ERA</span><b>3.60</b></div></div><p class="mxn">5.4 per nine against them, against 8.0 all season.</p><p class="mxn warn">1 start is not evidence. It is shown because it is the kind of thing you want to see, not because it moves the number.</p></div></details><div class="verdict ">ordinary matchup</div>
         </div>
         <div class="pb-card"
              style="--accent:var(--line-2)">
@@ -905,12 +1002,12 @@ footer{background:var(--bg-2);padding:56px 0 40px}
               <div class="pb-row"><span>MIL strikeouts</span>
                 <b>8.3 per game &middot; 14th of 29</b></div>
             </div>
-            <div class="gvs thin" title="2025–2026 regular season — shown as context, not used in the number. Too few starts to mean anything.">vs MIL &middot; 2 GS &middot; 12.3 IP &middot; 2.19 ERA &middot; thin</div>
             <div class="pb-foot">
               <span>o+120 / u−137</span>
               <span>in line</span>
             </div>
           </div>
+          <details class="mx"><summary><span class="mxs">matchup detail</span></summary><div class="mxb"><div class="mxh">Peterson against MIL, 2025–2026</div><div class="mxg"><div><span>starts</span><b>2</b></div><div><span>innings</span><b>12.3</b></div><div><span>K</span><b>6</b></div><div><span>K per 9</span><b>4.4</b></div><div><span>ERA</span><b>2.19</b></div></div><p class="mxn">4.4 per nine against them, against 8.0 all season.</p><p class="mxn warn">2 starts is not evidence. It is shown because it is the kind of thing you want to see, not because it moves the number.</p></div></details><div class="verdict ">ordinary matchup</div>
         </div>
         <div class="pb-card"
              style="--accent:var(--line-2)">
@@ -943,12 +1040,12 @@ footer{background:var(--bg-2);padding:56px 0 40px}
               <div class="pb-row"><span>CHC strikeouts</span>
                 <b>8.5 per game &middot; 12th of 29</b></div>
             </div>
-            <div class="gvs" title="2025–2026 regular season — shown as context, not used in the number">vs CHC &middot; 4 GS &middot; 20.0 IP &middot; 2.70 ERA</div>
             <div class="pb-foot">
               <span>o−107 / u+105</span>
               <span class="lean">0.7 over the line</span>
             </div>
           </div>
+          <details class="mx"><summary><span class="mxs">matchup detail</span></summary><div class="mxb"><div class="mxh">Misiorowski against CHC, 2025–2026</div><div class="mxg"><div><span>starts</span><b>4</b></div><div><span>innings</span><b>20</b></div><div><span>K</span><b>28</b></div><div><span>K per 9</span><b>12.6</b></div><div><span>ERA</span><b>2.70</b></div></div><p class="mxn">12.6 per nine against them, against 13.2 all season.</p></div></details><div class="verdict ">ordinary matchup</div>
         </div>
         <div class="pb-card"
              style="--accent:var(--line-2)">
@@ -981,12 +1078,12 @@ footer{background:var(--bg-2);padding:56px 0 40px}
               <div class="pb-row"><span>MIN strikeouts</span>
                 <b>7.9 per game &middot; 24th of 29</b></div>
             </div>
-            <div class="gvs thin" title="2026 regular season — shown as context, not used in the number. Too few starts to mean anything.">vs MIN &middot; 3.7 IP &middot; 2.45 ERA &middot; thin</div>
             <div class="pb-foot">
               <span>o+128 / u−160</span>
               <span class="lean">1.1 over the line</span>
             </div>
           </div>
+          <details class="mx"><summary><span class="mxs">matchup detail</span></summary><div class="mxb"><div class="mxh">Anderson against MIN, 2026</div><div class="mxg"><div><span>starts</span><b>0</b></div><div><span>innings</span><b>3.7</b></div><div><span>K</span><b>6</b></div><div><span>K per 9</span><b>14.6</b></div><div><span>ERA</span><b>2.45</b></div></div><p class="mxn">14.6 per nine against them, against 10.0 all season.</p><p class="mxn warn">0 starts is not evidence. It is shown because it is the kind of thing you want to see, not because it moves the number.</p></div></details><div class="verdict ">ordinary matchup</div>
         </div>
         <div class="pb-card"
              style="--accent:var(--line-2)">
@@ -1019,12 +1116,12 @@ footer{background:var(--bg-2);padding:56px 0 40px}
               <div class="pb-row"><span>DET strikeouts</span>
                 <b>8.6 per game &middot; 9th of 29</b></div>
             </div>
-            <div class="gvs thin" title="2025–2026 regular season — shown as context, not used in the number. Too few starts to mean anything.">vs DET &middot; 2 GS &middot; 16.7 IP &middot; 9.18 ERA &middot; thin</div>
             <div class="pb-foot">
               <span>o+120 / u−140</span>
               <span class="lean">0.8 over the line</span>
             </div>
           </div>
+          <details class="mx"><summary><span class="mxs">matchup detail</span></summary><div class="mxb"><div class="mxh">Kremer against DET, 2025–2026</div><div class="mxg"><div><span>starts</span><b>2</b></div><div><span>innings</span><b>16.7</b></div><div><span>K</span><b>15</b></div><div><span>K per 9</span><b>8.1</b></div><div><span>ERA</span><b>9.18</b></div></div><p class="mxn">8.1 per nine against them, against 8.8 all season.</p><p class="mxn warn">2 starts is not evidence. It is shown because it is the kind of thing you want to see, not because it moves the number.</p></div></details><div class="verdict ">ordinary matchup</div>
         </div>
         <div class="pb-card"
              style="--accent:var(--line-2)">
@@ -1057,12 +1154,12 @@ footer{background:var(--bg-2);padding:56px 0 40px}
               <div class="pb-row"><span>KC strikeouts</span>
                 <b>7.8 per game &middot; 25th of 29</b></div>
             </div>
-            <div class="gvs thin">vs KC · never faced them</div>
             <div class="pb-foot">
               <span>o−142 / u+120</span>
               <span class="lean">0.9 over the line</span>
             </div>
           </div>
+          <details class="mx"><summary><span class="mxs">matchup detail</span></summary><div class="mxb"><div class="mxh">Pérez has never faced KC</div><p class="mxn">No starts against them in 2025 or 2026, so there is nothing here to read. The projection does not use this line either way &mdash; it is context, not an input.</p></div></details><div class="verdict ">ordinary matchup</div>
         </div>
         <div class="pb-card"
              style="--accent:var(--line-2)">
@@ -1095,12 +1192,12 @@ footer{background:var(--bg-2);padding:56px 0 40px}
               <div class="pb-row"><span>MIA strikeouts</span>
                 <b>8.2 per game &middot; 18th of 29</b></div>
             </div>
-            <div class="gvs thin">vs MIA · never faced them</div>
             <div class="pb-foot">
               <span>o−118 / u+102</span>
               <span>in line</span>
             </div>
           </div>
+          <details class="mx"><summary><span class="mxs">matchup detail</span></summary><div class="mxb"><div class="mxh">Cameron has never faced MIA</div><p class="mxn">No starts against them in 2025 or 2026, so there is nothing here to read. The projection does not use this line either way &mdash; it is context, not an input.</p></div></details><div class="verdict ">ordinary matchup</div>
         </div>
         <div class="pb-card"
              style="--accent:var(--line-2)">
@@ -1133,12 +1230,12 @@ footer{background:var(--bg-2);padding:56px 0 40px}
               <div class="pb-row"><span>CWS strikeouts</span>
                 <b>9.1 per game &middot; 6th of 29</b></div>
             </div>
-            <div class="gvs thin">vs CWS · never faced them</div>
             <div class="pb-foot">
               <span>o−143 / u+125</span>
               <span class="lean">0.4 over the line</span>
             </div>
           </div>
+          <details class="mx"><summary><span class="mxs">matchup detail</span></summary><div class="mxb"><div class="mxh">Wesneski has never faced CWS</div><p class="mxn">No starts against them in 2025 or 2026, so there is nothing here to read. The projection does not use this line either way &mdash; it is context, not an input.</p></div></details><div class="verdict ">ordinary matchup</div>
         </div>
         <div class="pb-card"
              style="--accent:var(--line-2)">
@@ -1171,12 +1268,12 @@ footer{background:var(--bg-2);padding:56px 0 40px}
               <div class="pb-row"><span>HOU strikeouts</span>
                 <b>8.2 per game &middot; 17th of 29</b></div>
             </div>
-            <div class="gvs" title="2025–2026 regular season — shown as context, not used in the number">vs HOU &middot; 3 GS &middot; 16.0 IP &middot; 6.19 ERA</div>
             <div class="pb-foot">
               <span>o+110 / u−125</span>
               <span class="lean">1.1 over the line</span>
             </div>
           </div>
+          <details class="mx"><summary><span class="mxs">matchup detail</span></summary><div class="mxb"><div class="mxh">Martin against HOU, 2025–2026</div><div class="mxg"><div><span>starts</span><b>3</b></div><div><span>innings</span><b>16</b></div><div><span>K</span><b>13</b></div><div><span>K per 9</span><b>7.3</b></div><div><span>ERA</span><b>6.19</b></div></div><p class="mxn">7.3 per nine against them, against 8.0 all season.</p></div></details><div class="verdict ">ordinary matchup</div>
         </div>
         <div class="pb-card"
              style="--accent:var(--line-2)">
@@ -1209,12 +1306,12 @@ footer{background:var(--bg-2);padding:56px 0 40px}
               <div class="pb-row"><span>LAA strikeouts</span>
                 <b>9.4 per game &middot; 3rd of 29</b></div>
             </div>
-            <div class="gvs thin">vs LAA · never faced them</div>
             <div class="pb-foot">
               <span>o−132 / u+115</span>
               <span>in line</span>
             </div>
           </div>
+          <details class="mx"><summary><span class="mxs">matchup detail</span></summary><div class="mxb"><div class="mxh">Schlittler has never faced LAA</div><p class="mxn">No starts against them in 2025 or 2026, so there is nothing here to read. The projection does not use this line either way &mdash; it is context, not an input.</p></div></details><div class="verdict ">ordinary matchup</div>
         </div>
         <div class="pb-card"
              style="--accent:var(--line-2)">
@@ -1247,12 +1344,12 @@ footer{background:var(--bg-2);padding:56px 0 40px}
               <div class="pb-row"><span>NYY strikeouts</span>
                 <b>9.2 per game &middot; 4th of 29</b></div>
             </div>
-            <div class="gvs thin" title="2025–2026 regular season — shown as context, not used in the number. Too few starts to mean anything.">vs NYY &middot; 1 GS &middot; 11.0 IP &middot; 0.82 ERA &middot; thin</div>
             <div class="pb-foot">
               <span>o−113 / u−111</span>
               <span>in line</span>
             </div>
           </div>
+          <details class="mx"><summary><span class="mxs">matchup detail</span></summary><div class="mxb"><div class="mxh">Detmers against NYY, 2025–2026</div><div class="mxg"><div><span>starts</span><b>1</b></div><div><span>innings</span><b>11</b></div><div><span>K</span><b>16</b></div><div><span>K per 9</span><b>13.1</b></div><div><span>ERA</span><b>0.82</b></div></div><p class="mxn">13.1 per nine against them, against 10.1 all season.</p><p class="mxn warn">1 start is not evidence. It is shown because it is the kind of thing you want to see, not because it moves the number.</p></div></details><div class="verdict ">ordinary matchup</div>
         </div></div>
 
     <div class="clegend" style="margin-top:22px">
