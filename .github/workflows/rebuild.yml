@@ -1,0 +1,79 @@
+name: Rebuild pages
+
+# Regenerates every HTML page from the JSON already in craftypicks/data.
+# It calls no API and spends no credits: _src/build.py only reads files.
+#
+# Use it when the pages on the site are out of step with the data behind them
+# -- after an update archive overwrote them with an older build, or after a
+# change to _src that the daily run has not picked up yet. It cannot make the
+# data newer; for that you need the daily job.
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: rebuild-pages
+  cancel-in-progress: false
+
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: craftypicks
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Say what the data is dated, before anything is written
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import json, pathlib
+          for name in ("board.json", "plays.json", "pitchers.json"):
+              p = pathlib.Path("data") / name
+              if not p.exists():
+                  print(f"{name:16} missing")
+                  continue
+              d = json.loads(p.read_text())
+              print(f"{name:16} date {d.get('date', '?')}")
+          PY
+
+      - name: Build
+        run: python3 _src/build.py
+
+      - name: Commit whatever changed
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name  "craftypicks-bot"
+          git config user.email "bot@users.noreply.github.com"
+          git add *.html */index.html
+          # The league boards are one directory down and a bare *.html glob
+          # does not reach them. Fail loudly rather than skip them quietly.
+          left=$(git status --porcelain -- '*.html' | grep -v '^[AMD]' || true)
+          if [ -n "$left" ]; then
+            echo "Built pages that were not staged:"; echo "$left"; exit 1
+          fi
+          if git diff --staged --quiet; then
+            echo "Pages already match the data. Nothing to commit."
+            exit 0
+          fi
+          git commit -m "rebuild: pages from the data on disk"
+          for attempt in 1 2 3; do
+            if git pull --rebase --autostash origin "${GITHUB_REF_NAME}" \
+               && git push origin "HEAD:${GITHUB_REF_NAME}"; then
+              exit 0
+            fi
+            sleep 5
+          done
+          echo "Could not push after three attempts."
+          exit 1
