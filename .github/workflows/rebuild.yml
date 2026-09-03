@@ -56,9 +56,13 @@ jobs:
           set -euo pipefail
           git config user.name  "craftypicks-bot"
           git config user.email "bot@users.noreply.github.com"
-          git add *.html */index.html
-          # The league boards are one directory down and a bare *.html glob
-          # does not reach them. Fail loudly rather than skip them quietly.
+          git add -- '*.html' ':(exclude)_src/**'
+          # Git does this globbing, not the shell, so it reaches every
+          # directory depth -- root pages, league boards, and any page type
+          # added later. The plain shell globs this replaced matched only
+          # *.html and */index.html, which silently dropped the form pages
+          # the day they were added. _src is excluded because its .body.html
+          # files are templates, not output.
           left=$(git status --porcelain -- '*.html' | grep -v '^[AMD]' || true)
           if [ -n "$left" ]; then
             echo "Built pages that were not staged:"; echo "$left"; exit 1
