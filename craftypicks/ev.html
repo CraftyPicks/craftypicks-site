@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Today's Plays — Craftypicks</title>
+<title>+EV — Craftypicks</title>
 <meta name="description" content="Craftypicks posts free NBA, NFL, MLB and college basketball plays every day — the number, the price, the reasoning, and a fully public track record. Nothing for sale.">
-<meta property="og:title" content="Today's Plays — Craftypicks">
+<meta property="og:title" content="+EV — Craftypicks">
 <meta property="og:description" content="Free daily plays with receipts on every one.">
 <meta property="og:type" content="website">
 <meta name="theme-color" content="#08090B">
@@ -848,109 +848,59 @@ footer{background:var(--bg-2);padding:56px 0 40px}
 <div class="statbar"><div class="sb-cell"><span class="sb-live"><span class="dot"></span>Board live</span></div><div class="sb-cell"><b>9</b> games rated</div><div class="sb-cell"><b>0</b> flagged</div><div class="sb-cell">Median disagreement <b>1.8 pts</b></div><div class="sb-cell">Updated <b>2026-09-02 17:26</b> ET</div></div>
 
 <section style="background:var(--bg-2)">
-  <div class="wrap" style="padding:56px 28px 40px">
-    <div class="split">
-      <div>
-        <div class="eyebrow">Board scanned · Next card posts at 9:00 AM ET</div>
-        <h1 style="font-size:clamp(32px,4.2vw,50px);margin:14px 0 14px">Today's plays</h1>
-        <p class="lead">No plays on the card today. The board was scanned and nothing cleared the edge threshold — that's a normal result, not an outage.</p>
-      </div>
-      <div class="card" style="padding:18px 22px;min-width:240px">
-        <div class="stamp">Card summary</div>
-        <div class="mono" style="font-size:30px;font-weight:600;margin:8px 0 2px">0.0u <span class="unit" style="font-size:15px">risked</span></div>
-        <div style="font-size:13px;color:var(--muted)">—</div>
-      </div>
-    </div>
-
-    
+  <div class="wrap" style="padding:56px 28px 46px">
+    <div class="eyebrow">What we look for</div>
+    <h1 style="font-size:clamp(32px,4.2vw,50px);margin:14px 0 16px">+EV</h1>
+    <p class="lead">Expected value: the average result if you could make the same bet a thousand times. Positive means that average is a profit. It is the only thing this site selects for, and this page is what that means and what it costs.</p>
   </div>
 </section>
 
-<section class="pad-sm">
+<section class="pad">
   <div class="wrap">
-    <div class="grid-2" id="board" style="align-items:stretch;gap:22px">
-      <div class="play" style="grid-column:1/-1">
-        <div class="play-top">
-          <span class="stamp">No qualifying plays</span>
-          <span class="stamp">Checked every game on the board</span>
-        </div>
-        <div class="play-body">
-          <div class="pick" style="color:var(--muted)">No plays today</div>
-          <p style="margin-top:10px;max-width:60ch">Nothing on the board cleared the edge threshold this morning. A card with no plays is a normal outcome — forcing one is how a good process turns into a bad month.</p>
-        </div>
-      </div></div>
+    <div class="sp">
+    <h2>A price is a probability wearing a costume</h2>
+    <p>Every price implies a chance. That is all it is. Strip the costume off and you can compare it against what you actually think &mdash; and a bet is only worth taking when you believe the real chance is higher than the number in the <em>implies</em> column.</p>
+    <div class="sscroll"><table class="stbl num"><tr><th></th><td class="en hd">decimal</td><td class="en hd">implies</td><td class="en hd">$100 returns</td></tr><tr><th>−200</th><td class="en">1.50</td><td class="en">66.7%</td><td class="en">$150</td></tr><tr><th>−110</th><td class="en">1.91</td><td class="en">52.4%</td><td class="en">$191</td></tr><tr><th>+100</th><td class="en">2.00</td><td class="en">50.0%</td><td class="en">$200</td></tr><tr><th>+150</th><td class="en">2.50</td><td class="en">40.0%</td><td class="en">$250</td></tr><tr><th>+900</th><td class="en">10.00</td><td class="en">10.0%</td><td class="en">$1,000</td></tr></table></div>
+    <p>A coin flip is a 50% shot. At <span class="ek">+100</span> that is exactly break-even &mdash; zero EV, forever. At <span class="ek">&minus;110</span> it is <b class="shl">&minus;4.55%</b>: you lose four and a half cents on the dollar every time, and being right half the time does not save you. At <span class="ek">+110</span> the same coin is <b class="shl">+5.00%</b>. Nothing changed about the coin. Only the price.</p>
 
-    <div class="note" style="margin-top:30px">
-      <p class="disclaimer"><b style="color:var(--txt)">Read the price, not just the pick.</b> Each play is only a play at the number and book listed &mdash; that specific price is where the edge lives. If the number has moved against it by the time you look, the edge is gone. Pass on it. Chasing a moved number is how a good process turns into a bad month.</p>
+    <h2>So where does a real edge come from</h2>
+    <p>Not from picking winners. From finding a price that implies a chance you think is wrong. Here is the best-priced side anywhere on the board of Wednesday, September 2:</p>
+    <div class="sum">
+      <div><span>Brewers &middot; moneyline, best price</span>
+        <span>−138</span></div>
+      <div><span>which implies</span><span>57.98%</span></div>
+      <div><span>what 9 books say once the vig is stripped out</span>
+        <span>58.11%</span></div>
+      <div class="tot"><span>a 58.11% chance, paid at 1.7246</span>
+        <span>0.5811 &times; 1.7246 = 1.0023</span></div>
     </div>
-  </div>
-</section>
+    <p>That is <b>$100.23</b> back for every $100 risked, on average &mdash; <b>+0.23% EV</b>. It says nothing whatever about whether this particular bet wins.</p>
 
-<section class="pad-sm" id="results">
-  <div class="wrap">
-    <div class="split" style="margin-bottom:26px">
-      <div>
-        <div class="eyebrow muted">Graded this morning</div>
-        <h2 style="font-size:26px;margin-top:10px">Last card &mdash; Tuesday, August 25</h2>
+    <h2>The hurdle before any of it counts</h2>
+    <p>Both sides of every market are priced to add up to more than 100%. The overflow is the house&rsquo;s margin, and on this board it runs about <b class="shl">4.65%</b>. You have to be better than the market by more than that before you have made a penny.</p>
+    <p>Which is why so little clears it. Of the <b class="shl">54</b> sides priced on Wednesday, September 2, taking the best number available at any of the books, <b class="shl">53</b> were still &minus;EV.</p>
+
+    <h2>What a price has to survive to be posted</h2>
+    <div class="sscroll"><table class="stbl"><tr><th><span class="gn">01</span>Today only</th><td class="sval"><span class="skey">SAME_DAY_ONLY</span><span class="snum">True</span></td><td class="swhy">An edge measured four days out is mostly noise, and it can never land inside the closing-line window, so it could never be graded honestly.</td></tr><tr><th><span class="gn">02</span>Drop stale books</th><td class="sval"><span class="skey">STALE_MINUTES</span><span class="snum">25 min</span></td><td class="swhy">A book that has not moved in this long is not quoting today&rsquo;s market. Stale prices are the single biggest source of edges that are not there.</td></tr><tr><th><span class="gn">03</span>Enough books</th><td class="sval"><span class="skey">MIN_BOOKS</span><span class="snum">6</span></td><td class="swhy">Below this there is no consensus to measure against, only noise wearing a consensus&rsquo;s clothes.</td></tr><tr><th><span class="gn">04</span>One number at a time</th><td class="sval"><span class="skey">&mdash;</span><span class="snum">consensus point</span></td><td class="swhy">For run lines and totals, only books sitting on the most common number are compared. Measuring &minus;1.5 against &minus;2.5 is not a measurement.</td></tr><tr><th><span class="gn">05</span>Strip the vig</th><td class="sval"><span class="skey">DEVIG_METHOD</span><span class="snum">power</span></td><td class="swhy">Both sides of every book&rsquo;s quote are converted to a vig-free pair. The power method corrects for books loading extra margin onto longshots; the naive method would fill the card with +300 dogs.</td></tr><tr><th><span class="gn">06</span>Price band</th><td class="sval"><span class="skey">MIN_PRICE / MAX_PRICE</span><span class="snum">-300 to +185</span></td><td class="swhy">Taste, and admitted as taste. Outside this band are prices this site does not want to be in the business of recommending.</td></tr><tr><th><span class="gn">07</span>Leave one out</th><td class="sval"><span class="skey">&mdash;</span><span class="snum">5 others</span></td><td class="swhy">The fair price averages every book <em>except the one we would be betting</em>. Include it and the outlier drags the consensus toward itself, manufacturing the very edge being measured.</td></tr><tr><th><span class="gn">08</span>Expected value</th><td class="sval"><span class="skey">MIN_EDGE_PCT</span><span class="snum">2.5%</span></td><td class="swhy">The gap between the best price and the fair price, as a ratio. This is the +EV number.</td></tr><tr><th><span class="gn">09</span>Probability points</th><td class="sval"><span class="skey">MIN_EDGE_PP</span><span class="snum">1.0 pp</span></td><td class="swhy">And the same gap in percentage points. Both have to clear. Ratios flatter longshots: a +200 dog reaches 5% EV on a 1.7-point edge while a &minus;200 favourite needs nearly three.</td></tr><tr><th><span class="gn">10</span>Sanity ceiling</th><td class="sval"><span class="skey">MAX_EDGE_PCT</span><span class="snum">12.0%</span></td><td class="swhy">Above this it is not an edge, it is a data problem &mdash; a stale line, a mismatched number, a book quoting a different game. Logged and thrown away rather than posted.</td></tr></table></div>
+
+    <h2>And what fits on the card</h2>
+    <div class="sscroll"><table class="stbl"><tr><th>One side per game</th><td class="snum">&mdash;</td><td class="swhy">Two sides of one event is correlated risk dressed up as diversification.</td></tr><tr><th>Per league</th><td class="snum">3</td><td class="swhy">No league can take over the card, however good its slate looks.</td></tr><tr><th>Per day</th><td class="snum">6</td><td class="swhy">A short card is a feature. It stops a bad day becoming fifteen losses.</td></tr><tr><th>Stake</th><td class="snum">1 unit</td><td class="swhy">Flat, on every play, always. Sizing by confidence would make the record a story about the sizing.</td></tr></table></div>
+
+    <h2>The same price, all the way through</h2>
+    <div class="swork"><div class="swork-h">Milwaukee Brewers at Chicago Cubs &middot; moneyline</div><div class="swork-r"><span>Books pricing it, after the stale ones went</span><span>9 &ge; 6</span></div><div class="swork-r"><span>Best price available</span><span>−138 at BetUS</span></div><div class="swork-r"><span>Inside the price band</span><span>-300 to +185</span></div><div class="swork-r"><span>Fair price, excluding BetUS</span><span>−139</span></div><div class="swork-r fail"><span>Expected value</span><span>+0.23% &lt; 2.5%</span></div><div class="swork-r fail"><span>Probability points</span><span>+0.13 pp &lt; 1.0 pp</span></div><div class="swork-r fail"><span>Posted?</span><span>No</span></div></div>
+    <p>It was +EV and it still did not go up. Being on the right side of the price is the beginning of the test, not the end of it.</p>
+
+    <h2>Which is why the card is sometimes empty</h2>
+    <p class="sbig">0 plays<small>from 54 priced sides on Wednesday, September 2</small></p>
+    <p>An empty card is not the system failing. It is the system working on a night when no book was far enough out of line to be worth taking. Anyone posting five plays every single day is not finding five edges every single day. They are filling a quota.</p>
+
+    <h2>What the word &ldquo;+EV&rdquo; is resting on</h2>
+    <div class="snote">
+      <p><b class="shl">Our fair price being right.</b> Every number on this page compares the market against our estimate. If the estimate is wrong, &ldquo;+EV&rdquo; is decoration. That is not a hypothetical: the strikeout projection on this site has been measured against 86 finished starts and it is <b class="shl">0.20 strikeouts less accurate</b> than the line it was trying to beat. The game markets have not been measured yet.</p>
+      <p><b class="shl">So check us on the closing line.</b> Whether a play beat the number the market settled on is a verdict on the bet rather than on the bounce, and it converges in tens of plays where profit needs thousands. It is the first figure on the <a href="record.html">track record</a> page for that reason, and if it does not turn positive over a few hundred plays then nothing on this page is worth anything.</p>
+      <p><b class="shl">Nothing here is discretionary.</b> No override, no gut call, no tidying the list afterwards. Every threshold above is read out of the configuration when this page is built, so changing a rule changes this page in the same commit.</p>
       </div>
-      <div style="text-align:right">
-        <div class="stamp">Net</div>
-        <div class="mono g" style="font-size:24px;font-weight:600">+4.52u</div>
-      </div>
     </div>
-    <div class="scroll-x">
-      <table class="tbl">
-        <thead>
-          <tr><th>Play</th><th>League</th><th>Market</th><th>Price</th><th>Stake</th><th>Result</th><th>Return</th></tr>
-        </thead>
-        <tbody><tr>
-          <td class="strong">Pirates −1.5</td>
-          <td class="m">MLB</td>
-          <td class="m">Spread</td>
-          <td class="m">+185</td>
-          <td class="m">1.0u</td>
-          <td><span class="tag loss">Loss</span></td>
-          <td class="m r">−1.00u</td></tr><tr>
-          <td class="strong">Mariners −1.5</td>
-          <td class="m">MLB</td>
-          <td class="m">Spread</td>
-          <td class="m">+190</td>
-          <td class="m">1.0u</td>
-          <td><span class="tag win">Win</span></td>
-          <td class="m g">+1.90u</td></tr><tr>
-          <td class="strong">Giants −1.5</td>
-          <td class="m">MLB</td>
-          <td class="m">Spread</td>
-          <td class="m">+189</td>
-          <td class="m">1.0u</td>
-          <td><span class="tag win">Win</span></td>
-          <td class="m g">+1.89u</td></tr><tr>
-          <td class="strong">Lions ML</td>
-          <td class="m">NFL</td>
-          <td class="m">Moneyline</td>
-          <td class="m">+173</td>
-          <td class="m">1.0u</td>
-          <td><span class="tag win">Win</span></td>
-          <td class="m g">+1.73u</td></tr></tbody>
-      </table>
-    </div>
-    <div style="margin-top:24px;display:flex;gap:14px;flex-wrap:wrap">
-      <a href="record.html" class="btn ghost">See every play ever posted</a>
-    </div>
-  </div>
-</section>
-
-<section class="cta-band">
-  <div class="wrap">
-    <div class="eyebrow">Don't want to check the site every day?</div>
-    <h2>Have the card sent to you at 9:00 AM ET</h2>
-    <p>Same plays, same math, same grading &mdash; delivered before the numbers move. Always free.</p>
-    <form class="form-row" data-signup>
-      <input type="email" required placeholder="you@email.com" aria-label="Email address">
-      <button class="btn solid" type="submit">Send me the plays</button>
-    </form>
-    <p class="form-msg" role="status"></p>
-    <div class="fineprint">Unsubscribe any time &middot; 21+</div>
   </div>
 </section>
 
