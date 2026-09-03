@@ -126,6 +126,67 @@ T = {
 
     # ---- the +EV page. The prose lives in ev.body.html; these are the
     # strings render.py builds tables and worked examples out of.
+    # ---- the batter home-run board
+    "nav_batters":   {"en": "Home runs", "es": "Jonrones"},
+    "bat_empty":     {"en": "No probable starters listed yet. This board fills "
+                            "in once tonight's pitchers are announced.",
+                      "es": "Aún no hay abridores probables. Esta pizarra se "
+                            "llena cuando se anuncien los lanzadores."},
+    "bat_facing":    {"en": "facing {who}{hand}, who allows a home run to "
+                            "{rate}% of the batters he faces",
+                      "es": "ante {who}{hand}, que permite jonrón al {rate}% "
+                            "de los bateadores que enfrenta"},
+    "bat_season":    {"en": "{hr} HR in {pa} plate appearances &middot; {rate}%",
+                      "es": "{hr} JR en {pa} apariciones &middot; {rate}%"},
+    "bat_park":      {"en": "park {v}", "es": "parque {v}"},
+    "bat_ungraded":  {"en": "Nothing graded yet. Every projection on this page "
+                            "is checked the following morning against the "
+                            "batter&rsquo;s own season total, and what it "
+                            "promised will appear here whether it was right "
+                            "or not.",
+                      "es": "Aún no hay nada calificado. Cada proyección se "
+                            "verifica a la mañana siguiente contra el total de "
+                            "la temporada del bateador, y lo prometido "
+                            "aparecerá aquí, acertado o no."},
+    "bat_cal":       {"en": "Across {n} graded bats this model promised "
+                            "<b>{exp}%</b> and delivered <b>{act}%</b>.",
+                      "es": "En {n} bateadores calificados este modelo "
+                            "prometió <b>{exp}%</b> y entregó <b>{act}%</b>."},
+    "bat_n":         {"en": "bats", "es": "bateadores"},
+    "bat_promised":  {"en": "promised", "es": "prometido"},
+    "bat_delivered": {"en": "delivered", "es": "entregado"},
+
+    # ---- the home-run board
+    "nav_homers":    {"en": "HR allowed", "es": "JR permitidos"},
+    "hr_empty":      {"en": "No probable starters listed yet. This board fills "
+                            "in once tonight's pitchers are announced.",
+                      "es": "Aún no hay abridores probables. Esta pizarra se "
+                            "llena cuando se anuncien los lanzadores."},
+    "hr_allows":     {"en": "Allows", "es": "Permite"},
+    "hr_lineup":     {"en": "{team} hit", "es": "{team} conecta"},
+    "hr_per9_unit":  {"en": "per 9 innings", "es": "por 9 entradas"},
+    "hr_pergame_unit": {"en": "per game", "es": "por juego"},
+    "hr_league":     {"en": "league {v}", "es": "liga {v}"},
+    "hr_season":     {"en": "{hr} allowed in {ip} innings",
+                      "es": "{hr} permitidos en {ip} entradas"},
+    "hr_too_few":    {"en": "Under twenty innings this season, so this rate is "
+                            "shown but not ranked.",
+                      "es": "Menos de veinte entradas esta temporada, así que "
+                            "esta tasa se muestra pero no se clasifica."},
+    "hr_v_high":     {"en": "gives them up", "es": "los permite"},
+    "hr_v_low":      {"en": "keeps them in", "es": "los contiene"},
+    "hr_v_ordinary": {"en": "ordinary", "es": "normal"},
+
+    # ---- the form table
+    "nav_form":      {"en": "Form", "es": "Forma"},
+    "form_empty":    {"en": "No finished games stored for this league yet. "
+                            "This table fills in as results come in.",
+                      "es": "Aún no hay juegos terminados guardados para esta "
+                            "liga. Esta tabla se llena con los resultados."},
+    "form_club":     {"en": "Club", "es": "Equipo"},
+    "form_record":   {"en": "Record", "es": "Récord"},
+    "form_pct":      {"en": "Win %", "es": "% de victorias"},
+
     "ev_n_plays":    {"en": "{n} play{s}", "es": "{n} jugada{s}"},
     "ev_decimal":    {"en": "decimal", "es": "decimal"},
     "ev_implies":    {"en": "implies", "es": "implica"},

@@ -40,9 +40,19 @@ _LEAGUE_PAGES = {
     for short in leagues.ORDER
 }
 
+# Every league gets a form table, because every league now stores its own
+# finished games. It is the second view for the three that have no props.
+_FORM_PAGES = {
+    f"{short}/form.html": Page(f"{short}/form.html", "form", short, short)
+    for short in leagues.ORDER
+}
+
 PAGES: dict[str, Page] = {
     "index.html":    Page("index.html",    "tonight",  "tonight",  None),
     **_LEAGUE_PAGES,
+    **_FORM_PAGES,
+    "homers.html":   Page("homers.html",   "homers",   "homers",   "mlb"),
+    "batters.html":  Page("batters.html",  "batters",  "batters",  "mlb"),
     "record.html":   Page("record.html",   "record",   "record",   None),
     "about.html":    Page("about.html",    "about",    "about",    None),
     "ev.html":       Page("ev.html",       "ev",       "ev",       None),
@@ -80,8 +90,11 @@ def rel_root(page: Page) -> str:
 # until its props page is built — four tabs that 404 look worse than one tab
 # that works.
 VIEWS: dict[str, list[tuple[str, str]]] = {
-    short: ([(f"{short}/index.html", "nav_board")]
-            + ([("pitchers.html", "nav_pitchers")]
+    short: ([(f"{short}/index.html", "nav_board"),
+             (f"{short}/form.html", "nav_form")]
+            + ([("pitchers.html", "nav_pitchers"),
+                ("batters.html", "nav_batters"),
+                ("homers.html", "nav_homers")]
                if leagues.LEAGUES[short].has_props
                and leagues.LEAGUES[short].short == "mlb" else []))
     for short in leagues.ORDER
@@ -173,6 +186,14 @@ TITLES = {
                     "es": f"Historial — {config.SITE_NAME}"},
     "about.html": {"en": f"How It Works — {config.SITE_NAME}",
                    "es": f"Cómo funciona — {config.SITE_NAME}"},
+    "homers.html": {"en": f"Home runs allowed — {config.SITE_NAME}",
+                    "es": f"Jonrones permitidos — {config.SITE_NAME}"},
+    "batters.html": {"en": f"Home runs — {config.SITE_NAME}",
+                     "es": f"Jonrones — {config.SITE_NAME}"},
+    **{f"{short}/form.html": {
+        "en": f"{leagues.LEAGUES[short].label} form — {config.SITE_NAME}",
+        "es": f"Forma {leagues.LEAGUES[short].label} — {config.SITE_NAME}"}
+       for short in leagues.ORDER},
     "ev.html":    {"en": f"+EV — {config.SITE_NAME}",
                    "es": f"+EV — {config.SITE_NAME}"},
     "screens.html": {"en": f"The Strikeout Screens — {config.SITE_NAME}",
@@ -400,6 +421,9 @@ def build() -> None:
     slate_doc = load("slate.json", {"date_label": "", "games": [], "summary": {}})
     pitch_doc = load("pitchers.json", {"date_label": "", "pitchers": [], "summary": {}})
     board_doc = load("board.json", {})
+    homer_doc = load("homers.json", {"date_label": "", "starters": []})
+    batter_doc = load("batters.json",
+                      {"date_label": "", "batters": [], "summary": {}})
 
     def build_tokens(lang, plays_doc, stats, history, slate_doc,
                      pitch_doc, closing_doc=None):
@@ -517,6 +541,13 @@ def build() -> None:
             "{{YEAR}}": str(datetime.utcnow().year),
             "{{TONIGHT_BOARD}}": R.board_cards(tonight_rows(board_doc)),
             # ---- the +EV page, generated so it cannot drift from config
+            "{{BAT_DATE}}": doc_date_label(batter_doc, lang) or L("not_rated"),
+            "{{BATTER_CARDS}}": R.batter_cards(batter_doc.get("batters", [])),
+            "{{BAT_CALIBRATION}}": R.batter_calibration(
+                batter_doc.get("summary", {})),
+            "{{HR_DATE}}": doc_date_label(homer_doc, lang) or L("not_rated"),
+            "{{HOMER_CARDS}}": R.homer_cards(homer_doc.get("starters", [])),
+            "{{FORM_TABLE}}": "",
             "{{EV_PRICES}}": R.ev_price_table(),
             "{{EV_EXAMPLE}}": R.ev_example(board_doc),
             "{{EV_GATES}}": R.ev_gates(),
@@ -582,7 +613,12 @@ def build() -> None:
                     "board_eyebrow", lang,
                     n=sum((board_doc.get("counts") or {}).values()),
                     d=_board_day(board_doc.get("date", ""), lang))
-            if page.league:
+            if page.body == "form":
+                import results_store, form_store          # noqa: E402
+                page_tokens["{{LEAGUE_NAME}}"] = leagues.LEAGUES[page.league].label
+                page_tokens["{{FORM_TABLE}}"] = R.form_table(
+                    form_store.table(results_store.load(page.league)))
+            elif page.league:
                 entry = (board_doc.get("leagues") or {}).get(page.league, {})
                 page_tokens["{{LEAGUE_NAME}}"] = entry.get(
                     "label", leagues.LEAGUES[page.league].label)

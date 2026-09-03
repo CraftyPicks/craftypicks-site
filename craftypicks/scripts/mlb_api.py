@@ -65,6 +65,10 @@ def probable_starters(date_str: str) -> list[dict]:
                         "opponent": teams[other]["team"].get("abbreviation")
                                     or teams[other]["team"]["name"],
                         "opponent_id": teams[other]["team"]["id"],
+                        # Which dugout he is in. The home club's park is the
+                        # one the ball has to leave, and without this a caller
+                        # has to guess which of the two names is hosting.
+                        "is_home": side == "home",
                         "game_time": game.get("gameDate", ""),
                     })
                 except (KeyError, TypeError):
@@ -85,7 +89,7 @@ def pitcher_season(pitcher_id: int, season: int) -> dict:
     splits = (data.get("stats") or [{}])[0].get("splits") or []
     if not splits:
         return {"k_pct": None, "k_per_9": None, "innings": 0.0, "era": None,
-                "w": None, "l": None}
+                "w": None, "l": None, "hr": None, "hr_per_9": None, "bf": None}
     s = splits[0].get("stat", {})
     bf = s.get("battersFaced") or 0
     k = s.get("strikeOuts") or 0
@@ -95,11 +99,18 @@ def pitcher_season(pitcher_id: int, season: int) -> dict:
     except (TypeError, ValueError):
         era = None
     wins, losses = s.get("wins"), s.get("losses")
+    hr = s.get("homeRuns")
     return {
         "k_pct": (k / bf) if bf else None,
         "k_per_9": (k * 9 / ip) if ip else None,
         "innings": ip,
         "era": era,
+        "bf": int(bf) if bf else None,
+        "hr": int(hr) if hr is not None else None,
+        # StatsAPI publishes homeRunsPer9 as a string, but it is derived from
+        # the same two numbers we already have and rounds to two places.
+        # Recomputing keeps the precision and avoids parsing "-.--".
+        "hr_per_9": (float(hr) * 9 / ip) if (hr is not None and ip) else None,
         "w": int(wins) if wins is not None else None,
         "l": int(losses) if losses is not None else None,
     }
@@ -127,6 +138,24 @@ def team_k_per_game(team_id: int, season: int) -> float | None:
     games = s.get("gamesPlayed") or 0
     k = s.get("strikeOuts") or 0
     return (k / games) if games else None
+
+
+def team_hr_per_game(team_id: int, season: int) -> float | None:
+    """How often this lineup goes deep. Free, one request, display-only.
+
+    Mirrors team_k_per_game deliberately: the home-run page is the strikeout
+    page's argument applied to a different number, and using a different
+    denominator for it would make the two incomparable.
+    """
+    data = _get(f"/teams/{team_id}/stats", stats="season",
+                season=season, group="hitting") or {}
+    splits = (data.get("stats") or [{}])[0].get("splits") or []
+    if not splits:
+        return None
+    s = splits[0].get("stat", {})
+    games = s.get("gamesPlayed") or 0
+    hr = s.get("homeRuns") or 0
+    return (hr / games) if games else None
 
 
 def team_roster(team_id: int, season: int) -> list[int]:

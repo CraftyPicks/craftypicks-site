@@ -1693,6 +1693,177 @@ def ev_funnel(board: dict) -> str:
             f'{body}</div>')
 
 
+# --------------------------------------------------------- batter homers ---
+# A projection, and drawn as one: the chance is the headline, the three
+# numbers behind it sit underneath, and the calibration strip above the cards
+# says what the model has actually delivered so far.
+
+def batter_cards(rows: list[dict]) -> str:
+    """Tonight's most dangerous bats, grouped by the game they appear in."""
+    if not rows:
+        return f'<div class="empty-board">{_("bat_empty")}</div>'
+    games: dict = {}
+    for r in rows:
+        games.setdefault((r.get("commence_time"), r.get("vs")), []).append(r)
+
+    out = []
+    for (when, pitcher), group in games.items():
+        club = esc(_nickname(group[0].get("team")))
+        hand = group[0].get("vs_hand") or ""
+        hand_txt = (f' ({_("mx_right") if hand == "R" else _("mx_left")})'
+                    if hand in ("L", "R") else "")
+        park = group[0].get("park") or 1.0
+        park_cls = "good" if park > 1.03 else "bad" if park < 0.97 else ""
+        bats = "".join(f"""
+          <div class="bat">
+            <div class="bat-n">{esc(b.get('name',''))}</div>
+            <div class="bat-c"><b>{b['chance'] * 100:.1f}%</b></div>
+            <div class="bat-w">{_("bat_season",
+                hr=b.get('hr', 0), pa=f"{b.get('pa', 0):,}",
+                rate=f"{b.get('hr_rate', 0) * 100:.1f}")}</div>
+          </div>""" for b in group)
+        out.append(f"""
+        <article class="pb-card bat-card"
+                 style="--accent:{team_color(group[0].get('team')) or 'var(--line-2)'}">
+          <div class="pb-top">
+            <span>{club} &middot; {esc(game_time(when))}</span>
+            <span class="bat-park {park_cls}">{_("bat_park", v=f"{park:.2f}")}</span>
+          </div>
+          <div class="pb-body">
+            <div class="bat-vs">{_("bat_facing",
+                who=esc(pitcher or "?"), hand=hand_txt,
+                rate=f"{(group[0].get('vs_hr_per_bf') or 0) * 100:.1f}")}</div>
+            {bats}
+          </div>
+        </article>""")
+    return '<div class="pb-grid">' + "".join(out) + "</div>"
+
+
+def batter_calibration(summary: dict) -> str:
+    """What the model promised against what happened. Not a win rate."""
+    n = (summary or {}).get("graded") or 0
+    if not n:
+        return f'<p class="pnl-note">{_("bat_ungraded")}</p>'
+    exp, act = summary["expected"], summary["actual"]
+    rows = "".join(
+        f'<tr><th>{esc(b["label"])}</th>'
+        f'<td class="en">{b["n"]}</td>'
+        f'<td class="en">{b["expected"]:.1f}%</td>'
+        f'<td class="en {"egain" if b["actual"] >= b["expected"] else "eloss"}">'
+        f'{b["actual"]:.1f}%</td></tr>'
+        for b in summary.get("buckets") or [])
+    # Formatted before the f-string, not inside it. An f-string expression
+    # cannot be split across two adjacent literals, and this is the third
+    # time that trap has been hit in this file.
+    exp_txt, act_txt = f"{exp:.1f}", f"{act:.1f}"
+    head = f'<p class="pnl-note">{_("bat_cal", n=n, exp=exp_txt, act=act_txt)}</p>' 
+    if not rows:
+        return head
+    return (head + f'<div class="sscroll"><table class="stbl num">'
+            f'<tr><th></th><td class="en hd">{_("bat_n")}</td>'
+            f'<td class="en hd">{_("bat_promised")}</td>'
+            f'<td class="en hd">{_("bat_delivered")}</td></tr>'
+            f'{rows}</table></div>')
+
+
+# ------------------------------------------------------------- home runs ---
+# The strikeout page's argument applied to a different number, and with the
+# same posture: matchup facts, no projection, no pick. There are no prices
+# here because a batter home-run market is billed per event and the strikeout
+# projection has not yet earned a second one.
+
+HR_CLASS = {"favourable": "good", "tough": "bad", "neutral": ""}
+HR_LABEL = {"favourable": "hr_v_high", "tough": "hr_v_low",
+            "neutral": "hr_v_ordinary"}
+
+
+def _hr_row(label: str, value, unit: str, rank, of, mean,
+            verdict: str) -> str:
+    """One measured line: the number, where it ranks, and the league beside it."""
+    if value is None:
+        return (f'<div class="hrl"><span class="hrl-k">{label}</span>'
+                f'<span class="hrl-v">&mdash;</span></div>')
+    rank_txt = (_("pb_rank", r=rank, ord=_ordinal(rank), n=of)
+                if rank and of else "")
+    mean_txt = _("hr_league", v=f"{mean:.2f}") if mean else ""
+    return (f'<div class="hrl {HR_CLASS[verdict]}">'
+            f'<span class="hrl-k">{label}</span>'
+            f'<span class="hrl-v"><b>{value:.2f}</b> {unit}</span>'
+            f'<span class="hrl-r">{rank_txt}</span>'
+            f'<span class="hrl-m">{mean_txt}</span></div>')
+
+
+def homer_cards(rows: list[dict]) -> str:
+    """One card per starter: how often he gives one up, how often they hit one."""
+    if not rows:
+        return f'<div class="empty-board">{_("hr_empty")}</div>'
+    out = []
+    for r in rows:
+        opp = esc(_nickname(r.get("opponent")))
+        hand = r.get("hand") or ""
+        hand_txt = (f' &middot; {_("mx_right") if hand == "R" else _("mx_left")}'
+                    if hand in ("L", "R") else "")
+        thin = r.get("thin")
+        accent = team_color(r.get("opponent")) or "var(--line-2)"
+        out.append(f"""
+        <article class="pb-card hr-card" style="--accent:{accent}">
+          <div class="pb-top">
+            <span>{esc(r.get('team',''))} vs {opp}
+              &middot; {esc(game_time(r.get('commence_time')))}</span>
+          </div>
+          <div class="pb-body">
+            <div class="pb-name">{esc(r.get('name',''))}{hand_txt}</div>
+            {_hr_row(_("hr_allows"), r.get("hr_per_9"), _("hr_per9_unit"),
+                     r.get("hr_per_9_rank"), r.get("pitchers_ranked"),
+                     r.get("league_hr_per_9"), r.get("pitcher_verdict"))}
+            {_hr_row(_("hr_lineup", team=opp), r.get("opp_hr_per_game"),
+                     _("hr_pergame_unit"), r.get("opp_hr_rank"),
+                     r.get("teams_ranked"), r.get("league_hr_per_game"),
+                     r.get("lineup_verdict"))}
+            <div class="pb-rows">
+              <div class="pb-row"><span>{_("season")}</span>
+                <b>{_("hr_season", hr=r.get("hr_allowed") or 0,
+                      ip=f'{r.get("innings") or 0:.1f}')}</b></div>
+            </div>
+            {f'<p class="hr-thin">{_("hr_too_few")}</p>' if thin else ""}
+          </div>
+        </article>""")
+    return '<div class="pb-grid">' + "".join(out) + "</div>"
+
+
+# ------------------------------------------------------------------ form ---
+# Every league's table, computed from the finals this project stores for
+# itself. MLB could take it from StatsAPI instead, but one code path that
+# works for four leagues beats two that each work for some of them.
+
+def form_table(table: dict) -> str:
+    """A league table: record, last ten, streak, sorted by winning percentage."""
+    if not table:
+        return f'<div class="empty-board">{_("form_empty")}</div>'
+
+    def pct(v):
+        played = v["w"] + v["l"]
+        return v["w"] / played if played else 0.0
+
+    rows = []
+    for i, (club, v) in enumerate(
+            sorted(table.items(), key=lambda kv: (-pct(kv[1]), kv[0])), 1):
+        code = v.get("streak") or ""
+        scls = "good" if code.startswith("W") else "bad" if code.startswith("L") else ""
+        rows.append(
+            f'<tr><td class="ft-n">{i}</td>'
+            f'<th>{_tdot(club)}{esc(_nickname(club))}</th>'
+            f'<td class="ft-r">{v["w"]}&ndash;{v["l"]}</td>'
+            f'<td class="ft-p">{pct(v) * 100:.1f}%</td>'
+            f'<td class="ft-r">{v["l10_w"]}&ndash;{v["l10_l"]}</td>'
+            f'<td class="ft-s {scls}">{esc(code) or "&mdash;"}</td></tr>')
+    return (f'<div class="sscroll"><table class="ftbl">'
+            f'<tr class="hd"><td></td><th>{_("form_club")}</th>'
+            f'<td>{_("form_record")}</td><td>{_("form_pct")}</td>'
+            f'<td>{_("pnl_last10")}</td><td>{_("pnl_streak")}</td></tr>'
+            f'{"".join(rows)}</table></div>')
+
+
 def _self_test() -> None:
     row = {
         "event_id": "evt1", "league": "mlb",

@@ -53,6 +53,8 @@ except Exception as _screen_err:                             # noqa: BLE001
 # Pitcher projections. Optional like everything else.
 try:
     import pitchers as pitch_mod  # noqa: E402
+    import homers as homers_mod   # noqa: E402
+    import batters as batters_mod # noqa: E402
 except Exception as _pitch_err:                              # noqa: BLE001
     pitch_mod = None
     print(f"!! pitcher board unavailable ({_pitch_err})", file=sys.stderr)
@@ -391,6 +393,58 @@ def main() -> int:
                       f"(line missed by {pitch_summary['line_mae']})")
         except Exception as e:                               # noqa: BLE001
             print(f"!! pitcher board failed ({type(e).__name__}: {e})",
+                  file=sys.stderr)
+
+    # -------------------------------------------------- 3d. home-run board
+    # Deliberately not inside the prop block above. That one only runs when
+    # prop events were bought; this one needs nothing but the free schedule,
+    # and a page that disappears on a day the props were skipped would look
+    # broken rather than thrifty.
+    if homers_mod and "baseball_mlb" in in_season:
+        try:
+            import screen_config as _hcfg
+            import mlb_api as _hapi
+            hr_starters = _hapi.probable_starters(now.strftime("%m/%d/%Y"))
+            hr_rows = homers_mod.build(hr_starters, _hcfg.SEASON)
+            if hr_rows:
+                save_json(DATA / "homers.json", {
+                    "date": today,
+                    "date_label": f"{now:%A, %B %-d, %Y}",
+                    "starters": hr_rows,
+                })
+                print(f"-- homers: {len(hr_rows)} starter(s) on the board")
+
+            # The batter board is a projection, so it is stored and graded
+            # from the first night. Grading costs nothing: the leaderboard is
+            # refetched here anyway, and a batter's season total against the
+            # total recorded when he was projected answers the question.
+            bat_hist = load_json(DATA / "batter_ratings.json",
+                                 {"batters": []})["batters"]
+            table = batters_mod.all_batters(_hcfg.SEASON)
+            settled = batters_mod.grade(bat_hist, table)
+            bat_rows = batters_mod.build(hr_starters, _hcfg.SEASON)
+            known = {(r.get("batter_id"), r.get("commence_time"))
+                     for r in bat_hist}
+            for row in bat_rows:
+                if (row.get("batter_id"), row.get("commence_time")) not in known:
+                    bat_hist.append(dict(row))
+            bat_summary = batters_mod.summary(bat_hist)
+            save_json(DATA / "batter_ratings.json", {"batters": bat_hist})
+            if bat_rows:
+                save_json(DATA / "batters.json", {
+                    "date": today,
+                    "date_label": f"{now:%A, %B %-d, %Y}",
+                    "batters": bat_rows,
+                    "summary": bat_summary,
+                })
+                print(f"-- batters: {len(bat_rows)} rated, {settled} graded")
+                if bat_summary.get("expected") is not None:
+                    print(f"   calibration: promised "
+                          f"{bat_summary['expected']}%, delivered "
+                          f"{bat_summary['actual']}% on "
+                          f"{bat_summary['graded']} bat(s)")
+        except Exception as e:                               # noqa: BLE001
+            print(f"!! home-run board failed ({type(e).__name__}: {e})",
                   file=sys.stderr)
 
     # ------------------------------------------------------- 3b. rated board
