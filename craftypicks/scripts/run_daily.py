@@ -55,14 +55,18 @@ try:
     import pitchers as pitch_mod  # noqa: E402
     import homers as homers_mod   # noqa: E402
     import batters as batters_mod # noqa: E402
+    import hits as hits_mod       # noqa: E402
+    import projection             # noqa: E402
 except Exception as _pitch_err:                              # noqa: BLE001
-    # All three are cleared, not just the first. They are imported together
-    # for brevity, but a failure part-way through would otherwise leave the
+    # All are cleared, not just the first. They are imported together for
+    # brevity, but a failure part-way through would otherwise leave the
     # later names undefined, and `if homers_mod` further down would raise
     # NameError -- turning an optional board into a broken daily run.
     pitch_mod = None
     homers_mod = None
     batters_mod = None
+    hits_mod = None
+    projection = None
     print(f"!! pitcher board unavailable ({_pitch_err})", file=sys.stderr)
 
 # Full-board ratings. Optional too, but this is the piece that makes the
@@ -449,6 +453,31 @@ def main() -> int:
                           f"{bat_summary['expected']}%, delivered "
                           f"{bat_summary['actual']}% on "
                           f"{bat_summary['graded']} bat(s)")
+
+            # The hits board, beside the batter board and not inside its
+            # `if bat_rows:` -- a sibling page must not vanish just because
+            # the home-run board came up empty. It reuses `table` and
+            # `hr_starters` fetched above rather than asking StatsAPI again;
+            # mlb_api's process cache would answer a repeat request for free
+            # anyway, but there is no reason to pretend to need one.
+            if hits_mod:
+                hit_hist = load_json(DATA / "hit_ratings.json",
+                                     {"batters": []})["batters"]
+                hit_settled = hits_mod.grade(hit_hist, table)
+                hit_rows = hits_mod.build(hr_starters, _hcfg.SEASON)
+                hit_added = projection.merge(hit_hist, hit_rows,
+                                             ("batter_id", "commence_time"))
+                hit_summary = hits_mod.summary(hit_hist)
+                save_json(DATA / "hit_ratings.json", {"batters": hit_hist})
+                if hit_rows:
+                    save_json(DATA / "hits.json", {
+                        "date": today,
+                        "date_label": f"{now:%A, %B %-d, %Y}",
+                        "batters": hit_rows,
+                        "summary": hit_summary,
+                    })
+                    print(f"-- hits: {len(hit_rows)} rated, {hit_added} new, "
+                          f"{hit_settled} graded")
         except Exception as e:                               # noqa: BLE001
             print(f"!! home-run board failed ({type(e).__name__}: {e})",
                   file=sys.stderr)

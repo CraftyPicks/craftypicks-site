@@ -128,6 +128,7 @@ T = {
     # strings render.py builds tables and worked examples out of.
     # ---- the batter home-run board
     "nav_batters":   {"en": "Home runs", "es": "Jonrones"},
+    "nav_hits":      {"en": "Hits", "es": "Hits"},
     "bat_empty":     {"en": "No probable starters listed yet. This board fills "
                             "in once tonight's pitchers are announced.",
                       "es": "Aún no hay abridores probables. Esta pizarra se "
@@ -155,6 +156,24 @@ T = {
     "bat_n":         {"en": "bats", "es": "bateadores"},
     "bat_promised":  {"en": "promised", "es": "prometido"},
     "bat_delivered": {"en": "delivered", "es": "entregado"},
+
+    # ---- the hits board
+    "hit_empty":     {"en": "No probable starters listed yet. This board "
+                            "fills in once tonight's pitchers are announced.",
+                      "es": "Aún no hay lanzadores probables. Esta pizarra se "
+                            "llena cuando se anuncien los abridores."},
+    "hit_season":    {"en": "{h} hits in {pa} PA ({rate}%)",
+                      "es": "{h} hits en {pa} AP ({rate}%)"},
+    "hit_facing":    {"en": "Facing {who}{hand} — allows a hit to {rate}% "
+                            "of the batters he faces",
+                      "es": "Contra {who}{hand} — permite hit al {rate}% "
+                            "de los bateadores"},
+    "hit_park":      {"en": "Park {v}", "es": "Estadio {v}"},
+    "hit_ungraded":  {"en": "Not graded yet. Every projection on this board "
+                            "is settled the next morning.",
+                      "es": "Aún sin calificar. Cada proyección se resuelve "
+                            "a la mañana siguiente."},
+    "hit_count":     {"en": "{n} batter{s} rated", "es": "{n} bateadores calificados"},
 
     # ---- the home-run board
     "nav_homers":    {"en": "HR allowed", "es": "JR permitidos"},

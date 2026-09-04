@@ -37,6 +37,7 @@ from __future__ import annotations
 import statistics
 
 import mlb_api
+import projection
 
 # A starter throws about five and a bit innings of nine, so he faces roughly
 # this share of a lineup's plate appearances. The rest meet a bullpen, which
@@ -75,9 +76,10 @@ def parse_batters(payload) -> dict[int, dict]:
         if pid is None or not pa:
             continue
         row = out.setdefault(int(pid), {
-            "name": player.get("fullName", ""), "hr": 0, "pa": 0,
+            "name": player.get("fullName", ""), "hr": 0, "pa": 0, "h": 0,
             "team_id": None})
         row["hr"] += int(stat.get("homeRuns") or 0)
+        row["h"] += int(stat.get("hits") or 0)
         row["pa"] += int(pa)
         team = (sp.get("team") or {}).get("id")
         if team:
@@ -261,22 +263,10 @@ def grade(history: list[dict], table: dict[int, dict]) -> int:
     refetched every morning, so a batter's season total today against the
     total stored when he was projected answers the question with no extra
     request and no way to quietly skip it.
-
-    A row is graded once. Returns how many were newly settled.
     """
-    graded = 0
-    for row in history:
-        if row.get("homered") is not None:
-            continue
-        now = table.get(row.get("batter_id"))
-        if not now:
-            continue
-        before = row.get("hr_at_projection")
-        if before is None:
-            continue
-        row["homered"] = bool(now["hr"] > before)
-        graded += 1
-    return graded
+    return projection.grade_counting(
+        history, table, id_key="batter_id", at_key="hr_at_projection",
+        verdict_key="homered", total_key="hr", settled=projection.game_over)
 
 
 def summary(history: list[dict]) -> dict:
@@ -286,38 +276,20 @@ def summary(history: list[dict]) -> dict:
     time, and the honest test of it is whether the group it called 12% homered
     12% of the time -- not whether the top name went deep.
     """
-    done = [r for r in history if r.get("homered") is not None]
-    if not done:
-        return {"graded": 0, "expected": None, "actual": None, "buckets": []}
-    exp = sum(r["chance"] for r in done) / len(done)
-    act = sum(1 for r in done if r["homered"]) / len(done)
-    buckets = []
-    edges = [(0.0, 0.08), (0.08, 0.12), (0.12, 0.18), (0.18, 1.0)]
-    for lo, hi in edges:
-        grp = [r for r in done if lo <= r["chance"] < hi]
-        if not grp:
-            continue
-        buckets.append({
-            "label": f"{lo * 100:.0f}-{hi * 100:.0f}%",
-            "n": len(grp),
-            "expected": round(sum(r["chance"] for r in grp) / len(grp) * 100, 1),
-            "actual": round(sum(1 for r in grp if r["homered"]) / len(grp) * 100, 1),
-        })
-    return {"graded": len(done), "expected": round(exp * 100, 1),
-            "actual": round(act * 100, 1), "buckets": buckets}
+    return projection.calibration(history, verdict_key="homered")
 
 
 def _self_test() -> None:
     payload = {"stats": [{"splits": [
         {"player": {"id": 1, "fullName": "Big Bat"}, "team": {"id": 113},
-         "stat": {"homeRuns": 40, "plateAppearances": 600}},
+         "stat": {"homeRuns": 40, "plateAppearances": 600, "hits": 150}},
         {"player": {"id": 2, "fullName": "Slap Hitter"}, "team": {"id": 113},
-         "stat": {"homeRuns": 2, "plateAppearances": 500}},
+         "stat": {"homeRuns": 2, "plateAppearances": 500, "hits": 90}},
         # Traded: two lines, one player, summed.
         {"player": {"id": 3, "fullName": "Moved On"}, "team": {"id": 135},
-         "stat": {"homeRuns": 10, "plateAppearances": 200}},
+         "stat": {"homeRuns": 10, "plateAppearances": 200, "hits": 25}},
         {"player": {"id": 3, "fullName": "Moved On"}, "team": {"id": 141},
-         "stat": {"homeRuns": 5, "plateAppearances": 150}},
+         "stat": {"homeRuns": 5, "plateAppearances": 150, "hits": 15}},
         # No plate appearances at all: not a rate, not counted.
         {"player": {"id": 4, "fullName": "Never Played"}, "team": {"id": 113},
          "stat": {"homeRuns": 0, "plateAppearances": 0}},
@@ -327,6 +299,11 @@ def _self_test() -> None:
     assert t[3]["hr"] == 15 and t[3]["pa"] == 350, t[3]
     assert t[3]["team_id"] == 141, "a traded batter sits with his current club"
     assert 4 not in t, "a batter with no plate appearances is not a rate"
+
+    # Hits ride along in the same payload as home runs. They were being
+    # parsed and dropped; nothing extra is requested for them.
+    assert t[1]["h"] == 150, t[1]
+    assert t[3]["h"] == 40, t[3]      # traded: two lines, summed
 
     lg = league_rate(t)
     assert round(lg, 5) == round(57 / 1450, 5), lg
@@ -370,12 +347,20 @@ def _self_test() -> None:
     assert hr_chance(0.06, 0.04, lgr, 1.0, 5.0) > big
     assert hr_chance(0.06, 0.04, lgr, 1.0, 0) == 0.0
     # ---- grading, which costs nothing: today's season total against the
-    # total recorded when the projection was made.
+    # total recorded when the projection was made. Every row's game is
+    # already in the past -- grade() is gated by game_over now, and an
+    # ungated fixture here would prove nothing about the real bug.
+    from datetime import datetime, timedelta, timezone
+    played = (datetime.now(timezone.utc) - timedelta(hours=7)).isoformat()
     hist = [
-        {"batter_id": 1, "chance": 0.20, "hr_at_projection": 40, "homered": None},
-        {"batter_id": 2, "chance": 0.05, "hr_at_projection": 2, "homered": None},
-        {"batter_id": 9, "chance": 0.10, "hr_at_projection": 5, "homered": None},
-        {"batter_id": 1, "chance": 0.20, "hr_at_projection": 39, "homered": True},
+        {"batter_id": 1, "chance": 0.20, "hr_at_projection": 40,
+         "homered": None, "commence_time": played},
+        {"batter_id": 2, "chance": 0.05, "hr_at_projection": 2,
+         "homered": None, "commence_time": played},
+        {"batter_id": 9, "chance": 0.10, "hr_at_projection": 5,
+         "homered": None, "commence_time": played},
+        {"batter_id": 1, "chance": 0.20, "hr_at_projection": 39,
+         "homered": True, "commence_time": played},
     ]
     now = {1: {"hr": 41, "pa": 610}, 2: {"hr": 2, "pa": 505}}
     n = grade(hist, now)
@@ -385,6 +370,14 @@ def _self_test() -> None:
     assert hist[2]["homered"] is None, "a batter absent from the table waits"
     assert hist[3]["homered"] is True, "an already-graded row is not touched"
     assert grade(hist, now) == 0, "grading twice settles nothing new"
+
+    # A batter whose game is still hours away must not be graded a miss,
+    # no matter what his season total says -- the critical fix.
+    future = (datetime.now(timezone.utc) + timedelta(hours=3)).isoformat()
+    early = [{"batter_id": 1, "chance": 0.20, "hr_at_projection": 40,
+              "homered": None, "commence_time": future}]
+    assert grade(early, now) == 0
+    assert early[0]["homered"] is None, "a future game must stay ungraded"
 
     # ---- calibration, not a win rate
     sm = summary(hist)

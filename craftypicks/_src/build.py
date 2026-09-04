@@ -53,12 +53,13 @@ PAGES: dict[str, Page] = {
     **_FORM_PAGES,
     "homers.html":   Page("homers.html",   "homers",   "homers",   "mlb"),
     "batters.html":  Page("batters.html",  "batters",  "batters",  "mlb"),
+    "hits.html":     Page("hits.html",     "hits",     "hits",     "mlb"),
     "record.html":   Page("record.html",   "record",   "record",   None),
     "about.html":    Page("about.html",    "about",    "about",    None),
     "ev.html":       Page("ev.html",       "ev",       "ev",       None),
     "plays.html":    Page("plays.html",    "plays",    "plays",    None),
     "screens.html":  Page("screens.html",  "screens",  "screens",  None),
-    "pitchers.html": Page("pitchers.html", "pitchers", "pitchers", None),
+    "pitchers.html": Page("pitchers.html", "pitchers", "pitchers", "mlb"),
     "slate.html":    Page("slate.html",    "slate",    "slate",    None),
 }
 
@@ -94,6 +95,7 @@ VIEWS: dict[str, list[tuple[str, str]]] = {
              (f"{short}/form.html", "nav_form")]
             + ([("pitchers.html", "nav_pitchers"),
                 ("batters.html", "nav_batters"),
+                ("hits.html", "nav_hits"),
                 ("homers.html", "nav_homers")]
                if leagues.LEAGUES[short].has_props
                and leagues.LEAGUES[short].short == "mlb" else []))
@@ -190,6 +192,8 @@ TITLES = {
                     "es": f"Jonrones permitidos — {config.SITE_NAME}"},
     "batters.html": {"en": f"Home runs — {config.SITE_NAME}",
                      "es": f"Jonrones — {config.SITE_NAME}"},
+    "hits.html": {"en": f"Hits — {config.SITE_NAME}",
+                  "es": f"Hits — {config.SITE_NAME}"},
     **{f"{short}/form.html": {
         "en": f"{leagues.LEAGUES[short].label} form — {config.SITE_NAME}",
         "es": f"Forma {leagues.LEAGUES[short].label} — {config.SITE_NAME}"}
@@ -424,6 +428,8 @@ def build() -> None:
     homer_doc = load("homers.json", {"date_label": "", "starters": []})
     batter_doc = load("batters.json",
                       {"date_label": "", "batters": [], "summary": {}})
+    hit_doc = load("hits.json",
+                   {"date_label": "", "batters": [], "summary": {}})
 
     def build_tokens(lang, plays_doc, stats, history, slate_doc,
                      pitch_doc, closing_doc=None):
@@ -545,6 +551,11 @@ def build() -> None:
             "{{BATTER_CARDS}}": R.batter_cards(batter_doc.get("batters", [])),
             "{{BAT_CALIBRATION}}": R.batter_calibration(
                 batter_doc.get("summary", {})),
+            "{{HIT_CARDS}}": R.hit_cards(hit_doc.get("batters", [])),
+            "{{HIT_CALIBRATION}}": R.hit_calibration(
+                hit_doc.get("summary", {})),
+            "{{HIT_COUNT}}": L("hit_count", n=len(hit_doc.get("batters", [])),
+                              s=pl(len(hit_doc.get("batters", [])))),
             "{{HR_DATE}}": doc_date_label(homer_doc, lang) or L("not_rated"),
             "{{HOMER_CARDS}}": R.homer_cards(homer_doc.get("starters", [])),
             "{{FORM_TABLE}}": "",
@@ -628,6 +639,12 @@ def build() -> None:
                     "board_eyebrow", lang,
                     n=(board_doc.get("counts") or {}).get(page.league, 0),
                     d=_board_day(board_doc.get("date", ""), lang))
+            if page.body == "hits":
+                # {{DATE_LABEL}} is otherwise the plays board's date; the
+                # hits page is the only body that consumes it, so it is
+                # safe to point it at the hits document here instead.
+                page_tokens["{{DATE_LABEL}}"] = (
+                    doc_date_label(hit_doc, lang) or i18n.t("not_rated", lang))
             for token, value in page_tokens.items():
                 body = body.replace(token, str(value))
 
@@ -691,6 +708,18 @@ def _self_test() -> None:
     assert "pitchers.html" in mlb, "MLB's props page is missing from its views"
     assert mlb.count('class="on"') == 1, "the board tab should be active"
 
+    # Every page a league lists as one of its views must claim that league.
+    # view_row() opens with `if not page.league: return ""`, so a page that
+    # forgets it renders no second row at all -- the reader lands on it and
+    # every sibling tab vanishes. This shipped once, on pitchers.html.
+    for _league, _views in VIEWS.items():
+        for _href, _key in _views:
+            _page = PAGES.get(_href)
+            assert _page is not None, f"{_href} is in VIEWS but not PAGES"
+            assert _page.league == _league, (
+                f"{_href} is listed under {_league} but declares "
+                f"league={_page.league!r}; its sub-nav will be empty")
+
     ncaab = view_row(PAGES["ncaab/index.html"], "en")
     assert "pitchers.html" not in ncaab, \
         "NCAAB has no props page and must not link to one"
@@ -737,8 +766,13 @@ def _self_test() -> None:
 
 
 if __name__ == "__main__":
-    if "--test" in sys.argv:
-        _self_test()
-    else:
+    # The invariants run before every build, not only under --test. They are
+    # pure registry checks -- no disk, no network, microseconds -- and the
+    # one thing they are for is catching a page that is wired up wrong. Gated
+    # behind a flag no workflow passes, they caught nothing: the page whose
+    # missing league emptied the whole MLB sub-nav shipped past them and was
+    # found by a reader instead.
+    _self_test()
+    if "--test" not in sys.argv:
         build()
 

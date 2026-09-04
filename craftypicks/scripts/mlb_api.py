@@ -83,20 +83,20 @@ def probable_starters(date_str: str) -> list[dict]:
     return out
 
 
-def pitcher_season(pitcher_id: int, season: int) -> dict:
-    """Season K%, K/9, innings, ERA and win-loss record.
+EMPTY_PITCHER = {"k_pct": None, "k_per_9": None, "innings": 0.0, "era": None,
+                 "w": None, "l": None, "hr": None, "hr_per_9": None,
+                 "bf": None, "h": None}
 
-    The record is display-only and deliberately so: a starter's W-L says more
-    about the lineup behind him than about him. Cleveland's Bibee sits at
-    5-14 with a 3.88 ERA. It is on the card because readers look for it, and
-    nowhere near the projection.
+
+def parse_pitcher_season(payload) -> dict:
+    """A starter's season line, from a /people/{id}/stats payload.
+
+    Pure, so it can be tested without the network. The fetch is next door.
     """
-    data = _get(f"/people/{pitcher_id}/stats", stats="season",
-                season=season, group="pitching") or {}
+    data = payload or {}
     splits = (data.get("stats") or [{}])[0].get("splits") or []
     if not splits:
-        return {"k_pct": None, "k_per_9": None, "innings": 0.0, "era": None,
-                "w": None, "l": None, "hr": None, "hr_per_9": None, "bf": None}
+        return dict(EMPTY_PITCHER)
     s = splits[0].get("stat", {})
     bf = s.get("battersFaced") or 0
     k = s.get("strikeOuts") or 0
@@ -107,6 +107,7 @@ def pitcher_season(pitcher_id: int, season: int) -> dict:
         era = None
     wins, losses = s.get("wins"), s.get("losses")
     hr = s.get("homeRuns")
+    hits = s.get("hits")
     return {
         "k_pct": (k / bf) if bf else None,
         "k_per_9": (k * 9 / ip) if ip else None,
@@ -118,9 +119,23 @@ def pitcher_season(pitcher_id: int, season: int) -> dict:
         # the same two numbers we already have and rounds to two places.
         # Recomputing keeps the precision and avoids parsing "-.--".
         "hr_per_9": (float(hr) * 9 / ip) if (hr is not None and ip) else None,
+        "h": int(hits) if hits is not None else None,
         "w": int(wins) if wins is not None else None,
         "l": int(losses) if losses is not None else None,
     }
+
+
+def pitcher_season(pitcher_id: int, season: int) -> dict:
+    """Season K%, K/9, innings, ERA, hits and home runs allowed, and record.
+
+    The record is display-only and deliberately so: a starter's W-L says more
+    about the lineup behind him than about him. Cleveland's Bibee sits at
+    5-14 with a 3.88 ERA. It is on the card because readers look for it, and
+    nowhere near the projection.
+    """
+    return parse_pitcher_season(_get(
+        f"/people/{pitcher_id}/stats", stats="season",
+        season=season, group="pitching"))
 
 
 def _innings(value) -> float:
@@ -594,7 +609,39 @@ def _self_test() -> None:
     assert 999 not in ks, "a club with only one of the two splits is dropped"
     assert parse_k_splits({}) == {}
 
-    print("mlb_api self-test: every parser holds")
+    # ---- pitcher season line. hits ride along with everything else in the
+    # same payload; only the parsing was ever missing.
+    payload = {"stats": [{"splits": [{"stat": {
+        "battersFaced": 700, "strikeOuts": 180, "inningsPitched": "170.1",
+        "era": "3.45", "homeRuns": 22, "hits": 150,
+        "wins": 11, "losses": 7}}]}]}
+    row = parse_pitcher_season(payload)
+    assert row["bf"] == 700, row
+    assert row["h"] == 150, row          # hits allowed, the new field
+    assert row["hr"] == 22, row
+    assert row["w"] == 11 and row["l"] == 7, row
+    assert abs(row["k_pct"] - 180 / 700) < 1e-12, row
+    assert abs(row["innings"] - 170.333) < 0.01, row
+
+    # A pitcher with no season line returns the empty shape, not a KeyError,
+    # and every caller reads it with .get() anyway.
+    empty = parse_pitcher_season({"stats": [{"splits": []}]})
+    assert empty["h"] is None and empty["bf"] is None, empty
+    assert set(empty) == set(EMPTY_PITCHER), empty
+
+    # A missing hits field is None, not zero. Zero would read as a pitcher
+    # who has never allowed a hit and would rank top of every board.
+    no_hits = parse_pitcher_season({"stats": [{"splits": [{"stat": {
+        "battersFaced": 100, "inningsPitched": "25.0"}}]}]})
+    assert no_hits["h"] is None, no_hits
+
+    # The empty template must not be handed out by reference; a caller that
+    # mutated it would corrupt every later empty result.
+    a = parse_pitcher_season({})
+    a["h"] = 999
+    assert parse_pitcher_season({})["h"] is None, "EMPTY_PITCHER was shared"
+
+    print("mlb_api self-test: every parser holds, pitcher season included")
 
 
 if __name__ == "__main__":

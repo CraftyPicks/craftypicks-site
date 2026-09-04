@@ -1766,6 +1766,60 @@ def batter_calibration(summary: dict) -> str:
             f'{rows}</table></div>')
 
 
+# ----------------------------------------------------------------- hits ---
+# A sibling of the batter home-run board, same layout, different column:
+# the hits column of payloads the home-run board already fetches.
+
+def hit_cards(rows: list[dict]) -> str:
+    """Tonight's best chances of a hit, grouped by the game they appear in."""
+    if not rows:
+        return f'<div class="empty-board">{_("hit_empty")}</div>'
+    games: dict = {}
+    for r in rows:
+        games.setdefault((r.get("commence_time"), r.get("vs")), []).append(r)
+
+    out = []
+    for (when, pitcher), group in games.items():
+        club = esc(_nickname(group[0].get("team")))
+        hand = group[0].get("vs_hand") or ""
+        hand_txt = (f' ({_("mx_right") if hand == "R" else _("mx_left")})'
+                    if hand in ("L", "R") else "")
+        park = group[0].get("park") or 1.0
+        park_cls = "good" if park > 1.03 else "bad" if park < 0.97 else ""
+        vs_rate = f"{(group[0].get('vs_h_per_bf') or 0) * 100:.1f}"
+        bats = "".join(f"""
+          <div class="bat">
+            <div class="bat-n">{esc(b.get('name',''))}</div>
+            <div class="bat-c"><b>{b['chance'] * 100:.1f}%</b></div>
+            <div class="bat-w">{_("hit_season",
+                h=b.get('h', 0), pa=f"{b.get('pa', 0):,}",
+                rate=f"{b.get('hit_rate', 0) * 100:.1f}")}</div>
+          </div>""" for b in group)
+        accent = team_color(group[0].get('team')) or 'var(--line-2)'
+        out.append(f"""
+        <article class="pb-card bat-card" style="--accent:{accent}">
+          <div class="pb-top">
+            <span>{club} &middot; {esc(game_time(when))}</span>
+            <span class="bat-park {park_cls}">{_("hit_park",
+                v=f"{park:.2f}")}</span>
+          </div>
+          <div class="pb-body">
+            <div class="bat-vs">{_("hit_facing",
+                who=esc(pitcher or "?"), hand=hand_txt, rate=vs_rate)}</div>
+            {bats}
+          </div>
+        </article>""")
+    return '<div class="pb-grid">' + "".join(out) + "</div>"
+
+
+def hit_calibration(summary: dict) -> str:
+    """What the model promised against what happened. Not a win rate."""
+    n = (summary or {}).get("graded") or 0
+    if not n:
+        return f'<p class="pnl-note">{_("hit_ungraded")}</p>'
+    return batter_calibration(summary)
+
+
 # ------------------------------------------------------------- home runs ---
 # The strikeout page's argument applied to a different number, and with the
 # same posture: matchup facts, no projection, no pick. There are no prices

@@ -24,6 +24,7 @@ deep. Re-running only ever adds rows it has not seen.
 from __future__ import annotations
 
 import json
+import os
 import sys
 from datetime import datetime
 from pathlib import Path
@@ -39,21 +40,48 @@ import screen_config       # noqa: E402
 import mlb_api             # noqa: E402
 import homers as homers_mod    # noqa: E402
 import batters as batters_mod  # noqa: E402
+import hits as hits_mod        # noqa: E402
+import projection              # noqa: E402
+import results_store           # noqa: E402
 
 
 def load_json(path: Path, default):
+    """Read a store, or quarantine it and start over if it will not parse.
+
+    A half-written file (a run killed mid-write, before atomic saves existed)
+    used to be silently treated as empty, and the very next save then
+    overwrote it with tonight's rows only -- every prior graded row gone
+    with no trace it had ever existed. Renaming the bad file aside keeps the
+    evidence instead of destroying it, and the message on stderr makes the
+    loss visible rather than quiet.
+    """
     if not path.exists():
         return default
     try:
         return json.loads(path.read_text())
     except json.JSONDecodeError:
-        print(f"!! {path.name} is corrupt; starting from empty", file=sys.stderr)
+        stamp = datetime.now().strftime("%Y%m%dT%H%M%S")
+        bad = path.with_name(f"{path.name}.corrupt-{stamp}")
+        try:
+            os.replace(path, bad)
+            where = f"; moved aside to {bad.name}"
+        except OSError:
+            where = ""
+        print(f"!! {path.name} is corrupt{where}; starting from empty",
+              file=sys.stderr)
         return default
 
 
 def save_json(path: Path, payload) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n")
+    """Write a store in one step, or not at all.
+
+    Reuses results_store's own atomic write (temp file + os.replace) rather
+    than a second implementation of the same fix: path.write_text() truncates
+    before it writes, so a run killed mid-save used to leave a half-written
+    file for the next run's load_json to find.
+    """
+    text = json.dumps(payload, indent=2, ensure_ascii=False) + "\n"
+    results_store._write_atomic(path, text)
 
 
 def main() -> int:
@@ -86,16 +114,15 @@ def main() -> int:
 
     # ---------------------------------------------------------- batters
     history = load_json(DATA / "batter_ratings.json", {"batters": []})["batters"]
+    repaired = projection.repair_premature(history, verdict_key="homered")
+    if repaired:
+        print(f"!! batter_ratings: reset {repaired} verdict(s) that were "
+              f"graded before their game had started", file=sys.stderr)
     table = batters_mod.all_batters(season)
     settled = batters_mod.grade(history, table)
     rows = batters_mod.build(starters, season)
 
-    known = {(r.get("batter_id"), r.get("commence_time")) for r in history}
-    added = 0
-    for row in rows:
-        if (row.get("batter_id"), row.get("commence_time")) not in known:
-            history.append(dict(row))
-            added += 1
+    added = projection.merge(history, rows, ("batter_id", "commence_time"))
     summary = batters_mod.summary(history)
     save_json(DATA / "batter_ratings.json", {"batters": history})
 
@@ -113,6 +140,32 @@ def main() -> int:
                   f"{summary['graded']} bat(s)")
     else:
         print("!! batters: no lineup cleared the plate-appearance floor",
+              file=sys.stderr)
+
+    # ---------------------------------------------------------- hits
+    hit_hist = load_json(DATA / "hit_ratings.json", {"batters": []})["batters"]
+    hit_repaired = projection.repair_premature(hit_hist, verdict_key="got_hit")
+    if hit_repaired:
+        print(f"!! hit_ratings: reset {hit_repaired} verdict(s) that were "
+              f"graded before their game had started", file=sys.stderr)
+    hit_settled = hits_mod.grade(hit_hist, table)
+    hit_rows = hits_mod.build(starters, season)
+    hit_added = projection.merge(hit_hist, hit_rows,
+                                 ("batter_id", "commence_time"))
+    hit_summary = hits_mod.summary(hit_hist)
+    save_json(DATA / "hit_ratings.json", {"batters": hit_hist})
+
+    if hit_rows:
+        save_json(DATA / "hits.json", {
+            "date": today,
+            "date_label": label,
+            "batters": hit_rows,
+            "summary": hit_summary,
+        })
+        print(f"-- hits: {len(hit_rows)} rated, {hit_added} new, "
+              f"{hit_settled} graded")
+    else:
+        print("!! hits: no lineup cleared the plate-appearance floor",
               file=sys.stderr)
 
     return 0
