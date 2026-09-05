@@ -517,10 +517,9 @@ footer{background:var(--bg-2);padding:56px 0 40px}
   .gmore>summary{padding:12px 0 4px;min-height:44px}
   .nav-views .nav-in{padding:0 16px;gap:16px}
   .nav-views a{padding:12px 0;min-height:44px}
-  .statbar{display:flex;overflow-x:auto;-webkit-overflow-scrolling:touch;
-    scrollbar-width:none}
-  .statbar::-webkit-scrollbar{display:none}
-  .sb-cell{flex:0 0 auto;white-space:nowrap;padding:10px 14px}
+  
+  
+  
   .foot-grid{grid-template-columns:1fr 1fr;gap:22px}
 }
 @media(max-width:390px){
@@ -605,36 +604,21 @@ footer{background:var(--bg-2);padding:56px 0 40px}
   background: var(--green); border-radius: 2px;
 }
 
-
 /* ====================================================== status strip =====
    A row of live facts directly under the nav. It exists to answer "is this
    thing actually running?" before a reader has to trust any of the numbers
    underneath it — which is the same argument the rest of the site makes. */
-.statbar{
-  display:grid;grid-auto-flow:column;grid-auto-columns:1fr;
-  border-bottom:1px solid var(--line);background:var(--bg-2);
-}
-.sb-cell{
-  padding:13px 22px;border-right:1px solid var(--line);
-  font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;
-  text-transform:uppercase;color:var(--muted);white-space:nowrap;
-  overflow:hidden;text-overflow:ellipsis;
-}
-.sb-cell:last-child{border-right:0}
-.statbar b{color:var(--txt);font-weight:600}
-.sb-live{color:var(--green);display:flex;align-items:center;gap:9px}
+
 @media(max-width:900px){
-  .statbar{grid-auto-flow:row;grid-auto-columns:auto}
-  .sb-cell{border-right:0;border-bottom:1px solid var(--line)}
-  .sb-cell:last-child{border-bottom:0}
+  
+  
+  
 }
 
 /* ======================================================== game card =====
    Rebuilt around one number. The old card gave both teams a probability,
    which made a reader do the subtraction; this one names a single side and
    shows the market's disagreement as a distance along the bar. */
-
-
 
 /* The nav outgrew the viewport once the labels went uppercase mono and a
    sixth item arrived: on a phone the last three links were being clipped by
@@ -655,7 +639,6 @@ footer{background:var(--bg-2);padding:56px 0 40px}
 }
 
 /* ---------- language switch ---------- */
-
 
 /* ============================================ board card detail panel ===== */
 .pnl{padding:2px 0 4px}
@@ -890,16 +873,15 @@ footer{background:var(--bg-2);padding:56px 0 40px}
 <header class="nav">
   <div class="nav-in">
     <a href="index.html" class="logo">Craftypicks<em>.</em></a>
-    <nav class="nav-links"><a href="index.html" class="">Tonight</a><a href="mlb/index.html" class="">MLB</a><a href="nba/index.html" class="">NBA</a><a href="nfl/index.html" class="">NFL</a><a href="ncaab/index.html" class="">NCAAB</a></nav>
+    <nav class="nav-links"><a href="index.html" class="">Today's Games</a><a href="mlb/index.html" class="">MLB</a><a href="nba/index.html" class="">NBA</a><a href="nfl/index.html" class="">NFL</a><a href="ncaab/index.html" class="">NCAAB</a></nav>
     <div class="nav-cta">
       <a href="ev.html" class="link-quiet">+EV</a>
       <a href="about.html" class="link-quiet">Why it's free</a>
-      <a href="plays.html" class="btn solid sm">Today's plays</a>
+      <a href="plays.html" class="btn solid sm">System plays</a>
     </div>
   </div>
 </header>
 <div class="nav-views is-empty"><div class="nav-in"></div></div>
-<div class="statbar"><div class="sb-cell"><span class="sb-live"><span class="dot"></span>Board live</span></div><div class="sb-cell"><b>16</b> games rated</div><div class="sb-cell"><b>1</b> flagged</div><div class="sb-cell">Median disagreement <b>5.5 pts</b></div><div class="sb-cell">Updated <b>2026-09-04 11:23</b> ET</div></div>
 
 <section style="background:var(--bg-2)">
   <div class="wrap" style="padding:64px 28px 40px">
@@ -1585,7 +1567,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
     <h2>The board is rated daily. Plays are rarer.</h2>
     <p>A rating on every game doesn't mean a bet on every game. Most nights the market and our number agree closely enough that there's nothing to do.</p>
     <div class="hero-cta">
-      <a href="plays.html" class="btn solid">Today's plays</a>
+      <a href="plays.html" class="btn solid">System plays</a>
       <a href="pitchers.html" class="btn ghost">Pitchers prop</a>
       <a href="record.html" class="btn ghost">Track record</a>
     </div>
@@ -1622,6 +1604,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
     <div class="foot-legal">
       <p class="disclaimer"><b>21+ only. For entertainment purposes.</b> Craftypicks is not a sportsbook and does not accept wagers, hold funds, or facilitate betting of any kind. Nothing here is financial advice or a guarantee of profit — every play posted can lose, and most winning stretches are followed by losing ones. Never wager money you cannot afford to lose. If gambling stops being fun, call <b>1-800-GAMBLER</b> or text 800GAM to 800177.</p>
       <p>&copy; 2026 Craftypicks. Plays are posted before the number moves and graded exactly as posted.</p>
+      <p class="foot-stamp">Picks posted 2026-09-04 11:23 ET</p>
     </div>
   </div>
 </footer>

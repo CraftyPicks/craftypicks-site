@@ -517,10 +517,9 @@ footer{background:var(--bg-2);padding:56px 0 40px}
   .gmore>summary{padding:12px 0 4px;min-height:44px}
   .nav-views .nav-in{padding:0 16px;gap:16px}
   .nav-views a{padding:12px 0;min-height:44px}
-  .statbar{display:flex;overflow-x:auto;-webkit-overflow-scrolling:touch;
-    scrollbar-width:none}
-  .statbar::-webkit-scrollbar{display:none}
-  .sb-cell{flex:0 0 auto;white-space:nowrap;padding:10px 14px}
+  
+  
+  
   .foot-grid{grid-template-columns:1fr 1fr;gap:22px}
 }
 @media(max-width:390px){
@@ -605,36 +604,21 @@ footer{background:var(--bg-2);padding:56px 0 40px}
   background: var(--green); border-radius: 2px;
 }
 
-
 /* ====================================================== status strip =====
    A row of live facts directly under the nav. It exists to answer "is this
    thing actually running?" before a reader has to trust any of the numbers
    underneath it — which is the same argument the rest of the site makes. */
-.statbar{
-  display:grid;grid-auto-flow:column;grid-auto-columns:1fr;
-  border-bottom:1px solid var(--line);background:var(--bg-2);
-}
-.sb-cell{
-  padding:13px 22px;border-right:1px solid var(--line);
-  font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;
-  text-transform:uppercase;color:var(--muted);white-space:nowrap;
-  overflow:hidden;text-overflow:ellipsis;
-}
-.sb-cell:last-child{border-right:0}
-.statbar b{color:var(--txt);font-weight:600}
-.sb-live{color:var(--green);display:flex;align-items:center;gap:9px}
+
 @media(max-width:900px){
-  .statbar{grid-auto-flow:row;grid-auto-columns:auto}
-  .sb-cell{border-right:0;border-bottom:1px solid var(--line)}
-  .sb-cell:last-child{border-bottom:0}
+  
+  
+  
 }
 
 /* ======================================================== game card =====
    Rebuilt around one number. The old card gave both teams a probability,
    which made a reader do the subtraction; this one names a single side and
    shows the market's disagreement as a distance along the bar. */
-
-
 
 /* The nav outgrew the viewport once the labels went uppercase mono and a
    sixth item arrived: on a phone the last three links were being clipped by
@@ -655,7 +639,6 @@ footer{background:var(--bg-2);padding:56px 0 40px}
 }
 
 /* ---------- language switch ---------- */
-
 
 /* ============================================ board card detail panel ===== */
 .pnl{padding:2px 0 4px}
@@ -890,16 +873,15 @@ footer{background:var(--bg-2);padding:56px 0 40px}
 <header class="nav">
   <div class="nav-in">
     <a href="index.html" class="logo">Craftypicks<em>.</em></a>
-    <nav class="nav-links"><a href="index.html" class="">Tonight</a><a href="mlb/index.html" class="on">MLB</a><a href="nba/index.html" class="">NBA</a><a href="nfl/index.html" class="">NFL</a><a href="ncaab/index.html" class="">NCAAB</a></nav>
+    <nav class="nav-links"><a href="index.html" class="">Today's Games</a><a href="mlb/index.html" class="on">MLB</a><a href="nba/index.html" class="">NBA</a><a href="nfl/index.html" class="">NFL</a><a href="ncaab/index.html" class="">NCAAB</a></nav>
     <div class="nav-cta">
       <a href="ev.html" class="link-quiet">+EV</a>
       <a href="about.html" class="link-quiet">Why it's free</a>
-      <a href="plays.html" class="btn solid sm">Today's plays</a>
+      <a href="plays.html" class="btn solid sm">System plays</a>
     </div>
   </div>
 </header>
 <div class="nav-views"><div class="nav-in"><a href="mlb/index.html" class="">Board</a><a href="mlb/form.html" class="">Form</a><a href="pitchers.html" class="">Pitchers Prop</a><a href="batters.html" class="on">Home runs</a><a href="hits.html" class="">Hits</a><a href="homers.html" class="">HR allowed</a></div></div>
-<div class="statbar"><div class="sb-cell"><span class="sb-live"><span class="dot"></span>Board live</span></div><div class="sb-cell"><b>16</b> games rated</div><div class="sb-cell"><b>1</b> flagged</div><div class="sb-cell">Median disagreement <b>5.5 pts</b></div><div class="sb-cell">Updated <b>2026-09-04 11:23</b> ET</div></div>
 
 <section class="board-hero">
   <div class="wrap">
@@ -1240,7 +1222,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
             
           <div class="bat">
             <div class="bat-n">Heriberto Hernández</div>
-            <div class="bat-c"><b>18.8%</b></div>
+            <div class="bat-c"><b>18.9%</b></div>
             <div class="bat-w">23 HR in 412 plate appearances &middot; 5.6%</div>
           </div>
           <div class="bat">
@@ -1389,19 +1371,19 @@ footer{background:var(--bg-2);padding:56px 0 40px}
                  style="--accent:var(--line-2)">
           <div class="pb-top">
             <span>TB &middot; 8:05 PM ET</span>
-            <span class="bat-park ">park 0.98</span>
+            <span class="bat-park ">park 0.99</span>
           </div>
           <div class="pb-body">
             <div class="bat-vs">facing Trevor Williams, who allows a home run to 3.6% of the batters he faces</div>
             
           <div class="bat">
             <div class="bat-n">Junior Caminero</div>
-            <div class="bat-c"><b>25.0%</b></div>
+            <div class="bat-c"><b>25.2%</b></div>
             <div class="bat-w">37 HR in 615 plate appearances &middot; 6.0%</div>
           </div>
           <div class="bat">
             <div class="bat-n">Yandy Díaz</div>
-            <div class="bat-c"><b>14.9%</b></div>
+            <div class="bat-c"><b>15.0%</b></div>
             <div class="bat-w">21 HR in 605 plate appearances &middot; 3.5%</div>
           </div>
           <div class="bat">
@@ -1415,24 +1397,24 @@ footer{background:var(--bg-2);padding:56px 0 40px}
                  style="--accent:var(--line-2)">
           <div class="pb-top">
             <span>TEX &middot; 8:05 PM ET</span>
-            <span class="bat-park ">park 0.98</span>
+            <span class="bat-park ">park 0.99</span>
           </div>
           <div class="pb-body">
             <div class="bat-vs">facing Nick Martinez, who allows a home run to 3.0% of the batters he faces</div>
             
           <div class="bat">
             <div class="bat-n">Joc Pederson</div>
-            <div class="bat-c"><b>15.9%</b></div>
+            <div class="bat-c"><b>15.8%</b></div>
             <div class="bat-w">24 HR in 413 plate appearances &middot; 5.8%</div>
           </div>
           <div class="bat">
             <div class="bat-n">Jake Burger</div>
-            <div class="bat-c"><b>15.2%</b></div>
+            <div class="bat-c"><b>15.1%</b></div>
             <div class="bat-w">23 HR in 536 plate appearances &middot; 4.3%</div>
           </div>
           <div class="bat">
             <div class="bat-n">Ezequiel Duran</div>
-            <div class="bat-c"><b>11.4%</b></div>
+            <div class="bat-c"><b>11.3%</b></div>
             <div class="bat-w">17 HR in 515 plate appearances &middot; 3.3%</div>
           </div>
           </div>
@@ -1500,7 +1482,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
             
           <div class="bat">
             <div class="bat-n">Nolan Arenado</div>
-            <div class="bat-c"><b>16.5%</b></div>
+            <div class="bat-c"><b>16.6%</b></div>
             <div class="bat-w">21 HR in 515 plate appearances &middot; 4.1%</div>
           </div>
           <div class="bat">
@@ -1610,7 +1592,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           <div class="bat">
             <div class="bat-n">Luis García Jr.</div>
             <div class="bat-c"><b>18.3%</b></div>
-            <div class="bat-w">28 HR in 480 plate appearances &middot; 5.8%</div>
+            <div class="bat-w">28 HR in 481 plate appearances &middot; 5.8%</div>
           </div>
           <div class="bat">
             <div class="bat-n">Jazz Chisholm Jr.</div>
@@ -1631,17 +1613,17 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           <div class="bat">
             <div class="bat-n">Manny Machado</div>
             <div class="bat-c"><b>9.1%</b></div>
-            <div class="bat-w">24 HR in 584 plate appearances &middot; 4.1%</div>
+            <div class="bat-w">24 HR in 585 plate appearances &middot; 4.1%</div>
           </div>
           <div class="bat">
             <div class="bat-n">Jackson Merrill</div>
-            <div class="bat-c"><b>8.4%</b></div>
+            <div class="bat-c"><b>8.3%</b></div>
             <div class="bat-w">22 HR in 578 plate appearances &middot; 3.8%</div>
           </div>
           <div class="bat">
             <div class="bat-n">Ty France</div>
-            <div class="bat-c"><b>7.7%</b></div>
-            <div class="bat-w">20 HR in 420 plate appearances &middot; 4.8%</div>
+            <div class="bat-c"><b>7.6%</b></div>
+            <div class="bat-w">20 HR in 421 plate appearances &middot; 4.8%</div>
           </div>
           </div>
         </article>
@@ -1682,7 +1664,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
             
           <div class="bat">
             <div class="bat-n">Shea Langeliers</div>
-            <div class="bat-c"><b>19.3%</b></div>
+            <div class="bat-c"><b>19.2%</b></div>
             <div class="bat-w">23 HR in 416 plate appearances &middot; 5.5%</div>
           </div>
           <div class="bat">
@@ -1704,16 +1686,16 @@ footer{background:var(--bg-2);padding:56px 0 40px}
             <span class="bat-park ">park 1.01</span>
           </div>
           <div class="pb-body">
-            <div class="bat-vs">facing Jackson Kent, who allows a home run to 1.0% of the batters he faces</div>
+            <div class="bat-vs">facing Jackson Kent, who allows a home run to 0.9% of the batters he faces</div>
             
           <div class="bat">
             <div class="bat-n">Shohei Ohtani</div>
-            <div class="bat-c"><b>12.7%</b></div>
+            <div class="bat-c"><b>12.6%</b></div>
             <div class="bat-w">30 HR in 592 plate appearances &middot; 5.1%</div>
           </div>
           <div class="bat">
             <div class="bat-n">Max Muncy</div>
-            <div class="bat-c"><b>11.1%</b></div>
+            <div class="bat-c"><b>11.0%</b></div>
             <div class="bat-w">26 HR in 484 plate appearances &middot; 5.4%</div>
           </div>
           <div class="bat">
@@ -1740,7 +1722,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           <div class="bat">
             <div class="bat-n">CJ Abrams</div>
             <div class="bat-c"><b>8.3%</b></div>
-            <div class="bat-w">29 HR in 575 plate appearances &middot; 5.0%</div>
+            <div class="bat-w">29 HR in 576 plate appearances &middot; 5.0%</div>
           </div>
           <div class="bat">
             <div class="bat-n">Daylen Lile</div>
@@ -1782,6 +1764,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
     <div class="foot-legal">
       <p class="disclaimer"><b>21+ only. For entertainment purposes.</b> Craftypicks is not a sportsbook and does not accept wagers, hold funds, or facilitate betting of any kind. Nothing here is financial advice or a guarantee of profit — every play posted can lose, and most winning stretches are followed by losing ones. Never wager money you cannot afford to lose. If gambling stops being fun, call <b>1-800-GAMBLER</b> or text 800GAM to 800177.</p>
       <p>&copy; 2026 Craftypicks. Plays are posted before the number moves and graded exactly as posted.</p>
+      <p class="foot-stamp">Picks posted 2026-09-04 11:23 ET</p>
     </div>
   </div>
 </footer>
