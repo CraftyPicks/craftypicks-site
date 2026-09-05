@@ -16,31 +16,31 @@
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%2308090B'/><path d='M8 20 L14 12 L18 17 L24 9' stroke='%233BE081' stroke-width='2.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>">
 <style>
 :root{
-  /* Slate. Every value below was checked with scripts/palette.py rather than
+  /* Graphite. Every value below was checked with scripts/palette.py rather than
      eyeballed; the ratios in the spec's table are reproduced exactly by that
      module, so a change here that breaks legibility fails the build. */
-  --bg:#EEF1F4;
-  --bg-2:#EEF1F4;
-  --panel:#FFFFFF;
-  --panel-2:#F7F9FB;
-  --line:#D8DEE4;
-  --line-2:#BFC7D0;
+  --bg:#14171C;
+  --bg-2:#14171C;
+  --panel:#1C2027;
+  --panel-2:#191D23;
+  --line:#2A3038;
+  --line-2:#3A424C;
 
   /* The type hierarchy, in the order a reader meets it. --dim is the only
      token below 5:1 and is valid only for a caption under a figure that
      already carries the meaning — never for a name, a price or a percentage.
      See the --dim allowlist at the bottom of this file. */
-  --txt:#14181D;      /* club names, primary numbers, best price        15.7:1 */
-  --sub:#333A42;      /* records, starter, ERA, supporting stats        10.2:1 */
-  --muted:#525B65;    /* market labels, card headers, units              6.1:1 */
-  --dim:#828C97;      /* footnote captions only                          3.0:1 */
+  --txt:#E6EAF0;      /* club names, primary numbers, best price        14.9:1 */
+  --sub:#BFC7D2;      /* records, starter, ERA, supporting stats        10.5:1 */
+  --muted:#8E99A6;    /* market labels, card headers, units              6.2:1 */
+  --dim:#626D7A;      /* footnote captions only                          3.4:1 */
 
-  --green:#106E42;
-  --green-deep:#3D8D68;   /* the light end of the probability-bar gradient */
-  --green-hover:#0C5533;   /* solid-button hover: darker than rest on a light ground */
-  --green-dim:#1F7F4B;
-  --red:#BE2F2F;
-  --amber:#734C00;
+  --green:#3FD37A;
+  --green-deep:#2A9C59;   /* the light end of the probability-bar gradient */
+  --green-hover:#63E294;   /* solid-button hover: lighter than rest on a dark ground */
+  --green-dim:#35B96A;
+  --red:#F26D6D;
+  --amber:#F0B429;
 
   /* Two roles: mono labels the data, the sans carries everything else. */
   --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
@@ -79,7 +79,7 @@ p{color:var(--muted);font-size:16px}
 
 /* ---------- nav ---------- */
 header.nav{
-  position:sticky;top:0;z-index:50;background:rgba(255,255,255,.86);
+  position:sticky;top:0;z-index:50;background:rgba(28,32,39,.86);
   backdrop-filter:blur(14px);border-bottom:1px solid var(--line);
 }
 .nav-in{max-width:var(--maxw);margin:0 auto;padding:0 28px;height:68px;
@@ -113,11 +113,11 @@ header.nav{
   font-weight:500;padding:13px 22px;border:1px solid var(--green);color:var(--green);
   background:transparent;cursor:pointer;transition:.15s;white-space:nowrap;
 }
-.btn:hover{background:rgba(16,110,66,.09)}
-.btn.solid{background:var(--green);color:#FFFFFF;border-color:var(--green);font-weight:700}
+.btn:hover{background:rgba(63,211,122,.09)}
+.btn.solid{background:var(--green);color:var(--bg);border-color:var(--green);font-weight:700}
 .btn.solid:hover{background:var(--green-hover)}
 .btn.ghost{border-color:var(--line-2);color:var(--txt)}
-.btn.ghost:hover{border-color:var(--muted);background:rgba(20,24,29,.03)}
+.btn.ghost:hover{border-color:var(--muted);background:rgba(230,234,240,.06)}
 .btn.sm{padding:10px 16px;font-size:11px}
 .link-quiet{font-size:14px;color:var(--muted)}
 .link-quiet:hover{color:var(--txt)}
@@ -161,7 +161,7 @@ section{border-bottom:1px solid var(--line)}
   padding:14px 20px;border-bottom:1px solid var(--line);
 }
 .dot{width:6px;height:6px;border-radius:50%;background:var(--green);display:inline-block;
-  box-shadow:0 0 0 3px rgba(16,110,66,.16);animation:pulse 2.4s infinite}
+  box-shadow:0 0 0 3px rgba(63,211,122,.16);animation:pulse 2.4s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
 .stamp{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
 .stamp.on{color:var(--green)}
@@ -169,7 +169,7 @@ section{border-bottom:1px solid var(--line)}
 .pick{font-size:26px;font-weight:800;letter-spacing:-.02em;margin-bottom:8px}
 .meta{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:18px}
 .mock-banner{
-  background:rgba(115,76,0,.12);border-bottom:1px solid rgba(115,76,0,.35);
+  background:rgba(240,180,41,.12);border-bottom:1px solid rgba(240,180,41,.35);
   color:var(--amber);font-family:var(--mono);font-size:11.5px;letter-spacing:.04em;
   padding:11px 28px;text-align:center;
 }
@@ -217,9 +217,9 @@ section{border-bottom:1px solid var(--line)}
 .tbl tbody tr:hover{background:var(--panel-2)}
 .tag{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;
   padding:4px 8px;border:1px solid var(--line-2);color:var(--muted)}
-.tag.win{color:var(--green);border-color:rgba(16,110,66,.4);background:rgba(16,110,66,.10)}
-.tag.loss{color:var(--red);border-color:rgba(190,47,47,.35);background:rgba(190,47,47,.08)}
-.tag.push{color:var(--amber);border-color:rgba(115,76,0,.35);background:rgba(115,76,0,.08)}
+.tag.win{color:var(--green);border-color:rgba(63,211,122,.4);background:rgba(63,211,122,.10)}
+.tag.loss{color:var(--red);border-color:rgba(242,109,109,.35);background:rgba(242,109,109,.08)}
+.tag.push{color:var(--amber);border-color:rgba(240,180,41,.35);background:rgba(240,180,41,.08)}
 .scroll-x{overflow-x:auto}
 
 /* ---------- rated board ---------- */
@@ -230,7 +230,7 @@ section{border-bottom:1px solid var(--line)}
   gap:18px;align-items:start}
 .gcard{background:var(--panel);border:1px solid var(--line);transition:.18s}
 .gcard:hover{border-color:var(--line-2);background:var(--panel-2)}
-.gcard.flag{border-color:rgba(115,76,0,.42)}
+.gcard.flag{border-color:rgba(240,180,41,.42)}
 .gcard-top{
   display:flex;align-items:center;justify-content:space-between;gap:10px;
   padding:11px 17px;border-bottom:1px solid var(--line);background:var(--bg-2);
@@ -329,9 +329,9 @@ section{border-bottom:1px solid var(--line)}
 .crow .cl{font-family:var(--mono);font-size:13px;color:var(--txt);font-weight:600}
 .crow .cn{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--sub)}
 .ctrack{position:relative;height:24px;background:var(--bg-2);border:1px solid var(--line)}
-.cband{position:absolute;top:0;bottom:0;background:rgba(16,110,66,.09);
-  border-left:1px solid rgba(16,110,66,.18);border-right:1px solid rgba(16,110,66,.18)}
-.csaid{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--green);box-shadow:0 0 6px rgba(16,110,66,.55)}
+.cband{position:absolute;top:0;bottom:0;background:rgba(63,211,122,.09);
+  border-left:1px solid rgba(63,211,122,.18);border-right:1px solid rgba(63,211,122,.18)}
+.csaid{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--green);box-shadow:0 0 6px rgba(63,211,122,.55)}
 .cact{position:absolute;top:50%;width:9px;height:9px;margin:-5px 0 0 -5px;border-radius:50%;
   background:var(--txt);box-shadow:0 0 0 3px var(--panel)}
 .cact.out{background:var(--amber)}
@@ -344,8 +344,8 @@ section{border-bottom:1px solid var(--line)}
 .clegend i{display:inline-block}
 .key-line{width:2px;height:13px;background:var(--green)}
 .key-dot{width:9px;height:9px;border-radius:50%;background:var(--txt)}
-.key-band{width:26px;height:13px;background:rgba(16,110,66,.09);
-  border-left:1px solid rgba(16,110,66,.25);border-right:1px solid rgba(16,110,66,.25)}
+.key-band{width:26px;height:13px;background:rgba(63,211,122,.09);
+  border-left:1px solid rgba(63,211,122,.25);border-right:1px solid rgba(63,211,122,.25)}
 @media(max-width:820px){
   .crow{grid-template-columns:1fr 1fr;gap:10px}
   .crow .ctrack{grid-column:1/-1}
@@ -356,7 +356,7 @@ section{border-bottom:1px solid var(--line)}
 .pb-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(336px,1fr));gap:16px}
 .pb-card{background:var(--panel);border:1px solid var(--line);transition:.18s}
 .pb-card:hover{border-color:var(--line-2);background:var(--panel-2)}
-.pb-card.flag{border-color:rgba(115,76,0,.42)}
+.pb-card.flag{border-color:rgba(240,180,41,.42)}
 .pb-top{display:flex;align-items:center;justify-content:space-between;gap:10px;
   padding:11px 17px;border-bottom:1px solid var(--line);background:var(--bg-2);
   font-family:var(--mono);font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--sub)}
@@ -409,7 +409,7 @@ section{border-bottom:1px solid var(--line)}
   cursor:pointer;transition:.15s;
 }
 .chip:hover{color:var(--txt);border-color:var(--muted)}
-.chip.on{background:var(--green);border-color:var(--green);color:#FFFFFF;font-weight:700}
+.chip.on{background:var(--green);border-color:var(--green);color:var(--bg);font-weight:700}
 
 /* ---------- misc ---------- */
 .split{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap}
@@ -919,8 +919,8 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           </div>
           <div class="pb-body">
             <div class="pb-name">Logan Allen</div>
-            <div class="hrl "><span class="hrl-k">Allows</span><span class="hrl-v"><b>1.62</b> per 9 innings</span><span class="hrl-r"></span><span class="hrl-m">league 1.22</span></div>
-            <div class="hrl "><span class="hrl-k">DET hit</span><span class="hrl-v"><b>1.12</b> per game</span><span class="hrl-r">16th of 30</span><span class="hrl-m">league 1.14</span></div>
+            <div class="hrl "><span class="hrl-k">Allows</span><span class="hrl-v"><b>1.62</b> per 9 innings</span><span class="hrl-r"></span><span class="hrl-m">league 1.21</span></div>
+            <div class="hrl "><span class="hrl-k">DET hit</span><span class="hrl-v"><b>1.12</b> per game</span><span class="hrl-r">17th of 30</span><span class="hrl-m">league 1.14</span></div>
             <div class="pb-rows">
               <div class="pb-row"><span>Season</span>
                 <b>3 allowed in 16.7 innings</b></div>
@@ -935,8 +935,8 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           </div>
           <div class="pb-body">
             <div class="pb-name">Keider Montero</div>
-            <div class="hrl "><span class="hrl-k">Allows</span><span class="hrl-v"><b>0.94</b> per 9 innings</span><span class="hrl-r">21st of 32</span><span class="hrl-m">league 1.22</span></div>
-            <div class="hrl bad"><span class="hrl-k">CLE hit</span><span class="hrl-v"><b>0.93</b> per game</span><span class="hrl-r">29th of 30</span><span class="hrl-m">league 1.14</span></div>
+            <div class="hrl "><span class="hrl-k">Allows</span><span class="hrl-v"><b>0.94</b> per 9 innings</span><span class="hrl-r">21st of 32</span><span class="hrl-m">league 1.21</span></div>
+            <div class="hrl bad"><span class="hrl-k">CLE hit</span><span class="hrl-v"><b>0.94</b> per game</span><span class="hrl-r">29th of 30</span><span class="hrl-m">league 1.14</span></div>
             <div class="pb-rows">
               <div class="pb-row"><span>Season</span>
                 <b>15 allowed in 143.0 innings</b></div>
@@ -951,7 +951,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           </div>
           <div class="pb-body">
             <div class="pb-name">Rhett Lowder</div>
-            <div class="hrl "><span class="hrl-k">Allows</span><span class="hrl-v"><b>1.24</b> per 9 innings</span><span class="hrl-r">15th of 32</span><span class="hrl-m">league 1.22</span></div>
+            <div class="hrl "><span class="hrl-k">Allows</span><span class="hrl-v"><b>1.24</b> per 9 innings</span><span class="hrl-r">16th of 32</span><span class="hrl-m">league 1.21</span></div>
             <div class="hrl bad"><span class="hrl-k">MIL hit</span><span class="hrl-v"><b>0.92</b> per game</span><span class="hrl-r">30th of 30</span><span class="hrl-m">league 1.14</span></div>
             <div class="pb-rows">
               <div class="pb-row"><span>Season</span>
@@ -967,7 +967,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           </div>
           <div class="pb-body">
             <div class="pb-name">Shane Drohan</div>
-            <div class="hrl "><span class="hrl-k">Allows</span><span class="hrl-v"><b>0.94</b> per 9 innings</span><span class="hrl-r">20th of 32</span><span class="hrl-m">league 1.22</span></div>
+            <div class="hrl "><span class="hrl-k">Allows</span><span class="hrl-v"><b>0.94</b> per 9 innings</span><span class="hrl-r">20th of 32</span><span class="hrl-m">league 1.21</span></div>
             <div class="hrl good"><span class="hrl-k">CIN hit</span><span class="hrl-v"><b>1.33</b> per game</span><span class="hrl-r">4th of 30</span><span class="hrl-m">league 1.14</span></div>
             <div class="pb-rows">
               <div class="pb-row"><span>Season</span>
@@ -983,7 +983,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           </div>
           <div class="pb-body">
             <div class="pb-name">Cristopher Sánchez</div>
-            <div class="hrl bad"><span class="hrl-k">Allows</span><span class="hrl-v"><b>0.69</b> per 9 innings</span><span class="hrl-r">24th of 32</span><span class="hrl-m">league 1.22</span></div>
+            <div class="hrl bad"><span class="hrl-k">Allows</span><span class="hrl-v"><b>0.69</b> per 9 innings</span><span class="hrl-r">24th of 32</span><span class="hrl-m">league 1.21</span></div>
             <div class="hrl good"><span class="hrl-k">ATL hit</span><span class="hrl-v"><b>1.27</b> per game</span><span class="hrl-r">7th of 30</span><span class="hrl-m">league 1.14</span></div>
             <div class="pb-rows">
               <div class="pb-row"><span>Season</span>
@@ -999,7 +999,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           </div>
           <div class="pb-body">
             <div class="pb-name">Chris Sale</div>
-            <div class="hrl bad"><span class="hrl-k">Allows</span><span class="hrl-v"><b>0.54</b> per 9 innings</span><span class="hrl-r">29th of 32</span><span class="hrl-m">league 1.22</span></div>
+            <div class="hrl bad"><span class="hrl-k">Allows</span><span class="hrl-v"><b>0.54</b> per 9 innings</span><span class="hrl-r">29th of 32</span><span class="hrl-m">league 1.21</span></div>
             <div class="hrl "><span class="hrl-k">PHI hit</span><span class="hrl-v"><b>1.18</b> per game</span><span class="hrl-r">12th of 30</span><span class="hrl-m">league 1.14</span></div>
             <div class="pb-rows">
               <div class="pb-row"><span>Season</span>
@@ -1015,7 +1015,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           </div>
           <div class="pb-body">
             <div class="pb-name">Jared Jones</div>
-            <div class="hrl "><span class="hrl-k">Allows</span><span class="hrl-v"><b>1.37</b> per 9 innings</span><span class="hrl-r">13th of 32</span><span class="hrl-m">league 1.22</span></div>
+            <div class="hrl "><span class="hrl-k">Allows</span><span class="hrl-v"><b>1.37</b> per 9 innings</span><span class="hrl-r">14th of 32</span><span class="hrl-m">league 1.21</span></div>
             <div class="hrl bad"><span class="hrl-k">LAA hit</span><span class="hrl-v"><b>0.96</b> per game</span><span class="hrl-r">27th of 30</span><span class="hrl-m">league 1.14</span></div>
             <div class="pb-rows">
               <div class="pb-row"><span>Season</span>
@@ -1031,8 +1031,8 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           </div>
           <div class="pb-body">
             <div class="pb-name">Ryan Johnson</div>
-            <div class="hrl good"><span class="hrl-k">Allows</span><span class="hrl-v"><b>1.84</b> per 9 innings</span><span class="hrl-r">5th of 32</span><span class="hrl-m">league 1.22</span></div>
-            <div class="hrl "><span class="hrl-k">PIT hit</span><span class="hrl-v"><b>1.15</b> per game</span><span class="hrl-r">15th of 30</span><span class="hrl-m">league 1.14</span></div>
+            <div class="hrl good"><span class="hrl-k">Allows</span><span class="hrl-v"><b>1.84</b> per 9 innings</span><span class="hrl-r">5th of 32</span><span class="hrl-m">league 1.21</span></div>
+            <div class="hrl "><span class="hrl-k">PIT hit</span><span class="hrl-v"><b>1.15</b> per game</span><span class="hrl-r">14th of 30</span><span class="hrl-m">league 1.14</span></div>
             <div class="pb-rows">
               <div class="pb-row"><span>Season</span>
                 <b>16 allowed in 78.3 innings</b></div>
@@ -1047,7 +1047,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           </div>
           <div class="pb-body">
             <div class="pb-name">Shane Baz</div>
-            <div class="hrl bad"><span class="hrl-k">Allows</span><span class="hrl-v"><b>0.66</b> per 9 innings</span><span class="hrl-r">26th of 32</span><span class="hrl-m">league 1.22</span></div>
+            <div class="hrl bad"><span class="hrl-k">Allows</span><span class="hrl-v"><b>0.66</b> per 9 innings</span><span class="hrl-r">26th of 32</span><span class="hrl-m">league 1.21</span></div>
             <div class="hrl bad"><span class="hrl-k">BOS hit</span><span class="hrl-v"><b>1.04</b> per game</span><span class="hrl-r">22nd of 30</span><span class="hrl-m">league 1.14</span></div>
             <div class="pb-rows">
               <div class="pb-row"><span>Season</span>
@@ -1063,8 +1063,8 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           </div>
           <div class="pb-body">
             <div class="pb-name">Ranger Suarez</div>
-            <div class="hrl bad"><span class="hrl-k">Allows</span><span class="hrl-v"><b>0.55</b> per 9 innings</span><span class="hrl-r">28th of 32</span><span class="hrl-m">league 1.22</span></div>
-            <div class="hrl good"><span class="hrl-k">BAL hit</span><span class="hrl-v"><b>1.21</b> per game</span><span class="hrl-r">10th of 30</span><span class="hrl-m">league 1.14</span></div>
+            <div class="hrl bad"><span class="hrl-k">Allows</span><span class="hrl-v"><b>0.55</b> per 9 innings</span><span class="hrl-r">28th of 32</span><span class="hrl-m">league 1.21</span></div>
+            <div class="hrl "><span class="hrl-k">BAL hit</span><span class="hrl-v"><b>1.21</b> per game</span><span class="hrl-r">10th of 30</span><span class="hrl-m">league 1.14</span></div>
             <div class="pb-rows">
               <div class="pb-row"><span>Season</span>
                 <b>8 allowed in 130.7 innings</b></div>
@@ -1079,7 +1079,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           </div>
           <div class="pb-body">
             <div class="pb-name">Nolan McLean</div>
-            <div class="hrl bad"><span class="hrl-k">Allows</span><span class="hrl-v"><b>0.84</b> per 9 innings</span><span class="hrl-r">22nd of 32</span><span class="hrl-m">league 1.22</span></div>
+            <div class="hrl bad"><span class="hrl-k">Allows</span><span class="hrl-v"><b>0.84</b> per 9 innings</span><span class="hrl-r">22nd of 32</span><span class="hrl-m">league 1.21</span></div>
             <div class="hrl "><span class="hrl-k">SF hit</span><span class="hrl-v"><b>1.11</b> per game</span><span class="hrl-r">18th of 30</span><span class="hrl-m">league 1.14</span></div>
             <div class="pb-rows">
               <div class="pb-row"><span>Season</span>
@@ -1095,7 +1095,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           </div>
           <div class="pb-body">
             <div class="pb-name">Matt Wilkinson</div>
-            <div class="hrl "><span class="hrl-k">Allows</span><span class="hrl-v"><b>2.45</b> per 9 innings</span><span class="hrl-r"></span><span class="hrl-m">league 1.22</span></div>
+            <div class="hrl "><span class="hrl-k">Allows</span><span class="hrl-v"><b>2.45</b> per 9 innings</span><span class="hrl-r"></span><span class="hrl-m">league 1.21</span></div>
             <div class="hrl good"><span class="hrl-k">NYM hit</span><span class="hrl-v"><b>1.23</b> per game</span><span class="hrl-r">8th of 30</span><span class="hrl-m">league 1.14</span></div>
             <div class="pb-rows">
               <div class="pb-row"><span>Season</span>
@@ -1111,8 +1111,8 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           </div>
           <div class="pb-body">
             <div class="pb-name">Janson Junk</div>
-            <div class="hrl "><span class="hrl-k">Allows</span><span class="hrl-v"><b>1.00</b> per 9 innings</span><span class="hrl-r">19th of 32</span><span class="hrl-m">league 1.22</span></div>
-            <div class="hrl good"><span class="hrl-k">CHC hit</span><span class="hrl-v"><b>1.39</b> per game</span><span class="hrl-r">1st of 30</span><span class="hrl-m">league 1.14</span></div>
+            <div class="hrl "><span class="hrl-k">Allows</span><span class="hrl-v"><b>1.00</b> per 9 innings</span><span class="hrl-r">19th of 32</span><span class="hrl-m">league 1.21</span></div>
+            <div class="hrl good"><span class="hrl-k">CHC hit</span><span class="hrl-v"><b>1.40</b> per game</span><span class="hrl-r">1st of 30</span><span class="hrl-m">league 1.14</span></div>
             <div class="pb-rows">
               <div class="pb-row"><span>Season</span>
                 <b>12 allowed in 108.0 innings</b></div>
@@ -1127,7 +1127,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           </div>
           <div class="pb-body">
             <div class="pb-name">Shota Imanaga</div>
-            <div class="hrl good"><span class="hrl-k">Allows</span><span class="hrl-v"><b>1.90</b> per 9 innings</span><span class="hrl-r">4th of 32</span><span class="hrl-m">league 1.22</span></div>
+            <div class="hrl good"><span class="hrl-k">Allows</span><span class="hrl-v"><b>1.90</b> per 9 innings</span><span class="hrl-r">4th of 32</span><span class="hrl-m">league 1.21</span></div>
             <div class="hrl bad"><span class="hrl-k">MIA hit</span><span class="hrl-v"><b>1.01</b> per game</span><span class="hrl-r">25th of 30</span><span class="hrl-m">league 1.14</span></div>
             <div class="pb-rows">
               <div class="pb-row"><span>Season</span>
@@ -1143,8 +1143,8 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           </div>
           <div class="pb-body">
             <div class="pb-name">Foster Griffin</div>
-            <div class="hrl "><span class="hrl-k">Allows</span><span class="hrl-v"><b>1.29</b> per 9 innings</span><span class="hrl-r">14th of 32</span><span class="hrl-m">league 1.22</span></div>
-            <div class="hrl "><span class="hrl-k">DET hit</span><span class="hrl-v"><b>1.12</b> per game</span><span class="hrl-r">16th of 30</span><span class="hrl-m">league 1.14</span></div>
+            <div class="hrl "><span class="hrl-k">Allows</span><span class="hrl-v"><b>1.29</b> per 9 innings</span><span class="hrl-r">15th of 32</span><span class="hrl-m">league 1.21</span></div>
+            <div class="hrl "><span class="hrl-k">DET hit</span><span class="hrl-v"><b>1.12</b> per game</span><span class="hrl-r">17th of 30</span><span class="hrl-m">league 1.14</span></div>
             <div class="pb-rows">
               <div class="pb-row"><span>Season</span>
                 <b>23 allowed in 160.3 innings</b></div>
@@ -1159,8 +1159,8 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           </div>
           <div class="pb-body">
             <div class="pb-name">Andrew Sears</div>
-            <div class="hrl "><span class="hrl-k">Allows</span><span class="hrl-v"><b>0.73</b> per 9 innings</span><span class="hrl-r"></span><span class="hrl-m">league 1.22</span></div>
-            <div class="hrl bad"><span class="hrl-k">CLE hit</span><span class="hrl-v"><b>0.93</b> per game</span><span class="hrl-r">29th of 30</span><span class="hrl-m">league 1.14</span></div>
+            <div class="hrl "><span class="hrl-k">Allows</span><span class="hrl-v"><b>0.73</b> per 9 innings</span><span class="hrl-r"></span><span class="hrl-m">league 1.21</span></div>
+            <div class="hrl bad"><span class="hrl-k">CLE hit</span><span class="hrl-v"><b>0.94</b> per game</span><span class="hrl-r">29th of 30</span><span class="hrl-m">league 1.14</span></div>
             <div class="pb-rows">
               <div class="pb-row"><span>Season</span>
                 <b>1 allowed in 12.3 innings</b></div>
@@ -1175,8 +1175,8 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           </div>
           <div class="pb-body">
             <div class="pb-name">Erick Fedde</div>
-            <div class="hrl good"><span class="hrl-k">Allows</span><span class="hrl-v"><b>1.54</b> per 9 innings</span><span class="hrl-r">11th of 32</span><span class="hrl-m">league 1.22</span></div>
-            <div class="hrl "><span class="hrl-k">MIN hit</span><span class="hrl-v"><b>1.17</b> per game</span><span class="hrl-r">13th of 30</span><span class="hrl-m">league 1.14</span></div>
+            <div class="hrl good"><span class="hrl-k">Allows</span><span class="hrl-v"><b>1.54</b> per 9 innings</span><span class="hrl-r">11th of 32</span><span class="hrl-m">league 1.21</span></div>
+            <div class="hrl "><span class="hrl-k">MIN hit</span><span class="hrl-v"><b>1.18</b> per game</span><span class="hrl-r">13th of 30</span><span class="hrl-m">league 1.14</span></div>
             <div class="pb-rows">
               <div class="pb-row"><span>Season</span>
                 <b>22 allowed in 128.3 innings</b></div>
@@ -1191,7 +1191,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           </div>
           <div class="pb-body">
             <div class="pb-name">Zebby Matthews</div>
-            <div class="hrl good"><span class="hrl-k">Allows</span><span class="hrl-v"><b>1.69</b> per 9 innings</span><span class="hrl-r">6th of 32</span><span class="hrl-m">league 1.22</span></div>
+            <div class="hrl good"><span class="hrl-k">Allows</span><span class="hrl-v"><b>1.69</b> per 9 innings</span><span class="hrl-r">6th of 32</span><span class="hrl-m">league 1.21</span></div>
             <div class="hrl good"><span class="hrl-k">CWS hit</span><span class="hrl-v"><b>1.30</b> per game</span><span class="hrl-r">6th of 30</span><span class="hrl-m">league 1.14</span></div>
             <div class="pb-rows">
               <div class="pb-row"><span>Season</span>
@@ -1207,8 +1207,8 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           </div>
           <div class="pb-body">
             <div class="pb-name">Trevor Williams</div>
-            <div class="hrl "><span class="hrl-k">Allows</span><span class="hrl-v"><b>1.40</b> per 9 innings</span><span class="hrl-r"></span><span class="hrl-m">league 1.22</span></div>
-            <div class="hrl bad"><span class="hrl-k">TB hit</span><span class="hrl-v"><b>1.04</b> per game</span><span class="hrl-r">23rd of 30</span><span class="hrl-m">league 1.14</span></div>
+            <div class="hrl "><span class="hrl-k">Allows</span><span class="hrl-v"><b>1.40</b> per 9 innings</span><span class="hrl-r"></span><span class="hrl-m">league 1.21</span></div>
+            <div class="hrl bad"><span class="hrl-k">TB hit</span><span class="hrl-v"><b>1.04</b> per game</span><span class="hrl-r">24th of 30</span><span class="hrl-m">league 1.14</span></div>
             <div class="pb-rows">
               <div class="pb-row"><span>Season</span>
                 <b>3 allowed in 19.3 innings</b></div>
@@ -1223,11 +1223,11 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           </div>
           <div class="pb-body">
             <div class="pb-name">Nick Martinez</div>
-            <div class="hrl "><span class="hrl-k">Allows</span><span class="hrl-v"><b>1.07</b> per 9 innings</span><span class="hrl-r">18th of 32</span><span class="hrl-m">league 1.22</span></div>
-            <div class="hrl "><span class="hrl-k">TEX hit</span><span class="hrl-v"><b>1.12</b> per game</span><span class="hrl-r">17th of 30</span><span class="hrl-m">league 1.14</span></div>
+            <div class="hrl "><span class="hrl-k">Allows</span><span class="hrl-v"><b>1.07</b> per 9 innings</span><span class="hrl-r">18th of 32</span><span class="hrl-m">league 1.21</span></div>
+            <div class="hrl "><span class="hrl-k">TEX hit</span><span class="hrl-v"><b>1.13</b> per game</span><span class="hrl-r">16th of 30</span><span class="hrl-m">league 1.14</span></div>
             <div class="pb-rows">
               <div class="pb-row"><span>Season</span>
-                <b>19 allowed in 159.3 innings</b></div>
+                <b>19 allowed in 160.0 innings</b></div>
             </div>
             
           </div>
@@ -1239,7 +1239,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           </div>
           <div class="pb-body">
             <div class="pb-name">Cristian Javier</div>
-            <div class="hrl good"><span class="hrl-k">Allows</span><span class="hrl-v"><b>1.63</b> per 9 innings</span><span class="hrl-r">8th of 32</span><span class="hrl-m">league 1.22</span></div>
+            <div class="hrl good"><span class="hrl-k">Allows</span><span class="hrl-v"><b>1.63</b> per 9 innings</span><span class="hrl-r">8th of 32</span><span class="hrl-m">league 1.21</span></div>
             <div class="hrl bad"><span class="hrl-k">AZ hit</span><span class="hrl-v"><b>0.98</b> per game</span><span class="hrl-r">26th of 30</span><span class="hrl-m">league 1.14</span></div>
             <div class="pb-rows">
               <div class="pb-row"><span>Season</span>
@@ -1255,11 +1255,11 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           </div>
           <div class="pb-body">
             <div class="pb-name">Merrill Kelly</div>
-            <div class="hrl good"><span class="hrl-k">Allows</span><span class="hrl-v"><b>1.66</b> per 9 innings</span><span class="hrl-r">7th of 32</span><span class="hrl-m">league 1.22</span></div>
+            <div class="hrl good"><span class="hrl-k">Allows</span><span class="hrl-v"><b>1.65</b> per 9 innings</span><span class="hrl-r">7th of 32</span><span class="hrl-m">league 1.21</span></div>
             <div class="hrl good"><span class="hrl-k">HOU hit</span><span class="hrl-v"><b>1.31</b> per game</span><span class="hrl-r">5th of 30</span><span class="hrl-m">league 1.14</span></div>
             <div class="pb-rows">
               <div class="pb-row"><span>Season</span>
-                <b>27 allowed in 146.7 innings</b></div>
+                <b>27 allowed in 147.7 innings</b></div>
             </div>
             
           </div>
@@ -1271,7 +1271,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           </div>
           <div class="pb-body">
             <div class="pb-name">Daniel Lynch IV</div>
-            <div class="hrl bad"><span class="hrl-k">Allows</span><span class="hrl-v"><b>0.67</b> per 9 innings</span><span class="hrl-r">25th of 32</span><span class="hrl-m">league 1.22</span></div>
+            <div class="hrl bad"><span class="hrl-k">Allows</span><span class="hrl-v"><b>0.67</b> per 9 innings</span><span class="hrl-r">25th of 32</span><span class="hrl-m">league 1.21</span></div>
             <div class="hrl bad"><span class="hrl-k">TOR hit</span><span class="hrl-v"><b>0.94</b> per game</span><span class="hrl-r">28th of 30</span><span class="hrl-m">league 1.14</span></div>
             <div class="pb-rows">
               <div class="pb-row"><span>Season</span>
@@ -1287,8 +1287,8 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           </div>
           <div class="pb-body">
             <div class="pb-name">Jameson Taillon</div>
-            <div class="hrl good"><span class="hrl-k">Allows</span><span class="hrl-v"><b>2.83</b> per 9 innings</span><span class="hrl-r">1st of 32</span><span class="hrl-m">league 1.22</span></div>
-            <div class="hrl bad"><span class="hrl-k">KC hit</span><span class="hrl-v"><b>1.04</b> per game</span><span class="hrl-r">24th of 30</span><span class="hrl-m">league 1.14</span></div>
+            <div class="hrl good"><span class="hrl-k">Allows</span><span class="hrl-v"><b>2.83</b> per 9 innings</span><span class="hrl-r">1st of 32</span><span class="hrl-m">league 1.21</span></div>
+            <div class="hrl bad"><span class="hrl-k">KC hit</span><span class="hrl-v"><b>1.04</b> per game</span><span class="hrl-r">23rd of 30</span><span class="hrl-m">league 1.14</span></div>
             <div class="pb-rows">
               <div class="pb-row"><span>Season</span>
                 <b>27 allowed in 86.0 innings</b></div>
@@ -1303,11 +1303,11 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           </div>
           <div class="pb-body">
             <div class="pb-name">Ryan Feltner</div>
-            <div class="hrl good"><span class="hrl-k">Allows</span><span class="hrl-v"><b>1.62</b> per 9 innings</span><span class="hrl-r">10th of 32</span><span class="hrl-m">league 1.22</span></div>
+            <div class="hrl good"><span class="hrl-k">Allows</span><span class="hrl-v"><b>1.60</b> per 9 innings</span><span class="hrl-r">10th of 32</span><span class="hrl-m">league 1.21</span></div>
             <div class="hrl bad"><span class="hrl-k">STL hit</span><span class="hrl-v"><b>1.06</b> per game</span><span class="hrl-r">21st of 30</span><span class="hrl-m">league 1.14</span></div>
             <div class="pb-rows">
               <div class="pb-row"><span>Season</span>
-                <b>19 allowed in 105.7 innings</b></div>
+                <b>19 allowed in 106.7 innings</b></div>
             </div>
             
           </div>
@@ -1319,11 +1319,11 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           </div>
           <div class="pb-body">
             <div class="pb-name">Andre Pallante</div>
-            <div class="hrl bad"><span class="hrl-k">Allows</span><span class="hrl-v"><b>0.64</b> per 9 innings</span><span class="hrl-r">27th of 32</span><span class="hrl-m">league 1.22</span></div>
-            <div class="hrl "><span class="hrl-k">COL hit</span><span class="hrl-v"><b>1.09</b> per game</span><span class="hrl-r">19th of 30</span><span class="hrl-m">league 1.14</span></div>
+            <div class="hrl bad"><span class="hrl-k">Allows</span><span class="hrl-v"><b>0.64</b> per 9 innings</span><span class="hrl-r">27th of 32</span><span class="hrl-m">league 1.21</span></div>
+            <div class="hrl "><span class="hrl-k">COL hit</span><span class="hrl-v"><b>1.11</b> per game</span><span class="hrl-r">19th of 30</span><span class="hrl-m">league 1.14</span></div>
             <div class="pb-rows">
               <div class="pb-row"><span>Season</span>
-                <b>10 allowed in 140.0 innings</b></div>
+                <b>10 allowed in 141.0 innings</b></div>
             </div>
             
           </div>
@@ -1335,11 +1335,11 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           </div>
           <div class="pb-body">
             <div class="pb-name">Walker Buehler</div>
-            <div class="hrl "><span class="hrl-k">Allows</span><span class="hrl-v"><b>1.16</b> per 9 innings</span><span class="hrl-r">17th of 32</span><span class="hrl-m">league 1.22</span></div>
-            <div class="hrl good"><span class="hrl-k">NYY hit</span><span class="hrl-v"><b>1.36</b> per game</span><span class="hrl-r">2nd of 30</span><span class="hrl-m">league 1.14</span></div>
+            <div class="hrl "><span class="hrl-k">Allows</span><span class="hrl-v"><b>1.19</b> per 9 innings</span><span class="hrl-r">17th of 32</span><span class="hrl-m">league 1.21</span></div>
+            <div class="hrl good"><span class="hrl-k">NYY hit</span><span class="hrl-v"><b>1.37</b> per game</span><span class="hrl-r">2nd of 30</span><span class="hrl-m">league 1.14</span></div>
             <div class="pb-rows">
               <div class="pb-row"><span>Season</span>
-                <b>17 allowed in 132.3 innings</b></div>
+                <b>18 allowed in 136.3 innings</b></div>
             </div>
             
           </div>
@@ -1351,11 +1351,11 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           </div>
           <div class="pb-body">
             <div class="pb-name">Max Fried</div>
-            <div class="hrl bad"><span class="hrl-k">Allows</span><span class="hrl-v"><b>0.30</b> per 9 innings</span><span class="hrl-r">31st of 32</span><span class="hrl-m">league 1.22</span></div>
+            <div class="hrl bad"><span class="hrl-k">Allows</span><span class="hrl-v"><b>0.29</b> per 9 innings</span><span class="hrl-r">31st of 32</span><span class="hrl-m">league 1.21</span></div>
             <div class="hrl "><span class="hrl-k">SD hit</span><span class="hrl-v"><b>1.09</b> per game</span><span class="hrl-r">20th of 30</span><span class="hrl-m">league 1.14</span></div>
             <div class="pb-rows">
               <div class="pb-row"><span>Season</span>
-                <b>3 allowed in 90.0 innings</b></div>
+                <b>3 allowed in 94.3 innings</b></div>
             </div>
             
           </div>
@@ -1367,11 +1367,11 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           </div>
           <div class="pb-body">
             <div class="pb-name">Blake Snell</div>
-            <div class="hrl bad"><span class="hrl-k">Allows</span><span class="hrl-v"><b>0.00</b> per 9 innings</span><span class="hrl-r">32nd of 32</span><span class="hrl-m">league 1.22</span></div>
-            <div class="hrl good"><span class="hrl-k">WSH hit</span><span class="hrl-v"><b>1.36</b> per game</span><span class="hrl-r">3rd of 30</span><span class="hrl-m">league 1.14</span></div>
+            <div class="hrl bad"><span class="hrl-k">Allows</span><span class="hrl-v"><b>0.00</b> per 9 innings</span><span class="hrl-r">32nd of 32</span><span class="hrl-m">league 1.21</span></div>
+            <div class="hrl good"><span class="hrl-k">WSH hit</span><span class="hrl-v"><b>1.35</b> per game</span><span class="hrl-r">3rd of 30</span><span class="hrl-m">league 1.14</span></div>
             <div class="pb-rows">
               <div class="pb-row"><span>Season</span>
-                <b>0 allowed in 26.0 innings</b></div>
+                <b>0 allowed in 29.0 innings</b></div>
             </div>
             
           </div>
@@ -1383,13 +1383,13 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           </div>
           <div class="pb-body">
             <div class="pb-name">Jackson Kent</div>
-            <div class="hrl "><span class="hrl-k">Allows</span><span class="hrl-v"><b>0.47</b> per 9 innings</span><span class="hrl-r"></span><span class="hrl-m">league 1.22</span></div>
-            <div class="hrl good"><span class="hrl-k">LAD hit</span><span class="hrl-v"><b>1.22</b> per game</span><span class="hrl-r">9th of 30</span><span class="hrl-m">league 1.14</span></div>
+            <div class="hrl bad"><span class="hrl-k">Allows</span><span class="hrl-v"><b>0.42</b> per 9 innings</span><span class="hrl-r">30th of 32</span><span class="hrl-m">league 1.21</span></div>
+            <div class="hrl good"><span class="hrl-k">LAD hit</span><span class="hrl-v"><b>1.21</b> per game</span><span class="hrl-r">9th of 30</span><span class="hrl-m">league 1.14</span></div>
             <div class="pb-rows">
               <div class="pb-row"><span>Season</span>
-                <b>1 allowed in 19.3 innings</b></div>
+                <b>1 allowed in 21.7 innings</b></div>
             </div>
-            <p class="hr-thin">Under twenty innings this season, so this rate is shown but not ranked.</p>
+            
           </div>
         </article>
         <article class="pb-card hr-card" style="--accent:var(--line-2)">
@@ -1399,11 +1399,11 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           </div>
           <div class="pb-body">
             <div class="pb-name">Logan Gilbert</div>
-            <div class="hrl "><span class="hrl-k">Allows</span><span class="hrl-v"><b>1.23</b> per 9 innings</span><span class="hrl-r">16th of 32</span><span class="hrl-m">league 1.22</span></div>
-            <div class="hrl "><span class="hrl-k">ATH hit</span><span class="hrl-v"><b>1.19</b> per game</span><span class="hrl-r">11th of 30</span><span class="hrl-m">league 1.14</span></div>
+            <div class="hrl "><span class="hrl-k">Allows</span><span class="hrl-v"><b>1.43</b> per 9 innings</span><span class="hrl-r">12th of 32</span><span class="hrl-m">league 1.21</span></div>
+            <div class="hrl "><span class="hrl-k">ATH hit</span><span class="hrl-v"><b>1.21</b> per game</span><span class="hrl-r">11th of 30</span><span class="hrl-m">league 1.14</span></div>
             <div class="pb-rows">
               <div class="pb-row"><span>Season</span>
-                <b>22 allowed in 160.3 innings</b></div>
+                <b>26 allowed in 163.3 innings</b></div>
             </div>
             
           </div>
@@ -1415,11 +1415,11 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           </div>
           <div class="pb-body">
             <div class="pb-name">Kade Morris</div>
-            <div class="hrl "><span class="hrl-k">Allows</span><span class="hrl-v"><b>2.45</b> per 9 innings</span><span class="hrl-r"></span><span class="hrl-m">league 1.22</span></div>
-            <div class="hrl "><span class="hrl-k">SEA hit</span><span class="hrl-v"><b>1.15</b> per game</span><span class="hrl-r">14th of 30</span><span class="hrl-m">league 1.14</span></div>
+            <div class="hrl "><span class="hrl-k">Allows</span><span class="hrl-v"><b>2.16</b> per 9 innings</span><span class="hrl-r"></span><span class="hrl-m">league 1.21</span></div>
+            <div class="hrl "><span class="hrl-k">SEA hit</span><span class="hrl-v"><b>1.14</b> per game</span><span class="hrl-r">15th of 30</span><span class="hrl-m">league 1.14</span></div>
             <div class="pb-rows">
               <div class="pb-row"><span>Season</span>
-                <b>4 allowed in 14.7 innings</b></div>
+                <b>4 allowed in 16.7 innings</b></div>
             </div>
             <p class="hr-thin">Under twenty innings this season, so this rate is shown but not ranked.</p>
           </div>

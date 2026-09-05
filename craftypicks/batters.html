@@ -16,31 +16,31 @@
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%2308090B'/><path d='M8 20 L14 12 L18 17 L24 9' stroke='%233BE081' stroke-width='2.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>">
 <style>
 :root{
-  /* Slate. Every value below was checked with scripts/palette.py rather than
+  /* Graphite. Every value below was checked with scripts/palette.py rather than
      eyeballed; the ratios in the spec's table are reproduced exactly by that
      module, so a change here that breaks legibility fails the build. */
-  --bg:#EEF1F4;
-  --bg-2:#EEF1F4;
-  --panel:#FFFFFF;
-  --panel-2:#F7F9FB;
-  --line:#D8DEE4;
-  --line-2:#BFC7D0;
+  --bg:#14171C;
+  --bg-2:#14171C;
+  --panel:#1C2027;
+  --panel-2:#191D23;
+  --line:#2A3038;
+  --line-2:#3A424C;
 
   /* The type hierarchy, in the order a reader meets it. --dim is the only
      token below 5:1 and is valid only for a caption under a figure that
      already carries the meaning — never for a name, a price or a percentage.
      See the --dim allowlist at the bottom of this file. */
-  --txt:#14181D;      /* club names, primary numbers, best price        15.7:1 */
-  --sub:#333A42;      /* records, starter, ERA, supporting stats        10.2:1 */
-  --muted:#525B65;    /* market labels, card headers, units              6.1:1 */
-  --dim:#828C97;      /* footnote captions only                          3.0:1 */
+  --txt:#E6EAF0;      /* club names, primary numbers, best price        14.9:1 */
+  --sub:#BFC7D2;      /* records, starter, ERA, supporting stats        10.5:1 */
+  --muted:#8E99A6;    /* market labels, card headers, units              6.2:1 */
+  --dim:#626D7A;      /* footnote captions only                          3.4:1 */
 
-  --green:#106E42;
-  --green-deep:#3D8D68;   /* the light end of the probability-bar gradient */
-  --green-hover:#0C5533;   /* solid-button hover: darker than rest on a light ground */
-  --green-dim:#1F7F4B;
-  --red:#BE2F2F;
-  --amber:#734C00;
+  --green:#3FD37A;
+  --green-deep:#2A9C59;   /* the light end of the probability-bar gradient */
+  --green-hover:#63E294;   /* solid-button hover: lighter than rest on a dark ground */
+  --green-dim:#35B96A;
+  --red:#F26D6D;
+  --amber:#F0B429;
 
   /* Two roles: mono labels the data, the sans carries everything else. */
   --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
@@ -79,7 +79,7 @@ p{color:var(--muted);font-size:16px}
 
 /* ---------- nav ---------- */
 header.nav{
-  position:sticky;top:0;z-index:50;background:rgba(255,255,255,.86);
+  position:sticky;top:0;z-index:50;background:rgba(28,32,39,.86);
   backdrop-filter:blur(14px);border-bottom:1px solid var(--line);
 }
 .nav-in{max-width:var(--maxw);margin:0 auto;padding:0 28px;height:68px;
@@ -113,11 +113,11 @@ header.nav{
   font-weight:500;padding:13px 22px;border:1px solid var(--green);color:var(--green);
   background:transparent;cursor:pointer;transition:.15s;white-space:nowrap;
 }
-.btn:hover{background:rgba(16,110,66,.09)}
-.btn.solid{background:var(--green);color:#FFFFFF;border-color:var(--green);font-weight:700}
+.btn:hover{background:rgba(63,211,122,.09)}
+.btn.solid{background:var(--green);color:var(--bg);border-color:var(--green);font-weight:700}
 .btn.solid:hover{background:var(--green-hover)}
 .btn.ghost{border-color:var(--line-2);color:var(--txt)}
-.btn.ghost:hover{border-color:var(--muted);background:rgba(20,24,29,.03)}
+.btn.ghost:hover{border-color:var(--muted);background:rgba(230,234,240,.06)}
 .btn.sm{padding:10px 16px;font-size:11px}
 .link-quiet{font-size:14px;color:var(--muted)}
 .link-quiet:hover{color:var(--txt)}
@@ -161,7 +161,7 @@ section{border-bottom:1px solid var(--line)}
   padding:14px 20px;border-bottom:1px solid var(--line);
 }
 .dot{width:6px;height:6px;border-radius:50%;background:var(--green);display:inline-block;
-  box-shadow:0 0 0 3px rgba(16,110,66,.16);animation:pulse 2.4s infinite}
+  box-shadow:0 0 0 3px rgba(63,211,122,.16);animation:pulse 2.4s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
 .stamp{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
 .stamp.on{color:var(--green)}
@@ -169,7 +169,7 @@ section{border-bottom:1px solid var(--line)}
 .pick{font-size:26px;font-weight:800;letter-spacing:-.02em;margin-bottom:8px}
 .meta{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:18px}
 .mock-banner{
-  background:rgba(115,76,0,.12);border-bottom:1px solid rgba(115,76,0,.35);
+  background:rgba(240,180,41,.12);border-bottom:1px solid rgba(240,180,41,.35);
   color:var(--amber);font-family:var(--mono);font-size:11.5px;letter-spacing:.04em;
   padding:11px 28px;text-align:center;
 }
@@ -217,9 +217,9 @@ section{border-bottom:1px solid var(--line)}
 .tbl tbody tr:hover{background:var(--panel-2)}
 .tag{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;
   padding:4px 8px;border:1px solid var(--line-2);color:var(--muted)}
-.tag.win{color:var(--green);border-color:rgba(16,110,66,.4);background:rgba(16,110,66,.10)}
-.tag.loss{color:var(--red);border-color:rgba(190,47,47,.35);background:rgba(190,47,47,.08)}
-.tag.push{color:var(--amber);border-color:rgba(115,76,0,.35);background:rgba(115,76,0,.08)}
+.tag.win{color:var(--green);border-color:rgba(63,211,122,.4);background:rgba(63,211,122,.10)}
+.tag.loss{color:var(--red);border-color:rgba(242,109,109,.35);background:rgba(242,109,109,.08)}
+.tag.push{color:var(--amber);border-color:rgba(240,180,41,.35);background:rgba(240,180,41,.08)}
 .scroll-x{overflow-x:auto}
 
 /* ---------- rated board ---------- */
@@ -230,7 +230,7 @@ section{border-bottom:1px solid var(--line)}
   gap:18px;align-items:start}
 .gcard{background:var(--panel);border:1px solid var(--line);transition:.18s}
 .gcard:hover{border-color:var(--line-2);background:var(--panel-2)}
-.gcard.flag{border-color:rgba(115,76,0,.42)}
+.gcard.flag{border-color:rgba(240,180,41,.42)}
 .gcard-top{
   display:flex;align-items:center;justify-content:space-between;gap:10px;
   padding:11px 17px;border-bottom:1px solid var(--line);background:var(--bg-2);
@@ -329,9 +329,9 @@ section{border-bottom:1px solid var(--line)}
 .crow .cl{font-family:var(--mono);font-size:13px;color:var(--txt);font-weight:600}
 .crow .cn{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--sub)}
 .ctrack{position:relative;height:24px;background:var(--bg-2);border:1px solid var(--line)}
-.cband{position:absolute;top:0;bottom:0;background:rgba(16,110,66,.09);
-  border-left:1px solid rgba(16,110,66,.18);border-right:1px solid rgba(16,110,66,.18)}
-.csaid{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--green);box-shadow:0 0 6px rgba(16,110,66,.55)}
+.cband{position:absolute;top:0;bottom:0;background:rgba(63,211,122,.09);
+  border-left:1px solid rgba(63,211,122,.18);border-right:1px solid rgba(63,211,122,.18)}
+.csaid{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--green);box-shadow:0 0 6px rgba(63,211,122,.55)}
 .cact{position:absolute;top:50%;width:9px;height:9px;margin:-5px 0 0 -5px;border-radius:50%;
   background:var(--txt);box-shadow:0 0 0 3px var(--panel)}
 .cact.out{background:var(--amber)}
@@ -344,8 +344,8 @@ section{border-bottom:1px solid var(--line)}
 .clegend i{display:inline-block}
 .key-line{width:2px;height:13px;background:var(--green)}
 .key-dot{width:9px;height:9px;border-radius:50%;background:var(--txt)}
-.key-band{width:26px;height:13px;background:rgba(16,110,66,.09);
-  border-left:1px solid rgba(16,110,66,.25);border-right:1px solid rgba(16,110,66,.25)}
+.key-band{width:26px;height:13px;background:rgba(63,211,122,.09);
+  border-left:1px solid rgba(63,211,122,.25);border-right:1px solid rgba(63,211,122,.25)}
 @media(max-width:820px){
   .crow{grid-template-columns:1fr 1fr;gap:10px}
   .crow .ctrack{grid-column:1/-1}
@@ -356,7 +356,7 @@ section{border-bottom:1px solid var(--line)}
 .pb-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(336px,1fr));gap:16px}
 .pb-card{background:var(--panel);border:1px solid var(--line);transition:.18s}
 .pb-card:hover{border-color:var(--line-2);background:var(--panel-2)}
-.pb-card.flag{border-color:rgba(115,76,0,.42)}
+.pb-card.flag{border-color:rgba(240,180,41,.42)}
 .pb-top{display:flex;align-items:center;justify-content:space-between;gap:10px;
   padding:11px 17px;border-bottom:1px solid var(--line);background:var(--bg-2);
   font-family:var(--mono);font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--sub)}
@@ -409,7 +409,7 @@ section{border-bottom:1px solid var(--line)}
   cursor:pointer;transition:.15s;
 }
 .chip:hover{color:var(--txt);border-color:var(--muted)}
-.chip.on{background:var(--green);border-color:var(--green);color:#FFFFFF;font-weight:700}
+.chip.on{background:var(--green);border-color:var(--green);color:var(--bg);font-weight:700}
 
 /* ---------- misc ---------- */
 .split{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap}
@@ -928,12 +928,12 @@ footer{background:var(--bg-2);padding:56px 0 40px}
             
           <div class="bat">
             <div class="bat-n">Dillon Dingler</div>
-            <div class="bat-c"><b>19.1%</b></div>
-            <div class="bat-w">26 HR in 545 plate appearances &middot; 4.8%</div>
+            <div class="bat-c"><b>19.0%</b></div>
+            <div class="bat-w">26 HR in 546 plate appearances &middot; 4.8%</div>
           </div>
           <div class="bat">
             <div class="bat-n">Spencer Torkelson</div>
-            <div class="bat-c"><b>16.4%</b></div>
+            <div class="bat-c"><b>16.3%</b></div>
             <div class="bat-w">22 HR in 540 plate appearances &middot; 4.1%</div>
           </div>
           <div class="bat">
@@ -954,17 +954,17 @@ footer{background:var(--bg-2);padding:56px 0 40px}
             
           <div class="bat">
             <div class="bat-n">Jo Adell</div>
-            <div class="bat-c"><b>11.8%</b></div>
-            <div class="bat-w">20 HR in 573 plate appearances &middot; 3.5%</div>
+            <div class="bat-c"><b>11.6%</b></div>
+            <div class="bat-w">20 HR in 574 plate appearances &middot; 3.5%</div>
           </div>
           <div class="bat">
             <div class="bat-n">Nathaniel Lowe</div>
-            <div class="bat-c"><b>9.0%</b></div>
-            <div class="bat-w">15 HR in 378 plate appearances &middot; 4.0%</div>
+            <div class="bat-c"><b>8.9%</b></div>
+            <div class="bat-w">15 HR in 379 plate appearances &middot; 4.0%</div>
           </div>
           <div class="bat">
             <div class="bat-n">Angel Martínez</div>
-            <div class="bat-c"><b>8.4%</b></div>
+            <div class="bat-c"><b>8.3%</b></div>
             <div class="bat-w">14 HR in 352 plate appearances &middot; 4.0%</div>
           </div>
           </div>
@@ -980,17 +980,17 @@ footer{background:var(--bg-2);padding:56px 0 40px}
             
           <div class="bat">
             <div class="bat-n">Sal Stewart</div>
-            <div class="bat-c"><b>17.8%</b></div>
+            <div class="bat-c"><b>17.6%</b></div>
             <div class="bat-w">31 HR in 611 plate appearances &middot; 5.1%</div>
           </div>
           <div class="bat">
             <div class="bat-n">JJ Bleday</div>
-            <div class="bat-c"><b>13.0%</b></div>
+            <div class="bat-c"><b>12.8%</b></div>
             <div class="bat-w">22 HR in 471 plate appearances &middot; 4.7%</div>
           </div>
           <div class="bat">
             <div class="bat-n">Eugenio Suárez</div>
-            <div class="bat-c"><b>12.4%</b></div>
+            <div class="bat-c"><b>12.3%</b></div>
             <div class="bat-w">21 HR in 430 plate appearances &middot; 4.9%</div>
           </div>
           </div>
@@ -1016,7 +1016,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           </div>
           <div class="bat">
             <div class="bat-n">Brice Turang</div>
-            <div class="bat-c"><b>11.2%</b></div>
+            <div class="bat-c"><b>11.1%</b></div>
             <div class="bat-w">17 HR in 597 plate appearances &middot; 2.8%</div>
           </div>
           </div>
@@ -1037,7 +1037,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           </div>
           <div class="bat">
             <div class="bat-n">Bryce Harper</div>
-            <div class="bat-c"><b>14.3%</b></div>
+            <div class="bat-c"><b>14.2%</b></div>
             <div class="bat-w">27 HR in 603 plate appearances &middot; 4.5%</div>
           </div>
           <div class="bat">
@@ -1068,7 +1068,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           </div>
           <div class="bat">
             <div class="bat-n">Drake Baldwin</div>
-            <div class="bat-c"><b>12.4%</b></div>
+            <div class="bat-c"><b>12.3%</b></div>
             <div class="bat-w">22 HR in 523 plate appearances &middot; 4.2%</div>
           </div>
           </div>
@@ -1084,7 +1084,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
             
           <div class="bat">
             <div class="bat-n">Brandon Lowe</div>
-            <div class="bat-c"><b>24.9%</b></div>
+            <div class="bat-c"><b>24.8%</b></div>
             <div class="bat-w">29 HR in 582 plate appearances &middot; 5.0%</div>
           </div>
           <div class="bat">
@@ -1094,7 +1094,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           </div>
           <div class="bat">
             <div class="bat-n">Ryan O'Hearn</div>
-            <div class="bat-c"><b>15.4%</b></div>
+            <div class="bat-c"><b>15.3%</b></div>
             <div class="bat-w">17 HR in 398 plate appearances &middot; 4.3%</div>
           </div>
           </div>
@@ -1181,7 +1181,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
                  style="--accent:var(--line-2)">
           <div class="pb-top">
             <span>NYM &middot; 7:10 PM ET</span>
-            <span class="bat-park bad">park 0.94</span>
+            <span class="bat-park bad">park 0.95</span>
           </div>
           <div class="pb-body">
             <div class="bat-vs">facing Matt Wilkinson, who allows a home run to 6.2% of the batters he faces</div>
@@ -1193,12 +1193,12 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           </div>
           <div class="bat">
             <div class="bat-n">Francisco Lindor</div>
-            <div class="bat-c"><b>16.3%</b></div>
+            <div class="bat-c"><b>16.2%</b></div>
             <div class="bat-w">16 HR in 366 plate appearances &middot; 4.4%</div>
           </div>
           <div class="bat">
             <div class="bat-n">Carson Benge</div>
-            <div class="bat-c"><b>16.1%</b></div>
+            <div class="bat-c"><b>16.0%</b></div>
             <div class="bat-w">16 HR in 558 plate appearances &middot; 2.9%</div>
           </div>
           </div>
@@ -1214,7 +1214,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
             
           <div class="bat">
             <div class="bat-n">Pete Crow-Armstrong</div>
-            <div class="bat-c"><b>20.1%</b></div>
+            <div class="bat-c"><b>20.0%</b></div>
             <div class="bat-w">39 HR in 636 plate appearances &middot; 6.1%</div>
           </div>
           <div class="bat">
@@ -1224,8 +1224,8 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           </div>
           <div class="bat">
             <div class="bat-n">Alex Bregman</div>
-            <div class="bat-c"><b>12.8%</b></div>
-            <div class="bat-w">24 HR in 635 plate appearances &middot; 3.8%</div>
+            <div class="bat-c"><b>12.7%</b></div>
+            <div class="bat-w">24 HR in 636 plate appearances &middot; 3.8%</div>
           </div>
           </div>
         </article>
@@ -1240,17 +1240,17 @@ footer{background:var(--bg-2);padding:56px 0 40px}
             
           <div class="bat">
             <div class="bat-n">Heriberto Hernández</div>
-            <div class="bat-c"><b>19.2%</b></div>
+            <div class="bat-c"><b>18.9%</b></div>
             <div class="bat-w">23 HR in 412 plate appearances &middot; 5.6%</div>
           </div>
           <div class="bat">
             <div class="bat-n">Kyle Stowers</div>
-            <div class="bat-c"><b>15.2%</b></div>
+            <div class="bat-c"><b>14.9%</b></div>
             <div class="bat-w">18 HR in 437 plate appearances &middot; 4.1%</div>
           </div>
           <div class="bat">
             <div class="bat-n">Griffin Conine</div>
-            <div class="bat-c"><b>12.2%</b></div>
+            <div class="bat-c"><b>11.9%</b></div>
             <div class="bat-w">14 HR in 246 plate appearances &middot; 5.7%</div>
           </div>
           </div>
@@ -1259,24 +1259,24 @@ footer{background:var(--bg-2);padding:56px 0 40px}
                  style="--accent:var(--line-2)">
           <div class="pb-top">
             <span>SF &middot; 7:10 PM ET</span>
-            <span class="bat-park bad">park 0.94</span>
+            <span class="bat-park bad">park 0.95</span>
           </div>
           <div class="pb-body">
             <div class="bat-vs">facing Nolan McLean, who allows a home run to 2.2% of the batters he faces</div>
             
           <div class="bat">
             <div class="bat-n">Rafael Devers</div>
-            <div class="bat-c"><b>17.7%</b></div>
+            <div class="bat-c"><b>17.9%</b></div>
             <div class="bat-w">33 HR in 607 plate appearances &middot; 5.4%</div>
           </div>
           <div class="bat">
             <div class="bat-n">Casey Schmitt</div>
-            <div class="bat-c"><b>11.6%</b></div>
+            <div class="bat-c"><b>11.8%</b></div>
             <div class="bat-w">21 HR in 409 plate appearances &middot; 5.1%</div>
           </div>
           <div class="bat">
             <div class="bat-n">Willy Adames</div>
-            <div class="bat-c"><b>11.6%</b></div>
+            <div class="bat-c"><b>11.7%</b></div>
             <div class="bat-w">21 HR in 505 plate appearances &middot; 4.2%</div>
           </div>
           </div>
@@ -1292,8 +1292,8 @@ footer{background:var(--bg-2);padding:56px 0 40px}
             
           <div class="bat">
             <div class="bat-n">Dillon Dingler</div>
-            <div class="bat-c"><b>18.5%</b></div>
-            <div class="bat-w">26 HR in 545 plate appearances &middot; 4.8%</div>
+            <div class="bat-c"><b>18.4%</b></div>
+            <div class="bat-w">26 HR in 546 plate appearances &middot; 4.8%</div>
           </div>
           <div class="bat">
             <div class="bat-n">Spencer Torkelson</div>
@@ -1318,17 +1318,17 @@ footer{background:var(--bg-2);padding:56px 0 40px}
             
           <div class="bat">
             <div class="bat-n">Jo Adell</div>
-            <div class="bat-c"><b>10.3%</b></div>
-            <div class="bat-w">20 HR in 573 plate appearances &middot; 3.5%</div>
+            <div class="bat-c"><b>10.1%</b></div>
+            <div class="bat-w">20 HR in 574 plate appearances &middot; 3.5%</div>
           </div>
           <div class="bat">
             <div class="bat-n">Nathaniel Lowe</div>
-            <div class="bat-c"><b>7.8%</b></div>
-            <div class="bat-w">15 HR in 378 plate appearances &middot; 4.0%</div>
+            <div class="bat-c"><b>7.7%</b></div>
+            <div class="bat-w">15 HR in 379 plate appearances &middot; 4.0%</div>
           </div>
           <div class="bat">
             <div class="bat-n">Angel Martínez</div>
-            <div class="bat-c"><b>7.3%</b></div>
+            <div class="bat-c"><b>7.2%</b></div>
             <div class="bat-w">14 HR in 352 plate appearances &middot; 4.0%</div>
           </div>
           </div>
@@ -1344,17 +1344,17 @@ footer{background:var(--bg-2);padding:56px 0 40px}
             
           <div class="bat">
             <div class="bat-n">Colson Montgomery</div>
-            <div class="bat-c"><b>25.0%</b></div>
+            <div class="bat-c"><b>24.8%</b></div>
             <div class="bat-w">30 HR in 562 plate appearances &middot; 5.3%</div>
           </div>
           <div class="bat">
             <div class="bat-n">Miguel Vargas</div>
-            <div class="bat-c"><b>25.0%</b></div>
+            <div class="bat-c"><b>24.7%</b></div>
             <div class="bat-w">30 HR in 613 plate appearances &middot; 4.9%</div>
           </div>
           <div class="bat">
             <div class="bat-n">Munetaka Murakami</div>
-            <div class="bat-c"><b>24.4%</b></div>
+            <div class="bat-c"><b>24.2%</b></div>
             <div class="bat-w">29 HR in 464 plate appearances &middot; 6.2%</div>
           </div>
           </div>
@@ -1375,12 +1375,12 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           </div>
           <div class="bat">
             <div class="bat-n">Kody Clemens</div>
-            <div class="bat-c"><b>18.0%</b></div>
+            <div class="bat-c"><b>18.1%</b></div>
             <div class="bat-w">24 HR in 502 plate appearances &middot; 4.8%</div>
           </div>
           <div class="bat">
             <div class="bat-n">Brooks Lee</div>
-            <div class="bat-c"><b>16.6%</b></div>
+            <div class="bat-c"><b>16.7%</b></div>
             <div class="bat-w">22 HR in 544 plate appearances &middot; 4.0%</div>
           </div>
           </div>
@@ -1396,18 +1396,18 @@ footer{background:var(--bg-2);padding:56px 0 40px}
             
           <div class="bat">
             <div class="bat-n">Junior Caminero</div>
-            <div class="bat-c"><b>25.1%</b></div>
-            <div class="bat-w">37 HR in 613 plate appearances &middot; 6.0%</div>
+            <div class="bat-c"><b>25.0%</b></div>
+            <div class="bat-w">37 HR in 615 plate appearances &middot; 6.0%</div>
           </div>
           <div class="bat">
             <div class="bat-n">Yandy Díaz</div>
             <div class="bat-c"><b>14.9%</b></div>
-            <div class="bat-w">21 HR in 604 plate appearances &middot; 3.5%</div>
+            <div class="bat-w">21 HR in 605 plate appearances &middot; 3.5%</div>
           </div>
           <div class="bat">
             <div class="bat-n">Jonathan Aranda</div>
             <div class="bat-c"><b>12.9%</b></div>
-            <div class="bat-w">18 HR in 595 plate appearances &middot; 3.0%</div>
+            <div class="bat-w">18 HR in 596 plate appearances &middot; 3.0%</div>
           </div>
           </div>
         </article>
@@ -1422,18 +1422,18 @@ footer{background:var(--bg-2);padding:56px 0 40px}
             
           <div class="bat">
             <div class="bat-n">Joc Pederson</div>
-            <div class="bat-c"><b>16.0%</b></div>
+            <div class="bat-c"><b>15.9%</b></div>
             <div class="bat-w">24 HR in 413 plate appearances &middot; 5.8%</div>
           </div>
           <div class="bat">
             <div class="bat-n">Jake Burger</div>
-            <div class="bat-c"><b>15.3%</b></div>
-            <div class="bat-w">23 HR in 534 plate appearances &middot; 4.3%</div>
+            <div class="bat-c"><b>15.2%</b></div>
+            <div class="bat-w">23 HR in 536 plate appearances &middot; 4.3%</div>
           </div>
           <div class="bat">
             <div class="bat-n">Ezequiel Duran</div>
-            <div class="bat-c"><b>11.5%</b></div>
-            <div class="bat-w">17 HR in 513 plate appearances &middot; 3.3%</div>
+            <div class="bat-c"><b>11.4%</b></div>
+            <div class="bat-w">17 HR in 515 plate appearances &middot; 3.3%</div>
           </div>
           </div>
         </article>
@@ -1448,18 +1448,18 @@ footer{background:var(--bg-2);padding:56px 0 40px}
             
           <div class="bat">
             <div class="bat-n">Yordan Alvarez</div>
-            <div class="bat-c"><b>28.4%</b></div>
-            <div class="bat-w">37 HR in 612 plate appearances &middot; 6.0%</div>
+            <div class="bat-c"><b>28.0%</b></div>
+            <div class="bat-w">37 HR in 613 plate appearances &middot; 6.0%</div>
           </div>
           <div class="bat">
             <div class="bat-n">Christian Walker</div>
-            <div class="bat-c"><b>19.3%</b></div>
-            <div class="bat-w">24 HR in 558 plate appearances &middot; 4.3%</div>
+            <div class="bat-c"><b>19.0%</b></div>
+            <div class="bat-w">24 HR in 559 plate appearances &middot; 4.3%</div>
           </div>
           <div class="bat">
             <div class="bat-n">Isaac Paredes</div>
-            <div class="bat-c"><b>14.7%</b></div>
-            <div class="bat-w">18 HR in 572 plate appearances &middot; 3.1%</div>
+            <div class="bat-c"><b>14.5%</b></div>
+            <div class="bat-w">18 HR in 573 plate appearances &middot; 3.1%</div>
           </div>
           </div>
         </article>
@@ -1474,18 +1474,18 @@ footer{background:var(--bg-2);padding:56px 0 40px}
             
           <div class="bat">
             <div class="bat-n">Jac Caglianone</div>
-            <div class="bat-c"><b>28.1%</b></div>
-            <div class="bat-w">23 HR in 508 plate appearances &middot; 4.5%</div>
+            <div class="bat-c"><b>27.8%</b></div>
+            <div class="bat-w">23 HR in 509 plate appearances &middot; 4.5%</div>
           </div>
           <div class="bat">
             <div class="bat-n">Carter Jensen</div>
-            <div class="bat-c"><b>26.9%</b></div>
-            <div class="bat-w">22 HR in 528 plate appearances &middot; 4.2%</div>
+            <div class="bat-c"><b>26.6%</b></div>
+            <div class="bat-w">22 HR in 529 plate appearances &middot; 4.2%</div>
           </div>
           <div class="bat">
             <div class="bat-n">Salvador Perez</div>
-            <div class="bat-c"><b>22.4%</b></div>
-            <div class="bat-w">18 HR in 550 plate appearances &middot; 3.3%</div>
+            <div class="bat-c"><b>22.2%</b></div>
+            <div class="bat-w">18 HR in 551 plate appearances &middot; 3.3%</div>
           </div>
           </div>
         </article>
@@ -1501,17 +1501,17 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           <div class="bat">
             <div class="bat-n">Nolan Arenado</div>
             <div class="bat-c"><b>16.6%</b></div>
-            <div class="bat-w">21 HR in 513 plate appearances &middot; 4.1%</div>
+            <div class="bat-w">21 HR in 515 plate appearances &middot; 4.1%</div>
           </div>
           <div class="bat">
             <div class="bat-n">Ketel Marte</div>
-            <div class="bat-c"><b>16.6%</b></div>
-            <div class="bat-w">21 HR in 530 plate appearances &middot; 4.0%</div>
+            <div class="bat-c"><b>16.5%</b></div>
+            <div class="bat-w">21 HR in 531 plate appearances &middot; 4.0%</div>
           </div>
           <div class="bat">
             <div class="bat-n">Corbin Carroll</div>
-            <div class="bat-c"><b>15.1%</b></div>
-            <div class="bat-w">19 HR in 596 plate appearances &middot; 3.2%</div>
+            <div class="bat-c"><b>15.0%</b></div>
+            <div class="bat-w">19 HR in 597 plate appearances &middot; 3.2%</div>
           </div>
           </div>
         </article>
@@ -1527,17 +1527,17 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           <div class="bat">
             <div class="bat-n">Kazuma Okamoto</div>
             <div class="bat-c"><b>14.6%</b></div>
-            <div class="bat-w">28 HR in 554 plate appearances &middot; 5.1%</div>
+            <div class="bat-w">28 HR in 555 plate appearances &middot; 5.0%</div>
           </div>
           <div class="bat">
             <div class="bat-n">George Springer</div>
             <div class="bat-c"><b>7.5%</b></div>
-            <div class="bat-w">14 HR in 452 plate appearances &middot; 3.1%</div>
+            <div class="bat-w">14 HR in 453 plate appearances &middot; 3.1%</div>
           </div>
           <div class="bat">
             <div class="bat-n">Nathan Lukes</div>
             <div class="bat-c"><b>5.4%</b></div>
-            <div class="bat-w">10 HR in 381 plate appearances &middot; 2.6%</div>
+            <div class="bat-w">10 HR in 382 plate appearances &middot; 2.6%</div>
           </div>
           </div>
         </article>
@@ -1552,17 +1552,17 @@ footer{background:var(--bg-2);padding:56px 0 40px}
             
           <div class="bat">
             <div class="bat-n">Jordan Walker</div>
-            <div class="bat-c"><b>22.4%</b></div>
-            <div class="bat-w">28 HR in 588 plate appearances &middot; 4.8%</div>
+            <div class="bat-c"><b>22.2%</b></div>
+            <div class="bat-w">28 HR in 590 plate appearances &middot; 4.7%</div>
           </div>
           <div class="bat">
             <div class="bat-n">Alec Burleson</div>
-            <div class="bat-c"><b>17.2%</b></div>
-            <div class="bat-w">21 HR in 592 plate appearances &middot; 3.5%</div>
+            <div class="bat-c"><b>17.1%</b></div>
+            <div class="bat-w">21 HR in 594 plate appearances &middot; 3.5%</div>
           </div>
           <div class="bat">
             <div class="bat-n">JJ Wetherholt</div>
-            <div class="bat-c"><b>14.1%</b></div>
+            <div class="bat-c"><b>14.0%</b></div>
             <div class="bat-w">17 HR in 586 plate appearances &middot; 2.9%</div>
           </div>
           </div>
@@ -1578,13 +1578,13 @@ footer{background:var(--bg-2);padding:56px 0 40px}
             
           <div class="bat">
             <div class="bat-n">Hunter Goodman</div>
-            <div class="bat-c"><b>19.6%</b></div>
-            <div class="bat-w">36 HR in 499 plate appearances &middot; 7.2%</div>
+            <div class="bat-c"><b>19.5%</b></div>
+            <div class="bat-w">36 HR in 501 plate appearances &middot; 7.2%</div>
           </div>
           <div class="bat">
             <div class="bat-n">Mickey Moniak</div>
             <div class="bat-c"><b>11.8%</b></div>
-            <div class="bat-w">21 HR in 382 plate appearances &middot; 5.5%</div>
+            <div class="bat-w">21 HR in 384 plate appearances &middot; 5.5%</div>
           </div>
           <div class="bat">
             <div class="bat-n">Willi Castro</div>
@@ -1600,22 +1600,22 @@ footer{background:var(--bg-2);padding:56px 0 40px}
             <span class="bat-park bad">park 0.93</span>
           </div>
           <div class="pb-body">
-            <div class="bat-vs">facing Walker Buehler, who allows a home run to 3.0% of the batters he faces</div>
+            <div class="bat-vs">facing Walker Buehler, who allows a home run to 3.1% of the batters he faces</div>
             
           <div class="bat">
             <div class="bat-n">Ben Rice</div>
-            <div class="bat-c"><b>21.9%</b></div>
-            <div class="bat-w">35 HR in 578 plate appearances &middot; 6.1%</div>
+            <div class="bat-c"><b>22.9%</b></div>
+            <div class="bat-w">36 HR in 579 plate appearances &middot; 6.2%</div>
           </div>
           <div class="bat">
             <div class="bat-n">Luis García Jr.</div>
-            <div class="bat-c"><b>17.9%</b></div>
-            <div class="bat-w">28 HR in 479 plate appearances &middot; 5.8%</div>
+            <div class="bat-c"><b>18.3%</b></div>
+            <div class="bat-w">28 HR in 480 plate appearances &middot; 5.8%</div>
           </div>
           <div class="bat">
             <div class="bat-n">Jazz Chisholm Jr.</div>
-            <div class="bat-c"><b>12.4%</b></div>
-            <div class="bat-w">19 HR in 509 plate appearances &middot; 3.7%</div>
+            <div class="bat-c"><b>12.7%</b></div>
+            <div class="bat-w">19 HR in 511 plate appearances &middot; 3.7%</div>
           </div>
           </div>
         </article>
@@ -1626,22 +1626,22 @@ footer{background:var(--bg-2);padding:56px 0 40px}
             <span class="bat-park bad">park 0.93</span>
           </div>
           <div class="pb-body">
-            <div class="bat-vs">facing Max Fried, who allows a home run to 0.9% of the batters he faces</div>
+            <div class="bat-vs">facing Max Fried, who allows a home run to 0.8% of the batters he faces</div>
             
           <div class="bat">
             <div class="bat-n">Manny Machado</div>
-            <div class="bat-c"><b>9.2%</b></div>
-            <div class="bat-w">24 HR in 582 plate appearances &middot; 4.1%</div>
+            <div class="bat-c"><b>9.1%</b></div>
+            <div class="bat-w">24 HR in 584 plate appearances &middot; 4.1%</div>
           </div>
           <div class="bat">
             <div class="bat-n">Jackson Merrill</div>
-            <div class="bat-c"><b>8.5%</b></div>
-            <div class="bat-w">22 HR in 576 plate appearances &middot; 3.8%</div>
+            <div class="bat-c"><b>8.4%</b></div>
+            <div class="bat-w">22 HR in 578 plate appearances &middot; 3.8%</div>
           </div>
           <div class="bat">
             <div class="bat-n">Ty France</div>
-            <div class="bat-c"><b>7.8%</b></div>
-            <div class="bat-w">20 HR in 418 plate appearances &middot; 4.8%</div>
+            <div class="bat-c"><b>7.7%</b></div>
+            <div class="bat-w">20 HR in 420 plate appearances &middot; 4.8%</div>
           </div>
           </div>
         </article>
@@ -1652,22 +1652,22 @@ footer{background:var(--bg-2);padding:56px 0 40px}
             <span class="bat-park good">park 1.05</span>
           </div>
           <div class="pb-body">
-            <div class="bat-vs">facing Kade Morris, who allows a home run to 5.3% of the batters he faces</div>
+            <div class="bat-vs">facing Kade Morris, who allows a home run to 4.8% of the batters he faces</div>
             
           <div class="bat">
             <div class="bat-n">Randy Arozarena</div>
-            <div class="bat-c"><b>22.0%</b></div>
-            <div class="bat-w">22 HR in 576 plate appearances &middot; 3.8%</div>
+            <div class="bat-c"><b>20.6%</b></div>
+            <div class="bat-w">22 HR in 577 plate appearances &middot; 3.8%</div>
           </div>
           <div class="bat">
             <div class="bat-n">Dominic Canzone</div>
-            <div class="bat-c"><b>21.3%</b></div>
-            <div class="bat-w">21 HR in 439 plate appearances &middot; 4.8%</div>
+            <div class="bat-c"><b>19.9%</b></div>
+            <div class="bat-w">21 HR in 440 plate appearances &middot; 4.8%</div>
           </div>
           <div class="bat">
             <div class="bat-n">Cal Raleigh</div>
-            <div class="bat-c"><b>20.4%</b></div>
-            <div class="bat-w">20 HR in 442 plate appearances &middot; 4.5%</div>
+            <div class="bat-c"><b>19.0%</b></div>
+            <div class="bat-w">20 HR in 443 plate appearances &middot; 4.5%</div>
           </div>
           </div>
         </article>
@@ -1678,21 +1678,21 @@ footer{background:var(--bg-2);padding:56px 0 40px}
             <span class="bat-park good">park 1.05</span>
           </div>
           <div class="pb-body">
-            <div class="bat-vs">facing Logan Gilbert, who allows a home run to 3.4% of the batters he faces</div>
+            <div class="bat-vs">facing Logan Gilbert, who allows a home run to 4.0% of the batters he faces</div>
             
           <div class="bat">
             <div class="bat-n">Shea Langeliers</div>
-            <div class="bat-c"><b>17.7%</b></div>
+            <div class="bat-c"><b>19.3%</b></div>
             <div class="bat-w">23 HR in 416 plate appearances &middot; 5.5%</div>
           </div>
           <div class="bat">
             <div class="bat-n">Nick Kurtz</div>
-            <div class="bat-c"><b>16.3%</b></div>
+            <div class="bat-c"><b>17.7%</b></div>
             <div class="bat-w">21 HR in 434 plate appearances &middot; 4.8%</div>
           </div>
           <div class="bat">
             <div class="bat-n">Tyler Soderstrom</div>
-            <div class="bat-c"><b>14.8%</b></div>
+            <div class="bat-c"><b>16.1%</b></div>
             <div class="bat-w">19 HR in 453 plate appearances &middot; 4.2%</div>
           </div>
           </div>
@@ -1704,21 +1704,21 @@ footer{background:var(--bg-2);padding:56px 0 40px}
             <span class="bat-park ">park 1.01</span>
           </div>
           <div class="pb-body">
-            <div class="bat-vs">facing Jackson Kent, who allows a home run to 1.1% of the batters he faces</div>
+            <div class="bat-vs">facing Jackson Kent, who allows a home run to 1.0% of the batters he faces</div>
             
           <div class="bat">
             <div class="bat-n">Shohei Ohtani</div>
-            <div class="bat-c"><b>13.3%</b></div>
+            <div class="bat-c"><b>12.8%</b></div>
             <div class="bat-w">30 HR in 592 plate appearances &middot; 5.1%</div>
           </div>
           <div class="bat">
             <div class="bat-n">Max Muncy</div>
-            <div class="bat-c"><b>11.7%</b></div>
-            <div class="bat-w">26 HR in 482 plate appearances &middot; 5.4%</div>
+            <div class="bat-c"><b>11.2%</b></div>
+            <div class="bat-w">26 HR in 483 plate appearances &middot; 5.4%</div>
           </div>
           <div class="bat">
             <div class="bat-n">Andy Pages</div>
-            <div class="bat-c"><b>9.5%</b></div>
+            <div class="bat-c"><b>9.1%</b></div>
             <div class="bat-w">21 HR in 550 plate appearances &middot; 3.8%</div>
           </div>
           </div>
@@ -1735,12 +1735,12 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           <div class="bat">
             <div class="bat-n">James Wood</div>
             <div class="bat-c"><b>8.6%</b></div>
-            <div class="bat-w">30 HR in 539 plate appearances &middot; 5.6%</div>
+            <div class="bat-w">30 HR in 541 plate appearances &middot; 5.5%</div>
           </div>
           <div class="bat">
             <div class="bat-n">CJ Abrams</div>
             <div class="bat-c"><b>8.3%</b></div>
-            <div class="bat-w">29 HR in 574 plate appearances &middot; 5.1%</div>
+            <div class="bat-w">29 HR in 575 plate appearances &middot; 5.0%</div>
           </div>
           <div class="bat">
             <div class="bat-n">Daylen Lile</div>

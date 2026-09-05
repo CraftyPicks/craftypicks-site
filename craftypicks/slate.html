@@ -16,31 +16,31 @@
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%2308090B'/><path d='M8 20 L14 12 L18 17 L24 9' stroke='%233BE081' stroke-width='2.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>">
 <style>
 :root{
-  /* Slate. Every value below was checked with scripts/palette.py rather than
+  /* Graphite. Every value below was checked with scripts/palette.py rather than
      eyeballed; the ratios in the spec's table are reproduced exactly by that
      module, so a change here that breaks legibility fails the build. */
-  --bg:#EEF1F4;
-  --bg-2:#EEF1F4;
-  --panel:#FFFFFF;
-  --panel-2:#F7F9FB;
-  --line:#D8DEE4;
-  --line-2:#BFC7D0;
+  --bg:#14171C;
+  --bg-2:#14171C;
+  --panel:#1C2027;
+  --panel-2:#191D23;
+  --line:#2A3038;
+  --line-2:#3A424C;
 
   /* The type hierarchy, in the order a reader meets it. --dim is the only
      token below 5:1 and is valid only for a caption under a figure that
      already carries the meaning — never for a name, a price or a percentage.
      See the --dim allowlist at the bottom of this file. */
-  --txt:#14181D;      /* club names, primary numbers, best price        15.7:1 */
-  --sub:#333A42;      /* records, starter, ERA, supporting stats        10.2:1 */
-  --muted:#525B65;    /* market labels, card headers, units              6.1:1 */
-  --dim:#828C97;      /* footnote captions only                          3.0:1 */
+  --txt:#E6EAF0;      /* club names, primary numbers, best price        14.9:1 */
+  --sub:#BFC7D2;      /* records, starter, ERA, supporting stats        10.5:1 */
+  --muted:#8E99A6;    /* market labels, card headers, units              6.2:1 */
+  --dim:#626D7A;      /* footnote captions only                          3.4:1 */
 
-  --green:#106E42;
-  --green-deep:#3D8D68;   /* the light end of the probability-bar gradient */
-  --green-hover:#0C5533;   /* solid-button hover: darker than rest on a light ground */
-  --green-dim:#1F7F4B;
-  --red:#BE2F2F;
-  --amber:#734C00;
+  --green:#3FD37A;
+  --green-deep:#2A9C59;   /* the light end of the probability-bar gradient */
+  --green-hover:#63E294;   /* solid-button hover: lighter than rest on a dark ground */
+  --green-dim:#35B96A;
+  --red:#F26D6D;
+  --amber:#F0B429;
 
   /* Two roles: mono labels the data, the sans carries everything else. */
   --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
@@ -79,7 +79,7 @@ p{color:var(--muted);font-size:16px}
 
 /* ---------- nav ---------- */
 header.nav{
-  position:sticky;top:0;z-index:50;background:rgba(255,255,255,.86);
+  position:sticky;top:0;z-index:50;background:rgba(28,32,39,.86);
   backdrop-filter:blur(14px);border-bottom:1px solid var(--line);
 }
 .nav-in{max-width:var(--maxw);margin:0 auto;padding:0 28px;height:68px;
@@ -113,11 +113,11 @@ header.nav{
   font-weight:500;padding:13px 22px;border:1px solid var(--green);color:var(--green);
   background:transparent;cursor:pointer;transition:.15s;white-space:nowrap;
 }
-.btn:hover{background:rgba(16,110,66,.09)}
-.btn.solid{background:var(--green);color:#FFFFFF;border-color:var(--green);font-weight:700}
+.btn:hover{background:rgba(63,211,122,.09)}
+.btn.solid{background:var(--green);color:var(--bg);border-color:var(--green);font-weight:700}
 .btn.solid:hover{background:var(--green-hover)}
 .btn.ghost{border-color:var(--line-2);color:var(--txt)}
-.btn.ghost:hover{border-color:var(--muted);background:rgba(20,24,29,.03)}
+.btn.ghost:hover{border-color:var(--muted);background:rgba(230,234,240,.06)}
 .btn.sm{padding:10px 16px;font-size:11px}
 .link-quiet{font-size:14px;color:var(--muted)}
 .link-quiet:hover{color:var(--txt)}
@@ -161,7 +161,7 @@ section{border-bottom:1px solid var(--line)}
   padding:14px 20px;border-bottom:1px solid var(--line);
 }
 .dot{width:6px;height:6px;border-radius:50%;background:var(--green);display:inline-block;
-  box-shadow:0 0 0 3px rgba(16,110,66,.16);animation:pulse 2.4s infinite}
+  box-shadow:0 0 0 3px rgba(63,211,122,.16);animation:pulse 2.4s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
 .stamp{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
 .stamp.on{color:var(--green)}
@@ -169,7 +169,7 @@ section{border-bottom:1px solid var(--line)}
 .pick{font-size:26px;font-weight:800;letter-spacing:-.02em;margin-bottom:8px}
 .meta{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:18px}
 .mock-banner{
-  background:rgba(115,76,0,.12);border-bottom:1px solid rgba(115,76,0,.35);
+  background:rgba(240,180,41,.12);border-bottom:1px solid rgba(240,180,41,.35);
   color:var(--amber);font-family:var(--mono);font-size:11.5px;letter-spacing:.04em;
   padding:11px 28px;text-align:center;
 }
@@ -217,9 +217,9 @@ section{border-bottom:1px solid var(--line)}
 .tbl tbody tr:hover{background:var(--panel-2)}
 .tag{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;
   padding:4px 8px;border:1px solid var(--line-2);color:var(--muted)}
-.tag.win{color:var(--green);border-color:rgba(16,110,66,.4);background:rgba(16,110,66,.10)}
-.tag.loss{color:var(--red);border-color:rgba(190,47,47,.35);background:rgba(190,47,47,.08)}
-.tag.push{color:var(--amber);border-color:rgba(115,76,0,.35);background:rgba(115,76,0,.08)}
+.tag.win{color:var(--green);border-color:rgba(63,211,122,.4);background:rgba(63,211,122,.10)}
+.tag.loss{color:var(--red);border-color:rgba(242,109,109,.35);background:rgba(242,109,109,.08)}
+.tag.push{color:var(--amber);border-color:rgba(240,180,41,.35);background:rgba(240,180,41,.08)}
 .scroll-x{overflow-x:auto}
 
 /* ---------- rated board ---------- */
@@ -230,7 +230,7 @@ section{border-bottom:1px solid var(--line)}
   gap:18px;align-items:start}
 .gcard{background:var(--panel);border:1px solid var(--line);transition:.18s}
 .gcard:hover{border-color:var(--line-2);background:var(--panel-2)}
-.gcard.flag{border-color:rgba(115,76,0,.42)}
+.gcard.flag{border-color:rgba(240,180,41,.42)}
 .gcard-top{
   display:flex;align-items:center;justify-content:space-between;gap:10px;
   padding:11px 17px;border-bottom:1px solid var(--line);background:var(--bg-2);
@@ -329,9 +329,9 @@ section{border-bottom:1px solid var(--line)}
 .crow .cl{font-family:var(--mono);font-size:13px;color:var(--txt);font-weight:600}
 .crow .cn{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--sub)}
 .ctrack{position:relative;height:24px;background:var(--bg-2);border:1px solid var(--line)}
-.cband{position:absolute;top:0;bottom:0;background:rgba(16,110,66,.09);
-  border-left:1px solid rgba(16,110,66,.18);border-right:1px solid rgba(16,110,66,.18)}
-.csaid{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--green);box-shadow:0 0 6px rgba(16,110,66,.55)}
+.cband{position:absolute;top:0;bottom:0;background:rgba(63,211,122,.09);
+  border-left:1px solid rgba(63,211,122,.18);border-right:1px solid rgba(63,211,122,.18)}
+.csaid{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--green);box-shadow:0 0 6px rgba(63,211,122,.55)}
 .cact{position:absolute;top:50%;width:9px;height:9px;margin:-5px 0 0 -5px;border-radius:50%;
   background:var(--txt);box-shadow:0 0 0 3px var(--panel)}
 .cact.out{background:var(--amber)}
@@ -344,8 +344,8 @@ section{border-bottom:1px solid var(--line)}
 .clegend i{display:inline-block}
 .key-line{width:2px;height:13px;background:var(--green)}
 .key-dot{width:9px;height:9px;border-radius:50%;background:var(--txt)}
-.key-band{width:26px;height:13px;background:rgba(16,110,66,.09);
-  border-left:1px solid rgba(16,110,66,.25);border-right:1px solid rgba(16,110,66,.25)}
+.key-band{width:26px;height:13px;background:rgba(63,211,122,.09);
+  border-left:1px solid rgba(63,211,122,.25);border-right:1px solid rgba(63,211,122,.25)}
 @media(max-width:820px){
   .crow{grid-template-columns:1fr 1fr;gap:10px}
   .crow .ctrack{grid-column:1/-1}
@@ -356,7 +356,7 @@ section{border-bottom:1px solid var(--line)}
 .pb-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(336px,1fr));gap:16px}
 .pb-card{background:var(--panel);border:1px solid var(--line);transition:.18s}
 .pb-card:hover{border-color:var(--line-2);background:var(--panel-2)}
-.pb-card.flag{border-color:rgba(115,76,0,.42)}
+.pb-card.flag{border-color:rgba(240,180,41,.42)}
 .pb-top{display:flex;align-items:center;justify-content:space-between;gap:10px;
   padding:11px 17px;border-bottom:1px solid var(--line);background:var(--bg-2);
   font-family:var(--mono);font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--sub)}
@@ -409,7 +409,7 @@ section{border-bottom:1px solid var(--line)}
   cursor:pointer;transition:.15s;
 }
 .chip:hover{color:var(--txt);border-color:var(--muted)}
-.chip.on{background:var(--green);border-color:var(--green);color:#FFFFFF;font-weight:700}
+.chip.on{background:var(--green);border-color:var(--green);color:var(--bg);font-weight:700}
 
 /* ---------- misc ---------- */
 .split{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap}
@@ -926,7 +926,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
 <section class="pad-sm">
   <div class="wrap">
     <div class="board">
-        <div class="gcard" style="--accent:#00385D">
+        <div class="gcard" style="--accent:#406A86">
           <div class="gcard-top">
             <span>2:11 PM ET</span>
             <span style="color:var(--muted)">Scheduled</span>
@@ -934,7 +934,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           <div class="gcard-body">
             
         <div class="gside">
-          <div class="tm"><span class="tdot" style="--tc:#0C2340"></span>Detroit Tigers</div>
+          <div class="tm"><span class="tdot" style="--tc:#556579"></span>Detroit Tigers</div>
           <div class="pc">44.9%</div>
         </div>
         <div class="grec">64&ndash;75 &middot; 30&ndash;40 on the road</div>
@@ -947,7 +947,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
             </div>
             
         <div class="gside lead">
-          <div class="tm"><span class="tdot" style="--tc:#00385D"></span>Cleveland Guardians</div>
+          <div class="tm"><span class="tdot" style="--tc:#406A86"></span>Cleveland Guardians</div>
           <div class="pc">55.1%</div>
         </div>
         <div class="grec">70&ndash;70 &middot; 33&ndash;38 at home</div>
@@ -967,7 +967,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           <div class="gcard-body">
             
         <div class="gside lead">
-          <div class="tm"><span class="tdot" style="--tc:#12284B"></span>Milwaukee Brewers</div>
+          <div class="tm"><span class="tdot" style="--tc:#596881"></span>Milwaukee Brewers</div>
           <div class="pc">60.5%</div>
         </div>
         <div class="grec">87&ndash;54 &middot; 40&ndash;29 on the road</div>
@@ -1025,7 +1025,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
             </div>
           </div>
         </div>
-        <div class="gcard" style="--accent:#CA931F">
+        <div class="gcard" style="--accent:#FDB827">
           <div class="gcard-top">
             <span>6:46 PM ET</span>
             <span style="color:var(--muted)">Scheduled</span>
@@ -1033,7 +1033,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           <div class="gcard-body">
             
         <div class="gside">
-          <div class="tm"><span class="tdot" style="--tc:#BA0021"></span>Los Angeles Angels</div>
+          <div class="tm"><span class="tdot" style="--tc:#C11A37"></span>Los Angeles Angels</div>
           <div class="pc">37.0%</div>
         </div>
         <div class="grec">53&ndash;87 &middot; 23&ndash;43 on the road</div>
@@ -1046,7 +1046,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
             </div>
             
         <div class="gside lead">
-          <div class="tm"><span class="tdot" style="--tc:#CA931F"></span>Pittsburgh Pirates</div>
+          <div class="tm"><span class="tdot" style="--tc:#FDB827"></span>Pittsburgh Pirates</div>
           <div class="pc">63.0%</div>
         </div>
         <div class="grec">69&ndash;72 &middot; 36&ndash;33 at home</div>
@@ -1099,7 +1099,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           <div class="gcard-body">
             
         <div class="gside lead">
-          <div class="tm"><span class="tdot" style="--tc:#0E3386"></span>Chicago Cubs</div>
+          <div class="tm"><span class="tdot" style="--tc:#4A66A4"></span>Chicago Cubs</div>
           <div class="pc">50.0%</div>
         </div>
         <div class="grec">79&ndash;62 &middot; 38&ndash;31 on the road</div>
@@ -1157,7 +1157,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
             </div>
           </div>
         </div>
-        <div class="gcard" style="--accent:#00385D">
+        <div class="gcard" style="--accent:#406A86">
           <div class="gcard-top">
             <span>7:16 PM ET</span>
             <span style="color:var(--muted)">Scheduled</span>
@@ -1165,7 +1165,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           <div class="gcard-body">
             
         <div class="gside">
-          <div class="tm"><span class="tdot" style="--tc:#0C2340"></span>Detroit Tigers</div>
+          <div class="tm"><span class="tdot" style="--tc:#556579"></span>Detroit Tigers</div>
           <div class="pc">44.9%</div>
         </div>
         <div class="grec">64&ndash;75 &middot; 30&ndash;40 on the road</div>
@@ -1178,7 +1178,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
             </div>
             
         <div class="gside lead">
-          <div class="tm"><span class="tdot" style="--tc:#00385D"></span>Cleveland Guardians</div>
+          <div class="tm"><span class="tdot" style="--tc:#406A86"></span>Cleveland Guardians</div>
           <div class="pc">55.1%</div>
         </div>
         <div class="grec">70&ndash;70 &middot; 33&ndash;38 at home</div>
@@ -1190,7 +1190,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
             </div>
           </div>
         </div>
-        <div class="gcard" style="--accent:#939A9F">
+        <div class="gcard" style="--accent:#C4CED4">
           <div class="gcard-top">
             <span>7:41 PM ET</span>
             <span style="color:var(--muted)">Scheduled</span>
@@ -1198,7 +1198,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           <div class="gcard-body">
             
         <div class="gside">
-          <div class="tm"><span class="tdot" style="--tc:#002B5C"></span>Minnesota Twins</div>
+          <div class="tm"><span class="tdot" style="--tc:#4C6B8D"></span>Minnesota Twins</div>
           <div class="pc">41.8%</div>
         </div>
         <div class="grec">67&ndash;73 &middot; 29&ndash;39 on the road</div>
@@ -1211,7 +1211,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
             </div>
             
         <div class="gside lead">
-          <div class="tm"><span class="tdot" style="--tc:#939A9F"></span>Chicago White Sox</div>
+          <div class="tm"><span class="tdot" style="--tc:#C4CED4"></span>Chicago White Sox</div>
           <div class="pc">58.2%</div>
         </div>
         <div class="grec">73&ndash;67 &middot; 41&ndash;27 at home</div>
@@ -1223,7 +1223,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
             </div>
           </div>
         </div>
-        <div class="gcard" style="--accent:#003278">
+        <div class="gcard" style="--accent:#40659A">
           <div class="gcard-top">
             <span>8:06 PM ET</span>
             <span style="color:var(--muted)">Scheduled</span>
@@ -1231,7 +1231,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           <div class="gcard-body">
             
         <div class="gside lead">
-          <div class="tm"><span class="tdot" style="--tc:#7AA0C4"></span>Tampa Bay Rays</div>
+          <div class="tm"><span class="tdot" style="--tc:#8FBCE6"></span>Tampa Bay Rays</div>
           <div class="pc">51.6%</div>
         </div>
         <div class="grec">83&ndash;57 &middot; 36&ndash;32 on the road</div>
@@ -1244,7 +1244,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
             </div>
             
         <div class="gside">
-          <div class="tm"><span class="tdot" style="--tc:#003278"></span>Texas Rangers</div>
+          <div class="tm"><span class="tdot" style="--tc:#40659A"></span>Texas Rangers</div>
           <div class="pc">48.4%</div>
         </div>
         <div class="grec">70&ndash;71 &middot; 39&ndash;30 at home</div>
@@ -1256,7 +1256,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
             </div>
           </div>
         </div>
-        <div class="gcard" style="--accent:#004687">
+        <div class="gcard" style="--accent:#336B9F">
           <div class="gcard-top">
             <span>8:10 PM ET</span>
             <span style="color:var(--muted)">Scheduled</span>
@@ -1264,7 +1264,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           <div class="gcard-body">
             
         <div class="gside">
-          <div class="tm"><span class="tdot" style="--tc:#134A8E"></span>Toronto Blue Jays</div>
+          <div class="tm"><span class="tdot" style="--tc:#36659F"></span>Toronto Blue Jays</div>
           <div class="pc">40.6%</div>
         </div>
         <div class="grec">70&ndash;71 &middot; 33&ndash;36 on the road</div>
@@ -1277,7 +1277,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
             </div>
             
         <div class="gside lead">
-          <div class="tm"><span class="tdot" style="--tc:#004687"></span>Kansas City Royals</div>
+          <div class="tm"><span class="tdot" style="--tc:#336B9F"></span>Kansas City Royals</div>
           <div class="pc">59.4%</div>
         </div>
         <div class="grec">63&ndash;78 &middot; 37&ndash;32 at home</div>
@@ -1297,7 +1297,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           <div class="gcard-body">
             
         <div class="gside lead">
-          <div class="tm"><span class="tdot" style="--tc:#A71930"></span>Arizona Diamondbacks</div>
+          <div class="tm"><span class="tdot" style="--tc:#B03045"></span>Arizona Diamondbacks</div>
           <div class="pc">53.4%</div>
         </div>
         <div class="grec">74&ndash;67 &middot; 33&ndash;36 on the road</div>
@@ -1322,7 +1322,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
             </div>
           </div>
         </div>
-        <div class="gcard" style="--accent:#33006F">
+        <div class="gcard" style="--accent:#7A59A1">
           <div class="gcard-top">
             <span>8:41 PM ET</span>
             <span style="color:var(--muted)">Scheduled</span>
@@ -1343,7 +1343,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
             </div>
             
         <div class="gside">
-          <div class="tm"><span class="tdot" style="--tc:#33006F"></span>Colorado Rockies</div>
+          <div class="tm"><span class="tdot" style="--tc:#7A59A1"></span>Colorado Rockies</div>
           <div class="pc">38.7%</div>
         </div>
         <div class="grec">54&ndash;86 &middot; 29&ndash;39 at home</div>
@@ -1355,7 +1355,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
             </div>
           </div>
         </div>
-        <div class="gcard" style="--accent:#2F241D">
+        <div class="gcard" style="--accent:#6D6661">
           <div class="gcard-top">
             <span>9:41 PM ET</span>
             <span style="color:var(--muted)">Scheduled</span>
@@ -1363,7 +1363,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           <div class="gcard-body">
             
         <div class="gside lead">
-          <div class="tm"><span class="tdot" style="--tc:#1C2841"></span>New York Yankees</div>
+          <div class="tm"><span class="tdot" style="--tc:#60687A"></span>New York Yankees</div>
           <div class="pc">57.4%</div>
         </div>
         <div class="grec">80&ndash;60 &middot; 43&ndash;29 on the road</div>
@@ -1376,7 +1376,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
             </div>
             
         <div class="gside">
-          <div class="tm"><span class="tdot" style="--tc:#2F241D"></span>San Diego Padres</div>
+          <div class="tm"><span class="tdot" style="--tc:#6D6661"></span>San Diego Padres</div>
           <div class="pc">42.6%</div>
         </div>
         <div class="grec">73&ndash;67 &middot; 41&ndash;28 at home</div>
@@ -1388,7 +1388,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
             </div>
           </div>
         </div>
-        <div class="gcard" style="--accent:#005C5C">
+        <div class="gcard" style="--accent:#1A6C6C">
           <div class="gcard-top">
             <span>10:11 PM ET</span>
             <span style="color:var(--muted)">Scheduled</span>
@@ -1396,7 +1396,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           <div class="gcard-body">
             
         <div class="gside">
-          <div class="tm"><span class="tdot" style="--tc:#003831"></span>Athletics</div>
+          <div class="tm"><span class="tdot" style="--tc:#406A64"></span>Athletics</div>
           <div class="pc">41.2%</div>
         </div>
         <div class="grec">55&ndash;86 &middot; 30&ndash;42 on the road</div>
@@ -1409,7 +1409,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
             </div>
             
         <div class="gside lead">
-          <div class="tm"><span class="tdot" style="--tc:#005C5C"></span>Seattle Mariners</div>
+          <div class="tm"><span class="tdot" style="--tc:#1A6C6C"></span>Seattle Mariners</div>
           <div class="pc">58.8%</div>
         </div>
         <div class="grec">66&ndash;75 &middot; 37&ndash;32 at home</div>
@@ -1421,7 +1421,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
             </div>
           </div>
         </div>
-        <div class="gcard flag" style="--accent:#005A9C">
+        <div class="gcard flag" style="--accent:#1A6AA6">
           <div class="gcard-top">
             <span>10:11 PM ET</span>
             <span style="color:var(--muted)">Scheduled</span>
@@ -1429,7 +1429,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           <div class="gcard-body">
             
         <div class="gside">
-          <div class="tm"><span class="tdot" style="--tc:#AB0003"></span>Washington Nationals</div>
+          <div class="tm"><span class="tdot" style="--tc:#B82629"></span>Washington Nationals</div>
           <div class="pc">40.0%</div>
         </div>
         <div class="grec">67&ndash;75 &middot; 34&ndash;35 on the road</div>
@@ -1442,7 +1442,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
             </div>
             
         <div class="gside lead">
-          <div class="tm"><span class="tdot" style="--tc:#005A9C"></span>Los Angeles Dodgers</div>
+          <div class="tm"><span class="tdot" style="--tc:#1A6AA6"></span>Los Angeles Dodgers</div>
           <div class="pc">60.0%</div>
         </div>
         <div class="grec">83&ndash;57 &middot; 41&ndash;28 at home</div>

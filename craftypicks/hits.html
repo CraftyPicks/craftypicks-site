@@ -16,31 +16,31 @@
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%2308090B'/><path d='M8 20 L14 12 L18 17 L24 9' stroke='%233BE081' stroke-width='2.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>">
 <style>
 :root{
-  /* Slate. Every value below was checked with scripts/palette.py rather than
+  /* Graphite. Every value below was checked with scripts/palette.py rather than
      eyeballed; the ratios in the spec's table are reproduced exactly by that
      module, so a change here that breaks legibility fails the build. */
-  --bg:#EEF1F4;
-  --bg-2:#EEF1F4;
-  --panel:#FFFFFF;
-  --panel-2:#F7F9FB;
-  --line:#D8DEE4;
-  --line-2:#BFC7D0;
+  --bg:#14171C;
+  --bg-2:#14171C;
+  --panel:#1C2027;
+  --panel-2:#191D23;
+  --line:#2A3038;
+  --line-2:#3A424C;
 
   /* The type hierarchy, in the order a reader meets it. --dim is the only
      token below 5:1 and is valid only for a caption under a figure that
      already carries the meaning — never for a name, a price or a percentage.
      See the --dim allowlist at the bottom of this file. */
-  --txt:#14181D;      /* club names, primary numbers, best price        15.7:1 */
-  --sub:#333A42;      /* records, starter, ERA, supporting stats        10.2:1 */
-  --muted:#525B65;    /* market labels, card headers, units              6.1:1 */
-  --dim:#828C97;      /* footnote captions only                          3.0:1 */
+  --txt:#E6EAF0;      /* club names, primary numbers, best price        14.9:1 */
+  --sub:#BFC7D2;      /* records, starter, ERA, supporting stats        10.5:1 */
+  --muted:#8E99A6;    /* market labels, card headers, units              6.2:1 */
+  --dim:#626D7A;      /* footnote captions only                          3.4:1 */
 
-  --green:#106E42;
-  --green-deep:#3D8D68;   /* the light end of the probability-bar gradient */
-  --green-hover:#0C5533;   /* solid-button hover: darker than rest on a light ground */
-  --green-dim:#1F7F4B;
-  --red:#BE2F2F;
-  --amber:#734C00;
+  --green:#3FD37A;
+  --green-deep:#2A9C59;   /* the light end of the probability-bar gradient */
+  --green-hover:#63E294;   /* solid-button hover: lighter than rest on a dark ground */
+  --green-dim:#35B96A;
+  --red:#F26D6D;
+  --amber:#F0B429;
 
   /* Two roles: mono labels the data, the sans carries everything else. */
   --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
@@ -79,7 +79,7 @@ p{color:var(--muted);font-size:16px}
 
 /* ---------- nav ---------- */
 header.nav{
-  position:sticky;top:0;z-index:50;background:rgba(255,255,255,.86);
+  position:sticky;top:0;z-index:50;background:rgba(28,32,39,.86);
   backdrop-filter:blur(14px);border-bottom:1px solid var(--line);
 }
 .nav-in{max-width:var(--maxw);margin:0 auto;padding:0 28px;height:68px;
@@ -113,11 +113,11 @@ header.nav{
   font-weight:500;padding:13px 22px;border:1px solid var(--green);color:var(--green);
   background:transparent;cursor:pointer;transition:.15s;white-space:nowrap;
 }
-.btn:hover{background:rgba(16,110,66,.09)}
-.btn.solid{background:var(--green);color:#FFFFFF;border-color:var(--green);font-weight:700}
+.btn:hover{background:rgba(63,211,122,.09)}
+.btn.solid{background:var(--green);color:var(--bg);border-color:var(--green);font-weight:700}
 .btn.solid:hover{background:var(--green-hover)}
 .btn.ghost{border-color:var(--line-2);color:var(--txt)}
-.btn.ghost:hover{border-color:var(--muted);background:rgba(20,24,29,.03)}
+.btn.ghost:hover{border-color:var(--muted);background:rgba(230,234,240,.06)}
 .btn.sm{padding:10px 16px;font-size:11px}
 .link-quiet{font-size:14px;color:var(--muted)}
 .link-quiet:hover{color:var(--txt)}
@@ -161,7 +161,7 @@ section{border-bottom:1px solid var(--line)}
   padding:14px 20px;border-bottom:1px solid var(--line);
 }
 .dot{width:6px;height:6px;border-radius:50%;background:var(--green);display:inline-block;
-  box-shadow:0 0 0 3px rgba(16,110,66,.16);animation:pulse 2.4s infinite}
+  box-shadow:0 0 0 3px rgba(63,211,122,.16);animation:pulse 2.4s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
 .stamp{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
 .stamp.on{color:var(--green)}
@@ -169,7 +169,7 @@ section{border-bottom:1px solid var(--line)}
 .pick{font-size:26px;font-weight:800;letter-spacing:-.02em;margin-bottom:8px}
 .meta{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:18px}
 .mock-banner{
-  background:rgba(115,76,0,.12);border-bottom:1px solid rgba(115,76,0,.35);
+  background:rgba(240,180,41,.12);border-bottom:1px solid rgba(240,180,41,.35);
   color:var(--amber);font-family:var(--mono);font-size:11.5px;letter-spacing:.04em;
   padding:11px 28px;text-align:center;
 }
@@ -217,9 +217,9 @@ section{border-bottom:1px solid var(--line)}
 .tbl tbody tr:hover{background:var(--panel-2)}
 .tag{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;
   padding:4px 8px;border:1px solid var(--line-2);color:var(--muted)}
-.tag.win{color:var(--green);border-color:rgba(16,110,66,.4);background:rgba(16,110,66,.10)}
-.tag.loss{color:var(--red);border-color:rgba(190,47,47,.35);background:rgba(190,47,47,.08)}
-.tag.push{color:var(--amber);border-color:rgba(115,76,0,.35);background:rgba(115,76,0,.08)}
+.tag.win{color:var(--green);border-color:rgba(63,211,122,.4);background:rgba(63,211,122,.10)}
+.tag.loss{color:var(--red);border-color:rgba(242,109,109,.35);background:rgba(242,109,109,.08)}
+.tag.push{color:var(--amber);border-color:rgba(240,180,41,.35);background:rgba(240,180,41,.08)}
 .scroll-x{overflow-x:auto}
 
 /* ---------- rated board ---------- */
@@ -230,7 +230,7 @@ section{border-bottom:1px solid var(--line)}
   gap:18px;align-items:start}
 .gcard{background:var(--panel);border:1px solid var(--line);transition:.18s}
 .gcard:hover{border-color:var(--line-2);background:var(--panel-2)}
-.gcard.flag{border-color:rgba(115,76,0,.42)}
+.gcard.flag{border-color:rgba(240,180,41,.42)}
 .gcard-top{
   display:flex;align-items:center;justify-content:space-between;gap:10px;
   padding:11px 17px;border-bottom:1px solid var(--line);background:var(--bg-2);
@@ -329,9 +329,9 @@ section{border-bottom:1px solid var(--line)}
 .crow .cl{font-family:var(--mono);font-size:13px;color:var(--txt);font-weight:600}
 .crow .cn{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--sub)}
 .ctrack{position:relative;height:24px;background:var(--bg-2);border:1px solid var(--line)}
-.cband{position:absolute;top:0;bottom:0;background:rgba(16,110,66,.09);
-  border-left:1px solid rgba(16,110,66,.18);border-right:1px solid rgba(16,110,66,.18)}
-.csaid{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--green);box-shadow:0 0 6px rgba(16,110,66,.55)}
+.cband{position:absolute;top:0;bottom:0;background:rgba(63,211,122,.09);
+  border-left:1px solid rgba(63,211,122,.18);border-right:1px solid rgba(63,211,122,.18)}
+.csaid{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--green);box-shadow:0 0 6px rgba(63,211,122,.55)}
 .cact{position:absolute;top:50%;width:9px;height:9px;margin:-5px 0 0 -5px;border-radius:50%;
   background:var(--txt);box-shadow:0 0 0 3px var(--panel)}
 .cact.out{background:var(--amber)}
@@ -344,8 +344,8 @@ section{border-bottom:1px solid var(--line)}
 .clegend i{display:inline-block}
 .key-line{width:2px;height:13px;background:var(--green)}
 .key-dot{width:9px;height:9px;border-radius:50%;background:var(--txt)}
-.key-band{width:26px;height:13px;background:rgba(16,110,66,.09);
-  border-left:1px solid rgba(16,110,66,.25);border-right:1px solid rgba(16,110,66,.25)}
+.key-band{width:26px;height:13px;background:rgba(63,211,122,.09);
+  border-left:1px solid rgba(63,211,122,.25);border-right:1px solid rgba(63,211,122,.25)}
 @media(max-width:820px){
   .crow{grid-template-columns:1fr 1fr;gap:10px}
   .crow .ctrack{grid-column:1/-1}
@@ -356,7 +356,7 @@ section{border-bottom:1px solid var(--line)}
 .pb-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(336px,1fr));gap:16px}
 .pb-card{background:var(--panel);border:1px solid var(--line);transition:.18s}
 .pb-card:hover{border-color:var(--line-2);background:var(--panel-2)}
-.pb-card.flag{border-color:rgba(115,76,0,.42)}
+.pb-card.flag{border-color:rgba(240,180,41,.42)}
 .pb-top{display:flex;align-items:center;justify-content:space-between;gap:10px;
   padding:11px 17px;border-bottom:1px solid var(--line);background:var(--bg-2);
   font-family:var(--mono);font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--sub)}
@@ -409,7 +409,7 @@ section{border-bottom:1px solid var(--line)}
   cursor:pointer;transition:.15s;
 }
 .chip:hover{color:var(--txt);border-color:var(--muted)}
-.chip.on{background:var(--green);border-color:var(--green);color:#FFFFFF;font-weight:700}
+.chip.on{background:var(--green);border-color:var(--green);color:var(--bg);font-weight:700}
 
 /* ---------- misc ---------- */
 .split{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap}
@@ -930,12 +930,12 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           <div class="bat">
             <div class="bat-n">Kevin McGonigle</div>
             <div class="bat-c"><b>78.0%</b></div>
-            <div class="bat-w">144 hits in 617 PA (23.3%)</div>
+            <div class="bat-w">144 hits in 618 PA (23.3%)</div>
           </div>
           <div class="bat">
             <div class="bat-n">Dillon Dingler</div>
             <div class="bat-c"><b>72.3%</b></div>
-            <div class="bat-w">123 hits in 545 PA (22.6%)</div>
+            <div class="bat-w">123 hits in 546 PA (22.5%)</div>
           </div>
           <div class="bat">
             <div class="bat-n">Riley Greene</div>
@@ -954,18 +954,18 @@ footer{background:var(--bg-2);padding:56px 0 40px}
             
           <div class="bat">
             <div class="bat-n">Chase DeLauter</div>
-            <div class="bat-c"><b>64.8%</b></div>
+            <div class="bat-c"><b>64.3%</b></div>
             <div class="bat-w">131 hits in 499 PA (26.3%)</div>
           </div>
           <div class="bat">
             <div class="bat-n">Steven Kwan</div>
-            <div class="bat-c"><b>63.0%</b></div>
-            <div class="bat-w">127 hits in 549 PA (23.1%)</div>
+            <div class="bat-c"><b>62.4%</b></div>
+            <div class="bat-w">127 hits in 551 PA (23.0%)</div>
           </div>
           <div class="bat">
             <div class="bat-n">Jo Adell</div>
-            <div class="bat-c"><b>62.4%</b></div>
-            <div class="bat-w">126 hits in 573 PA (22.0%)</div>
+            <div class="bat-c"><b>61.9%</b></div>
+            <div class="bat-w">126 hits in 574 PA (22.0%)</div>
           </div>
           </div>
         </article>
@@ -979,17 +979,17 @@ footer{background:var(--bg-2);padding:56px 0 40px}
             
           <div class="bat">
             <div class="bat-n">Sal Stewart</div>
-            <div class="bat-c"><b>67.7%</b></div>
+            <div class="bat-c"><b>67.2%</b></div>
             <div class="bat-w">144 hits in 611 PA (23.6%)</div>
           </div>
           <div class="bat">
             <div class="bat-n">Elly De La Cruz</div>
-            <div class="bat-c"><b>64.9%</b></div>
-            <div class="bat-w">133 hits in 545 PA (24.4%)</div>
+            <div class="bat-c"><b>64.5%</b></div>
+            <div class="bat-w">133 hits in 546 PA (24.4%)</div>
           </div>
           <div class="bat">
             <div class="bat-n">Tyler Stephenson</div>
-            <div class="bat-c"><b>49.0%</b></div>
+            <div class="bat-c"><b>48.6%</b></div>
             <div class="bat-w">87 hits in 402 PA (21.6%)</div>
           </div>
           </div>
@@ -1009,12 +1009,12 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           </div>
           <div class="bat">
             <div class="bat-n">Brice Turang</div>
-            <div class="bat-c"><b>64.6%</b></div>
+            <div class="bat-c"><b>64.7%</b></div>
             <div class="bat-w">131 hits in 597 PA (21.9%)</div>
           </div>
           <div class="bat">
             <div class="bat-n">Jackson Chourio</div>
-            <div class="bat-c"><b>64.1%</b></div>
+            <div class="bat-c"><b>64.2%</b></div>
             <div class="bat-w">126 hits in 485 PA (26.0%)</div>
           </div>
           </div>
@@ -1172,49 +1172,49 @@ footer{background:var(--bg-2);padding:56px 0 40px}
         <article class="pb-card bat-card" style="--accent:var(--line-2)">
           <div class="pb-top">
             <span>MIA &middot; 7:10 PM ET</span>
-            <span class="bat-park bad">Park 0.97</span>
+            <span class="bat-park bad">Park 0.96</span>
           </div>
           <div class="pb-body">
             <div class="bat-vs">Facing Shota Imanaga — allows a hit to 22.0% of the batters he faces</div>
             
           <div class="bat">
             <div class="bat-n">Otto Lopez</div>
-            <div class="bat-c"><b>74.5%</b></div>
+            <div class="bat-c"><b>73.9%</b></div>
             <div class="bat-w">166 hits in 599 PA (27.7%)</div>
           </div>
           <div class="bat">
             <div class="bat-n">Xavier Edwards</div>
-            <div class="bat-c"><b>67.9%</b></div>
+            <div class="bat-c"><b>67.4%</b></div>
             <div class="bat-w">141 hits in 574 PA (24.6%)</div>
           </div>
           <div class="bat">
             <div class="bat-n">Javier Sanoja</div>
-            <div class="bat-c"><b>59.0%</b></div>
-            <div class="bat-w">109 hits in 404 PA (27.0%)</div>
+            <div class="bat-c"><b>58.5%</b></div>
+            <div class="bat-w">109 hits in 405 PA (26.9%)</div>
           </div>
           </div>
         </article>
         <article class="pb-card bat-card" style="--accent:var(--line-2)">
           <div class="pb-top">
             <span>NYM &middot; 7:10 PM ET</span>
-            <span class="bat-park ">Park 0.99</span>
+            <span class="bat-park ">Park 1.00</span>
           </div>
           <div class="pb-body">
             <div class="bat-vs">Facing Matt Wilkinson — allows a hit to 25.0% of the batters he faces</div>
             
           <div class="bat">
             <div class="bat-n">Bo Bichette</div>
-            <div class="bat-c"><b>72.6%</b></div>
+            <div class="bat-c"><b>72.2%</b></div>
             <div class="bat-w">146 hits in 597 PA (24.5%)</div>
           </div>
           <div class="bat">
             <div class="bat-n">Carson Benge</div>
-            <div class="bat-c"><b>71.9%</b></div>
+            <div class="bat-c"><b>71.5%</b></div>
             <div class="bat-w">142 hits in 558 PA (25.4%)</div>
           </div>
           <div class="bat">
             <div class="bat-n">Marcus Semien</div>
-            <div class="bat-c"><b>54.6%</b></div>
+            <div class="bat-c"><b>54.1%</b></div>
             <div class="bat-w">92 hits in 471 PA (19.5%)</div>
           </div>
           </div>
@@ -1222,7 +1222,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
         <article class="pb-card bat-card" style="--accent:var(--line-2)">
           <div class="pb-top">
             <span>CHC &middot; 7:10 PM ET</span>
-            <span class="bat-park bad">Park 0.97</span>
+            <span class="bat-park bad">Park 0.96</span>
           </div>
           <div class="pb-body">
             <div class="bat-vs">Facing Janson Junk — allows a hit to 24.1% of the batters he faces</div>
@@ -1239,27 +1239,27 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           </div>
           <div class="bat">
             <div class="bat-n">Alex Bregman</div>
-            <div class="bat-c"><b>69.3%</b></div>
-            <div class="bat-w">145 hits in 635 PA (22.8%)</div>
+            <div class="bat-c"><b>69.2%</b></div>
+            <div class="bat-w">145 hits in 636 PA (22.8%)</div>
           </div>
           </div>
         </article>
         <article class="pb-card bat-card" style="--accent:var(--line-2)">
           <div class="pb-top">
             <span>SF &middot; 7:10 PM ET</span>
-            <span class="bat-park ">Park 0.99</span>
+            <span class="bat-park ">Park 1.00</span>
           </div>
           <div class="pb-body">
             <div class="bat-vs">Facing Nolan McLean — allows a hit to 17.9% of the batters he faces</div>
             
           <div class="bat">
             <div class="bat-n">Jung Hoo Lee</div>
-            <div class="bat-c"><b>63.9%</b></div>
+            <div class="bat-c"><b>64.0%</b></div>
             <div class="bat-w">138 hits in 529 PA (26.1%)</div>
           </div>
           <div class="bat">
             <div class="bat-n">Rafael Devers</div>
-            <div class="bat-c"><b>62.9%</b></div>
+            <div class="bat-c"><b>63.0%</b></div>
             <div class="bat-w">137 hits in 607 PA (22.6%)</div>
           </div>
           <div class="bat">
@@ -1279,13 +1279,13 @@ footer{background:var(--bg-2);padding:56px 0 40px}
             
           <div class="bat">
             <div class="bat-n">Kevin McGonigle</div>
-            <div class="bat-c"><b>71.1%</b></div>
-            <div class="bat-w">144 hits in 617 PA (23.3%)</div>
+            <div class="bat-c"><b>71.0%</b></div>
+            <div class="bat-w">144 hits in 618 PA (23.3%)</div>
           </div>
           <div class="bat">
             <div class="bat-n">Dillon Dingler</div>
-            <div class="bat-c"><b>65.2%</b></div>
-            <div class="bat-w">123 hits in 545 PA (22.6%)</div>
+            <div class="bat-c"><b>65.1%</b></div>
+            <div class="bat-w">123 hits in 546 PA (22.5%)</div>
           </div>
           <div class="bat">
             <div class="bat-n">Riley Greene</div>
@@ -1304,18 +1304,18 @@ footer{background:var(--bg-2);padding:56px 0 40px}
             
           <div class="bat">
             <div class="bat-n">Chase DeLauter</div>
-            <div class="bat-c"><b>69.0%</b></div>
+            <div class="bat-c"><b>68.5%</b></div>
             <div class="bat-w">131 hits in 499 PA (26.3%)</div>
           </div>
           <div class="bat">
             <div class="bat-n">Steven Kwan</div>
-            <div class="bat-c"><b>67.0%</b></div>
-            <div class="bat-w">127 hits in 549 PA (23.1%)</div>
+            <div class="bat-c"><b>66.5%</b></div>
+            <div class="bat-w">127 hits in 551 PA (23.0%)</div>
           </div>
           <div class="bat">
             <div class="bat-n">Jo Adell</div>
-            <div class="bat-c"><b>66.5%</b></div>
-            <div class="bat-w">126 hits in 573 PA (22.0%)</div>
+            <div class="bat-c"><b>65.9%</b></div>
+            <div class="bat-w">126 hits in 574 PA (22.0%)</div>
           </div>
           </div>
         </article>
@@ -1329,17 +1329,17 @@ footer{background:var(--bg-2);padding:56px 0 40px}
             
           <div class="bat">
             <div class="bat-n">Chase Meidroth</div>
-            <div class="bat-c"><b>69.5%</b></div>
+            <div class="bat-c"><b>68.9%</b></div>
             <div class="bat-w">136 hits in 567 PA (24.0%)</div>
           </div>
           <div class="bat">
             <div class="bat-n">Miguel Vargas</div>
-            <div class="bat-c"><b>66.8%</b></div>
+            <div class="bat-c"><b>66.3%</b></div>
             <div class="bat-w">129 hits in 613 PA (21.0%)</div>
           </div>
           <div class="bat">
             <div class="bat-n">Sam Antonacci</div>
-            <div class="bat-c"><b>61.4%</b></div>
+            <div class="bat-c"><b>60.8%</b></div>
             <div class="bat-w">110 hits in 485 PA (22.7%)</div>
           </div>
           </div>
@@ -1354,13 +1354,13 @@ footer{background:var(--bg-2);padding:56px 0 40px}
             
           <div class="bat">
             <div class="bat-n">Josh Bell</div>
-            <div class="bat-c"><b>64.4%</b></div>
-            <div class="bat-w">127 hits in 550 PA (23.1%)</div>
+            <div class="bat-c"><b>64.7%</b></div>
+            <div class="bat-w">128 hits in 551 PA (23.2%)</div>
           </div>
           <div class="bat">
             <div class="bat-n">Luke Keaschall</div>
-            <div class="bat-c"><b>64.0%</b></div>
-            <div class="bat-w">125 hits in 531 PA (23.5%)</div>
+            <div class="bat-c"><b>63.9%</b></div>
+            <div class="bat-w">125 hits in 532 PA (23.5%)</div>
           </div>
           <div class="bat">
             <div class="bat-n">Brooks Lee</div>
@@ -1379,18 +1379,18 @@ footer{background:var(--bg-2);padding:56px 0 40px}
             
           <div class="bat">
             <div class="bat-n">Yandy Díaz</div>
-            <div class="bat-c"><b>72.9%</b></div>
-            <div class="bat-w">164 hits in 604 PA (27.2%)</div>
+            <div class="bat-c"><b>73.2%</b></div>
+            <div class="bat-w">165 hits in 605 PA (27.3%)</div>
           </div>
           <div class="bat">
             <div class="bat-n">Chandler Simpson</div>
             <div class="bat-c"><b>71.3%</b></div>
-            <div class="bat-w">155 hits in 537 PA (28.9%)</div>
+            <div class="bat-w">155 hits in 538 PA (28.8%)</div>
           </div>
           <div class="bat">
             <div class="bat-n">Junior Caminero</div>
-            <div class="bat-c"><b>69.1%</b></div>
-            <div class="bat-w">150 hits in 613 PA (24.5%)</div>
+            <div class="bat-c"><b>69.4%</b></div>
+            <div class="bat-w">151 hits in 615 PA (24.6%)</div>
           </div>
           </div>
         </article>
@@ -1405,42 +1405,42 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           <div class="bat">
             <div class="bat-n">Brandon Nimmo</div>
             <div class="bat-c"><b>68.7%</b></div>
-            <div class="bat-w">138 hits in 573 PA (24.1%)</div>
+            <div class="bat-w">138 hits in 575 PA (24.0%)</div>
           </div>
           <div class="bat">
             <div class="bat-n">Ezequiel Duran</div>
             <div class="bat-c"><b>66.1%</b></div>
-            <div class="bat-w">128 hits in 513 PA (25.0%)</div>
+            <div class="bat-w">128 hits in 515 PA (24.9%)</div>
           </div>
           <div class="bat">
             <div class="bat-n">Jake Burger</div>
             <div class="bat-c"><b>61.4%</b></div>
-            <div class="bat-w">115 hits in 534 PA (21.5%)</div>
+            <div class="bat-w">115 hits in 536 PA (21.5%)</div>
           </div>
           </div>
         </article>
         <article class="pb-card bat-card" style="--accent:var(--line-2)">
           <div class="pb-top">
             <span>HOU &middot; 8:10 PM ET</span>
-            <span class="bat-park ">Park 0.97</span>
+            <span class="bat-park bad">Park 0.97</span>
           </div>
           <div class="pb-body">
-            <div class="bat-vs">Facing Merrill Kelly — allows a hit to 24.0% of the batters he faces</div>
+            <div class="bat-vs">Facing Merrill Kelly — allows a hit to 23.9% of the batters he faces</div>
             
           <div class="bat">
             <div class="bat-n">Yordan Alvarez</div>
-            <div class="bat-c"><b>73.4%</b></div>
-            <div class="bat-w">159 hits in 612 PA (26.0%)</div>
+            <div class="bat-c"><b>72.7%</b></div>
+            <div class="bat-w">159 hits in 613 PA (25.9%)</div>
           </div>
           <div class="bat">
             <div class="bat-n">Isaac Paredes</div>
-            <div class="bat-c"><b>64.1%</b></div>
-            <div class="bat-w">126 hits in 572 PA (22.0%)</div>
+            <div class="bat-c"><b>63.3%</b></div>
+            <div class="bat-w">126 hits in 573 PA (22.0%)</div>
           </div>
           <div class="bat">
             <div class="bat-n">Christian Walker</div>
-            <div class="bat-c"><b>60.4%</b></div>
-            <div class="bat-w">115 hits in 558 PA (20.6%)</div>
+            <div class="bat-c"><b>59.7%</b></div>
+            <div class="bat-w">115 hits in 559 PA (20.6%)</div>
           </div>
           </div>
         </article>
@@ -1454,18 +1454,18 @@ footer{background:var(--bg-2);padding:56px 0 40px}
             
           <div class="bat">
             <div class="bat-n">Bobby Witt Jr.</div>
-            <div class="bat-c"><b>70.6%</b></div>
-            <div class="bat-w">136 hits in 543 PA (25.0%)</div>
+            <div class="bat-c"><b>70.1%</b></div>
+            <div class="bat-w">136 hits in 544 PA (25.0%)</div>
           </div>
           <div class="bat">
             <div class="bat-n">Jac Caglianone</div>
-            <div class="bat-c"><b>70.1%</b></div>
-            <div class="bat-w">133 hits in 508 PA (26.2%)</div>
+            <div class="bat-c"><b>69.6%</b></div>
+            <div class="bat-w">133 hits in 509 PA (26.1%)</div>
           </div>
           <div class="bat">
             <div class="bat-n">Salvador Perez</div>
-            <div class="bat-c"><b>62.8%</b></div>
-            <div class="bat-w">113 hits in 550 PA (20.5%)</div>
+            <div class="bat-c"><b>62.6%</b></div>
+            <div class="bat-w">114 hits in 551 PA (20.7%)</div>
           </div>
           </div>
         </article>
@@ -1480,42 +1480,42 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           <div class="bat">
             <div class="bat-n">Ernie Clement</div>
             <div class="bat-c"><b>67.6%</b></div>
-            <div class="bat-w">145 hits in 551 PA (26.3%)</div>
+            <div class="bat-w">145 hits in 553 PA (26.2%)</div>
           </div>
           <div class="bat">
             <div class="bat-n">Vladimir Guerrero Jr.</div>
-            <div class="bat-c"><b>61.4%</b></div>
+            <div class="bat-c"><b>61.5%</b></div>
             <div class="bat-w">125 hits in 537 PA (23.3%)</div>
           </div>
           <div class="bat">
             <div class="bat-n">Kazuma Okamoto</div>
             <div class="bat-c"><b>57.1%</b></div>
-            <div class="bat-w">113 hits in 554 PA (20.4%)</div>
+            <div class="bat-w">113 hits in 555 PA (20.4%)</div>
           </div>
           </div>
         </article>
         <article class="pb-card bat-card" style="--accent:var(--line-2)">
           <div class="pb-top">
             <span>AZ &middot; 8:10 PM ET</span>
-            <span class="bat-park ">Park 0.97</span>
+            <span class="bat-park bad">Park 0.97</span>
           </div>
           <div class="pb-body">
             <div class="bat-vs">Facing Cristian Javier — allows a hit to 24.7% of the batters he faces</div>
             
           <div class="bat">
             <div class="bat-n">Geraldo Perdomo</div>
-            <div class="bat-c"><b>63.6%</b></div>
-            <div class="bat-w">123 hits in 590 PA (20.8%)</div>
+            <div class="bat-c"><b>63.9%</b></div>
+            <div class="bat-w">124 hits in 591 PA (21.0%)</div>
           </div>
           <div class="bat">
             <div class="bat-n">Gabriel Moreno</div>
-            <div class="bat-c"><b>63.6%</b></div>
-            <div class="bat-w">119 hits in 463 PA (25.7%)</div>
+            <div class="bat-c"><b>63.5%</b></div>
+            <div class="bat-w">119 hits in 464 PA (25.6%)</div>
           </div>
           <div class="bat">
             <div class="bat-n">Corbin Carroll</div>
-            <div class="bat-c"><b>63.6%</b></div>
-            <div class="bat-w">123 hits in 596 PA (20.6%)</div>
+            <div class="bat-c"><b>63.5%</b></div>
+            <div class="bat-w">123 hits in 597 PA (20.6%)</div>
           </div>
           </div>
         </article>
@@ -1525,22 +1525,22 @@ footer{background:var(--bg-2);padding:56px 0 40px}
             <span class="bat-park good">Park 1.05</span>
           </div>
           <div class="pb-body">
-            <div class="bat-vs">Facing Ryan Feltner — allows a hit to 24.7% of the batters he faces</div>
+            <div class="bat-vs">Facing Ryan Feltner — allows a hit to 25.1% of the batters he faces</div>
             
           <div class="bat">
             <div class="bat-n">Jordan Walker</div>
-            <div class="bat-c"><b>76.8%</b></div>
-            <div class="bat-w">156 hits in 588 PA (26.5%)</div>
+            <div class="bat-c"><b>77.1%</b></div>
+            <div class="bat-w">156 hits in 590 PA (26.4%)</div>
           </div>
           <div class="bat">
             <div class="bat-n">Alec Burleson</div>
-            <div class="bat-c"><b>75.2%</b></div>
-            <div class="bat-w">150 hits in 592 PA (25.3%)</div>
+            <div class="bat-c"><b>75.8%</b></div>
+            <div class="bat-w">151 hits in 594 PA (25.4%)</div>
           </div>
           <div class="bat">
             <div class="bat-n">Iván Herrera</div>
-            <div class="bat-c"><b>68.6%</b></div>
-            <div class="bat-w">129 hits in 629 PA (20.5%)</div>
+            <div class="bat-c"><b>69.2%</b></div>
+            <div class="bat-w">130 hits in 631 PA (20.6%)</div>
           </div>
           </div>
         </article>
@@ -1550,22 +1550,22 @@ footer{background:var(--bg-2);padding:56px 0 40px}
             <span class="bat-park good">Park 1.05</span>
           </div>
           <div class="pb-body">
-            <div class="bat-vs">Facing Andre Pallante — allows a hit to 22.4% of the batters he faces</div>
+            <div class="bat-vs">Facing Andre Pallante — allows a hit to 22.3% of the batters he faces</div>
             
           <div class="bat">
             <div class="bat-n">TJ Rumfield</div>
-            <div class="bat-c"><b>71.9%</b></div>
-            <div class="bat-w">139 hits in 554 PA (25.1%)</div>
+            <div class="bat-c"><b>72.4%</b></div>
+            <div class="bat-w">141 hits in 556 PA (25.4%)</div>
           </div>
           <div class="bat">
             <div class="bat-n">Jake McCarthy</div>
-            <div class="bat-c"><b>71.0%</b></div>
-            <div class="bat-w">134 hits in 502 PA (26.7%)</div>
+            <div class="bat-c"><b>70.9%</b></div>
+            <div class="bat-w">134 hits in 504 PA (26.6%)</div>
           </div>
           <div class="bat">
             <div class="bat-n">Hunter Goodman</div>
-            <div class="bat-c"><b>63.8%</b></div>
-            <div class="bat-w">113 hits in 499 PA (22.6%)</div>
+            <div class="bat-c"><b>63.6%</b></div>
+            <div class="bat-w">113 hits in 501 PA (22.6%)</div>
           </div>
           </div>
         </article>
@@ -1575,22 +1575,22 @@ footer{background:var(--bg-2);padding:56px 0 40px}
             <span class="bat-park bad">Park 0.95</span>
           </div>
           <div class="pb-body">
-            <div class="bat-vs">Facing Walker Buehler — allows a hit to 23.1% of the batters he faces</div>
+            <div class="bat-vs">Facing Walker Buehler — allows a hit to 22.9% of the batters he faces</div>
             
           <div class="bat">
             <div class="bat-n">Luis García Jr.</div>
-            <div class="bat-c"><b>66.1%</b></div>
-            <div class="bat-w">129 hits in 479 PA (26.9%)</div>
+            <div class="bat-c"><b>66.2%</b></div>
+            <div class="bat-w">130 hits in 480 PA (27.1%)</div>
           </div>
           <div class="bat">
             <div class="bat-n">Ben Rice</div>
-            <div class="bat-c"><b>64.7%</b></div>
-            <div class="bat-w">128 hits in 578 PA (22.1%)</div>
+            <div class="bat-c"><b>64.9%</b></div>
+            <div class="bat-w">129 hits in 579 PA (22.3%)</div>
           </div>
           <div class="bat">
             <div class="bat-n">Cody Bellinger</div>
-            <div class="bat-c"><b>60.1%</b></div>
-            <div class="bat-w">112 hits in 482 PA (23.2%)</div>
+            <div class="bat-c"><b>59.9%</b></div>
+            <div class="bat-w">112 hits in 483 PA (23.2%)</div>
           </div>
           </div>
         </article>
@@ -1600,22 +1600,22 @@ footer{background:var(--bg-2);padding:56px 0 40px}
             <span class="bat-park bad">Park 0.95</span>
           </div>
           <div class="pb-body">
-            <div class="bat-vs">Facing Max Fried — allows a hit to 17.9% of the batters he faces</div>
+            <div class="bat-vs">Facing Max Fried — allows a hit to 18.2% of the batters he faces</div>
             
           <div class="bat">
             <div class="bat-n">Fernando Tatis Jr.</div>
-            <div class="bat-c"><b>65.7%</b></div>
-            <div class="bat-w">154 hits in 610 PA (25.2%)</div>
+            <div class="bat-c"><b>66.0%</b></div>
+            <div class="bat-w">154 hits in 611 PA (25.2%)</div>
           </div>
           <div class="bat">
             <div class="bat-n">Jackson Merrill</div>
-            <div class="bat-c"><b>58.3%</b></div>
-            <div class="bat-w">128 hits in 576 PA (22.2%)</div>
+            <div class="bat-c"><b>58.7%</b></div>
+            <div class="bat-w">128 hits in 578 PA (22.1%)</div>
           </div>
           <div class="bat">
             <div class="bat-n">Manny Machado</div>
-            <div class="bat-c"><b>52.6%</b></div>
-            <div class="bat-w">111 hits in 582 PA (19.1%)</div>
+            <div class="bat-c"><b>53.3%</b></div>
+            <div class="bat-w">112 hits in 584 PA (19.2%)</div>
           </div>
           </div>
         </article>
@@ -1625,22 +1625,22 @@ footer{background:var(--bg-2);padding:56px 0 40px}
             <span class="bat-park bad">Park 0.94</span>
           </div>
           <div class="pb-body">
-            <div class="bat-vs">Facing Kade Morris — allows a hit to 33.3% of the batters he faces</div>
+            <div class="bat-vs">Facing Kade Morris — allows a hit to 32.5% of the batters he faces</div>
             
           <div class="bat">
             <div class="bat-n">Josh Naylor</div>
-            <div class="bat-c"><b>76.6%</b></div>
-            <div class="bat-w">136 hits in 562 PA (24.2%)</div>
+            <div class="bat-c"><b>75.9%</b></div>
+            <div class="bat-w">136 hits in 563 PA (24.2%)</div>
           </div>
           <div class="bat">
             <div class="bat-n">Randy Arozarena</div>
-            <div class="bat-c"><b>76.1%</b></div>
-            <div class="bat-w">135 hits in 576 PA (23.4%)</div>
+            <div class="bat-c"><b>75.4%</b></div>
+            <div class="bat-w">135 hits in 577 PA (23.4%)</div>
           </div>
           <div class="bat">
             <div class="bat-n">Cole Young</div>
-            <div class="bat-c"><b>73.4%</b></div>
-            <div class="bat-w">126 hits in 565 PA (22.3%)</div>
+            <div class="bat-c"><b>73.0%</b></div>
+            <div class="bat-w">127 hits in 566 PA (22.4%)</div>
           </div>
           </div>
         </article>
@@ -1650,47 +1650,22 @@ footer{background:var(--bg-2);padding:56px 0 40px}
             <span class="bat-park bad">Park 0.96</span>
           </div>
           <div class="pb-body">
-            <div class="bat-vs">Facing Jackson Kent — allows a hit to 20.5% of the batters he faces</div>
+            <div class="bat-vs">Facing Jackson Kent — allows a hit to 20.0% of the batters he faces</div>
             
           <div class="bat">
             <div class="bat-n">Freddie Freeman</div>
-            <div class="bat-c"><b>69.8%</b></div>
+            <div class="bat-c"><b>69.3%</b></div>
             <div class="bat-w">155 hits in 584 PA (26.5%)</div>
           </div>
           <div class="bat">
             <div class="bat-n">Shohei Ohtani</div>
-            <div class="bat-c"><b>65.2%</b></div>
+            <div class="bat-c"><b>64.7%</b></div>
             <div class="bat-w">139 hits in 592 PA (23.5%)</div>
           </div>
           <div class="bat">
             <div class="bat-n">Andy Pages</div>
-            <div class="bat-c"><b>64.0%</b></div>
+            <div class="bat-c"><b>63.5%</b></div>
             <div class="bat-w">134 hits in 550 PA (24.4%)</div>
-          </div>
-          </div>
-        </article>
-        <article class="pb-card bat-card" style="--accent:var(--line-2)">
-          <div class="pb-top">
-            <span>WSH &middot; 10:10 PM ET</span>
-            <span class="bat-park bad">Park 0.96</span>
-          </div>
-          <div class="pb-body">
-            <div class="bat-vs">Facing Blake Snell — allows a hit to 14.7% of the batters he faces</div>
-            
-          <div class="bat">
-            <div class="bat-n">CJ Abrams</div>
-            <div class="bat-c"><b>55.1%</b></div>
-            <div class="bat-w">135 hits in 574 PA (23.5%)</div>
-          </div>
-          <div class="bat">
-            <div class="bat-n">Daylen Lile</div>
-            <div class="bat-c"><b>55.1%</b></div>
-            <div class="bat-w">135 hits in 581 PA (23.2%)</div>
-          </div>
-          <div class="bat">
-            <div class="bat-n">James Wood</div>
-            <div class="bat-c"><b>49.7%</b></div>
-            <div class="bat-w">117 hits in 539 PA (21.7%)</div>
           </div>
           </div>
         </article>
@@ -1700,22 +1675,47 @@ footer{background:var(--bg-2);padding:56px 0 40px}
             <span class="bat-park bad">Park 0.94</span>
           </div>
           <div class="pb-body">
-            <div class="bat-vs">Facing Logan Gilbert — allows a hit to 19.7% of the batters he faces</div>
+            <div class="bat-vs">Facing Logan Gilbert — allows a hit to 20.1% of the batters he faces</div>
             
           <div class="bat">
             <div class="bat-n">Jeff McNeil</div>
-            <div class="bat-c"><b>54.7%</b></div>
-            <div class="bat-w">109 hits in 442 PA (24.7%)</div>
+            <div class="bat-c"><b>55.9%</b></div>
+            <div class="bat-w">111 hits in 444 PA (25.0%)</div>
           </div>
           <div class="bat">
             <div class="bat-n">Shea Langeliers</div>
-            <div class="bat-c"><b>51.2%</b></div>
+            <div class="bat-c"><b>51.5%</b></div>
             <div class="bat-w">99 hits in 416 PA (23.8%)</div>
           </div>
           <div class="bat">
             <div class="bat-n">Tyler Soderstrom</div>
-            <div class="bat-c"><b>50.0%</b></div>
+            <div class="bat-c"><b>50.4%</b></div>
             <div class="bat-w">97 hits in 453 PA (21.4%)</div>
+          </div>
+          </div>
+        </article>
+        <article class="pb-card bat-card" style="--accent:var(--line-2)">
+          <div class="pb-top">
+            <span>WSH &middot; 10:10 PM ET</span>
+            <span class="bat-park bad">Park 0.96</span>
+          </div>
+          <div class="pb-body">
+            <div class="bat-vs">Facing Blake Snell — allows a hit to 14.3% of the batters he faces</div>
+            
+          <div class="bat">
+            <div class="bat-n">CJ Abrams</div>
+            <div class="bat-c"><b>54.6%</b></div>
+            <div class="bat-w">135 hits in 575 PA (23.5%)</div>
+          </div>
+          <div class="bat">
+            <div class="bat-n">Daylen Lile</div>
+            <div class="bat-c"><b>54.6%</b></div>
+            <div class="bat-w">135 hits in 581 PA (23.2%)</div>
+          </div>
+          <div class="bat">
+            <div class="bat-n">James Wood</div>
+            <div class="bat-c"><b>49.3%</b></div>
+            <div class="bat-w">117 hits in 541 PA (21.6%)</div>
           </div>
           </div>
         </article></div>

@@ -16,31 +16,31 @@
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%2308090B'/><path d='M8 20 L14 12 L18 17 L24 9' stroke='%233BE081' stroke-width='2.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>">
 <style>
 :root{
-  /* Slate. Every value below was checked with scripts/palette.py rather than
+  /* Graphite. Every value below was checked with scripts/palette.py rather than
      eyeballed; the ratios in the spec's table are reproduced exactly by that
      module, so a change here that breaks legibility fails the build. */
-  --bg:#EEF1F4;
-  --bg-2:#EEF1F4;
-  --panel:#FFFFFF;
-  --panel-2:#F7F9FB;
-  --line:#D8DEE4;
-  --line-2:#BFC7D0;
+  --bg:#14171C;
+  --bg-2:#14171C;
+  --panel:#1C2027;
+  --panel-2:#191D23;
+  --line:#2A3038;
+  --line-2:#3A424C;
 
   /* The type hierarchy, in the order a reader meets it. --dim is the only
      token below 5:1 and is valid only for a caption under a figure that
      already carries the meaning — never for a name, a price or a percentage.
      See the --dim allowlist at the bottom of this file. */
-  --txt:#14181D;      /* club names, primary numbers, best price        15.7:1 */
-  --sub:#333A42;      /* records, starter, ERA, supporting stats        10.2:1 */
-  --muted:#525B65;    /* market labels, card headers, units              6.1:1 */
-  --dim:#828C97;      /* footnote captions only                          3.0:1 */
+  --txt:#E6EAF0;      /* club names, primary numbers, best price        14.9:1 */
+  --sub:#BFC7D2;      /* records, starter, ERA, supporting stats        10.5:1 */
+  --muted:#8E99A6;    /* market labels, card headers, units              6.2:1 */
+  --dim:#626D7A;      /* footnote captions only                          3.4:1 */
 
-  --green:#106E42;
-  --green-deep:#3D8D68;   /* the light end of the probability-bar gradient */
-  --green-hover:#0C5533;   /* solid-button hover: darker than rest on a light ground */
-  --green-dim:#1F7F4B;
-  --red:#BE2F2F;
-  --amber:#734C00;
+  --green:#3FD37A;
+  --green-deep:#2A9C59;   /* the light end of the probability-bar gradient */
+  --green-hover:#63E294;   /* solid-button hover: lighter than rest on a dark ground */
+  --green-dim:#35B96A;
+  --red:#F26D6D;
+  --amber:#F0B429;
 
   /* Two roles: mono labels the data, the sans carries everything else. */
   --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
@@ -79,7 +79,7 @@ p{color:var(--muted);font-size:16px}
 
 /* ---------- nav ---------- */
 header.nav{
-  position:sticky;top:0;z-index:50;background:rgba(255,255,255,.86);
+  position:sticky;top:0;z-index:50;background:rgba(28,32,39,.86);
   backdrop-filter:blur(14px);border-bottom:1px solid var(--line);
 }
 .nav-in{max-width:var(--maxw);margin:0 auto;padding:0 28px;height:68px;
@@ -113,11 +113,11 @@ header.nav{
   font-weight:500;padding:13px 22px;border:1px solid var(--green);color:var(--green);
   background:transparent;cursor:pointer;transition:.15s;white-space:nowrap;
 }
-.btn:hover{background:rgba(16,110,66,.09)}
-.btn.solid{background:var(--green);color:#FFFFFF;border-color:var(--green);font-weight:700}
+.btn:hover{background:rgba(63,211,122,.09)}
+.btn.solid{background:var(--green);color:var(--bg);border-color:var(--green);font-weight:700}
 .btn.solid:hover{background:var(--green-hover)}
 .btn.ghost{border-color:var(--line-2);color:var(--txt)}
-.btn.ghost:hover{border-color:var(--muted);background:rgba(20,24,29,.03)}
+.btn.ghost:hover{border-color:var(--muted);background:rgba(230,234,240,.06)}
 .btn.sm{padding:10px 16px;font-size:11px}
 .link-quiet{font-size:14px;color:var(--muted)}
 .link-quiet:hover{color:var(--txt)}
@@ -161,7 +161,7 @@ section{border-bottom:1px solid var(--line)}
   padding:14px 20px;border-bottom:1px solid var(--line);
 }
 .dot{width:6px;height:6px;border-radius:50%;background:var(--green);display:inline-block;
-  box-shadow:0 0 0 3px rgba(16,110,66,.16);animation:pulse 2.4s infinite}
+  box-shadow:0 0 0 3px rgba(63,211,122,.16);animation:pulse 2.4s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
 .stamp{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
 .stamp.on{color:var(--green)}
@@ -169,7 +169,7 @@ section{border-bottom:1px solid var(--line)}
 .pick{font-size:26px;font-weight:800;letter-spacing:-.02em;margin-bottom:8px}
 .meta{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:18px}
 .mock-banner{
-  background:rgba(115,76,0,.12);border-bottom:1px solid rgba(115,76,0,.35);
+  background:rgba(240,180,41,.12);border-bottom:1px solid rgba(240,180,41,.35);
   color:var(--amber);font-family:var(--mono);font-size:11.5px;letter-spacing:.04em;
   padding:11px 28px;text-align:center;
 }
@@ -217,9 +217,9 @@ section{border-bottom:1px solid var(--line)}
 .tbl tbody tr:hover{background:var(--panel-2)}
 .tag{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;
   padding:4px 8px;border:1px solid var(--line-2);color:var(--muted)}
-.tag.win{color:var(--green);border-color:rgba(16,110,66,.4);background:rgba(16,110,66,.10)}
-.tag.loss{color:var(--red);border-color:rgba(190,47,47,.35);background:rgba(190,47,47,.08)}
-.tag.push{color:var(--amber);border-color:rgba(115,76,0,.35);background:rgba(115,76,0,.08)}
+.tag.win{color:var(--green);border-color:rgba(63,211,122,.4);background:rgba(63,211,122,.10)}
+.tag.loss{color:var(--red);border-color:rgba(242,109,109,.35);background:rgba(242,109,109,.08)}
+.tag.push{color:var(--amber);border-color:rgba(240,180,41,.35);background:rgba(240,180,41,.08)}
 .scroll-x{overflow-x:auto}
 
 /* ---------- rated board ---------- */
@@ -230,7 +230,7 @@ section{border-bottom:1px solid var(--line)}
   gap:18px;align-items:start}
 .gcard{background:var(--panel);border:1px solid var(--line);transition:.18s}
 .gcard:hover{border-color:var(--line-2);background:var(--panel-2)}
-.gcard.flag{border-color:rgba(115,76,0,.42)}
+.gcard.flag{border-color:rgba(240,180,41,.42)}
 .gcard-top{
   display:flex;align-items:center;justify-content:space-between;gap:10px;
   padding:11px 17px;border-bottom:1px solid var(--line);background:var(--bg-2);
@@ -329,9 +329,9 @@ section{border-bottom:1px solid var(--line)}
 .crow .cl{font-family:var(--mono);font-size:13px;color:var(--txt);font-weight:600}
 .crow .cn{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--sub)}
 .ctrack{position:relative;height:24px;background:var(--bg-2);border:1px solid var(--line)}
-.cband{position:absolute;top:0;bottom:0;background:rgba(16,110,66,.09);
-  border-left:1px solid rgba(16,110,66,.18);border-right:1px solid rgba(16,110,66,.18)}
-.csaid{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--green);box-shadow:0 0 6px rgba(16,110,66,.55)}
+.cband{position:absolute;top:0;bottom:0;background:rgba(63,211,122,.09);
+  border-left:1px solid rgba(63,211,122,.18);border-right:1px solid rgba(63,211,122,.18)}
+.csaid{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--green);box-shadow:0 0 6px rgba(63,211,122,.55)}
 .cact{position:absolute;top:50%;width:9px;height:9px;margin:-5px 0 0 -5px;border-radius:50%;
   background:var(--txt);box-shadow:0 0 0 3px var(--panel)}
 .cact.out{background:var(--amber)}
@@ -344,8 +344,8 @@ section{border-bottom:1px solid var(--line)}
 .clegend i{display:inline-block}
 .key-line{width:2px;height:13px;background:var(--green)}
 .key-dot{width:9px;height:9px;border-radius:50%;background:var(--txt)}
-.key-band{width:26px;height:13px;background:rgba(16,110,66,.09);
-  border-left:1px solid rgba(16,110,66,.25);border-right:1px solid rgba(16,110,66,.25)}
+.key-band{width:26px;height:13px;background:rgba(63,211,122,.09);
+  border-left:1px solid rgba(63,211,122,.25);border-right:1px solid rgba(63,211,122,.25)}
 @media(max-width:820px){
   .crow{grid-template-columns:1fr 1fr;gap:10px}
   .crow .ctrack{grid-column:1/-1}
@@ -356,7 +356,7 @@ section{border-bottom:1px solid var(--line)}
 .pb-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(336px,1fr));gap:16px}
 .pb-card{background:var(--panel);border:1px solid var(--line);transition:.18s}
 .pb-card:hover{border-color:var(--line-2);background:var(--panel-2)}
-.pb-card.flag{border-color:rgba(115,76,0,.42)}
+.pb-card.flag{border-color:rgba(240,180,41,.42)}
 .pb-top{display:flex;align-items:center;justify-content:space-between;gap:10px;
   padding:11px 17px;border-bottom:1px solid var(--line);background:var(--bg-2);
   font-family:var(--mono);font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--sub)}
@@ -409,7 +409,7 @@ section{border-bottom:1px solid var(--line)}
   cursor:pointer;transition:.15s;
 }
 .chip:hover{color:var(--txt);border-color:var(--muted)}
-.chip.on{background:var(--green);border-color:var(--green);color:#FFFFFF;font-weight:700}
+.chip.on{background:var(--green);border-color:var(--green);color:var(--bg);font-weight:700}
 
 /* ---------- misc ---------- */
 .split{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap}
@@ -909,14 +909,14 @@ footer{background:var(--bg-2);padding:56px 0 40px}
 </section>
 <section class="wrap board-page">
   <div class="board">
-      <article class="gcard" style="--accent:#00385D" id="g-062e69d482e7d6bf3c2d654eca93bd44">
+      <article class="gcard" style="--accent:#406A86" id="g-062e69d482e7d6bf3c2d654eca93bd44">
         <div class="gcard-top">
           <span>MLB &middot; 2:11 PM ET</span><span>Scheduled</span>
         </div>
         <div class="gcard-body">
           
         <div class="gside">
-          <div class="tm"><span class="tdot" style="--tc:#0C2340"></span>Detroit Tigers</div>
+          <div class="tm"><span class="tdot" style="--tc:#556579"></span>Detroit Tigers</div>
           <div class="pc">44.9%</div>
         </div>
         <div class="grec">64&ndash;75 &middot; 30&ndash;40 on the road</div>
@@ -925,7 +925,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           <div class="gbar"><div class="seg on" style="width:44.9%"></div><div class="tick" style="left:44.6%" title="Where the market has it"></div></div>
           
         <div class="gside lead">
-          <div class="tm"><span class="tdot" style="--tc:#00385D"></span>Cleveland Guardians</div>
+          <div class="tm"><span class="tdot" style="--tc:#406A86"></span>Cleveland Guardians</div>
           <div class="pc">55.1%</div>
         </div>
         <div class="grec">70&ndash;70 &middot; 33&ndash;38 at home</div>
@@ -943,7 +943,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
         <div class="gcard-body">
           
         <div class="gside lead">
-          <div class="tm"><span class="tdot" style="--tc:#12284B"></span>Milwaukee Brewers</div>
+          <div class="tm"><span class="tdot" style="--tc:#596881"></span>Milwaukee Brewers</div>
           <div class="pc">60.5%</div>
         </div>
         <div class="grec">87&ndash;54 &middot; 40&ndash;29 on the road</div>
@@ -990,14 +990,14 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           <details class="gmore"><summary>Form, head to head and props</summary><div class="gmore-in"><div class="pnl"><section class="pk"><h4>Form</h4><table class="pkt fm"><tr class="hd"><th></th><td>Braves</td><td>Phillies</td></tr><tr><th>Record</th><td>83&ndash;57</td><td>79&ndash;61</td></tr><tr><th>Last 10</th><td>8&ndash;2</td><td>7&ndash;3</td></tr><tr><th>Streak</th><td><b class="good">W1</b><i>won its last</i></td><td><b class="bad">L1</b><i>lost its last</i></td></tr></table></section><section class="pk"><h4>Head to head</h4><p class="pnl-note">Braves lead the season series <b>5&ndash;1</b></p><div class="h2more">1 earlier meeting not shown</div><div class="h2g"><span class="h2d">Apr 18</span><span class="h2s"><b>Braves</b> 3&ndash;1</span><span class="h2w">at Philadelphia</span></div><div class="h2g"><span class="h2d">Apr 19</span><span class="h2s"><b>Braves</b> 4&ndash;2</span><span class="h2w">at Philadelphia</span></div><div class="h2g"><span class="h2d">Apr 24</span><span class="h2s"><b>Braves</b> 5&ndash;3</span><span class="h2w">at Atlanta</span></div><div class="h2g"><span class="h2d">Apr 25</span><span class="h2s"><b>Phillies</b> 8&ndash;5</span><span class="h2w">at Atlanta</span></div><div class="h2g"><span class="h2d">Apr 26</span><span class="h2s"><b>Braves</b> 6&ndash;2</span><span class="h2w">at Atlanta</span></div></section><section class="pk"><h4>Tonight&rsquo;s starters</h4><div class="pst"><div class="pst-n">Chris Sale &middot; 2.06 ERA</div><div class="pst-v">5 starts against the Phillies: 29.7 innings, 38 strikeouts (11.5 per nine), 2.12 ERA</div></div><div class="pst"><div class="pst-n">Cristopher Sánchez &middot; 2.52 ERA</div><div class="pst-v">3 starts against the Braves: 18.7 innings, 21 strikeouts (10.1 per nine), 1.45 ERA</div></div></section><section class="pk"><h4>Tonight&rsquo;s strikeout props</h4><div class="ppr"><div class="ppr-top"><span class="ppr-n">Cristopher Sánchez</span><span class="ppr-v bad">tough matchup</span></div><div class="ppr-line">strikeouts &middot; ours <b>5.9</b> &middot; line <b>6.5</b> &middot; o−115 / u−105 &middot; <span class="bad">0.6 under the line</span></div></div><div class="ppr"><div class="ppr-top"><span class="ppr-n">Chris Sale</span><span class="ppr-v ">ordinary matchup</span></div><div class="ppr-line">strikeouts &middot; ours <b>6.7</b> &middot; line <b>6.5</b> &middot; o−120 / u−102 &middot; <span class="">in line</span></div></div></section></div></div></details>
         </div>
       </article>
-      <article class="gcard" style="--accent:#CA931F" id="g-c3750e470b5141a39a1efd04ef2e7b25">
+      <article class="gcard" style="--accent:#FDB827" id="g-c3750e470b5141a39a1efd04ef2e7b25">
         <div class="gcard-top">
           <span>MLB &middot; 6:46 PM ET</span><span>Scheduled</span>
         </div>
         <div class="gcard-body">
           
         <div class="gside">
-          <div class="tm"><span class="tdot" style="--tc:#BA0021"></span>Los Angeles Angels</div>
+          <div class="tm"><span class="tdot" style="--tc:#C11A37"></span>Los Angeles Angels</div>
           <div class="pc">37.0%</div>
         </div>
         <div class="grec">53&ndash;87 &middot; 23&ndash;43 on the road</div>
@@ -1006,7 +1006,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           <div class="gbar"><div class="seg on" style="width:37.0%"></div><div class="tick" style="left:35.6%" title="Where the market has it"></div></div>
           
         <div class="gside lead">
-          <div class="tm"><span class="tdot" style="--tc:#CA931F"></span>Pittsburgh Pirates</div>
+          <div class="tm"><span class="tdot" style="--tc:#FDB827"></span>Pittsburgh Pirates</div>
           <div class="pc">63.0%</div>
         </div>
         <div class="grec">69&ndash;72 &middot; 36&ndash;33 at home</div>
@@ -1051,7 +1051,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
         <div class="gcard-body">
           
         <div class="gside lead">
-          <div class="tm"><span class="tdot" style="--tc:#0E3386"></span>Chicago Cubs</div>
+          <div class="tm"><span class="tdot" style="--tc:#4A66A4"></span>Chicago Cubs</div>
           <div class="pc">50.0%</div>
         </div>
         <div class="grec">79&ndash;62 &middot; 38&ndash;31 on the road</div>
@@ -1098,14 +1098,14 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           <details class="gmore"><summary>Form, head to head and props</summary><div class="gmore-in"><div class="pnl"><section class="pk"><h4>Form</h4><table class="pkt fm"><tr class="hd"><th></th><td>Giants</td><td>Mets</td></tr><tr><th>Record</th><td>58&ndash;83</td><td>63&ndash;77</td></tr><tr><th>Last 10</th><td>5&ndash;5</td><td>4&ndash;6</td></tr><tr><th>Streak</th><td><b class="bad">L1</b><i>lost its last</i></td><td><b class="good">W1</b><i>won its last</i></td></tr></table></section><section class="pk"><h4>Head to head</h4><p class="pnl-note">Mets lead the season series <b>3&ndash;1</b></p><div class="h2g"><span class="h2d">Apr 2</span><span class="h2s"><b>Giants</b> 7&ndash;2</span><span class="h2w">at San Francisco</span></div><div class="h2g"><span class="h2d">Apr 3</span><span class="h2s"><b>Mets</b> 10&ndash;3</span><span class="h2w">at San Francisco</span></div><div class="h2g"><span class="h2d">Apr 4</span><span class="h2s"><b>Mets</b> 9&ndash;0</span><span class="h2w">at San Francisco</span></div><div class="h2g"><span class="h2d">Apr 5</span><span class="h2s"><b>Mets</b> 5&ndash;2</span><span class="h2w">at San Francisco</span></div></section><section class="pk"><h4>Tonight&rsquo;s starters</h4><div class="pst"><div class="pst-n">Matt Wilkinson &middot; 4.63 ERA</div><div class="pst-v">has not faced the Mets in 2025&ndash;2026</div></div><div class="pst"><div class="pst-n">Nolan McLean &middot; 3.06 ERA</div><div class="pst-v">1 start against the Giants: 5.3 innings, 4 strikeouts (6.8 per nine), 1.69 ERA</div></div></section><section class="pk"><h4>Tonight&rsquo;s strikeout props</h4><div class="ppr"><div class="ppr-top"><span class="ppr-n">Matt Wilkinson</span><span class="ppr-v ">ordinary matchup</span></div><div class="ppr-line">strikeouts &middot; ours <b>2.8</b> &middot; line <b>3.5</b> &middot; o−114 / u+105 &middot; <span class="bad">0.7 under the line</span></div></div><div class="ppr"><div class="ppr-top"><span class="ppr-n">Nolan McLean</span><span class="ppr-v bad">tough matchup</span></div><div class="ppr-line">strikeouts &middot; ours <b>5.6</b> &middot; line <b>6.5</b> &middot; o+118 / u−137 &middot; <span class="bad">0.9 under the line</span></div></div></section></div></div></details>
         </div>
       </article>
-      <article class="gcard" style="--accent:#00385D" id="g-a78d8674e699409d8d881b105ba90acd">
+      <article class="gcard" style="--accent:#406A86" id="g-a78d8674e699409d8d881b105ba90acd">
         <div class="gcard-top">
           <span>MLB &middot; 7:16 PM ET</span><span>Scheduled</span>
         </div>
         <div class="gcard-body">
           
         <div class="gside">
-          <div class="tm"><span class="tdot" style="--tc:#0C2340"></span>Detroit Tigers</div>
+          <div class="tm"><span class="tdot" style="--tc:#556579"></span>Detroit Tigers</div>
           <div class="pc">44.9%</div>
         </div>
         <div class="grec">64&ndash;75 &middot; 30&ndash;40 on the road</div>
@@ -1114,7 +1114,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           <div class="gbar"><div class="seg on" style="width:44.9%"></div><div class="tick" style="left:43.6%" title="Where the market has it"></div></div>
           
         <div class="gside lead">
-          <div class="tm"><span class="tdot" style="--tc:#00385D"></span>Cleveland Guardians</div>
+          <div class="tm"><span class="tdot" style="--tc:#406A86"></span>Cleveland Guardians</div>
           <div class="pc">55.1%</div>
         </div>
         <div class="grec">70&ndash;70 &middot; 33&ndash;38 at home</div>
@@ -1125,14 +1125,14 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           <details class="gmore"><summary>Form, head to head and props</summary><div class="gmore-in"><div class="pnl"><section class="pk"><h4>Form</h4><table class="pkt fm"><tr class="hd"><th></th><td>Tigers</td><td>Guardians</td></tr><tr><th>Record</th><td>64&ndash;75</td><td>70&ndash;70</td></tr><tr><th>Last 10</th><td>3&ndash;7</td><td>6&ndash;4</td></tr><tr><th>Streak</th><td><b class="good">W1</b><i>won its last</i></td><td><b class="bad">L2</b><i>lost 2 in a row</i></td></tr></table></section><section class="pk"><h4>Head to head</h4><p class="pnl-note">Guardians lead the season series <b>8&ndash;2</b></p><div class="h2more">5 earlier meetings not shown</div><div class="h2g"><span class="h2d">Jun 13</span><span class="h2s"><b>Guardians</b> 3&ndash;1</span><span class="h2w">at Cleveland</span></div><div class="h2g"><span class="h2d">Jun 14</span><span class="h2s"><b>Guardians</b> 0&ndash;0</span><span class="h2w">at Cleveland</span></div><div class="h2g"><span class="h2d">Aug 11</span><span class="h2s"><b>Tigers</b> 6&ndash;4</span><span class="h2w">at Detroit</span></div><div class="h2g"><span class="h2d">Aug 12</span><span class="h2s"><b>Guardians</b> 6&ndash;4</span><span class="h2w">at Detroit</span></div><div class="h2g"><span class="h2d">Aug 13</span><span class="h2s"><b>Tigers</b> 3&ndash;0</span><span class="h2w">at Detroit</span></div></section><section class="pk"><h4>Tonight&rsquo;s starters</h4><div class="pst"><div class="pst-n">Andrew Sears &middot; 6.75 ERA</div><div class="pst-v">has not faced the Guardians in 2025&ndash;2026</div></div><div class="pst"><div class="pst-n">Foster Griffin &middot; 3.21 ERA</div><div class="pst-v">1 start against the Tigers: 5 innings, 3 strikeouts (5.4 per nine), 1.80 ERA</div></div></section><section class="pk"><h4>Tonight&rsquo;s strikeout props</h4><div class="ppr"><div class="ppr-top"><span class="ppr-n">Foster Griffin</span><span class="ppr-v ">ordinary matchup</span></div><div class="ppr-line">strikeouts &middot; ours <b>4.9</b> &middot; line <b>5.5</b> &middot; o+105 / u−130 &middot; <span class="bad">0.6 under the line</span></div></div></section></div></div></details>
         </div>
       </article>
-      <article class="gcard" style="--accent:#939A9F" id="g-c7264d49b628c3dab7e70e7583b85424">
+      <article class="gcard" style="--accent:#C4CED4" id="g-c7264d49b628c3dab7e70e7583b85424">
         <div class="gcard-top">
           <span>MLB &middot; 7:41 PM ET</span><span>Scheduled</span>
         </div>
         <div class="gcard-body">
           
         <div class="gside">
-          <div class="tm"><span class="tdot" style="--tc:#002B5C"></span>Minnesota Twins</div>
+          <div class="tm"><span class="tdot" style="--tc:#4C6B8D"></span>Minnesota Twins</div>
           <div class="pc">41.8%</div>
         </div>
         <div class="grec">67&ndash;73 &middot; 29&ndash;39 on the road</div>
@@ -1141,7 +1141,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           <div class="gbar"><div class="seg on" style="width:41.8%"></div><div class="tick" style="left:48.2%" title="Where the market has it"></div></div>
           
         <div class="gside lead">
-          <div class="tm"><span class="tdot" style="--tc:#939A9F"></span>Chicago White Sox</div>
+          <div class="tm"><span class="tdot" style="--tc:#C4CED4"></span>Chicago White Sox</div>
           <div class="pc">58.2%</div>
         </div>
         <div class="grec">73&ndash;67 &middot; 41&ndash;27 at home</div>
@@ -1152,14 +1152,14 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           <details class="gmore"><summary>Form, head to head and props</summary><div class="gmore-in"><div class="pnl"><section class="pk"><h4>Form</h4><table class="pkt fm"><tr class="hd"><th></th><td>Twins</td><td>White Sox</td></tr><tr><th>Record</th><td>67&ndash;73</td><td>73&ndash;67</td></tr><tr><th>Last 10</th><td>4&ndash;6</td><td>5&ndash;5</td></tr><tr><th>Streak</th><td><b class="bad">L1</b><i>lost its last</i></td><td><b class="bad">L2</b><i>lost 2 in a row</i></td></tr></table></section><section class="pk"><h4>Head to head</h4><p class="pnl-note">White Sox lead the season series <b>6&ndash;4</b></p><div class="h2more">5 earlier meetings not shown</div><div class="h2g"><span class="h2d">Jun 2</span><span class="h2s"><b>Twins</b> 6&ndash;4</span><span class="h2w">at Minnesota</span></div><div class="h2g"><span class="h2d">Jun 3</span><span class="h2s"><b>White Sox</b> 8&ndash;0</span><span class="h2w">at Minnesota</span></div><div class="h2g"><span class="h2d">Aug 28</span><span class="h2s"><b>White Sox</b> 7&ndash;4</span><span class="h2w">at Minnesota</span></div><div class="h2g"><span class="h2d">Aug 29</span><span class="h2s"><b>White Sox</b> 3&ndash;2</span><span class="h2w">at Minnesota</span></div><div class="h2g"><span class="h2d">Aug 30</span><span class="h2s"><b>Twins</b> 5&ndash;1</span><span class="h2w">at Minnesota</span></div></section><section class="pk"><h4>Tonight&rsquo;s starters</h4><div class="pst"><div class="pst-n">Zebby Matthews &middot; 4.58 ERA</div><div class="pst-v">4 starts against the White Sox: 25 innings, 20 strikeouts (7.2 per nine), 3.24 ERA</div></div><div class="pst"><div class="pst-n">Erick Fedde &middot; 4.16 ERA</div><div class="pst-v">3 starts against the Twins: 16 innings, 8 strikeouts (4.5 per nine), 1.69 ERA</div></div></section></div></div></details>
         </div>
       </article>
-      <article class="gcard" style="--accent:#003278" id="g-d08cd8d7e7ee9c4a2c546a19da42d129">
+      <article class="gcard" style="--accent:#40659A" id="g-d08cd8d7e7ee9c4a2c546a19da42d129">
         <div class="gcard-top">
           <span>MLB &middot; 8:06 PM ET</span><span>Scheduled</span>
         </div>
         <div class="gcard-body">
           
         <div class="gside lead">
-          <div class="tm"><span class="tdot" style="--tc:#7AA0C4"></span>Tampa Bay Rays</div>
+          <div class="tm"><span class="tdot" style="--tc:#8FBCE6"></span>Tampa Bay Rays</div>
           <div class="pc">51.6%</div>
         </div>
         <div class="grec">83&ndash;57 &middot; 36&ndash;32 on the road</div>
@@ -1168,7 +1168,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           <div class="gbar"><div class="seg on" style="width:51.6%"></div><div class="tick" style="left:49.1%" title="Where the market has it"></div></div>
           
         <div class="gside">
-          <div class="tm"><span class="tdot" style="--tc:#003278"></span>Texas Rangers</div>
+          <div class="tm"><span class="tdot" style="--tc:#40659A"></span>Texas Rangers</div>
           <div class="pc">48.4%</div>
         </div>
         <div class="grec">70&ndash;71 &middot; 39&ndash;30 at home</div>
@@ -1179,14 +1179,14 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           <details class="gmore"><summary>Form, head to head and props</summary><div class="gmore-in"><div class="pnl"><section class="pk"><h4>Form</h4><table class="pkt fm"><tr class="hd"><th></th><td>Rays</td><td>Rangers</td></tr><tr><th>Record</th><td>83&ndash;57</td><td>70&ndash;71</td></tr><tr><th>Last 10</th><td>6&ndash;4</td><td>5&ndash;5</td></tr><tr><th>Streak</th><td><b class="bad">L2</b><i>lost 2 in a row</i></td><td><b class="good">W1</b><i>won its last</i></td></tr></table></section><section class="pk"><h4>Head to head</h4><p class="pnl-note">The season series is level at <b>2&ndash;2</b></p><div class="h2g"><span class="h2d">Jul 28</span><span class="h2s"><b>Rangers</b> 4&ndash;1</span><span class="h2w">at Tampa Bay</span></div><div class="h2g"><span class="h2d">Jul 29</span><span class="h2s"><b>Rays</b> 3&ndash;0</span><span class="h2w">at Tampa Bay</span></div><div class="h2g"><span class="h2d">Jul 30</span><span class="h2s"><b>Rays</b> 3&ndash;2</span><span class="h2w">at Tampa Bay</span></div><div class="h2g"><span class="h2d">Sep 3</span><span class="h2s"><b>Rangers</b> 6&ndash;0</span><span class="h2w">at Texas</span></div></section><section class="pk"><h4>Tonight&rsquo;s starters</h4><div class="pst"><div class="pst-n">Nick Martinez &middot; 2.99 ERA</div><div class="pst-v">has not faced the Rangers in 2025&ndash;2026</div></div><div class="pst"><div class="pst-n">Trevor Williams &middot; 3.93 ERA</div><div class="pst-v">has not faced the Rays in 2025&ndash;2026</div></div></section></div></div></details>
         </div>
       </article>
-      <article class="gcard" style="--accent:#004687" id="g-db6080ddc95ea130d0b1ecb4538eaed5">
+      <article class="gcard" style="--accent:#336B9F" id="g-db6080ddc95ea130d0b1ecb4538eaed5">
         <div class="gcard-top">
           <span>MLB &middot; 8:10 PM ET</span><span>Scheduled</span>
         </div>
         <div class="gcard-body">
           
         <div class="gside">
-          <div class="tm"><span class="tdot" style="--tc:#134A8E"></span>Toronto Blue Jays</div>
+          <div class="tm"><span class="tdot" style="--tc:#36659F"></span>Toronto Blue Jays</div>
           <div class="pc">40.6%</div>
         </div>
         <div class="grec">70&ndash;71 &middot; 33&ndash;36 on the road</div>
@@ -1195,7 +1195,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           <div class="gbar"><div class="seg on" style="width:40.6%"></div><div class="tick" style="left:47.7%" title="Where the market has it"></div></div>
           
         <div class="gside lead">
-          <div class="tm"><span class="tdot" style="--tc:#004687"></span>Kansas City Royals</div>
+          <div class="tm"><span class="tdot" style="--tc:#336B9F"></span>Kansas City Royals</div>
           <div class="pc">59.4%</div>
         </div>
         <div class="grec">63&ndash;78 &middot; 37&ndash;32 at home</div>
@@ -1213,7 +1213,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
         <div class="gcard-body">
           
         <div class="gside lead">
-          <div class="tm"><span class="tdot" style="--tc:#A71930"></span>Arizona Diamondbacks</div>
+          <div class="tm"><span class="tdot" style="--tc:#B03045"></span>Arizona Diamondbacks</div>
           <div class="pc">53.4%</div>
         </div>
         <div class="grec">74&ndash;67 &middot; 33&ndash;36 on the road</div>
@@ -1233,7 +1233,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           <details class="gmore"><summary>Form, head to head and props</summary><div class="gmore-in"><div class="pnl"><section class="pk"><h4>Form</h4><table class="pkt fm"><tr class="hd"><th></th><td>Diamondbacks</td><td>Astros</td></tr><tr><th>Record</th><td>74&ndash;67</td><td>72&ndash;69</td></tr><tr><th>Last 10</th><td>5&ndash;5</td><td>7&ndash;3</td></tr><tr><th>Streak</th><td><b class="good">W1</b><i>won its last</i></td><td><b class="good">W2</b><i>won 2 in a row</i></td></tr></table></section><section class="pk"><h4>Head to head</h4><p class="pnl-note">They have not met yet this season.</p></section><section class="pk"><h4>Tonight&rsquo;s starters</h4><div class="pst"><div class="pst-n">Merrill Kelly &middot; 5.08 ERA</div><div class="pst-v">2 starts against the Astros: 10 innings, 8 strikeouts (7.2 per nine), 6.30 ERA</div></div><div class="pst"><div class="pst-n">Cristian Javier &middot; 6.45 ERA</div><div class="pst-v">has not faced the Diamondbacks in 2025&ndash;2026</div></div></section></div></div></details>
         </div>
       </article>
-      <article class="gcard" style="--accent:#33006F" id="g-1b0e8aa1b257757991d6d1e3d3d0bab9">
+      <article class="gcard" style="--accent:#7A59A1" id="g-1b0e8aa1b257757991d6d1e3d3d0bab9">
         <div class="gcard-top">
           <span>MLB &middot; 8:41 PM ET</span><span>Scheduled</span>
         </div>
@@ -1249,7 +1249,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           <div class="gbar"><div class="seg on" style="width:61.3%"></div><div class="tick" style="left:54.1%" title="Where the market has it"></div></div>
           
         <div class="gside">
-          <div class="tm"><span class="tdot" style="--tc:#33006F"></span>Colorado Rockies</div>
+          <div class="tm"><span class="tdot" style="--tc:#7A59A1"></span>Colorado Rockies</div>
           <div class="pc">38.7%</div>
         </div>
         <div class="grec">54&ndash;86 &middot; 29&ndash;39 at home</div>
@@ -1260,14 +1260,14 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           <details class="gmore"><summary>Form, head to head and props</summary><div class="gmore-in"><div class="pnl"><section class="pk"><h4>Form</h4><table class="pkt fm"><tr class="hd"><th></th><td>Cardinals</td><td>Rockies</td></tr><tr><th>Record</th><td>70&ndash;71</td><td>54&ndash;86</td></tr><tr><th>Last 10</th><td>4&ndash;6</td><td>4&ndash;6</td></tr><tr><th>Streak</th><td><b class="bad">L1</b><i>lost its last</i></td><td><b class="good">W2</b><i>won 2 in a row</i></td></tr></table></section><section class="pk"><h4>Head to head</h4><p class="pnl-note">Cardinals lead the season series <b>2&ndash;1</b></p><div class="h2g"><span class="h2d">Aug 7</span><span class="h2s"><b>Cardinals</b> 3&ndash;2</span><span class="h2w">at St. Louis</span></div><div class="h2g"><span class="h2d">Aug 8</span><span class="h2s"><b>Rockies</b> 8&ndash;6</span><span class="h2w">at St. Louis</span></div><div class="h2g"><span class="h2d">Aug 9</span><span class="h2s"><b>Cardinals</b> 7&ndash;4</span><span class="h2w">at St. Louis</span></div></section><section class="pk"><h4>Tonight&rsquo;s starters</h4><div class="pst"><div class="pst-n">Andre Pallante &middot; 3.57 ERA</div><div class="pst-v">1 start against the Rockies: 5 innings, 5 strikeouts (9.0 per nine), 9.00 ERA</div></div><div class="pst"><div class="pst-n">Ryan Feltner &middot; 5.84 ERA</div><div class="pst-v">1 start against the Cardinals: 5.3 innings, 2 strikeouts (3.4 per nine), 5.06 ERA</div></div></section></div></div></details>
         </div>
       </article>
-      <article class="gcard" style="--accent:#2F241D" id="g-2d3ba8f32a3003fe2c9866328f0b1a2b">
+      <article class="gcard" style="--accent:#6D6661" id="g-2d3ba8f32a3003fe2c9866328f0b1a2b">
         <div class="gcard-top">
           <span>MLB &middot; 9:41 PM ET</span><span>Scheduled</span>
         </div>
         <div class="gcard-body">
           
         <div class="gside lead">
-          <div class="tm"><span class="tdot" style="--tc:#1C2841"></span>New York Yankees</div>
+          <div class="tm"><span class="tdot" style="--tc:#60687A"></span>New York Yankees</div>
           <div class="pc">57.4%</div>
         </div>
         <div class="grec">80&ndash;60 &middot; 43&ndash;29 on the road</div>
@@ -1276,7 +1276,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           <div class="gbar"><div class="seg on" style="width:57.4%"></div><div class="tick" style="left:52.8%" title="Where the market has it"></div></div>
           
         <div class="gside">
-          <div class="tm"><span class="tdot" style="--tc:#2F241D"></span>San Diego Padres</div>
+          <div class="tm"><span class="tdot" style="--tc:#6D6661"></span>San Diego Padres</div>
           <div class="pc">42.6%</div>
         </div>
         <div class="grec">73&ndash;67 &middot; 41&ndash;28 at home</div>
@@ -1287,14 +1287,14 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           <details class="gmore"><summary>Form, head to head and props</summary><div class="gmore-in"><div class="pnl"><section class="pk"><h4>Form</h4><table class="pkt fm"><tr class="hd"><th></th><td>Yankees</td><td>Padres</td></tr><tr><th>Record</th><td>80&ndash;60</td><td>73&ndash;67</td></tr><tr><th>Last 10</th><td>6&ndash;4</td><td>3&ndash;7</td></tr><tr><th>Streak</th><td><b class="good">W2</b><i>won 2 in a row</i></td><td><b class="bad">L2</b><i>lost 2 in a row</i></td></tr></table></section><section class="pk"><h4>Head to head</h4><p class="pnl-note">They have not met yet this season.</p></section><section class="pk"><h4>Tonight&rsquo;s starters</h4><div class="pst"><div class="pst-n">Max Fried &middot; 2.80 ERA</div><div class="pst-v">1 start against the Padres: 7 innings, 8 strikeouts (10.3 per nine), 1.29 ERA</div></div><div class="pst"><div class="pst-n">Walker Buehler &middot; 4.66 ERA</div><div class="pst-v">1 start against the Yankees: 4.3 innings, 4 strikeouts (8.4 per nine), 14.54 ERA</div></div></section></div></div></details>
         </div>
       </article>
-      <article class="gcard" style="--accent:#005A9C" id="g-e5841b22c4ba21de51634f16c9743bcb">
+      <article class="gcard" style="--accent:#1A6AA6" id="g-e5841b22c4ba21de51634f16c9743bcb">
         <div class="gcard-top">
           <span>MLB &middot; 10:11 PM ET</span><span>Scheduled</span>
         </div>
         <div class="gcard-body">
           
         <div class="gside">
-          <div class="tm"><span class="tdot" style="--tc:#AB0003"></span>Washington Nationals</div>
+          <div class="tm"><span class="tdot" style="--tc:#B82629"></span>Washington Nationals</div>
           <div class="pc">40.0%</div>
         </div>
         <div class="grec">67&ndash;75 &middot; 34&ndash;35 on the road</div>
@@ -1303,7 +1303,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           <div class="gbar"><div class="seg on" style="width:40.0%"></div><div class="tick" style="left:27.2%" title="Where the market has it"></div></div>
           
         <div class="gside lead">
-          <div class="tm"><span class="tdot" style="--tc:#005A9C"></span>Los Angeles Dodgers</div>
+          <div class="tm"><span class="tdot" style="--tc:#1A6AA6"></span>Los Angeles Dodgers</div>
           <div class="pc">60.0%</div>
         </div>
         <div class="grec">83&ndash;57 &middot; 41&ndash;28 at home</div>
@@ -1314,14 +1314,14 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           <details class="gmore"><summary>Form, head to head and props</summary><div class="gmore-in"><div class="pnl"><section class="pk"><h4>Form</h4><table class="pkt fm"><tr class="hd"><th></th><td>Nationals</td><td>Dodgers</td></tr><tr><th>Record</th><td>67&ndash;75</td><td>83&ndash;57</td></tr><tr><th>Last 10</th><td>6&ndash;4</td><td>4&ndash;6</td></tr><tr><th>Streak</th><td><b class="bad">L1</b><i>lost its last</i></td><td><b class="good">W1</b><i>won its last</i></td></tr></table></section><section class="pk"><h4>Head to head</h4><p class="pnl-note">Dodgers lead the season series <b>3&ndash;0</b></p><div class="h2g"><span class="h2d">Apr 3</span><span class="h2s"><b>Dodgers</b> 13&ndash;6</span><span class="h2w">at Washington</span></div><div class="h2g"><span class="h2d">Apr 4</span><span class="h2s"><b>Dodgers</b> 10&ndash;5</span><span class="h2w">at Washington</span></div><div class="h2g"><span class="h2d">Apr 5</span><span class="h2s"><b>Dodgers</b> 8&ndash;6</span><span class="h2w">at Washington</span></div></section><section class="pk"><h4>Tonight&rsquo;s starters</h4><div class="pst"><div class="pst-n">Jackson Kent &middot; 5.59 ERA</div><div class="pst-v">has not faced the Dodgers in 2025&ndash;2026</div></div><div class="pst"><div class="pst-n">Blake Snell &middot; 2.42 ERA</div><div class="pst-v">has not faced the Nationals in 2025&ndash;2026</div></div></section></div></div></details>
         </div>
       </article>
-      <article class="gcard" style="--accent:#005C5C" id="g-c12be047c8ded8a9a907d99bef5494f7">
+      <article class="gcard" style="--accent:#1A6C6C" id="g-c12be047c8ded8a9a907d99bef5494f7">
         <div class="gcard-top">
           <span>MLB &middot; 10:11 PM ET</span><span>Scheduled</span>
         </div>
         <div class="gcard-body">
           
         <div class="gside">
-          <div class="tm"><span class="tdot" style="--tc:#003831"></span>Athletics</div>
+          <div class="tm"><span class="tdot" style="--tc:#406A64"></span>Athletics</div>
           <div class="pc">41.2%</div>
         </div>
         <div class="grec">55&ndash;86 &middot; 30&ndash;42 on the road</div>
@@ -1330,7 +1330,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           <div class="gbar"><div class="seg on" style="width:41.2%"></div><div class="tick" style="left:32.7%" title="Where the market has it"></div></div>
           
         <div class="gside lead">
-          <div class="tm"><span class="tdot" style="--tc:#005C5C"></span>Seattle Mariners</div>
+          <div class="tm"><span class="tdot" style="--tc:#1A6C6C"></span>Seattle Mariners</div>
           <div class="pc">58.8%</div>
         </div>
         <div class="grec">66&ndash;75 &middot; 37&ndash;32 at home</div>
