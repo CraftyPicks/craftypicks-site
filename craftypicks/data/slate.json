@@ -1,58 +1,393 @@
 {
-  "date": "2026-09-04",
-  "date_label": "Friday, September 4, 2026",
+  "date": "2026-09-05",
+  "date_label": "Saturday, September 5, 2026",
   "games": [
     {
-      "event_id": "062e69d482e7d6bf3c2d654eca93bd44",
-      "date": "09/04/2026",
-      "commence_time": "2026-09-04T18:11:00Z",
+      "event_id": "c3af289a1433ac426961691deab41154",
+      "date": "09/05/2026",
+      "commence_time": "2026-09-05T20:11:00Z",
+      "home": "Miami Marlins",
+      "away": "Chicago Cubs",
+      "home_id": 146,
+      "away_id": 112,
+      "home_starter": "Ryan Gusto",
+      "away_starter": "Javier Assad",
+      "home_starter_era": 3.86,
+      "away_starter_era": 3.46,
+      "home_starter_wl": [
+        1,
+        3
+      ],
+      "away_starter_wl": [
+        6,
+        1
+      ],
+      "home_sp_innings": 67.66666666666667,
+      "away_sp_innings": 83.33333333333333,
+      "home_hand": "R",
+      "away_hand": "R",
+      "home_record": {
+        "w": 71,
+        "l": 71,
+        "hw": 42,
+        "hl": 28,
+        "aw": 29,
+        "al": 43
+      },
+      "away_record": {
+        "w": 80,
+        "l": 62,
+        "hw": 41,
+        "hl": 31,
+        "aw": 39,
+        "al": 31
+      },
+      "home_form": {
+        "w": 71,
+        "l": 71,
+        "streak": "L2",
+        "l10_w": 4,
+        "l10_l": 6
+      },
+      "away_form": {
+        "w": 80,
+        "l": 62,
+        "streak": "W2",
+        "l10_w": 4,
+        "l10_l": 6
+      },
+      "series": [
+        {
+          "date": "2026-09-04",
+          "away": "Chicago Cubs",
+          "away_runs": 6,
+          "home": "Miami Marlins",
+          "home_runs": 1
+        }
+      ],
+      "home_vs_opp": {
+        "starts": 0,
+        "innings": 4.0,
+        "era": 9.0,
+        "strikeouts": 4,
+        "span": "2025–2026",
+        "source": "gameLog"
+      },
+      "away_vs_opp": null,
+      "result": null,
+      "home_elo": 1499.8,
+      "away_elo": 1524.8,
+      "elo_prob": 0.4985,
+      "starter_adj": -0.018,
+      "home_win_prob": 0.4805,
+      "away_win_prob": 0.5195,
+      "market_home_prob": 0.457,
+      "books": 9,
+      "best_home_price": 116.0,
+      "best_away_price": -121.0,
+      "disagreement": 2.3,
+      "suspect": false
+    },
+    {
+      "event_id": "c5b03415dadb8213241501d56b4926bc",
+      "date": "09/05/2026",
+      "commence_time": "2026-09-05T20:11:00Z",
+      "home": "New York Mets",
+      "away": "San Francisco Giants",
+      "home_id": 121,
+      "away_id": 137,
+      "home_starter": "Zac Thornton",
+      "away_starter": "Anthony Molina",
+      "home_starter_era": 2.93,
+      "away_starter_era": 3.77,
+      "home_starter_wl": [
+        3,
+        4
+      ],
+      "away_starter_wl": [
+        2,
+        0
+      ],
+      "home_sp_innings": 61.333333333333336,
+      "away_sp_innings": 14.333333333333334,
+      "home_hand": "L",
+      "away_hand": "R",
+      "home_record": {
+        "w": 64,
+        "l": 77,
+        "hw": 33,
+        "hl": 39,
+        "aw": 31,
+        "al": 38
+      },
+      "away_record": {
+        "w": 59,
+        "l": 84,
+        "hw": 33,
+        "hl": 36,
+        "aw": 26,
+        "al": 48
+      },
+      "home_form": {
+        "w": 64,
+        "l": 77,
+        "streak": "W2",
+        "l10_w": 5,
+        "l10_l": 5
+      },
+      "away_form": {
+        "w": 58,
+        "l": 84,
+        "streak": "L2",
+        "l10_w": 4,
+        "l10_l": 6
+      },
+      "series": [
+        {
+          "date": "2026-04-02",
+          "away": "New York Mets",
+          "away_runs": 2,
+          "home": "San Francisco Giants",
+          "home_runs": 7
+        },
+        {
+          "date": "2026-04-03",
+          "away": "New York Mets",
+          "away_runs": 10,
+          "home": "San Francisco Giants",
+          "home_runs": 3
+        },
+        {
+          "date": "2026-04-04",
+          "away": "New York Mets",
+          "away_runs": 9,
+          "home": "San Francisco Giants",
+          "home_runs": 0
+        },
+        {
+          "date": "2026-04-05",
+          "away": "New York Mets",
+          "away_runs": 5,
+          "home": "San Francisco Giants",
+          "home_runs": 2
+        },
+        {
+          "date": "2026-09-04",
+          "away": "San Francisco Giants",
+          "away_runs": 6,
+          "home": "New York Mets",
+          "home_runs": 10
+        }
+      ],
+      "home_vs_opp": null,
+      "away_vs_opp": {
+        "starts": 0,
+        "innings": 1.0,
+        "era": 9.0,
+        "strikeouts": 2,
+        "span": "2025–2026",
+        "source": "gameLog"
+      },
+      "result": null,
+      "home_elo": 1489.7,
+      "away_elo": 1465.4,
+      "elo_prob": 0.5691,
+      "starter_adj": 0.0,
+      "home_win_prob": 0.5691,
+      "away_win_prob": 0.4309,
+      "market_home_prob": 0.6154,
+      "books": 9,
+      "best_home_price": -159.0,
+      "best_away_price": 156.0,
+      "disagreement": -4.6,
+      "suspect": false
+    },
+    {
+      "event_id": "335cdc2989ec57b83bd603b5beeb7fcc",
+      "date": "09/05/2026",
+      "commence_time": "2026-09-05T22:06:00Z",
+      "home": "Philadelphia Phillies",
+      "away": "Atlanta Braves",
+      "home_id": 143,
+      "away_id": 144,
+      "home_starter": "Zack Wheeler",
+      "away_starter": "Martín Pérez",
+      "home_starter_era": 3.31,
+      "away_starter_era": 3.05,
+      "home_starter_wl": [
+        11,
+        5
+      ],
+      "away_starter_wl": [
+        8,
+        8
+      ],
+      "home_sp_innings": 130.33333333333334,
+      "away_sp_innings": 121.0,
+      "home_hand": "R",
+      "away_hand": "L",
+      "home_record": {
+        "w": 79,
+        "l": 62,
+        "hw": 38,
+        "hl": 31,
+        "aw": 41,
+        "al": 31
+      },
+      "away_record": {
+        "w": 84,
+        "l": 58,
+        "hw": 48,
+        "hl": 25,
+        "aw": 36,
+        "al": 33
+      },
+      "home_form": {
+        "w": 79,
+        "l": 62,
+        "streak": "L2",
+        "l10_w": 6,
+        "l10_l": 4
+      },
+      "away_form": {
+        "w": 84,
+        "l": 57,
+        "streak": "W2",
+        "l10_w": 8,
+        "l10_l": 2
+      },
+      "series": [
+        {
+          "date": "2026-04-17",
+          "away": "Atlanta Braves",
+          "away_runs": 9,
+          "home": "Philadelphia Phillies",
+          "home_runs": 0
+        },
+        {
+          "date": "2026-04-18",
+          "away": "Atlanta Braves",
+          "away_runs": 3,
+          "home": "Philadelphia Phillies",
+          "home_runs": 1
+        },
+        {
+          "date": "2026-04-19",
+          "away": "Atlanta Braves",
+          "away_runs": 4,
+          "home": "Philadelphia Phillies",
+          "home_runs": 2
+        },
+        {
+          "date": "2026-04-24",
+          "away": "Philadelphia Phillies",
+          "away_runs": 3,
+          "home": "Atlanta Braves",
+          "home_runs": 5
+        },
+        {
+          "date": "2026-04-25",
+          "away": "Philadelphia Phillies",
+          "away_runs": 8,
+          "home": "Atlanta Braves",
+          "home_runs": 5
+        },
+        {
+          "date": "2026-04-26",
+          "away": "Philadelphia Phillies",
+          "away_runs": 2,
+          "home": "Atlanta Braves",
+          "home_runs": 6
+        },
+        {
+          "date": "2026-09-04",
+          "away": "Atlanta Braves",
+          "away_runs": 5,
+          "home": "Philadelphia Phillies",
+          "home_runs": 2
+        }
+      ],
+      "home_vs_opp": {
+        "starts": 3,
+        "innings": 15.7,
+        "era": 7.47,
+        "strikeouts": 19,
+        "span": "2025–2026",
+        "source": "gameLog"
+      },
+      "away_vs_opp": {
+        "starts": 1,
+        "innings": 6.0,
+        "era": 0.0,
+        "strikeouts": 4,
+        "span": "2025–2026",
+        "source": "gameLog"
+      },
+      "result": null,
+      "home_elo": 1528.2,
+      "away_elo": 1532.3,
+      "elo_prob": 0.5287,
+      "starter_adj": -0.0117,
+      "home_win_prob": 0.517,
+      "away_win_prob": 0.483,
+      "market_home_prob": 0.5971,
+      "books": 9,
+      "best_home_price": -155.0,
+      "best_away_price": 140.0,
+      "disagreement": -8.0,
+      "suspect": false
+    },
+    {
+      "event_id": "9bff8c9d21336a9f547bec785afbb238",
+      "date": "09/05/2026",
+      "commence_time": "2026-09-05T22:11:00Z",
       "home": "Cleveland Guardians",
       "away": "Detroit Tigers",
       "home_id": 114,
       "away_id": 116,
-      "home_starter": "Foster Griffin",
-      "away_starter": "Andrew Sears",
-      "home_starter_era": 3.21,
-      "away_starter_era": 6.75,
+      "home_starter": "Parker Messick",
+      "away_starter": "Framber Valdez",
+      "home_starter_era": 2.46,
+      "away_starter_era": 4.36,
       "home_starter_wl": [
-        15,
-        4
+        11,
+        8
       ],
       "away_starter_wl": [
-        0,
-        1
+        8,
+        10
       ],
-      "home_sp_innings": 154.33333333333334,
-      "away_sp_innings": 6.666666666666667,
+      "home_sp_innings": 161.0,
+      "away_sp_innings": 150.66666666666666,
       "home_hand": "L",
       "away_hand": "L",
       "home_record": {
-        "w": 70,
+        "w": 72,
         "l": 70,
-        "hw": 33,
+        "hw": 35,
         "hl": 38,
         "aw": 37,
         "al": 32
       },
       "away_record": {
         "w": 64,
-        "l": 75,
+        "l": 77,
         "hw": 34,
         "hl": 35,
         "aw": 30,
-        "al": 40
+        "al": 42
       },
       "home_form": {
-        "w": 70,
+        "w": 72,
         "l": 70,
-        "streak": "L2",
+        "streak": "W2",
         "l10_w": 6,
         "l10_l": 4
       },
       "away_form": {
         "w": 64,
-        "l": 75,
-        "streak": "W1",
+        "l": 77,
+        "streak": "L2",
         "l10_w": 3,
         "l10_l": 7
       },
@@ -126,84 +461,105 @@
           "away_runs": 0,
           "home": "Detroit Tigers",
           "home_runs": 3
+        },
+        {
+          "date": "2026-09-04",
+          "away": "Detroit Tigers",
+          "away_runs": 6,
+          "home": "Cleveland Guardians",
+          "home_runs": 7
+        },
+        {
+          "date": "2026-09-04",
+          "away": "Detroit Tigers",
+          "away_runs": 3,
+          "home": "Cleveland Guardians",
+          "home_runs": 4
         }
       ],
       "home_vs_opp": {
-        "starts": 1,
-        "innings": 5.0,
-        "era": 1.8,
-        "strikeouts": 3,
-        "span": "2026",
+        "starts": 3,
+        "innings": 15.7,
+        "era": 4.6,
+        "strikeouts": 19,
+        "span": "2025–2026",
         "source": "gameLog"
       },
-      "away_vs_opp": null,
+      "away_vs_opp": {
+        "starts": 2,
+        "innings": 10.7,
+        "era": 6.75,
+        "strikeouts": 6,
+        "span": "2025–2026",
+        "source": "gameLog"
+      },
       "result": null,
-      "home_elo": 1495.9,
-      "away_elo": 1484.2,
-      "elo_prob": 0.5511,
-      "starter_adj": 0.0,
-      "home_win_prob": 0.5511,
-      "away_win_prob": 0.4489,
-      "market_home_prob": 0.5543,
+      "home_elo": 1499.4,
+      "away_elo": 1480.6,
+      "elo_prob": 0.5613,
+      "starter_adj": 0.0855,
+      "home_win_prob": 0.6468,
+      "away_win_prob": 0.3532,
+      "market_home_prob": 0.5949,
       "books": 9,
-      "best_home_price": -130.0,
-      "best_away_price": 119.0,
-      "disagreement": -0.3,
+      "best_home_price": -152.0,
+      "best_away_price": 138.0,
+      "disagreement": 5.2,
       "suspect": false
     },
     {
-      "event_id": "dac0957aa5c5244daa20683be70be3d9",
-      "date": "09/04/2026",
-      "commence_time": "2026-09-04T22:11:00Z",
+      "event_id": "9744b17bfe52474717b2c23f7700752f",
+      "date": "09/05/2026",
+      "commence_time": "2026-09-05T22:41:00Z",
       "home": "Cincinnati Reds",
       "away": "Milwaukee Brewers",
       "home_id": 113,
       "away_id": 158,
-      "home_starter": "Rhett Lowder",
-      "away_starter": "Shane Drohan",
-      "home_starter_era": 5.14,
-      "away_starter_era": 3.75,
+      "home_starter": "Andrew Abbott",
+      "away_starter": "Dustin May",
+      "home_starter_era": 4.49,
+      "away_starter_era": 4.69,
       "home_starter_wl": [
         6,
-        8
+        10
       ],
       "away_starter_wl": [
-        7,
-        5
+        6,
+        9
       ],
-      "home_sp_innings": 112.0,
-      "away_sp_innings": 110.33333333333333,
-      "home_hand": "R",
-      "away_hand": "L",
+      "home_sp_innings": 148.33333333333334,
+      "away_sp_innings": 128.66666666666666,
+      "home_hand": "L",
+      "away_hand": "R",
       "home_record": {
         "w": 67,
-        "l": 73,
+        "l": 74,
         "hw": 34,
-        "hl": 37,
+        "hl": 38,
         "aw": 33,
         "al": 36
       },
       "away_record": {
-        "w": 87,
+        "w": 88,
         "l": 54,
         "hw": 47,
         "hl": 25,
-        "aw": 40,
+        "aw": 41,
         "al": 29
       },
       "home_form": {
         "w": 67,
-        "l": 73,
-        "streak": "W2",
+        "l": 74,
+        "streak": "L1",
         "l10_w": 5,
         "l10_l": 5
       },
       "away_form": {
-        "w": 87,
+        "w": 88,
         "l": 54,
-        "streak": "L1",
-        "l10_w": 6,
-        "l10_l": 4
+        "streak": "W1",
+        "l10_w": 7,
+        "l10_l": 3
       },
       "series": [
         {
@@ -254,295 +610,175 @@
           "away_runs": 7,
           "home": "Milwaukee Brewers",
           "home_runs": 2
+        },
+        {
+          "date": "2026-09-04",
+          "away": "Milwaukee Brewers",
+          "away_runs": 10,
+          "home": "Cincinnati Reds",
+          "home_runs": 7
         }
       ],
       "home_vs_opp": {
-        "starts": 2,
-        "innings": 10.3,
-        "era": 7.84,
-        "strikeouts": 14,
-        "span": "2026",
-        "source": "gameLog"
-      },
-      "away_vs_opp": {
-        "starts": 2,
-        "innings": 10.0,
-        "era": 1.8,
-        "strikeouts": 12,
-        "span": "2026",
-        "source": "gameLog"
-      },
-      "result": null,
-      "home_elo": 1491.5,
-      "away_elo": 1545.1,
-      "elo_prob": 0.4575,
-      "starter_adj": -0.0625,
-      "home_win_prob": 0.3949,
-      "away_win_prob": 0.6051,
-      "market_home_prob": 0.4016,
-      "books": 9,
-      "best_home_price": 141.0,
-      "best_away_price": -153.0,
-      "disagreement": -0.7,
-      "suspect": false
-    },
-    {
-      "event_id": "88620c3e43d7ed89b323b1d85e261c52",
-      "date": "09/04/2026",
-      "commence_time": "2026-09-04T22:41:00Z",
-      "home": "Philadelphia Phillies",
-      "away": "Atlanta Braves",
-      "home_id": 143,
-      "away_id": 144,
-      "home_starter": "Cristopher Sánchez",
-      "away_starter": "Chris Sale",
-      "home_starter_era": 2.52,
-      "away_starter_era": 2.06,
-      "home_starter_wl": [
-        16,
-        4
-      ],
-      "away_starter_wl": [
-        13,
-        9
-      ],
-      "home_sp_innings": 175.33333333333334,
-      "away_sp_innings": 144.0,
-      "home_hand": "L",
-      "away_hand": "L",
-      "home_record": {
-        "w": 79,
-        "l": 61,
-        "hw": 38,
-        "hl": 30,
-        "aw": 41,
-        "al": 31
-      },
-      "away_record": {
-        "w": 83,
-        "l": 58,
-        "hw": 48,
-        "hl": 25,
-        "aw": 35,
-        "al": 33
-      },
-      "home_form": {
-        "w": 79,
-        "l": 61,
-        "streak": "L1",
-        "l10_w": 7,
-        "l10_l": 3
-      },
-      "away_form": {
-        "w": 83,
-        "l": 57,
-        "streak": "W1",
-        "l10_w": 8,
-        "l10_l": 2
-      },
-      "series": [
-        {
-          "date": "2026-04-17",
-          "away": "Atlanta Braves",
-          "away_runs": 9,
-          "home": "Philadelphia Phillies",
-          "home_runs": 0
-        },
-        {
-          "date": "2026-04-18",
-          "away": "Atlanta Braves",
-          "away_runs": 3,
-          "home": "Philadelphia Phillies",
-          "home_runs": 1
-        },
-        {
-          "date": "2026-04-19",
-          "away": "Atlanta Braves",
-          "away_runs": 4,
-          "home": "Philadelphia Phillies",
-          "home_runs": 2
-        },
-        {
-          "date": "2026-04-24",
-          "away": "Philadelphia Phillies",
-          "away_runs": 3,
-          "home": "Atlanta Braves",
-          "home_runs": 5
-        },
-        {
-          "date": "2026-04-25",
-          "away": "Philadelphia Phillies",
-          "away_runs": 8,
-          "home": "Atlanta Braves",
-          "home_runs": 5
-        },
-        {
-          "date": "2026-04-26",
-          "away": "Philadelphia Phillies",
-          "away_runs": 2,
-          "home": "Atlanta Braves",
-          "home_runs": 6
-        }
-      ],
-      "home_vs_opp": {
-        "starts": 3,
-        "innings": 18.7,
-        "era": 1.45,
-        "strikeouts": 21,
+        "starts": 4,
+        "innings": 23.3,
+        "era": 3.86,
+        "strikeouts": 20,
         "span": "2025–2026",
         "source": "gameLog"
       },
       "away_vs_opp": {
-        "starts": 5,
-        "innings": 29.7,
-        "era": 2.12,
-        "strikeouts": 38,
+        "starts": 1,
+        "innings": 6.0,
+        "era": 1.5,
+        "strikeouts": 8,
         "span": "2025–2026",
         "source": "gameLog"
       },
       "result": null,
-      "home_elo": 1530.4,
-      "away_elo": 1530.2,
-      "elo_prob": 0.5348,
-      "starter_adj": -0.0207,
-      "home_win_prob": 0.5141,
-      "away_win_prob": 0.4859,
-      "market_home_prob": 0.5154,
+      "home_elo": 1489.7,
+      "away_elo": 1547.0,
+      "elo_prob": 0.4522,
+      "starter_adj": 0.009,
+      "home_win_prob": 0.4612,
+      "away_win_prob": 0.5388,
+      "market_home_prob": 0.4093,
       "books": 9,
-      "best_home_price": -110.0,
-      "best_away_price": 103.0,
-      "disagreement": -0.1,
+      "best_home_price": 136.0,
+      "best_away_price": -148.0,
+      "disagreement": 5.2,
       "suspect": false
     },
     {
-      "event_id": "c3750e470b5141a39a1efd04ef2e7b25",
-      "date": "09/04/2026",
-      "commence_time": "2026-09-04T22:46:00Z",
+      "event_id": "56ed4ca39605247d3e4d3168064bb5cc",
+      "date": "09/05/2026",
+      "commence_time": "2026-09-05T22:41:00Z",
       "home": "Pittsburgh Pirates",
       "away": "Los Angeles Angels",
       "home_id": 134,
       "away_id": 108,
-      "home_starter": "Jared Jones",
-      "away_starter": "Ryan Johnson",
-      "home_starter_era": 4.83,
-      "away_starter_era": 5.47,
+      "home_starter": "Braxton Ashcraft",
+      "away_starter": "Yusei Kikuchi",
+      "home_starter_era": 3.59,
+      "away_starter_era": 5.65,
       "home_starter_wl": [
-        2,
-        6
+        14,
+        5
       ],
       "away_starter_wl": [
-        3,
-        7
+        0,
+        5
       ],
-      "home_sp_innings": 72.66666666666667,
-      "away_sp_innings": 72.33333333333333,
+      "home_sp_innings": 160.33333333333334,
+      "away_sp_innings": 43.0,
       "home_hand": "R",
-      "away_hand": "R",
+      "away_hand": "L",
       "home_record": {
-        "w": 69,
+        "w": 70,
         "l": 72,
-        "hw": 36,
+        "hw": 37,
         "hl": 33,
         "aw": 33,
         "al": 39
       },
       "away_record": {
         "w": 53,
-        "l": 87,
+        "l": 88,
         "hw": 30,
         "hl": 44,
         "aw": 23,
-        "al": 43
+        "al": 44
       },
       "home_form": {
-        "w": 69,
+        "w": 70,
         "l": 72,
-        "streak": "W1",
-        "l10_w": 6,
-        "l10_l": 4
+        "streak": "W2",
+        "l10_w": 7,
+        "l10_l": 3
       },
       "away_form": {
         "w": 53,
-        "l": 87,
-        "streak": "L2",
+        "l": 88,
+        "streak": "L3",
         "l10_w": 1,
         "l10_l": 9
       },
-      "series": [],
+      "series": [
+        {
+          "date": "2026-09-04",
+          "away": "Los Angeles Angels",
+          "away_runs": 0,
+          "home": "Pittsburgh Pirates",
+          "home_runs": 1
+        }
+      ],
       "home_vs_opp": null,
-      "away_vs_opp": {
-        "starts": 0,
-        "innings": 1.0,
-        "era": 0.0,
-        "strikeouts": 1,
-        "span": "2025–2026",
-        "source": "gameLog"
-      },
+      "away_vs_opp": null,
       "result": null,
-      "home_elo": 1497.1,
-      "away_elo": 1449.5,
-      "elo_prob": 0.6016,
-      "starter_adj": 0.0288,
-      "home_win_prob": 0.6304,
-      "away_win_prob": 0.3696,
-      "market_home_prob": 0.6441,
+      "home_elo": 1498.7,
+      "away_elo": 1447.9,
+      "elo_prob": 0.606,
+      "starter_adj": 0.09,
+      "home_win_prob": 0.696,
+      "away_win_prob": 0.304,
+      "market_home_prob": 0.6308,
       "books": 9,
-      "best_home_price": -190.0,
-      "best_away_price": 171.0,
-      "disagreement": -1.4,
+      "best_home_price": -175.0,
+      "best_away_price": 160.0,
+      "disagreement": 6.5,
       "suspect": false
     },
     {
-      "event_id": "d19f536dd30580edd3b97db60957866f",
-      "date": "09/04/2026",
-      "commence_time": "2026-09-04T23:06:00Z",
+      "event_id": "fb7185d28470aa6f3e7aba955423c36f",
+      "date": "09/05/2026",
+      "commence_time": "2026-09-05T23:06:00Z",
       "home": "Baltimore Orioles",
       "away": "Boston Red Sox",
       "home_id": 110,
       "away_id": 111,
-      "home_starter": "Shane Baz",
-      "away_starter": "Ranger Suarez",
-      "home_starter_era": 4.01,
-      "away_starter_era": 3.64,
+      "home_starter": "Chris Bassitt",
+      "away_starter": "Sonny Gray",
+      "home_starter_era": 4.97,
+      "away_starter_era": 2.82,
       "home_starter_wl": [
-        5,
-        14
-      ],
-      "away_starter_wl": [
-        5,
+        6,
         4
       ],
-      "home_sp_innings": 157.0,
-      "away_sp_innings": 123.66666666666667,
+      "away_starter_wl": [
+        16,
+        4
+      ],
+      "home_sp_innings": 79.66666666666667,
+      "away_sp_innings": 143.66666666666666,
       "home_hand": "R",
-      "away_hand": "L",
+      "away_hand": "R",
       "home_record": {
         "w": 69,
-        "l": 72,
+        "l": 73,
         "hw": 34,
-        "hl": 35,
+        "hl": 36,
         "aw": 35,
         "al": 37
       },
       "away_record": {
-        "w": 76,
+        "w": 77,
         "l": 65,
         "hw": 35,
         "hl": 34,
-        "aw": 41,
+        "aw": 42,
         "al": 31
       },
       "home_form": {
         "w": 69,
-        "l": 72,
-        "streak": "L3",
-        "l10_w": 6,
-        "l10_l": 4
+        "l": 73,
+        "streak": "L4",
+        "l10_w": 5,
+        "l10_l": 5
       },
       "away_form": {
-        "w": 76,
+        "w": 77,
         "l": 65,
-        "streak": "W1",
+        "streak": "W2",
         "l10_w": 4,
         "l10_l": 6
       },
@@ -623,416 +859,210 @@
           "away_runs": 6,
           "home": "Baltimore Orioles",
           "home_runs": 5
+        },
+        {
+          "date": "2026-09-04",
+          "away": "Boston Red Sox",
+          "away_runs": 1,
+          "home": "Baltimore Orioles",
+          "home_runs": 0
         }
       ],
       "home_vs_opp": {
-        "starts": 5,
-        "innings": 30.7,
-        "era": 2.35,
-        "strikeouts": 31,
+        "starts": 3,
+        "innings": 10.7,
+        "era": 10.12,
+        "strikeouts": 9,
+        "span": "2025–2026",
+        "source": "gameLog"
+      },
+      "away_vs_opp": null,
+      "result": null,
+      "home_elo": 1496.9,
+      "away_elo": 1525.1,
+      "elo_prob": 0.4939,
+      "starter_adj": -0.09,
+      "home_win_prob": 0.4039,
+      "away_win_prob": 0.5961,
+      "market_home_prob": 0.4561,
+      "books": 9,
+      "best_home_price": 114.0,
+      "best_away_price": -120.0,
+      "disagreement": -5.2,
+      "suspect": false
+    },
+    {
+      "event_id": "add942d9a7eebd81c252d596832ff941",
+      "date": "09/05/2026",
+      "commence_time": "2026-09-05T23:06:00Z",
+      "home": "Texas Rangers",
+      "away": "Tampa Bay Rays",
+      "home_id": 140,
+      "away_id": 139,
+      "home_starter": "Jacob deGrom",
+      "away_starter": "Drew Rasmussen",
+      "home_starter_era": 4.0,
+      "away_starter_era": 2.95,
+      "home_starter_wl": [
+        10,
+        9
+      ],
+      "away_starter_wl": [
+        14,
+        5
+      ],
+      "home_sp_innings": 137.33333333333334,
+      "away_sp_innings": 146.33333333333334,
+      "home_hand": "R",
+      "away_hand": "R",
+      "home_record": {
+        "w": 70,
+        "l": 72,
+        "hw": 39,
+        "hl": 31,
+        "aw": 31,
+        "al": 41
+      },
+      "away_record": {
+        "w": 84,
+        "l": 57,
+        "hw": 47,
+        "hl": 25,
+        "aw": 37,
+        "al": 32
+      },
+      "home_form": {
+        "w": 70,
+        "l": 72,
+        "streak": "L1",
+        "l10_w": 4,
+        "l10_l": 6
+      },
+      "away_form": {
+        "w": 84,
+        "l": 57,
+        "streak": "W1",
+        "l10_w": 6,
+        "l10_l": 4
+      },
+      "series": [
+        {
+          "date": "2026-07-28",
+          "away": "Texas Rangers",
+          "away_runs": 4,
+          "home": "Tampa Bay Rays",
+          "home_runs": 1
+        },
+        {
+          "date": "2026-07-29",
+          "away": "Texas Rangers",
+          "away_runs": 0,
+          "home": "Tampa Bay Rays",
+          "home_runs": 3
+        },
+        {
+          "date": "2026-07-30",
+          "away": "Texas Rangers",
+          "away_runs": 2,
+          "home": "Tampa Bay Rays",
+          "home_runs": 3
+        },
+        {
+          "date": "2026-09-03",
+          "away": "Tampa Bay Rays",
+          "away_runs": 0,
+          "home": "Texas Rangers",
+          "home_runs": 6
+        },
+        {
+          "date": "2026-09-04",
+          "away": "Tampa Bay Rays",
+          "away_runs": 7,
+          "home": "Texas Rangers",
+          "home_runs": 6
+        }
+      ],
+      "home_vs_opp": {
+        "starts": 1,
+        "innings": 5.7,
+        "era": 6.35,
+        "strikeouts": 3,
         "span": "2025–2026",
         "source": "gameLog"
       },
       "away_vs_opp": {
-        "starts": 1,
-        "innings": 6.3,
-        "era": 7.11,
-        "strikeouts": 3,
+        "starts": 2,
+        "innings": 10.0,
+        "era": 0.9,
+        "strikeouts": 12,
         "span": "2025–2026",
         "source": "gameLog"
       },
       "result": null,
-      "home_elo": 1498.9,
-      "away_elo": 1523.1,
-      "elo_prob": 0.4997,
-      "starter_adj": -0.0166,
-      "home_win_prob": 0.4831,
-      "away_win_prob": 0.5169,
-      "market_home_prob": 0.4766,
+      "home_elo": 1494.0,
+      "away_elo": 1532.9,
+      "elo_prob": 0.4786,
+      "starter_adj": -0.0472,
+      "home_win_prob": 0.4314,
+      "away_win_prob": 0.5686,
+      "market_home_prob": 0.4988,
       "books": 9,
-      "best_home_price": 106.0,
-      "best_away_price": -115.0,
-      "disagreement": 0.6,
+      "best_home_price": -105.0,
+      "best_away_price": -105.0,
+      "disagreement": -6.7,
       "suspect": false
     },
     {
-      "event_id": "5f74d6675008f32d7fe295ab10bbf896",
-      "date": "09/04/2026",
-      "commence_time": "2026-09-04T23:10:00Z",
-      "home": "Miami Marlins",
-      "away": "Chicago Cubs",
-      "home_id": 146,
-      "away_id": 112,
-      "home_starter": "Janson Junk",
-      "away_starter": "Shota Imanaga",
-      "home_starter_era": 4.11,
-      "away_starter_era": 4.01,
-      "home_starter_wl": [
-        6,
-        8
-      ],
-      "away_starter_wl": [
-        8,
-        10
-      ],
-      "home_sp_innings": 103.0,
-      "away_sp_innings": 150.33333333333334,
-      "home_hand": "R",
-      "away_hand": "L",
-      "home_record": {
-        "w": 71,
-        "l": 70,
-        "hw": 42,
-        "hl": 27,
-        "aw": 29,
-        "al": 43
-      },
-      "away_record": {
-        "w": 79,
-        "l": 62,
-        "hw": 41,
-        "hl": 31,
-        "aw": 38,
-        "al": 31
-      },
-      "home_form": {
-        "w": 71,
-        "l": 70,
-        "streak": "L1",
-        "l10_w": 4,
-        "l10_l": 6
-      },
-      "away_form": {
-        "w": 79,
-        "l": 62,
-        "streak": "W1",
-        "l10_w": 4,
-        "l10_l": 6
-      },
-      "series": [],
-      "home_vs_opp": null,
-      "away_vs_opp": null,
-      "result": null,
-      "home_elo": 1501.8,
-      "away_elo": 1522.8,
-      "elo_prob": 0.5043,
-      "starter_adj": -0.0045,
-      "home_win_prob": 0.4998,
-      "away_win_prob": 0.5002,
-      "market_home_prob": 0.4079,
-      "books": 9,
-      "best_home_price": 138.0,
-      "best_away_price": -152.0,
-      "disagreement": 9.2,
-      "suspect": false
-    },
-    {
-      "event_id": "72e2e4b474c796cd0827a5637575bb7d",
-      "date": "09/04/2026",
-      "commence_time": "2026-09-04T23:11:00Z",
-      "home": "New York Mets",
-      "away": "San Francisco Giants",
-      "home_id": 121,
-      "away_id": 137,
-      "home_starter": "Nolan McLean",
-      "away_starter": "Matt Wilkinson",
-      "home_starter_era": 3.06,
-      "away_starter_era": 4.63,
-      "home_starter_wl": [
-        10,
-        8
-      ],
-      "away_starter_wl": [
-        0,
-        2
-      ],
-      "home_sp_innings": 155.66666666666666,
-      "away_sp_innings": 11.666666666666666,
-      "home_hand": "R",
-      "away_hand": "L",
-      "home_record": {
-        "w": 63,
-        "l": 77,
-        "hw": 32,
-        "hl": 39,
-        "aw": 31,
-        "al": 38
-      },
-      "away_record": {
-        "w": 59,
-        "l": 83,
-        "hw": 33,
-        "hl": 36,
-        "aw": 26,
-        "al": 47
-      },
-      "home_form": {
-        "w": 63,
-        "l": 77,
-        "streak": "W1",
-        "l10_w": 4,
-        "l10_l": 6
-      },
-      "away_form": {
-        "w": 58,
-        "l": 83,
-        "streak": "L1",
-        "l10_w": 5,
-        "l10_l": 5
-      },
-      "series": [
-        {
-          "date": "2026-04-02",
-          "away": "New York Mets",
-          "away_runs": 2,
-          "home": "San Francisco Giants",
-          "home_runs": 7
-        },
-        {
-          "date": "2026-04-03",
-          "away": "New York Mets",
-          "away_runs": 10,
-          "home": "San Francisco Giants",
-          "home_runs": 3
-        },
-        {
-          "date": "2026-04-04",
-          "away": "New York Mets",
-          "away_runs": 9,
-          "home": "San Francisco Giants",
-          "home_runs": 0
-        },
-        {
-          "date": "2026-04-05",
-          "away": "New York Mets",
-          "away_runs": 5,
-          "home": "San Francisco Giants",
-          "home_runs": 2
-        }
-      ],
-      "home_vs_opp": {
-        "starts": 1,
-        "innings": 5.3,
-        "era": 1.69,
-        "strikeouts": 4,
-        "span": "2025–2026",
-        "source": "gameLog"
-      },
-      "away_vs_opp": null,
-      "result": null,
-      "home_elo": 1488.0,
-      "away_elo": 1467.1,
-      "elo_prob": 0.5642,
-      "starter_adj": 0.0,
-      "home_win_prob": 0.5642,
-      "away_win_prob": 0.4358,
-      "market_home_prob": 0.6372,
-      "books": 9,
-      "best_home_price": -182.0,
-      "best_away_price": 164.0,
-      "disagreement": -7.3,
-      "suspect": false
-    },
-    {
-      "event_id": "a78d8674e699409d8d881b105ba90acd",
-      "date": "09/04/2026",
-      "commence_time": "2026-09-04T23:16:00Z",
-      "home": "Cleveland Guardians",
-      "away": "Detroit Tigers",
-      "home_id": 114,
-      "away_id": 116,
-      "home_starter": "Foster Griffin",
-      "away_starter": "Andrew Sears",
-      "home_starter_era": 3.21,
-      "away_starter_era": 6.75,
-      "home_starter_wl": [
-        15,
-        4
-      ],
-      "away_starter_wl": [
-        0,
-        1
-      ],
-      "home_sp_innings": 154.33333333333334,
-      "away_sp_innings": 6.666666666666667,
-      "home_hand": "L",
-      "away_hand": "L",
-      "home_record": {
-        "w": 70,
-        "l": 70,
-        "hw": 33,
-        "hl": 38,
-        "aw": 37,
-        "al": 32
-      },
-      "away_record": {
-        "w": 64,
-        "l": 75,
-        "hw": 34,
-        "hl": 35,
-        "aw": 30,
-        "al": 40
-      },
-      "home_form": {
-        "w": 70,
-        "l": 70,
-        "streak": "L2",
-        "l10_w": 6,
-        "l10_l": 4
-      },
-      "away_form": {
-        "w": 64,
-        "l": 75,
-        "streak": "W1",
-        "l10_w": 3,
-        "l10_l": 7
-      },
-      "series": [
-        {
-          "date": "2026-05-18",
-          "away": "Cleveland Guardians",
-          "away_runs": 8,
-          "home": "Detroit Tigers",
-          "home_runs": 2
-        },
-        {
-          "date": "2026-05-19",
-          "away": "Cleveland Guardians",
-          "away_runs": 4,
-          "home": "Detroit Tigers",
-          "home_runs": 3
-        },
-        {
-          "date": "2026-05-20",
-          "away": "Cleveland Guardians",
-          "away_runs": 3,
-          "home": "Detroit Tigers",
-          "home_runs": 2
-        },
-        {
-          "date": "2026-05-21",
-          "away": "Cleveland Guardians",
-          "away_runs": 3,
-          "home": "Detroit Tigers",
-          "home_runs": 1
-        },
-        {
-          "date": "2026-06-12",
-          "away": "Detroit Tigers",
-          "away_runs": 2,
-          "home": "Cleveland Guardians",
-          "home_runs": 3
-        },
-        {
-          "date": "2026-06-13",
-          "away": "Detroit Tigers",
-          "away_runs": 1,
-          "home": "Cleveland Guardians",
-          "home_runs": 3
-        },
-        {
-          "date": "2026-06-14",
-          "away": "Detroit Tigers",
-          "away_runs": 0,
-          "home": "Cleveland Guardians",
-          "home_runs": 0
-        },
-        {
-          "date": "2026-08-11",
-          "away": "Cleveland Guardians",
-          "away_runs": 4,
-          "home": "Detroit Tigers",
-          "home_runs": 6
-        },
-        {
-          "date": "2026-08-12",
-          "away": "Cleveland Guardians",
-          "away_runs": 6,
-          "home": "Detroit Tigers",
-          "home_runs": 4
-        },
-        {
-          "date": "2026-08-13",
-          "away": "Cleveland Guardians",
-          "away_runs": 0,
-          "home": "Detroit Tigers",
-          "home_runs": 3
-        }
-      ],
-      "home_vs_opp": {
-        "starts": 1,
-        "innings": 5.0,
-        "era": 1.8,
-        "strikeouts": 3,
-        "span": "2026",
-        "source": "gameLog"
-      },
-      "away_vs_opp": null,
-      "result": null,
-      "home_elo": 1495.9,
-      "away_elo": 1484.2,
-      "elo_prob": 0.5511,
-      "starter_adj": 0.0,
-      "home_win_prob": 0.5511,
-      "away_win_prob": 0.4489,
-      "market_home_prob": 0.5635,
-      "books": 9,
-      "best_home_price": -135.0,
-      "best_away_price": 122.0,
-      "disagreement": -1.2,
-      "suspect": false
-    },
-    {
-      "event_id": "c7264d49b628c3dab7e70e7583b85424",
-      "date": "09/04/2026",
-      "commence_time": "2026-09-04T23:41:00Z",
+      "event_id": "a8a56ccf8ee0c53a32d197ae5ffa812c",
+      "date": "09/05/2026",
+      "commence_time": "2026-09-05T23:11:00Z",
       "home": "Chicago White Sox",
       "away": "Minnesota Twins",
       "home_id": 145,
       "away_id": 142,
-      "home_starter": "Erick Fedde",
-      "away_starter": "Zebby Matthews",
-      "home_starter_era": 4.16,
-      "away_starter_era": 4.58,
+      "home_starter": "Anthony Kay",
+      "away_starter": "Taj Bradley",
+      "home_starter_era": 4.28,
+      "away_starter_era": 3.85,
       "home_starter_wl": [
-        7,
-        8
+        9,
+        7
       ],
       "away_starter_wl": [
-        9,
-        8
+        10,
+        6
       ],
-      "home_sp_innings": 123.33333333333333,
-      "away_sp_innings": 112.0,
-      "home_hand": "R",
+      "home_sp_innings": 136.66666666666666,
+      "away_sp_innings": 154.33333333333334,
+      "home_hand": "L",
       "away_hand": "R",
       "home_record": {
-        "w": 73,
+        "w": 74,
         "l": 67,
-        "hw": 41,
+        "hw": 42,
         "hl": 27,
         "aw": 32,
         "al": 40
       },
       "away_record": {
         "w": 67,
-        "l": 73,
+        "l": 74,
         "hw": 38,
         "hl": 34,
         "aw": 29,
-        "al": 39
+        "al": 40
       },
       "home_form": {
-        "w": 73,
+        "w": 74,
         "l": 67,
-        "streak": "L2",
-        "l10_w": 5,
-        "l10_l": 5
+        "streak": "W1",
+        "l10_w": 6,
+        "l10_l": 4
       },
       "away_form": {
         "w": 67,
-        "l": 73,
-        "streak": "L1",
+        "l": 74,
+        "streak": "L2",
         "l10_w": 4,
         "l10_l": 6
       },
@@ -1106,191 +1136,98 @@
           "away_runs": 1,
           "home": "Minnesota Twins",
           "home_runs": 5
+        },
+        {
+          "date": "2026-09-04",
+          "away": "Minnesota Twins",
+          "away_runs": 1,
+          "home": "Chicago White Sox",
+          "home_runs": 4
         }
       ],
       "home_vs_opp": {
-        "starts": 3,
-        "innings": 16.0,
-        "era": 1.69,
-        "strikeouts": 8,
-        "span": "2025–2026",
+        "starts": 1,
+        "innings": 6.0,
+        "era": 1.5,
+        "strikeouts": 5,
+        "span": "2026",
         "source": "gameLog"
       },
       "away_vs_opp": {
         "starts": 4,
-        "innings": 25.0,
-        "era": 3.24,
-        "strikeouts": 20,
+        "innings": 16.3,
+        "era": 10.47,
+        "strikeouts": 13,
         "span": "2025–2026",
         "source": "gameLog"
       },
       "result": null,
-      "home_elo": 1509.8,
-      "away_elo": 1489.8,
-      "elo_prob": 0.563,
-      "starter_adj": 0.0189,
-      "home_win_prob": 0.5819,
-      "away_win_prob": 0.4181,
-      "market_home_prob": 0.5181,
+      "home_elo": 1511.6,
+      "away_elo": 1488.1,
+      "elo_prob": 0.5679,
+      "starter_adj": -0.0194,
+      "home_win_prob": 0.5486,
+      "away_win_prob": 0.4514,
+      "market_home_prob": 0.5291,
       "books": 9,
-      "best_home_price": -111.0,
-      "best_away_price": 102.0,
-      "disagreement": 6.4,
+      "best_home_price": -116.0,
+      "best_away_price": 106.0,
+      "disagreement": 1.9,
       "suspect": false
     },
     {
-      "event_id": "d08cd8d7e7ee9c4a2c546a19da42d129",
-      "date": "09/04/2026",
-      "commence_time": "2026-09-05T00:06:00Z",
-      "home": "Texas Rangers",
-      "away": "Tampa Bay Rays",
-      "home_id": 140,
-      "away_id": 139,
-      "home_starter": "Trevor Williams",
-      "away_starter": "Nick Martinez",
-      "home_starter_era": 3.93,
-      "away_starter_era": 2.99,
-      "home_starter_wl": [
-        0,
-        0
-      ],
-      "away_starter_wl": [
-        13,
-        4
-      ],
-      "home_sp_innings": 18.333333333333332,
-      "away_sp_innings": 153.66666666666666,
-      "home_hand": "R",
-      "away_hand": "R",
-      "home_record": {
-        "w": 70,
-        "l": 71,
-        "hw": 39,
-        "hl": 30,
-        "aw": 31,
-        "al": 41
-      },
-      "away_record": {
-        "w": 83,
-        "l": 57,
-        "hw": 47,
-        "hl": 25,
-        "aw": 36,
-        "al": 32
-      },
-      "home_form": {
-        "w": 70,
-        "l": 71,
-        "streak": "W1",
-        "l10_w": 5,
-        "l10_l": 5
-      },
-      "away_form": {
-        "w": 83,
-        "l": 57,
-        "streak": "L2",
-        "l10_w": 6,
-        "l10_l": 4
-      },
-      "series": [
-        {
-          "date": "2026-07-28",
-          "away": "Texas Rangers",
-          "away_runs": 4,
-          "home": "Tampa Bay Rays",
-          "home_runs": 1
-        },
-        {
-          "date": "2026-07-29",
-          "away": "Texas Rangers",
-          "away_runs": 0,
-          "home": "Tampa Bay Rays",
-          "home_runs": 3
-        },
-        {
-          "date": "2026-07-30",
-          "away": "Texas Rangers",
-          "away_runs": 2,
-          "home": "Tampa Bay Rays",
-          "home_runs": 3
-        },
-        {
-          "date": "2026-09-03",
-          "away": "Tampa Bay Rays",
-          "away_runs": 0,
-          "home": "Texas Rangers",
-          "home_runs": 6
-        }
-      ],
-      "home_vs_opp": null,
-      "away_vs_opp": null,
-      "result": null,
-      "home_elo": 1496.0,
-      "away_elo": 1531.0,
-      "elo_prob": 0.4842,
-      "starter_adj": 0.0,
-      "home_win_prob": 0.4842,
-      "away_win_prob": 0.5158,
-      "market_home_prob": 0.5093,
-      "books": 9,
-      "best_home_price": -104.0,
-      "best_away_price": 103.0,
-      "disagreement": -2.5,
-      "suspect": false
-    },
-    {
-      "event_id": "db6080ddc95ea130d0b1ecb4538eaed5",
-      "date": "09/04/2026",
-      "commence_time": "2026-09-05T00:10:00Z",
+      "event_id": "b343b2c13d1aaa540bd4974035adc893",
+      "date": "09/05/2026",
+      "commence_time": "2026-09-05T23:11:00Z",
       "home": "Kansas City Royals",
       "away": "Toronto Blue Jays",
       "home_id": 118,
       "away_id": 141,
-      "home_starter": "Daniel Lynch IV",
-      "away_starter": "Jameson Taillon",
-      "home_starter_era": 3.06,
-      "away_starter_era": 5.68,
+      "home_starter": "Seth Lugo",
+      "away_starter": "Max Scherzer",
+      "home_starter_era": 5.03,
+      "away_starter_era": 6.16,
       "home_starter_wl": [
-        4,
-        4
+        6,
+        8
       ],
       "away_starter_wl": [
         2,
-        6
+        7
       ],
-      "home_sp_innings": 61.666666666666664,
-      "away_sp_innings": 84.0,
-      "home_hand": "L",
+      "home_sp_innings": 154.0,
+      "away_sp_innings": 57.0,
+      "home_hand": "R",
       "away_hand": "R",
       "home_record": {
         "w": 63,
-        "l": 78,
+        "l": 79,
         "hw": 37,
-        "hl": 32,
+        "hl": 33,
         "aw": 26,
         "al": 46
       },
       "away_record": {
-        "w": 70,
+        "w": 71,
         "l": 71,
         "hw": 37,
         "hl": 35,
-        "aw": 33,
+        "aw": 34,
         "al": 36
       },
       "home_form": {
         "w": 63,
-        "l": 78,
-        "streak": "W1",
-        "l10_w": 6,
-        "l10_l": 4
+        "l": 79,
+        "streak": "L1",
+        "l10_w": 5,
+        "l10_l": 5
       },
       "away_form": {
-        "w": 70,
+        "w": 71,
         "l": 71,
-        "streak": "W2",
-        "l10_w": 6,
-        "l10_l": 4
+        "streak": "W3",
+        "l10_w": 7,
+        "l10_l": 3
       },
       "series": [
         {
@@ -1313,162 +1250,277 @@
           "away_runs": 13,
           "home": "Toronto Blue Jays",
           "home_runs": 2
+        },
+        {
+          "date": "2026-09-04",
+          "away": "Toronto Blue Jays",
+          "away_runs": 9,
+          "home": "Kansas City Royals",
+          "home_runs": 2
         }
       ],
       "home_vs_opp": {
-        "starts": 0,
-        "innings": 1.0,
-        "era": 0.0,
-        "strikeouts": 1,
+        "starts": 2,
+        "innings": 9.7,
+        "era": 2.79,
+        "strikeouts": 8,
         "span": "2025–2026",
         "source": "gameLog"
       },
-      "away_vs_opp": null,
+      "away_vs_opp": {
+        "starts": 3,
+        "innings": 11.7,
+        "era": 7.71,
+        "strikeouts": 11,
+        "span": "2025–2026",
+        "source": "gameLog"
+      },
       "result": null,
-      "home_elo": 1483.8,
-      "away_elo": 1504.7,
-      "elo_prob": 0.5044,
-      "starter_adj": 0.09,
-      "home_win_prob": 0.5944,
-      "away_win_prob": 0.4056,
-      "market_home_prob": 0.5233,
+      "home_elo": 1481.8,
+      "away_elo": 1506.7,
+      "elo_prob": 0.4986,
+      "starter_adj": 0.0508,
+      "home_win_prob": 0.5495,
+      "away_win_prob": 0.4505,
+      "market_home_prob": 0.5023,
       "books": 9,
-      "best_home_price": -115.0,
-      "best_away_price": 106.0,
-      "disagreement": 7.1,
+      "best_home_price": -105.0,
+      "best_away_price": -105.0,
+      "disagreement": 4.7,
       "suspect": false
     },
     {
-      "event_id": "3e11befa0d454e6d6a15358ce076b4cd",
-      "date": "09/04/2026",
-      "commence_time": "2026-09-05T00:11:00Z",
+      "event_id": "cdfa947143c57e6933ca955cf87ebabe",
+      "date": "09/05/2026",
+      "commence_time": "2026-09-05T23:16:00Z",
       "home": "Houston Astros",
       "away": "Arizona Diamondbacks",
       "home_id": 117,
       "away_id": 109,
-      "home_starter": "Cristian Javier",
-      "away_starter": "Merrill Kelly",
-      "home_starter_era": 6.45,
-      "away_starter_era": 5.08,
+      "home_starter": "Ethan Pecko",
+      "away_starter": "Brandon Pfaadt",
+      "home_starter_era": 6.23,
+      "away_starter_era": 3.49,
       "home_starter_wl": [
         1,
-        5
+        0
       ],
       "away_starter_wl": [
-        9,
-        12
+        7,
+        2
       ],
-      "home_sp_innings": 44.666666666666664,
-      "away_sp_innings": 141.66666666666666,
+      "home_sp_innings": 13.0,
+      "away_sp_innings": 111.0,
       "home_hand": "R",
       "away_hand": "R",
       "home_record": {
-        "w": 72,
+        "w": 73,
         "l": 69,
-        "hw": 36,
+        "hw": 37,
         "hl": 36,
         "aw": 36,
         "al": 33
       },
       "away_record": {
         "w": 74,
-        "l": 67,
+        "l": 68,
         "hw": 41,
         "hl": 31,
         "aw": 33,
-        "al": 36
+        "al": 37
       },
       "home_form": {
-        "w": 72,
+        "w": 73,
         "l": 69,
-        "streak": "W2",
+        "streak": "W3",
         "l10_w": 7,
         "l10_l": 3
       },
       "away_form": {
         "w": 74,
-        "l": 67,
-        "streak": "W1",
+        "l": 68,
+        "streak": "L1",
         "l10_w": 5,
         "l10_l": 5
       },
-      "series": [],
+      "series": [
+        {
+          "date": "2026-09-04",
+          "away": "Arizona Diamondbacks",
+          "away_runs": 1,
+          "home": "Houston Astros",
+          "home_runs": 3
+        }
+      ],
       "home_vs_opp": null,
       "away_vs_opp": {
-        "starts": 2,
-        "innings": 10.0,
-        "era": 6.3,
-        "strikeouts": 8,
+        "starts": 1,
+        "innings": 5.3,
+        "era": 3.38,
+        "strikeouts": 5,
         "span": "2025–2026",
         "source": "gameLog"
       },
       "result": null,
-      "home_elo": 1506.6,
-      "away_elo": 1511.1,
-      "elo_prob": 0.5281,
-      "starter_adj": -0.0617,
-      "home_win_prob": 0.4664,
-      "away_win_prob": 0.5336,
-      "market_home_prob": 0.5542,
+      "home_elo": 1508.5,
+      "away_elo": 1509.2,
+      "elo_prob": 0.5335,
+      "starter_adj": 0.0,
+      "home_win_prob": 0.5335,
+      "away_win_prob": 0.4665,
+      "market_home_prob": 0.5035,
       "books": 9,
-      "best_home_price": -127.0,
-      "best_away_price": 119.0,
-      "disagreement": -8.8,
+      "best_home_price": -107.0,
+      "best_away_price": -103.0,
+      "disagreement": 3.0,
       "suspect": false
     },
     {
-      "event_id": "1b0e8aa1b257757991d6d1e3d3d0bab9",
-      "date": "09/04/2026",
-      "commence_time": "2026-09-05T00:41:00Z",
+      "event_id": "c5179877e1918c6fb96b0d90a77e9ef9",
+      "date": "09/05/2026",
+      "commence_time": "2026-09-05T23:16:00Z",
+      "home": "San Diego Padres",
+      "away": "New York Yankees",
+      "home_id": 135,
+      "away_id": 147,
+      "home_starter": "Robbie Ray",
+      "away_starter": "Carlos Rodón",
+      "home_starter_era": 3.14,
+      "away_starter_era": 3.2,
+      "home_starter_wl": [
+        11,
+        7
+      ],
+      "away_starter_wl": [
+        4,
+        3
+      ],
+      "home_sp_innings": 149.0,
+      "away_sp_innings": 59.0,
+      "home_hand": "L",
+      "away_hand": "L",
+      "home_record": {
+        "w": 74,
+        "l": 67,
+        "hw": 42,
+        "hl": 28,
+        "aw": 32,
+        "al": 39
+      },
+      "away_record": {
+        "w": 80,
+        "l": 61,
+        "hw": 37,
+        "hl": 31,
+        "aw": 43,
+        "al": 30
+      },
+      "home_form": {
+        "w": 74,
+        "l": 67,
+        "streak": "W1",
+        "l10_w": 3,
+        "l10_l": 7
+      },
+      "away_form": {
+        "w": 80,
+        "l": 61,
+        "streak": "L1",
+        "l10_w": 6,
+        "l10_l": 4
+      },
+      "series": [
+        {
+          "date": "2026-09-04",
+          "away": "New York Yankees",
+          "away_runs": 2,
+          "home": "San Diego Padres",
+          "home_runs": 3
+        }
+      ],
+      "home_vs_opp": {
+        "starts": 2,
+        "innings": 9.3,
+        "era": 2.89,
+        "strikeouts": 11,
+        "span": "2025–2026",
+        "source": "gameLog"
+      },
+      "away_vs_opp": {
+        "starts": 1,
+        "innings": 6.7,
+        "era": 0.0,
+        "strikeouts": 5,
+        "span": "2025–2026",
+        "source": "gameLog"
+      },
+      "result": null,
+      "home_elo": 1511.3,
+      "away_elo": 1525.0,
+      "elo_prob": 0.5149,
+      "starter_adj": 0.0027,
+      "home_win_prob": 0.5176,
+      "away_win_prob": 0.4824,
+      "market_home_prob": 0.5408,
+      "books": 9,
+      "best_home_price": -117.0,
+      "best_away_price": 116.0,
+      "disagreement": -2.3,
+      "suspect": false
+    },
+    {
+      "event_id": "fdff6c89acb4de39265f17044023a88c",
+      "date": "09/05/2026",
+      "commence_time": "2026-09-06T00:11:00Z",
       "home": "Colorado Rockies",
       "away": "St. Louis Cardinals",
       "home_id": 115,
       "away_id": 138,
-      "home_starter": "Ryan Feltner",
-      "away_starter": "Andre Pallante",
-      "home_starter_era": 5.84,
-      "away_starter_era": 3.57,
+      "home_starter": "Mason Adams",
+      "away_starter": "Matthew Liberatore",
+      "home_starter_era": 3.0,
+      "away_starter_era": 5.41,
       "home_starter_wl": [
-        5,
-        9
+        0,
+        0
       ],
       "away_starter_wl": [
-        12,
-        6
+        5,
+        13
       ],
-      "home_sp_innings": 101.66666666666667,
-      "away_sp_innings": 136.0,
+      "home_sp_innings": 9.0,
+      "away_sp_innings": 134.66666666666666,
       "home_hand": "R",
-      "away_hand": "R",
+      "away_hand": "L",
       "home_record": {
         "w": 54,
-        "l": 86,
+        "l": 87,
         "hw": 29,
-        "hl": 39,
+        "hl": 40,
         "aw": 25,
         "al": 47
       },
       "away_record": {
-        "w": 70,
+        "w": 71,
         "l": 71,
         "hw": 34,
         "hl": 38,
-        "aw": 36,
+        "aw": 37,
         "al": 33
       },
       "home_form": {
         "w": 54,
-        "l": 86,
-        "streak": "W2",
+        "l": 87,
+        "streak": "L1",
         "l10_w": 4,
         "l10_l": 6
       },
       "away_form": {
-        "w": 70,
+        "w": 71,
         "l": 71,
-        "streak": "L1",
-        "l10_w": 4,
-        "l10_l": 6
+        "streak": "W1",
+        "l10_w": 5,
+        "l10_l": 5
       },
       "series": [
         {
@@ -1491,176 +1543,198 @@
           "away_runs": 4,
           "home": "St. Louis Cardinals",
           "home_runs": 7
+        },
+        {
+          "date": "2026-09-04",
+          "away": "St. Louis Cardinals",
+          "away_runs": 7,
+          "home": "Colorado Rockies",
+          "home_runs": 6
         }
       ],
-      "home_vs_opp": {
-        "starts": 1,
-        "innings": 5.3,
-        "era": 5.06,
-        "strikeouts": 2,
-        "span": "2025–2026",
-        "source": "gameLog"
-      },
+      "home_vs_opp": null,
       "away_vs_opp": {
-        "starts": 1,
-        "innings": 5.0,
-        "era": 9.0,
-        "strikeouts": 5,
+        "starts": 2,
+        "innings": 9.0,
+        "era": 8.0,
+        "strikeouts": 6,
         "span": "2025–2026",
         "source": "gameLog"
       },
       "result": null,
-      "home_elo": 1456.1,
-      "away_elo": 1496.1,
-      "elo_prob": 0.477,
-      "starter_adj": -0.09,
-      "home_win_prob": 0.387,
-      "away_win_prob": 0.613,
-      "market_home_prob": 0.4587,
+      "home_elo": 1454.2,
+      "away_elo": 1498.0,
+      "elo_prob": 0.4715,
+      "starter_adj": 0.0,
+      "home_win_prob": 0.4715,
+      "away_win_prob": 0.5285,
+      "market_home_prob": 0.4656,
       "books": 9,
-      "best_home_price": 113.0,
-      "best_away_price": -122.0,
-      "disagreement": -7.2,
+      "best_home_price": 111.0,
+      "best_away_price": -120.0,
+      "disagreement": 0.6,
       "suspect": false
     },
     {
-      "event_id": "2d3ba8f32a3003fe2c9866328f0b1a2b",
-      "date": "09/04/2026",
-      "commence_time": "2026-09-05T01:41:00Z",
-      "home": "San Diego Padres",
-      "away": "New York Yankees",
-      "home_id": 135,
-      "away_id": 147,
-      "home_starter": "Walker Buehler",
-      "away_starter": "Max Fried",
-      "home_starter_era": 4.66,
-      "away_starter_era": 2.8,
+      "event_id": "ab0bc299e48e6a4feb43688eda780998",
+      "date": "09/05/2026",
+      "commence_time": "2026-09-06T01:11:00Z",
+      "home": "Los Angeles Dodgers",
+      "away": "Washington Nationals",
+      "home_id": 119,
+      "away_id": 120,
+      "home_starter": "Tyler Glasnow",
+      "away_starter": "Cade Cavalli",
+      "home_starter_era": 2.79,
+      "away_starter_era": 3.12,
       "home_starter_wl": [
-        8,
-        6
+        4,
+        0
       ],
       "away_starter_wl": [
-        4,
-        4
+        12,
+        5
       ],
-      "home_sp_innings": 131.33333333333334,
-      "away_sp_innings": 90.0,
+      "home_sp_innings": 51.666666666666664,
+      "away_sp_innings": 152.66666666666666,
+      "home_hand": "R",
+      "away_hand": "R",
+      "home_record": {
+        "w": 84,
+        "l": 57,
+        "hw": 42,
+        "hl": 28,
+        "aw": 42,
+        "al": 29
+      },
+      "away_record": {
+        "w": 67,
+        "l": 76,
+        "hw": 33,
+        "hl": 40,
+        "aw": 34,
+        "al": 36
+      },
+      "home_form": {
+        "w": 84,
+        "l": 57,
+        "streak": "W2",
+        "l10_w": 4,
+        "l10_l": 6
+      },
+      "away_form": {
+        "w": 67,
+        "l": 76,
+        "streak": "L2",
+        "l10_w": 5,
+        "l10_l": 5
+      },
+      "series": [
+        {
+          "date": "2026-04-03",
+          "away": "Los Angeles Dodgers",
+          "away_runs": 13,
+          "home": "Washington Nationals",
+          "home_runs": 6
+        },
+        {
+          "date": "2026-04-04",
+          "away": "Los Angeles Dodgers",
+          "away_runs": 10,
+          "home": "Washington Nationals",
+          "home_runs": 5
+        },
+        {
+          "date": "2026-04-05",
+          "away": "Los Angeles Dodgers",
+          "away_runs": 8,
+          "home": "Washington Nationals",
+          "home_runs": 6
+        },
+        {
+          "date": "2026-09-04",
+          "away": "Washington Nationals",
+          "away_runs": 3,
+          "home": "Los Angeles Dodgers",
+          "home_runs": 5
+        }
+      ],
+      "home_vs_opp": {
+        "starts": 1,
+        "innings": 6.0,
+        "era": 3.0,
+        "strikeouts": 9,
+        "span": "2025–2026",
+        "source": "gameLog"
+      },
+      "away_vs_opp": null,
+      "result": null,
+      "home_elo": 1532.7,
+      "away_elo": 1483.2,
+      "elo_prob": 0.6042,
+      "starter_adj": 0.0149,
+      "home_win_prob": 0.6191,
+      "away_win_prob": 0.3809,
+      "market_home_prob": 0.6751,
+      "books": 9,
+      "best_home_price": -213.0,
+      "best_away_price": 200.0,
+      "disagreement": -5.6,
+      "suspect": false
+    },
+    {
+      "event_id": "e048c681c46e42165449e02fe8f9aac8",
+      "date": "09/05/2026",
+      "commence_time": "2026-09-06T01:41:00Z",
+      "home": "Seattle Mariners",
+      "away": "Athletics",
+      "home_id": 136,
+      "away_id": 133,
+      "home_starter": "George Kirby",
+      "away_starter": "Jeffrey Springs",
+      "home_starter_era": 4.19,
+      "away_starter_era": 6.37,
+      "home_starter_wl": [
+        9,
+        10
+      ],
+      "away_starter_wl": [
+        3,
+        13
+      ],
+      "home_sp_innings": 152.66666666666666,
+      "away_sp_innings": 123.0,
       "home_hand": "R",
       "away_hand": "L",
       "home_record": {
-        "w": 73,
-        "l": 67,
-        "hw": 41,
-        "hl": 28,
-        "aw": 32,
-        "al": 39
+        "w": 66,
+        "l": 76,
+        "hw": 37,
+        "hl": 33,
+        "aw": 29,
+        "al": 43
       },
       "away_record": {
-        "w": 80,
-        "l": 60,
-        "hw": 37,
-        "hl": 31,
-        "aw": 43,
-        "al": 29
+        "w": 56,
+        "l": 86,
+        "hw": 25,
+        "hl": 44,
+        "aw": 31,
+        "al": 42
       },
       "home_form": {
-        "w": 73,
-        "l": 67,
+        "w": 66,
+        "l": 76,
         "streak": "L2",
         "l10_w": 3,
         "l10_l": 7
       },
       "away_form": {
-        "w": 80,
-        "l": 60,
-        "streak": "W2",
-        "l10_w": 6,
-        "l10_l": 4
-      },
-      "series": [],
-      "home_vs_opp": {
-        "starts": 1,
-        "innings": 4.3,
-        "era": 14.54,
-        "strikeouts": 4,
-        "span": "2025–2026",
-        "source": "gameLog"
-      },
-      "away_vs_opp": {
-        "starts": 1,
-        "innings": 7.0,
-        "era": 1.29,
-        "strikeouts": 8,
-        "span": "2025–2026",
-        "source": "gameLog"
-      },
-      "result": null,
-      "home_elo": 1509.4,
-      "away_elo": 1526.9,
-      "elo_prob": 0.5093,
-      "starter_adj": -0.0837,
-      "home_win_prob": 0.4256,
-      "away_win_prob": 0.5744,
-      "market_home_prob": 0.4719,
-      "books": 9,
-      "best_home_price": 110.0,
-      "best_away_price": -115.0,
-      "disagreement": -4.6,
-      "suspect": false
-    },
-    {
-      "event_id": "c12be047c8ded8a9a907d99bef5494f7",
-      "date": "09/04/2026",
-      "commence_time": "2026-09-05T02:11:00Z",
-      "home": "Seattle Mariners",
-      "away": "Athletics",
-      "home_id": 136,
-      "away_id": 133,
-      "home_starter": "Logan Gilbert",
-      "away_starter": "Kade Morris",
-      "home_starter_era": 3.42,
-      "away_starter_era": 9.82,
-      "home_starter_wl": [
-        11,
-        8
-      ],
-      "away_starter_wl": [
-        0,
-        1
-      ],
-      "home_sp_innings": 160.33333333333334,
-      "away_sp_innings": 14.666666666666666,
-      "home_hand": "R",
-      "away_hand": "R",
-      "home_record": {
-        "w": 66,
-        "l": 75,
-        "hw": 37,
-        "hl": 32,
-        "aw": 29,
-        "al": 43
-      },
-      "away_record": {
-        "w": 55,
+        "w": 56,
         "l": 86,
-        "hw": 25,
-        "hl": 44,
-        "aw": 30,
-        "al": 42
-      },
-      "home_form": {
-        "w": 66,
-        "l": 75,
-        "streak": "L1",
-        "l10_w": 4,
-        "l10_l": 6
-      },
-      "away_form": {
-        "w": 55,
-        "l": 86,
-        "streak": "W2",
-        "l10_w": 4,
-        "l10_l": 6
+        "streak": "W3",
+        "l10_w": 5,
+        "l10_l": 5
       },
       "series": [
         {
@@ -1711,168 +1785,89 @@
           "away_runs": 7,
           "home": "Seattle Mariners",
           "home_runs": 4
+        },
+        {
+          "date": "2026-09-04",
+          "away": "Athletics",
+          "away_runs": 7,
+          "home": "Seattle Mariners",
+          "home_runs": 6
         }
       ],
       "home_vs_opp": {
-        "starts": 4,
-        "innings": 23.0,
-        "era": 1.96,
+        "starts": 1,
+        "innings": 6.0,
+        "era": 1.5,
+        "strikeouts": 3,
+        "span": "2025–2026",
+        "source": "gameLog"
+      },
+      "away_vs_opp": {
+        "starts": 5,
+        "innings": 27.3,
+        "era": 1.98,
         "strikeouts": 30,
         "span": "2025–2026",
         "source": "gameLog"
       },
-      "away_vs_opp": null,
       "result": null,
-      "home_elo": 1487.3,
-      "away_elo": 1449.8,
-      "elo_prob": 0.5876,
-      "starter_adj": 0.0,
-      "home_win_prob": 0.5876,
-      "away_win_prob": 0.4124,
-      "market_home_prob": 0.6728,
+      "home_elo": 1485.0,
+      "away_elo": 1452.2,
+      "elo_prob": 0.581,
+      "starter_adj": 0.09,
+      "home_win_prob": 0.671,
+      "away_win_prob": 0.329,
+      "market_home_prob": 0.6948,
       "books": 9,
-      "best_home_price": -212.0,
-      "best_away_price": 194.0,
-      "disagreement": -8.5,
+      "best_home_price": -233.0,
+      "best_away_price": 210.0,
+      "disagreement": -2.4,
       "suspect": false
-    },
-    {
-      "event_id": "e5841b22c4ba21de51634f16c9743bcb",
-      "date": "09/04/2026",
-      "commence_time": "2026-09-05T02:11:00Z",
-      "home": "Los Angeles Dodgers",
-      "away": "Washington Nationals",
-      "home_id": 119,
-      "away_id": 120,
-      "home_starter": "Blake Snell",
-      "away_starter": "Jackson Kent",
-      "home_starter_era": 2.42,
-      "away_starter_era": 5.59,
-      "home_starter_wl": [
-        2,
-        1
-      ],
-      "away_starter_wl": [
-        1,
-        2
-      ],
-      "home_sp_innings": 26.0,
-      "away_sp_innings": 19.333333333333332,
-      "home_hand": "L",
-      "away_hand": "L",
-      "home_record": {
-        "w": 83,
-        "l": 57,
-        "hw": 41,
-        "hl": 28,
-        "aw": 42,
-        "al": 29
-      },
-      "away_record": {
-        "w": 67,
-        "l": 75,
-        "hw": 33,
-        "hl": 40,
-        "aw": 34,
-        "al": 35
-      },
-      "home_form": {
-        "w": 83,
-        "l": 57,
-        "streak": "W1",
-        "l10_w": 4,
-        "l10_l": 6
-      },
-      "away_form": {
-        "w": 67,
-        "l": 75,
-        "streak": "L1",
-        "l10_w": 6,
-        "l10_l": 4
-      },
-      "series": [
-        {
-          "date": "2026-04-03",
-          "away": "Los Angeles Dodgers",
-          "away_runs": 13,
-          "home": "Washington Nationals",
-          "home_runs": 6
-        },
-        {
-          "date": "2026-04-04",
-          "away": "Los Angeles Dodgers",
-          "away_runs": 10,
-          "home": "Washington Nationals",
-          "home_runs": 5
-        },
-        {
-          "date": "2026-04-05",
-          "away": "Los Angeles Dodgers",
-          "away_runs": 8,
-          "home": "Washington Nationals",
-          "home_runs": 6
-        }
-      ],
-      "home_vs_opp": null,
-      "away_vs_opp": null,
-      "result": null,
-      "home_elo": 1531.1,
-      "away_elo": 1484.8,
-      "elo_prob": 0.5998,
-      "starter_adj": 0.0,
-      "home_win_prob": 0.5998,
-      "away_win_prob": 0.4002,
-      "market_home_prob": 0.7275,
-      "books": 9,
-      "best_home_price": -275.0,
-      "best_away_price": 255.0,
-      "disagreement": -12.8,
-      "suspect": true
     }
   ],
   "summary": {
-    "rated": 135,
-    "graded": 119,
+    "rated": 150,
+    "graded": 135,
     "calibration": [
       {
         "lo": 0.35,
         "hi": 0.45,
-        "n": 18,
-        "predicted": 40.9,
-        "actual": 44.4,
-        "gap": 3.5
+        "n": 21,
+        "predicted": 40.8,
+        "actual": 42.9,
+        "gap": 2.0
       },
       {
         "lo": 0.45,
         "hi": 0.5,
-        "n": 20,
-        "predicted": 47.0,
-        "actual": 35.0,
-        "gap": -12.0
+        "n": 24,
+        "predicted": 47.2,
+        "actual": 33.3,
+        "gap": -13.9
       },
       {
         "lo": 0.5,
         "hi": 0.55,
-        "n": 32,
-        "predicted": 52.6,
-        "actual": 50.0,
-        "gap": -2.6
+        "n": 33,
+        "predicted": 52.5,
+        "actual": 48.5,
+        "gap": -4.0
       },
       {
         "lo": 0.55,
         "hi": 0.6,
-        "n": 28,
+        "n": 35,
         "predicted": 57.5,
-        "actual": 60.7,
-        "gap": 3.2
+        "actual": 62.9,
+        "gap": 5.3
       },
       {
         "lo": 0.6,
         "hi": 0.65,
-        "n": 14,
-        "predicted": 62.1,
-        "actual": 71.4,
-        "gap": 9.3
+        "n": 15,
+        "predicted": 62.2,
+        "actual": 73.3,
+        "gap": 11.1
       },
       {
         "lo": 0.65,
@@ -1883,8 +1878,8 @@
         "gap": -19.6
       }
     ],
-    "brier": 0.2382,
-    "market_brier": 0.2402,
-    "market_compared": 119
+    "brier": 0.2371,
+    "market_brier": 0.2373,
+    "market_compared": 135
   }
 }

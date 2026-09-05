@@ -900,21 +900,21 @@ footer{background:var(--bg-2);padding:56px 0 40px}
     <p>A coin flip is a 50% shot. At <span class="ek">+100</span> that is exactly break-even &mdash; zero EV, forever. At <span class="ek">&minus;110</span> it is <b class="shl">&minus;4.55%</b>: you lose four and a half cents on the dollar every time, and being right half the time does not save you. At <span class="ek">+110</span> the same coin is <b class="shl">+5.00%</b>. Nothing changed about the coin. Only the price.</p>
 
     <h2>So where does a real edge come from</h2>
-    <p>Not from picking winners. From finding a price that implies a chance you think is wrong. Here is the best-priced side anywhere on the board of Friday, September 4:</p>
+    <p>Not from picking winners. From finding a price that implies a chance you think is wrong. Here is the best-priced side anywhere on the board of Saturday, September 5:</p>
     <div class="sum">
-      <div><span>Rangers &middot; moneyline, best price</span>
-        <span>−104</span></div>
-      <div><span>which implies</span><span>50.98%</span></div>
+      <div><span>Padres &middot; moneyline, best price</span>
+        <span>−117</span></div>
+      <div><span>which implies</span><span>53.92%</span></div>
       <div><span>what 9 books say once the vig is stripped out</span>
-        <span>51.18%</span></div>
-      <div class="tot"><span>a 51.18% chance, paid at 1.9615</span>
-        <span>0.5118 &times; 1.9615 = 1.0040</span></div>
+        <span>54.34%</span></div>
+      <div class="tot"><span>a 54.34% chance, paid at 1.8547</span>
+        <span>0.5434 &times; 1.8547 = 1.0078</span></div>
     </div>
-    <p>That is <b>$100.40</b> back for every $100 risked, on average &mdash; <b>+0.40% EV</b>. It says nothing whatever about whether this particular bet wins.</p>
+    <p>That is <b>$100.78</b> back for every $100 risked, on average &mdash; <b>+0.78% EV</b>. It says nothing whatever about whether this particular bet wins.</p>
 
     <h2>The hurdle before any of it counts</h2>
     <p>Both sides of every market are priced to add up to more than 100%. The overflow is the house&rsquo;s margin, and on this board it runs about <b class="shl">4.55%</b>. You have to be better than the market by more than that before you have made a penny.</p>
-    <p>Which is why so little clears it. Of the <b class="shl">96</b> sides priced on Friday, September 4, taking the best number available at any of the books, <b class="shl">94</b> were still &minus;EV.</p>
+    <p>Which is why so little clears it. Of the <b class="shl">90</b> sides priced on Saturday, September 5, taking the best number available at any of the books, <b class="shl">87</b> were still &minus;EV.</p>
 
     <h2>What a price has to survive to be posted</h2>
     <div class="sscroll"><table class="stbl"><tr><th><span class="gn">01</span>Today only</th><td class="sval"><span class="skey">SAME_DAY_ONLY</span><span class="snum">True</span></td><td class="swhy">An edge measured four days out is mostly noise, and it can never land inside the closing-line window, so it could never be graded honestly.</td></tr><tr><th><span class="gn">02</span>Drop stale books</th><td class="sval"><span class="skey">STALE_MINUTES</span><span class="snum">25 min</span></td><td class="swhy">A book that has not moved in this long is not quoting today&rsquo;s market. Stale prices are the single biggest source of edges that are not there.</td></tr><tr><th><span class="gn">03</span>Enough books</th><td class="sval"><span class="skey">MIN_BOOKS</span><span class="snum">6</span></td><td class="swhy">Below this there is no consensus to measure against, only noise wearing a consensus&rsquo;s clothes.</td></tr><tr><th><span class="gn">04</span>One number at a time</th><td class="sval"><span class="skey">&mdash;</span><span class="snum">consensus point</span></td><td class="swhy">For run lines and totals, only books sitting on the most common number are compared. Measuring &minus;1.5 against &minus;2.5 is not a measurement.</td></tr><tr><th><span class="gn">05</span>Strip the vig</th><td class="sval"><span class="skey">DEVIG_METHOD</span><span class="snum">power</span></td><td class="swhy">Both sides of every book&rsquo;s quote are converted to a vig-free pair. The power method corrects for books loading extra margin onto longshots; the naive method would fill the card with +300 dogs.</td></tr><tr><th><span class="gn">06</span>Price band</th><td class="sval"><span class="skey">MIN_PRICE / MAX_PRICE</span><span class="snum">-300 to +185</span></td><td class="swhy">Taste, and admitted as taste. Outside this band are prices this site does not want to be in the business of recommending.</td></tr><tr><th><span class="gn">07</span>Leave one out</th><td class="sval"><span class="skey">&mdash;</span><span class="snum">5 others</span></td><td class="swhy">The fair price averages every book <em>except the one we would be betting</em>. Include it and the outlier drags the consensus toward itself, manufacturing the very edge being measured.</td></tr><tr><th><span class="gn">08</span>Expected value</th><td class="sval"><span class="skey">MIN_EDGE_PCT</span><span class="snum">2.5%</span></td><td class="swhy">The gap between the best price and the fair price, as a ratio. This is the +EV number.</td></tr><tr><th><span class="gn">09</span>Probability points</th><td class="sval"><span class="skey">MIN_EDGE_PP</span><span class="snum">1.0 pp</span></td><td class="swhy">And the same gap in percentage points. Both have to clear. Ratios flatter longshots: a +200 dog reaches 5% EV on a 1.7-point edge while a &minus;200 favourite needs nearly three.</td></tr><tr><th><span class="gn">10</span>Sanity ceiling</th><td class="sval"><span class="skey">MAX_EDGE_PCT</span><span class="snum">12.0%</span></td><td class="swhy">Above this it is not an edge, it is a data problem &mdash; a stale line, a mismatched number, a book quoting a different game. Logged and thrown away rather than posted.</td></tr></table></div>
@@ -923,11 +923,11 @@ footer{background:var(--bg-2);padding:56px 0 40px}
     <div class="sscroll"><table class="stbl"><tr><th>One side per game</th><td class="snum">&mdash;</td><td class="swhy">Two sides of one event is correlated risk dressed up as diversification.</td></tr><tr><th>Per league</th><td class="snum">3</td><td class="swhy">No league can take over the card, however good its slate looks.</td></tr><tr><th>Per day</th><td class="snum">6</td><td class="swhy">A short card is a feature. It stops a bad day becoming fifteen losses.</td></tr><tr><th>Stake</th><td class="snum">1 unit</td><td class="swhy">Flat, on every play, always. Sizing by confidence would make the record a story about the sizing.</td></tr></table></div>
 
     <h2>The same price, all the way through</h2>
-    <div class="swork"><div class="swork-h">Tampa Bay Rays at Texas Rangers &middot; moneyline</div><div class="swork-r"><span>Books pricing it, after the stale ones went</span><span>9 &ge; 6</span></div><div class="swork-r"><span>Best price available</span><span>−104 at BetRivers</span></div><div class="swork-r"><span>Inside the price band</span><span>-300 to +185</span></div><div class="swork-r"><span>Fair price, excluding BetRivers</span><span>−105</span></div><div class="swork-r fail"><span>Expected value</span><span>+0.40% &lt; 2.5%</span></div><div class="swork-r fail"><span>Probability points</span><span>+0.20 pp &lt; 1.0 pp</span></div><div class="swork-r fail"><span>Posted?</span><span>No</span></div></div>
+    <div class="swork"><div class="swork-h">New York Yankees at San Diego Padres &middot; moneyline</div><div class="swork-r"><span>Books pricing it, after the stale ones went</span><span>9 &ge; 6</span></div><div class="swork-r"><span>Best price available</span><span>−117 at BetRivers</span></div><div class="swork-r"><span>Inside the price band</span><span>-300 to +185</span></div><div class="swork-r"><span>Fair price, excluding BetRivers</span><span>−119</span></div><div class="swork-r fail"><span>Expected value</span><span>+0.78% &lt; 2.5%</span></div><div class="swork-r fail"><span>Probability points</span><span>+0.42 pp &lt; 1.0 pp</span></div><div class="swork-r fail"><span>Posted?</span><span>No</span></div></div>
     <p>It was +EV and it still did not go up. Being on the right side of the price is the beginning of the test, not the end of it.</p>
 
     <h2>Which is why the card is sometimes empty</h2>
-    <p class="sbig">0 plays<small>from 96 priced sides on Friday, September 4</small></p>
+    <p class="sbig">1 play<small>from 90 priced sides on Saturday, September 5</small></p>
     <p>An empty card is not the system failing. It is the system working on a night when no book was far enough out of line to be worth taking. Anyone posting five plays every single day is not finding five edges every single day. They are filling a quota.</p>
 
     <h2>What the word &ldquo;+EV&rdquo; is resting on</h2>
@@ -969,7 +969,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
     <div class="foot-legal">
       <p class="disclaimer"><b>21+ only. For entertainment purposes.</b> Craftypicks is not a sportsbook and does not accept wagers, hold funds, or facilitate betting of any kind. Nothing here is financial advice or a guarantee of profit — every play posted can lose, and most winning stretches are followed by losing ones. Never wager money you cannot afford to lose. If gambling stops being fun, call <b>1-800-GAMBLER</b> or text 800GAM to 800177.</p>
       <p>&copy; 2026 Craftypicks. Plays are posted before the number moves and graded exactly as posted.</p>
-      <p class="foot-stamp">Picks posted 2026-09-04 11:23 ET</p>
+      <p class="foot-stamp">Picks posted 2026-09-05 10:34 ET</p>
     </div>
   </div>
 </footer>
