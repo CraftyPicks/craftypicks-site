@@ -196,8 +196,8 @@ TITLES = {
         "en": f"{leagues.LEAGUES[short].label} board — {config.SITE_NAME}",
         "es": f"Tablero {leagues.LEAGUES[short].label} — {config.SITE_NAME}"}
        for short in leagues.ORDER},
-    "plays.html": {"en": f"Today's Plays — {config.SITE_NAME}",
-                   "es": f"Jugadas de hoy — {config.SITE_NAME}"},
+    "plays.html": {"en": f"System Plays — {config.SITE_NAME}",
+                   "es": f"Jugadas del sistema — {config.SITE_NAME}"},
     "record.html": {"en": f"Track Record — {config.SITE_NAME}",
                     "es": f"Historial — {config.SITE_NAME}"},
     "about.html": {"en": f"How It Works — {config.SITE_NAME}",
@@ -271,16 +271,23 @@ HEAD = """<!DOCTYPE html>
   </div>
 </header>
 <div class="nav-views{views_empty}"><div class="nav-in">{views}</div></div>
-{statbar}
 {banner}
 """
 
 def mock_banner(lang: str) -> str:
     return f'<div class="mock-banner">{i18n.t("sample_data", lang)}</div>' 
 
-def footer_html(lang: str, year: int, up: str = "") -> str:
-    """The footer, per language. Links point inside the same language tree."""
+def footer_html(lang: str, year: int, up: str = "",
+                stamp: str = "") -> str:
+    """The footer, per language. Links point inside the same language tree.
+
+    Carries the build stamp because the status strip that used to show it was
+    removed as clutter, and a reader looking at a day-old board would then
+    have nothing at all to tell them so.
+    """
     L = lambda k: i18n.t(k, lang)
+    updated = (f'<p class="foot-stamp">{i18n.t("foot_stamp", lang, v=stamp)}</p>'
+               if stamp else "")
     return f"""
 <footer>
   <div class="wrap">
@@ -311,6 +318,7 @@ def footer_html(lang: str, year: int, up: str = "") -> str:
     <div class="foot-legal">
       <p class="disclaimer">{L("disclaimer")}</p>
       <p>{i18n.t("foot_copy", lang, year=year)}</p>
+      {updated}
     </div>
   </div>
 </footer>
@@ -394,41 +402,6 @@ def _price_note(scfg, lang: str = "en") -> str:
     # could be thrown out for being correctly priced, which is backwards.
     return i18n.t("price_note", lang)
 
-
-def _statbar(slate_doc: dict, plays_doc: dict, lang: str = "en") -> str:
-    """The live-facts row under the nav.
-
-    Every figure is derived from the data already on disk — nothing here is
-    decorative, and nothing is asserted that the files don't support. On a
-    board that hasn't been rated the row still renders, saying so plainly,
-    because a status strip that vanishes when there's nothing to report is
-    worse than one that admits it.
-    """
-    games = slate_doc.get("games") or []
-    rated = len(games)
-    flagged = sum(1 for g in games if g.get("suspect"))
-    gaps = sorted(abs(g["disagreement"]) for g in games
-                  if g.get("disagreement") is not None)
-    if gaps:
-        mid = len(gaps) // 2
-        median = gaps[mid] if len(gaps) % 2 else (gaps[mid - 1] + gaps[mid]) / 2
-        median_txt = f'<b>{median:.1f} {i18n.t("pts", lang)}</b>'
-    else:
-        median_txt = "<b>&mdash;</b>"
-
-    stamp = (plays_doc.get("generated_at", "") or "")[:16].replace("T", " ")
-    L = lambda k, **kw: i18n.t(k, lang, **kw)
-    live = L("sb_live") if rated else L("sb_noboard")
-    pl = i18n.plural
-
-    cells = [
-        f'<div class="sb-cell"><span class="sb-live"><span class="dot"></span>{live}</span></div>',
-        f'<div class="sb-cell">{L("sb_rated", n=f"<b>{rated}</b>", s=pl(rated, lang))}</div>',
-        f'<div class="sb-cell">{L("sb_flagged", n=f"<b>{flagged}</b>", s=pl(flagged, lang))}</div>',
-        f'<div class="sb-cell">{L("sb_median", v=median_txt)}</div>',
-        f'<div class="sb-cell">{L("sb_updated", v=f"<b>{esc_min(stamp) or chr(8212)}</b>")}</div>',
-    ]
-    return '<div class="statbar">' + "".join(cells) + "</div>"
 
 
 def esc_min(t) -> str:
@@ -719,10 +692,10 @@ def build() -> None:
                 about_href=f"{up}about.html", plays_href=f"{up}plays.html",
                 ev_href=f"{up}ev.html",
                 why_free=i18n.t("nav_why", lang), cta=i18n.t("cta_plays", lang),
-                statbar=_statbar(slate_doc, plays_doc, lang),
                 banner=mock_banner(lang) if plays_doc.get("mock") else "",
             )
-            html_out = head + body + footer_html(lang, year, up)
+            stamp = (plays_doc.get("generated_at", "") or "")[:16].replace("T", " ")
+            html_out = head + body + footer_html(lang, year, up, stamp)
             target = out_dir / out_name
             target.parent.mkdir(parents=True, exist_ok=True)
             target.write_text(html_out, encoding="utf-8")

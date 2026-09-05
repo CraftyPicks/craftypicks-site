@@ -57,24 +57,24 @@ WEEKDAYS = {
 
 T = {
     # ---- navigation and chrome
-    "nav_plays":    {"en": "Today's Plays",  "es": "Jugadas de hoy"},
-    "nav_tonight":  {"en": "Tonight",        "es": "Esta noche"},
+    "nav_plays":    {"en": "System Plays",   "es": "Jugadas del sistema"},
+    "nav_tonight":  {"en": "Today's Games",  "es": "Juegos de hoy"},
     "nav_board":    {"en": "Board",          "es": "Pizarra"},
     "nav_pitchers": {"en": "Pitchers Prop",  "es": "Props de lanzadores"},
     "nav_record":   {"en": "Track Record",   "es": "Historial"},
     "nav_about":    {"en": "How It Works",   "es": "Cómo funciona"},
     "nav_screens":  {"en": "The Screens",    "es": "Los filtros"},
     "nav_why":      {"en": "Why it's free",  "es": "Por qué es gratis"},
-    "cta_plays":    {"en": "Today's plays",  "es": "Jugadas de hoy"},
+    "cta_plays":    {"en": "System plays",   "es": "Jugadas del sistema"},
     "lang_other":   {"en": "Español",        "es": "English"},
 
     # ---- status strip
-    "sb_live":      {"en": "Board live",     "es": "Pizarra activa"},
-    "sb_noboard":   {"en": "No board yet",   "es": "Sin pizarra aún"},
-    "sb_rated":     {"en": "{n} game{s} rated", "es": "{n} juego{s} evaluado{s}"},
-    "sb_flagged":   {"en": "{n} flagged",    "es": "{n} marcado{s}"},
-    "sb_median":    {"en": "Median disagreement {v}", "es": "Discrepancia mediana {v}"},
-    "sb_updated":   {"en": "Updated {v} ET", "es": "Actualizado {v} ET"},
+    # Sourced from plays.json's generated_at, which is the moment the daily
+# card was written -- so it timestamps the PICKS, not the page it sits on.
+# Saying "board" would have implied the hits or home-run board on those
+# pages, which is built later in the day by a different job.
+"foot_stamp":   {"en": "Picks posted {v} ET",
+                 "es": "Jugadas publicadas {v} ET"},
     "pts":          {"en": "pts",            "es": "pts"},
 
     # ---- the board card
@@ -402,15 +402,15 @@ T = {
     "pnl_h2h_more":  {"en": "{n} earlier meeting{s} not shown",
                       "es": "{n} enfrentamiento{s} anterior{s} no mostrado{s}"},
     "pnl_h2h_at":    {"en": "at {place}", "es": "en {place}"},
-    "pnl_starters":  {"en": "Tonight&rsquo;s starters", "es": "Abridores de hoy"},
+    "pnl_starters":  {"en": "Starters", "es": "Abridores"},
     "pnl_vs_line":   {"en": "{n} start{s} against the {team}: {ip} innings, "
                             "{k} strikeouts ({k9} per nine), {era} ERA",
                       "es": "{n} apertura{s} ante {team}: {ip} entradas, "
                             "{k} ponches ({k9} por nueve), efectividad {era}"},
     "pnl_vs_never":  {"en": "has not faced the {team} in {span}",
                       "es": "no ha enfrentado a {team} en {span}"},
-    "pnl_props":     {"en": "Tonight&rsquo;s strikeout props",
-                      "es": "Props de ponches de hoy"},
+    "pnl_props":     {"en": "Strikeout props",
+                      "es": "Props de ponches"},
     "pnl_prop_line": {"en": "strikeouts &middot; ours <b>{ours}</b> &middot; "
                             "line <b>{line}</b> &middot; {prices}",
                       "es": "ponches &middot; nuestro <b>{ours}</b> &middot; "
