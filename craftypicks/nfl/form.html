@@ -864,7 +864,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
 .ftbl td.ft-s.good{color:var(--green)}
 .ftbl td.ft-s.bad{color:var(--red)}
 
-/* ============================================== batter home-run board ===== */
+/* ============================== shared player-card boards (all sports) ==== */
 .bat-card .pb-top{gap:10px}
 .bat-park{font-family:var(--mono);font-size:10.5px;color:var(--muted);
   white-space:nowrap}
@@ -878,6 +878,11 @@ footer{background:var(--bg-2);padding:56px 0 40px}
 .bat-c{font-family:var(--mono);font-size:17px;color:var(--green);
   text-align:right;white-space:nowrap;grid-row:span 2}
 .bat-w{font-size:11.5px;color:var(--muted)}
+/* The position badge on the NFL yardage/touchdown cards. Named .ppos, not
+   .pos -- the bare .pos rule above (monthly chart bars) would otherwise
+   apply its height:180px flex-column layout to this inline badge. */
+.ppos{font-family:var(--mono);font-size:10px;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--muted);margin-left:6px}
 
 </style>
 </head>
@@ -893,7 +898,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
     </div>
   </div>
 </header>
-<div class="nav-views"><div class="nav-in"><a href="../nfl/index.html" class="">Board</a><a href="../nfl/form.html" class="on">Form</a></div></div>
+<div class="nav-views"><div class="nav-in"><a href="../nfl/index.html" class="">Board</a><a href="../nfl/form.html" class="on">Form</a><a href="../nfl/passing.html" class="">Passing</a><a href="../nfl/rushing.html" class="">Rushing</a><a href="../nfl/receiving.html" class="">Receiving</a><a href="../nfl/td.html" class="">Touchdowns</a></div></div>
 <div class="statbar"><div class="sb-cell"><span class="sb-live"><span class="dot"></span>Board live</span></div><div class="sb-cell"><b>16</b> games rated</div><div class="sb-cell"><b>1</b> flagged</div><div class="sb-cell">Median disagreement <b>5.5 pts</b></div><div class="sb-cell">Updated <b>2026-09-04 11:23</b> ET</div></div>
 
 <section class="board-hero">
