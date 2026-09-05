@@ -58,6 +58,51 @@ def _iso(us_date: str) -> str:
     return f"{year}-{month}-{day}"
 
 
+def pair_starters(games: list[dict], teams: dict,
+                  starters: list[dict]) -> dict:
+    """Which starter belongs to which game, when a club plays twice.
+
+    Keyed on the club alone -- which is what this replaces -- a doubleheader
+    silently gave both games the same pitcher: the dict comprehension kept
+    whichever row came last, so Cleveland's opener was drawn with the
+    nightcap's starter and both cards carried the same win probability,
+    because the rating reads his ERA.
+
+    Start times are deliberately NOT compared for equality. The odds feed and
+    the schedule disagree by a minute or two about the same game -- 2:11 PM
+    against 2:10 PM on the day this was found. Both lists are sorted and
+    paired in order instead, which is exact for a doubleheader and identical
+    to the old behaviour for every single-game slate.
+
+    Does not invent a pairing. A club with fewer announced starters than games
+    leaves the later games unassigned, which draws a card with no pitcher
+    rather than a card with the wrong one.
+    """
+    by_team: dict = {}
+    for s in starters:
+        by_team.setdefault(s["team_id"], []).append(s)
+    for rows in by_team.values():
+        rows.sort(key=lambda r: r.get("game_time") or "")
+
+    games_by_team: dict = {}
+    for i, g in enumerate(games):
+        for side in ("home_team", "away_team"):
+            tid = teams.get(str(g.get(side, "")).strip().lower())
+            if tid:
+                games_by_team.setdefault(tid, []).append(
+                    (g.get("commence_time") or "", i))
+    for rows in games_by_team.values():
+        rows.sort()
+
+    out: dict = {}
+    for tid, rows in games_by_team.items():
+        available = by_team.get(tid, [])
+        for n, (_when, i) in enumerate(rows):
+            if n < len(available):
+                out[(i, tid)] = available[n]
+    return out
+
+
 def build(games: list[dict], date_str: str, season: int,
           verbose: bool = True) -> list[dict]:
     """One rated row per game on today's board."""
@@ -72,15 +117,15 @@ def build(games: list[dict], date_str: str, season: int,
     elo = rate_mlb.build_elo(results)
     recs = rate_mlb.records(results)
     teams = mlb_api.team_index(season)
-    starters = {s["team_id"]: s for s in mlb_api.probable_starters(date_str)}
+    starter_rows = mlb_api.probable_starters(date_str)
     # The schedule's probablePitcher hydration carries no pitchHand, which is
     # why home_hand was an empty string on every card the board ever drew.
     # One /people call covers the whole slate.
     try:
-        hands = mlb_api.pitch_hands(s["pitcher_id"] for s in starters.values())
+        hands = mlb_api.pitch_hands(s["pitcher_id"] for s in starter_rows)
     except Exception:                                        # noqa: BLE001
         hands = {}
-    for s_ in starters.values():
+    for s_ in starter_rows:
         s_["hand"] = hands.get(s_["pitcher_id"], "")
 
     # Record, streak and last ten for all thirty clubs in one free request,
@@ -93,17 +138,19 @@ def build(games: list[dict], date_str: str, season: int,
     want_vs = getattr(config, "SLATE_VS_OPPONENT", True)
     if verbose:
         print(f"   slate: {len(results)} games of history, "
-              f"{len(starters)} probable starters")
+              f"{len(starter_rows)} probable starters")
+
+    assigned = pair_starters(games, teams, starter_rows)
 
     rows = []
-    for game in games:
+    for idx, game in enumerate(games):
         home_id = teams.get(str(game.get("home_team", "")).strip().lower())
         away_id = teams.get(str(game.get("away_team", "")).strip().lower())
         if not home_id or not away_id:
             continue
 
-        def sp(team_id, opponent_id):
-            s = starters.get(team_id)
+        def sp(team_id, opponent_id, _i=idx):
+            s = assigned.get((_i, team_id))
             if not s:
                 return {}, None, None, ""
             stats = mlb_api.pitcher_season(s["pitcher_id"], season)
@@ -224,3 +271,54 @@ def summary(history: list[dict]) -> dict:
         "market_brier": theirs,
         "market_compared": len(with_market),
     }
+
+
+def _self_test() -> None:
+    teams = {"cleveland guardians": 114, "detroit tigers": 116,
+             "chicago cubs": 112}
+    # The slate from the day the doubleheader bug was found.
+    starters = [
+        {"pitcher_id": 1, "name": "Logan Allen", "team_id": 114,
+         "game_time": "2026-09-04T18:10:00Z"},
+        {"pitcher_id": 2, "name": "Keider Montero", "team_id": 116,
+         "game_time": "2026-09-04T18:10:00Z"},
+        {"pitcher_id": 3, "name": "Foster Griffin", "team_id": 114,
+         "game_time": "2026-09-04T23:15:00Z"},
+        {"pitcher_id": 4, "name": "Andrew Sears", "team_id": 116,
+         "game_time": "2026-09-04T23:15:00Z"},
+    ]
+    # The odds feed's times are a minute off the schedule's, and it listed the
+    # nightcap first. Both are real; neither may change the pairing.
+    games = [
+        {"home_team": "Cleveland Guardians", "away_team": "Detroit Tigers",
+         "commence_time": "2026-09-04T23:16:00Z"},
+        {"home_team": "Cleveland Guardians", "away_team": "Detroit Tigers",
+         "commence_time": "2026-09-04T18:11:00Z"},
+    ]
+    a = pair_starters(games, teams, starters)
+    assert a[(1, 114)]["name"] == "Logan Allen", a[(1, 114)]
+    assert a[(1, 116)]["name"] == "Keider Montero", a[(1, 116)]
+    assert a[(0, 114)]["name"] == "Foster Griffin", a[(0, 114)]
+    assert a[(0, 116)]["name"] == "Andrew Sears", a[(0, 116)]
+
+    # A single-game slate must behave exactly as it did before.
+    one = pair_starters(
+        [{"home_team": "Cleveland Guardians", "away_team": "Chicago Cubs",
+          "commence_time": "2026-09-04T18:11:00Z"}], teams, starters[:1])
+    assert one[(0, 114)]["name"] == "Logan Allen", one
+
+    # One announced starter across two games leaves the later one unassigned.
+    # A card with no pitcher is honest; a card with the wrong one is not.
+    short = pair_starters(games, teams, [starters[0]])
+    assert (1, 114) in short and (0, 114) not in short, short
+
+    # A club the team index does not recognise is skipped, not crashed on.
+    assert pair_starters(
+        [{"home_team": "Nowhere Nine", "away_team": "Nobody",
+          "commence_time": "2026-09-04T18:11:00Z"}], teams, starters) == {}
+
+    print("slate self-test: every game gets its own starter")
+
+
+if __name__ == "__main__":
+    _self_test()
