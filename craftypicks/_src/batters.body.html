@@ -2,18 +2,14 @@
   <div class="wrap">
     <div class="eyebrow">{{BAT_DATE}}</div>
     <h1>Home runs</h1>
-    <p class="lead">The most dangerous bat in each of tonight's lineups, and the chance it leaves the park &mdash; from the batter's own rate, the pitcher he is facing, and the park he is standing in.</p>
+    <p class="ecap">Club regulars, not tonight's lineup &mdash; lineups post about two hours before first pitch.</p>
   </div>
 </section>
 
 <section class="board-page">
   <div class="wrap">
-    <div class="sp" style="margin-bottom:26px">
-      <h2 style="margin-top:0">What the model has actually delivered</h2>
-      {{BAT_CALIBRATION}}
-      <p class="ecap">This is calibration, not a win rate. A model that says 12% should be right about 12% of the time; the honest test is whether the group it called 12% homered 12% of the time, not whether the top name went deep. Every projection is graded the next morning against the batter's own season total, which costs nothing and leaves no way to quietly skip a bad night.</p>
-    </div>
     {{BATTER_CARDS}}
-    <p class="ecap" style="margin-top:26px;max-width:74ch">The chance combines three rates &mdash; the batter's home runs per plate appearance, the pitcher's home runs per batter faced, and the league average &mdash; by the odds ratio, then multiplies by the park and by how often this batter comes to the plate. A starter is modelled as facing 58% of a lineup's plate appearances and a league-average bullpen the rest. Park factors are computed from home and away splits on both sides of the ball and then halved toward neutral, because one season of them is noisy. <b>These are not lineups.</b> Lineups post about two hours before first pitch and this board is built in the morning, so a rested regular will still appear.</p>
+    <h2>Graded</h2>
+    {{BAT_CALIBRATION}}
   </div>
 </section>
