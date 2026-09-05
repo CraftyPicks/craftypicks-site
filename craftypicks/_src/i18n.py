@@ -59,6 +59,7 @@ T = {
     # ---- navigation and chrome
     "nav_plays":    {"en": "System Plays",   "es": "Jugadas del sistema"},
     "nav_tonight":  {"en": "Today's Games",  "es": "Juegos de hoy"},
+    "close":        {"en": "Close", "es": "Cerrar"},
     "nav_board":    {"en": "Board",          "es": "Pizarra"},
     "nav_pitchers": {"en": "Pitchers Prop",  "es": "Props de lanzadores"},
     "nav_record":   {"en": "Track Record",   "es": "Historial"},
@@ -240,7 +241,6 @@ T = {
     "hr_v_ordinary": {"en": "ordinary", "es": "normal"},
 
     # ---- the form table
-    "nav_form":      {"en": "Form", "es": "Forma"},
     "form_empty":    {"en": "No finished games stored for this league yet. "
                             "This table fills in as results come in.",
                       "es": "Aún no hay juegos terminados guardados para esta "

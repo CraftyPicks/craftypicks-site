@@ -1491,7 +1491,9 @@ def _disclosure(row: dict) -> str:
     panel = _detail_panel(row)
     if not panel:
         return ""
-    return (f'<details class="gmore"><summary>{_("card_more")}</summary>'
+    close = _("close")
+    return (f'<details class="gmore" data-close="{close}">'
+            f'<summary>{_("card_more")}</summary>'
             f'<div class="gmore-in">{panel}</div></details>')
 
 
@@ -2022,34 +2024,6 @@ def homer_cards(rows: list[dict]) -> str:
 # Every league's table, computed from the finals this project stores for
 # itself. MLB could take it from StatsAPI instead, but one code path that
 # works for four leagues beats two that each work for some of them.
-
-def form_table(table: dict) -> str:
-    """A league table: record, last ten, streak, sorted by winning percentage."""
-    if not table:
-        return f'<div class="empty-board">{_("form_empty")}</div>'
-
-    def pct(v):
-        played = v["w"] + v["l"]
-        return v["w"] / played if played else 0.0
-
-    rows = []
-    for i, (club, v) in enumerate(
-            sorted(table.items(), key=lambda kv: (-pct(kv[1]), kv[0])), 1):
-        code = v.get("streak") or ""
-        scls = "good" if code.startswith("W") else "bad" if code.startswith("L") else ""
-        rows.append(
-            f'<tr><td class="ft-n">{i}</td>'
-            f'<th>{_tdot(club)}{esc(_nickname(club))}</th>'
-            f'<td class="ft-r">{v["w"]}&ndash;{v["l"]}</td>'
-            f'<td class="ft-p">{pct(v) * 100:.1f}%</td>'
-            f'<td class="ft-r">{v["l10_w"]}&ndash;{v["l10_l"]}</td>'
-            f'<td class="ft-s {scls}">{esc(code) or "&mdash;"}</td></tr>')
-    return (f'<div class="sscroll"><table class="ftbl">'
-            f'<tr class="hd"><td></td><th>{_("form_club")}</th>'
-            f'<td>{_("form_record")}</td><td>{_("form_pct")}</td>'
-            f'<td>{_("pnl_last10")}</td><td>{_("pnl_streak")}</td></tr>'
-            f'{"".join(rows)}</table></div>')
-
 
 def _self_test() -> None:
     row = {

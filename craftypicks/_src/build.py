@@ -28,6 +28,7 @@ import render as R  # noqa: E402
 import i18n         # noqa: E402
 
 CSS = (SRC / "base.css").read_text(encoding="utf-8")
+JS = (SRC / "board.js").read_text(encoding="utf-8")
 
 # out    — path relative to the output root; the subdirectory is in here
 # body   — stem of the _src/<stem>.body.html file this page renders
@@ -40,17 +41,13 @@ _LEAGUE_PAGES = {
     for short in leagues.ORDER
 }
 
-# Every league gets a form table, because every league now stores its own
-# finished games. It is the second view for the three that have no props.
-_FORM_PAGES = {
-    f"{short}/form.html": Page(f"{short}/form.html", "form", short, short)
-    for short in leagues.ORDER
-}
+# The form PAGE is gone -- four tabs of nav for a table nobody opened. The
+# form DATA stays: form_store still feeds the streak, last-ten and season
+# series inside every game card, which are read. See board.py.
 
 PAGES: dict[str, Page] = {
     "index.html":    Page("index.html",    "tonight",  "tonight",  None),
     **_LEAGUE_PAGES,
-    **_FORM_PAGES,
     "homers.html":   Page("homers.html",   "homers",   "homers",   "mlb"),
     "batters.html":  Page("batters.html",  "batters",  "batters",  "mlb"),
     "hits.html":     Page("hits.html",     "hits",     "hits",     "mlb"),
@@ -110,8 +107,7 @@ _EXTRA_VIEWS: dict[str, list[tuple[str, str]]] = {
 # until its props page is built — four tabs that 404 look worse than one tab
 # that works.
 VIEWS: dict[str, list[tuple[str, str]]] = {
-    short: ([(f"{short}/index.html", "nav_board"),
-             (f"{short}/form.html", "nav_form")]
+    short: ([(f"{short}/index.html", "nav_board")]
             + _EXTRA_VIEWS.get(short, []))
     for short in leagues.ORDER
 }
@@ -216,10 +212,6 @@ TITLES = {
                            "es": f"Yardas de recepción — {config.SITE_NAME}"},
     "nfl/td.html": {"en": f"Anytime touchdown — {config.SITE_NAME}",
                     "es": f"Touchdown en cualquier momento — {config.SITE_NAME}"},
-    **{f"{short}/form.html": {
-        "en": f"{leagues.LEAGUES[short].label} form — {config.SITE_NAME}",
-        "es": f"Forma {leagues.LEAGUES[short].label} — {config.SITE_NAME}"}
-       for short in leagues.ORDER},
     "ev.html":    {"en": f"+EV — {config.SITE_NAME}",
                    "es": f"+EV — {config.SITE_NAME}"},
     "screens.html": {"en": f"The Strikeout Screens — {config.SITE_NAME}",
@@ -322,6 +314,7 @@ def footer_html(lang: str, year: int, up: str = "",
     </div>
   </div>
 </footer>
+<script>{JS}</script>
 """
 
 
@@ -633,12 +626,7 @@ def build() -> None:
                     "board_eyebrow", lang,
                     n=sum((board_doc.get("counts") or {}).values()),
                     d=_board_day(board_doc.get("date", ""), lang))
-            if page.body == "form":
-                import results_store, form_store          # noqa: E402
-                page_tokens["{{LEAGUE_NAME}}"] = leagues.LEAGUES[page.league].label
-                page_tokens["{{FORM_TABLE}}"] = R.form_table(
-                    form_store.table(results_store.load(page.league)))
-            elif page.league:
+            if page.league:
                 entry = (board_doc.get("leagues") or {}).get(page.league, {})
                 page_tokens["{{LEAGUE_NAME}}"] = entry.get(
                     "label", leagues.LEAGUES[page.league].label)
