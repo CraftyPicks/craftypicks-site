@@ -38,6 +38,8 @@ FLOORS = {
 # --dim is the one token allowed below the 5:1 body-text floor, because it is
 # only ever valid for a caption beneath a figure that already carries the
 # meaning. It still has to clear 3:1 to be usable as UI.
+THEME = "dark"
+
 DIM_MIN = 3.0
 DIM_MAX = 5.0
 
@@ -96,7 +98,33 @@ def contrast(hex_a: str, hex_b: str) -> float:
 # Pure black and pure white are allowed in an rgba() even though neither is a
 # palette token: a shadow is black at low alpha and a highlight is white at low
 # alpha, and naming those would not make them clearer.
+# Pure black and pure white are allowed as tints because a shadow or a
+# highlight is built from them in either theme. They are NOT allowed as a
+# surface: a translucent white header survived the swap to a dark ground and
+# put a light bar across the top of every page, passing every ratio check
+# because the ratios only ever look at --bg. SURFACE_ALPHA is the line
+# between the two -- a tint that opaque is painting something, not shading it.
 ALLOWED_EXTRA = {(0, 0, 0), (255, 255, 255)}
+SURFACE_ALPHA = 0.5
+
+
+def opaque_surfaces(css_text: str | None = None) -> list[tuple[int, tuple[int, int, int], float]]:
+    """Every rgba() painted solidly enough to be a surface, with its alpha.
+
+    Exists because rgba_triples() deliberately ignores alpha, which is right
+    for catching a stale tint and wrong for catching a light pane in a dark
+    theme. Anything at or above SURFACE_ALPHA is treated as a surface and has
+    to belong to the theme.
+    """
+    text = css_text if css_text is not None else CSS.read_text()
+    out = []
+    for n, line in enumerate(text.splitlines(), 1):
+        for m in re.finditer(r"rgba\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*,"
+                             r"\s*([\d.]+)\s*\)", line):
+            r, g, b, a = int(m[1]), int(m[2]), int(m[3]), float(m[4])
+            if a >= SURFACE_ALPHA:
+                out.append((n, (r, g, b), a))
+    return out
 
 
 def rgba_triples(css_text: str | None = None) -> list[tuple[int, tuple[int, int, int]]]:
@@ -282,13 +310,20 @@ def _self_test() -> None:
     missing = sorted(REQUIRED - set(t))
     assert not missing, f"palette is missing tokens: {missing}"
 
-    # The theme is light. This is the assertion that fails on the dark palette
-    # and passes on the slate one — every ratio below is satisfied by both, so
-    # without it this test would approve either theme.
-    assert luminance(t["bg"]) > 0.5, \
-        f"--bg {t['bg']} is dark; this is meant to be the light theme"
-    assert t["panel"].upper() == "#FFFFFF", \
-        f"cards must be white, got --panel {t['panel']}"
+    # Which theme this palette is meant to be. Every ratio below is satisfied
+    # by both a light and a dark palette, so without this the test would
+    # approve a half-finished swap -- and a dark ground under white cards
+    # clears every contrast floor while being unreadable. Change this line and
+    # the tokens together, never one without the other.
+    dark = luminance(t["bg"]) <= 0.5
+    assert dark == (THEME == "dark"), (
+        f"--bg {t['bg']} is {'dark' if dark else 'light'}, but THEME says "
+        f"{THEME!r}. If the swap is deliberate, change THEME in the same "
+        f"commit; if it is not, the token swap is half-finished.")
+    panel_dark = luminance(t["panel"]) <= 0.5
+    assert panel_dark == dark, (
+        f"--panel {t['panel']} sits on the opposite side of the palette from "
+        f"--bg {t['bg']}; cards and ground must belong to the same theme")
 
     ground = t["bg"]
     for name, floor in FLOORS.items():
@@ -313,8 +348,18 @@ def _self_test() -> None:
              if rgb not in palette_rgb and rgb not in ALLOWED_EXTRA]
     assert not stray, (
         "these rgba() colours are not in the palette — they are most likely "
-        "tints left over from the dark theme:\n"
+        "tints left over from the previous theme:\n"
         + "\n".join(f"  base.css:{n}  rgba{rgb}" for n, rgb in stray))
+
+    # A surface must belong to the theme. Ratios only ever compare against
+    # --bg, so a light pane on a dark ground clears every one of them.
+    wrong_side = [(n, rgb, a) for n, rgb, a in opaque_surfaces()
+                  if (luminance("#%02X%02X%02X" % rgb) <= 0.5) != dark]
+    assert not wrong_side, (
+        f"these surfaces are painted on the wrong side of a {THEME} theme:\n"
+        + "\n".join(f"  base.css:{n}  rgba{rgb} at {a} alpha"
+                     for n, rgb, a in wrong_side)
+        + "\n\nA tint shades; a surface at this opacity paints. Use a token.")
 
     # Positive assertion: rgba_triples() returning nothing would make the stray
     # check above pass vacuously, which is what a mis-parse of base.css looks
@@ -328,7 +373,8 @@ def _self_test() -> None:
               if lit.upper() not in palette_hex]
     assert not strays, (
         "these hex literals sit in a rule body but are not palette colours — "
-        "they are most likely dark-theme values the token swap never reached:\n"
+        "they are most likely values from the previous theme that the "
+        "token swap never reached:\n"
         + "\n".join(f"  base.css:{n}  {lit}" for n, lit in strays)
         + "\n\nUse a token, or add the value to :root with a name.")
 
@@ -353,7 +399,7 @@ def _self_test() -> None:
                  for nick, orig, adj, ratio in team_color_report()
                  if ratio < render.MIN_CONTRAST - 1e-9]
     assert not illegible, (
-        "these club colours do not reach MIN_CONTRAST against a white card:\n"
+        "these club colours do not reach MIN_CONTRAST against the card:\n"
         + "\n".join(f"  {nick}: {orig} -> {adj} ({ratio:.2f}:1)"
                     for nick, orig, adj, ratio in illegible))
 

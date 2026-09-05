@@ -137,7 +137,14 @@ SLATE_VS_OPPONENT = True
 # post a card every remaining day of the cycle and spends props only out of
 # what is genuinely left over. A quiet first week can no longer bankrupt the
 # last one.
-CREDIT_MONTHLY_ALLOWANCE = 500
+#
+# This MUST match the plan actually in force. It read 500 while the site was on
+# the free tier, which was correct; it moves to 20,000 with the paid tier. The
+# generous direction is the dangerous one — the reserve maths would let the
+# daily job plan around money that is not there. The run log prints the API's
+# own remaining count every morning, so a mismatch surfaces the next day rather
+# than at the end of the month.
+CREDIT_MONTHLY_ALLOWANCE = 20000
 CREDIT_RESET_DAY = 1           # day of month the allowance refills
 CORE_CREDITS_PER_SPORT = len(MARKETS) + 2      # one odds pull + one scores pull
 
