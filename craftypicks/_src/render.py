@@ -1820,6 +1820,139 @@ def hit_calibration(summary: dict) -> str:
     return batter_calibration(summary)
 
 
+# ------------------------------------------------------------------ NFL ---
+# Three yardage boards (passing, rushing, receiving) and one touchdown
+# board, siblings of the hits board above: same card grid, same calibration
+# note, a different number underneath. yard_cards and td_cards both group by
+# game exactly as hit_cards does; yard_accuracy is the continuous-error
+# sibling of hit_calibration's bucketed one, because a yardage projection is
+# a number, not a chance.
+#
+# The badge that names a player's position is given its own class, "ppos",
+# rather than the bare "pos" the brief's own snippet uses -- base.css already
+# defines a bare .pos rule for the monthly chart's positive bars
+# (height:180px, flex column), and a player's position badge would have
+# inherited that layout by accident.
+
+def yard_cards(rows: list[dict], unit: str = "yds") -> str:
+    """Projected yardage, one card per club.
+
+    Grouped on (commence_time, team), not the fixture. Grouping on the
+    game put both sides of a fixture in one card headed with one club's
+    name and captioned with that club's opp_allowed -- the visiting
+    side's players then sat under the home side's opponent and defensive
+    rate, a wrong number that reads as a plausible one. hit_cards already
+    groups on the club rather than the fixture; this follows it.
+    """
+    if not rows:
+        return f'<div class="empty-board">{_("nfl_empty")}</div>'
+    games: dict = {}
+    for r in rows:
+        games.setdefault((r.get("commence_time"), r.get("team")), []).append(r)
+
+    out = []
+    for (when, _team), group in games.items():
+        head = f"{esc(group[0].get('team',''))} &middot; {esc(game_time(when))}"
+        opp = esc(group[0].get("opponent", ""))
+        allowed = f"{group[0].get('opp_allowed', 0):.0f}"
+        league = f"{group[0].get('league_allowed', 0):.0f}"
+        men = "".join(f"""
+          <div class="bat">
+            <div class="bat-n">{esc(p.get('name',''))}
+              <span class="ppos">{esc(p.get('position',''))}</span></div>
+            <div class="bat-c"><b>{p.get('projection', 0):.0f}</b>
+              <span class="unit">{esc(unit)}</span></div>
+            <div class="bat-w">{p.get('baseline', 0):.0f} {esc(unit)}
+              unadjusted</div>
+          </div>""" for p in group)
+        out.append(f"""
+        <article class="pb-card bat-card">
+          <div class="pb-top"><span>{head}</span></div>
+          <div class="pb-body">
+            <div class="bat-vs">{_("nfl_vs", opp=opp, allowed=allowed,
+                                   league=league)}</div>
+            {men}
+          </div>
+        </article>""")
+    return '<div class="pb-grid">' + "".join(out) + "</div>"
+
+
+def td_cards(rows: list[dict]) -> str:
+    """Anytime touchdown chances, one card per club.
+
+    Grouped on (commence_time, team) for the same reason as yard_cards:
+    grouping on the fixture instead puts the away side's players under
+    the home side's name and opp_allowed.
+    """
+    if not rows:
+        return f'<div class="empty-board">{_("nfl_empty")}</div>'
+    games: dict = {}
+    for r in rows:
+        games.setdefault((r.get("commence_time"), r.get("team")), []).append(r)
+    out = []
+    for (when, _team), group in games.items():
+        head = f"{esc(group[0].get('team',''))} &middot; {esc(game_time(when))}"
+        opp = esc(group[0].get("opponent", ""))
+        allowed = f"{group[0].get('opp_allowed', 0):.2f}"
+        league = f"{group[0].get('league_allowed', 0):.2f}"
+        men = "".join(f"""
+          <div class="bat">
+            <div class="bat-n">{esc(p.get('name',''))}
+              <span class="ppos">{esc(p.get('position',''))}</span></div>
+            <div class="bat-c"><b>{p.get('chance', 0) * 100:.1f}%</b></div>
+          </div>""" for p in group)
+        out.append(f"""
+        <article class="pb-card bat-card">
+          <div class="pb-top"><span>{head}</span></div>
+          <div class="pb-body">
+            <div class="bat-vs">{_("nfl_vs", opp=opp, allowed=allowed,
+                                   league=league)}</div>
+            {men}
+          </div>
+        </article>""")
+    return '<div class="pb-grid">' + "".join(out) + "</div>"
+
+
+def td_calibration(summary: dict) -> str:
+    """What the model promised against what happened. Not a win rate.
+
+    batter_calibration's bucketed markup fits a chance-based verdict
+    exactly as well here as it does for a home run -- the touchdown page
+    just needs its own empty state. Without this it fell through to
+    batter_calibration directly, and batter_calibration's own empty-state
+    copy talks about the batter's season total, which is how a public NFL
+    page ended up reading like a baseball one. hit_calibration is the
+    same fix for the same reason; follow it.
+    """
+    n = (summary or {}).get("graded") or 0
+    if not n:
+        return f'<p class="pnl-note">{_("nfl_ungraded")}</p>'
+    return batter_calibration(summary)
+
+
+def yard_accuracy(summary: dict) -> str:
+    """Mean error against the unadjusted baseline, like for like.
+
+    Every sibling renderer goes through i18n; this one used to hardcode
+    its sentences in English only, which is invisible in an English-only
+    build but is exactly the kind of gap that leaves half a site
+    untranslatable the day a second language ships.
+    """
+    n = (summary or {}).get("graded") or 0
+    if not n:
+        return f'<p class="pnl-note">{_("nfl_ungraded")}</p>'
+    mae = summary.get("mae")
+    base = summary.get("baseline_mae")
+    comp = summary.get("mae_on_baseline_rows")
+    bits = [_("nfl_acc_headline", mae=mae, n=n, s=i18n.plural(n, LANG))]
+    if base is not None and comp is not None:
+        verdict = _("nfl_acc_earning" if comp < base
+                   else "nfl_acc_not_earning")
+        bits.append(_("nfl_acc_compare", bn=summary.get("baseline_n"),
+                      comp=comp, base=base, verdict=verdict))
+    return '<p class="pnl-note">' + " ".join(bits) + "</p>"
+
+
 # ------------------------------------------------------------- home runs ---
 # The strikeout page's argument applied to a different number, and with the
 # same posture: matchup facts, no projection, no pick. There are no prices

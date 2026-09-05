@@ -1,25 +1,26 @@
 #!/usr/bin/env python3
-"""Build the two home-run boards from free data only.
+"""Build every board that does not need an Odds API credit.
 
     python3 scripts/run_boards.py
 
-Everything here comes from MLB's public StatsAPI, so this spends no Odds API
-credits and can be run as often as you like. It exists because the daily job
-guards itself: once today's card is committed, run_daily.py exits before it
-reaches any of the board code, and the only way past that guard is
-CRAFTYPICKS_FORCE=1, which re-buys the odds. So on any day the boards are
-added, changed, or simply arrive late, this is the way to fill them in
-without paying twice.
+MLB's side comes from the public StatsAPI; the NFL side from nflverse's free
+CSV feed. Neither costs a credit, so both can be run as often as you like.
+This exists because the daily job guards itself: once today's card is
+committed, run_daily.py exits before it reaches any of the board code, and
+the only way past that guard is CRAFTYPICKS_FORCE=1, which re-buys the odds.
+So on any day a board is added, changed, or simply arrives late, this is the
+way to fill it in without paying twice.
 
-It writes:
+It writes seven public boards -- data/homers.json, batters.json, hits.json,
+nfl_passing.json, nfl_rushing.json, nfl_receiving.json, and nfl_td.json --
+each beside a *_ratings.json history of every row ever projected in that
+category, which is what grading reads and appends to.
 
-    data/homers.json          tonight's starters, ranked by home runs allowed
-    data/batters.json         tonight's batters, ranked by chance to go deep
-    data/batter_ratings.json  every batter ever projected, for grading
-
-Grading is free and idempotent: a batter's season home-run total tonight,
-against his total on the night he was projected, answers whether he went
-deep. Re-running only ever adds rows it has not seen.
+Grading is free and idempotent everywhere here: MLB settles a projection
+against the same season leaderboard the build already fetches, and NFL
+settles one against the same weekly feed, both gated on the game actually
+being over. Re-running only ever adds rows it has not seen and grades rows
+it has not yet graded.
 """
 from __future__ import annotations
 
@@ -43,6 +44,12 @@ import batters as batters_mod  # noqa: E402
 import hits as hits_mod        # noqa: E402
 import projection              # noqa: E402
 import results_store           # noqa: E402
+import nfl_yards                # noqa: E402
+import nfl_td                   # noqa: E402
+
+# The calendar year the NFL season starts in -- 2026 covers the games
+# played from September 2026 through early 2027.
+NFL_SEASON = 2026
 
 
 def load_json(path: Path, default):
@@ -97,75 +104,119 @@ def main() -> int:
         # Not an error. MLB posts probables through the morning, and on an
         # off day there are none at all. Leaving yesterday's boards up would
         # be worse than leaving them empty, so nothing is written either way.
-        print("   Nothing to build yet; the boards keep whatever they hold.")
-        return 0
-
-    # ---------------------------------------------------------- home runs allowed
-    hr_rows = homers_mod.build(starters, season)
-    if hr_rows:
-        save_json(DATA / "homers.json", {
-            "date": today,
-            "date_label": label,
-            "starters": hr_rows,
-        })
-        print(f"-- homers: {len(hr_rows)} starter(s) on the board")
+        # The NFL block below still runs -- an MLB off day must not cost the
+        # NFL boards their run any more than an NFL failure should cost MLB's.
+        print("   Nothing to build yet; the MLB boards keep whatever they hold.")
     else:
-        print("!! homers: no starter had enough innings to rate", file=sys.stderr)
+        # ---------------------------------------------------------- home runs allowed
+        hr_rows = homers_mod.build(starters, season)
+        if hr_rows:
+            save_json(DATA / "homers.json", {
+                "date": today,
+                "date_label": label,
+                "starters": hr_rows,
+            })
+            print(f"-- homers: {len(hr_rows)} starter(s) on the board")
+        else:
+            print("!! homers: no starter had enough innings to rate", file=sys.stderr)
 
-    # ---------------------------------------------------------- batters
-    history = load_json(DATA / "batter_ratings.json", {"batters": []})["batters"]
-    repaired = projection.repair_premature(history, verdict_key="homered")
-    if repaired:
-        print(f"!! batter_ratings: reset {repaired} verdict(s) that were "
-              f"graded before their game had started", file=sys.stderr)
-    table = batters_mod.all_batters(season)
-    settled = batters_mod.grade(history, table)
-    rows = batters_mod.build(starters, season)
+        # ---------------------------------------------------------- batters
+        history = load_json(DATA / "batter_ratings.json", {"batters": []})["batters"]
+        repaired = projection.repair_premature(history, verdict_key="homered")
+        if repaired:
+            print(f"!! batter_ratings: reset {repaired} verdict(s) that were "
+                  f"graded before their game had started", file=sys.stderr)
+        table = batters_mod.all_batters(season)
+        settled = batters_mod.grade(history, table)
+        rows = batters_mod.build(starters, season)
 
-    added = projection.merge(history, rows, ("batter_id", "commence_time"))
-    summary = batters_mod.summary(history)
-    save_json(DATA / "batter_ratings.json", {"batters": history})
+        added = projection.merge(history, rows, ("batter_id", "commence_time"))
+        summary = batters_mod.summary(history)
+        save_json(DATA / "batter_ratings.json", {"batters": history})
 
-    if rows:
-        save_json(DATA / "batters.json", {
-            "date": today,
-            "date_label": label,
-            "batters": rows,
-            "summary": summary,
-        })
-        print(f"-- batters: {len(rows)} rated, {added} new, {settled} graded")
-        if summary.get("expected") is not None:
-            print(f"   calibration: promised {summary['expected']}%, "
-                  f"delivered {summary['actual']}% on "
-                  f"{summary['graded']} bat(s)")
-    else:
-        print("!! batters: no lineup cleared the plate-appearance floor",
-              file=sys.stderr)
+        if rows:
+            save_json(DATA / "batters.json", {
+                "date": today,
+                "date_label": label,
+                "batters": rows,
+                "summary": summary,
+            })
+            print(f"-- batters: {len(rows)} rated, {added} new, {settled} graded")
+            if summary.get("expected") is not None:
+                print(f"   calibration: promised {summary['expected']}%, "
+                      f"delivered {summary['actual']}% on "
+                      f"{summary['graded']} bat(s)")
+        else:
+            print("!! batters: no lineup cleared the plate-appearance floor",
+                  file=sys.stderr)
 
-    # ---------------------------------------------------------- hits
-    hit_hist = load_json(DATA / "hit_ratings.json", {"batters": []})["batters"]
-    hit_repaired = projection.repair_premature(hit_hist, verdict_key="got_hit")
-    if hit_repaired:
-        print(f"!! hit_ratings: reset {hit_repaired} verdict(s) that were "
-              f"graded before their game had started", file=sys.stderr)
-    hit_settled = hits_mod.grade(hit_hist, table)
-    hit_rows = hits_mod.build(starters, season)
-    hit_added = projection.merge(hit_hist, hit_rows,
-                                 ("batter_id", "commence_time"))
-    hit_summary = hits_mod.summary(hit_hist)
-    save_json(DATA / "hit_ratings.json", {"batters": hit_hist})
+        # ---------------------------------------------------------- hits
+        hit_hist = load_json(DATA / "hit_ratings.json", {"batters": []})["batters"]
+        hit_repaired = projection.repair_premature(hit_hist, verdict_key="got_hit")
+        if hit_repaired:
+            print(f"!! hit_ratings: reset {hit_repaired} verdict(s) that were "
+                  f"graded before their game had started", file=sys.stderr)
+        hit_settled = hits_mod.grade(hit_hist, table)
+        hit_rows = hits_mod.build(starters, season)
+        hit_added = projection.merge(hit_hist, hit_rows,
+                                     ("batter_id", "commence_time"))
+        hit_summary = hits_mod.summary(hit_hist)
+        save_json(DATA / "hit_ratings.json", {"batters": hit_hist})
 
-    if hit_rows:
-        save_json(DATA / "hits.json", {
-            "date": today,
-            "date_label": label,
-            "batters": hit_rows,
-            "summary": hit_summary,
-        })
-        print(f"-- hits: {len(hit_rows)} rated, {hit_added} new, "
-              f"{hit_settled} graded")
-    else:
-        print("!! hits: no lineup cleared the plate-appearance floor",
+        if hit_rows:
+            save_json(DATA / "hits.json", {
+                "date": today,
+                "date_label": label,
+                "batters": hit_rows,
+                "summary": hit_summary,
+            })
+            print(f"-- hits: {len(hit_rows)} rated, {hit_added} new, "
+                  f"{hit_settled} graded")
+        else:
+            print("!! hits: no lineup cleared the plate-appearance floor",
+                  file=sys.stderr)
+
+    # ---------------------------------------------------------- NFL
+    # Guarded as a whole: the NFL feed is a third party, and a bad day
+    # there must not cost the MLB boards their run.
+    try:
+        nfl_weekly = nfl_yards.season_weekly(NFL_SEASON)
+        for name, cat in (("nfl_passing", "passing"),
+                          ("nfl_rushing", "rushing"),
+                          ("nfl_receiving", "receiving")):
+            store = DATA / f"{name}_ratings.json"
+            hist = load_json(store, {"rows": []})["rows"]
+            fixed = projection.repair_premature(hist, verdict_key="actual")
+            if fixed:
+                print(f"-- {name}: reset {fixed} premature verdict(s)")
+            settled = nfl_yards.grade(hist, nfl_weekly, cat)
+            rows = nfl_yards.build(NFL_SEASON, cat)
+            added = projection.merge(hist, rows, ("player_id", "game_id"))
+            save_json(store, {"rows": hist})
+            if rows:
+                save_json(DATA / f"{name}.json", {
+                    "date": today, "date_label": label, "rows": rows,
+                    "summary": nfl_yards.summary(hist)})
+                print(f"-- {name}: {len(rows)} rated, {added} new, "
+                      f"{settled} graded")
+
+        store = DATA / "nfl_td_ratings.json"
+        hist = load_json(store, {"rows": []})["rows"]
+        fixed = projection.repair_premature(hist, verdict_key="scored")
+        if fixed:
+            print(f"-- nfl_td: reset {fixed} premature verdict(s)")
+        settled = nfl_td.grade(hist, nfl_weekly)
+        rows = nfl_td.build(NFL_SEASON)
+        added = projection.merge(hist, rows, ("player_id", "game_id"))
+        save_json(store, {"rows": hist})
+        if rows:
+            save_json(DATA / "nfl_td.json", {
+                "date": today, "date_label": label, "rows": rows,
+                "summary": nfl_td.summary(hist)})
+            print(f"-- nfl_td: {len(rows)} rated, {added} new, "
+                  f"{settled} graded")
+    except Exception as e:                                   # noqa: BLE001
+        print(f"!! NFL boards failed ({type(e).__name__}: {e})",
               file=sys.stderr)
 
     return 0

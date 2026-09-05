@@ -54,6 +54,10 @@ PAGES: dict[str, Page] = {
     "homers.html":   Page("homers.html",   "homers",   "homers",   "mlb"),
     "batters.html":  Page("batters.html",  "batters",  "batters",  "mlb"),
     "hits.html":     Page("hits.html",     "hits",     "hits",     "mlb"),
+    "nfl/passing.html":   Page("nfl/passing.html",   "nfl_passing",   "nfl_passing",   "nfl"),
+    "nfl/rushing.html":   Page("nfl/rushing.html",   "nfl_rushing",   "nfl_rushing",   "nfl"),
+    "nfl/receiving.html": Page("nfl/receiving.html", "nfl_receiving", "nfl_receiving", "nfl"),
+    "nfl/td.html":        Page("nfl/td.html",        "nfl_td",        "nfl_td",        "nfl"),
     "record.html":   Page("record.html",   "record",   "record",   None),
     "about.html":    Page("about.html",    "about",    "about",    None),
     "ev.html":       Page("ev.html",       "ev",       "ev",       None),
@@ -87,18 +91,28 @@ def rel_root(page: Page) -> str:
     return "../" * page.out.count("/")
 
 
+# The extra views each league has beyond its board and its form table.
+# Keyed rather than branched, because the branch version already grew a
+# condition that read "has_props AND short == mlb" and would have grown
+# another for every sport added.
+_EXTRA_VIEWS: dict[str, list[tuple[str, str]]] = {
+    "mlb": [("pitchers.html", "nav_pitchers"),
+            ("batters.html", "nav_batters"),
+            ("hits.html", "nav_hits"),
+            ("homers.html", "nav_homers")],
+    "nfl": [("nfl/passing.html", "nav_pass"),
+            ("nfl/rushing.html", "nav_rush"),
+            ("nfl/receiving.html", "nav_recv"),
+            ("nfl/td.html", "nav_nfltd")],
+}
+
 # The views each league actually has. A league is not listed with a props tab
 # until its props page is built — four tabs that 404 look worse than one tab
 # that works.
 VIEWS: dict[str, list[tuple[str, str]]] = {
     short: ([(f"{short}/index.html", "nav_board"),
              (f"{short}/form.html", "nav_form")]
-            + ([("pitchers.html", "nav_pitchers"),
-                ("batters.html", "nav_batters"),
-                ("hits.html", "nav_hits"),
-                ("homers.html", "nav_homers")]
-               if leagues.LEAGUES[short].has_props
-               and leagues.LEAGUES[short].short == "mlb" else []))
+            + _EXTRA_VIEWS.get(short, []))
     for short in leagues.ORDER
 }
 
@@ -194,6 +208,14 @@ TITLES = {
                      "es": f"Jonrones — {config.SITE_NAME}"},
     "hits.html": {"en": f"Hits — {config.SITE_NAME}",
                   "es": f"Hits — {config.SITE_NAME}"},
+    "nfl/passing.html": {"en": f"Passing yards — {config.SITE_NAME}",
+                         "es": f"Yardas de pase — {config.SITE_NAME}"},
+    "nfl/rushing.html": {"en": f"Rushing yards — {config.SITE_NAME}",
+                         "es": f"Yardas de acarreo — {config.SITE_NAME}"},
+    "nfl/receiving.html": {"en": f"Receiving yards — {config.SITE_NAME}",
+                           "es": f"Yardas de recepción — {config.SITE_NAME}"},
+    "nfl/td.html": {"en": f"Anytime touchdown — {config.SITE_NAME}",
+                    "es": f"Touchdown en cualquier momento — {config.SITE_NAME}"},
     **{f"{short}/form.html": {
         "en": f"{leagues.LEAGUES[short].label} form — {config.SITE_NAME}",
         "es": f"Forma {leagues.LEAGUES[short].label} — {config.SITE_NAME}"}
@@ -431,6 +453,20 @@ def build() -> None:
     hit_doc = load("hits.json",
                    {"date_label": "", "batters": [], "summary": {}})
 
+    # The four NFL boards: three yardage categories and one touchdown board,
+    # each a sibling of hits.json above with its own rows and its own error
+    # summary / calibration.
+    NFL_DOCS = {
+        "nfl_passing": load("nfl_passing.json",
+                            {"date_label": "", "rows": [], "summary": {}}),
+        "nfl_rushing": load("nfl_rushing.json",
+                            {"date_label": "", "rows": [], "summary": {}}),
+        "nfl_receiving": load("nfl_receiving.json",
+                              {"date_label": "", "rows": [], "summary": {}}),
+        "nfl_td": load("nfl_td.json",
+                       {"date_label": "", "rows": [], "summary": {}}),
+    }
+
     def build_tokens(lang, plays_doc, stats, history, slate_doc,
                      pitch_doc, closing_doc=None):
         """Every {{TOKEN}} a page body can contain, for one language."""
@@ -645,6 +681,33 @@ def build() -> None:
                 # safe to point it at the hits document here instead.
                 page_tokens["{{DATE_LABEL}}"] = (
                     doc_date_label(hit_doc, lang) or i18n.t("not_rated", lang))
+            elif page.body in NFL_DOCS:
+                # Four sibling pages sharing one set of token names. Each
+                # page's own document supplies the values, the same way the
+                # hits page above supplies its own DATE_LABEL rather than
+                # the plays board's.
+                nfl_doc = NFL_DOCS[page.body]
+                nfl_rows = nfl_doc.get("rows", [])
+                if page.body == "nfl_td":
+                    page_tokens["{{NFL_CARDS}}"] = R.td_cards(nfl_rows)
+                    page_tokens["{{NFL_ACCURACY}}"] = R.td_calibration(
+                        nfl_doc.get("summary", {}))
+                else:
+                    page_tokens["{{NFL_CARDS}}"] = R.yard_cards(nfl_rows)
+                    page_tokens["{{NFL_ACCURACY}}"] = R.yard_accuracy(
+                        nfl_doc.get("summary", {}))
+                # Cold start: every row still entirely last season's rate,
+                # because this season has not played the games yet to blend
+                # in. nfl_data.blend sets weight 0.0 for exactly that case.
+                cold = bool(nfl_rows) and all(
+                    (r.get("weight") or 0) == 0 for r in nfl_rows)
+                page_tokens["{{NFL_NOTE}}"] = (
+                    i18n.t("nfl_lastyear", lang) if cold else "")
+                page_tokens["{{NFL_COUNT}}"] = i18n.t(
+                    "nfl_count", lang, n=len(nfl_rows),
+                    s=i18n.plural(len(nfl_rows), lang))
+                page_tokens["{{DATE_LABEL}}"] = (
+                    doc_date_label(nfl_doc, lang) or i18n.t("not_rated", lang))
             for token, value in page_tokens.items():
                 body = body.replace(token, str(value))
 

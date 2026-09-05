@@ -175,6 +175,49 @@ T = {
                             "a la mañana siguiente."},
     "hit_count":     {"en": "{n} batter{s} rated", "es": "{n} bateadores calificados"},
 
+    # ---- the four NFL yardage/touchdown boards
+    "nav_pass":     {"en": "Passing", "es": "Pases"},
+    "nav_rush":     {"en": "Rushing", "es": "Carreras"},
+    "nav_recv":     {"en": "Receiving", "es": "Recepciones"},
+    "nav_nfltd":    {"en": "Touchdowns", "es": "Touchdowns"},
+    "nfl_empty":    {"en": "No games scheduled yet. This board fills in "
+                           "once the week's fixtures are posted.",
+                     "es": "Aún no hay partidos. Esta pizarra se llena "
+                           "cuando se publiquen los encuentros."},
+    "nfl_lastyear": {"en": "Running entirely on last season. This "
+                           "season has not played a single game yet for "
+                           "any player on this board.",
+                     "es": "Basado por completo en la temporada pasada. "
+                           "Esta temporada aún no ha jugado ningún "
+                           "partido para nadie en esta pizarra."},
+    "nfl_vs":       {"en": "vs {opp} — allows {allowed} a game, league "
+                           "average {league}",
+                     "es": "vs {opp} — permite {allowed} por partido"},
+    "nfl_ungraded": {"en": "Not graded yet. Every projection on this board "
+                           "is settled once its game has finished.",
+                     "es": "Aún sin calificar."},
+    "nfl_count":    {"en": "{n} player{s} rated",
+                     "es": "{n} jugadores calificados"},
+    "nfl_acc_headline": {"en": "<strong>{mae}</strong> yards off, on "
+                               "average, over {n} projection{s}.",
+                         "es": "<strong>{mae}</strong> yardas de error, "
+                               "en promedio, en {n} proyecciones."},
+    "nfl_acc_compare": {"en": "On the {bn} where a baseline exists: "
+                              "<strong>{comp}</strong> adjusted against "
+                              "<strong>{base}</strong> unadjusted "
+                              "&mdash; {verdict}.",
+                        "es": "De las {bn} donde existe una base: "
+                              "<strong>{comp}</strong> ajustado contra "
+                              "<strong>{base}</strong> sin ajustar "
+                              "&mdash; {verdict}."},
+    "nfl_acc_earning": {"en": "the opponent adjustment is earning its place",
+                        "es": "el ajuste por rival está justificando "
+                              "su lugar"},
+    "nfl_acc_not_earning": {"en": "the opponent adjustment is not "
+                                  "earning its place",
+                            "es": "el ajuste por rival no está "
+                                  "justificando su lugar"},
+
     # ---- the home-run board
     "nav_homers":    {"en": "HR allowed", "es": "JR permitidos"},
     "hr_empty":      {"en": "No probable starters listed yet. This board fills "

@@ -31,6 +31,10 @@ class League:
     sport_key: str
     label: str
     spread_key: str      # i18n key for this league's word for a spread
+    # Unused by build.py: _EXTRA_VIEWS there now keys each league's extra
+    # pages directly, replacing the branch that used to read this field.
+    # Left in place (out of scope for this pass) rather than deleted, so
+    # its own self-test assertions below are the only thing exercising it.
     has_props: bool
 
 
