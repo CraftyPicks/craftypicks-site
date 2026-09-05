@@ -596,6 +596,8 @@ def build() -> None:
             except OSError:
                 print(f"!! {stale}/ still has files in it; left in place")
 
+    written: set = set()
+
     for lang in i18n.LANGS:
         R.set_lang(lang)
         # The board's cards carry each game's strikeout props. render holds
@@ -687,7 +689,33 @@ def build() -> None:
             target = out_dir / out_name
             target.parent.mkdir(parents=True, exist_ok=True)
             target.write_text(html_out, encoding="utf-8")
+            written.add(target.resolve())
             print(f"built {lang}/{out_name}  ({len(html_out)//1024} KB)")
+
+    _remove_orphans(written)
+
+
+def _remove_orphans(written: set) -> None:
+    """Delete built pages this run no longer produces.
+
+    The same reasoning as the stale-language sweep above, applied one level
+    down: the built pages are committed, so a page that simply stops being
+    written stays live forever. Removing the Form tab left four of them --
+    /mlb/form.html and its siblings -- reachable by URL, frozen in the old
+    theme and the old navigation, and updated by nothing ever again.
+
+    Deliberately narrow. It only considers .html at the output root and one
+    directory below it, which is every page this build can emit and nothing
+    deeper. _src is skipped: its .body.html files are templates, not output.
+    """
+    here = ROOT.resolve()
+    candidates = list(here.glob("*.html")) + list(here.glob("*/*.html"))
+    for f in sorted(candidates):
+        if f.parent.name == "_src" or f.resolve() in written:
+            continue
+        f.unlink()
+        print(f"removed orphan {f.relative_to(here)} "
+              f"— no longer built")
 
 
 def _self_test() -> None:
