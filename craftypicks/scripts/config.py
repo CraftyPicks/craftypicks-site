@@ -166,7 +166,7 @@ def days_until_reset(today) -> int:
 # rate, so it is treated as if it could be half again as expensive.
 SPEND_WINDOW = 14
 SPEND_TRUSTED_DAYS = 5
-SPEND_PAD_THIN = 1.5
+SPEND_PAD_THIN = 1.25
 SPEND_PAD = 1.15
 
 
@@ -185,6 +185,14 @@ def daily_reserve(history: list[dict] | None, sports_in_season: int):
     The 75th percentile rather than the mean because the expensive days are
     the ones a reserve exists to survive -- an NFL Sunday costs more than a
     Tuesday, and averaging the two under-books for Sunday.
+
+    The pad on a short record is 1.25 rather than 1.5. 1.5 was picked before
+    the numbers were in front of me and it is too cautious to be useful: on
+    2026-09-07, one observed day of 9 credits became a 14/day reserve, which
+    held back 336 of 343 credits and skipped props over a 1-credit shortfall
+    on a month whose true pace leaves well over a hundred credits spare. A
+    reserve that blocks the thing it is protecting has stopped being a
+    reserve.
     """
     days = [d for d in (history or []) if isinstance(d.get("spent"), int)]
     if not days:
@@ -198,13 +206,22 @@ def daily_reserve(history: list[dict] | None, sports_in_season: int):
 
 
 def spare_credits(remaining, today, sports_in_season: int,
-                  history: list[dict] | None = None) -> int:
+                  history: list[dict] | None = None,
+                  spent_today: int = 0) -> int:
     """What's left after reserving a card for every remaining day.
 
     Returns a large number when the remaining balance is unknown, so a
     missing header never silently switches the extras off.
+
+    spent_today is subtracted from the reserve because days_until_reset
+    counts today, and by the time props are considered the day's odds pull
+    has already happened. Reserving a full day's credits on top of the
+    credits that day has already cost charges for the same morning twice --
+    which on 2026-09-07 was most of the four-credit shortfall that skipped
+    props.
     """
     if remaining is None:
         return 10 ** 6
     per_day, _why = daily_reserve(history, sports_in_season)
-    return int(remaining) - per_day * days_until_reset(today)
+    reserve = per_day * days_until_reset(today) - max(0, int(spent_today or 0))
+    return int(remaining) - max(0, reserve)

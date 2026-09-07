@@ -305,7 +305,8 @@ def main() -> int:
             prop_cost = config.PROP_MAX_EVENTS * len(getattr(config, "PROP_MARKETS", []) or [])
             spare = config.spare_credits(client.credits_remaining,
                                          now.date(), len(in_season),
-                                         credit_history())
+                                         credit_history(),
+                                         client.credits_used_this_run)
             if (props and getattr(config, "PROP_MARKETS", None)
                     and sport in getattr(config, "PROP_SPORTS", [])
                     and games
