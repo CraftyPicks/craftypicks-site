@@ -801,3 +801,44 @@ rendering rather than new models.
 means seven weeks of empty pages and no way to test any of it until there are
 box scores. Build the structure so a league drops in as a config entry; write
 the models when there is something to grade them against.
+
+
+---
+
+# Parked — money percentage and sharp money
+
+Raised 2026-09-05, deliberately not built. Recorded so the reasoning is not
+re-derived later.
+
+**Bet % and money % are not reachable.** The Odds API returns odds only —
+prices, points, books. It carries no handle, no ticket counts, no splits.
+That data comes from books reporting to third parties (Action Network, VSiN,
+Sports Insights), which means a second paid subscription, and most of them
+do not license it for republication at any price.
+
+**"Sharp money" splits in two, and only half is reachable.**
+
+*Reverse line movement* — the line moving against where most bets sit — is
+the signal most sites mean by the phrase. It needs bet %, so it is out for
+the same reason.
+
+*Steam* — several books moving the same way within minutes — is detectable
+from odds alone, which this site already buys. It is what steam actually is,
+and it needs nobody's ticket count.
+
+**What steam would cost.** The board pulls odds once a day. Steam needs
+snapshots through the day. At 3 markets and 1 region that is 3 credits a
+pull; hourly from 9 AM to 9 PM is 36 a day, about **1,100 a month for MLB**
+against a 20,000 allowance. Four sports in season at that cadence is roughly
+4,400. Affordable, but not free, and it buys a weaker claim than the next
+paragraph.
+
+**The stronger version already exists and is accumulating.**
+`data/board_clv.json` held **73 scored sides** when this was written: whether
+the market moved toward our number after we posted it. Steam says the market
+moved. Closing-line value says the market moved *toward us*, which is the
+only version that says anything about being right. A first read wants around
+300 rows; it grows for free on a request already made.
+
+**If this is ever built, build the CLV page first.** It costs nothing, it is
+further along than it looks, and it may make steam unnecessary.

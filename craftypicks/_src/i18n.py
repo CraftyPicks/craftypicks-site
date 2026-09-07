@@ -59,6 +59,7 @@ T = {
     # ---- navigation and chrome
     "nav_plays":    {"en": "System Plays",   "es": "Jugadas del sistema"},
     "nav_tonight":  {"en": "Today's Games",  "es": "Juegos de hoy"},
+    "ev_label":     {"en": "EV", "es": "VE"},
     "close":        {"en": "Close", "es": "Cerrar"},
     "nav_board":    {"en": "Board",          "es": "Pizarra"},
     "nav_pitchers": {"en": "Pitchers Prop",  "es": "Props de lanzadores"},

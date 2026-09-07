@@ -13,6 +13,7 @@ import config    # noqa: E402
 import fair      # noqa: E402
 import form_store # noqa: E402
 import leagues   # noqa: E402
+import odds_math as om  # noqa: E402
 import rate_mlb  # noqa: E402
 import ratings   # noqa: E402
 
@@ -364,6 +365,7 @@ def merge_model(rows: list[dict], rated: list[dict], source: str) -> int:
         if market is None:
             market = ((row.get("markets") or {}).get("h2h") or {}).get("fair_home")
 
+        h2h = (row.get("markets") or {}).get("h2h") or {}
         row["model"] = {
             "home_win_prob": hp,
             "away_win_prob": ap,
@@ -371,12 +373,36 @@ def merge_model(rows: list[dict], rated: list[dict], source: str) -> int:
             "disagreement": rating.get("disagreement"),
             "suspect": bool(rating.get("suspect")),
             "source": source,
+            "ev_home": model_ev(hp, h2h.get("best_home")),
+            "ev_away": model_ev(ap, h2h.get("best_away")),
         }
         detail = {k: rating[k] for k in DETAIL_KEYS if rating.get(k) is not None}
         if detail:
             row["detail"] = detail
         matched += 1
     return matched
+
+
+def model_ev(prob, best) -> float | None:
+    """EV of backing this side at the best posted price, on OUR number.
+
+    Deliberately a different quantity from the market edges already on the
+    card. Those compare a book's price against the devigged consensus and
+    answer "is this book off the market". This asks "does our own
+    probability say this price is worth taking", which is the only version
+    a reader can act on and the only one that is ever wrong in a way that
+    matters.
+
+    Returns None rather than a number when either half is missing: no model
+    for the game, or no book pricing that side. A zero would read as a fair
+    price rather than as an absence.
+    """
+    if prob is None or not best:
+        return None
+    price = best.get("price")
+    if price is None:
+        return None
+    return round(om.expected_value_pct(prob, price), 1)
 
 
 def merge_form(rows: list[dict], games: list[dict]) -> int:
@@ -481,7 +507,6 @@ def elo_model(rows: list[dict], history: list[dict], short: str,
 def _self_test() -> None:
     import io                        # noqa: PLC0415
     import contextlib                # noqa: PLC0415
-    import odds_math as om           # noqa: PLC0415
 
     # A four-book game. Caesars is best on both moneyline sides and hangs a
     # different total from everyone else.

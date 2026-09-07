@@ -540,7 +540,7 @@ def _vs_line(vs: dict | None, opponent: str | None) -> str:
 
 
 def _side(team, starter, era, prob, leading, rec=None, at_home=False,
-          vs=None, opponent=None, wl=None) -> str:
+          vs=None, opponent=None, wl=None, ev=None) -> str:
     # No starter, no starter line. The old "TBA" was a hardcoded English
     # string — the only reader-facing word on a card not routed through _()
     # — and it is now reached by every Elo league, printing a pitcher slot on
@@ -564,10 +564,24 @@ def _side(team, starter, era, prob, leading, rec=None, at_home=False,
     # No probability means no model for this game yet — the club's name still
     # gets its slot, but the percentage is left off rather than faked as 0%.
     pc = f'<div class="pc">{prob*100:.1f}%</div>' if prob is not None else ""
+    # EV of backing this side at the best posted price, on OUR number --
+    # not the market-edge figure on the price rows below, which asks a
+    # different question (is this book off the consensus). Shown only when
+    # there is a price to compute it against; a missing EV is left blank
+    # rather than printed as zero, which would read as a fair price.
+    ev_tag = ""
+    if ev is not None:
+        cls = "up" if ev > 0 else "down"
+        # A real minus, as format_american uses. A hyphen reads as a dash
+        # beside a percentage and the two are visibly different sizes in
+        # the mono face this is set in.
+        shown = f"+{ev:.1f}" if ev > 0 else f"−{abs(ev):.1f}"
+        ev_tag = (f'<div class="gev {cls}">{shown}% '
+                  f'<span>{_("ev_label")}</span></div>')
     return f"""
         <div class="gside{' lead' if leading else ''}">
           <div class="tm">{_tdot(team)}{esc(team or '')}</div>
-          {pc}
+          {pc}{ev_tag}
         </div>
         {_record_line(rec, at_home)}
         {sp}
@@ -656,7 +670,7 @@ def slate_rows(rows: list[dict]) -> str:
           <div class="gcard-body">
             {_side(away, r.get('away_starter'), r.get('away_starter_era'), pa,
                    pa > ph, r.get('away_record'), False,
-                   r.get('away_vs_opp'), home)}
+                   r.get('away_vs_opp'), home, ev=(r.get('model') or {}).get('ev_away'))}
             <div class="gbar">
               <div class="seg on" style="left:0;width:{max(0.0, min(100.0, pa * 100)):.1f}%"></div>
               <div class="seg" style="left:{max(0.0, min(100.0, pa * 100)):.1f}%;right:0"></div>
@@ -664,7 +678,7 @@ def slate_rows(rows: list[dict]) -> str:
             </div>
             {_side(home, r.get('home_starter'), r.get('home_starter_era'), ph,
                    ph >= pa, r.get('home_record'), True,
-                   r.get('home_vs_opp'), away)}
+                   r.get('home_vs_opp'), away, ev=(r.get('model') or {}).get('ev_home'))}
             <div class="gfoot">
               {foot_left}
               {foot_right}
@@ -1239,6 +1253,7 @@ def board_card(row: dict) -> str:
             wl=detail.get(f"{which}_starter_wl"),
             vs=detail.get(f"{which}_vs_opp"),
             opponent=row.get("home" if which == "away" else "away"),
+            ev=model.get(f"ev_{which}"),
         )
 
     hp = model.get("home_win_prob")
