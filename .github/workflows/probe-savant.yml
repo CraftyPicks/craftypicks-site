@@ -1,0 +1,24 @@
+name: Probe Savant xwOBA
+
+# Diagnostic only. Reads public endpoints, writes nothing, commits nothing.
+# Run it once from the Actions tab and paste the log back.
+
+on:
+  workflow_dispatch:
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Ask Savant whether it will give us xwOBA
+        shell: bash
+        run: |
+          set -o pipefail
+          python3 research/probe_savant.py 2>&1
