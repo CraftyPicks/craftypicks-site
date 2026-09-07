@@ -336,6 +336,53 @@ section{border-bottom:1px solid var(--line)}
 .mk-edge.r{color:var(--red)}
 .mk-note{flex:0 0 auto;font-size:12.5px;color:var(--muted)}
 
+/* ---------- the canvas card ----------
+   Five lines and nothing else: the matchup, the one probability we are
+   claiming, the bar with the market ticked onto it, what the market says,
+   and the size of the disagreement. Everything that used to live on the
+   face of this card -- records, starters, head to head, the three price
+   rows -- is behind the disclosure. A reader scanning fifteen games should
+   be comparing fifteen of the same number, not reading fifteen paragraphs. */
+.cv-head{display:flex;align-items:baseline;justify-content:space-between;
+  gap:10px;margin-bottom:18px}
+.cv-tm{font-size:20px;font-weight:700;letter-spacing:-.025em;color:var(--txt);
+  line-height:1.15;margin:0}
+.cv-tm span{color:var(--muted);font-weight:400}
+.cv-time{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;
+  color:var(--muted);white-space:nowrap}
+.cv-row{display:flex;align-items:baseline;justify-content:space-between;
+  gap:12px;margin-bottom:10px}
+.cv-lab{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--muted)}
+/* The number the card exists to deliver. Sans, not mono -- display type. */
+.cv-pct{font-size:30px;font-weight:700;letter-spacing:-.03em;line-height:1;
+  color:var(--green)}
+.cv-bar{position:relative;height:13px;background:var(--bg-2);overflow:hidden}
+.cv-fill{position:absolute;left:0;top:0;bottom:0;
+  background:linear-gradient(90deg,rgba(91,227,156,.30),var(--green))}
+/* Ringed in the page ground so it reads over both halves of the bar. */
+.cv-tick{position:absolute;top:0;bottom:0;width:2px;background:var(--txt);
+  box-shadow:0 0 0 1px rgba(8,9,11,.85)}
+.cv-foot{display:flex;align-items:baseline;justify-content:space-between;
+  gap:10px;margin-top:14px;padding-top:12px;border-top:1px solid var(--line);
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;
+  text-transform:uppercase}
+.cv-foot .gm{color:var(--muted)}
+.ge{font-weight:700;white-space:nowrap}
+.ge.up{color:var(--green)}
+.ge.down{color:var(--amber)}
+.ge.none{color:var(--muted);font-weight:400}
+/* The prop card's second line: which club, which opponent, and whether the
+   start has been graded. It replaces the old top strip, which on the canvas
+   card has no place -- the canvas puts the matchup in the title. */
+.cv-sub{font-family:var(--mono);font-size:10px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--muted);margin:-12px 0 18px}
+/* The unit after a projection. --dim is allowed here for the same reason it
+   is on .pb-num .unit: the figure beside it already carries the meaning. */
+.cv-u{font-size:15px;color:var(--dim);margin-left:4px;font-weight:500}
+.cv-none{font-family:var(--mono);font-size:11px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--muted);padding:6px 0 2px}
+
 /* Disclosure, not a flip: the back of a card is the size of its front, and
    this content does not fit there. interpolate-size lets it animate to its
    natural height, and prefers-reduced-motion turns that off. */
@@ -1039,568 +1086,448 @@ footer{background:var(--bg-2);padding:56px 0 40px}
     <div class="pb-grid">
         <div class="pb-card"
              style="--accent:var(--line-2)">
-          <div class="pb-top">
-            <span>ATL vs PHI
-              &middot; 1:06 PM ET</span>
-            <span>Rated</span>
-          </div>
           <div class="pb-body">
-            <div class="pb-name">Grant Holmes <span class="pb-wl">9&ndash;5</span></div>
-            <div class="pb-head">
-              <div class="pb-num"><div class="k">Our projection</div>
-                <div class="v">4.2<span class="unit">K</span></div></div>
-              <div class="pb-num alt"><div class="k">Posted line</div>
-                <div class="v">3.5<span class="unit">K</span></div></div>
+            <div class="cv-head">
+              <h3 class="cv-tm">Grant Holmes</h3>
+              <span class="cv-time">1:06 PM ET</span>
             </div>
-            <div class="pb-striphead">
-              <span>Last 10 starts</span>
-              <span class="pb-rec"><b>4&ndash;6</b>
-                over 3.5 &middot; L5 <b>0&ndash;5</b></span>
+            <div class="cv-sub">ATL vs PHI
+              &middot; Rated</div>
+            <div class="cv-row">
+              <span class="cv-lab">Our projection</span>
+              <span class="cv-pct">4.2<span class="cv-u">K</span></span>
             </div>
-            
+            <div class="cv-bar"><i class="cv-fill" style="width:60.0%"></i>
+              <i class="cv-tick" style="left:50.0%"></i></div>
+            <div class="cv-foot">
+              <span class="gm">Posted line 3.5</span><span class="ge up">+0.7 edge</span>
+            </div>
+            <details class="gmore" data-close="Close">
+              <summary>Prop detail +</summary>
+              <div class="gmore-in"><div class="pnl"><section class="pk"><h4>Prices</h4><div class="pb-foot"><span>o+103 / u−128</span><span class="lean">0.7 over the line</span></div></section><section class="pk"><h4>Last 10 starts</h4><div class="pb-striphead"><span></span><span class="pb-rec"><b>4&ndash;6</b> over 3.5 &middot; L5 <b>0&ndash;5</b></span></div>
       <div class="pb-strip">
         <div class="pb-line" style="bottom:25.0%"><span class="pb-linelab">3.5</span></div>
         <div class="pb-bar hit" style="height:35.7%" title="2026-07-08 vs Pittsburgh Pirates — 5 K in 5.0 IP"></div><div class="pb-bar" style="height:14.3%" title="2026-07-19 vs Texas Rangers — 2 K in 5.0 IP"></div><div class="pb-bar hit" style="height:35.7%" title="2026-07-24 vs Baltimore Orioles — 5 K in 5.0 IP"></div><div class="pb-bar hit" style="height:28.6%" title="2026-07-30 vs Washington Nationals — 4 K in 4.7 IP"></div><div class="pb-bar hit" style="height:35.7%" title="2026-08-04 vs Miami Marlins — 5 K in 6.0 IP"></div><div class="pb-bar" style="height:14.3%" title="2026-08-09 vs New York Yankees — 2 K in 6.0 IP"></div><div class="pb-bar" style="height:21.4%" title="2026-08-15 vs Arizona Diamondbacks — 3 K in 3.7 IP"></div><div class="pb-bar" style="height:21.4%" title="2026-08-20 vs Chicago White Sox — 3 K in 6.0 IP"></div><div class="pb-bar" style="height:21.4%" title="2026-08-28 vs Colorado Rockies — 3 K in 5.0 IP"></div><div class="pb-bar" style="height:7.1%" title="2026-09-02 vs Washington Nationals — 1 K in 3.0 IP"></div>
       </div>
-      <div class="pb-ticks"><span>5</span><span>2</span><span>5</span><span>4</span><span>5</span><span>2</span><span>3</span><span>3</span><span>3</span><span>1</span></div>
-            <div class="pb-rows">
-              <div class="pb-row"><span>Season</span><b>18.5% K &middot; 7.1 K/9 &middot; 3.62 ERA</b></div>
-              <div class="pb-row"><span>PHI strikeouts</span>
-                <b>8.3 per game &middot; 9th of 21</b></div>
-            </div>
-            <div class="pb-foot">
-              <span>o+103 / u−128</span>
-              <span class="lean">0.7 over the line</span>
-            </div>
+      <div class="pb-ticks"><span>5</span><span>2</span><span>5</span><span>4</span><span>5</span><span>2</span><span>3</span><span>3</span><span>3</span><span>1</span></div></section><section class="pk"><h4>Season</h4><div class="pb-rows"><div class="pb-row"><span>Season</span><b>18.5% K &middot; 7.1 K/9 &middot; 3.62 ERA</b></div><div class="pb-row"><span>PHI strikeouts</span><b>8.3 per game &middot; 9th of 21</b></div></div></section>
+                <div class="mxb"><div class="mxh">Holmes against PHI, 2025–2026</div><div class="mxg"><div><span>starts</span><b>3</b></div><div><span>innings</span><b>14.7</b></div><div><span>K</span><b>14</b></div><div><span>K per 9</span><b>8.6</b></div><div><span>ERA</span><b>3.07</b></div></div><p class="mxn">8.6 per nine against them, against 7.1 all season.</p><div class="mxh">How PHI strike out</div><table class="mxt"><tr class="on"><th>vs right-handers</th><td class="n">21.9%</td><td class="r">12th of 30</td><td class="p">3,696 PA</td></tr><tr class="avg"><th>league average</th><td class="n">21.9%</td><td class="r"></td><td class="p"></td></tr></table><p class="mxn">Holmes throws right, so this is the rate that applies to him. PHI rank 13th against everybody and 12th against right-handers.</p></div><div class="verdict ">ordinary matchup<span class="vd">+0.1 points vs league</span></div></div></div>
+            </details>
           </div>
-          <details class="mx"><summary><span class="mxs">matchup detail</span></summary><div class="mxb"><div class="mxh">Holmes against PHI, 2025–2026</div><div class="mxg"><div><span>starts</span><b>3</b></div><div><span>innings</span><b>14.7</b></div><div><span>K</span><b>14</b></div><div><span>K per 9</span><b>8.6</b></div><div><span>ERA</span><b>3.07</b></div></div><p class="mxn">8.6 per nine against them, against 7.1 all season.</p><div class="mxh">How PHI strike out</div><table class="mxt"><tr class="on"><th>vs right-handers</th><td class="n">21.9%</td><td class="r">12th of 30</td><td class="p">3,696 PA</td></tr><tr class="avg"><th>league average</th><td class="n">21.9%</td><td class="r"></td><td class="p"></td></tr></table><p class="mxn">Holmes throws right, so this is the rate that applies to him. PHI rank 13th against everybody and 12th against right-handers.</p></div></details><div class="verdict ">ordinary matchup<span class="vd">+0.1 points vs league</span></div>
         </div>
         <div class="pb-card"
              style="--accent:var(--line-2)">
-          <div class="pb-top">
-            <span>PHI vs ATL
-              &middot; 1:06 PM ET</span>
-            <span>Rated</span>
-          </div>
           <div class="pb-body">
-            <div class="pb-name">Jesús Luzardo <span class="pb-wl">13&ndash;5</span></div>
-            <div class="pb-head">
-              <div class="pb-num"><div class="k">Our projection</div>
-                <div class="v">6.7<span class="unit">K</span></div></div>
-              <div class="pb-num alt"><div class="k">Posted line</div>
-                <div class="v">7.5<span class="unit">K</span></div></div>
+            <div class="cv-head">
+              <h3 class="cv-tm">Jesús Luzardo</h3>
+              <span class="cv-time">1:06 PM ET</span>
             </div>
-            <div class="pb-striphead">
-              <span>Last 10 starts</span>
-              <span class="pb-rec"><b>6&ndash;4</b>
-                over 7.5 &middot; L5 <b>4&ndash;1</b></span>
+            <div class="cv-sub">PHI vs ATL
+              &middot; Rated</div>
+            <div class="cv-row">
+              <span class="cv-lab">Our projection</span>
+              <span class="cv-pct">6.7<span class="cv-u">K</span></span>
             </div>
-            
+            <div class="cv-bar"><i class="cv-fill" style="width:44.7%"></i>
+              <i class="cv-tick" style="left:50.0%"></i></div>
+            <div class="cv-foot">
+              <span class="gm">Posted line 7.5</span><span class="ge down">&minus;0.8 fade</span>
+            </div>
+            <details class="gmore" data-close="Close">
+              <summary>Prop detail +</summary>
+              <div class="gmore-in"><div class="pnl"><section class="pk"><h4>Prices</h4><div class="pb-foot"><span>o+122 / u−145</span><span class="lean">0.8 under the line</span></div></section><section class="pk"><h4>Last 10 starts</h4><div class="pb-striphead"><span></span><span class="pb-rec"><b>6&ndash;4</b> over 7.5 &middot; L5 <b>4&ndash;1</b></span></div>
       <div class="pb-strip">
         <div class="pb-line" style="bottom:53.6%"><span class="pb-linelab">7.5</span></div>
         <div class="pb-bar hit" style="height:78.6%" title="2026-07-09 vs Cincinnati Reds — 11 K in 7.0 IP"></div><div class="pb-bar" style="height:50.0%" title="2026-07-18 vs New York Mets — 7 K in 5.0 IP"></div><div class="pb-bar hit" style="height:64.3%" title="2026-07-24 vs New York Yankees — 9 K in 7.0 IP"></div><div class="pb-bar" style="height:35.7%" title="2026-07-29 vs Miami Marlins — 5 K in 6.3 IP"></div><div class="pb-bar" style="height:50.0%" title="2026-08-04 vs Washington Nationals — 7 K in 8.0 IP"></div><div class="pb-bar hit" style="height:85.7%" title="2026-08-09 vs Toronto Blue Jays — 12 K in 7.0 IP"></div><div class="pb-bar hit" style="height:64.3%" title="2026-08-15 vs Minnesota Twins — 9 K in 6.7 IP"></div><div class="pb-bar hit" style="height:64.3%" title="2026-08-21 vs St. Louis Cardinals — 9 K in 5.7 IP"></div><div class="pb-bar hit" style="height:64.3%" title="2026-08-26 vs Seattle Mariners — 9 K in 7.0 IP"></div><div class="pb-bar" style="height:42.9%" title="2026-09-01 vs Arizona Diamondbacks — 6 K in 6.7 IP"></div>
       </div>
-      <div class="pb-ticks"><span>11</span><span>7</span><span>9</span><span>5</span><span>7</span><span>12</span><span>9</span><span>9</span><span>9</span><span>6</span></div>
-            <div class="pb-rows">
-              <div class="pb-row"><span>Season</span><b>30.0% K &middot; 11.1 K/9 &middot; 3.02 ERA</b></div>
-              <div class="pb-row"><span>ATL strikeouts</span>
-                <b>8.1 per game &middot; 11th of 21</b></div>
-            </div>
-            <div class="pb-foot">
-              <span>o+122 / u−145</span>
-              <span class="lean">0.8 under the line</span>
-            </div>
+      <div class="pb-ticks"><span>11</span><span>7</span><span>9</span><span>5</span><span>7</span><span>12</span><span>9</span><span>9</span><span>9</span><span>6</span></div></section><section class="pk"><h4>Season</h4><div class="pb-rows"><div class="pb-row"><span>Season</span><b>30.0% K &middot; 11.1 K/9 &middot; 3.02 ERA</b></div><div class="pb-row"><span>ATL strikeouts</span><b>8.1 per game &middot; 11th of 21</b></div></div></section>
+                <div class="mxb"><div class="mxh">Luzardo against ATL, 2025–2026</div><div class="mxg"><div><span>starts</span><b>3</b></div><div><span>innings</span><b>17.7</b></div><div><span>K</span><b>20</b></div><div><span>K per 9</span><b>10.2</b></div><div><span>ERA</span><b>1.53</b></div></div><p class="mxn">10.2 per nine against them, against 11.1 all season.</p><div class="mxh">How ATL strike out</div><table class="mxt"><tr class="on"><th>vs left-handers</th><td class="n">20.9%</td><td class="r">25th of 30</td><td class="p">1,832 PA</td></tr><tr class="avg"><th>league average</th><td class="n">22.6%</td><td class="r"></td><td class="p"></td></tr></table><p class="mxn">Luzardo throws left, so this is the rate that applies to him. ATL rank 15th against everybody and 25th against left-handers.</p></div><div class="verdict bad">tough matchup<span class="vd">-1.7 points vs league</span></div></div></div>
+            </details>
           </div>
-          <details class="mx"><summary><span class="mxs">matchup detail</span></summary><div class="mxb"><div class="mxh">Luzardo against ATL, 2025–2026</div><div class="mxg"><div><span>starts</span><b>3</b></div><div><span>innings</span><b>17.7</b></div><div><span>K</span><b>20</b></div><div><span>K per 9</span><b>10.2</b></div><div><span>ERA</span><b>1.53</b></div></div><p class="mxn">10.2 per nine against them, against 11.1 all season.</p><div class="mxh">How ATL strike out</div><table class="mxt"><tr class="on"><th>vs left-handers</th><td class="n">20.9%</td><td class="r">25th of 30</td><td class="p">1,832 PA</td></tr><tr class="avg"><th>league average</th><td class="n">22.6%</td><td class="r"></td><td class="p"></td></tr></table><p class="mxn">Luzardo throws left, so this is the rate that applies to him. ATL rank 15th against everybody and 25th against left-handers.</p></div></details><div class="verdict bad">tough matchup<span class="vd">-1.7 points vs league</span></div>
         </div>
         <div class="pb-card"
              style="--accent:var(--line-2)">
-          <div class="pb-top">
-            <span>NYM vs MIA
-              &middot; 1:11 PM ET</span>
-            <span>Rated</span>
-          </div>
           <div class="pb-body">
-            <div class="pb-name">Jonah Tong <span class="pb-wl">1&ndash;1</span></div>
-            <div class="pb-head">
-              <div class="pb-num"><div class="k">Our projection</div>
-                <div class="v">3.7<span class="unit">K</span></div></div>
-              <div class="pb-num alt"><div class="k">Posted line</div>
-                <div class="v">4.5<span class="unit">K</span></div></div>
+            <div class="cv-head">
+              <h3 class="cv-tm">Jonah Tong</h3>
+              <span class="cv-time">1:11 PM ET</span>
             </div>
-            <div class="pb-striphead">
-              <span>Last 0 starts</span>
-              <span class="pb-rec"><b>0&ndash;0</b>
-                over 4.5 &middot; L5 <b>0&ndash;0</b></span>
+            <div class="cv-sub">NYM vs MIA
+              &middot; Rated</div>
+            <div class="cv-row">
+              <span class="cv-lab">Our projection</span>
+              <span class="cv-pct">3.7<span class="cv-u">K</span></span>
             </div>
-            <div class="pb-nostrip">No starts logged yet this season.</div>
-            <div class="pb-rows">
-              <div class="pb-row"><span>Season</span><b>14.9% K &middot; 6.3 K/9 &middot; 3.60 ERA</b></div>
-              <div class="pb-row"><span>MIA strikeouts</span>
-                <b>8.2 per game &middot; 10th of 21</b></div>
+            <div class="cv-bar"><i class="cv-fill" style="width:41.1%"></i>
+              <i class="cv-tick" style="left:50.0%"></i></div>
+            <div class="cv-foot">
+              <span class="gm">Posted line 4.5</span><span class="ge down">&minus;0.8 fade</span>
             </div>
-            <div class="pb-foot">
-              <span>o−117 / u+106</span>
-              <span class="lean">0.8 under the line</span>
-            </div>
+            <details class="gmore" data-close="Close">
+              <summary>Prop detail +</summary>
+              <div class="gmore-in"><div class="pnl"><section class="pk"><h4>Prices</h4><div class="pb-foot"><span>o−117 / u+106</span><span class="lean">0.8 under the line</span></div></section><section class="pk"><h4>Last 0 starts</h4><div class="pb-striphead"><span></span><span class="pb-rec"><b>0&ndash;0</b> over 4.5 &middot; L5 <b>0&ndash;0</b></span></div><div class="pb-nostrip">No starts logged yet this season.</div></section><section class="pk"><h4>Season</h4><div class="pb-rows"><div class="pb-row"><span>Season</span><b>14.9% K &middot; 6.3 K/9 &middot; 3.60 ERA</b></div><div class="pb-row"><span>MIA strikeouts</span><b>8.2 per game &middot; 10th of 21</b></div></div></section>
+                <div class="mxb"><div class="mxh">Tong against MIA, 2025–2026</div><div class="mxg"><div><span>starts</span><b>1</b></div><div><span>innings</span><b>8</b></div><div><span>K</span><b>8</b></div><div><span>K per 9</span><b>9.0</b></div><div><span>ERA</span><b>1.12</b></div></div><p class="mxn">9.0 per nine against them, against 6.3 all season.</p><p class="mxn warn">1 start is not evidence. It is shown because it is the kind of thing you want to see, not because it moves the number.</p><div class="mxh">How MIA strike out</div><table class="mxt"><tr class="on"><th>vs right-handers</th><td class="n">21.1%</td><td class="r">21st of 30</td><td class="p">3,930 PA</td></tr><tr class="avg"><th>league average</th><td class="n">21.9%</td><td class="r"></td><td class="p"></td></tr></table><p class="mxn">Tong throws right, so this is the rate that applies to him. MIA rank 17th against everybody and 21st against right-handers.</p></div><div class="verdict ">ordinary matchup<span class="vd">-0.7 points vs league</span></div></div></div>
+            </details>
           </div>
-          <details class="mx"><summary><span class="mxs">matchup detail</span></summary><div class="mxb"><div class="mxh">Tong against MIA, 2025–2026</div><div class="mxg"><div><span>starts</span><b>1</b></div><div><span>innings</span><b>8</b></div><div><span>K</span><b>8</b></div><div><span>K per 9</span><b>9.0</b></div><div><span>ERA</span><b>1.12</b></div></div><p class="mxn">9.0 per nine against them, against 6.3 all season.</p><p class="mxn warn">1 start is not evidence. It is shown because it is the kind of thing you want to see, not because it moves the number.</p><div class="mxh">How MIA strike out</div><table class="mxt"><tr class="on"><th>vs right-handers</th><td class="n">21.1%</td><td class="r">21st of 30</td><td class="p">3,930 PA</td></tr><tr class="avg"><th>league average</th><td class="n">21.9%</td><td class="r"></td><td class="p"></td></tr></table><p class="mxn">Tong throws right, so this is the rate that applies to him. MIA rank 17th against everybody and 21st against right-handers.</p></div></details><div class="verdict ">ordinary matchup<span class="vd">-0.7 points vs league</span></div>
         </div>
         <div class="pb-card"
              style="--accent:var(--line-2)">
-          <div class="pb-top">
-            <span>MIA vs NYM
-              &middot; 1:11 PM ET</span>
-            <span>Rated</span>
-          </div>
           <div class="pb-body">
-            <div class="pb-name">Eury Pérez <span class="pb-wl">7&ndash;10</span></div>
-            <div class="pb-head">
-              <div class="pb-num"><div class="k">Our projection</div>
-                <div class="v">5.8<span class="unit">K</span></div></div>
-              <div class="pb-num alt"><div class="k">Posted line</div>
-                <div class="v">5.5<span class="unit">K</span></div></div>
+            <div class="cv-head">
+              <h3 class="cv-tm">Eury Pérez</h3>
+              <span class="cv-time">1:11 PM ET</span>
             </div>
-            <div class="pb-striphead">
-              <span>Last 10 starts</span>
-              <span class="pb-rec"><b>5&ndash;5</b>
-                over 5.5 &middot; L5 <b>1&ndash;4</b></span>
+            <div class="cv-sub">MIA vs NYM
+              &middot; Rated</div>
+            <div class="cv-row">
+              <span class="cv-lab">Our projection</span>
+              <span class="cv-pct">5.8<span class="cv-u">K</span></span>
             </div>
-            
+            <div class="cv-bar"><i class="cv-fill" style="width:52.7%"></i>
+              <i class="cv-tick" style="left:50.0%"></i></div>
+            <div class="cv-foot">
+              <span class="gm">Posted line 5.5</span><span class="ge none">no edge</span>
+            </div>
+            <details class="gmore" data-close="Close">
+              <summary>Prop detail +</summary>
+              <div class="gmore-in"><div class="pnl"><section class="pk"><h4>Prices</h4><div class="pb-foot"><span>o−115 / u+103</span><span>in line</span></div></section><section class="pk"><h4>Last 10 starts</h4><div class="pb-striphead"><span></span><span class="pb-rec"><b>5&ndash;5</b> over 5.5 &middot; L5 <b>1&ndash;4</b></span></div>
       <div class="pb-strip">
         <div class="pb-line" style="bottom:39.3%"><span class="pb-linelab">5.5</span></div>
         <div class="pb-bar hit" style="height:42.9%" title="2026-07-11 vs Cleveland Guardians — 6 K in 6.0 IP"></div><div class="pb-bar hit" style="height:64.3%" title="2026-07-19 vs Milwaukee Brewers — 9 K in 6.0 IP"></div><div class="pb-bar" style="height:14.3%" title="2026-07-25 vs San Diego Padres — 2 K in 7.0 IP"></div><div class="pb-bar hit" style="height:42.9%" title="2026-07-30 vs New York Mets — 6 K in 6.0 IP"></div><div class="pb-bar hit" style="height:64.3%" title="2026-08-05 vs Atlanta Braves — 9 K in 5.0 IP"></div><div class="pb-bar hit" style="height:50.0%" title="2026-08-11 vs Pittsburgh Pirates — 7 K in 7.0 IP"></div><div class="pb-bar" style="height:35.7%" title="2026-08-16 vs Cincinnati Reds — 5 K in 6.0 IP"></div><div class="pb-bar" style="height:28.6%" title="2026-08-22 vs Washington Nationals — 4 K in 5.0 IP"></div><div class="pb-bar" style="height:35.7%" title="2026-08-28 vs Washington Nationals — 5 K in 3.0 IP"></div><div class="pb-bar" style="height:21.4%" title="2026-09-02 vs Kansas City Royals — 3 K in 4.7 IP"></div>
       </div>
-      <div class="pb-ticks"><span>6</span><span>9</span><span>2</span><span>6</span><span>9</span><span>7</span><span>5</span><span>4</span><span>5</span><span>3</span></div>
-            <div class="pb-rows">
-              <div class="pb-row"><span>Season</span><b>26.1% K &middot; 9.6 K/9 &middot; 3.72 ERA</b></div>
-              <div class="pb-row"><span>NYM strikeouts</span>
-                <b>8.4 per game &middot; 5th of 21</b></div>
-            </div>
-            <div class="pb-foot">
-              <span>o−115 / u+103</span>
-              <span>in line</span>
-            </div>
+      <div class="pb-ticks"><span>6</span><span>9</span><span>2</span><span>6</span><span>9</span><span>7</span><span>5</span><span>4</span><span>5</span><span>3</span></div></section><section class="pk"><h4>Season</h4><div class="pb-rows"><div class="pb-row"><span>Season</span><b>26.1% K &middot; 9.6 K/9 &middot; 3.72 ERA</b></div><div class="pb-row"><span>NYM strikeouts</span><b>8.4 per game &middot; 5th of 21</b></div></div></section>
+                <div class="mxb"><div class="mxh">Pérez against NYM, 2025–2026</div><div class="mxg"><div><span>starts</span><b>4</b></div><div><span>innings</span><b>18.3</b></div><div><span>K</span><b>22</b></div><div><span>K per 9</span><b>10.8</b></div><div><span>ERA</span><b>4.91</b></div></div><p class="mxn">10.8 per nine against them, against 9.6 all season.</p><div class="mxh">How NYM strike out</div><table class="mxt"><tr class="on"><th>vs right-handers</th><td class="n">22.3%</td><td class="r">9th of 30</td><td class="p">3,805 PA</td></tr><tr class="avg"><th>league average</th><td class="n">21.9%</td><td class="r"></td><td class="p"></td></tr></table><p class="mxn">Pérez throws right, so this is the rate that applies to him. NYM rank 11th against everybody and 9th against right-handers.</p></div><div class="verdict ">ordinary matchup<span class="vd">+0.4 points vs league</span></div></div></div>
+            </details>
           </div>
-          <details class="mx"><summary><span class="mxs">matchup detail</span></summary><div class="mxb"><div class="mxh">Pérez against NYM, 2025–2026</div><div class="mxg"><div><span>starts</span><b>4</b></div><div><span>innings</span><b>18.3</b></div><div><span>K</span><b>22</b></div><div><span>K per 9</span><b>10.8</b></div><div><span>ERA</span><b>4.91</b></div></div><p class="mxn">10.8 per nine against them, against 9.6 all season.</p><div class="mxh">How NYM strike out</div><table class="mxt"><tr class="on"><th>vs right-handers</th><td class="n">22.3%</td><td class="r">9th of 30</td><td class="p">3,805 PA</td></tr><tr class="avg"><th>league average</th><td class="n">21.9%</td><td class="r"></td><td class="p"></td></tr></table><p class="mxn">Pérez throws right, so this is the rate that applies to him. NYM rank 11th against everybody and 9th against right-handers.</p></div></details><div class="verdict ">ordinary matchup<span class="vd">+0.4 points vs league</span></div>
         </div>
         <div class="pb-card"
              style="--accent:var(--line-2)">
-          <div class="pb-top">
-            <span>CLE vs BAL
-              &middot; 1:36 PM ET</span>
-            <span>Rated</span>
-          </div>
           <div class="pb-body">
-            <div class="pb-name">Joey Cantillo <span class="pb-wl">9&ndash;8</span></div>
-            <div class="pb-head">
-              <div class="pb-num"><div class="k">Our projection</div>
-                <div class="v">6.4<span class="unit">K</span></div></div>
-              <div class="pb-num alt"><div class="k">Posted line</div>
-                <div class="v">5.5<span class="unit">K</span></div></div>
+            <div class="cv-head">
+              <h3 class="cv-tm">Joey Cantillo</h3>
+              <span class="cv-time">1:36 PM ET</span>
             </div>
-            <div class="pb-striphead">
-              <span>Last 10 starts</span>
-              <span class="pb-rec"><b>5&ndash;5</b>
-                over 5.5 &middot; L5 <b>2&ndash;3</b></span>
+            <div class="cv-sub">CLE vs BAL
+              &middot; Rated</div>
+            <div class="cv-row">
+              <span class="cv-lab">Our projection</span>
+              <span class="cv-pct">6.4<span class="cv-u">K</span></span>
             </div>
-            
+            <div class="cv-bar"><i class="cv-fill" style="width:58.2%"></i>
+              <i class="cv-tick" style="left:50.0%"></i></div>
+            <div class="cv-foot">
+              <span class="gm">Posted line 5.5</span><span class="ge up">+0.9 edge</span>
+            </div>
+            <details class="gmore" data-close="Close">
+              <summary>Prop detail +</summary>
+              <div class="gmore-in"><div class="pnl"><section class="pk"><h4>Prices</h4><div class="pb-foot"><span>o−143 / u+122</span><span class="lean">0.9 over the line</span></div></section><section class="pk"><h4>Last 10 starts</h4><div class="pb-striphead"><span></span><span class="pb-rec"><b>5&ndash;5</b> over 5.5 &middot; L5 <b>2&ndash;3</b></span></div>
       <div class="pb-strip">
         <div class="pb-line" style="bottom:39.3%"><span class="pb-linelab">5.5</span></div>
         <div class="pb-bar hit" style="height:64.3%" title="2026-07-12 vs Miami Marlins — 9 K in 5.0 IP"></div><div class="pb-bar hit" style="height:50.0%" title="2026-07-19 vs Pittsburgh Pirates — 7 K in 5.0 IP"></div><div class="pb-bar" style="height:28.6%" title="2026-07-24 vs Tampa Bay Rays — 4 K in 3.7 IP"></div><div class="pb-bar hit" style="height:57.1%" title="2026-07-29 vs Cincinnati Reds — 8 K in 4.0 IP"></div><div class="pb-bar" style="height:35.7%" title="2026-08-04 vs New York Mets — 5 K in 5.0 IP"></div><div class="pb-bar" style="height:21.4%" title="2026-08-09 vs Chicago White Sox — 3 K in 1.0 IP"></div><div class="pb-bar hit" style="height:50.0%" title="2026-08-15 vs San Diego Padres — 7 K in 6.0 IP"></div><div class="pb-bar" style="height:35.7%" title="2026-08-21 vs Colorado Rockies — 5 K in 4.7 IP"></div><div class="pb-bar" style="height:7.1%" title="2026-08-26 vs Los Angeles Angels — 1 K in 6.0 IP"></div><div class="pb-bar hit" style="height:42.9%" title="2026-09-02 vs Toronto Blue Jays — 6 K in 5.3 IP"></div>
       </div>
-      <div class="pb-ticks"><span>9</span><span>7</span><span>4</span><span>8</span><span>5</span><span>3</span><span>7</span><span>5</span><span>1</span><span>6</span></div>
-            <div class="pb-rows">
-              <div class="pb-row"><span>Season</span><b>24.5% K &middot; 9.6 K/9 &middot; 3.81 ERA</b></div>
-              <div class="pb-row"><span>BAL strikeouts</span>
-                <b>9.2 per game &middot; 2nd of 21</b></div>
-            </div>
-            <div class="pb-foot">
-              <span>o−143 / u+122</span>
-              <span class="lean">0.9 over the line</span>
-            </div>
+      <div class="pb-ticks"><span>9</span><span>7</span><span>4</span><span>8</span><span>5</span><span>3</span><span>7</span><span>5</span><span>1</span><span>6</span></div></section><section class="pk"><h4>Season</h4><div class="pb-rows"><div class="pb-row"><span>Season</span><b>24.5% K &middot; 9.6 K/9 &middot; 3.81 ERA</b></div><div class="pb-row"><span>BAL strikeouts</span><b>9.2 per game &middot; 2nd of 21</b></div></div></section>
+                <div class="mxb"><div class="mxh">Cantillo against BAL, 2025–2026</div><div class="mxg"><div><span>starts</span><b>2</b></div><div><span>innings</span><b>10.7</b></div><div><span>K</span><b>13</b></div><div><span>K per 9</span><b>10.9</b></div><div><span>ERA</span><b>4.22</b></div></div><p class="mxn">10.9 per nine against them, against 9.6 all season.</p><p class="mxn warn">2 starts is not evidence. It is shown because it is the kind of thing you want to see, not because it moves the number.</p><div class="mxh">How BAL strike out</div><table class="mxt"><tr class="on"><th>vs left-handers</th><td class="n">26.2%</td><td class="r">1st of 30</td><td class="p">1,715 PA</td></tr><tr class="avg"><th>league average</th><td class="n">22.6%</td><td class="r"></td><td class="p"></td></tr></table><p class="mxn">Cantillo throws left, so this is the rate that applies to him. BAL rank 4th against everybody and 1st against left-handers.</p></div><div class="verdict good">favourable matchup<span class="vd">+3.6 points vs league</span></div></div></div>
+            </details>
           </div>
-          <details class="mx"><summary><span class="mxs">matchup detail</span></summary><div class="mxb"><div class="mxh">Cantillo against BAL, 2025–2026</div><div class="mxg"><div><span>starts</span><b>2</b></div><div><span>innings</span><b>10.7</b></div><div><span>K</span><b>13</b></div><div><span>K per 9</span><b>10.9</b></div><div><span>ERA</span><b>4.22</b></div></div><p class="mxn">10.9 per nine against them, against 9.6 all season.</p><p class="mxn warn">2 starts is not evidence. It is shown because it is the kind of thing you want to see, not because it moves the number.</p><div class="mxh">How BAL strike out</div><table class="mxt"><tr class="on"><th>vs left-handers</th><td class="n">26.2%</td><td class="r">1st of 30</td><td class="p">1,715 PA</td></tr><tr class="avg"><th>league average</th><td class="n">22.6%</td><td class="r"></td><td class="p"></td></tr></table><p class="mxn">Cantillo throws left, so this is the rate that applies to him. BAL rank 4th against everybody and 1st against left-handers.</p></div></details><div class="verdict good">favourable matchup<span class="vd">+3.6 points vs league</span></div>
         </div>
         <div class="pb-card"
              style="--accent:var(--line-2)">
-          <div class="pb-top">
-            <span>BAL vs CLE
-              &middot; 1:36 PM ET</span>
-            <span>Rated</span>
-          </div>
           <div class="pb-body">
-            <div class="pb-name">Trevor Rogers <span class="pb-wl">9&ndash;9</span></div>
-            <div class="pb-head">
-              <div class="pb-num"><div class="k">Our projection</div>
-                <div class="v">4.7<span class="unit">K</span></div></div>
-              <div class="pb-num alt"><div class="k">Posted line</div>
-                <div class="v">4.5<span class="unit">K</span></div></div>
+            <div class="cv-head">
+              <h3 class="cv-tm">Trevor Rogers</h3>
+              <span class="cv-time">1:36 PM ET</span>
             </div>
-            <div class="pb-striphead">
-              <span>Last 10 starts</span>
-              <span class="pb-rec"><b>8&ndash;2</b>
-                over 4.5 &middot; L5 <b>4&ndash;1</b></span>
+            <div class="cv-sub">BAL vs CLE
+              &middot; Rated</div>
+            <div class="cv-row">
+              <span class="cv-lab">Our projection</span>
+              <span class="cv-pct">4.7<span class="cv-u">K</span></span>
             </div>
-            
+            <div class="cv-bar"><i class="cv-fill" style="width:52.2%"></i>
+              <i class="cv-tick" style="left:50.0%"></i></div>
+            <div class="cv-foot">
+              <span class="gm">Posted line 4.5</span><span class="ge none">no edge</span>
+            </div>
+            <details class="gmore" data-close="Close">
+              <summary>Prop detail +</summary>
+              <div class="gmore-in"><div class="pnl"><section class="pk"><h4>Prices</h4><div class="pb-foot"><span>o−130 / u+105</span><span>in line</span></div></section><section class="pk"><h4>Last 10 starts</h4><div class="pb-striphead"><span></span><span class="pb-rec"><b>8&ndash;2</b> over 4.5 &middot; L5 <b>4&ndash;1</b></span></div>
       <div class="pb-strip">
         <div class="pb-line" style="bottom:32.1%"><span class="pb-linelab">4.5</span></div>
         <div class="pb-bar" style="height:28.6%" title="2026-07-09 vs Chicago Cubs — 4 K in 6.0 IP"></div><div class="pb-bar hit" style="height:57.1%" title="2026-07-18 vs Houston Astros — 8 K in 6.3 IP"></div><div class="pb-bar hit" style="height:42.9%" title="2026-07-24 vs Atlanta Braves — 6 K in 7.0 IP"></div><div class="pb-bar hit" style="height:42.9%" title="2026-07-29 vs Detroit Tigers — 6 K in 6.0 IP"></div><div class="pb-bar hit" style="height:64.3%" title="2026-08-05 vs Los Angeles Angels — 9 K in 6.0 IP"></div><div class="pb-bar" style="height:28.6%" title="2026-08-10 vs Minnesota Twins — 4 K in 4.0 IP"></div><div class="pb-bar hit" style="height:42.9%" title="2026-08-16 vs Tampa Bay Rays — 6 K in 6.0 IP"></div><div class="pb-bar hit" style="height:42.9%" title="2026-08-21 vs Tampa Bay Rays — 6 K in 7.0 IP"></div><div class="pb-bar hit" style="height:50.0%" title="2026-08-27 vs St. Louis Cardinals — 7 K in 5.0 IP"></div><div class="pb-bar hit" style="height:78.6%" title="2026-09-02 vs Colorado Rockies — 11 K in 6.7 IP"></div>
       </div>
-      <div class="pb-ticks"><span>4</span><span>8</span><span>6</span><span>6</span><span>9</span><span>4</span><span>6</span><span>6</span><span>7</span><span>11</span></div>
-            <div class="pb-rows">
-              <div class="pb-row"><span>Season</span><b>21.9% K &middot; 8.2 K/9 &middot; 4.30 ERA</b></div>
-              <div class="pb-row"><span>CLE strikeouts</span>
-                <b>8.0 per game &middot; 15th of 21</b></div>
-            </div>
-            <div class="pb-foot">
-              <span>o−130 / u+105</span>
-              <span>in line</span>
-            </div>
+      <div class="pb-ticks"><span>4</span><span>8</span><span>6</span><span>6</span><span>9</span><span>4</span><span>6</span><span>6</span><span>7</span><span>11</span></div></section><section class="pk"><h4>Season</h4><div class="pb-rows"><div class="pb-row"><span>Season</span><b>21.9% K &middot; 8.2 K/9 &middot; 4.30 ERA</b></div><div class="pb-row"><span>CLE strikeouts</span><b>8.0 per game &middot; 15th of 21</b></div></div></section>
+                <div class="mxb"><div class="mxh">Rogers against CLE, 2025–2026</div><div class="mxg"><div><span>starts</span><b>1</b></div><div><span>innings</span><b>5</b></div><div><span>K</span><b>5</b></div><div><span>K per 9</span><b>9.0</b></div><div><span>ERA</span><b>9.00</b></div></div><p class="mxn">9.0 per nine against them, against 8.2 all season.</p><p class="mxn warn">1 start is not evidence. It is shown because it is the kind of thing you want to see, not because it moves the number.</p><div class="mxh">How CLE strike out</div><table class="mxt"><tr class="on"><th>vs left-handers</th><td class="n">22.0%</td><td class="r">19th of 30</td><td class="p">1,643 PA</td></tr><tr class="avg"><th>league average</th><td class="n">22.6%</td><td class="r"></td><td class="p"></td></tr></table><p class="mxn">Rogers throws left, so this is the rate that applies to him. CLE rank 23rd against everybody and 19th against left-handers.</p></div><div class="verdict ">ordinary matchup<span class="vd">-0.6 points vs league</span></div></div></div>
+            </details>
           </div>
-          <details class="mx"><summary><span class="mxs">matchup detail</span></summary><div class="mxb"><div class="mxh">Rogers against CLE, 2025–2026</div><div class="mxg"><div><span>starts</span><b>1</b></div><div><span>innings</span><b>5</b></div><div><span>K</span><b>5</b></div><div><span>K per 9</span><b>9.0</b></div><div><span>ERA</span><b>9.00</b></div></div><p class="mxn">9.0 per nine against them, against 8.2 all season.</p><p class="mxn warn">1 start is not evidence. It is shown because it is the kind of thing you want to see, not because it moves the number.</p><div class="mxh">How CLE strike out</div><table class="mxt"><tr class="on"><th>vs left-handers</th><td class="n">22.0%</td><td class="r">19th of 30</td><td class="p">1,643 PA</td></tr><tr class="avg"><th>league average</th><td class="n">22.6%</td><td class="r"></td><td class="p"></td></tr></table><p class="mxn">Rogers throws left, so this is the rate that applies to him. CLE rank 23rd against everybody and 19th against left-handers.</p></div></details><div class="verdict ">ordinary matchup<span class="vd">-0.6 points vs league</span></div>
         </div>
         <div class="pb-card"
              style="--accent:var(--line-2)">
-          <div class="pb-top">
-            <span>BOS vs LAA
-              &middot; 1:36 PM ET</span>
-            <span>Rated</span>
-          </div>
           <div class="pb-body">
-            <div class="pb-name">Brayan Bello <span class="pb-wl">5&ndash;7</span></div>
-            <div class="pb-head">
-              <div class="pb-num"><div class="k">Our projection</div>
-                <div class="v">4.4<span class="unit">K</span></div></div>
-              <div class="pb-num alt"><div class="k">Posted line</div>
-                <div class="v">4.5<span class="unit">K</span></div></div>
+            <div class="cv-head">
+              <h3 class="cv-tm">Brayan Bello</h3>
+              <span class="cv-time">1:36 PM ET</span>
             </div>
-            <div class="pb-striphead">
-              <span>Last 8 starts</span>
-              <span class="pb-rec"><b>1&ndash;7</b>
-                over 4.5 &middot; L5 <b>0&ndash;5</b></span>
+            <div class="cv-sub">BOS vs LAA
+              &middot; Rated</div>
+            <div class="cv-row">
+              <span class="cv-lab">Our projection</span>
+              <span class="cv-pct">4.4<span class="cv-u">K</span></span>
             </div>
-            
+            <div class="cv-bar"><i class="cv-fill" style="width:48.9%"></i>
+              <i class="cv-tick" style="left:50.0%"></i></div>
+            <div class="cv-foot">
+              <span class="gm">Posted line 4.5</span><span class="ge none">no edge</span>
+            </div>
+            <details class="gmore" data-close="Close">
+              <summary>Prop detail +</summary>
+              <div class="gmore-in"><div class="pnl"><section class="pk"><h4>Prices</h4><div class="pb-foot"><span>o+116 / u−124</span><span>in line</span></div></section><section class="pk"><h4>Last 8 starts</h4><div class="pb-striphead"><span></span><span class="pb-rec"><b>1&ndash;7</b> over 4.5 &middot; L5 <b>0&ndash;5</b></span></div>
       <div class="pb-strip">
         <div class="pb-line" style="bottom:32.1%"><span class="pb-linelab">4.5</span></div>
         <div class="pb-bar" style="height:14.3%" title="2026-03-31 vs Houston Astros — 2 K in 4.7 IP"></div><div class="pb-bar hit" style="height:35.7%" title="2026-04-06 vs Milwaukee Brewers — 5 K in 3.3 IP"></div><div class="pb-bar" style="height:14.3%" title="2026-04-12 vs St. Louis Cardinals — 2 K in 6.7 IP"></div><div class="pb-bar" style="height:28.6%" title="2026-04-18 vs Detroit Tigers — 4 K in 4.0 IP"></div><div class="pb-bar" style="height:14.3%" title="2026-04-24 vs Baltimore Orioles — 2 K in 3.3 IP"></div><div class="pb-bar" style="height:14.3%" title="2026-04-29 vs Toronto Blue Jays — 2 K in 3.7 IP"></div><div class="pb-bar" style="height:7.1%" title="2026-05-17 vs Atlanta Braves — 1 K in 5.0 IP"></div><div class="pb-bar" style="height:28.6%" title="2026-06-04 vs Baltimore Orioles — 4 K in 5.0 IP"></div>
       </div>
-      <div class="pb-ticks"><span>2</span><span>5</span><span>2</span><span>4</span><span>2</span><span>2</span><span>1</span><span>4</span></div>
-            <div class="pb-rows">
-              <div class="pb-row"><span>Season</span><b>16.2% K &middot; 6.5 K/9 &middot; 5.07 ERA</b></div>
-              <div class="pb-row"><span>LAA strikeouts</span>
-                <b>9.4 per game &middot; 1st of 21</b></div>
-            </div>
-            <div class="pb-foot">
-              <span>o+116 / u−124</span>
-              <span>in line</span>
-            </div>
+      <div class="pb-ticks"><span>2</span><span>5</span><span>2</span><span>4</span><span>2</span><span>2</span><span>1</span><span>4</span></div></section><section class="pk"><h4>Season</h4><div class="pb-rows"><div class="pb-row"><span>Season</span><b>16.2% K &middot; 6.5 K/9 &middot; 5.07 ERA</b></div><div class="pb-row"><span>LAA strikeouts</span><b>9.4 per game &middot; 1st of 21</b></div></div></section>
+                <div class="mxb"><div class="mxh">Bello against LAA, 2025–2026</div><div class="mxg"><div><span>starts</span><b>1</b></div><div><span>innings</span><b>6</b></div><div><span>K</span><b>4</b></div><div><span>K per 9</span><b>6.0</b></div><div><span>ERA</span><b>4.50</b></div></div><p class="mxn">6.0 per nine against them, against 6.5 all season.</p><p class="mxn warn">1 start is not evidence. It is shown because it is the kind of thing you want to see, not because it moves the number.</p><div class="mxh">How LAA strike out</div><table class="mxt"><tr class="on"><th>vs right-handers</th><td class="n">25.3%</td><td class="r">2nd of 30</td><td class="p">3,833 PA</td></tr><tr class="avg"><th>league average</th><td class="n">21.9%</td><td class="r"></td><td class="p"></td></tr></table><p class="mxn">Bello throws right, so this is the rate that applies to him. LAA rank 2nd against everybody, the same as against right-handers alone.</p></div><div class="verdict good">favourable matchup<span class="vd">+3.4 points vs league</span></div></div></div>
+            </details>
           </div>
-          <details class="mx"><summary><span class="mxs">matchup detail</span></summary><div class="mxb"><div class="mxh">Bello against LAA, 2025–2026</div><div class="mxg"><div><span>starts</span><b>1</b></div><div><span>innings</span><b>6</b></div><div><span>K</span><b>4</b></div><div><span>K per 9</span><b>6.0</b></div><div><span>ERA</span><b>4.50</b></div></div><p class="mxn">6.0 per nine against them, against 6.5 all season.</p><p class="mxn warn">1 start is not evidence. It is shown because it is the kind of thing you want to see, not because it moves the number.</p><div class="mxh">How LAA strike out</div><table class="mxt"><tr class="on"><th>vs right-handers</th><td class="n">25.3%</td><td class="r">2nd of 30</td><td class="p">3,833 PA</td></tr><tr class="avg"><th>league average</th><td class="n">21.9%</td><td class="r"></td><td class="p"></td></tr></table><p class="mxn">Bello throws right, so this is the rate that applies to him. LAA rank 2nd against everybody, the same as against right-handers alone.</p></div></details><div class="verdict good">favourable matchup<span class="vd">+3.4 points vs league</span></div>
         </div>
         <div class="pb-card"
              style="--accent:var(--line-2)">
-          <div class="pb-top">
-            <span>LAA vs BOS
-              &middot; 1:36 PM ET</span>
-            <span>Rated</span>
-          </div>
           <div class="pb-body">
-            <div class="pb-name">Grayson Rodriguez <span class="pb-wl">4&ndash;6</span></div>
-            <div class="pb-head">
-              <div class="pb-num"><div class="k">Our projection</div>
-                <div class="v">4.9<span class="unit">K</span></div></div>
-              <div class="pb-num alt"><div class="k">Posted line</div>
-                <div class="v">4.5<span class="unit">K</span></div></div>
+            <div class="cv-head">
+              <h3 class="cv-tm">Grayson Rodriguez</h3>
+              <span class="cv-time">1:36 PM ET</span>
             </div>
-            <div class="pb-striphead">
-              <span>Last 10 starts</span>
-              <span class="pb-rec"><b>6&ndash;4</b>
-                over 4.5 &middot; L5 <b>4&ndash;1</b></span>
+            <div class="cv-sub">LAA vs BOS
+              &middot; Rated</div>
+            <div class="cv-row">
+              <span class="cv-lab">Our projection</span>
+              <span class="cv-pct">4.9<span class="cv-u">K</span></span>
             </div>
-            
+            <div class="cv-bar"><i class="cv-fill" style="width:54.4%"></i>
+              <i class="cv-tick" style="left:50.0%"></i></div>
+            <div class="cv-foot">
+              <span class="gm">Posted line 4.5</span><span class="ge up">+0.4 edge</span>
+            </div>
+            <details class="gmore" data-close="Close">
+              <summary>Prop detail +</summary>
+              <div class="gmore-in"><div class="pnl"><section class="pk"><h4>Prices</h4><div class="pb-foot"><span>o−103 / u−112</span><span class="lean">0.4 over the line</span></div></section><section class="pk"><h4>Last 10 starts</h4><div class="pb-striphead"><span></span><span class="pb-rec"><b>6&ndash;4</b> over 4.5 &middot; L5 <b>4&ndash;1</b></span></div>
       <div class="pb-strip">
         <div class="pb-line" style="bottom:32.1%"><span class="pb-linelab">4.5</span></div>
         <div class="pb-bar" style="height:6.0%" title="2026-07-10 vs Minnesota Twins — 0 K in 5.3 IP"></div><div class="pb-bar" style="height:21.4%" title="2026-07-18 vs Detroit Tigers — 3 K in 4.0 IP"></div><div class="pb-bar" style="height:21.4%" title="2026-07-24 vs San Francisco Giants — 3 K in 4.0 IP"></div><div class="pb-bar hit" style="height:42.9%" title="2026-07-29 vs Houston Astros — 6 K in 5.0 IP"></div><div class="pb-bar hit" style="height:42.9%" title="2026-08-04 vs Baltimore Orioles — 6 K in 7.0 IP"></div><div class="pb-bar hit" style="height:57.1%" title="2026-08-09 vs Miami Marlins — 8 K in 4.0 IP"></div><div class="pb-bar hit" style="height:35.7%" title="2026-08-14 vs Kansas City Royals — 5 K in 4.0 IP"></div><div class="pb-bar hit" style="height:42.9%" title="2026-08-20 vs Houston Astros — 6 K in 7.0 IP"></div><div class="pb-bar" style="height:28.6%" title="2026-08-26 vs Cleveland Guardians — 4 K in 5.7 IP"></div><div class="pb-bar hit" style="height:50.0%" title="2026-09-01 vs New York Yankees — 7 K in 6.0 IP"></div>
       </div>
-      <div class="pb-ticks"><span>0</span><span>3</span><span>3</span><span>6</span><span>6</span><span>8</span><span>5</span><span>6</span><span>4</span><span>7</span></div>
-            <div class="pb-rows">
-              <div class="pb-row"><span>Season</span><b>20.7% K &middot; 8.3 K/9 &middot; 6.03 ERA</b></div>
-              <div class="pb-row"><span>BOS strikeouts</span>
-                <b>8.1 per game &middot; 13th of 21</b></div>
-            </div>
-            <div class="pb-foot">
-              <span>o−103 / u−112</span>
-              <span class="lean">0.4 over the line</span>
-            </div>
+      <div class="pb-ticks"><span>0</span><span>3</span><span>3</span><span>6</span><span>6</span><span>8</span><span>5</span><span>6</span><span>4</span><span>7</span></div></section><section class="pk"><h4>Season</h4><div class="pb-rows"><div class="pb-row"><span>Season</span><b>20.7% K &middot; 8.3 K/9 &middot; 6.03 ERA</b></div><div class="pb-row"><span>BOS strikeouts</span><b>8.1 per game &middot; 13th of 21</b></div></div></section>
+                <div class="mxb"><div class="mxh">Rodriguez has never faced BOS</div><p class="mxn">No starts against them in 2025 or 2026, so there is nothing here to read. The projection does not use this line either way &mdash; it is context, not an input.</p><div class="mxh">How BOS strike out</div><table class="mxt"><tr class="on"><th>vs right-handers</th><td class="n">21.5%</td><td class="r">19th of 30</td><td class="p">4,083 PA</td></tr><tr class="avg"><th>league average</th><td class="n">21.9%</td><td class="r"></td><td class="p"></td></tr></table><p class="mxn">Rodriguez throws right, so this is the rate that applies to him. BOS rank 22nd against everybody and 19th against right-handers.</p></div><div class="verdict ">ordinary matchup<span class="vd">-0.4 points vs league</span></div></div></div>
+            </details>
           </div>
-          <details class="mx"><summary><span class="mxs">matchup detail</span></summary><div class="mxb"><div class="mxh">Rodriguez has never faced BOS</div><p class="mxn">No starts against them in 2025 or 2026, so there is nothing here to read. The projection does not use this line either way &mdash; it is context, not an input.</p><div class="mxh">How BOS strike out</div><table class="mxt"><tr class="on"><th>vs right-handers</th><td class="n">21.5%</td><td class="r">19th of 30</td><td class="p">4,083 PA</td></tr><tr class="avg"><th>league average</th><td class="n">21.9%</td><td class="r"></td><td class="p"></td></tr></table><p class="mxn">Rodriguez throws right, so this is the rate that applies to him. BOS rank 22nd against everybody and 19th against right-handers.</p></div></details><div class="verdict ">ordinary matchup<span class="vd">-0.4 points vs league</span></div>
         </div>
         <div class="pb-card"
              style="--accent:var(--line-2)">
-          <div class="pb-top">
-            <span>KC vs AZ
-              &middot; 2:11 PM ET</span>
-            <span>Rated</span>
-          </div>
           <div class="pb-body">
-            <div class="pb-name">Noah Cameron <span class="pb-wl">9&ndash;8</span></div>
-            <div class="pb-head">
-              <div class="pb-num"><div class="k">Our projection</div>
-                <div class="v">4.2<span class="unit">K</span></div></div>
-              <div class="pb-num alt"><div class="k">Posted line</div>
-                <div class="v">3.5<span class="unit">K</span></div></div>
+            <div class="cv-head">
+              <h3 class="cv-tm">Noah Cameron</h3>
+              <span class="cv-time">2:11 PM ET</span>
             </div>
-            <div class="pb-striphead">
-              <span>Last 10 starts</span>
-              <span class="pb-rec"><b>6&ndash;4</b>
-                over 3.5 &middot; L5 <b>2&ndash;3</b></span>
+            <div class="cv-sub">KC vs AZ
+              &middot; Rated</div>
+            <div class="cv-row">
+              <span class="cv-lab">Our projection</span>
+              <span class="cv-pct">4.2<span class="cv-u">K</span></span>
             </div>
-            
+            <div class="cv-bar"><i class="cv-fill" style="width:60.0%"></i>
+              <i class="cv-tick" style="left:50.0%"></i></div>
+            <div class="cv-foot">
+              <span class="gm">Posted line 3.5</span><span class="ge up">+0.7 edge</span>
+            </div>
+            <details class="gmore" data-close="Close">
+              <summary>Prop detail +</summary>
+              <div class="gmore-in"><div class="pnl"><section class="pk"><h4>Prices</h4><div class="pb-foot"><span>o−135 / u+123</span><span class="lean">0.7 over the line</span></div></section><section class="pk"><h4>Last 10 starts</h4><div class="pb-striphead"><span></span><span class="pb-rec"><b>6&ndash;4</b> over 3.5 &middot; L5 <b>2&ndash;3</b></span></div>
       <div class="pb-strip">
         <div class="pb-line" style="bottom:25.0%"><span class="pb-linelab">3.5</span></div>
         <div class="pb-bar hit" style="height:50.0%" title="2026-07-06 vs Philadelphia Phillies — 7 K in 5.0 IP"></div><div class="pb-bar hit" style="height:64.3%" title="2026-07-11 vs Baltimore Orioles — 9 K in 7.0 IP"></div><div class="pb-bar" style="height:7.1%" title="2026-07-19 vs San Diego Padres — 1 K in 5.0 IP"></div><div class="pb-bar hit" style="height:50.0%" title="2026-07-30 vs Minnesota Twins — 7 K in 8.0 IP"></div><div class="pb-bar hit" style="height:64.3%" title="2026-08-05 vs Minnesota Twins — 9 K in 8.0 IP"></div><div class="pb-bar" style="height:14.3%" title="2026-08-10 vs Los Angeles Dodgers — 2 K in 5.7 IP"></div><div class="pb-bar hit" style="height:57.1%" title="2026-08-16 vs Los Angeles Angels — 8 K in 9.0 IP"></div><div class="pb-bar" style="height:14.3%" title="2026-08-21 vs Detroit Tigers — 2 K in 5.0 IP"></div><div class="pb-bar" style="height:21.4%" title="2026-08-27 vs Toronto Blue Jays — 3 K in 6.0 IP"></div><div class="pb-bar hit" style="height:50.0%" title="2026-09-02 vs Miami Marlins — 7 K in 5.0 IP"></div>
       </div>
-      <div class="pb-ticks"><span>7</span><span>9</span><span>1</span><span>7</span><span>9</span><span>2</span><span>8</span><span>2</span><span>3</span><span>7</span></div>
-            <div class="pb-rows">
-              <div class="pb-row"><span>Season</span><b>21.3% K &middot; 8.0 K/9 &middot; 4.08 ERA</b></div>
-              <div class="pb-row"><span>AZ strikeouts</span>
-                <b>7.3 per game &middot; 20th of 21</b></div>
-            </div>
-            <div class="pb-foot">
-              <span>o−135 / u+123</span>
-              <span class="lean">0.7 over the line</span>
-            </div>
+      <div class="pb-ticks"><span>7</span><span>9</span><span>1</span><span>7</span><span>9</span><span>2</span><span>8</span><span>2</span><span>3</span><span>7</span></div></section><section class="pk"><h4>Season</h4><div class="pb-rows"><div class="pb-row"><span>Season</span><b>21.3% K &middot; 8.0 K/9 &middot; 4.08 ERA</b></div><div class="pb-row"><span>AZ strikeouts</span><b>7.3 per game &middot; 20th of 21</b></div></div></section>
+                <div class="mxb"><div class="mxh">Cameron has never faced AZ</div><p class="mxn">No starts against them in 2025 or 2026, so there is nothing here to read. The projection does not use this line either way &mdash; it is context, not an input.</p><div class="mxh">How AZ strike out</div><table class="mxt"><tr class="on"><th>vs left-handers</th><td class="n">18.0%</td><td class="r">30th of 30</td><td class="p">1,491 PA</td></tr><tr class="avg"><th>league average</th><td class="n">22.6%</td><td class="r"></td><td class="p"></td></tr></table><p class="mxn">Cameron throws left, so this is the rate that applies to him. AZ rank 28th against everybody and 30th against left-handers.</p></div><div class="verdict bad">tough matchup<span class="vd">-4.6 points vs league</span></div></div></div>
+            </details>
           </div>
-          <details class="mx"><summary><span class="mxs">matchup detail</span></summary><div class="mxb"><div class="mxh">Cameron has never faced AZ</div><p class="mxn">No starts against them in 2025 or 2026, so there is nothing here to read. The projection does not use this line either way &mdash; it is context, not an input.</p><div class="mxh">How AZ strike out</div><table class="mxt"><tr class="on"><th>vs left-handers</th><td class="n">18.0%</td><td class="r">30th of 30</td><td class="p">1,491 PA</td></tr><tr class="avg"><th>league average</th><td class="n">22.6%</td><td class="r"></td><td class="p"></td></tr></table><p class="mxn">Cameron throws left, so this is the rate that applies to him. AZ rank 28th against everybody and 30th against left-handers.</p></div></details><div class="verdict bad">tough matchup<span class="vd">-4.6 points vs league</span></div>
         </div>
         <div class="pb-card"
              style="--accent:var(--line-2)">
-          <div class="pb-top">
-            <span>CHC vs MIL
-              &middot; 2:11 PM ET</span>
-            <span>Rated</span>
-          </div>
           <div class="pb-body">
-            <div class="pb-name">Matthew Boyd <span class="pb-wl">8&ndash;3</span></div>
-            <div class="pb-head">
-              <div class="pb-num"><div class="k">Our projection</div>
-                <div class="v">4.2<span class="unit">K</span></div></div>
-              <div class="pb-num alt"><div class="k">Posted line</div>
-                <div class="v">4.5<span class="unit">K</span></div></div>
+            <div class="cv-head">
+              <h3 class="cv-tm">Matthew Boyd</h3>
+              <span class="cv-time">2:11 PM ET</span>
             </div>
-            <div class="pb-striphead">
-              <span>Last 10 starts</span>
-              <span class="pb-rec"><b>2&ndash;8</b>
-                over 4.5 &middot; L5 <b>1&ndash;4</b></span>
+            <div class="cv-sub">CHC vs MIL
+              &middot; Rated</div>
+            <div class="cv-row">
+              <span class="cv-lab">Our projection</span>
+              <span class="cv-pct">4.2<span class="cv-u">K</span></span>
             </div>
-            
+            <div class="cv-bar"><i class="cv-fill" style="width:46.7%"></i>
+              <i class="cv-tick" style="left:50.0%"></i></div>
+            <div class="cv-foot">
+              <span class="gm">Posted line 4.5</span><span class="ge none">no edge</span>
+            </div>
+            <details class="gmore" data-close="Close">
+              <summary>Prop detail +</summary>
+              <div class="gmore-in"><div class="pnl"><section class="pk"><h4>Prices</h4><div class="pb-foot"><span>o+126 / u−138</span><span>in line</span></div></section><section class="pk"><h4>Last 10 starts</h4><div class="pb-striphead"><span></span><span class="pb-rec"><b>2&ndash;8</b> over 4.5 &middot; L5 <b>1&ndash;4</b></span></div>
       <div class="pb-strip">
         <div class="pb-line" style="bottom:32.1%"><span class="pb-linelab">4.5</span></div>
         <div class="pb-bar" style="height:21.4%" title="2026-07-12 vs Cincinnati Reds — 3 K in 6.3 IP"></div><div class="pb-bar" style="height:28.6%" title="2026-07-18 vs Minnesota Twins — 4 K in 6.0 IP"></div><div class="pb-bar" style="height:28.6%" title="2026-07-24 vs Pittsburgh Pirates — 4 K in 7.0 IP"></div><div class="pb-bar hit" style="height:35.7%" title="2026-07-29 vs St. Louis Cardinals — 5 K in 7.0 IP"></div><div class="pb-bar" style="height:21.4%" title="2026-08-03 vs Los Angeles Dodgers — 3 K in 6.7 IP"></div><div class="pb-bar" style="height:21.4%" title="2026-08-09 vs Kansas City Royals — 3 K in 7.0 IP"></div><div class="pb-bar" style="height:14.3%" title="2026-08-15 vs St. Louis Cardinals — 2 K in 5.3 IP"></div><div class="pb-bar" style="height:21.4%" title="2026-08-21 vs Seattle Mariners — 3 K in 6.0 IP"></div><div class="pb-bar hit" style="height:35.7%" title="2026-08-26 vs Arizona Diamondbacks — 5 K in 6.0 IP"></div><div class="pb-bar" style="height:21.4%" title="2026-09-01 vs Milwaukee Brewers — 3 K in 5.3 IP"></div>
       </div>
-      <div class="pb-ticks"><span>3</span><span>4</span><span>4</span><span>5</span><span>3</span><span>3</span><span>2</span><span>3</span><span>5</span><span>3</span></div>
-            <div class="pb-rows">
-              <div class="pb-row"><span>Season</span><b>18.7% K &middot; 6.9 K/9 &middot; 4.05 ERA</b></div>
-              <div class="pb-row"><span>MIL strikeouts</span>
-                <b>8.4 per game &middot; 7th of 21</b></div>
-            </div>
-            <div class="pb-foot">
-              <span>o+126 / u−138</span>
-              <span>in line</span>
-            </div>
+      <div class="pb-ticks"><span>3</span><span>4</span><span>4</span><span>5</span><span>3</span><span>3</span><span>2</span><span>3</span><span>5</span><span>3</span></div></section><section class="pk"><h4>Season</h4><div class="pb-rows"><div class="pb-row"><span>Season</span><b>18.7% K &middot; 6.9 K/9 &middot; 4.05 ERA</b></div><div class="pb-row"><span>MIL strikeouts</span><b>8.4 per game &middot; 7th of 21</b></div></div></section>
+                <div class="mxb"><div class="mxh">Boyd against MIL, 2025–2026</div><div class="mxg"><div><span>starts</span><b>3</b></div><div><span>innings</span><b>15.7</b></div><div><span>K</span><b>8</b></div><div><span>K per 9</span><b>4.6</b></div><div><span>ERA</span><b>6.89</b></div></div><p class="mxn">4.6 per nine against them, against 6.9 all season.</p><div class="mxh">How MIL strike out</div><table class="mxt"><tr class="on"><th>vs left-handers</th><td class="n">21.3%</td><td class="r">22nd of 30</td><td class="p">1,693 PA</td></tr><tr class="avg"><th>league average</th><td class="n">22.6%</td><td class="r"></td><td class="p"></td></tr></table><p class="mxn">Boyd throws left, so this is the rate that applies to him. MIL rank 19th against everybody and 22nd against left-handers.</p></div><div class="verdict bad">tough matchup<span class="vd">-1.3 points vs league</span></div></div></div>
+            </details>
           </div>
-          <details class="mx"><summary><span class="mxs">matchup detail</span></summary><div class="mxb"><div class="mxh">Boyd against MIL, 2025–2026</div><div class="mxg"><div><span>starts</span><b>3</b></div><div><span>innings</span><b>15.7</b></div><div><span>K</span><b>8</b></div><div><span>K per 9</span><b>4.6</b></div><div><span>ERA</span><b>6.89</b></div></div><p class="mxn">4.6 per nine against them, against 6.9 all season.</p><div class="mxh">How MIL strike out</div><table class="mxt"><tr class="on"><th>vs left-handers</th><td class="n">21.3%</td><td class="r">22nd of 30</td><td class="p">1,693 PA</td></tr><tr class="avg"><th>league average</th><td class="n">22.6%</td><td class="r"></td><td class="p"></td></tr></table><p class="mxn">Boyd throws left, so this is the rate that applies to him. MIL rank 19th against everybody and 22nd against left-handers.</p></div></details><div class="verdict bad">tough matchup<span class="vd">-1.3 points vs league</span></div>
         </div>
         <div class="pb-card"
              style="--accent:var(--line-2)">
-          <div class="pb-top">
-            <span>MIL vs CHC
-              &middot; 2:11 PM ET</span>
-            <span>Rated</span>
-          </div>
           <div class="pb-body">
-            <div class="pb-name">Robert Gasser <span class="pb-wl">4&ndash;5</span></div>
-            <div class="pb-head">
-              <div class="pb-num"><div class="k">Our projection</div>
-                <div class="v">5.2<span class="unit">K</span></div></div>
-              <div class="pb-num alt"><div class="k">Posted line</div>
-                <div class="v">4.5<span class="unit">K</span></div></div>
+            <div class="cv-head">
+              <h3 class="cv-tm">Robert Gasser</h3>
+              <span class="cv-time">2:11 PM ET</span>
             </div>
-            <div class="pb-striphead">
-              <span>Last 10 starts</span>
-              <span class="pb-rec"><b>4&ndash;6</b>
-                over 4.5 &middot; L5 <b>2&ndash;3</b></span>
+            <div class="cv-sub">MIL vs CHC
+              &middot; Rated</div>
+            <div class="cv-row">
+              <span class="cv-lab">Our projection</span>
+              <span class="cv-pct">5.2<span class="cv-u">K</span></span>
             </div>
-            
+            <div class="cv-bar"><i class="cv-fill" style="width:57.8%"></i>
+              <i class="cv-tick" style="left:50.0%"></i></div>
+            <div class="cv-foot">
+              <span class="gm">Posted line 4.5</span><span class="ge up">+0.7 edge</span>
+            </div>
+            <details class="gmore" data-close="Close">
+              <summary>Prop detail +</summary>
+              <div class="gmore-in"><div class="pnl"><section class="pk"><h4>Prices</h4><div class="pb-foot"><span>o+110 / u−131</span><span class="lean">0.7 over the line</span></div></section><section class="pk"><h4>Last 10 starts</h4><div class="pb-striphead"><span></span><span class="pb-rec"><b>4&ndash;6</b> over 4.5 &middot; L5 <b>2&ndash;3</b></span></div>
       <div class="pb-strip">
         <div class="pb-line" style="bottom:32.1%"><span class="pb-linelab">4.5</span></div>
         <div class="pb-bar hit" style="height:35.7%" title="2026-06-29 vs Cincinnati Reds — 5 K in 5.7 IP"></div><div class="pb-bar" style="height:28.6%" title="2026-07-07 vs St. Louis Cardinals — 4 K in 7.7 IP"></div><div class="pb-bar" style="height:21.4%" title="2026-07-12 vs Pittsburgh Pirates — 3 K in 3.0 IP"></div><div class="pb-bar hit" style="height:35.7%" title="2026-07-19 vs Miami Marlins — 5 K in 5.0 IP"></div><div class="pb-bar" style="height:28.6%" title="2026-07-25 vs Colorado Rockies — 4 K in 6.0 IP"></div><div class="pb-bar hit" style="height:42.9%" title="2026-08-01 vs Los Angeles Angels — 6 K in 5.0 IP"></div><div class="pb-bar" style="height:21.4%" title="2026-08-08 vs Minnesota Twins — 3 K in 4.7 IP"></div><div class="pb-bar hit" style="height:50.0%" title="2026-08-14 vs Los Angeles Dodgers — 7 K in 6.3 IP"></div><div class="pb-bar" style="height:28.6%" title="2026-08-20 vs Seattle Mariners — 4 K in 3.7 IP"></div><div class="pb-bar" style="height:28.6%" title="2026-09-01 vs Chicago Cubs — 4 K in 4.3 IP"></div>
       </div>
-      <div class="pb-ticks"><span>5</span><span>4</span><span>3</span><span>5</span><span>4</span><span>6</span><span>3</span><span>7</span><span>4</span><span>4</span></div>
-            <div class="pb-rows">
-              <div class="pb-row"><span>Season</span><b>21.8% K &middot; 8.5 K/9 &middot; 4.57 ERA</b></div>
-              <div class="pb-row"><span>CHC strikeouts</span>
-                <b>8.4 per game &middot; 6th of 21</b></div>
-            </div>
-            <div class="pb-foot">
-              <span>o+110 / u−131</span>
-              <span class="lean">0.7 over the line</span>
-            </div>
+      <div class="pb-ticks"><span>5</span><span>4</span><span>3</span><span>5</span><span>4</span><span>6</span><span>3</span><span>7</span><span>4</span><span>4</span></div></section><section class="pk"><h4>Season</h4><div class="pb-rows"><div class="pb-row"><span>Season</span><b>21.8% K &middot; 8.5 K/9 &middot; 4.57 ERA</b></div><div class="pb-row"><span>CHC strikeouts</span><b>8.4 per game &middot; 6th of 21</b></div></div></section>
+                <div class="mxb"><div class="mxh">Gasser against CHC, 2025–2026</div><div class="mxg"><div><span>starts</span><b>1</b></div><div><span>innings</span><b>4.3</b></div><div><span>K</span><b>4</b></div><div><span>K per 9</span><b>8.4</b></div><div><span>ERA</span><b>4.15</b></div></div><p class="mxn">8.4 per nine against them, against 8.5 all season.</p><p class="mxn warn">1 start is not evidence. It is shown because it is the kind of thing you want to see, not because it moves the number.</p><div class="mxh">How CHC strike out</div><table class="mxt"><tr class="on"><th>vs left-handers</th><td class="n">21.4%</td><td class="r">21st of 30</td><td class="p">1,524 PA</td></tr><tr class="avg"><th>league average</th><td class="n">22.6%</td><td class="r"></td><td class="p"></td></tr></table><p class="mxn">Gasser throws left, so this is the rate that applies to him. CHC rank 21st against everybody, the same as against left-handers alone.</p></div><div class="verdict bad">tough matchup<span class="vd">-1.2 points vs league</span></div></div></div>
+            </details>
           </div>
-          <details class="mx"><summary><span class="mxs">matchup detail</span></summary><div class="mxb"><div class="mxh">Gasser against CHC, 2025–2026</div><div class="mxg"><div><span>starts</span><b>1</b></div><div><span>innings</span><b>4.3</b></div><div><span>K</span><b>4</b></div><div><span>K per 9</span><b>8.4</b></div><div><span>ERA</span><b>4.15</b></div></div><p class="mxn">8.4 per nine against them, against 8.5 all season.</p><p class="mxn warn">1 start is not evidence. It is shown because it is the kind of thing you want to see, not because it moves the number.</p><div class="mxh">How CHC strike out</div><table class="mxt"><tr class="on"><th>vs left-handers</th><td class="n">21.4%</td><td class="r">21st of 30</td><td class="p">1,524 PA</td></tr><tr class="avg"><th>league average</th><td class="n">22.6%</td><td class="r"></td><td class="p"></td></tr></table><p class="mxn">Gasser throws left, so this is the rate that applies to him. CHC rank 21st against everybody, the same as against left-handers alone.</p></div></details><div class="verdict bad">tough matchup<span class="vd">-1.2 points vs league</span></div>
         </div>
         <div class="pb-card flag"
              style="--accent:var(--line-2)">
-          <div class="pb-top">
-            <span>MIN vs DET
-              &middot; 3:11 PM ET</span>
-            <span>Rated</span>
-          </div>
           <div class="pb-body">
-            <div class="pb-name">Joe Ryan <span class="pb-wl">6&ndash;8</span></div>
-            <div class="pb-head">
-              <div class="pb-num"><div class="k">Our projection</div>
-                <div class="v">6.2<span class="unit">K</span></div></div>
-              <div class="pb-num alt"><div class="k">Posted line</div>
-                <div class="v">3.5<span class="unit">K</span></div></div>
+            <div class="cv-head">
+              <h3 class="cv-tm">Joe Ryan</h3>
+              <span class="cv-time">3:11 PM ET</span>
             </div>
-            <div class="pb-striphead">
-              <span>Last 10 starts</span>
-              <span class="pb-rec"><b>8&ndash;2</b>
-                over 3.5 &middot; L5 <b>3&ndash;2</b></span>
+            <div class="cv-sub">MIN vs DET
+              &middot; Rated</div>
+            <div class="cv-row">
+              <span class="cv-lab">Our projection</span>
+              <span class="cv-pct">6.2<span class="cv-u">K</span></span>
             </div>
-            
+            <div class="cv-bar"><i class="cv-fill" style="width:87.0%"></i>
+              <i class="cv-tick" style="left:49.1%"></i></div>
+            <div class="cv-foot">
+              <span class="gm">Posted line 3.5</span><span class="ge up">+2.7 edge</span>
+            </div>
+            <details class="gmore" data-close="Close">
+              <summary>Prop detail +</summary>
+              <div class="gmore-in"><div class="pnl"><section class="pk"><h4>Prices</h4><div class="pb-foot"><span>o−105 / u−111</span><span class="flagged" title="Further from the posted number than the market can plausibly be wrong — treated as our error">&#9888; 2.7 off the line</span></div></section><section class="pk"><h4>Last 10 starts</h4><div class="pb-striphead"><span></span><span class="pb-rec"><b>8&ndash;2</b> over 3.5 &middot; L5 <b>3&ndash;2</b></span></div>
       <div class="pb-strip">
         <div class="pb-line" style="bottom:25.0%"><span class="pb-linelab">3.5</span></div>
         <div class="pb-bar hit" style="height:35.7%" title="2026-06-06 vs Kansas City Royals — 5 K in 6.0 IP"></div><div class="pb-bar hit" style="height:57.1%" title="2026-06-12 vs St. Louis Cardinals — 8 K in 6.0 IP"></div><div class="pb-bar hit" style="height:50.0%" title="2026-06-18 vs Texas Rangers — 7 K in 5.0 IP"></div><div class="pb-bar hit" style="height:64.3%" title="2026-06-24 vs Los Angeles Dodgers — 9 K in 6.0 IP"></div><div class="pb-bar hit" style="height:35.7%" title="2026-06-30 vs Houston Astros — 5 K in 4.0 IP"></div><div class="pb-bar hit" style="height:64.3%" title="2026-07-05 vs New York Yankees — 9 K in 7.0 IP"></div><div class="pb-bar hit" style="height:42.9%" title="2026-07-11 vs Los Angeles Angels — 6 K in 6.0 IP"></div><div class="pb-bar" style="height:21.4%" title="2026-07-20 vs Cleveland Guardians — 3 K in 4.0 IP"></div><div class="pb-bar hit" style="height:28.6%" title="2026-07-29 vs Kansas City Royals — 4 K in 6.0 IP"></div><div class="pb-bar" style="height:21.4%" title="2026-08-04 vs Kansas City Royals — 3 K in 5.3 IP"></div>
       </div>
-      <div class="pb-ticks"><span>5</span><span>8</span><span>7</span><span>9</span><span>5</span><span>9</span><span>6</span><span>3</span><span>4</span><span>3</span></div>
-            <div class="pb-rows">
-              <div class="pb-row"><span>Season</span><b>26.4% K &middot; 9.9 K/9 &middot; 3.65 ERA</b></div>
-              <div class="pb-row"><span>DET strikeouts</span>
-                <b>8.7 per game &middot; 3rd of 21</b></div>
-            </div>
-            <div class="pb-foot">
-              <span>o−105 / u−111</span>
-              <span class="flagged" title="Further from the posted number than the market can plausibly be wrong — treated as our error">&#9888; 2.7 off the line</span>
-            </div>
+      <div class="pb-ticks"><span>5</span><span>8</span><span>7</span><span>9</span><span>5</span><span>9</span><span>6</span><span>3</span><span>4</span><span>3</span></div></section><section class="pk"><h4>Season</h4><div class="pb-rows"><div class="pb-row"><span>Season</span><b>26.4% K &middot; 9.9 K/9 &middot; 3.65 ERA</b></div><div class="pb-row"><span>DET strikeouts</span><b>8.7 per game &middot; 3rd of 21</b></div></div></section>
+                <div class="mxb"><div class="mxh">Ryan against DET, 2025–2026</div><div class="mxg"><div><span>starts</span><b>1</b></div><div><span>innings</span><b>5</b></div><div><span>K</span><b>7</b></div><div><span>K per 9</span><b>12.6</b></div><div><span>ERA</span><b>3.60</b></div></div><p class="mxn">12.6 per nine against them, against 9.9 all season.</p><p class="mxn warn">1 start is not evidence. It is shown because it is the kind of thing you want to see, not because it moves the number.</p><div class="mxh">How DET strike out</div><table class="mxt"><tr class="on"><th>vs right-handers</th><td class="n">22.8%</td><td class="r">7th of 30</td><td class="p">3,823 PA</td></tr><tr class="avg"><th>league average</th><td class="n">21.9%</td><td class="r"></td><td class="p"></td></tr></table><p class="mxn">Ryan throws right, so this is the rate that applies to him. DET rank 8th against everybody and 7th against right-handers.</p></div><div class="verdict good">favourable matchup<span class="vd">+1.0 points vs league</span></div></div></div>
+            </details>
           </div>
-          <details class="mx"><summary><span class="mxs">matchup detail</span></summary><div class="mxb"><div class="mxh">Ryan against DET, 2025–2026</div><div class="mxg"><div><span>starts</span><b>1</b></div><div><span>innings</span><b>5</b></div><div><span>K</span><b>7</b></div><div><span>K per 9</span><b>12.6</b></div><div><span>ERA</span><b>3.60</b></div></div><p class="mxn">12.6 per nine against them, against 9.9 all season.</p><p class="mxn warn">1 start is not evidence. It is shown because it is the kind of thing you want to see, not because it moves the number.</p><div class="mxh">How DET strike out</div><table class="mxt"><tr class="on"><th>vs right-handers</th><td class="n">22.8%</td><td class="r">7th of 30</td><td class="p">3,823 PA</td></tr><tr class="avg"><th>league average</th><td class="n">21.9%</td><td class="r"></td><td class="p"></td></tr></table><p class="mxn">Ryan throws right, so this is the rate that applies to him. DET rank 8th against everybody and 7th against right-handers.</p></div></details><div class="verdict good">favourable matchup<span class="vd">+1.0 points vs league</span></div>
         </div>
         <div class="pb-card"
              style="--accent:var(--line-2)">
-          <div class="pb-top">
-            <span>DET vs MIN
-              &middot; 3:11 PM ET</span>
-            <span>Rated</span>
-          </div>
           <div class="pb-body">
-            <div class="pb-name">Troy Melton <span class="pb-wl">7&ndash;4</span></div>
-            <div class="pb-head">
-              <div class="pb-num"><div class="k">Our projection</div>
-                <div class="v">4.2<span class="unit">K</span></div></div>
-              <div class="pb-num alt"><div class="k">Posted line</div>
-                <div class="v">4.5<span class="unit">K</span></div></div>
+            <div class="cv-head">
+              <h3 class="cv-tm">Troy Melton</h3>
+              <span class="cv-time">3:11 PM ET</span>
             </div>
-            <div class="pb-striphead">
-              <span>Last 10 starts</span>
-              <span class="pb-rec"><b>5&ndash;5</b>
-                over 4.5 &middot; L5 <b>1&ndash;4</b></span>
+            <div class="cv-sub">DET vs MIN
+              &middot; Rated</div>
+            <div class="cv-row">
+              <span class="cv-lab">Our projection</span>
+              <span class="cv-pct">4.2<span class="cv-u">K</span></span>
             </div>
-            
+            <div class="cv-bar"><i class="cv-fill" style="width:46.7%"></i>
+              <i class="cv-tick" style="left:50.0%"></i></div>
+            <div class="cv-foot">
+              <span class="gm">Posted line 4.5</span><span class="ge none">no edge</span>
+            </div>
+            <details class="gmore" data-close="Close">
+              <summary>Prop detail +</summary>
+              <div class="gmore-in"><div class="pnl"><section class="pk"><h4>Prices</h4><div class="pb-foot"><span>o+126 / u−154</span><span>in line</span></div></section><section class="pk"><h4>Last 10 starts</h4><div class="pb-striphead"><span></span><span class="pb-rec"><b>5&ndash;5</b> over 4.5 &middot; L5 <b>1&ndash;4</b></span></div>
       <div class="pb-strip">
         <div class="pb-line" style="bottom:32.1%"><span class="pb-linelab">4.5</span></div>
         <div class="pb-bar hit" style="height:64.3%" title="2026-07-08 vs Athletics — 9 K in 5.3 IP"></div><div class="pb-bar hit" style="height:64.3%" title="2026-07-17 vs Los Angeles Angels — 9 K in 5.7 IP"></div><div class="pb-bar hit" style="height:35.7%" title="2026-07-23 vs Kansas City Royals — 5 K in 5.0 IP"></div><div class="pb-bar hit" style="height:35.7%" title="2026-07-28 vs Baltimore Orioles — 5 K in 7.0 IP"></div><div class="pb-bar" style="height:28.6%" title="2026-08-04 vs Seattle Mariners — 4 K in 7.0 IP"></div><div class="pb-bar hit" style="height:35.7%" title="2026-08-09 vs San Francisco Giants — 5 K in 6.0 IP"></div><div class="pb-bar" style="height:28.6%" title="2026-08-15 vs Chicago White Sox — 4 K in 4.3 IP"></div><div class="pb-bar" style="height:21.4%" title="2026-08-21 vs Kansas City Royals — 3 K in 5.7 IP"></div><div class="pb-bar" style="height:28.6%" title="2026-08-26 vs Tampa Bay Rays — 4 K in 7.0 IP"></div><div class="pb-bar" style="height:28.6%" title="2026-09-01 vs Minnesota Twins — 4 K in 5.3 IP"></div>
       </div>
-      <div class="pb-ticks"><span>9</span><span>9</span><span>5</span><span>5</span><span>4</span><span>5</span><span>4</span><span>3</span><span>4</span><span>4</span></div>
-            <div class="pb-rows">
-              <div class="pb-row"><span>Season</span><b>20.6% K &middot; 7.4 K/9 &middot; 2.20 ERA</b></div>
-              <div class="pb-row"><span>MIN strikeouts</span>
-                <b>8.0 per game &middot; 16th of 21</b></div>
-            </div>
-            <div class="pb-foot">
-              <span>o+126 / u−154</span>
-              <span>in line</span>
-            </div>
+      <div class="pb-ticks"><span>9</span><span>9</span><span>5</span><span>5</span><span>4</span><span>5</span><span>4</span><span>3</span><span>4</span><span>4</span></div></section><section class="pk"><h4>Season</h4><div class="pb-rows"><div class="pb-row"><span>Season</span><b>20.6% K &middot; 7.4 K/9 &middot; 2.20 ERA</b></div><div class="pb-row"><span>MIN strikeouts</span><b>8.0 per game &middot; 16th of 21</b></div></div></section>
+                <div class="mxb"><div class="mxh">Melton against MIN, 2025–2026</div><div class="mxg"><div><span>starts</span><b>2</b></div><div><span>innings</span><b>12.3</b></div><div><span>K</span><b>10</b></div><div><span>K per 9</span><b>7.3</b></div><div><span>ERA</span><b>6.57</b></div></div><p class="mxn">7.3 per nine against them, against 7.4 all season.</p><p class="mxn warn">2 starts is not evidence. It is shown because it is the kind of thing you want to see, not because it moves the number.</p><div class="mxh">How MIN strike out</div><table class="mxt"><tr class="on"><th>vs right-handers</th><td class="n">20.6%</td><td class="r">26th of 30</td><td class="p">3,770 PA</td></tr><tr class="avg"><th>league average</th><td class="n">21.9%</td><td class="r"></td><td class="p"></td></tr></table><p class="mxn">Melton throws right, so this is the rate that applies to him. MIN rank 24th against everybody and 26th against right-handers.</p></div><div class="verdict bad">tough matchup<span class="vd">-1.3 points vs league</span></div></div></div>
+            </details>
           </div>
-          <details class="mx"><summary><span class="mxs">matchup detail</span></summary><div class="mxb"><div class="mxh">Melton against MIN, 2025–2026</div><div class="mxg"><div><span>starts</span><b>2</b></div><div><span>innings</span><b>12.3</b></div><div><span>K</span><b>10</b></div><div><span>K per 9</span><b>7.3</b></div><div><span>ERA</span><b>6.57</b></div></div><p class="mxn">7.3 per nine against them, against 7.4 all season.</p><p class="mxn warn">2 starts is not evidence. It is shown because it is the kind of thing you want to see, not because it moves the number.</p><div class="mxh">How MIN strike out</div><table class="mxt"><tr class="on"><th>vs right-handers</th><td class="n">20.6%</td><td class="r">26th of 30</td><td class="p">3,770 PA</td></tr><tr class="avg"><th>league average</th><td class="n">21.9%</td><td class="r"></td><td class="p"></td></tr></table><p class="mxn">Melton throws right, so this is the rate that applies to him. MIN rank 24th against everybody and 26th against right-handers.</p></div></details><div class="verdict bad">tough matchup<span class="vd">-1.3 points vs league</span></div>
         </div>
         <div class="pb-card flag"
              style="--accent:var(--line-2)">
-          <div class="pb-top">
-            <span>SD vs WSH
-              &middot; 5:11 PM ET</span>
-            <span>Rated</span>
-          </div>
           <div class="pb-body">
-            <div class="pb-name">Nick Pivetta <span class="pb-wl">1&ndash;2</span></div>
-            <div class="pb-head">
-              <div class="pb-num"><div class="k">Our projection</div>
-                <div class="v">8.4<span class="unit">K</span></div></div>
-              <div class="pb-num alt"><div class="k">Posted line</div>
-                <div class="v">4.5<span class="unit">K</span></div></div>
+            <div class="cv-head">
+              <h3 class="cv-tm">Nick Pivetta</h3>
+              <span class="cv-time">5:11 PM ET</span>
             </div>
-            <div class="pb-striphead">
-              <span>Last 4 starts</span>
-              <span class="pb-rec"><b>2&ndash;2</b>
-                over 4.5 &middot; L5 <b>2&ndash;2</b></span>
+            <div class="cv-sub">SD vs WSH
+              &middot; Rated</div>
+            <div class="cv-row">
+              <span class="cv-lab">Our projection</span>
+              <span class="cv-pct">8.4<span class="cv-u">K</span></span>
             </div>
-            
+            <div class="cv-bar"><i class="cv-fill" style="width:87.0%"></i>
+              <i class="cv-tick" style="left:46.6%"></i></div>
+            <div class="cv-foot">
+              <span class="gm">Posted line 4.5</span><span class="ge up">+3.9 edge</span>
+            </div>
+            <details class="gmore" data-close="Close">
+              <summary>Prop detail +</summary>
+              <div class="gmore-in"><div class="pnl"><section class="pk"><h4>Prices</h4><div class="pb-foot"><span>o−108 / u−104</span><span class="flagged" title="Further from the posted number than the market can plausibly be wrong — treated as our error">&#9888; 3.9 off the line</span></div></section><section class="pk"><h4>Last 4 starts</h4><div class="pb-striphead"><span></span><span class="pb-rec"><b>2&ndash;2</b> over 4.5 &middot; L5 <b>2&ndash;2</b></span></div>
       <div class="pb-strip">
         <div class="pb-line" style="bottom:32.1%"><span class="pb-linelab">4.5</span></div>
         <div class="pb-bar" style="height:28.6%" title="2026-03-26 vs Detroit Tigers — 4 K in 3.0 IP"></div><div class="pb-bar hit" style="height:57.1%" title="2026-04-01 vs San Francisco Giants — 8 K in 5.0 IP"></div><div class="pb-bar hit" style="height:57.1%" title="2026-04-07 vs Pittsburgh Pirates — 8 K in 5.0 IP"></div><div class="pb-bar" style="height:28.6%" title="2026-04-12 vs Colorado Rockies — 4 K in 3.0 IP"></div>
       </div>
-      <div class="pb-ticks"><span>4</span><span>8</span><span>8</span><span>4</span></div>
-            <div class="pb-rows">
-              <div class="pb-row"><span>Season</span><b>36.4% K &middot; 13.5 K/9 &middot; 4.50 ERA</b></div>
-              <div class="pb-row"><span>WSH strikeouts</span>
-                <b>8.4 per game &middot; 8th of 21</b></div>
-            </div>
-            <div class="pb-foot">
-              <span>o−108 / u−104</span>
-              <span class="flagged" title="Further from the posted number than the market can plausibly be wrong — treated as our error">&#9888; 3.9 off the line</span>
-            </div>
+      <div class="pb-ticks"><span>4</span><span>8</span><span>8</span><span>4</span></div></section><section class="pk"><h4>Season</h4><div class="pb-rows"><div class="pb-row"><span>Season</span><b>36.4% K &middot; 13.5 K/9 &middot; 4.50 ERA</b></div><div class="pb-row"><span>WSH strikeouts</span><b>8.4 per game &middot; 8th of 21</b></div></div></section>
+                <div class="mxb"><div class="mxh">Pivetta against WSH, 2025–2026</div><div class="mxg"><div><span>starts</span><b>2</b></div><div><span>innings</span><b>13</b></div><div><span>K</span><b>15</b></div><div><span>K per 9</span><b>10.4</b></div><div><span>ERA</span><b>0.69</b></div></div><p class="mxn">10.4 per nine against them, against 13.5 all season.</p><p class="mxn warn">2 starts is not evidence. It is shown because it is the kind of thing you want to see, not because it moves the number.</p><div class="mxh">How WSH strike out</div><table class="mxt"><tr class="on"><th>vs right-handers</th><td class="n">20.7%</td><td class="r">23rd of 30</td><td class="p">3,955 PA</td></tr><tr class="avg"><th>league average</th><td class="n">21.9%</td><td class="r"></td><td class="p"></td></tr></table><p class="mxn">Pivetta throws right, so this is the rate that applies to him. WSH rank 16th against everybody and 23rd against right-handers.</p></div><div class="verdict bad">tough matchup<span class="vd">-1.2 points vs league</span></div></div></div>
+            </details>
           </div>
-          <details class="mx"><summary><span class="mxs">matchup detail</span></summary><div class="mxb"><div class="mxh">Pivetta against WSH, 2025–2026</div><div class="mxg"><div><span>starts</span><b>2</b></div><div><span>innings</span><b>13</b></div><div><span>K</span><b>15</b></div><div><span>K per 9</span><b>10.4</b></div><div><span>ERA</span><b>0.69</b></div></div><p class="mxn">10.4 per nine against them, against 13.5 all season.</p><p class="mxn warn">2 starts is not evidence. It is shown because it is the kind of thing you want to see, not because it moves the number.</p><div class="mxh">How WSH strike out</div><table class="mxt"><tr class="on"><th>vs right-handers</th><td class="n">20.7%</td><td class="r">23rd of 30</td><td class="p">3,955 PA</td></tr><tr class="avg"><th>league average</th><td class="n">21.9%</td><td class="r"></td><td class="p"></td></tr></table><p class="mxn">Pivetta throws right, so this is the rate that applies to him. WSH rank 16th against everybody and 23rd against right-handers.</p></div></details><div class="verdict bad">tough matchup<span class="vd">-1.2 points vs league</span></div>
         </div>
         <div class="pb-card"
              style="--accent:var(--line-2)">
-          <div class="pb-top">
-            <span>WSH vs SD
-              &middot; 5:11 PM ET</span>
-            <span>Rated</span>
-          </div>
           <div class="pb-body">
-            <div class="pb-name">Jake Irvin <span class="pb-wl">2&ndash;8</span></div>
-            <div class="pb-head">
-              <div class="pb-num"><div class="k">Our projection</div>
-                <div class="v">5.3<span class="unit">K</span></div></div>
-              <div class="pb-num alt"><div class="k">Posted line</div>
-                <div class="v">4.5<span class="unit">K</span></div></div>
+            <div class="cv-head">
+              <h3 class="cv-tm">Jake Irvin</h3>
+              <span class="cv-time">5:11 PM ET</span>
             </div>
-            <div class="pb-striphead">
-              <span>Last 10 starts</span>
-              <span class="pb-rec"><b>5&ndash;5</b>
-                over 4.5 &middot; L5 <b>3&ndash;2</b></span>
+            <div class="cv-sub">WSH vs SD
+              &middot; Rated</div>
+            <div class="cv-row">
+              <span class="cv-lab">Our projection</span>
+              <span class="cv-pct">5.3<span class="cv-u">K</span></span>
             </div>
-            
+            <div class="cv-bar"><i class="cv-fill" style="width:58.9%"></i>
+              <i class="cv-tick" style="left:50.0%"></i></div>
+            <div class="cv-foot">
+              <span class="gm">Posted line 4.5</span><span class="ge up">+0.8 edge</span>
+            </div>
+            <details class="gmore" data-close="Close">
+              <summary>Prop detail +</summary>
+              <div class="gmore-in"><div class="pnl"><section class="pk"><h4>Prices</h4><div class="pb-foot"><span>o+120 / u−146</span><span class="lean">0.8 over the line</span></div></section><section class="pk"><h4>Last 10 starts</h4><div class="pb-striphead"><span></span><span class="pb-rec"><b>5&ndash;5</b> over 4.5 &middot; L5 <b>3&ndash;2</b></span></div>
       <div class="pb-strip">
         <div class="pb-line" style="bottom:32.1%"><span class="pb-linelab">4.5</span></div>
         <div class="pb-bar" style="height:28.6%" title="2026-05-13 vs Cincinnati Reds — 4 K in 3.0 IP"></div><div class="pb-bar hit" style="height:42.9%" title="2026-05-18 vs New York Mets — 6 K in 4.0 IP"></div><div class="pb-bar hit" style="height:50.0%" title="2026-05-23 vs Atlanta Braves — 7 K in 5.0 IP"></div><div class="pb-bar" style="height:7.1%" title="2026-07-30 vs Atlanta Braves — 1 K in 5.0 IP"></div><div class="pb-bar" style="height:21.4%" title="2026-08-05 vs Philadelphia Phillies — 3 K in 5.3 IP"></div><div class="pb-bar" style="height:28.6%" title="2026-08-11 vs Chicago Cubs — 4 K in 3.3 IP"></div><div class="pb-bar hit" style="height:42.9%" title="2026-08-16 vs New York Mets — 6 K in 6.0 IP"></div><div class="pb-bar" style="height:28.6%" title="2026-08-22 vs Miami Marlins — 4 K in 6.0 IP"></div><div class="pb-bar hit" style="height:42.9%" title="2026-08-27 vs Colorado Rockies — 6 K in 4.3 IP"></div><div class="pb-bar hit" style="height:35.7%" title="2026-09-01 vs Atlanta Braves — 5 K in 4.0 IP"></div>
       </div>
-      <div class="pb-ticks"><span>4</span><span>6</span><span>7</span><span>1</span><span>3</span><span>4</span><span>6</span><span>4</span><span>6</span><span>5</span></div>
-            <div class="pb-rows">
-              <div class="pb-row"><span>Season</span><b>22.9% K &middot; 9.1 K/9 &middot; 5.57 ERA</b></div>
-              <div class="pb-row"><span>SD strikeouts</span>
-                <b>8.1 per game &middot; 12th of 21</b></div>
-            </div>
-            <div class="pb-foot">
-              <span>o+120 / u−146</span>
-              <span class="lean">0.8 over the line</span>
-            </div>
+      <div class="pb-ticks"><span>4</span><span>6</span><span>7</span><span>1</span><span>3</span><span>4</span><span>6</span><span>4</span><span>6</span><span>5</span></div></section><section class="pk"><h4>Season</h4><div class="pb-rows"><div class="pb-row"><span>Season</span><b>22.9% K &middot; 9.1 K/9 &middot; 5.57 ERA</b></div><div class="pb-row"><span>SD strikeouts</span><b>8.1 per game &middot; 12th of 21</b></div></div></section>
+                <div class="mxb"><div class="mxh">Irvin has never faced SD</div><p class="mxn">No starts against them in 2025 or 2026, so there is nothing here to read. The projection does not use this line either way &mdash; it is context, not an input.</p><div class="mxh">How SD strike out</div><table class="mxt"><tr class="on"><th>vs right-handers</th><td class="n">21.6%</td><td class="r">17th of 30</td><td class="p">3,930 PA</td></tr><tr class="avg"><th>league average</th><td class="n">21.9%</td><td class="r"></td><td class="p"></td></tr></table><p class="mxn">Irvin throws right, so this is the rate that applies to him. SD rank 14th against everybody and 17th against right-handers.</p></div><div class="verdict ">ordinary matchup<span class="vd">-0.3 points vs league</span></div></div></div>
+            </details>
           </div>
-          <details class="mx"><summary><span class="mxs">matchup detail</span></summary><div class="mxb"><div class="mxh">Irvin has never faced SD</div><p class="mxn">No starts against them in 2025 or 2026, so there is nothing here to read. The projection does not use this line either way &mdash; it is context, not an input.</p><div class="mxh">How SD strike out</div><table class="mxt"><tr class="on"><th>vs right-handers</th><td class="n">21.6%</td><td class="r">17th of 30</td><td class="p">3,930 PA</td></tr><tr class="avg"><th>league average</th><td class="n">21.9%</td><td class="r"></td><td class="p"></td></tr></table><p class="mxn">Irvin throws right, so this is the rate that applies to him. SD rank 14th against everybody and 17th against right-handers.</p></div></details><div class="verdict ">ordinary matchup<span class="vd">-0.3 points vs league</span></div>
         </div></div>
 
     <div class="clegend" style="margin-top:22px">

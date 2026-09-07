@@ -336,6 +336,53 @@ section{border-bottom:1px solid var(--line)}
 .mk-edge.r{color:var(--red)}
 .mk-note{flex:0 0 auto;font-size:12.5px;color:var(--muted)}
 
+/* ---------- the canvas card ----------
+   Five lines and nothing else: the matchup, the one probability we are
+   claiming, the bar with the market ticked onto it, what the market says,
+   and the size of the disagreement. Everything that used to live on the
+   face of this card -- records, starters, head to head, the three price
+   rows -- is behind the disclosure. A reader scanning fifteen games should
+   be comparing fifteen of the same number, not reading fifteen paragraphs. */
+.cv-head{display:flex;align-items:baseline;justify-content:space-between;
+  gap:10px;margin-bottom:18px}
+.cv-tm{font-size:20px;font-weight:700;letter-spacing:-.025em;color:var(--txt);
+  line-height:1.15;margin:0}
+.cv-tm span{color:var(--muted);font-weight:400}
+.cv-time{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;
+  color:var(--muted);white-space:nowrap}
+.cv-row{display:flex;align-items:baseline;justify-content:space-between;
+  gap:12px;margin-bottom:10px}
+.cv-lab{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--muted)}
+/* The number the card exists to deliver. Sans, not mono -- display type. */
+.cv-pct{font-size:30px;font-weight:700;letter-spacing:-.03em;line-height:1;
+  color:var(--green)}
+.cv-bar{position:relative;height:13px;background:var(--bg-2);overflow:hidden}
+.cv-fill{position:absolute;left:0;top:0;bottom:0;
+  background:linear-gradient(90deg,rgba(91,227,156,.30),var(--green))}
+/* Ringed in the page ground so it reads over both halves of the bar. */
+.cv-tick{position:absolute;top:0;bottom:0;width:2px;background:var(--txt);
+  box-shadow:0 0 0 1px rgba(8,9,11,.85)}
+.cv-foot{display:flex;align-items:baseline;justify-content:space-between;
+  gap:10px;margin-top:14px;padding-top:12px;border-top:1px solid var(--line);
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;
+  text-transform:uppercase}
+.cv-foot .gm{color:var(--muted)}
+.ge{font-weight:700;white-space:nowrap}
+.ge.up{color:var(--green)}
+.ge.down{color:var(--amber)}
+.ge.none{color:var(--muted);font-weight:400}
+/* The prop card's second line: which club, which opponent, and whether the
+   start has been graded. It replaces the old top strip, which on the canvas
+   card has no place -- the canvas puts the matchup in the title. */
+.cv-sub{font-family:var(--mono);font-size:10px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--muted);margin:-12px 0 18px}
+/* The unit after a projection. --dim is allowed here for the same reason it
+   is on .pb-num .unit: the figure beside it already carries the meaning. */
+.cv-u{font-size:15px;color:var(--dim);margin-left:4px;font-weight:500}
+.cv-none{font-family:var(--mono);font-size:11px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--muted);padding:6px 0 2px}
+
 /* Disclosure, not a flip: the back of a card is the size of its front, and
    this content does not fit there. interpolate-size lets it animate to its
    natural height, and prefers-reduced-motion turns that off. */
@@ -1036,300 +1083,201 @@ footer{background:var(--bg-2);padding:56px 0 40px}
 <section class="wrap board-page">
   <div class="board">
       <article class="gcard" style="--accent:#E81828" id="g-ce94c6d5ef8ae9f29d29223e386beee1">
-        <div class="gcard-top">
-          <span>MLB &middot; 1:06 PM ET</span><span>Scheduled</span>
-        </div>
         <div class="gcard-body">
+          <div class="cv-head">
+            <h3 class="cv-tm">Braves <span>@</span> Phillies</h3>
+            <span class="cv-time">1:06 PM ET</span>
+          </div>
           
-        <div class="gside">
-          <div class="tm"><span class="tdot" style="--tc:#CE1141"></span>Atlanta Braves</div>
-          <div class="pc">44.5%</div>
-        </div>
-        <div class="grec">85&ndash;59 &middot; 37&ndash;34 on the road</div>
-        <div class="gsp">Grant Holmes &middot; <span class="gwl">9&ndash;5</span> &middot; 3.62 ERA</div>
-        <div class="gvs" title="2025–2026 regular season — shown as context, not used in the number">vs Phillies &middot; 3 GS &middot; 14.7 IP &middot; 3.07 ERA</div>
-          <div class="gbar"><div class="seg on" style="width:44.5%"></div><div class="tick" style="left:37.2%" title="Where the market has it"></div></div>
-          
-        <div class="gside lead">
-          <div class="tm"><span class="tdot" style="--tc:#E81828"></span>Philadelphia Phillies</div>
-          <div class="pc">55.5%</div>
-        </div>
-        <div class="grec">80&ndash;63 &middot; 39&ndash;32 at home</div>
-        <div class="gsp">Jesús Luzardo &middot; <span class="gwl">13&ndash;5</span> &middot; 3.02 ERA</div>
-        <div class="gvs" title="2025–2026 regular season — shown as context, not used in the number">vs Braves &middot; 3 GS &middot; 17.7 IP &middot; 1.53 ERA</div>
-          <div class="gfoot"><span class="lean">7.3 pts off market</span></div>
-          <div class="mk"><div class="mk-row"><span class="mk-label">Moneyline</span><span class="mk-line">Phillies <b>−175</b> <span class="mk-book">LowVig.ag</span></span><span class="mk-edge r">−1.3%</span></div><div class="mk-row"><span class="mk-label">Run line</span><span class="mk-line">Phillies −1.5 <b>+125</b> <span class="mk-book">FanDuel</span></span><span class="mk-edge r">−1.1%</span></div><div class="mk-row"><span class="mk-label">Total</span><span class="mk-line">+8 &middot; o<b>−105</b> <span class="mk-book">Bovada</span></span><span class="mk-note">market only</span></div></div>
-          <details class="gmore" data-close="Close"><summary>Form, head to head and props</summary><div class="gmore-in"><div class="pnl"><section class="pk"><h4>Form</h4><table class="pkt fm"><tr class="hd"><th></th><td>Braves</td><td>Phillies</td></tr><tr><th>Record</th><td>85&ndash;58</td><td>80&ndash;63</td></tr><tr><th>Last 10</th><td>7&ndash;3</td><td>7&ndash;3</td></tr><tr><th>Streak</th><td><b class="good">W1</b><i>won its last</i></td><td><b class="bad">L1</b><i>lost its last</i></td></tr></table></section><section class="pk"><h4>Head to head</h4><p class="pnl-note">Braves lead the season series <b>7&ndash;2</b></p><div class="h2more">4 earlier meetings not shown</div><div class="h2g"><span class="h2d">Apr 25</span><span class="h2s"><b>Phillies</b> 8&ndash;5</span><span class="h2w">at Atlanta</span></div><div class="h2g"><span class="h2d">Apr 26</span><span class="h2s"><b>Braves</b> 6&ndash;2</span><span class="h2w">at Atlanta</span></div><div class="h2g"><span class="h2d">Sep 4</span><span class="h2s"><b>Braves</b> 5&ndash;2</span><span class="h2w">at Philadelphia</span></div><div class="h2g"><span class="h2d">Sep 5</span><span class="h2s"><b>Phillies</b> 4&ndash;2</span><span class="h2w">at Philadelphia</span></div><div class="h2g"><span class="h2d">Sep 6</span><span class="h2s"><b>Braves</b> 5&ndash;4</span><span class="h2w">at Philadelphia</span></div></section><section class="pk"><h4>Starters</h4><div class="pst"><div class="pst-n">Grant Holmes &middot; 3.62 ERA</div><div class="pst-v">3 starts against the Phillies: 14.7 innings, 14 strikeouts (8.6 per nine), 3.07 ERA</div></div><div class="pst"><div class="pst-n">Jesús Luzardo &middot; 3.02 ERA</div><div class="pst-v">3 starts against the Braves: 17.7 innings, 20 strikeouts (10.2 per nine), 1.53 ERA</div></div></section><section class="pk"><h4>Strikeout props</h4><div class="ppr"><div class="ppr-top"><span class="ppr-n">Grant Holmes</span><span class="ppr-v ">ordinary matchup</span></div><div class="ppr-line">strikeouts &middot; ours <b>4.2</b> &middot; line <b>3.5</b> &middot; o+103 / u−128 &middot; <span class="good">0.7 over the line</span></div></div><div class="ppr"><div class="ppr-top"><span class="ppr-n">Jesús Luzardo</span><span class="ppr-v bad">tough matchup</span></div><div class="ppr-line">strikeouts &middot; ours <b>6.7</b> &middot; line <b>7.5</b> &middot; o+122 / u−145 &middot; <span class="bad">0.8 under the line</span></div></div></section></div></div></details>
+          <div class="cv-row">
+            <span class="cv-lab">PHI win prob</span>
+            <span class="cv-pct">56%</span>
+          </div>
+          <div class="cv-bar"><i class="cv-fill" style="width:55.5%"></i><i class="cv-tick" style="left:62.8%"></i></div>
+          <div class="cv-foot">
+            <span class="gm">market 63%</span><span class="ge down">&minus;7.3 fade</span>
+          </div>
+          <details class="gmore" data-close="Close"><summary>Game detail +</summary><div class="gmore-in"><div class="pnl"><section class="pk"><h4>Prices</h4><div class="mk"><div class="mk-row"><span class="mk-label">Moneyline</span><span class="mk-line">Phillies <b>−175</b> <span class="mk-book">LowVig.ag</span></span><span class="mk-edge r">−1.3%</span></div><div class="mk-row"><span class="mk-label">Run line</span><span class="mk-line">Phillies −1.5 <b>+125</b> <span class="mk-book">FanDuel</span></span><span class="mk-edge r">−1.1%</span></div><div class="mk-row"><span class="mk-label">Total</span><span class="mk-line">+8 &middot; o<b>−105</b> <span class="mk-book">Bovada</span></span><span class="mk-note">market only</span></div></div></section><section class="pk"><h4>Form</h4><table class="pkt fm"><tr class="hd"><th></th><td>Braves</td><td>Phillies</td></tr><tr><th>Record</th><td>85&ndash;58</td><td>80&ndash;63</td></tr><tr><th>Last 10</th><td>7&ndash;3</td><td>7&ndash;3</td></tr><tr><th>Streak</th><td><b class="good">W1</b><i>won its last</i></td><td><b class="bad">L1</b><i>lost its last</i></td></tr></table></section><section class="pk"><h4>Head to head</h4><p class="pnl-note">Braves lead the season series <b>7&ndash;2</b></p><div class="h2more">4 earlier meetings not shown</div><div class="h2g"><span class="h2d">Apr 25</span><span class="h2s"><b>Phillies</b> 8&ndash;5</span><span class="h2w">at Atlanta</span></div><div class="h2g"><span class="h2d">Apr 26</span><span class="h2s"><b>Braves</b> 6&ndash;2</span><span class="h2w">at Atlanta</span></div><div class="h2g"><span class="h2d">Sep 4</span><span class="h2s"><b>Braves</b> 5&ndash;2</span><span class="h2w">at Philadelphia</span></div><div class="h2g"><span class="h2d">Sep 5</span><span class="h2s"><b>Phillies</b> 4&ndash;2</span><span class="h2w">at Philadelphia</span></div><div class="h2g"><span class="h2d">Sep 6</span><span class="h2s"><b>Braves</b> 5&ndash;4</span><span class="h2w">at Philadelphia</span></div></section><section class="pk"><h4>Starters</h4><div class="pst"><div class="pst-n">Grant Holmes &middot; 3.62 ERA</div><div class="pst-v">3 starts against the Phillies: 14.7 innings, 14 strikeouts (8.6 per nine), 3.07 ERA</div></div><div class="pst"><div class="pst-n">Jesús Luzardo &middot; 3.02 ERA</div><div class="pst-v">3 starts against the Braves: 17.7 innings, 20 strikeouts (10.2 per nine), 1.53 ERA</div></div></section><section class="pk"><h4>Strikeout props</h4><div class="ppr"><div class="ppr-top"><span class="ppr-n">Grant Holmes</span><span class="ppr-v ">ordinary matchup</span></div><div class="ppr-line">strikeouts &middot; ours <b>4.2</b> &middot; line <b>3.5</b> &middot; o+103 / u−128 &middot; <span class="good">0.7 over the line</span></div></div><div class="ppr"><div class="ppr-top"><span class="ppr-n">Jesús Luzardo</span><span class="ppr-v bad">tough matchup</span></div><div class="ppr-line">strikeouts &middot; ours <b>6.7</b> &middot; line <b>7.5</b> &middot; o+122 / u−145 &middot; <span class="bad">0.8 under the line</span></div></div></section></div></div></details>
         </div>
       </article>
       <article class="gcard" style="--accent:#00A3E0" id="g-4645b2d34e3503155b3ff308836621dc">
-        <div class="gcard-top">
-          <span>MLB &middot; 1:11 PM ET</span><span>Scheduled</span>
-        </div>
         <div class="gcard-body">
+          <div class="cv-head">
+            <h3 class="cv-tm">Mets <span>@</span> Marlins</h3>
+            <span class="cv-time">1:11 PM ET</span>
+          </div>
           
-        <div class="gside">
-          <div class="tm"><span class="tdot" style="--tc:#FF5910"></span>New York Mets</div>
-          <div class="pc">45.0%</div>
-        </div>
-        <div class="grec">65&ndash;78 &middot; 31&ndash;38 on the road</div>
-        <div class="gsp">Jonah Tong &middot; <span class="gwl">1&ndash;1</span> &middot; 3.60 ERA</div>
-        <div class="gvs thin" title="2025–2026 regular season — shown as context, not used in the number. Too few starts to mean anything.">vs Marlins &middot; 1 GS &middot; 8.0 IP &middot; 1.12 ERA &middot; thin</div>
-          <div class="gbar"><div class="seg on" style="width:45.0%"></div><div class="tick" style="left:44.5%" title="Where the market has it"></div></div>
-          
-        <div class="gside lead">
-          <div class="tm"><span class="tdot" style="--tc:#00A3E0"></span>Miami Marlins</div>
-          <div class="pc">55.0%</div>
-        </div>
-        <div class="grec">72&ndash;72 &middot; 43&ndash;29 at home</div>
-        <div class="gsp">Eury Pérez &middot; <span class="gwl">7&ndash;10</span> &middot; 3.72 ERA</div>
-        <div class="gvs" title="2025–2026 regular season — shown as context, not used in the number">vs Mets &middot; 4 GS &middot; 18.3 IP &middot; 4.91 ERA</div>
-          <div class="gfoot"><span>in line with the market</span></div>
-          <div class="mk"><div class="mk-row"><span class="mk-label">Moneyline</span><span class="mk-line">Marlins <b>−130</b> <span class="mk-book">FanDuel</span></span><span class="mk-edge r">−1.5%</span></div><div class="mk-row"><span class="mk-label">Run line</span><span class="mk-line">Marlins −1.5 <b>+155</b> <span class="mk-book">FanDuel</span></span><span class="mk-edge r">−3.9%</span></div><div class="mk-row"><span class="mk-label">Total</span><span class="mk-line">+8 &middot; o<b>−110</b> <span class="mk-book">BetRivers</span></span><span class="mk-note">market only</span></div></div>
-          <details class="gmore" data-close="Close"><summary>Form, head to head and props</summary><div class="gmore-in"><div class="pnl"><section class="pk"><h4>Form</h4><table class="pkt fm"><tr class="hd"><th></th><td>Mets</td><td>Marlins</td></tr><tr><th>Record</th><td>65&ndash;78</td><td>72&ndash;72</td></tr><tr><th>Last 10</th><td>5&ndash;5</td><td>4&ndash;6</td></tr><tr><th>Streak</th><td><b class="good">W1</b><i>won its last</i></td><td><b class="good">W1</b><i>won its last</i></td></tr></table></section><section class="pk"><h4>Head to head</h4><p class="pnl-note">Marlins lead the season series <b>6&ndash;4</b></p><div class="h2more">5 earlier meetings not shown</div><div class="h2g"><span class="h2d">May 31</span><span class="h2s"><b>Mets</b> 10&ndash;1</span><span class="h2w">at New York</span></div><div class="h2g"><span class="h2d">Jul 30</span><span class="h2s"><b>Mets</b> 4&ndash;2</span><span class="h2w">at New York</span></div><div class="h2g"><span class="h2d">Jul 31</span><span class="h2s"><b>Marlins</b> 5&ndash;2</span><span class="h2w">at New York</span></div><div class="h2g"><span class="h2d">Aug 1</span><span class="h2s"><b>Marlins</b> 6&ndash;2</span><span class="h2w">at New York</span></div><div class="h2g"><span class="h2d">Aug 2</span><span class="h2s"><b>Marlins</b> 2&ndash;0</span><span class="h2w">at New York</span></div></section><section class="pk"><h4>Starters</h4><div class="pst"><div class="pst-n">Jonah Tong &middot; 3.60 ERA</div><div class="pst-v">1 start against the Marlins: 8 innings, 8 strikeouts (9.0 per nine), 1.12 ERA</div></div><div class="pst"><div class="pst-n">Eury Pérez &middot; 3.72 ERA</div><div class="pst-v">4 starts against the Mets: 18.3 innings, 22 strikeouts (10.8 per nine), 4.91 ERA</div></div></section><section class="pk"><h4>Strikeout props</h4><div class="ppr"><div class="ppr-top"><span class="ppr-n">Jonah Tong</span><span class="ppr-v ">ordinary matchup</span></div><div class="ppr-line">strikeouts &middot; ours <b>3.7</b> &middot; line <b>4.5</b> &middot; o−117 / u+106 &middot; <span class="bad">0.8 under the line</span></div></div><div class="ppr"><div class="ppr-top"><span class="ppr-n">Eury Pérez</span><span class="ppr-v ">ordinary matchup</span></div><div class="ppr-line">strikeouts &middot; ours <b>5.8</b> &middot; line <b>5.5</b> &middot; o−115 / u+103 &middot; <span class="">in line</span></div></div></section></div></div></details>
+          <div class="cv-row">
+            <span class="cv-lab">MIA win prob</span>
+            <span class="cv-pct">55%</span>
+          </div>
+          <div class="cv-bar"><i class="cv-fill" style="width:55.0%"></i><i class="cv-tick" style="left:55.5%"></i></div>
+          <div class="cv-foot">
+            <span class="gm">market 56%</span><span class="ge none">no edge</span>
+          </div>
+          <details class="gmore" data-close="Close"><summary>Game detail +</summary><div class="gmore-in"><div class="pnl"><section class="pk"><h4>Prices</h4><div class="mk"><div class="mk-row"><span class="mk-label">Moneyline</span><span class="mk-line">Marlins <b>−130</b> <span class="mk-book">FanDuel</span></span><span class="mk-edge r">−1.5%</span></div><div class="mk-row"><span class="mk-label">Run line</span><span class="mk-line">Marlins −1.5 <b>+155</b> <span class="mk-book">FanDuel</span></span><span class="mk-edge r">−3.9%</span></div><div class="mk-row"><span class="mk-label">Total</span><span class="mk-line">+8 &middot; o<b>−110</b> <span class="mk-book">BetRivers</span></span><span class="mk-note">market only</span></div></div></section><section class="pk"><h4>Form</h4><table class="pkt fm"><tr class="hd"><th></th><td>Mets</td><td>Marlins</td></tr><tr><th>Record</th><td>65&ndash;78</td><td>72&ndash;72</td></tr><tr><th>Last 10</th><td>5&ndash;5</td><td>4&ndash;6</td></tr><tr><th>Streak</th><td><b class="good">W1</b><i>won its last</i></td><td><b class="good">W1</b><i>won its last</i></td></tr></table></section><section class="pk"><h4>Head to head</h4><p class="pnl-note">Marlins lead the season series <b>6&ndash;4</b></p><div class="h2more">5 earlier meetings not shown</div><div class="h2g"><span class="h2d">May 31</span><span class="h2s"><b>Mets</b> 10&ndash;1</span><span class="h2w">at New York</span></div><div class="h2g"><span class="h2d">Jul 30</span><span class="h2s"><b>Mets</b> 4&ndash;2</span><span class="h2w">at New York</span></div><div class="h2g"><span class="h2d">Jul 31</span><span class="h2s"><b>Marlins</b> 5&ndash;2</span><span class="h2w">at New York</span></div><div class="h2g"><span class="h2d">Aug 1</span><span class="h2s"><b>Marlins</b> 6&ndash;2</span><span class="h2w">at New York</span></div><div class="h2g"><span class="h2d">Aug 2</span><span class="h2s"><b>Marlins</b> 2&ndash;0</span><span class="h2w">at New York</span></div></section><section class="pk"><h4>Starters</h4><div class="pst"><div class="pst-n">Jonah Tong &middot; 3.60 ERA</div><div class="pst-v">1 start against the Marlins: 8 innings, 8 strikeouts (9.0 per nine), 1.12 ERA</div></div><div class="pst"><div class="pst-n">Eury Pérez &middot; 3.72 ERA</div><div class="pst-v">4 starts against the Mets: 18.3 innings, 22 strikeouts (10.8 per nine), 4.91 ERA</div></div></section><section class="pk"><h4>Strikeout props</h4><div class="ppr"><div class="ppr-top"><span class="ppr-n">Jonah Tong</span><span class="ppr-v ">ordinary matchup</span></div><div class="ppr-line">strikeouts &middot; ours <b>3.7</b> &middot; line <b>4.5</b> &middot; o−117 / u+106 &middot; <span class="bad">0.8 under the line</span></div></div><div class="ppr"><div class="ppr-top"><span class="ppr-n">Eury Pérez</span><span class="ppr-v ">ordinary matchup</span></div><div class="ppr-line">strikeouts &middot; ours <b>5.8</b> &middot; line <b>5.5</b> &middot; o−115 / u+103 &middot; <span class="">in line</span></div></div></section></div></div></details>
         </div>
       </article>
       <article class="gcard" style="--accent:#DF4601" id="g-0a5522c3b427e5162e8c13c1ddb05dd7">
-        <div class="gcard-top">
-          <span>MLB &middot; 1:36 PM ET</span><span>Scheduled</span>
-        </div>
         <div class="gcard-body">
+          <div class="cv-head">
+            <h3 class="cv-tm">Guardians <span>@</span> Orioles</h3>
+            <span class="cv-time">1:36 PM ET</span>
+          </div>
           
-        <div class="gside">
-          <div class="tm"><span class="tdot" style="--tc:#33607D"></span>Cleveland Guardians</div>
-          <div class="pc">49.6%</div>
-        </div>
-        <div class="grec">73&ndash;71 &middot; 37&ndash;32 on the road</div>
-        <div class="gsp">Joey Cantillo &middot; <span class="gwl">9&ndash;8</span> &middot; 3.81 ERA</div>
-        <div class="gvs thin" title="2025–2026 regular season — shown as context, not used in the number. Too few starts to mean anything.">vs Orioles &middot; 2 GS &middot; 10.7 IP &middot; 4.22 ERA &middot; thin</div>
-          <div class="gbar"><div class="seg on" style="width:49.6%"></div><div class="tick" style="left:44.3%" title="Where the market has it"></div></div>
-          
-        <div class="gside lead">
-          <div class="tm"><span class="tdot" style="--tc:#DF4601"></span>Baltimore Orioles</div>
-          <div class="pc">50.4%</div>
-        </div>
-        <div class="grec">69&ndash;75 &middot; 34&ndash;38 at home</div>
-        <div class="gsp">Trevor Rogers &middot; <span class="gwl">9&ndash;9</span> &middot; 4.30 ERA</div>
-        <div class="gvs thin" title="2025–2026 regular season — shown as context, not used in the number. Too few starts to mean anything.">vs Guardians &middot; 1 GS &middot; 5.0 IP &middot; 9.00 ERA &middot; thin</div>
-          <div class="gfoot"><span class="lean">5.4 pts off market</span></div>
-          <div class="mk"><div class="mk-row"><span class="mk-label">Moneyline</span><span class="mk-line">Orioles <b>−128</b> <span class="mk-book">BetUS</span></span><span class="mk-edge r">−0.6%</span></div><div class="mk-row"><span class="mk-label">Run line</span><span class="mk-line">Orioles −1.5 <b>+168</b> <span class="mk-book">MyBookie.ag</span></span><span class="mk-edge r">−3.5%</span></div><div class="mk-row"><span class="mk-label">Total</span><span class="mk-line">+7 &middot; o<b>−113</b> <span class="mk-book">LowVig.ag</span></span><span class="mk-note">market only</span></div></div>
-          <details class="gmore" data-close="Close"><summary>Form, head to head and props</summary><div class="gmore-in"><div class="pnl"><section class="pk"><h4>Form</h4><table class="pkt fm"><tr class="hd"><th></th><td>Guardians</td><td>Orioles</td></tr><tr><th>Record</th><td>73&ndash;71</td><td>69&ndash;75</td></tr><tr><th>Last 10</th><td>5&ndash;5</td><td>4&ndash;6</td></tr><tr><th>Streak</th><td><b class="good">W1</b><i>won its last</i></td><td><b class="bad">L6</b><i>lost 6 in a row</i></td></tr></table></section><section class="pk"><h4>Head to head</h4><p class="pnl-note">Guardians lead the season series <b>3&ndash;1</b></p><div class="h2g"><span class="h2d">Apr 16</span><span class="h2s"><b>Guardians</b> 4&ndash;2</span><span class="h2w">at Cleveland</span></div><div class="h2g"><span class="h2d">Apr 17</span><span class="h2s"><b>Orioles</b> 6&ndash;4</span><span class="h2w">at Cleveland</span></div><div class="h2g"><span class="h2d">Apr 18</span><span class="h2s"><b>Guardians</b> 4&ndash;2</span><span class="h2w">at Cleveland</span></div><div class="h2g"><span class="h2d">Apr 19</span><span class="h2s"><b>Guardians</b> 8&ndash;4</span><span class="h2w">at Cleveland</span></div></section><section class="pk"><h4>Starters</h4><div class="pst"><div class="pst-n">Joey Cantillo &middot; 3.81 ERA</div><div class="pst-v">2 starts against the Orioles: 10.7 innings, 13 strikeouts (10.9 per nine), 4.22 ERA</div></div><div class="pst"><div class="pst-n">Trevor Rogers &middot; 4.30 ERA</div><div class="pst-v">1 start against the Guardians: 5 innings, 5 strikeouts (9.0 per nine), 9.00 ERA</div></div></section><section class="pk"><h4>Strikeout props</h4><div class="ppr"><div class="ppr-top"><span class="ppr-n">Joey Cantillo</span><span class="ppr-v good">favourable matchup</span></div><div class="ppr-line">strikeouts &middot; ours <b>6.4</b> &middot; line <b>5.5</b> &middot; o−143 / u+122 &middot; <span class="good">0.9 over the line</span></div></div><div class="ppr"><div class="ppr-top"><span class="ppr-n">Trevor Rogers</span><span class="ppr-v ">ordinary matchup</span></div><div class="ppr-line">strikeouts &middot; ours <b>4.7</b> &middot; line <b>4.5</b> &middot; o−130 / u+105 &middot; <span class="">in line</span></div></div></section></div></div></details>
+          <div class="cv-row">
+            <span class="cv-lab">BAL win prob</span>
+            <span class="cv-pct">50%</span>
+          </div>
+          <div class="cv-bar"><i class="cv-fill" style="width:50.4%"></i><i class="cv-tick" style="left:55.7%"></i></div>
+          <div class="cv-foot">
+            <span class="gm">market 56%</span><span class="ge down">&minus;5.4 fade</span>
+          </div>
+          <details class="gmore" data-close="Close"><summary>Game detail +</summary><div class="gmore-in"><div class="pnl"><section class="pk"><h4>Prices</h4><div class="mk"><div class="mk-row"><span class="mk-label">Moneyline</span><span class="mk-line">Orioles <b>−128</b> <span class="mk-book">BetUS</span></span><span class="mk-edge r">−0.6%</span></div><div class="mk-row"><span class="mk-label">Run line</span><span class="mk-line">Orioles −1.5 <b>+168</b> <span class="mk-book">MyBookie.ag</span></span><span class="mk-edge r">−3.5%</span></div><div class="mk-row"><span class="mk-label">Total</span><span class="mk-line">+7 &middot; o<b>−113</b> <span class="mk-book">LowVig.ag</span></span><span class="mk-note">market only</span></div></div></section><section class="pk"><h4>Form</h4><table class="pkt fm"><tr class="hd"><th></th><td>Guardians</td><td>Orioles</td></tr><tr><th>Record</th><td>73&ndash;71</td><td>69&ndash;75</td></tr><tr><th>Last 10</th><td>5&ndash;5</td><td>4&ndash;6</td></tr><tr><th>Streak</th><td><b class="good">W1</b><i>won its last</i></td><td><b class="bad">L6</b><i>lost 6 in a row</i></td></tr></table></section><section class="pk"><h4>Head to head</h4><p class="pnl-note">Guardians lead the season series <b>3&ndash;1</b></p><div class="h2g"><span class="h2d">Apr 16</span><span class="h2s"><b>Guardians</b> 4&ndash;2</span><span class="h2w">at Cleveland</span></div><div class="h2g"><span class="h2d">Apr 17</span><span class="h2s"><b>Orioles</b> 6&ndash;4</span><span class="h2w">at Cleveland</span></div><div class="h2g"><span class="h2d">Apr 18</span><span class="h2s"><b>Guardians</b> 4&ndash;2</span><span class="h2w">at Cleveland</span></div><div class="h2g"><span class="h2d">Apr 19</span><span class="h2s"><b>Guardians</b> 8&ndash;4</span><span class="h2w">at Cleveland</span></div></section><section class="pk"><h4>Starters</h4><div class="pst"><div class="pst-n">Joey Cantillo &middot; 3.81 ERA</div><div class="pst-v">2 starts against the Orioles: 10.7 innings, 13 strikeouts (10.9 per nine), 4.22 ERA</div></div><div class="pst"><div class="pst-n">Trevor Rogers &middot; 4.30 ERA</div><div class="pst-v">1 start against the Guardians: 5 innings, 5 strikeouts (9.0 per nine), 9.00 ERA</div></div></section><section class="pk"><h4>Strikeout props</h4><div class="ppr"><div class="ppr-top"><span class="ppr-n">Joey Cantillo</span><span class="ppr-v good">favourable matchup</span></div><div class="ppr-line">strikeouts &middot; ours <b>6.4</b> &middot; line <b>5.5</b> &middot; o−143 / u+122 &middot; <span class="good">0.9 over the line</span></div></div><div class="ppr"><div class="ppr-top"><span class="ppr-n">Trevor Rogers</span><span class="ppr-v ">ordinary matchup</span></div><div class="ppr-line">strikeouts &middot; ours <b>4.7</b> &middot; line <b>4.5</b> &middot; o−130 / u+105 &middot; <span class="">in line</span></div></div></section></div></div></details>
         </div>
       </article>
       <article class="gcard" style="--accent:#BD3039" id="g-22430c880f9e9118f74aacf0b720b7ee">
-        <div class="gcard-top">
-          <span>MLB &middot; 1:36 PM ET</span><span>Scheduled</span>
-        </div>
         <div class="gcard-body">
+          <div class="cv-head">
+            <h3 class="cv-tm">Angels <span>@</span> Red Sox</h3>
+            <span class="cv-time">1:36 PM ET</span>
+          </div>
           
-        <div class="gside">
-          <div class="tm"><span class="tdot" style="--tc:#BA0021"></span>Los Angeles Angels</div>
-          <div class="pc">31.1%</div>
-        </div>
-        <div class="grec">54&ndash;89 &middot; 24&ndash;45 on the road</div>
-        <div class="gsp">Grayson Rodriguez &middot; <span class="gwl">4&ndash;6</span> &middot; 6.03 ERA</div>
-        
-          <div class="gbar"><div class="seg on" style="width:31.1%"></div><div class="tick" style="left:38.1%" title="Where the market has it"></div></div>
-          
-        <div class="gside lead">
-          <div class="tm"><span class="tdot" style="--tc:#BD3039"></span>Boston Red Sox</div>
-          <div class="pc">68.9%</div>
-        </div>
-        <div class="grec">79&ndash;65 &middot; 35&ndash;34 at home</div>
-        <div class="gsp">Brayan Bello &middot; <span class="gwl">5&ndash;7</span> &middot; 5.07 ERA</div>
-        <div class="gvs thin" title="2025–2026 regular season — shown as context, not used in the number. Too few starts to mean anything.">vs Angels &middot; 1 GS &middot; 6.0 IP &middot; 4.50 ERA &middot; thin</div>
-          <div class="gfoot"><span class="lean">7.0 pts off market</span></div>
-          <div class="mk"><div class="mk-row"><span class="mk-label">Moneyline</span><span class="mk-line">Red Sox <b>−168</b> <span class="mk-book">FanDuel</span></span><span class="mk-edge r">−1.0%</span></div><div class="mk-row"><span class="mk-label">Run line</span><span class="mk-line">Red Sox −1.5 <b>+126</b> <span class="mk-book">LowVig.ag</span></span><span class="mk-edge r">−2.5%</span></div><div class="mk-row"><span class="mk-label">Total</span><span class="mk-line">+8.5 &middot; o<b>+100</b> <span class="mk-book">Bovada</span></span><span class="mk-note">market only</span></div></div>
-          <details class="gmore" data-close="Close"><summary>Form, head to head and props</summary><div class="gmore-in"><div class="pnl"><section class="pk"><h4>Form</h4><table class="pkt fm"><tr class="hd"><th></th><td>Angels</td><td>Red Sox</td></tr><tr><th>Record</th><td>54&ndash;89</td><td>79&ndash;65</td></tr><tr><th>Last 10</th><td>2&ndash;8</td><td>6&ndash;4</td></tr><tr><th>Streak</th><td><b class="bad">L1</b><i>lost its last</i></td><td><b class="good">W4</b><i>won 4 in a row</i></td></tr></table></section><section class="pk"><h4>Head to head</h4><p class="pnl-note">Red Sox lead the season series <b>3&ndash;0</b></p><div class="h2g"><span class="h2d">Jul 3</span><span class="h2s"><b>Red Sox</b> 5&ndash;2</span><span class="h2w">at Los Angeles</span></div><div class="h2g"><span class="h2d">Jul 4</span><span class="h2s"><b>Red Sox</b> 8&ndash;1</span><span class="h2w">at Los Angeles</span></div><div class="h2g"><span class="h2d">Jul 5</span><span class="h2s"><b>Red Sox</b> 7&ndash;5</span><span class="h2w">at Los Angeles</span></div></section><section class="pk"><h4>Starters</h4><div class="pst"><div class="pst-n">Grayson Rodriguez &middot; 6.03 ERA</div><div class="pst-v">has not faced the Red Sox in 2025&ndash;2026</div></div><div class="pst"><div class="pst-n">Brayan Bello &middot; 5.07 ERA</div><div class="pst-v">1 start against the Angels: 6 innings, 4 strikeouts (6.0 per nine), 4.50 ERA</div></div></section><section class="pk"><h4>Strikeout props</h4><div class="ppr"><div class="ppr-top"><span class="ppr-n">Brayan Bello</span><span class="ppr-v good">favourable matchup</span></div><div class="ppr-line">strikeouts &middot; ours <b>4.4</b> &middot; line <b>4.5</b> &middot; o+116 / u−124 &middot; <span class="">in line</span></div></div><div class="ppr"><div class="ppr-top"><span class="ppr-n">Grayson Rodriguez</span><span class="ppr-v ">ordinary matchup</span></div><div class="ppr-line">strikeouts &middot; ours <b>4.9</b> &middot; line <b>4.5</b> &middot; o−103 / u−112 &middot; <span class="good">0.4 over the line</span></div></div></section></div></div></details>
+          <div class="cv-row">
+            <span class="cv-lab">BOS win prob</span>
+            <span class="cv-pct">69%</span>
+          </div>
+          <div class="cv-bar"><i class="cv-fill" style="width:68.9%"></i><i class="cv-tick" style="left:61.9%"></i></div>
+          <div class="cv-foot">
+            <span class="gm">market 62%</span><span class="ge up">+7.0 edge</span>
+          </div>
+          <details class="gmore" data-close="Close"><summary>Game detail +</summary><div class="gmore-in"><div class="pnl"><section class="pk"><h4>Prices</h4><div class="mk"><div class="mk-row"><span class="mk-label">Moneyline</span><span class="mk-line">Red Sox <b>−168</b> <span class="mk-book">FanDuel</span></span><span class="mk-edge r">−1.0%</span></div><div class="mk-row"><span class="mk-label">Run line</span><span class="mk-line">Red Sox −1.5 <b>+126</b> <span class="mk-book">LowVig.ag</span></span><span class="mk-edge r">−2.5%</span></div><div class="mk-row"><span class="mk-label">Total</span><span class="mk-line">+8.5 &middot; o<b>+100</b> <span class="mk-book">Bovada</span></span><span class="mk-note">market only</span></div></div></section><section class="pk"><h4>Form</h4><table class="pkt fm"><tr class="hd"><th></th><td>Angels</td><td>Red Sox</td></tr><tr><th>Record</th><td>54&ndash;89</td><td>79&ndash;65</td></tr><tr><th>Last 10</th><td>2&ndash;8</td><td>6&ndash;4</td></tr><tr><th>Streak</th><td><b class="bad">L1</b><i>lost its last</i></td><td><b class="good">W4</b><i>won 4 in a row</i></td></tr></table></section><section class="pk"><h4>Head to head</h4><p class="pnl-note">Red Sox lead the season series <b>3&ndash;0</b></p><div class="h2g"><span class="h2d">Jul 3</span><span class="h2s"><b>Red Sox</b> 5&ndash;2</span><span class="h2w">at Los Angeles</span></div><div class="h2g"><span class="h2d">Jul 4</span><span class="h2s"><b>Red Sox</b> 8&ndash;1</span><span class="h2w">at Los Angeles</span></div><div class="h2g"><span class="h2d">Jul 5</span><span class="h2s"><b>Red Sox</b> 7&ndash;5</span><span class="h2w">at Los Angeles</span></div></section><section class="pk"><h4>Starters</h4><div class="pst"><div class="pst-n">Grayson Rodriguez &middot; 6.03 ERA</div><div class="pst-v">has not faced the Red Sox in 2025&ndash;2026</div></div><div class="pst"><div class="pst-n">Brayan Bello &middot; 5.07 ERA</div><div class="pst-v">1 start against the Angels: 6 innings, 4 strikeouts (6.0 per nine), 4.50 ERA</div></div></section><section class="pk"><h4>Strikeout props</h4><div class="ppr"><div class="ppr-top"><span class="ppr-n">Brayan Bello</span><span class="ppr-v good">favourable matchup</span></div><div class="ppr-line">strikeouts &middot; ours <b>4.4</b> &middot; line <b>4.5</b> &middot; o+116 / u−124 &middot; <span class="">in line</span></div></div><div class="ppr"><div class="ppr-top"><span class="ppr-n">Grayson Rodriguez</span><span class="ppr-v ">ordinary matchup</span></div><div class="ppr-line">strikeouts &middot; ours <b>4.9</b> &middot; line <b>4.5</b> &middot; o−103 / u−112 &middot; <span class="good">0.4 over the line</span></div></div></section></div></div></details>
         </div>
       </article>
       <article class="gcard" style="--accent:#266299" id="g-b4745820fda1c660f277b88a71e25596">
-        <div class="gcard-top">
-          <span>MLB &middot; 2:11 PM ET</span><span>Scheduled</span>
-        </div>
         <div class="gcard-body">
+          <div class="cv-head">
+            <h3 class="cv-tm">Diamondbacks <span>@</span> Royals</h3>
+            <span class="cv-time">2:11 PM ET</span>
+          </div>
           
-        <div class="gside lead">
-          <div class="tm"><span class="tdot" style="--tc:#AB243A"></span>Arizona Diamondbacks</div>
-          <div class="pc">51.1%</div>
-        </div>
-        <div class="grec">76&ndash;68 &middot; 35&ndash;37 on the road</div>
-        <div class="gsp">Derek Law &middot; <span class="gwl">0&ndash;0</span> &middot; 1.93 ERA</div>
-        
-          <div class="gbar"><div class="seg on" style="width:51.1%"></div><div class="tick" style="left:49.3%" title="Where the market has it"></div></div>
-          
-        <div class="gside">
-          <div class="tm"><span class="tdot" style="--tc:#266299"></span>Kansas City Royals</div>
-          <div class="pc">48.9%</div>
-        </div>
-        <div class="grec">64&ndash;80 &middot; 38&ndash;34 at home</div>
-        <div class="gsp">Noah Cameron &middot; <span class="gwl">9&ndash;8</span> &middot; 4.08 ERA</div>
-        
-          <div class="gfoot"><span class="lean">1.8 pts off market</span></div>
-          <div class="mk"><div class="mk-row"><span class="mk-label">Moneyline</span><span class="mk-line">Royals <b>−106</b> <span class="mk-book">BetUS</span></span><span class="mk-edge r">−1.4%</span></div><div class="mk-row"><span class="mk-label">Run line</span><span class="mk-line">Royals +1.5 <b>−180</b> <span class="mk-book">DraftKings</span></span><span class="mk-edge r">−2.0%</span></div><div class="mk-row"><span class="mk-label">Total</span><span class="mk-line">+9 &middot; o<b>−109</b> <span class="mk-book">BetRivers</span></span><span class="mk-note">market only</span></div></div>
-          <details class="gmore" data-close="Close"><summary>Form, head to head and props</summary><div class="gmore-in"><div class="pnl"><section class="pk"><h4>Form</h4><table class="pkt fm"><tr class="hd"><th></th><td>Diamondbacks</td><td>Royals</td></tr><tr><th>Record</th><td>76&ndash;68</td><td>64&ndash;80</td></tr><tr><th>Last 10</th><td>5&ndash;5</td><td>5&ndash;5</td></tr><tr><th>Streak</th><td><b class="good">W2</b><i>won 2 in a row</i></td><td><b class="good">W1</b><i>won its last</i></td></tr></table></section><section class="pk"><h4>Head to head</h4><p class="pnl-note">They have not met yet this season.</p></section><section class="pk"><h4>Starters</h4><div class="pst"><div class="pst-n">Derek Law &middot; 1.93 ERA</div><div class="pst-v">has not faced the Royals in 2025&ndash;2026</div></div><div class="pst"><div class="pst-n">Noah Cameron &middot; 4.08 ERA</div><div class="pst-v">has not faced the Diamondbacks in 2025&ndash;2026</div></div></section><section class="pk"><h4>Strikeout props</h4><div class="ppr"><div class="ppr-top"><span class="ppr-n">Noah Cameron</span><span class="ppr-v bad">tough matchup</span></div><div class="ppr-line">strikeouts &middot; ours <b>4.2</b> &middot; line <b>3.5</b> &middot; o−135 / u+123 &middot; <span class="good">0.7 over the line</span></div></div></section></div></div></details>
+          <div class="cv-row">
+            <span class="cv-lab">ARI win prob</span>
+            <span class="cv-pct">51%</span>
+          </div>
+          <div class="cv-bar"><i class="cv-fill" style="width:51.1%"></i><i class="cv-tick" style="left:49.3%"></i></div>
+          <div class="cv-foot">
+            <span class="gm">market 49%</span><span class="ge down">&minus;1.8 fade</span>
+          </div>
+          <details class="gmore" data-close="Close"><summary>Game detail +</summary><div class="gmore-in"><div class="pnl"><section class="pk"><h4>Prices</h4><div class="mk"><div class="mk-row"><span class="mk-label">Moneyline</span><span class="mk-line">Royals <b>−106</b> <span class="mk-book">BetUS</span></span><span class="mk-edge r">−1.4%</span></div><div class="mk-row"><span class="mk-label">Run line</span><span class="mk-line">Royals +1.5 <b>−180</b> <span class="mk-book">DraftKings</span></span><span class="mk-edge r">−2.0%</span></div><div class="mk-row"><span class="mk-label">Total</span><span class="mk-line">+9 &middot; o<b>−109</b> <span class="mk-book">BetRivers</span></span><span class="mk-note">market only</span></div></div></section><section class="pk"><h4>Form</h4><table class="pkt fm"><tr class="hd"><th></th><td>Diamondbacks</td><td>Royals</td></tr><tr><th>Record</th><td>76&ndash;68</td><td>64&ndash;80</td></tr><tr><th>Last 10</th><td>5&ndash;5</td><td>5&ndash;5</td></tr><tr><th>Streak</th><td><b class="good">W2</b><i>won 2 in a row</i></td><td><b class="good">W1</b><i>won its last</i></td></tr></table></section><section class="pk"><h4>Head to head</h4><p class="pnl-note">They have not met yet this season.</p></section><section class="pk"><h4>Starters</h4><div class="pst"><div class="pst-n">Derek Law &middot; 1.93 ERA</div><div class="pst-v">has not faced the Royals in 2025&ndash;2026</div></div><div class="pst"><div class="pst-n">Noah Cameron &middot; 4.08 ERA</div><div class="pst-v">has not faced the Diamondbacks in 2025&ndash;2026</div></div></section><section class="pk"><h4>Strikeout props</h4><div class="ppr"><div class="ppr-top"><span class="ppr-n">Noah Cameron</span><span class="ppr-v bad">tough matchup</span></div><div class="ppr-line">strikeouts &middot; ours <b>4.2</b> &middot; line <b>3.5</b> &middot; o−135 / u+123 &middot; <span class="good">0.7 over the line</span></div></div></section></div></div></details>
         </div>
       </article>
       <article class="gcard" style="--accent:#4D5E78" id="g-0902d8258427af19994e87abb3519262">
-        <div class="gcard-top">
-          <span>MLB &middot; 2:11 PM ET</span><span>Scheduled</span>
-        </div>
         <div class="gcard-body">
+          <div class="cv-head">
+            <h3 class="cv-tm">Cubs <span>@</span> Brewers</h3>
+            <span class="cv-time">2:11 PM ET</span>
+          </div>
           
-        <div class="gside">
-          <div class="tm"><span class="tdot" style="--tc:#3E5C9E"></span>Chicago Cubs</div>
-          <div class="pc">46.3%</div>
-        </div>
-        <div class="grec">81&ndash;63 &middot; 40&ndash;32 on the road</div>
-        <div class="gsp">Matthew Boyd &middot; <span class="gwl">8&ndash;3</span> &middot; 4.05 ERA</div>
-        <div class="gvs" title="2025–2026 regular season — shown as context, not used in the number">vs Brewers &middot; 3 GS &middot; 15.7 IP &middot; 6.89 ERA</div>
-          <div class="gbar"><div class="seg on" style="width:46.3%"></div><div class="tick" style="left:46.8%" title="Where the market has it"></div></div>
-          
-        <div class="gside lead">
-          <div class="tm"><span class="tdot" style="--tc:#4D5E78"></span>Milwaukee Brewers</div>
-          <div class="pc">53.7%</div>
-        </div>
-        <div class="grec">88&ndash;56 &middot; 47&ndash;25 at home</div>
-        <div class="gsp">Robert Gasser &middot; <span class="gwl">4&ndash;5</span> &middot; 4.57 ERA</div>
-        <div class="gvs thin" title="2025–2026 regular season — shown as context, not used in the number. Too few starts to mean anything.">vs Cubs &middot; 1 GS &middot; 4.3 IP &middot; 4.15 ERA &middot; thin</div>
-          <div class="gfoot"><span>in line with the market</span></div>
-          <div class="mk"><div class="mk-row"><span class="mk-label">Moneyline</span><span class="mk-line">Brewers <b>−117</b> <span class="mk-book">BetRivers</span></span><span class="mk-edge r">−0.9%</span></div><div class="mk-row"><span class="mk-label">Run line</span><span class="mk-line">Brewers −1.5 <b>+171</b> <span class="mk-book">MyBookie.ag</span></span><span class="mk-edge r">−2.6%</span></div><div class="mk-row"><span class="mk-label">Total</span><span class="mk-line">+8.5 &middot; o<b>−105</b> <span class="mk-book">Bovada</span></span><span class="mk-note">market only</span></div></div>
-          <details class="gmore" data-close="Close"><summary>Form, head to head and props</summary><div class="gmore-in"><div class="pnl"><section class="pk"><h4>Form</h4><table class="pkt fm"><tr class="hd"><th></th><td>Cubs</td><td>Brewers</td></tr><tr><th>Record</th><td>81&ndash;63</td><td>88&ndash;56</td></tr><tr><th>Last 10</th><td>5&ndash;5</td><td>5&ndash;5</td></tr><tr><th>Streak</th><td><b class="bad">L1</b><i>lost its last</i></td><td><b class="bad">L2</b><i>lost 2 in a row</i></td></tr></table></section><section class="pk"><h4>Head to head</h4><p class="pnl-note">Brewers lead the season series <b>6&ndash;4</b></p><div class="h2more">5 earlier meetings not shown</div><div class="h2g"><span class="h2d">Jun 28</span><span class="h2s"><b>Cubs</b> 4&ndash;3</span><span class="h2w">at Milwaukee</span></div><div class="h2g"><span class="h2d">Aug 31</span><span class="h2s"><b>Cubs</b> 17&ndash;3</span><span class="h2w">at Chicago</span></div><div class="h2g"><span class="h2d">Sep 1</span><span class="h2s"><b>Brewers</b> 9&ndash;4</span><span class="h2w">at Chicago</span></div><div class="h2g"><span class="h2d">Sep 2</span><span class="h2s"><b>Brewers</b> 9&ndash;5</span><span class="h2w">at Chicago</span></div><div class="h2g"><span class="h2d">Sep 3</span><span class="h2s"><b>Cubs</b> 2&ndash;1</span><span class="h2w">at Chicago</span></div></section><section class="pk"><h4>Starters</h4><div class="pst"><div class="pst-n">Matthew Boyd &middot; 4.05 ERA</div><div class="pst-v">3 starts against the Brewers: 15.7 innings, 8 strikeouts (4.6 per nine), 6.89 ERA</div></div><div class="pst"><div class="pst-n">Robert Gasser &middot; 4.57 ERA</div><div class="pst-v">1 start against the Cubs: 4.3 innings, 4 strikeouts (8.4 per nine), 4.15 ERA</div></div></section><section class="pk"><h4>Strikeout props</h4><div class="ppr"><div class="ppr-top"><span class="ppr-n">Matthew Boyd</span><span class="ppr-v bad">tough matchup</span></div><div class="ppr-line">strikeouts &middot; ours <b>4.2</b> &middot; line <b>4.5</b> &middot; o+126 / u−138 &middot; <span class="">in line</span></div></div><div class="ppr"><div class="ppr-top"><span class="ppr-n">Robert Gasser</span><span class="ppr-v bad">tough matchup</span></div><div class="ppr-line">strikeouts &middot; ours <b>5.2</b> &middot; line <b>4.5</b> &middot; o+110 / u−131 &middot; <span class="good">0.7 over the line</span></div></div></section></div></div></details>
+          <div class="cv-row">
+            <span class="cv-lab">MIL win prob</span>
+            <span class="cv-pct">54%</span>
+          </div>
+          <div class="cv-bar"><i class="cv-fill" style="width:53.7%"></i><i class="cv-tick" style="left:53.2%"></i></div>
+          <div class="cv-foot">
+            <span class="gm">market 53%</span><span class="ge none">no edge</span>
+          </div>
+          <details class="gmore" data-close="Close"><summary>Game detail +</summary><div class="gmore-in"><div class="pnl"><section class="pk"><h4>Prices</h4><div class="mk"><div class="mk-row"><span class="mk-label">Moneyline</span><span class="mk-line">Brewers <b>−117</b> <span class="mk-book">BetRivers</span></span><span class="mk-edge r">−0.9%</span></div><div class="mk-row"><span class="mk-label">Run line</span><span class="mk-line">Brewers −1.5 <b>+171</b> <span class="mk-book">MyBookie.ag</span></span><span class="mk-edge r">−2.6%</span></div><div class="mk-row"><span class="mk-label">Total</span><span class="mk-line">+8.5 &middot; o<b>−105</b> <span class="mk-book">Bovada</span></span><span class="mk-note">market only</span></div></div></section><section class="pk"><h4>Form</h4><table class="pkt fm"><tr class="hd"><th></th><td>Cubs</td><td>Brewers</td></tr><tr><th>Record</th><td>81&ndash;63</td><td>88&ndash;56</td></tr><tr><th>Last 10</th><td>5&ndash;5</td><td>5&ndash;5</td></tr><tr><th>Streak</th><td><b class="bad">L1</b><i>lost its last</i></td><td><b class="bad">L2</b><i>lost 2 in a row</i></td></tr></table></section><section class="pk"><h4>Head to head</h4><p class="pnl-note">Brewers lead the season series <b>6&ndash;4</b></p><div class="h2more">5 earlier meetings not shown</div><div class="h2g"><span class="h2d">Jun 28</span><span class="h2s"><b>Cubs</b> 4&ndash;3</span><span class="h2w">at Milwaukee</span></div><div class="h2g"><span class="h2d">Aug 31</span><span class="h2s"><b>Cubs</b> 17&ndash;3</span><span class="h2w">at Chicago</span></div><div class="h2g"><span class="h2d">Sep 1</span><span class="h2s"><b>Brewers</b> 9&ndash;4</span><span class="h2w">at Chicago</span></div><div class="h2g"><span class="h2d">Sep 2</span><span class="h2s"><b>Brewers</b> 9&ndash;5</span><span class="h2w">at Chicago</span></div><div class="h2g"><span class="h2d">Sep 3</span><span class="h2s"><b>Cubs</b> 2&ndash;1</span><span class="h2w">at Chicago</span></div></section><section class="pk"><h4>Starters</h4><div class="pst"><div class="pst-n">Matthew Boyd &middot; 4.05 ERA</div><div class="pst-v">3 starts against the Brewers: 15.7 innings, 8 strikeouts (4.6 per nine), 6.89 ERA</div></div><div class="pst"><div class="pst-n">Robert Gasser &middot; 4.57 ERA</div><div class="pst-v">1 start against the Cubs: 4.3 innings, 4 strikeouts (8.4 per nine), 4.15 ERA</div></div></section><section class="pk"><h4>Strikeout props</h4><div class="ppr"><div class="ppr-top"><span class="ppr-n">Matthew Boyd</span><span class="ppr-v bad">tough matchup</span></div><div class="ppr-line">strikeouts &middot; ours <b>4.2</b> &middot; line <b>4.5</b> &middot; o+126 / u−138 &middot; <span class="">in line</span></div></div><div class="ppr"><div class="ppr-top"><span class="ppr-n">Robert Gasser</span><span class="ppr-v bad">tough matchup</span></div><div class="ppr-line">strikeouts &middot; ours <b>5.2</b> &middot; line <b>4.5</b> &middot; o+110 / u−131 &middot; <span class="good">0.7 over the line</span></div></div></section></div></div></details>
         </div>
       </article>
       <article class="gcard" style="--accent:#495A70" id="g-a410afcc86bee1b6cbe7e60eafd8d50e">
-        <div class="gcard-top">
-          <span>MLB &middot; 3:11 PM ET</span><span>Scheduled</span>
-        </div>
         <div class="gcard-body">
+          <div class="cv-head">
+            <h3 class="cv-tm">Twins <span>@</span> Tigers</h3>
+            <span class="cv-time">3:11 PM ET</span>
+          </div>
           
-        <div class="gside">
-          <div class="tm"><span class="tdot" style="--tc:#406085"></span>Minnesota Twins</div>
-          <div class="pc">41.1%</div>
-        </div>
-        <div class="grec">68&ndash;75 &middot; 30&ndash;41 on the road</div>
-        <div class="gsp">Joe Ryan &middot; <span class="gwl">6&ndash;8</span> &middot; 3.65 ERA</div>
-        <div class="gvs thin" title="2025–2026 regular season — shown as context, not used in the number. Too few starts to mean anything.">vs Tigers &middot; 1 GS &middot; 5.0 IP &middot; 3.60 ERA &middot; thin</div>
-          <div class="gbar"><div class="seg on" style="width:41.1%"></div><div class="tick" style="left:47.5%" title="Where the market has it"></div></div>
-          
-        <div class="gside lead">
-          <div class="tm"><span class="tdot" style="--tc:#495A70"></span>Detroit Tigers</div>
-          <div class="pc">58.9%</div>
-        </div>
-        <div class="grec">65&ndash;78 &middot; 34&ndash;35 at home</div>
-        <div class="gsp">Troy Melton &middot; <span class="gwl">7&ndash;4</span> &middot; 2.20 ERA</div>
-        <div class="gvs thin" title="2025–2026 regular season — shown as context, not used in the number. Too few starts to mean anything.">vs Twins &middot; 2 GS &middot; 12.3 IP &middot; 6.57 ERA &middot; thin</div>
-          <div class="gfoot"><span class="lean">6.4 pts off market</span></div>
-          <div class="mk"><div class="mk-row"><span class="mk-label">Moneyline</span><span class="mk-line">Tigers <b>−115</b> <span class="mk-book">BetUS</span></span><span class="mk-edge r">−1.9%</span></div><div class="mk-row"><span class="mk-label">Run line</span><span class="mk-line">Tigers +1.5 <b>−205</b> <span class="mk-book">FanDuel</span></span><span class="mk-edge r">−2.5%</span></div><div class="mk-row"><span class="mk-label">Total</span><span class="mk-line">+8 &middot; o<b>+103</b> <span class="mk-book">LowVig.ag</span></span><span class="mk-note">market only</span></div></div>
-          <details class="gmore" data-close="Close"><summary>Form, head to head and props</summary><div class="gmore-in"><div class="pnl"><section class="pk"><h4>Form</h4><table class="pkt fm"><tr class="hd"><th></th><td>Twins</td><td>Tigers</td></tr><tr><th>Record</th><td>68&ndash;75</td><td>65&ndash;78</td></tr><tr><th>Last 10</th><td>4&ndash;6</td><td>3&ndash;7</td></tr><tr><th>Streak</th><td><b class="bad">L1</b><i>lost its last</i></td><td><b class="bad">L1</b><i>lost its last</i></td></tr></table></section><section class="pk"><h4>Head to head</h4><p class="pnl-note">Twins lead the season series <b>7&ndash;3</b></p><div class="h2more">5 earlier meetings not shown</div><div class="h2g"><span class="h2d">Jun 10</span><span class="h2s"><b>Twins</b> 6&ndash;4</span><span class="h2w">at Detroit</span></div><div class="h2g"><span class="h2d">Jun 11</span><span class="h2s"><b>Tigers</b> 11&ndash;0</span><span class="h2w">at Detroit</span></div><div class="h2g"><span class="h2d">Aug 31</span><span class="h2s"><b>Twins</b> 11&ndash;1</span><span class="h2w">at Minnesota</span></div><div class="h2g"><span class="h2d">Sep 1</span><span class="h2s"><b>Twins</b> 15&ndash;2</span><span class="h2w">at Minnesota</span></div><div class="h2g"><span class="h2d">Sep 2</span><span class="h2s"><b>Tigers</b> 11&ndash;6</span><span class="h2w">at Minnesota</span></div></section><section class="pk"><h4>Starters</h4><div class="pst"><div class="pst-n">Joe Ryan &middot; 3.65 ERA</div><div class="pst-v">1 start against the Tigers: 5 innings, 7 strikeouts (12.6 per nine), 3.60 ERA</div></div><div class="pst"><div class="pst-n">Troy Melton &middot; 2.20 ERA</div><div class="pst-v">2 starts against the Twins: 12.3 innings, 10 strikeouts (7.3 per nine), 6.57 ERA</div></div></section><section class="pk"><h4>Strikeout props</h4><div class="ppr"><div class="ppr-top"><span class="ppr-n">Joe Ryan</span><span class="ppr-v good">favourable matchup</span></div><div class="ppr-line">strikeouts &middot; ours <b>6.2</b> &middot; line <b>3.5</b> &middot; o−105 / u−111 &middot; <span class="good">2.7 over the line</span></div></div><div class="ppr"><div class="ppr-top"><span class="ppr-n">Troy Melton</span><span class="ppr-v bad">tough matchup</span></div><div class="ppr-line">strikeouts &middot; ours <b>4.2</b> &middot; line <b>4.5</b> &middot; o+126 / u−154 &middot; <span class="">in line</span></div></div></section></div></div></details>
+          <div class="cv-row">
+            <span class="cv-lab">DET win prob</span>
+            <span class="cv-pct">59%</span>
+          </div>
+          <div class="cv-bar"><i class="cv-fill" style="width:58.9%"></i><i class="cv-tick" style="left:52.5%"></i></div>
+          <div class="cv-foot">
+            <span class="gm">market 52%</span><span class="ge up">+6.4 edge</span>
+          </div>
+          <details class="gmore" data-close="Close"><summary>Game detail +</summary><div class="gmore-in"><div class="pnl"><section class="pk"><h4>Prices</h4><div class="mk"><div class="mk-row"><span class="mk-label">Moneyline</span><span class="mk-line">Tigers <b>−115</b> <span class="mk-book">BetUS</span></span><span class="mk-edge r">−1.9%</span></div><div class="mk-row"><span class="mk-label">Run line</span><span class="mk-line">Tigers +1.5 <b>−205</b> <span class="mk-book">FanDuel</span></span><span class="mk-edge r">−2.5%</span></div><div class="mk-row"><span class="mk-label">Total</span><span class="mk-line">+8 &middot; o<b>+103</b> <span class="mk-book">LowVig.ag</span></span><span class="mk-note">market only</span></div></div></section><section class="pk"><h4>Form</h4><table class="pkt fm"><tr class="hd"><th></th><td>Twins</td><td>Tigers</td></tr><tr><th>Record</th><td>68&ndash;75</td><td>65&ndash;78</td></tr><tr><th>Last 10</th><td>4&ndash;6</td><td>3&ndash;7</td></tr><tr><th>Streak</th><td><b class="bad">L1</b><i>lost its last</i></td><td><b class="bad">L1</b><i>lost its last</i></td></tr></table></section><section class="pk"><h4>Head to head</h4><p class="pnl-note">Twins lead the season series <b>7&ndash;3</b></p><div class="h2more">5 earlier meetings not shown</div><div class="h2g"><span class="h2d">Jun 10</span><span class="h2s"><b>Twins</b> 6&ndash;4</span><span class="h2w">at Detroit</span></div><div class="h2g"><span class="h2d">Jun 11</span><span class="h2s"><b>Tigers</b> 11&ndash;0</span><span class="h2w">at Detroit</span></div><div class="h2g"><span class="h2d">Aug 31</span><span class="h2s"><b>Twins</b> 11&ndash;1</span><span class="h2w">at Minnesota</span></div><div class="h2g"><span class="h2d">Sep 1</span><span class="h2s"><b>Twins</b> 15&ndash;2</span><span class="h2w">at Minnesota</span></div><div class="h2g"><span class="h2d">Sep 2</span><span class="h2s"><b>Tigers</b> 11&ndash;6</span><span class="h2w">at Minnesota</span></div></section><section class="pk"><h4>Starters</h4><div class="pst"><div class="pst-n">Joe Ryan &middot; 3.65 ERA</div><div class="pst-v">1 start against the Tigers: 5 innings, 7 strikeouts (12.6 per nine), 3.60 ERA</div></div><div class="pst"><div class="pst-n">Troy Melton &middot; 2.20 ERA</div><div class="pst-v">2 starts against the Twins: 12.3 innings, 10 strikeouts (7.3 per nine), 6.57 ERA</div></div></section><section class="pk"><h4>Strikeout props</h4><div class="ppr"><div class="ppr-top"><span class="ppr-n">Joe Ryan</span><span class="ppr-v good">favourable matchup</span></div><div class="ppr-line">strikeouts &middot; ours <b>6.2</b> &middot; line <b>3.5</b> &middot; o−105 / u−111 &middot; <span class="good">2.7 over the line</span></div></div><div class="ppr"><div class="ppr-top"><span class="ppr-n">Troy Melton</span><span class="ppr-v bad">tough matchup</span></div><div class="ppr-line">strikeouts &middot; ours <b>4.2</b> &middot; line <b>4.5</b> &middot; o+126 / u−154 &middot; <span class="">in line</span></div></div></section></div></div></details>
         </div>
       </article>
       <article class="gcard" style="--accent:#635B56" id="g-4b966f5cc20bd2c8aabb3ffae91d489c">
-        <div class="gcard-top">
-          <span>MLB &middot; 5:11 PM ET</span><span>Scheduled</span>
-        </div>
         <div class="gcard-body">
+          <div class="cv-head">
+            <h3 class="cv-tm">Nationals <span>@</span> Padres</h3>
+            <span class="cv-time">5:11 PM ET</span>
+          </div>
           
-        <div class="gside">
-          <div class="tm"><span class="tdot" style="--tc:#B31A1C"></span>Washington Nationals</div>
-          <div class="pc">42.1%</div>
-        </div>
-        <div class="grec">67&ndash;78 &middot; 34&ndash;38 on the road</div>
-        <div class="gsp">Jake Irvin &middot; <span class="gwl">2&ndash;8</span> &middot; 5.57 ERA</div>
-        
-          <div class="gbar"><div class="seg on" style="width:42.1%"></div><div class="tick" style="left:34.9%" title="Where the market has it"></div></div>
-          
-        <div class="gside lead">
-          <div class="tm"><span class="tdot" style="--tc:#635B56"></span>San Diego Padres</div>
-          <div class="pc">57.9%</div>
-        </div>
-        <div class="grec">75&ndash;68 &middot; 43&ndash;29 at home</div>
-        <div class="gsp">Nick Pivetta &middot; <span class="gwl">1&ndash;2</span> &middot; 4.50 ERA</div>
-        <div class="gvs thin" title="2025–2026 regular season — shown as context, not used in the number. Too few starts to mean anything.">vs Nationals &middot; 2 GS &middot; 13.0 IP &middot; 0.69 ERA &middot; thin</div>
-          <div class="gfoot"><span class="lean">7.2 pts off market</span></div>
-          <div class="mk"><div class="mk-row"><span class="mk-label">Moneyline</span><span class="mk-line">Padres <b>−192</b> <span class="mk-book">DraftKings</span></span><span class="mk-edge r">−0.8%</span></div><div class="mk-row"><span class="mk-label">Run line</span><span class="mk-line">Padres −1.5 <b>+111</b> <span class="mk-book">DraftKings</span></span><span class="mk-edge r">−1.4%</span></div><div class="mk-row"><span class="mk-label">Total</span><span class="mk-line">+8 &middot; o<b>−107</b> <span class="mk-book">LowVig.ag</span></span><span class="mk-note">market only</span></div></div>
-          <details class="gmore" data-close="Close"><summary>Form, head to head and props</summary><div class="gmore-in"><div class="pnl"><section class="pk"><h4>Form</h4><table class="pkt fm"><tr class="hd"><th></th><td>Nationals</td><td>Padres</td></tr><tr><th>Record</th><td>67&ndash;78</td><td>75&ndash;68</td></tr><tr><th>Last 10</th><td>5&ndash;5</td><td>4&ndash;6</td></tr><tr><th>Streak</th><td><b class="bad">L4</b><i>lost 4 in a row</i></td><td><b class="good">W1</b><i>won its last</i></td></tr></table></section><section class="pk"><h4>Head to head</h4><p class="pnl-note">Nationals lead the season series <b>2&ndash;1</b></p><div class="h2g"><span class="h2d">May 29</span><span class="h2s"><b>Padres</b> 7&ndash;5</span><span class="h2w">at Washington</span></div><div class="h2g"><span class="h2d">May 30</span><span class="h2s"><b>Nationals</b> 9&ndash;4</span><span class="h2w">at Washington</span></div><div class="h2g"><span class="h2d">May 31</span><span class="h2s"><b>Nationals</b> 4&ndash;2</span><span class="h2w">at Washington</span></div></section><section class="pk"><h4>Starters</h4><div class="pst"><div class="pst-n">Jake Irvin &middot; 5.57 ERA</div><div class="pst-v">has not faced the Padres in 2025&ndash;2026</div></div><div class="pst"><div class="pst-n">Nick Pivetta &middot; 4.50 ERA</div><div class="pst-v">2 starts against the Nationals: 13 innings, 15 strikeouts (10.4 per nine), 0.69 ERA</div></div></section><section class="pk"><h4>Strikeout props</h4><div class="ppr"><div class="ppr-top"><span class="ppr-n">Nick Pivetta</span><span class="ppr-v bad">tough matchup</span></div><div class="ppr-line">strikeouts &middot; ours <b>8.4</b> &middot; line <b>4.5</b> &middot; o−108 / u−104 &middot; <span class="good">3.9 over the line</span></div></div><div class="ppr"><div class="ppr-top"><span class="ppr-n">Jake Irvin</span><span class="ppr-v ">ordinary matchup</span></div><div class="ppr-line">strikeouts &middot; ours <b>5.3</b> &middot; line <b>4.5</b> &middot; o+120 / u−146 &middot; <span class="good">0.8 over the line</span></div></div></section></div></div></details>
+          <div class="cv-row">
+            <span class="cv-lab">SD win prob</span>
+            <span class="cv-pct">58%</span>
+          </div>
+          <div class="cv-bar"><i class="cv-fill" style="width:57.9%"></i><i class="cv-tick" style="left:65.1%"></i></div>
+          <div class="cv-foot">
+            <span class="gm">market 65%</span><span class="ge down">&minus;7.2 fade</span>
+          </div>
+          <details class="gmore" data-close="Close"><summary>Game detail +</summary><div class="gmore-in"><div class="pnl"><section class="pk"><h4>Prices</h4><div class="mk"><div class="mk-row"><span class="mk-label">Moneyline</span><span class="mk-line">Padres <b>−192</b> <span class="mk-book">DraftKings</span></span><span class="mk-edge r">−0.8%</span></div><div class="mk-row"><span class="mk-label">Run line</span><span class="mk-line">Padres −1.5 <b>+111</b> <span class="mk-book">DraftKings</span></span><span class="mk-edge r">−1.4%</span></div><div class="mk-row"><span class="mk-label">Total</span><span class="mk-line">+8 &middot; o<b>−107</b> <span class="mk-book">LowVig.ag</span></span><span class="mk-note">market only</span></div></div></section><section class="pk"><h4>Form</h4><table class="pkt fm"><tr class="hd"><th></th><td>Nationals</td><td>Padres</td></tr><tr><th>Record</th><td>67&ndash;78</td><td>75&ndash;68</td></tr><tr><th>Last 10</th><td>5&ndash;5</td><td>4&ndash;6</td></tr><tr><th>Streak</th><td><b class="bad">L4</b><i>lost 4 in a row</i></td><td><b class="good">W1</b><i>won its last</i></td></tr></table></section><section class="pk"><h4>Head to head</h4><p class="pnl-note">Nationals lead the season series <b>2&ndash;1</b></p><div class="h2g"><span class="h2d">May 29</span><span class="h2s"><b>Padres</b> 7&ndash;5</span><span class="h2w">at Washington</span></div><div class="h2g"><span class="h2d">May 30</span><span class="h2s"><b>Nationals</b> 9&ndash;4</span><span class="h2w">at Washington</span></div><div class="h2g"><span class="h2d">May 31</span><span class="h2s"><b>Nationals</b> 4&ndash;2</span><span class="h2w">at Washington</span></div></section><section class="pk"><h4>Starters</h4><div class="pst"><div class="pst-n">Jake Irvin &middot; 5.57 ERA</div><div class="pst-v">has not faced the Padres in 2025&ndash;2026</div></div><div class="pst"><div class="pst-n">Nick Pivetta &middot; 4.50 ERA</div><div class="pst-v">2 starts against the Nationals: 13 innings, 15 strikeouts (10.4 per nine), 0.69 ERA</div></div></section><section class="pk"><h4>Strikeout props</h4><div class="ppr"><div class="ppr-top"><span class="ppr-n">Nick Pivetta</span><span class="ppr-v bad">tough matchup</span></div><div class="ppr-line">strikeouts &middot; ours <b>8.4</b> &middot; line <b>4.5</b> &middot; o−108 / u−104 &middot; <span class="good">3.9 over the line</span></div></div><div class="ppr"><div class="ppr-top"><span class="ppr-n">Jake Irvin</span><span class="ppr-v ">ordinary matchup</span></div><div class="ppr-line">strikeouts &middot; ours <b>5.3</b> &middot; line <b>4.5</b> &middot; o+120 / u−146 &middot; <span class="good">0.8 over the line</span></div></div></section></div></div></details>
         </div>
       </article>
       <article class="gcard" style="--accent:#FD5A1E" id="g-7e08f8c46ae533c3c09d2e5d1a37ac2b">
-        <div class="gcard-top">
-          <span>MLB &middot; 8:11 PM ET</span><span>Scheduled</span>
-        </div>
         <div class="gcard-body">
+          <div class="cv-head">
+            <h3 class="cv-tm">Cardinals <span>@</span> Giants</h3>
+            <span class="cv-time">8:11 PM ET</span>
+          </div>
           
-        <div class="gside lead">
-          <div class="tm"><span class="tdot" style="--tc:#C41E3A"></span>St. Louis Cardinals</div>
-          <div class="pc">52.2%</div>
-        </div>
-        <div class="grec">72&ndash;72 &middot; 38&ndash;34 on the road</div>
-        <div class="gsp">Michael McGreevy &middot; <span class="gwl">6&ndash;9</span> &middot; 3.97 ERA</div>
-        <div class="gvs thin" title="2025–2026 regular season — shown as context, not used in the number. Too few starts to mean anything.">vs Giants &middot; 2 GS &middot; 9.0 IP &middot; 11.00 ERA &middot; thin</div>
-          <div class="gbar"><div class="seg on" style="width:52.2%"></div><div class="tick" style="left:45.3%" title="Where the market has it"></div></div>
-          
-        <div class="gside">
-          <div class="tm"><span class="tdot" style="--tc:#FD5A1E"></span>San Francisco Giants</div>
-          <div class="pc">47.8%</div>
-        </div>
-        <div class="grec">60&ndash;85 &middot; 33&ndash;36 at home</div>
-        <div class="gsp">Logan Webb &middot; <span class="gwl">8&ndash;8</span> &middot; 4.21 ERA</div>
-        <div class="gvs thin" title="2025–2026 regular season — shown as context, not used in the number. Too few starts to mean anything.">vs Cardinals &middot; 1 GS &middot; 6.0 IP &middot; 4.50 ERA &middot; thin</div>
-          <div class="gfoot"><span class="lean">6.9 pts off market</span></div>
-          <div class="mk"><div class="mk-row"><span class="mk-label">Moneyline</span><span class="mk-line">Giants <b>−126</b> <span class="mk-book">BetOnline.ag</span></span><span class="mk-edge r">−1.9%</span></div><div class="mk-row"><span class="mk-label">Run line</span><span class="mk-line">Giants −1.5 <b>+170</b> <span class="mk-book">MyBookie.ag</span></span><span class="mk-edge r">−3.0%</span></div><div class="mk-row"><span class="mk-label">Total</span><span class="mk-line">+7.5 &middot; o<b>−113</b> <span class="mk-book">BetRivers</span></span><span class="mk-note">market only</span></div></div>
-          <details class="gmore" data-close="Close"><summary>Form, head to head and props</summary><div class="gmore-in"><div class="pnl"><section class="pk"><h4>Form</h4><table class="pkt fm"><tr class="hd"><th></th><td>Cardinals</td><td>Giants</td></tr><tr><th>Record</th><td>72&ndash;72</td><td>59&ndash;85</td></tr><tr><th>Last 10</th><td>6&ndash;4</td><td>4&ndash;6</td></tr><tr><th>Streak</th><td><b class="good">W1</b><i>won its last</i></td><td><b class="bad">L1</b><i>lost its last</i></td></tr></table></section><section class="pk"><h4>Head to head</h4><p class="pnl-note">They have not met yet this season.</p></section><section class="pk"><h4>Starters</h4><div class="pst"><div class="pst-n">Michael McGreevy &middot; 3.97 ERA</div><div class="pst-v">2 starts against the Giants: 9 innings, 5 strikeouts (5.0 per nine), 11.00 ERA</div></div><div class="pst"><div class="pst-n">Logan Webb &middot; 4.21 ERA</div><div class="pst-v">1 start against the Cardinals: 6 innings, 5 strikeouts (7.5 per nine), 4.50 ERA</div></div></section></div></div></details>
+          <div class="cv-row">
+            <span class="cv-lab">STL win prob</span>
+            <span class="cv-pct">52%</span>
+          </div>
+          <div class="cv-bar"><i class="cv-fill" style="width:52.2%"></i><i class="cv-tick" style="left:45.3%"></i></div>
+          <div class="cv-foot">
+            <span class="gm">market 45%</span><span class="ge down">&minus;6.9 fade</span>
+          </div>
+          <details class="gmore" data-close="Close"><summary>Game detail +</summary><div class="gmore-in"><div class="pnl"><section class="pk"><h4>Prices</h4><div class="mk"><div class="mk-row"><span class="mk-label">Moneyline</span><span class="mk-line">Giants <b>−126</b> <span class="mk-book">BetOnline.ag</span></span><span class="mk-edge r">−1.9%</span></div><div class="mk-row"><span class="mk-label">Run line</span><span class="mk-line">Giants −1.5 <b>+170</b> <span class="mk-book">MyBookie.ag</span></span><span class="mk-edge r">−3.0%</span></div><div class="mk-row"><span class="mk-label">Total</span><span class="mk-line">+7.5 &middot; o<b>−113</b> <span class="mk-book">BetRivers</span></span><span class="mk-note">market only</span></div></div></section><section class="pk"><h4>Form</h4><table class="pkt fm"><tr class="hd"><th></th><td>Cardinals</td><td>Giants</td></tr><tr><th>Record</th><td>72&ndash;72</td><td>59&ndash;85</td></tr><tr><th>Last 10</th><td>6&ndash;4</td><td>4&ndash;6</td></tr><tr><th>Streak</th><td><b class="good">W1</b><i>won its last</i></td><td><b class="bad">L1</b><i>lost its last</i></td></tr></table></section><section class="pk"><h4>Head to head</h4><p class="pnl-note">They have not met yet this season.</p></section><section class="pk"><h4>Starters</h4><div class="pst"><div class="pst-n">Michael McGreevy &middot; 3.97 ERA</div><div class="pst-v">2 starts against the Giants: 9 innings, 5 strikeouts (5.0 per nine), 11.00 ERA</div></div><div class="pst"><div class="pst-n">Logan Webb &middot; 4.21 ERA</div><div class="pst-v">1 start against the Cardinals: 6 innings, 5 strikeouts (7.5 per nine), 4.50 ERA</div></div></section></div></div></details>
         </div>
       </article>
       <article class="gcard" style="--accent:#005A9C" id="g-a58a90b8a19f48d680546cac451b77ec">
-        <div class="gcard-top">
-          <span>MLB &middot; 9:11 PM ET</span><span>Scheduled</span>
-        </div>
         <div class="gcard-body">
+          <div class="cv-head">
+            <h3 class="cv-tm">Reds <span>@</span> Dodgers</h3>
+            <span class="cv-time">9:11 PM ET</span>
+          </div>
           
-        <div class="gside">
-          <div class="tm"><span class="tdot" style="--tc:#C6011F"></span>Cincinnati Reds</div>
-          <div class="pc">40.6%</div>
-        </div>
-        <div class="grec">69&ndash;74 &middot; 33&ndash;36 on the road</div>
-        <div class="gsp">Chase Burns &middot; <span class="gwl">15&ndash;3</span> &middot; 2.79 ERA</div>
-        <div class="gvs thin" title="2025–2026 regular season — shown as context, not used in the number. Too few starts to mean anything.">vs Dodgers &middot; 1 GS &middot; 5.7 IP &middot; 4.76 ERA &middot; thin</div>
-          <div class="gbar"><div class="seg on" style="width:40.6%"></div><div class="tick" style="left:38.3%" title="Where the market has it"></div></div>
-          
-        <div class="gside lead">
-          <div class="tm"><span class="tdot" style="--tc:#005A9C"></span>Los Angeles Dodgers</div>
-          <div class="pc">59.4%</div>
-        </div>
-        <div class="grec">86&ndash;57 &middot; 44&ndash;28 at home</div>
-        
-        
-          <div class="gfoot"><span class="lean">2.3 pts off market</span></div>
-          <div class="mk"><div class="mk-row"><span class="mk-label">Moneyline</span><span class="mk-line">Dodgers <b>−169</b> <span class="mk-book">MyBookie.ag</span></span><span class="mk-edge r">−1.7%</span></div><div class="mk-row"><span class="mk-label">Run line</span><span class="mk-line">Dodgers −1.5 <b>+125</b> <span class="mk-book">FanDuel</span></span><span class="mk-edge r">−3.3%</span></div><div class="mk-row"><span class="mk-label">Total</span><span class="mk-line">+8.5 &middot; o<b>−102</b> <span class="mk-book">LowVig.ag</span></span><span class="mk-note">market only</span></div></div>
-          <details class="gmore" data-close="Close"><summary>Form, head to head and props</summary><div class="gmore-in"><div class="pnl"><section class="pk"><h4>Form</h4><table class="pkt fm"><tr class="hd"><th></th><td>Reds</td><td>Dodgers</td></tr><tr><th>Record</th><td>69&ndash;74</td><td>86&ndash;57</td></tr><tr><th>Last 10</th><td>7&ndash;3</td><td>6&ndash;4</td></tr><tr><th>Streak</th><td><b class="good">W2</b><i>won 2 in a row</i></td><td><b class="good">W4</b><i>won 4 in a row</i></td></tr></table></section><section class="pk"><h4>Head to head</h4><p class="pnl-note">They have not met yet this season.</p></section><section class="pk"><h4>Starters</h4><div class="pst"><div class="pst-n">Chase Burns &middot; 2.79 ERA</div><div class="pst-v">1 start against the Dodgers: 5.7 innings, 10 strikeouts (15.8 per nine), 4.76 ERA</div></div></section></div></div></details>
+          <div class="cv-row">
+            <span class="cv-lab">LAD win prob</span>
+            <span class="cv-pct">59%</span>
+          </div>
+          <div class="cv-bar"><i class="cv-fill" style="width:59.4%"></i><i class="cv-tick" style="left:61.7%"></i></div>
+          <div class="cv-foot">
+            <span class="gm">market 62%</span><span class="ge down">&minus;2.3 fade</span>
+          </div>
+          <details class="gmore" data-close="Close"><summary>Game detail +</summary><div class="gmore-in"><div class="pnl"><section class="pk"><h4>Prices</h4><div class="mk"><div class="mk-row"><span class="mk-label">Moneyline</span><span class="mk-line">Dodgers <b>−169</b> <span class="mk-book">MyBookie.ag</span></span><span class="mk-edge r">−1.7%</span></div><div class="mk-row"><span class="mk-label">Run line</span><span class="mk-line">Dodgers −1.5 <b>+125</b> <span class="mk-book">FanDuel</span></span><span class="mk-edge r">−3.3%</span></div><div class="mk-row"><span class="mk-label">Total</span><span class="mk-line">+8.5 &middot; o<b>−102</b> <span class="mk-book">LowVig.ag</span></span><span class="mk-note">market only</span></div></div></section><section class="pk"><h4>Form</h4><table class="pkt fm"><tr class="hd"><th></th><td>Reds</td><td>Dodgers</td></tr><tr><th>Record</th><td>69&ndash;74</td><td>86&ndash;57</td></tr><tr><th>Last 10</th><td>7&ndash;3</td><td>6&ndash;4</td></tr><tr><th>Streak</th><td><b class="good">W2</b><i>won 2 in a row</i></td><td><b class="good">W4</b><i>won 4 in a row</i></td></tr></table></section><section class="pk"><h4>Head to head</h4><p class="pnl-note">They have not met yet this season.</p></section><section class="pk"><h4>Starters</h4><div class="pst"><div class="pst-n">Chase Burns &middot; 2.79 ERA</div><div class="pst-v">1 start against the Dodgers: 5.7 innings, 10 strikeouts (15.8 per nine), 4.76 ERA</div></div></section></div></div></details>
         </div>
       </article>
       <article class="gcard" style="--accent:#33605A" id="g-56329e0195eb8df1d61a2ced249e623d">
-        <div class="gcard-top">
-          <span>MLB &middot; 10:06 PM ET</span><span>Scheduled</span>
-        </div>
         <div class="gcard-body">
+          <div class="cv-head">
+            <h3 class="cv-tm">Jays <span>@</span> Athletics</h3>
+            <span class="cv-time">10:06 PM ET</span>
+          </div>
           
-        <div class="gside lead">
-          <div class="tm"><span class="tdot" style="--tc:#2B5C99"></span>Toronto Blue Jays</div>
-          <div class="pc">63.3%</div>
-        </div>
-        <div class="grec">72&ndash;72 &middot; 35&ndash;37 on the road</div>
-        <div class="gsp">Dylan Cease &middot; <span class="gwl">10&ndash;5</span> &middot; 2.25 ERA</div>
-        <div class="gvs thin" title="2025–2026 regular season — shown as context, not used in the number. Too few starts to mean anything.">vs Athletics &middot; 2 GS &middot; 9.3 IP &middot; 9.64 ERA &middot; thin</div>
-          <div class="gbar"><div class="seg on" style="width:63.3%"></div><div class="tick" style="left:65.4%" title="Where the market has it"></div></div>
-          
-        <div class="gside">
-          <div class="tm"><span class="tdot" style="--tc:#33605A"></span>Athletics</div>
-          <div class="pc">36.7%</div>
-        </div>
-        <div class="grec">57&ndash;87 &middot; 25&ndash;44 at home</div>
-        <div class="gsp">Jacob Lopez &middot; <span class="gwl">6&ndash;4</span> &middot; 4.71 ERA</div>
-        <div class="gvs thin" title="2025–2026 regular season — shown as context, not used in the number. Too few starts to mean anything.">vs Jays &middot; 2 GS &middot; 6.7 IP &middot; 12.15 ERA &middot; thin</div>
-          <div class="gfoot"><span class="lean">2.1 pts off market</span></div>
-          <div class="mk"><div class="mk-row"><span class="mk-label">Moneyline</span><span class="mk-line">Athletics <b>+181</b> <span class="mk-book">LowVig.ag</span></span><span class="mk-edge r">−2.6%</span></div><div class="mk-row"><span class="mk-label">Run line</span><span class="mk-line">Athletics +1.5 <b>+105</b> <span class="mk-book">MyBookie.ag</span></span><span class="mk-edge r">−2.1%</span></div><div class="mk-row"><span class="mk-label">Total</span><span class="mk-line">+8.5 &middot; o<b>+103</b> <span class="mk-book">LowVig.ag</span></span><span class="mk-note">market only</span></div></div>
-          <details class="gmore" data-close="Close"><summary>Form, head to head and props</summary><div class="gmore-in"><div class="pnl"><section class="pk"><h4>Form</h4><table class="pkt fm"><tr class="hd"><th></th><td>Jays</td><td>Athletics</td></tr><tr><th>Record</th><td>72&ndash;72</td><td>57&ndash;87</td></tr><tr><th>Last 10</th><td>7&ndash;3</td><td>4&ndash;6</td></tr><tr><th>Streak</th><td><b class="bad">L1</b><i>lost its last</i></td><td><b class="bad">L1</b><i>lost its last</i></td></tr></table></section><section class="pk"><h4>Head to head</h4><p class="pnl-note">Jays lead the season series <b>3&ndash;0</b></p><div class="h2g"><span class="h2d">Mar 27</span><span class="h2s"><b>Jays</b> 3&ndash;2</span><span class="h2w">at Toronto Blue</span></div><div class="h2g"><span class="h2d">Mar 28</span><span class="h2s"><b>Jays</b> 8&ndash;7</span><span class="h2w">at Toronto Blue</span></div><div class="h2g"><span class="h2d">Mar 29</span><span class="h2s"><b>Jays</b> 5&ndash;2</span><span class="h2w">at Toronto Blue</span></div></section><section class="pk"><h4>Starters</h4><div class="pst"><div class="pst-n">Dylan Cease &middot; 2.25 ERA</div><div class="pst-v">2 starts against the Athletics: 9.3 innings, 16 strikeouts (15.5 per nine), 9.64 ERA</div></div><div class="pst"><div class="pst-n">Jacob Lopez &middot; 4.71 ERA</div><div class="pst-v">2 starts against the Jays: 6.7 innings, 5 strikeouts (6.7 per nine), 12.15 ERA</div></div></section></div></div></details>
+          <div class="cv-row">
+            <span class="cv-lab">TOR win prob</span>
+            <span class="cv-pct">63%</span>
+          </div>
+          <div class="cv-bar"><i class="cv-fill" style="width:63.3%"></i><i class="cv-tick" style="left:65.4%"></i></div>
+          <div class="cv-foot">
+            <span class="gm">market 65%</span><span class="ge up">+2.1 edge</span>
+          </div>
+          <details class="gmore" data-close="Close"><summary>Game detail +</summary><div class="gmore-in"><div class="pnl"><section class="pk"><h4>Prices</h4><div class="mk"><div class="mk-row"><span class="mk-label">Moneyline</span><span class="mk-line">Athletics <b>+181</b> <span class="mk-book">LowVig.ag</span></span><span class="mk-edge r">−2.6%</span></div><div class="mk-row"><span class="mk-label">Run line</span><span class="mk-line">Athletics +1.5 <b>+105</b> <span class="mk-book">MyBookie.ag</span></span><span class="mk-edge r">−2.1%</span></div><div class="mk-row"><span class="mk-label">Total</span><span class="mk-line">+8.5 &middot; o<b>+103</b> <span class="mk-book">LowVig.ag</span></span><span class="mk-note">market only</span></div></div></section><section class="pk"><h4>Form</h4><table class="pkt fm"><tr class="hd"><th></th><td>Jays</td><td>Athletics</td></tr><tr><th>Record</th><td>72&ndash;72</td><td>57&ndash;87</td></tr><tr><th>Last 10</th><td>7&ndash;3</td><td>4&ndash;6</td></tr><tr><th>Streak</th><td><b class="bad">L1</b><i>lost its last</i></td><td><b class="bad">L1</b><i>lost its last</i></td></tr></table></section><section class="pk"><h4>Head to head</h4><p class="pnl-note">Jays lead the season series <b>3&ndash;0</b></p><div class="h2g"><span class="h2d">Mar 27</span><span class="h2s"><b>Jays</b> 3&ndash;2</span><span class="h2w">at Toronto Blue</span></div><div class="h2g"><span class="h2d">Mar 28</span><span class="h2s"><b>Jays</b> 8&ndash;7</span><span class="h2w">at Toronto Blue</span></div><div class="h2g"><span class="h2d">Mar 29</span><span class="h2s"><b>Jays</b> 5&ndash;2</span><span class="h2w">at Toronto Blue</span></div></section><section class="pk"><h4>Starters</h4><div class="pst"><div class="pst-n">Dylan Cease &middot; 2.25 ERA</div><div class="pst-v">2 starts against the Athletics: 9.3 innings, 16 strikeouts (15.5 per nine), 9.64 ERA</div></div><div class="pst"><div class="pst-n">Jacob Lopez &middot; 4.71 ERA</div><div class="pst-v">2 starts against the Jays: 6.7 innings, 5 strikeouts (6.7 per nine), 12.15 ERA</div></div></section></div></div></details>
         </div>
       </article></div>
 </section>
