@@ -674,8 +674,14 @@ def build() -> None:
             for token, value in page_tokens.items():
                 body = body.replace(token, str(value))
 
+            # The stylesheet is inlined into pages at two depths, and a
+            # relative url() inside an inlined <style> resolves against the
+            # DOCUMENT, not the stylesheet. Every other link on the site is
+            # relative (there is no CNAME and no fixed root), so the font
+            # URLs have to be too -- and that means substituting the same
+            # `up` prefix the nav uses.
             head = HEAD.format(
-                title=title, css=CSS, links=links, site=config.SITE_NAME,
+                title=title, css=CSS.replace("{{UP}}", up), links=links, site=config.SITE_NAME,
                 lang=lang, desc=META_DESC[lang].format(site=config.SITE_NAME),
                 hreflang=hreflang, up=up, views=views,
                 views_empty=("" if views else " is-empty"),

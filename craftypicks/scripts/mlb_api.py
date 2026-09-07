@@ -187,16 +187,44 @@ def team_roster(team_id: int, season: int) -> list[int]:
             if (p.get("position") or {}).get("abbreviation") != "P"]
 
 
-def vs_batter(pitcher_id: int, batter_id: int, season: int):
-    data = _get(f"/people/{pitcher_id}/stats", stats="vsPlayerTotal",
-                group="hitting", opposingPlayerId=batter_id, season=season)
-    if not data:
-        return None
-    for block in data.get("stats", []):
+def _first_split(data):
+    for block in (data or {}).get("stats", []):
         for split in block.get("splits", []):
             s = split.get("stat", {})
             if s.get("plateAppearances"):
                 return s
+    return None
+
+
+def vs_batter(pitcher_id: int, batter_id: int, season: int):
+    """This pitcher's line against one hitter, career.
+
+    The season parameter used to be passed through, and that is why the
+    matchup panel came up empty for all fifteen starters on 2026-09-07:
+    StatsAPI returns nothing for a vsPlayer query that carries a season.
+    The slate's own probe had already printed the same thing one screen
+    higher in that log --
+
+        vs-probe stats=vsTeam: 60 split(s)
+        vs-probe stats=vsTeam+season: 0 split(s)
+
+    -- for the team-level twin of this call. Career is also what the panel
+    is supposed to show, so the parameter was wrong twice over.
+
+    The season is still accepted, and still tried as a fallback, because
+    losing this data silently is exactly the failure being fixed here: if a
+    future StatsAPI starts requiring the parameter, the fallback keeps the
+    panel alive instead of blanking it.
+    """
+    data = _get(f"/people/{pitcher_id}/stats", stats="vsPlayerTotal",
+                group="hitting", opposingPlayerId=batter_id)
+    found = _first_split(data)
+    if found is not None:
+        return found
+    if season:
+        return _first_split(
+            _get(f"/people/{pitcher_id}/stats", stats="vsPlayerTotal",
+                 group="hitting", opposingPlayerId=batter_id, season=season))
     return None
 
 

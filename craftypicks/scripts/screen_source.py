@@ -119,6 +119,57 @@ def scfg_devig() -> str:
     return getattr(config, "DEVIG_METHOD", "power")
 
 
+# Every rejection reason the rules can produce, mapped to the gate that
+# produced it. Counting these is the only way to know which threshold is
+# actually costing plays — guessing at it once already cost a day of tuning
+# the wrong knob.
+GATE_PATTERNS = [
+    ("missing ",              "missing data"),
+    ("PA vs this roster",     "vs-roster sample too small"),
+    ("vs-roster K%",          "vs-roster K% too low"),
+    ("vs-roster AVG",         "vs-roster AVG too high"),
+    ("vs-roster wOBA",        "vs-roster wOBA too high"),
+    ("season K%",             "pitcher season K% too low"),
+    ("K/9",                   "pitcher K/9 too low"),
+    ("opponent K/game",       "opponent K/game"),
+    ("fade",                  "on the fade list"),
+    ("juice",                 "juice worse than allowed"),
+    ("odds",                  "odds below the floor"),
+    ("line",                  "line outside the allowed range"),
+    ("daily cap",             "daily cap reached"),
+    ("cap",                   "daily cap reached"),
+]
+
+
+def gate_of(reason: str) -> str:
+    text = str(reason)
+    for needle, label in GATE_PATTERNS:
+        if needle in text:
+            return label
+    return "other"
+
+
+def report_gates(rejections) -> None:
+    """Which gate stopped how many, worst offender first."""
+    from collections import Counter
+    counts = Counter(gate_of(reason) for _c, _s, reason in rejections)
+    for label, n in counts.most_common():
+        print(f"      gate — {label}: {n}")
+
+    # For the sample gate specifically, how close were they? A wall of
+    # "28 PA, needed 30" is a different problem from "3 PA, needed 30".
+    shortfalls = []
+    for cand, _screen, reason in rejections:
+        if "PA vs this roster" in str(reason):
+            pa = getattr(getattr(cand, "vs_roster", None), "pa", None)
+            if pa is not None:
+                shortfalls.append((pa, cand.name))
+    if shortfalls:
+        shortfalls.sort(reverse=True)
+        best = ", ".join(f"{n} ({pa} PA)" for pa, n in shortfalls[:4])
+        print(f"      closest on sample: {best}")
+
+
 def build_plays(prop_events: list[dict], date_str: str, verbose: bool = True) -> list[dict]:
     """Run the screens over the games we already have prop odds for."""
     if not prop_events:
@@ -174,55 +225,6 @@ def build_plays(prop_events: list[dict], date_str: str, verbose: bool = True) ->
             print("   screens: no starters matched the posted strikeout lines")
         return []
 
-# Every rejection reason the rules can produce, mapped to the gate that
-# produced it. Counting these is the only way to know which threshold is
-# actually costing plays — guessing at it once already cost a day of tuning
-# the wrong knob.
-GATE_PATTERNS = [
-    ("missing ",              "missing data"),
-    ("PA vs this roster",     "vs-roster sample too small"),
-    ("vs-roster K%",          "vs-roster K% too low"),
-    ("vs-roster AVG",         "vs-roster AVG too high"),
-    ("vs-roster wOBA",        "vs-roster wOBA too high"),
-    ("season K%",             "pitcher season K% too low"),
-    ("K/9",                   "pitcher K/9 too low"),
-    ("opponent K/game",       "opponent K/game"),
-    ("fade",                  "on the fade list"),
-    ("juice",                 "juice worse than allowed"),
-    ("odds",                  "odds below the floor"),
-    ("line",                  "line outside the allowed range"),
-    ("daily cap",             "daily cap reached"),
-    ("cap",                   "daily cap reached"),
-]
-
-
-def gate_of(reason: str) -> str:
-    text = str(reason)
-    for needle, label in GATE_PATTERNS:
-        if needle in text:
-            return label
-    return "other"
-
-
-def report_gates(rejections) -> None:
-    """Which gate stopped how many, worst offender first."""
-    from collections import Counter
-    counts = Counter(gate_of(reason) for _c, _s, reason in rejections)
-    for label, n in counts.most_common():
-        print(f"      gate — {label}: {n}")
-
-    # For the sample gate specifically, how close were they? A wall of
-    # "28 PA, needed 30" is a different problem from "3 PA, needed 30".
-    shortfalls = []
-    for cand, _screen, reason in rejections:
-        if "PA vs this roster" in str(reason):
-            pa = getattr(getattr(cand, "vs_roster", None), "pa", None)
-            if pa is not None:
-                shortfalls.append((pa, cand.name))
-    if shortfalls:
-        shortfalls.sort(reverse=True)
-        best = ", ".join(f"{n} ({pa} PA)" for pa, n in shortfalls[:4])
-        print(f"      closest on sample: {best}")
 
 
     plays, rejections = evaluate_all(candidates)

@@ -129,12 +129,22 @@ def credit_history() -> list[dict]:
     return days if isinstance(days, list) else []
 
 
-def record_credits(date_str: str, spent: int, left) -> None:
+def record_credits(date_str: str, spent: int, left, extras: int = 0) -> None:
     """One row per day. A re-run on the same day replaces that day's row
     rather than appending a second one, or a morning with three manual
-    dispatches would read as three expensive days."""
+    dispatches would read as three expensive days.
+
+    `core` is the day's cost with the optional extras taken out, and it is
+    the number the reserve is built from. Reserving against total spend
+    creates a loop that shuts the extras off: the 2026-09-07 12:16 run
+    bought props for the first time in three days, its 17 credits became a
+    22/day reserve, and that reserve would have skipped props the next
+    morning -- the reserve using props spend as its reason to stop buying
+    props. A reserve exists to protect the card. Only the card belongs in
+    it."""
     days = [d for d in credit_history() if d.get("date") != date_str]
     days.append({"date": date_str, "spent": int(spent),
+                 "core": max(0, int(spent) - int(extras or 0)),
                  "left": None if left is None else int(left)})
     save_json(CREDIT_LOG, {"days": days[-CREDIT_LOG_KEEP:]})
 
@@ -224,6 +234,9 @@ def main() -> int:
     # store reads it long after this try block, and an odds failure must not
     # leave it undefined.
     in_season: list[str] = []
+    # What the optional extras cost this run, so the reserve can be built on
+    # the card alone. See record_credits.
+    extra_credits = 0
     try:
         in_season = client.in_season_sports()
         print(f"-- in season: {', '.join(in_season) or 'nothing'}")
@@ -322,6 +335,7 @@ def main() -> int:
                     and games):
                 try:
                     targets = props.pick_events(games, config.PROP_MAX_EVENTS)
+                    extra_credits += len(targets) * len(config.PROP_MARKETS)
                     print(f"   props: {len(targets)} event(s) × "
                           f"{len(config.PROP_MARKETS)} market(s) = "
                           f"{len(targets) * len(config.PROP_MARKETS)} credits")
@@ -637,7 +651,7 @@ def main() -> int:
             pace = left / days if days else float(left)
             print(f"-- credits: {used} spent this run, {left} left, "
                   f"{days} day(s) to reset — {pace:.1f}/day available")
-            record_credits(now.date().isoformat(), used, left)
+            record_credits(now.date().isoformat(), used, left, extra_credits)
             per_day, why = config.daily_reserve(credit_history(),
                                                 len(in_season))
             print(f"   reserving {per_day}/day for the rest of the cycle ({why})")

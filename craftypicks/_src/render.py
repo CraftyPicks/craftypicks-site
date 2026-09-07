@@ -540,7 +540,7 @@ def _vs_line(vs: dict | None, opponent: str | None) -> str:
 
 
 def _side(team, starter, era, prob, leading, rec=None, at_home=False,
-          vs=None, opponent=None, wl=None, ev=None) -> str:
+          vs=None, opponent=None, wl=None) -> str:
     # No starter, no starter line. The old "TBA" was a hardcoded English
     # string — the only reader-facing word on a card not routed through _()
     # — and it is now reached by every Elo league, printing a pitcher slot on
@@ -564,24 +564,27 @@ def _side(team, starter, era, prob, leading, rec=None, at_home=False,
     # No probability means no model for this game yet — the club's name still
     # gets its slot, but the percentage is left off rather than faked as 0%.
     pc = f'<div class="pc">{prob*100:.1f}%</div>' if prob is not None else ""
-    # EV of backing this side at the best posted price, on OUR number --
-    # not the market-edge figure on the price rows below, which asks a
-    # different question (is this book off the consensus). Shown only when
-    # there is a price to compute it against; a missing EV is left blank
-    # rather than printed as zero, which would read as a fair price.
-    ev_tag = ""
-    if ev is not None:
-        cls = "up" if ev > 0 else "down"
-        # A real minus, as format_american uses. A hyphen reads as a dash
-        # beside a percentage and the two are visibly different sizes in
-        # the mono face this is set in.
-        shown = f"+{ev:.1f}" if ev > 0 else f"−{abs(ev):.1f}"
-        ev_tag = (f'<div class="gev {cls}">{shown}% '
-                  f'<span>{_("ev_label")}</span></div>')
+    # The model's own EV used to print here. It is still computed and still
+    # stored in board.json as ev_home / ev_away, because the record needs to
+    # keep accumulating -- but it is not shown, and the reason is in the
+    # numbers rather than in taste.
+    #
+    # On 165 graded games, backing the side the model preferred returned
+    # +8.08% where it claimed +13.25% (n=72, se 13.21) on the games it
+    # disagreed with the market by four points or more, and -3.03% where it
+    # claimed +2.02% (n=93, se 10.45) on the rest. Both are indistinguishable
+    # from zero. The win model is level with the market on Brier -- 0.2382
+    # against 0.2402, CI [-0.0106, +0.0065] -- and "level with" does not
+    # support an EV figure, which is a claim of being better.
+    #
+    # It also contradicted the page it sat on: the same run that printed
+    # +17.9% on a card logged "0 qualifying edges, rejected -- EV below
+    # 2.5%: 60". The market edge on the price rows stays, because it
+    # compares a book against consensus and needs no model to be right.
     return f"""
         <div class="gside{' lead' if leading else ''}">
           <div class="tm">{_tdot(team)}{esc(team or '')}</div>
-          {pc}{ev_tag}
+          {pc}
         </div>
         {_record_line(rec, at_home)}
         {sp}
@@ -670,7 +673,7 @@ def slate_rows(rows: list[dict]) -> str:
           <div class="gcard-body">
             {_side(away, r.get('away_starter'), r.get('away_starter_era'), pa,
                    pa > ph, r.get('away_record'), False,
-                   r.get('away_vs_opp'), home, ev=(r.get('model') or {}).get('ev_away'))}
+                   r.get('away_vs_opp'), home)}
             <div class="gbar">
               <div class="seg on" style="left:0;width:{max(0.0, min(100.0, pa * 100)):.1f}%"></div>
               <div class="seg" style="left:{max(0.0, min(100.0, pa * 100)):.1f}%;right:0"></div>
@@ -678,7 +681,7 @@ def slate_rows(rows: list[dict]) -> str:
             </div>
             {_side(home, r.get('home_starter'), r.get('home_starter_era'), ph,
                    ph >= pa, r.get('home_record'), True,
-                   r.get('home_vs_opp'), away, ev=(r.get('model') or {}).get('ev_home'))}
+                   r.get('home_vs_opp'), away)}
             <div class="gfoot">
               {foot_left}
               {foot_right}
@@ -1302,7 +1305,6 @@ def board_card(row: dict) -> str:
             wl=detail.get(f"{which}_starter_wl"),
             vs=detail.get(f"{which}_vs_opp"),
             opponent=row.get("home" if which == "away" else "away"),
-            ev=model.get(f"ev_{which}"),
         )
 
     hp = model.get("home_win_prob")

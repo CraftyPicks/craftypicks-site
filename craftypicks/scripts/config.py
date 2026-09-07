@@ -194,10 +194,20 @@ def daily_reserve(history: list[dict] | None, sports_in_season: int):
     reserve that blocks the thing it is protecting has stopped being a
     reserve.
     """
-    days = [d for d in (history or []) if isinstance(d.get("spent"), int)]
+    def core(day):
+        """The card's cost, with the optional extras taken out.
+
+        Rows written before the split existed carry only "spent". Reading
+        those as core over-reserves, which is the safe direction and rights
+        itself within a day.
+        """
+        value = day.get("core")
+        return value if isinstance(value, int) else day.get("spent")
+
+    days = [d for d in (history or []) if isinstance(core(d), int)]
     if not days:
         return CORE_CREDITS_PER_SPORT * max(1, sports_in_season), "formula"
-    window = sorted(d["spent"] for d in days[-SPEND_WINDOW:])
+    window = sorted(core(d) for d in days[-SPEND_WINDOW:])
     # Nearest-rank p75. On one observation that is the observation.
     idx = max(0, min(len(window) - 1, int(round(0.75 * (len(window) - 1)))))
     pad = SPEND_PAD if len(window) >= SPEND_TRUSTED_DAYS else SPEND_PAD_THIN

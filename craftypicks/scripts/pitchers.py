@@ -21,6 +21,7 @@ the scanner.
 """
 from __future__ import annotations
 
+import sys as _sys
 from datetime import datetime, timezone
 
 import config
@@ -124,7 +125,12 @@ def roster_panel(pitcher_id: int, opponent_team_id: int, season: int) -> dict | 
     """
     try:
         vs = mlb_api.vs_roster(pitcher_id, opponent_team_id, season)
-    except Exception:                                        # noqa: BLE001
+    except Exception as e:                                   # noqa: BLE001
+        # Said out loud. A blanket except that returns None here is how all
+        # fifteen panels came up empty on 2026-09-07 with nothing in the log
+        # to say why.
+        print(f"   !! roster panel {pitcher_id}: {type(e).__name__}: {e}",
+              file=_sys.stderr)
         return None
     if not vs or not vs.pa:
         return None
@@ -270,8 +276,13 @@ def build(prop_events: list[dict], date_str: str, season: int,
 
     rows.sort(key=lambda r: r.get("commence_time") or "")
     if verbose:
+        panels = sum(1 for r in rows if r.get("vs_roster"))
+        with_x = sum(1 for r in rows
+                     if (r.get("vs_roster") or {}).get("xwoba") is not None)
         print(f"   pitchers: rated {len(rows)} starter(s), "
               f"league K/game {league:.2f}")
+        print(f"   pitchers: {panels}/{len(rows)} roster panel(s), "
+              f"{with_x} with xwOBA")
     return rows
 
 
