@@ -197,12 +197,17 @@ def daily_reserve(history: list[dict] | None, sports_in_season: int):
     def core(day):
         """The card's cost, with the optional extras taken out.
 
-        Rows written before the split existed carry only "spent". Reading
-        those as core over-reserves, which is the safe direction and rights
-        itself within a day.
+        A row written before the split existed carries only "spent", and is
+        SKIPPED rather than read as core. Reading it as core looked like the
+        safe direction and is not: on a nearest-rank 75th percentile a single
+        expensive legacy row is the answer for as long as it stays in the
+        window, so one 17-credit day -- 9 of card and 8 of props -- would
+        have held the reserve at 22/day for a week and skipped props every
+        morning of it. Skipping the row falls back to the formula, which is
+        wrong in a way that at least corrects itself the next day.
         """
         value = day.get("core")
-        return value if isinstance(value, int) else day.get("spent")
+        return value if isinstance(value, int) else None
 
     days = [d for d in (history or []) if isinstance(core(d), int)]
     if not days:
