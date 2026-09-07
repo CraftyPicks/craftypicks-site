@@ -777,6 +777,49 @@ def _strip(recent: list[dict], line: float) -> str:
       <div class="pb-ticks">{''.join(ticks)}</div>"""
 
 
+def _roster_block(row: dict, who: str, team: str) -> str:
+    """PA, K%, AVG, xwOBA against tonight's lineup.
+
+    First in the panel, above the vs-opponent block, because it is the
+    wider sample: a whole roster's career against this arm, rather than the
+    two or three starts he has made against the club.
+
+    The denominator is printed under xwOBA on purpose. Career xwOBA against
+    an individual hitter is typically a handful of plate appearances, and a
+    three-decimal number is exactly the kind of thing that reads as
+    precision when it is noise. Under THIN_PA the whole block is dimmed.
+    """
+    rs = row.get("vs_roster")
+    if not rs or not rs.get("pa"):
+        return ""
+
+    def three(v):
+        return f"{v:.3f}".lstrip("0") if v is not None else "&mdash;"
+
+    k_txt = f'{rs["k_pct"] * 100:.1f}%' if rs.get("k_pct") is not None else "&mdash;"
+    n = rs.get("batters") or 0
+    note = _("rs_read", n=n, s=_pl(n), s2=_pl(n))
+    if rs.get("xwoba") is not None:
+        note += " " + _("rs_xspan", span=esc(rs.get("xwoba_span") or ""),
+                        pa=format(rs.get("xwoba_pa") or 0, ","))
+    else:
+        note += " " + _("rs_xnone")
+
+    thin = ' dim' if rs.get("thin") else ''
+    out = (f'<div class="mxh">{_("rs_head", who=who, team=team)}</div>'
+           f'<div class="mxg four{thin}">'
+           f'<div><span>{_("rs_pa")}</span><b>{format(rs["pa"], ",")}</b></div>'
+           f'<div><span>{_("rs_kpct")}</span><b>{k_txt}</b></div>'
+           f'<div><span>{_("rs_avg")}</span><b>{three(rs.get("avg"))}</b></div>'
+           f'<div><span>{_("rs_xwoba")}</span><b>{three(rs.get("xwoba"))}</b></div>'
+           f'</div>'
+           f'<p class="mxn">{note}</p>')
+    if rs.get("thin"):
+        out += (f'<p class="mxn warn">'
+                f'{_("rs_thin", pa=format(rs["pa"], ","))}</p>')
+    return out
+
+
 def _matchup_panel(row: dict) -> str:
     """The prop card's collapsible detail.
 
@@ -788,6 +831,12 @@ def _matchup_panel(row: dict) -> str:
     who = esc((row.get("name") or "").split()[-1] or "?")
     team = esc(_nickname(row.get("opponent")))
     parts = []
+
+    # The roster line leads: it rests on hundreds of plate appearances where
+    # the vs-opponent line below often rests on two starts.
+    block = _roster_block(row, who, team)
+    if block:
+        parts.append(block)
 
     vs = row.get("vs_opp")
     if vs and vs.get("innings"):

@@ -23,6 +23,12 @@ class VsRoster:
     sf: int = 0
     batters_seen: int = 0        # how many of the roster he's actually faced
 
+    # The batter ids behind that aggregate. Savant is keyed by batter, so the
+    # xwOBA panel has to be built on exactly the roster StatsAPI used here --
+    # aggregating a different set of batters and printing the two numbers
+    # side by side would be a quiet lie.
+    faced: list = field(default_factory=list)
+
     @property
     def k_pct(self) -> Optional[float]:
         return self.k / self.pa if self.pa else None

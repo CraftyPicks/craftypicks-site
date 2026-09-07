@@ -219,6 +219,7 @@ def vs_roster(pitcher_id: int, opponent_team_id: int, season: int):
         agg.hbp += s.get("hitByPitch", 0) or 0
         agg.sf += s.get("sacFlies", 0) or 0
         agg.batters_seen += 1
+        agg.faced.append(batter_id)
     return agg
 
 

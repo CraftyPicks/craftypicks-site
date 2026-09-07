@@ -424,6 +424,30 @@ T = {
 
     # ---- prop card matchup panel
     "mx_open":       {"en": "matchup detail", "es": "detalle del duelo"},
+    # ---- the roster panel (PA, K%, AVG, xwOBA), Savant's four columns
+    "rs_head":       {"en": "{who} vs the {team} lineup",
+                      "es": "{who} ante la alineación de {team}"},
+    "rs_pa":         {"en": "PA", "es": "AP"},
+    "rs_kpct":       {"en": "K%", "es": "P%"},
+    "rs_avg":        {"en": "AVG", "es": "PROM"},
+    "rs_xwoba":      {"en": "xwOBA", "es": "xwOBA"},
+    "rs_read":       {"en": "Career, against the {n} hitter{s} on today's "
+                            "roster he has actually faced.",
+                      "es": "De por vida, ante los {n} bateador{s2} del "
+                            "róster de hoy que realmente ha enfrentado."},
+    "rs_xspan":      {"en": "xwOBA from Statcast, {span}, on {pa} PA.",
+                      "es": "xwOBA de Statcast, {span}, sobre {pa} AP."},
+    "rs_xnone":      {"en": "No Statcast rows cached for this matchup yet, so "
+                            "xwOBA is blank rather than guessed.",
+                      "es": "Aún no hay filas de Statcast en caché para este "
+                            "duelo, así que xwOBA queda vacío en vez de "
+                            "adivinado."},
+    "rs_thin":       {"en": "{pa} plate appearances is a small sample. It is "
+                            "shown because you would want to see it, not "
+                            "because it is evidence.",
+                      "es": "{pa} apariciones al plato es una muestra pequeña. "
+                            "Se muestra porque uno quiere verlo, no porque "
+                            "sea evidencia."},
     "mx_hist":       {"en": "{who} against {team}, {span}",
                       "es": "{who} ante {team}, {span}"},
     "mx_never":      {"en": "{who} has never faced {team}",

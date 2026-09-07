@@ -114,6 +114,31 @@ def save_json(path: Path, payload) -> None:
     path.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n")
 
 
+CREDIT_LOG = DATA / "credits.json"
+CREDIT_LOG_KEEP = 60
+
+
+def credit_history() -> list[dict]:
+    """What each recent day actually cost, oldest first.
+
+    This exists so the props reserve can be measured instead of guessed.
+    See config.daily_reserve for why the guess was wrong.
+    """
+    doc = load_json(CREDIT_LOG, {})
+    days = doc.get("days") if isinstance(doc, dict) else None
+    return days if isinstance(days, list) else []
+
+
+def record_credits(date_str: str, spent: int, left) -> None:
+    """One row per day. A re-run on the same day replaces that day's row
+    rather than appending a second one, or a morning with three manual
+    dispatches would read as three expensive days."""
+    days = [d for d in credit_history() if d.get("date") != date_str]
+    days.append({"date": date_str, "spent": int(spent),
+                 "left": None if left is None else int(left)})
+    save_json(CREDIT_LOG, {"days": days[-CREDIT_LOG_KEEP:]})
+
+
 def local_now() -> datetime:
     return datetime.now(ZoneInfo(config.TIMEZONE))
 
@@ -279,13 +304,17 @@ def main() -> int:
             # the card.
             prop_cost = config.PROP_MAX_EVENTS * len(getattr(config, "PROP_MARKETS", []) or [])
             spare = config.spare_credits(client.credits_remaining,
-                                         now.date(), len(in_season))
+                                         now.date(), len(in_season),
+                                         credit_history())
             if (props and getattr(config, "PROP_MARKETS", None)
                     and sport in getattr(config, "PROP_SPORTS", [])
                     and games
                     and spare < prop_cost):
+                per_day, why = config.daily_reserve(credit_history(),
+                                                   len(in_season))
                 print(f"   props: skipped — {client.credits_remaining} credits left, "
                       f"{config.days_until_reset(now.date())} days to reset, "
+                      f"reserving {per_day}/day ({why}), "
                       f"spare after reserving the card is {spare}, props need {prop_cost}")
             elif (props and getattr(config, "PROP_MARKETS", None)
                     and sport in getattr(config, "PROP_SPORTS", [])
@@ -607,6 +636,10 @@ def main() -> int:
             pace = left / days if days else float(left)
             print(f"-- credits: {used} spent this run, {left} left, "
                   f"{days} day(s) to reset — {pace:.1f}/day available")
+            record_credits(now.date().isoformat(), used, left)
+            per_day, why = config.daily_reserve(credit_history(),
+                                                len(in_season))
+            print(f"   reserving {per_day}/day for the rest of the cycle ({why})")
             if used > pace:
                 print(f"   !! this run cost more than the daily pace. At {used}/day "
                       f"the allowance runs out in {left // max(1, used)} day(s).")

@@ -161,7 +161,44 @@ def days_until_reset(today) -> int:
     return (date(nxt_y, nxt_m, day) - date(today.year, today.month, today.day)).days
 
 
-def spare_credits(remaining, today, sports_in_season: int) -> int:
+# How many days of measured spend to reason from, and how far to pad the
+# estimate while the record is still short. A single observed day is not a
+# rate, so it is treated as if it could be half again as expensive.
+SPEND_WINDOW = 14
+SPEND_TRUSTED_DAYS = 5
+SPEND_PAD_THIN = 1.5
+SPEND_PAD = 1.15
+
+
+def daily_reserve(history: list[dict] | None, sports_in_season: int):
+    """Credits to hold back per remaining day, and where the figure came from.
+
+    The old rule was CORE_CREDITS_PER_SPORT x sports_in_season, and on
+    2026-09-07 it skipped props by four credits: it reserved 5 a day each for
+    NFL and NBA on a day the log recorded "no games today - 0 credits spent"
+    for both, holding roughly 240 credits against sports that would mostly
+    not play before the reset. Actual spend that day was 9. The formula
+    assumed 15.
+
+    Sports in season is a proxy for cost. Actual cost is not a proxy for
+    anything, and the run has been printing it every morning, so measure it.
+    The 75th percentile rather than the mean because the expensive days are
+    the ones a reserve exists to survive -- an NFL Sunday costs more than a
+    Tuesday, and averaging the two under-books for Sunday.
+    """
+    days = [d for d in (history or []) if isinstance(d.get("spent"), int)]
+    if not days:
+        return CORE_CREDITS_PER_SPORT * max(1, sports_in_season), "formula"
+    window = sorted(d["spent"] for d in days[-SPEND_WINDOW:])
+    # Nearest-rank p75. On one observation that is the observation.
+    idx = max(0, min(len(window) - 1, int(round(0.75 * (len(window) - 1)))))
+    pad = SPEND_PAD if len(window) >= SPEND_TRUSTED_DAYS else SPEND_PAD_THIN
+    import math
+    return math.ceil(window[idx] * pad), f"measured over {len(window)} day(s)"
+
+
+def spare_credits(remaining, today, sports_in_season: int,
+                  history: list[dict] | None = None) -> int:
     """What's left after reserving a card for every remaining day.
 
     Returns a large number when the remaining balance is unknown, so a
@@ -169,5 +206,5 @@ def spare_credits(remaining, today, sports_in_season: int) -> int:
     """
     if remaining is None:
         return 10 ** 6
-    reserve = CORE_CREDITS_PER_SPORT * max(1, sports_in_season) * days_until_reset(today)
-    return int(remaining) - reserve
+    per_day, _why = daily_reserve(history, sports_in_season)
+    return int(remaining) - per_day * days_until_reset(today)

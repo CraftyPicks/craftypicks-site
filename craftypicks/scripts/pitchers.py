@@ -27,6 +27,7 @@ import config
 import screen_config as scfg
 import mlb_api
 import matchup
+import savant
 import screen_source
 
 # Expected innings for a starting pitcher. Modern starters average a shade
@@ -110,6 +111,48 @@ def opponent_split(table: dict, summary: dict, team_id: int,
     }
 
 
+def roster_panel(pitcher_id: int, opponent_team_id: int, season: int) -> dict | None:
+    """PA, K%, AVG and xwOBA for this starter against tonight's lineup.
+
+    The first three are StatsAPI and already computed -- VsRoster has done
+    this arithmetic since the screens were written and nothing has ever
+    displayed it. The fourth is Savant, joined on the same batter ids so the
+    two halves of the panel describe the same set of hitters.
+
+    Costs one free StatsAPI request per batter (~26-40) and no Savant
+    request at all: warm() has already filled the cache for today's board.
+    """
+    try:
+        vs = mlb_api.vs_roster(pitcher_id, opponent_team_id, season)
+    except Exception:                                        # noqa: BLE001
+        return None
+    if not vs or not vs.pa:
+        return None
+
+    xwoba = xpa = None
+    seasons = ""
+    try:
+        doc = savant.load(pitcher_id)
+        xwoba, xpa = savant.roster_xwoba(pitcher_id, vs.faced, doc)
+        seasons = savant.span(doc)
+    except Exception:                                        # noqa: BLE001
+        pass
+
+    return {
+        "pa": vs.pa,
+        "k_pct": vs.k_pct,
+        "avg": vs.avg,
+        "batters": vs.batters_seen,
+        # Savant's denominator is AB+BB+SF+HBP and the cache can be shallower
+        # than the StatsAPI career line, so this is reported separately rather
+        # than letting one PA count stand under both numbers.
+        "xwoba": round(xwoba, 3) if xwoba is not None else None,
+        "xwoba_pa": int(xpa) if xpa else 0,
+        "xwoba_span": seasons,
+        "thin": vs.pa < savant.THIN_PA,
+    }
+
+
 def build(prop_events: list[dict], date_str: str, season: int,
           verbose: bool = True) -> list[dict]:
     """One rated row per starter who has a posted strikeout line."""
@@ -148,6 +191,16 @@ def build(prop_events: list[dict], date_str: str, season: int,
     league = (sum(opp_rates.values()) / len(opp_rates)) if opp_rates else LEAGUE_K_PER_GAME
     ranked = sorted(opp_rates.items(), key=lambda kv: -kv[1])
     rank_of = {tid: i + 1 for i, (tid, _r) in enumerate(ranked)}
+
+    # One bounded pass at Savant for the whole board, before any row is
+    # built. Doing it per row would re-open the same pitcher's cache
+    # repeatedly and make the budget meaningless.
+    try:
+        savant.warm([s["pitcher_id"] for s in starters], season,
+                    date_str, verbose=verbose)
+    except Exception as e:                                   # noqa: BLE001
+        if verbose:
+            print(f"   savant: skipped ({type(e).__name__}: {e})")
 
     rows = []
     for event in prop_events:
@@ -204,6 +257,7 @@ def build(prop_events: list[dict], date_str: str, season: int,
                 "last5_over": sum(cleared[-5:]),
                 "last5_n": len(cleared[-5:]),
                 "vs_opp": vs,
+                "vs_roster": roster_panel(pid, starter["opponent_id"], season),
                 "hand": hands.get(pid, ""),
                 "opp_split": opponent_split(k_table, k_summary,
                                             starter["opponent_id"],

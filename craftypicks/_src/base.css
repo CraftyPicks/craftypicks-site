@@ -690,6 +690,10 @@ footer{background:var(--bg-2);padding:56px 0 40px}
 .mxg span{font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;
   color:var(--muted)}
 .mxg b{font-family:var(--mono);font-size:14px;color:var(--txt);font-weight:500}
+.mxg.four{grid-template-columns:repeat(4,1fr)}
+/* A small sample is shown, not hidden -- but it is not shown at the same
+   weight as a number with six hundred plate appearances behind it. */
+.mxg.dim b{color:var(--sub)}
 .mxn{font-size:12.5px;line-height:1.55;color:var(--muted);margin:8px 0 0}
 .mxn.warn{font-style:italic}
 .mxt{width:100%;border-collapse:collapse;font-size:12.5px}
