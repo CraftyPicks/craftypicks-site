@@ -1,7 +1,11 @@
 name: Probe Savant xwOBA
 
 # Diagnostic only. Reads public endpoints, writes nothing, commits nothing.
-# Run it once from the Actions tab and paste the log back.
+# The probe is inlined here on purpose: this file has to be pasted in by hand
+# anyway (GITHUB_TOKEN cannot write under .github/workflows), so carrying the
+# script inside it makes this one upload instead of two.
+#
+# Actions -> "Probe Savant xwOBA" -> Run workflow. Then paste the log back.
 
 on:
   workflow_dispatch:
@@ -11,8 +15,6 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v4
-
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
@@ -21,4 +23,153 @@ jobs:
         shell: bash
         run: |
           set -o pipefail
-          python3 research/probe_savant.py 2>&1
+          python3 - <<'PROBE_EOF' 2>&1
+          #!/usr/bin/env python3
+          """Can Baseball Savant give us xwOBA for a pitcher against a roster?
+
+          Diagnostic only. Reads public endpoints, writes nothing, commits nothing.
+
+          PA, K%, BB%, AVG and wOBA already come free from StatsAPI -- mlb_api.vs_roster
+          computes all five today and nothing displays them. xwOBA is the one column on
+          Savant's matchup panel that StatsAPI cannot produce, because it is a Statcast
+          quantity: expected wOBA from exit velocity and launch angle.
+
+          This asks three questions, in order of how much we would like the answer to
+          be yes:
+
+            1. Is there a matchup endpoint that returns the aggregate directly?
+            2. Failing that, does the Statcast search CSV expose the per-pitch
+               expected-wOBA column we could aggregate ourselves?
+            3. How big is that download, and how long does it take?
+
+          Run it from the Actions tab and read the log.
+          """
+          from __future__ import annotations
+
+          import csv
+          import io
+          import json
+          import time
+          import urllib.error
+          import urllib.parse
+          import urllib.request
+
+          UA = {"User-Agent": "craftypicks-probe/1.0 (+https://craftypicks.org)"}
+          SEASON = 2026
+
+          # Grant Holmes and Jesús Luzardo -- the two starters in the screenshot that
+          # prompted this, so the probe's output can be read straight against it.
+          PITCHERS = {"Grant Holmes": None, "Jesus Luzardo": None}
+
+
+          def get(url: str, want: str = "json", timeout: int = 60):
+              req = urllib.request.Request(url, headers=UA)
+              t0 = time.time()
+              try:
+                  with urllib.request.urlopen(req, timeout=timeout) as r:
+                      raw = r.read()
+                      code = r.status
+              except (urllib.error.HTTPError, urllib.error.URLError, TimeoutError) as e:
+                  print(f"  !! {url[:110]}\n     {type(e).__name__}: {e}")
+                  return None
+              secs = time.time() - t0
+              print(f"  ok {code}  {len(raw):,} bytes  {secs:.1f}s")
+              if want == "json":
+                  try:
+                      return json.loads(raw.decode("utf-8"))
+                  except json.JSONDecodeError:
+                      print("     (not JSON — first 200 bytes below)")
+                      print("     " + raw[:200].decode("utf-8", "replace"))
+                      return None
+              return raw.decode("utf-8", "replace")
+
+
+          def find_pitcher_ids() -> None:
+              print("== 1. resolving the two starters through StatsAPI")
+              for name in list(PITCHERS):
+                  url = ("https://statsapi.mlb.com/api/v1/people/search"
+                         f"?names={urllib.parse.quote(name)}")
+                  d = get(url)
+                  people = (d or {}).get("people") or []
+                  if people:
+                      PITCHERS[name] = people[0]["id"]
+                      print(f"     {name} -> {people[0]['id']}")
+                  else:
+                      print(f"     {name} -> not found")
+
+
+          def try_matchup_endpoints(pid: int) -> None:
+              """The cheap answer, if it exists."""
+              print("\n== 2. does a matchup endpoint hand us the aggregate directly?")
+              for label, url in (
+                  ("savant player percentile",
+                   f"https://baseballsavant.mlb.com/server/statcast_percentile"
+                   f"?player_id={pid}&position=P&season={SEASON}"),
+                  ("savant player page json",
+                   f"https://baseballsavant.mlb.com/savant-player/{pid}?stats=statcast"),
+                  ("statsapi expected stats",
+                   f"https://statsapi.mlb.com/api/v1/people/{pid}/stats"
+                   f"?stats=statcast&group=pitching&season={SEASON}"),
+              ):
+                  print(f"  {label}")
+                  d = get(url, want="json" if "json" in label or "percentile" in label
+                          or "statsapi" in label else "text")
+                  if isinstance(d, dict):
+                      keys = sorted(d)[:14]
+                      print(f"     top-level keys: {keys}")
+                      blob = json.dumps(d).lower()
+                      for probe in ("xwoba", "estimated_woba", "expected_woba"):
+                          if probe in blob:
+                              print(f"     >>> CONTAINS {probe!r}")
+
+
+          def try_statcast_search(pid: int) -> None:
+              """The expensive answer: per-pitch rows we aggregate ourselves."""
+              print("\n== 3. the Statcast search CSV, one season, this pitcher")
+              url = ("https://baseballsavant.mlb.com/statcast_search/csv"
+                     "?all=true&type=details&player_type=pitcher"
+                     f"&pitchers_lookup%5B%5D={pid}"
+                     f"&game_date_gt={SEASON}-03-01&game_date_lt={SEASON}-12-01")
+              text = get(url, want="text", timeout=120)
+              if not text:
+                  return
+              reader = csv.DictReader(io.StringIO(text))
+              rows = list(reader)
+              cols = reader.fieldnames or []
+              print(f"     {len(rows):,} pitches, {len(cols)} columns")
+              wanted = [c for c in cols
+                        if "woba" in c.lower() or "estimated" in c.lower()
+                        or c.lower() in ("batter", "events", "description")]
+              print("     columns we would need:")
+              for c in wanted:
+                  print(f"        {c}")
+              if rows:
+                  sample = next((r for r in rows if (r.get("events") or "").strip()), rows[0])
+                  print("     one batted-ball row, the fields that matter:")
+                  for c in wanted:
+                      print(f"        {c:38} {sample.get(c)!r}")
+              print("\n     NOTE: this is ONE pitcher for ONE season. The matchup panel")
+              print("     wants CAREER against a whole roster, so judge the size above")
+              print("     against roughly ten seasons times every starter on the board.")
+
+
+          def main() -> int:
+              find_pitcher_ids()
+              pid = next((v for v in PITCHERS.values() if v), None)
+              if not pid:
+                  print("\nCould not resolve a pitcher id; stopping.")
+                  return 1
+              try_matchup_endpoints(pid)
+              try_statcast_search(pid)
+              print("\n== done. What matters, in order:")
+              print("   * did anything in step 2 contain xwoba -> cheap, use that")
+              print("   * else does step 3 list an expected-wOBA column -> possible,")
+              print("     but weigh the byte count and seconds against every starter")
+              print("   * if neither -> xwOBA is out; PA, K%, BB%, AVG and wOBA are")
+              print("     still free and already computed")
+              return 0
+
+
+          if __name__ == "__main__":
+              raise SystemExit(main())
+          PROBE_EOF
