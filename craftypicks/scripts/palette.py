@@ -240,6 +240,9 @@ DIM_ALLOWED = {
     # Decorative team-colour dot before a club name; --dim is only the
     # fallback background when a club has no colour of its own, never text.
     ".tdot",
+    # The unit after a prop projection ("3.7 K"), same case as .pb-num .unit:
+    # the number beside it already carries the meaning.
+    ".cv-u",
 }
 
 

@@ -123,6 +123,15 @@ T = {
     "market_only":   {"en": "market only", "es": "solo mercado"},
     "board_empty":   {"en": "No games on the board tonight.",
                       "es": "No hay partidos en el tablero esta noche."},
+    # ---- the canvas card
+    "cv_winprob":    {"en": "{who} win prob", "es": "prob. victoria {who}"},
+    "cv_market":     {"en": "market {v}", "es": "mercado {v}"},
+    "cv_edge":       {"en": "{v} edge", "es": "ventaja {v}"},
+    "cv_fade":       {"en": "{v} fade", "es": "{v} en contra"},
+    "cv_noedge":     {"en": "no edge", "es": "sin ventaja"},
+    "pnl_prices":    {"en": "Prices", "es": "Precios"},
+    "cv_detail":     {"en": "Game detail +", "es": "Detalle del partido +"},
+    "cv_prop_detail":{"en": "Prop detail +", "es": "Detalle del prop +"},
     "card_more":     {"en": "Form, head to head and props",
                       "es": "Forma, historial y props"},
 

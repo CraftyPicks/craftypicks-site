@@ -823,7 +823,7 @@ def _roster_block(row: dict, who: str, team: str) -> str:
     return out
 
 
-def _matchup_panel(row: dict) -> str:
+def _matchup_inner(row: dict) -> str:
     """The prop card's collapsible detail.
 
     Three things, in this order: how this starter has done against this
@@ -913,8 +913,7 @@ def _matchup_panel(row: dict) -> str:
     if split and split.get("league_mean") is not None:
         gap = split["k_pct"] - split["league_mean"]
         delta = f'<span class="vd">{_("mx_delta", v=f"{gap:+.1f}")}</span>'
-    return (f'<details class="mx"><summary><span class="mxs">{_("mx_open")}'
-            f'</span></summary><div class="mxb">{"".join(parts)}</div></details>'
+    return (f'<div class="mxb">{"".join(parts)}</div>'
             f'<div class="verdict {MX_CLASS[verdict]}">'
             f'{_(MX_LABEL[verdict])}{delta}</div>')
 
@@ -939,10 +938,10 @@ def pitcher_cards(rows: list[dict]) -> str:
 
         actual = r.get("actual")
         if actual is None:
-            status = f'<span>{_("rated")}</span>'
+            status_txt = _("rated")
         else:
             went = _("over") if actual > line else _("under")
-            status = f'<span class="fin">{_("final_k", n=actual, side=went)}</span>' 
+            status_txt = _("final_k", n=actual, side=went)
 
 
         rank = r.get("opp_k_rank")
@@ -956,39 +955,75 @@ def pitcher_cards(rows: list[dict]) -> str:
         if r.get("under_odds") is not None:
             prices.append(f"u{om.format_american(r['under_odds'])}")
 
+        # The canvas card, applied to a prop. Same five lines as a game:
+        # who, one number, a bar with the market's own number ticked onto it,
+        # what the market says and the size of the disagreement.
+        #
+        # The bar is scaled to twice the posted line, so the line always sits
+        # at the halfway mark and the fill reads directly as "how far past
+        # it we are". Scaling to the projection instead would move the tick
+        # from card to card and make fifteen cards incomparable, which is the
+        # whole thing the canvas layout is for.
+        span = max(line * 2.0, proj * 1.15, 1.0)
+        fill = max(0.0, min(100.0, proj / span * 100))
+        tick = max(0.0, min(100.0, line / span * 100))
+        if gap is None or abs(gap) < 0.4:
+            edge = f'<span class="ge none">{_("cv_noedge")}</span>'
+        elif gap > 0:
+            edge = (f'<span class="ge up">'
+                    f'{_("cv_edge", v=f"+{abs(gap):.1f}")}</span>')
+        else:
+            edge = (f'<span class="ge down">'
+                    f'{_("cv_fade", v=f"&minus;{abs(gap):.1f}")}</span>')
+
+        # The strip, the season rows and the prices come off the face and go
+        # behind the disclosure, where the game card put its price rows.
+        inner = (
+            f'<section class="pk"><h4>{_("pnl_prices")}</h4>'
+            f'<div class="pb-foot"><span>{esc(" / ".join(prices)) or "&mdash;"}</span>'
+            f'{lean}</div></section>'
+            f'<section class="pk"><h4>{_("last_n_starts", n=r.get("recent_n", 0))}</h4>'
+            f'<div class="pb-striphead"><span></span>'
+            f'<span class="pb-rec"><b>{r.get("recent_over",0)}&ndash;'
+            f'{max(0,(r.get("recent_n",0)-r.get("recent_over",0)))}</b> '
+            f'{_("over_line", v=f"{line:g}")} &middot; {_("l5")} '
+            f'<b>{r.get("last5_over",0)}&ndash;'
+            f'{max(0,(r.get("last5_n",0)-r.get("last5_over",0)))}</b>'
+            f'</span></div>'
+            f'{_strip(r.get("recent") or [], line)}</section>'
+            f'<section class="pk"><h4>{_("season")}</h4>'
+            f'<div class="pb-rows">'
+            f'<div class="pb-row"><span>{_("season")}</span><b>{_season_line(r)}</b></div>'
+            f'<div class="pb-row"><span>'
+            f'{_("opp_ks", team=esc(_nickname(r.get("opponent"))))}</span>'
+            f'<b>{_("per_game", v=f"{opp_rate:.1f}") if opp_rate else "&mdash;"}'
+            f'{rank_txt}</b></div></div></section>')
+
         out.append(f"""
         <div class="pb-card{' flag' if r.get('suspect') else ''}"
              style="--accent:{team_color(r.get('opponent')) or 'var(--line-2)'}">
-          <div class="pb-top">
-            <span>{esc(r.get('team',''))} vs {esc(_nickname(r.get('opponent')))}
-              &middot; {esc(game_time(r.get('commence_time')))}</span>
-            {status}
-          </div>
           <div class="pb-body">
-            <div class="pb-name">{esc(r.get('name',''))}{_wl_tag(r)}</div>
-            <div class="pb-head">
-              <div class="pb-num"><div class="k">{_("our_projection")}</div>
-                <div class="v">{proj:.1f}<span class="unit">{_("k_unit")}</span></div></div>
-              <div class="pb-num alt"><div class="k">{_("posted_line")}</div>
-                <div class="v">{line:g}<span class="unit">{_("k_unit")}</span></div></div>
+            <div class="cv-head">
+              <h3 class="cv-tm">{esc(r.get('name',''))}</h3>
+              <span class="cv-time">{esc(game_time(r.get('commence_time')))}</span>
             </div>
-            <div class="pb-striphead">
-              <span>{_("last_n_starts", n=r.get('recent_n', 0))}</span>
-              <span class="pb-rec"><b>{r.get('recent_over',0)}&ndash;{max(0,(r.get('recent_n',0)-r.get('recent_over',0)))}</b>
-                {_("over_line", v=f"{line:g}")} &middot; {_("l5")} <b>{r.get('last5_over',0)}&ndash;{max(0,(r.get('last5_n',0)-r.get('last5_over',0)))}</b></span>
+            <div class="cv-sub">{esc(r.get('team',''))} vs {esc(_nickname(r.get('opponent')))}
+              &middot; {status_txt}</div>
+            <div class="cv-row">
+              <span class="cv-lab">{_("our_projection")}</span>
+              <span class="cv-pct">{proj:.1f}<span class="cv-u">{_("k_unit")}</span></span>
             </div>
-            {_strip(r.get('recent') or [], line)}
-            <div class="pb-rows">
-              <div class="pb-row"><span>{_("season")}</span><b>{_season_line(r)}</b></div>
-              <div class="pb-row"><span>{_("opp_ks", team=esc(_nickname(r.get('opponent'))))}</span>
-                <b>{_("per_game", v=f"{opp_rate:.1f}") if opp_rate else '&mdash;'}{rank_txt}</b></div>
+            <div class="cv-bar"><i class="cv-fill" style="width:{fill:.1f}%"></i>
+              <i class="cv-tick" style="left:{tick:.1f}%"></i></div>
+            <div class="cv-foot">
+              <span class="gm">{_("posted_line")} {line:g}</span>{edge}
             </div>
-            <div class="pb-foot">
-              <span>{esc(' / '.join(prices)) or '&mdash;'}</span>
-              {lean}
-            </div>
+            <details class="gmore" data-close="{_("close")}">
+              <summary>{_("cv_prop_detail")}</summary>
+              <div class="gmore-in"><div class="pnl">{inner}
+                {_matchup_inner(r)}</div></div>
+            </details>
           </div>
-          {_matchup_panel(r)}
         </div>""")
     return "".join(out)
 
@@ -1272,56 +1307,91 @@ def _prob_foot(model: dict | None) -> str:
             f'{_("off_market", v=f"{abs(gap):.1f}")}</span></div>')
 
 
+def _cv_edge(model: dict) -> str:
+    """The card's one verdict, bottom right.
+
+    Three states, because the canvas card has three: an edge worth naming,
+    an edge pointing the other way, and nothing. Printing "+0.4 EDGE" on a
+    game we agree with the market about is the kind of number that teaches a
+    reader to stop believing the ones that matter.
+    """
+    gap = model.get("disagreement")
+    if gap is None:
+        return f'<span class="ge none">{_("cv_noedge")}</span>'
+    if abs(gap) < 1.0:
+        return f'<span class="ge none">{_("cv_noedge")}</span>'
+    v = f"{abs(gap):.0f}" if abs(gap) >= 10 else f"{abs(gap):.1f}"
+    if gap > 0:
+        return f'<span class="ge up">{_("cv_edge", v="+" + v)}</span>'
+    return f'<span class="ge down">{_("cv_fade", v="&minus;" + v)}</span>'
+
+
 def board_card(row: dict) -> str:
-    """One game, priced, with the deep material behind a disclosure.
+    """One game, priced, with everything else behind a disclosure.
+
+    Rebuilt to the design canvas's card, which is a deliberately thin thing:
+    the matchup, ONE probability -- the side we favour -- a bar with the
+    market's own number ticked onto it, what the market says, and the size of
+    the disagreement. Five lines.
+
+    Clubs are named by nickname -- "Phillies @ Nationals", not "Philadelphia
+    Phillies @ Washington Nationals". At 20px the full names wrap to two
+    lines on every card and the matchup stops being one object.
+
+    What used to sit on the face of this card and now sits inside it: both
+    clubs' records, both starters, the head-to-head strip, and the three
+    market price rows. None of that is gone; it is one tap away. The point of
+    the canvas card is that a reader scanning fifteen games should be
+    comparing fifteen of the same number, not reading fifteen paragraphs.
 
     The disclosure is a <details> rather than a card flip: a flipped card's
-    back is exactly the footprint of its front, and the detail does not fit —
-    a ten-row prototype needed its own scrollbar before books or props were
-    added. <details> also stays findable by Ctrl+F and by search engines, and
-    works with no JavaScript at all.
-
-    Does not decide whether the game is worth betting. Every game on the
-    board is rendered the same way; the edge column is what varies.
+    back is exactly the footprint of its front, and the detail does not fit.
+    <details> also stays findable by Ctrl+F and works with no JavaScript.
     """
     model = row.get("model") or {}
-    detail = row.get("detail") or {}
     tip = game_time(row.get("commence_time"))
     accent = team_color(row.get("home"))
     style = f' style="--accent:{accent}"' if accent else ""
-    lg = leagues.LEAGUES.get(row.get("league") or "")
-    league_tag = f"{esc(lg.label)} &middot; " if lg else ""
-
-    def side(which: str, team: str, prob: float | None,
-             leading: bool) -> str:
-        return _side(
-            team,
-            detail.get(f"{which}_starter"),
-            detail.get(f"{which}_starter_era"),
-            prob,
-            leading,
-            rec=detail.get(f"{which}_record"),
-            at_home=(which == "home"),
-            wl=detail.get(f"{which}_starter_wl"),
-            vs=detail.get(f"{which}_vs_opp"),
-            opponent=row.get("home" if which == "away" else "away"),
-        )
 
     hp = model.get("home_win_prob")
     ap = model.get("away_win_prob")
-    lead_home = hp is not None and ap is not None and hp >= ap
+    away, home = row.get("away", ""), row.get("home", "")
+
+    if hp is None or ap is None:
+        body = f'<div class="cv-none">{_("not_rated")}</div>'
+    else:
+        # One side, and it is ours -- the club our number likes. A card that
+        # printed both made the reader do the comparison the card had already
+        # done.
+        lead_home = hp >= ap
+        who = home if lead_home else away
+        ours = hp if lead_home else ap
+        mkt = model.get("market_home_prob")
+        if mkt is not None and not lead_home:
+            mkt = 1.0 - mkt
+        market_txt = (_("cv_market", v=f"{mkt * 100:.0f}%")
+                      if mkt is not None else "")
+        fill = max(0.0, min(100.0, ours * 100))
+        tick = (f'<i class="cv-tick" style="left:{max(0.0, min(100.0, mkt * 100)):.1f}%"></i>'
+                if mkt is not None else "")
+        body = f"""
+          <div class="cv-row">
+            <span class="cv-lab">{_("cv_winprob", who=esc(_abbr(who)))}</span>
+            <span class="cv-pct">{ours * 100:.0f}%</span>
+          </div>
+          <div class="cv-bar"><i class="cv-fill" style="width:{fill:.1f}%"></i>{tick}</div>
+          <div class="cv-foot">
+            <span class="gm">{market_txt}</span>{_cv_edge(model)}
+          </div>"""
 
     return f"""
       <article class="gcard"{style} id="g-{esc(row.get('event_id',''))}">
-        <div class="gcard-top">
-          <span>{league_tag}{esc(tip)}</span><span>{_("scheduled")}</span>
-        </div>
         <div class="gcard-body">
-          {side("away", row.get('away',''), ap, not lead_home and ap is not None)}
-          {_prob_bar(model)}
-          {side("home", row.get('home',''), hp, lead_home)}
-          {_prob_foot(model)}
-          <div class="mk">{market_rows(row)}</div>
+          <div class="cv-head">
+            <h3 class="cv-tm">{esc(_nickname(away))} <span>@</span> {esc(_nickname(home))}</h3>
+            <span class="cv-time">{esc(tip)}</span>
+          </div>
+          {body}
           {_disclosure(row)}
         </div>
       </article>"""
@@ -1386,19 +1456,30 @@ def _streak_cell(code: str) -> str:
 
 
 def _form_block(row: dict, detail: dict) -> str:
+    """Records, last ten and streak, both clubs side by side.
+
+    Falls back to the bare records when there is no form yet. That fallback
+    is load-bearing: the canvas card took the records off its face, so if
+    this block returned nothing without form data the records would not
+    appear anywhere on the site at all -- which is exactly what happened,
+    and what the fixture at the bottom of this file now catches.
+    """
     home, away = detail.get("home_form"), detail.get("away_form")
     if not home or not away:
-        return ""
-    rows = [
-        (_("pnl_record"), f'{away["w"]}&ndash;{away["l"]}',
-                          f'{home["w"]}&ndash;{home["l"]}'),
-        (_("pnl_last10"), f'{away["l10_w"]}&ndash;{away["l10_l"]}',
-                          f'{home["l10_w"]}&ndash;{home["l10_l"]}'),
-        (_("pnl_streak"), _streak_cell(away.get("streak", "")),
-                          _streak_cell(home.get("streak", ""))),
-    ]
-    # No home/road split here: the card face already prints exactly that line
-    # under each club's name, two inches above.
+        hr, ar = detail.get("home_record"), detail.get("away_record")
+        if not hr or not ar:
+            return ""
+        rows = [(_("pnl_record"), f'{ar["w"]}&ndash;{ar["l"]}',
+                                  f'{hr["w"]}&ndash;{hr["l"]}')]
+    else:
+        rows = [
+            (_("pnl_record"), f'{away["w"]}&ndash;{away["l"]}',
+                              f'{home["w"]}&ndash;{home["l"]}'),
+            (_("pnl_last10"), f'{away["l10_w"]}&ndash;{away["l10_l"]}',
+                              f'{home["l10_w"]}&ndash;{home["l10_l"]}'),
+            (_("pnl_streak"), _streak_cell(away.get("streak", "")),
+                              _streak_cell(home.get("streak", ""))),
+        ]
     body = "".join(f"<tr><th>{lab}</th><td>{a}</td><td>{h}</td></tr>"
                    for lab, a, h in rows)
     return (f'<section class="pk"><h4>{_("pnl_form")}</h4>'
@@ -1541,9 +1622,15 @@ def _detail_panel(row: dict) -> str:
     # ("they have not met yet this season"), which is worth saying on a card
     # that has other material and is just noise on a card that has none. So it
     # is included only alongside something else.
-    if not (form or starters or props):
+    # The price rows came off the face of the card when it took the canvas's
+    # shape, so they land here -- first, because a reader who opened the card
+    # after seeing an edge is looking for the price that edge is against.
+    prices = market_rows(row)
+    price_block = (f'<section class="pk"><h4>{_("pnl_prices")}</h4>'
+                   f'<div class="mk">{prices}</div></section>') if prices else ""
+    if not (form or starters or props or price_block):
         return ""
-    return (f'<div class="pnl">{form}{_h2h_block(row, detail)}'
+    return (f'<div class="pnl">{price_block}{form}{_h2h_block(row, detail)}'
             f'{starters}{props}</div>')
 
 
@@ -1559,7 +1646,7 @@ def _disclosure(row: dict) -> str:
         return ""
     close = _("close")
     return (f'<details class="gmore" data-close="{close}">'
-            f'<summary>{_("card_more")}</summary>'
+            f'<summary>{_("cv_detail")}</summary>'
             f'<div class="gmore-in">{panel}</div></details>')
 
 
@@ -2121,9 +2208,21 @@ def _self_test() -> None:
 
     html_out = board_card(row)
 
-    # Both clubs are named at full strength. The card must not mark our side
-    # by making the other one harder to read.
-    assert row["home"] in html_out and row["away"] in html_out
+    # Both clubs are named, by nickname -- the canvas card sets the matchup
+    # at 20px and the full names wrap to two lines on every card. The card
+    # must still not mark our side by making the other one harder to read,
+    # so both are present and neither is dimmed.
+    assert _nickname(row["home"]) in html_out, html_out
+    assert _nickname(row["away"]) in html_out, html_out
+
+    # One probability, not two: the side our number likes. Printing both
+    # made the reader do the comparison the card had already done.
+    assert html_out.count('class="cv-pct"') == 1, html_out
+
+    # The prices moved behind the disclosure when the card took the canvas's
+    # shape, but they are still in the markup -- <details> keeps its content
+    # findable by Ctrl+F and by a crawler.
+    assert 'class="gmore"' in html_out
     assert "--dim" not in html_out, \
         "--dim may not appear in a card; it is 3:1 and this is all content"
 
@@ -2137,13 +2236,19 @@ def _self_test() -> None:
     assert i18n.t("market_only", LANG) in html_out, \
         "the total row must say it is market-only"
 
-    # A card with nothing behind it renders no disclosure at all. This row
-    # has no detail block yet, which is the state of a college basketball
-    # card and of an NFL card before enough finals are stored. The details
-    # element is asserted further down, once the fixture has something to
-    # disclose.
-    assert "<details" not in html_out, \
-        "an empty disclosure reads as a broken page"
+    # This row has no form, starters or props -- the state of a college
+    # basketball card, and of an NFL card before enough finals are stored.
+    # It still gets a disclosure, because the price rows moved behind one
+    # when the card took the canvas's shape and prices are content.
+    assert "<details" in html_out, \
+        "a card with prices has something to disclose"
+
+    # A card with genuinely nothing behind it still renders none. An empty
+    # disclosure reads as a broken page.
+    bare = dict(row)
+    bare["markets"] = {}
+    bare["detail"] = {}
+    assert "<details" not in board_card(bare), board_card(bare)
     assert "onclick" not in html_out, "the card needs no JavaScript"
 
     # The best price and the book offering it both appear.
@@ -2188,13 +2293,24 @@ def _self_test() -> None:
     assert _prob_bar(None) == ""
 
     card = board_card(rated)
-    assert "55.6" in card and "44.4" in card, "both percentages are printed"
-    # The whole record line, not the digits: "74" and "56" on their own also
-    # appear in event ids, prices and percentages, so the old two-substring
-    # assertion passed whether or not a record ever reached the card.
-    assert '<div class="grec">74&ndash;56</div>' in card, \
+    # ONE percentage on the face, rounded to whole points, and it is the side
+    # our number likes. The canvas card prints the claim, not the arithmetic
+    # -- 44.4 is 100 minus 55.6 and the reader can do that subtraction.
+    shown = re.findall(r'class="cv-pct">([^<]*)', card)
+    assert shown == ["56%"], shown
+    # 55.6 still appears -- as the bar's width in a style attribute, which is
+    # geometry, not a claim. The assertion is on the printed number only:
+    # a decimal there implies a precision the model does not have.
+    assert "44.4" not in card, card
+
+    # The records and the starters moved behind the disclosure, and are still
+    # in the markup. The whole record line, not the digits: "74" and "56" on
+    # their own also appear in event ids, prices and percentages, so a
+    # two-substring assertion would pass whether or not a record ever
+    # reached the card.
+    assert "74&ndash;56" in card, \
         "the home club's record reaches the card as a record line"
-    assert '<div class="grec">77&ndash;53</div>' in card
+    assert "77&ndash;53" in card
     assert "Freddy Peralta" in card and "3.47" in card
 
     # A card with no starter shows no starter line at all, rather than a
@@ -2203,30 +2319,28 @@ def _self_test() -> None:
     hoops = board_card({**row, "league": "nba", "detail": {},
                         "model": {"home_win_prob": 0.55, "away_win_prob": 0.45}})
     assert "TBA" not in hoops, "no pitcher slot on a card with no pitcher"
-    assert 'class="gsp"' not in hoops, \
-        "the starter line is suppressed, not emitted empty"
-    # ...and a card that does have one still prints it.
-    assert 'class="gsp"' in card
     assert "var(--dim)" not in card, "everything on a card is content"
 
-    # The bar's caption is a closing line after both clubs (matching
-    # slate_rows and .gfoot's border-top-only styling), not a label sitting
-    # between them. Pin the order so a future edit that moves it back fails.
-    foot_text = i18n.t("off_market", LANG, v="5.3")
-    assert card.index(rated["home"]) < card.index(foot_text), (
-        "the bar's footer must render after the home club's name, not "
-        "between the two clubs")
+    # The edge is the last thing on the face, after the market's number --
+    # the canvas reads left to right as "here is what they say, here is how
+    # far we are from it". Pin the order so an edit that swaps them fails.
+    assert card.index('class="gm"') < card.index('class="ge'), \
+        "the market's number comes before the size of the disagreement"
 
-    # The gap-under-a-point wording ("in line with the market") is the exact
-    # phrase that used to read as a label on the club above it.
-    agree_card = board_card({**rated, "model": {**rated["model"], "disagreement": 0.4}})
-    agree_text = i18n.t("agree_market", LANG)
-    assert agree_card.index(rated["home"]) < agree_card.index(agree_text)
+    # Under a point, the card says so instead of printing a decimal that
+    # would teach a reader to stop believing the ones that matter.
+    agree = board_card({**rated, "model": {**rated["model"], "disagreement": 0.4}})
+    assert i18n.t("cv_noedge", LANG) in agree, agree
+    assert "0.4" not in agree.split('class="ge')[1][:40], agree
+
+    # An edge the other way is amber and says "fade", not a negative edge.
+    fade = board_card({**rated, "model": {**rated["model"], "disagreement": -6.0}})
+    assert 'class="ge down"' in fade and i18n.t("cv_fade", LANG, v="") .split()[-1] in fade
 
     # A game we have not rated shows the market block and no percentages,
     # rather than a placeholder or the market's number in our place.
     plain = board_card({**row, "model": None, "detail": None})
-    assert "55.6" not in plain and "class=\"gbar\"" not in plain
+    assert "55.6" not in plain and 'class="cv-pct"' not in plain
     assert "MONEYLINE" in plain.upper() or i18n.t("mkt_moneyline", LANG) in plain
 
     # ---- the detail panel is the card's whole second half.
@@ -2264,14 +2378,19 @@ def _self_test() -> None:
     assert "[[" not in panel, panel
 
     # A card whose rating never merged has no detail, and must still render.
+    # It keeps a disclosure, because the price rows live behind one now.
     bare = dict(row)
     bare.pop("detail")
     set_props([])
-    assert _detail_panel(bare) == "", "no detail means no panel, not a crash"
-    assert _disclosure(bare) == "", "and no panel means no disclosure control"
-    # This is the college basketball card, and the NFL card on the first
-    # morning after the scores fix lands: games priced, nothing to expand.
-    assert "<details" not in board_card(bare), board_card(bare)
+    assert "<details" in board_card(bare), "prices are still worth disclosing"
+
+    # Strip the prices too and there is genuinely nothing to expand -- the
+    # college basketball card, and the NFL card on the first morning after
+    # the scores fix lands. No control at all, rather than an empty box.
+    nothing = {**bare, "markets": {}}
+    assert _detail_panel(nothing) == "", "no detail means no panel, not a crash"
+    assert _disclosure(nothing) == "", "and no panel means no disclosure control"
+    assert "<details" not in board_card(nothing), board_card(nothing)
     # And with a detail block it is a details element, not a flip.
     with_detail = board_card(row)
     assert "<details" in with_detail and "<summary" in with_detail
@@ -2286,7 +2405,7 @@ def _self_test() -> None:
         "vs_opp": {"starts": 3, "innings": 15.3, "era": 6.46,
                    "strikeouts": 15, "span": "2025-2026"},
     }
-    mx = _matchup_panel(prop)
+    mx = _matchup_inner(prop)
     assert "18.9%" in mx, mx
     assert "vs right-handers" in mx and "vs left-handers" not in mx, \
         "only the hand that applies is shown"
@@ -2301,7 +2420,7 @@ def _self_test() -> None:
     thin = {"name": "Nobody", "opponent": "TOR", "hand": "",
             "matchup": "neutral", "k_per_9": 8.0, "opp_split": None,
             "vs_opp": None}
-    out = _matchup_panel(thin)
+    out = _matchup_inner(thin)
     assert "has never faced" in out, out
     assert "%" not in out, "no split means no percentage invented"
 

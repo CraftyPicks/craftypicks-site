@@ -319,6 +319,53 @@ section{border-bottom:1px solid var(--line)}
 .mk-edge.r{color:var(--red)}
 .mk-note{flex:0 0 auto;font-size:12.5px;color:var(--muted)}
 
+/* ---------- the canvas card ----------
+   Five lines and nothing else: the matchup, the one probability we are
+   claiming, the bar with the market ticked onto it, what the market says,
+   and the size of the disagreement. Everything that used to live on the
+   face of this card -- records, starters, head to head, the three price
+   rows -- is behind the disclosure. A reader scanning fifteen games should
+   be comparing fifteen of the same number, not reading fifteen paragraphs. */
+.cv-head{display:flex;align-items:baseline;justify-content:space-between;
+  gap:10px;margin-bottom:18px}
+.cv-tm{font-size:20px;font-weight:700;letter-spacing:-.025em;color:var(--txt);
+  line-height:1.15;margin:0}
+.cv-tm span{color:var(--muted);font-weight:400}
+.cv-time{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;
+  color:var(--muted);white-space:nowrap}
+.cv-row{display:flex;align-items:baseline;justify-content:space-between;
+  gap:12px;margin-bottom:10px}
+.cv-lab{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--muted)}
+/* The number the card exists to deliver. Sans, not mono -- display type. */
+.cv-pct{font-size:30px;font-weight:700;letter-spacing:-.03em;line-height:1;
+  color:var(--green)}
+.cv-bar{position:relative;height:13px;background:var(--bg-2);overflow:hidden}
+.cv-fill{position:absolute;left:0;top:0;bottom:0;
+  background:linear-gradient(90deg,rgba(91,227,156,.30),var(--green))}
+/* Ringed in the page ground so it reads over both halves of the bar. */
+.cv-tick{position:absolute;top:0;bottom:0;width:2px;background:var(--txt);
+  box-shadow:0 0 0 1px rgba(8,9,11,.85)}
+.cv-foot{display:flex;align-items:baseline;justify-content:space-between;
+  gap:10px;margin-top:14px;padding-top:12px;border-top:1px solid var(--line);
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;
+  text-transform:uppercase}
+.cv-foot .gm{color:var(--muted)}
+.ge{font-weight:700;white-space:nowrap}
+.ge.up{color:var(--green)}
+.ge.down{color:var(--amber)}
+.ge.none{color:var(--muted);font-weight:400}
+/* The prop card's second line: which club, which opponent, and whether the
+   start has been graded. It replaces the old top strip, which on the canvas
+   card has no place -- the canvas puts the matchup in the title. */
+.cv-sub{font-family:var(--mono);font-size:10px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--muted);margin:-12px 0 18px}
+/* The unit after a projection. --dim is allowed here for the same reason it
+   is on .pb-num .unit: the figure beside it already carries the meaning. */
+.cv-u{font-size:15px;color:var(--dim);margin-left:4px;font-weight:500}
+.cv-none{font-family:var(--mono);font-size:11px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--muted);padding:6px 0 2px}
+
 /* Disclosure, not a flip: the back of a card is the size of its front, and
    this content does not fit there. interpolate-size lets it animate to its
    natural height, and prefers-reduced-motion turns that off. */
