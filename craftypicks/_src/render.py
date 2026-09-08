@@ -757,24 +757,51 @@ def _ordinal(n: int) -> str:
     return {1: "st", 2: "nd", 3: "rd"}.get(n % 10, "th")
 
 
-def _strip(recent: list[dict], line: float) -> str:
+def _k_tip(game: dict, value) -> str:
+    """The pitcher strip's tooltip, translated. Kept out of _strip so the
+    generic version does not have to know what an inning is."""
+    return _("pb_tip", when=esc(game.get("date") or ""),
+             opp=esc(game.get("opponent") or ""), k=value,
+             ip=game.get("innings", 0))
+
+
+def _strip(recent: list[dict], line: float, *, key: str = "strikeouts",
+           scale: float | None = None, label: str | None = None,
+           fmt=None, tip=None) -> str:
+    """The run of recent games, as bars against a reference line.
+
+    Written for the pitcher board and now shared with the NFL boards, so
+    the two things that were baked in are arguments: which field on a row
+    holds the number, and what the y-axis tops out at. A yardage strip
+    cannot use PITCH_MAX_K, and a touchdown strip's reference is half a
+    touchdown rather than a posted price.
+
+    `scale` defaults to whatever makes the tallest bar fill the box, with
+    the reference line kept inside it -- a fixed ceiling works for
+    strikeouts because they have a natural range and does not for yards.
+    """
     if not recent:
         return f'<div class="pb-nostrip">{_("no_starts")}</div>' 
+    fmt = fmt or (lambda v: f"{v:g}")
+    vals = [(g.get(key) or 0) for g in recent]
+    if scale is None:
+        scale = max(max(vals), line) * 1.15 or 1.0
     bars, ticks = [], []
-    for i, start in enumerate(recent):
-        k = start.get("strikeouts") or 0
-        h = max(6.0, min(100.0, k / PITCH_MAX_K * 100))
-        ago = len(recent) - i
-        when = esc(start.get("date") or "")
-        opp = esc(start.get("opponent") or "")
-        bars.append(f'<div class="pb-bar{" hit" if k > line else ""}" '
+    for g, v in zip(recent, vals):
+        h = max(6.0, min(100.0, v / scale * 100))
+        when = esc(g.get("date") or (f'W{g.get("week")}' if g.get("week") else ""))
+        opp = esc(g.get("opponent") or "")
+        title = (tip(g, v) if tip
+                 else f"{when} {opp} &middot; {fmt(v)}".strip())
+        bars.append(f'<div class="pb-bar{" hit" if v > line else ""}" '
                     f'style="height:{h:.1f}%" '
-                    f'title="{_("pb_tip", when=when, opp=opp, k=k, ip=start.get("innings", 0))}"></div>')
-        ticks.append(f"<span>{k}</span>")
-    pos = max(0.0, min(100.0, line / PITCH_MAX_K * 100))
+                    f'title="{title}"></div>')
+        ticks.append(f"<span>{fmt(v)}</span>")
+    pos = max(0.0, min(100.0, line / scale * 100))
+    lab = label if label is not None else f"{line:g}"
     return f"""
       <div class="pb-strip">
-        <div class="pb-line" style="bottom:{pos:.1f}%"><span class="pb-linelab">{line:g}</span></div>
+        <div class="pb-line" style="bottom:{pos:.1f}%"><span class="pb-linelab">{lab}</span></div>
         {''.join(bars)}
       </div>
       <div class="pb-ticks">{''.join(ticks)}</div>"""
@@ -1002,7 +1029,7 @@ def pitcher_cards(rows: list[dict]) -> str:
             f'<b>{r.get("last5_over",0)}&ndash;'
             f'{max(0,(r.get("last5_n",0)-r.get("last5_over",0)))}</b>'
             f'</span></div>'
-            f'{_strip(r.get("recent") or [], reference)}</section>'
+            f'{_strip(r.get("recent") or [], reference, scale=PITCH_MAX_K, tip=_k_tip)}</section>'
             f'<section class="pk"><h4>{_("season")}</h4>'
             f'<div class="pb-rows">'
             f'<div class="pb-row"><span>{_("season")}</span><b>{_season_line(r)}</b></div>'
@@ -2154,70 +2181,129 @@ def hit_calibration(summary: dict) -> str:
 # (height:180px, flex column), and a player's position badge would have
 # inherited that layout by accident.
 
-def yard_cards(rows: list[dict], unit: str = "yds") -> str:
-    """Projected yardage, one card per club.
+def _nfl_card(r: dict, *, big: str, label: str, ref: float, ref_label: str,
+              key: str, fmt, unit: str = "", strip_line: float | None = None,
+              rows_html: str = "", bar_pct: float | None = None) -> str:
+    """One NFL player, in the pitcher card's shape.
 
-    Grouped on (commence_time, team), not the fixture. Grouping on the
-    game put both sides of a fixture in one card headed with one club's
-    name and captioned with that club's opp_allowed -- the visiting
-    side's players then sat under the home side's opponent and defensive
-    rate, a wrong number that reads as a plausible one. hit_cards already
-    groups on the club rather than the fixture; this follows it.
+    Asked for directly: the NFL boards listed three players under a club
+    header with a per-game average each, and no sense of whether any of
+    them had done it lately. The pitcher card answers that with a strip,
+    so these get the same card rather than a second design that means the
+    same thing.
+    """
+    recent = r.get("recent") or []
+    over = sum(1 for g in recent if (g.get(key) or 0) > (strip_line if strip_line is not None else ref))
+    last5 = recent[-5:]
+    over5 = sum(1 for g in last5 if (g.get(key) or 0) > (strip_line if strip_line is not None else ref))
+    n, n5 = len(recent), len(last5)
+
+    # No games, no section. "Last 0 games / 0-0" is worse than silence: it
+    # looks like a player who has never produced rather than a board built
+    # before his season started.
+    strip_sec = ""
+    if recent:
+        strip_sec = (
+            f'<section class="pk">'
+            f'<h4>{_("nfl_last", n=n, s=_pl(n))}</h4>'
+            f'<div class="pb-striphead"><span></span>'
+            f'<span class="pb-rec"><b>{over}&ndash;{max(0, n - over)}</b> '
+            f'{ref_label} &middot; {_("l5")} '
+            f'<b>{over5}&ndash;{max(0, n5 - over5)}</b></span></div>'
+            f'{_strip(recent, strip_line if strip_line is not None else ref, key=key, fmt=fmt)}'
+            f'</section>')
+    inner = (strip_sec +
+             f'<section class="pk"><h4>{_("nfl_defence")}</h4>'
+             f'<div class="pb-rows">{rows_html}</div></section>')
+
+    # A bar only where there is something to be a fraction OF. A chance is
+    # a fraction of 100 and draws honestly; a yardage projection has no
+    # posted line to sit against on this board, and scaling it to itself
+    # would draw the same bar on every card -- decoration that looks like
+    # a measurement. Same rule as the lineless pitcher card.
+    bar = ""
+    if bar_pct is not None:
+        w = max(0.0, min(100.0, bar_pct))
+        bar = (f'<div class="cv-bar">'
+               f'<i class="cv-fill" style="width:{w:.1f}%"></i></div>')
+    return f"""
+        <div class="pb-card">
+          <div class="pb-body">
+            <div class="cv-head">
+              <h3 class="cv-tm">{esc(r.get('name', ''))}</h3>
+              <span class="cv-time">{esc(game_time(r.get('commence_time')))}</span>
+            </div>
+            <div class="cv-sub">{esc(r.get('team', ''))} vs {esc(r.get('opponent', ''))}
+              &middot; {esc(r.get('position', ''))}</div>
+            <div class="cv-row">
+              <span class="cv-lab">{label}</span>
+              <span class="cv-pct">{big}{f'<span class="cv-u">{esc(unit)}</span>' if unit else ''}</span>
+            </div>
+            {bar}
+            <div class="cv-foot">
+              <span class="gm">{fmt(r.get('per_game') or 0)} {_("nfl_base")}</span>
+            </div>
+            <details class="gmore" data-close="{_("close")}">
+              <summary>{_("nfl_detail")}</summary>
+              <div class="gmore-in"><div class="pnl">{inner}</div></div>
+            </details>
+          </div>
+        </div>"""
+
+
+def yard_cards(rows: list[dict], unit: str = "yds") -> str:
+    """Projected yardage, one card per player.
+
+    Was one card per club with three players listed inside it. The card
+    now matches the pitcher board: the projection at display size, the run
+    of recent games as a strip, and the defensive context behind the
+    disclosure.
     """
     if not rows:
         return f'<div class="empty-board">{_("nfl_empty")}</div>'
-    games: dict = {}
-    for r in rows:
-        games.setdefault((r.get("commence_time"), r.get("team")), []).append(r)
-
+    def yd(v):
+        return f"{v:.0f}"
     out = []
-    for (when, _team), group in games.items():
-        opp = esc(group[0].get("opponent", ""))
-        allowed = f"{group[0].get('opp_allowed', 0):.0f}"
-        league = f"{group[0].get('league_allowed', 0):.0f}"
-        men = "".join(f"""
-          <div class="bat">
-            <div class="bat-n">{esc(p.get('name',''))}
-              <span class="ppos">{esc(p.get('position',''))}</span></div>
-            <div class="bat-c"><b>{p.get('projection', 0):.0f}</b>
-              <span class="unit">{esc(unit)}</span></div>
-            <div class="bat-w">{p.get('baseline', 0):.0f} {esc(unit)}
-              unadjusted</div>
-          </div>""" for p in group)
-        out.append(_group_card(
-            esc(group[0].get("team", "")), when,
-            _("nfl_vs", opp=opp, allowed=allowed, league=league),
-            men))
+    for r in rows:
+        proj = r.get("projection") or 0
+        opp = esc(r.get("opponent", ""))
+        rows_html = (
+            f'<div class="pb-row"><span>{_("nfl_allows", opp=opp)}</span>'
+            f'<b>{r.get("opp_allowed", 0):.0f} {esc(unit)}</b></div>'
+            f'<div class="pb-row"><span>{_("nfl_league")}</span>'
+            f'<b>{r.get("league_allowed", 0):.0f} {esc(unit)}</b></div>')
+        out.append(_nfl_card(
+            r, big=yd(proj), label=_("nfl_proj"), ref=proj,
+            ref_label=_("nfl_clears", v=yd(proj)),
+            key="value", fmt=yd, unit=unit, rows_html=rows_html))
     return '<div class="pb-grid">' + "".join(out) + "</div>"
 
 
 def td_cards(rows: list[dict]) -> str:
-    """Anytime touchdown chances, one card per club.
+    """Anytime touchdown chance, one card per player.
 
-    Grouped on (commence_time, team) for the same reason as yard_cards:
-    grouping on the fixture instead puts the away side's players under
-    the home side's name and opp_allowed.
+    The strip's reference is half a touchdown rather than the chance
+    itself: the market is "anytime", so one is a hit and zero is not, and
+    a two-touchdown game is not twice as much of a hit. Comparing a count
+    against a percentage would be a category error drawn as a chart.
     """
     if not rows:
         return f'<div class="empty-board">{_("nfl_empty")}</div>'
-    games: dict = {}
-    for r in rows:
-        games.setdefault((r.get("commence_time"), r.get("team")), []).append(r)
+    def td(v):
+        return f"{v:g}"
     out = []
-    for (when, _team), group in games.items():
-        opp = esc(group[0].get("opponent", ""))
-        allowed = f"{group[0].get('opp_allowed', 0):.2f}"
-        league = f"{group[0].get('league_allowed', 0):.2f}"
-        men = "".join(f"""
-          <div class="bat">
-            <div class="bat-n">{esc(p.get('name',''))}
-              <span class="ppos">{esc(p.get('position',''))}</span></div>
-            <div class="bat-c"><b>{p.get('chance', 0) * 100:.1f}%</b></div>
-          </div>""" for p in group)
-        out.append(_group_card(
-            esc(group[0].get("team", "")), when,
-            _("nfl_vs", opp=opp, allowed=allowed, league=league),
-            men))
+    for r in rows:
+        chance = (r.get("chance") or 0) * 100
+        opp = esc(r.get("opponent", ""))
+        rows_html = (
+            f'<div class="pb-row"><span>{_("nfl_allows", opp=opp)}</span>'
+            f'<b>{r.get("opp_allowed", 0):.2f}</b></div>'
+            f'<div class="pb-row"><span>{_("nfl_league")}</span>'
+            f'<b>{r.get("league_allowed", 0):.2f}</b></div>')
+        out.append(_nfl_card(
+            r, big=f"{chance:.1f}%", label=_("nfl_chance"), ref=chance,
+            ref_label=_("nfl_scored"), key="value", fmt=td,
+            strip_line=0.5, rows_html=rows_html, bar_pct=chance))
     return '<div class="pb-grid">' + "".join(out) + "</div>"
 
 

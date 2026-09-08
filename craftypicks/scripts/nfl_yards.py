@@ -142,6 +142,10 @@ def _next_week(games: list[dict]) -> int | None:
     return min((g["week"] for g in upcoming), default=None)
 
 
+# How many games the card's strip shows, matching the pitcher board.
+RECENT_GAMES = 10
+
+
 def build(season: int, category: str, week: int | None = None) -> list[dict]:
     """One rated row per player worth listing in the coming week's games.
 
@@ -226,6 +230,13 @@ def build(season: int, category: str, week: int | None = None) -> list[dict]:
                     "week": game["week"],
                     "game_id": game["game_id"],
                     "commence_time": game["commence_time"],
+                    # The last ten games in this category, so the card can
+                    # draw the same strip the pitcher board draws. Built
+                    # from the two weekly files already in memory -- no
+                    # extra fetch, and the current season comes last so a
+                    # short new season reads as recent rather than as thin.
+                    "recent": nfl_data.recent_games(
+                        prior_weekly + cur_weekly, pid, field, RECENT_GAMES),
                     "actual": None,
                 })
     rows.sort(key=lambda r: (r["commence_time"], -r["projection"]))
@@ -386,6 +397,17 @@ def _self_test() -> None:
     assert "rb_low" not in rushing_ids, \
         f"a runner with one game of history leaked past MIN_GAMES: {rushing_rows}"
     assert "rb_ok" in rushing_ids, rushing_rows
+
+    # Every row carries its last games, oldest first, so the card can draw
+    # the same strip the pitcher board draws. This is asserted here rather
+    # than trusted because the board it feeds renders an empty section
+    # silently, and a silently empty strip is exactly how nobody notices.
+    steady = next(r for r in rushing_rows if r["player_id"] == "rb_ok")
+    assert len(steady["recent"]) == 8, steady["recent"]
+    assert [g["value"] for g in steady["recent"]] == [80.0] * 8
+    assert [g["week"] for g in steady["recent"]] == list(range(1, 9)), \
+        "oldest first, so the strip reads left to right as time"
+    assert steady["recent"][0]["opponent"] == "NE"
 
     # A week absent from an otherwise populated schedule is also empty --
     # asking for a week nothing was scheduled for must not raise or

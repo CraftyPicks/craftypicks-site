@@ -33,6 +33,9 @@ PER_TEAM = 4
 # The two that count as scoring, and the one that does not.
 SCORING = ("rushing_tds", "receiving_tds")
 
+# How many games the card's strip shows, matching the pitcher board.
+RECENT_GAMES = 10
+
 
 def td_chance(rate: float, opp_allowed: float, league: float) -> float:
     """Probability of at least one touchdown, Poisson.
@@ -156,6 +159,12 @@ def build(season: int, week: int | None = None) -> list[dict]:
                     "week": game["week"],
                     "game_id": game["game_id"],
                     "commence_time": game["commence_time"],
+                    # Touchdowns per game, last ten. The strip's reference
+                    # is half a touchdown, because the market here is
+                    # "anytime" -- one is a hit and zero is not, and a
+                    # two-touchdown game is not twice as much of a hit.
+                    "recent": nfl_data.recent_games(
+                        old_rows + cur_rows, pid, "any_td", RECENT_GAMES),
                     "scored": None,
                 })
     rows.sort(key=lambda r: (r["commence_time"], -r["chance"]))

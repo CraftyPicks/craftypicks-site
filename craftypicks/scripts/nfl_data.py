@@ -247,6 +247,37 @@ def parse_schedule(rows: list[dict], season: int) -> list[dict]:
 BLEND_K = 4
 
 
+def recent_games(weekly: list[dict], player_id: str, field: str,
+                 limit: int = 10) -> list[dict]:
+    """A player's last `limit` games in one category, oldest first.
+
+    The same rows player_rates aggregates, kept individually. A per-game
+    average tells a reader what a player usually does; the run of games
+    tells them whether he has been doing it lately, which is the question
+    the baseball board's last-ten strip answers and the NFL board could
+    not.
+
+    Oldest first because that is the reading order of a strip, and because
+    the caller should not have to remember to reverse it.
+
+    A week where the field is None is not a zero and is not a game -- the
+    same rule player_rates uses, for the same reason: a receiver with no
+    receiving line did not catch for zero yards, the line is absent.
+    """
+    mine = [r for r in weekly or []
+            if r.get("player_id") == player_id and r.get(field) is not None]
+    mine.sort(key=lambda r: (r.get("season") or 0, r.get("week") or 0))
+    out = []
+    for r in mine[-limit:]:
+        out.append({
+            "season": r.get("season"),
+            "week": r.get("week"),
+            "opponent": r.get("opponent_team") or "",
+            "value": r.get(field) or 0.0,
+        })
+    return out
+
+
 def player_rates(weekly: list[dict], field: str) -> dict[str, dict]:
     """Each player's per-game rate in one category.
 
