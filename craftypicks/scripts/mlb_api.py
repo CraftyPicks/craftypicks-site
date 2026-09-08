@@ -265,36 +265,36 @@ def _first_split(data):
     return None
 
 
-def vs_batter(pitcher_id: int, batter_id: int, season: int):
-    """This pitcher's line against one hitter, career.
+def vs_batter(pitcher_id: int, batter_id: int, season: int = 0):
+    """One hitter's career line against one pitcher.
 
-    The season parameter used to be passed through, and that is why the
-    matchup panel came up empty for all fifteen starters on 2026-09-07:
-    StatsAPI returns nothing for a vsPlayer query that carries a season.
-    The slate's own probe had already printed the same thing one screen
-    higher in that log --
+    The person in the path is the BATTER and the group is "hitting". That
+    is not a detail -- it is the whole thing, and two shipped versions of
+    this function got it wrong because it was reasoned about rather than
+    measured. research/probe_bvp.py settled it on 2026-09-08 by asking
+    StatsAPI seven ways about a real matchup (Angel Martinez vs Brandon
+    Young, 3 PA):
 
-        vs-probe stats=vsTeam: 60 split(s)
-        vs-probe stats=vsTeam+season: 0 split(s)
+        batter id,  group=hitting,  vsPlayerTotal   1 split,  3 PA   <-- this
+        pitcher id, group=pitching, vsPlayerTotal   1 split,  0 PA
+        pitcher id, group=hitting,  vsPlayerTotal   0 splits, 0 PA   <-- shipped
 
-    -- for the team-level twin of this call. Career is also what the panel
-    is supposed to show, so the parameter was wrong twice over.
+    The last line is what this site sent for every batter in every game,
+    which is why every card read "has not faced". Asking a PITCHER for his
+    "hitting" line against a batter is a question with no answer, and
+    StatsAPI answered it honestly with nothing.
 
-    The season is still accepted, and still tried as a fallback, because
-    losing this data silently is exactly the failure being fixed here: if a
-    future StatsAPI starts requiring the parameter, the fallback keeps the
-    panel alive instead of blanking it.
+    Note the pitching variant returns a split with no plate appearances
+    rather than no split at all -- so the guard has to be on PA, not on the
+    presence of a split.
+
+    `season` is accepted and ignored. vsPlayerTotal is the career total,
+    which is what every caller wants, and the parameter is kept only so the
+    call sites do not all have to change.
     """
-    data = _get(f"/people/{pitcher_id}/stats", stats="vsPlayerTotal",
-                group="hitting", opposingPlayerId=batter_id)
-    found = _first_split(data)
-    if found is not None:
-        return found
-    if season:
-        return _first_split(
-            _get(f"/people/{pitcher_id}/stats", stats="vsPlayerTotal",
-                 group="hitting", opposingPlayerId=batter_id, season=season))
-    return None
+    return _first_split(
+        _get(f"/people/{batter_id}/stats", stats="vsPlayerTotal",
+             group="hitting", opposingPlayerId=pitcher_id))
 
 
 def vs_roster(pitcher_id: int, opponent_team_id: int, season: int):
@@ -780,6 +780,57 @@ def _self_test() -> None:
     a = parse_pitcher_season({})
     a["h"] = 999
     assert parse_pitcher_season({})["h"] is None, "EMPTY_PITCHER was shared"
+
+    # --- batter vs pitcher: the exact payload research/probe_bvp.py pulled
+    # back on 2026-09-08, trimmed to the fields we read. The point of the
+    # fixture is the URL, not the arithmetic: two shipped versions of
+    # vs_batter asked the wrong person for the wrong group and returned
+    # nothing for every batter in every game, and nothing in this file
+    # noticed. Now the call itself is asserted.
+    seen = {}
+
+    def _fake_get(path, **params):
+        seen["path"], seen["params"] = path, params
+        if path != "/people/682657/stats":
+            return None
+        if params.get("group") != "hitting":
+            return None
+        return {"stats": [{"splits": [{"stat": {
+            "plateAppearances": 3, "atBats": 3, "hits": 2, "doubles": 1,
+            "homeRuns": 0, "rbi": 0, "strikeOuts": 0, "baseOnBalls": 0,
+            "hitByPitch": 0, "sacFlies": 0, "triples": 0,
+            "avg": ".667"}}]}]}
+
+    real_get = globals()["_get"]
+    globals()["_get"] = _fake_get
+    try:
+        got = vs_batter(687064, 682657, 2026)
+        assert seen["path"] == "/people/682657/stats", (
+            "the BATTER is the person in the path, not the pitcher: "
+            f"{seen['path']}")
+        assert seen["params"]["group"] == "hitting", seen["params"]
+        assert seen["params"]["opposingPlayerId"] == 687064, seen["params"]
+        assert seen["params"]["stats"] == "vsPlayerTotal", seen["params"]
+        assert "season" not in seen["params"], \
+            "vsPlayerTotal is the career total; a season would narrow it"
+        assert got and got["plateAppearances"] == 3, got
+
+        line = batter_vs_pitcher(682657, 687064, 2026)
+        assert line["pa"] == 3 and line["h"] == 2 and line["ab"] == 3, line
+        assert abs(line["avg"] - 2 / 3) < 1e-9, line
+        assert line["rbi"] == 0 and line["k"] == 0, line
+
+        # Never faced: None, not a row of zeroes. The two look identical
+        # once formatted and only one of them is true.
+        assert batter_vs_pitcher(694197, 687064, 2026) is None
+        # attach_bvp survives it and says so.
+        rows = [{"batter_id": 682657, "pitcher_id": 687064},
+                {"batter_id": 694197, "pitcher_id": 687064},
+                {"batter_id": None, "pitcher_id": 687064}]
+        assert attach_bvp(rows, 2026, verbose=False) == 1
+        assert rows[0]["bvp"]["pa"] == 3 and rows[1]["bvp"] is None
+    finally:
+        globals()["_get"] = real_get
 
     print("mlb_api self-test: every parser holds, pitcher season included")
 
