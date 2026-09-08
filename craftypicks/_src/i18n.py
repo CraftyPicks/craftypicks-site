@@ -164,6 +164,8 @@ T = {
                             "los de más apariciones ante él."},
     "pnl_prices":    {"en": "Prices", "es": "Precios"},
     "cv_detail":     {"en": "Game detail +", "es": "Detalle del partido +"},
+    "cv_noline":     {"en": "no line posted", "es": "sin línea publicada"},
+    "cv_clears":     {"en": "clears our {v}", "es": "supera nuestro {v}"},
     "cv_prop_detail":{"en": "Prop detail +", "es": "Detalle del prop +"},
     "card_more":     {"en": "Form, head to head and props",
                       "es": "Forma, historial y props"},

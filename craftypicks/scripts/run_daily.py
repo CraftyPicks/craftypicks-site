@@ -410,7 +410,12 @@ def main() -> int:
     print(f"-- card: {len(card)} play(s), {summary['units_risked']}u risked")
 
     # --------------------------------------------------- 3c. pitcher board
-    if pitch_mod and prop_events:
+    # No longer gated on prop_events. The projection is StatsAPI only, so a
+    # morning the credit reserve declined to buy props is still a morning we
+    # can publish and score a number for every probable starter -- and it is
+    # the morning the board mattered most, because there was nothing else on
+    # that page.
+    if pitch_mod:
         try:
             import screen_config as _scfg
             # Not `history`, and not `ratings` either. `history` holds the play
@@ -442,9 +447,15 @@ def main() -> int:
                 "summary": pitch_summary,
             })
             if pitch_summary.get("mae") is not None:
-                print(f"-- pitchers: avg miss {pitch_summary['mae']} K on "
-                      f"{pitch_summary['graded']} graded "
-                      f"(line missed by {pitch_summary['line_mae']})")
+                msg = (f"-- pitchers: avg miss {pitch_summary['mae']} K on "
+                       f"{pitch_summary['graded']} graded")
+                if pitch_summary.get("line_mae") is not None:
+                    msg += (f" (line missed by {pitch_summary['line_mae']} on "
+                            f"{pitch_summary['priced']} priced)")
+                print(msg)
+            priced_today = sum(1 for r in todays if r.get("line") is not None)
+            print(f"   pitchers: {len(todays)} starter(s) on the board, "
+                  f"{priced_today} with a posted line")
         except Exception as e:                               # noqa: BLE001
             print(f"!! pitcher board failed ({type(e).__name__}: {e})",
                   file=sys.stderr)

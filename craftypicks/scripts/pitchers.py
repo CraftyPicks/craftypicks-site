@@ -161,10 +161,21 @@ def roster_panel(pitcher_id: int, opponent_team_id: int, season: int) -> dict | 
 
 def build(prop_events: list[dict], date_str: str, season: int,
           verbose: bool = True) -> list[dict]:
-    """One rated row per starter who has a posted strikeout line."""
-    if not prop_events:
-        return []
+    """One rated row per probable starter, priced or not.
 
+    The projection has always been free -- K/9, the opponent's strikeout
+    rate and an innings assumption, all from StatsAPI. The board used to
+    disappear on a no-props morning only because this function looped over
+    the prop events and read quote["line"] as a required field, so a credit
+    gate three files away decided whether a free number got published.
+
+    The join now runs the other way: walk the starters, and attach a posted
+    line to the ones that happen to have one. `prop_events` is context, not
+    the subject.
+
+    A row with no line carries no gap, no lean and no verdict. An edge
+    against nothing is not a small edge, it is a category error.
+    """
     starters = mlb_api.probable_starters(date_str)
     if not starters:
         if verbose:
@@ -208,71 +219,84 @@ def build(prop_events: list[dict], date_str: str, season: int,
         if verbose:
             print(f"   savant: skipped ({type(e).__name__}: {e})")
 
+    # Whatever prices exist today, keyed the same way the starters are, so
+    # the lookup below is a dictionary hit rather than a second loop.
+    quotes: dict[str, tuple[dict, dict]] = {}
+    for event in prop_events or []:
+        try:
+            for player, quote in screen_source.lines_for_event(event).items():
+                quotes.setdefault(player, (quote, event))
+        except Exception:                                    # noqa: BLE001
+            continue
+
     rows = []
-    for event in prop_events:
-        for player, quote in screen_source.lines_for_event(event).items():
-            starter = by_name.get(player)
-            if not starter:
-                continue
-            pid = starter["pitcher_id"]
-            season_stats = mlb_api.pitcher_season(pid, season)
-            opp_rate = opp_rates.get(starter["opponent_id"])
-            projection = project(season_stats.get("k_per_9"), opp_rate, league)
-            if projection is None:
-                continue
+    for player, starter in by_name.items():
+        quote, event = quotes.get(player, (None, {}))
+        pid = starter["pitcher_id"]
+        season_stats = mlb_api.pitcher_season(pid, season)
+        opp_rate = opp_rates.get(starter["opponent_id"])
+        projection = project(season_stats.get("k_per_9"), opp_rate, league)
+        if projection is None:
+            continue
 
-            starts = recent_starts(pid, season)
-            line = quote["line"]
-            cleared = [s["strikeouts"] > line for s in starts]
-            gap = round(projection - line, 1)
+        starts = recent_starts(pid, season)
+        line = quote["line"] if quote else None
+        # With no posted line the strip is drawn against OUR number --
+        # how often he has cleared the figure we are publishing. That is
+        # a real question; a dashed line at a price nobody posted is not.
+        reference = line if line is not None else projection
+        cleared = [s["strikeouts"] > reference for s in starts]
+        gap = round(projection - line, 1) if line is not None else None
 
-            try:
-                vs = mlb_api.pitcher_vs_team(pid, starter["opponent_id"],
-                                                season, verbose=False)
-            except Exception:                                # noqa: BLE001
-                vs = None
+        try:
+            vs = mlb_api.pitcher_vs_team(pid, starter["opponent_id"],
+                                            season, verbose=False)
+        except Exception:                                # noqa: BLE001
+            vs = None
 
-            rows.append({
-                "pitcher_id": pid,
-                "name": starter["name"],
-                "team": starter["team"],
-                "opponent": starter["opponent"],
-                "opponent_id": starter["opponent_id"],
-                "event_id": event.get("id"),
-                "commence_time": event.get("commence_time"),
-                "date": date_str,
-                "line": line,
-                "over_odds": quote.get("over"),
-                "under_odds": quote.get("under"),
-                "books": quote.get("books"),
-                "projection": projection,
-                "gap": gap,
-                "suspect": abs(gap) > SUSPECT_GAP,
-                "k_pct": season_stats.get("k_pct"),
-                "k_per_9": season_stats.get("k_per_9"),
-                "era": season_stats.get("era"),
-                "w": season_stats.get("w"),
-                "l": season_stats.get("l"),
-                "innings": season_stats.get("innings"),
-                "opp_k_per_game": opp_rate,
-                "opp_k_rank": rank_of.get(starter["opponent_id"]),
-                "opp_teams_ranked": len(ranked),
-                "recent": starts,
-                "recent_over": sum(cleared),
-                "recent_n": len(starts),
-                "last5_over": sum(cleared[-5:]),
-                "last5_n": len(cleared[-5:]),
-                "vs_opp": vs,
-                "vs_roster": roster_panel(pid, starter["opponent_id"], season),
-                "hand": hands.get(pid, ""),
-                "opp_split": opponent_split(k_table, k_summary,
-                                            starter["opponent_id"],
-                                            hands.get(pid, "")),
-                "matchup": matchup.verdict(k_table, k_summary,
-                                           starter["opponent_id"],
-                                           hands.get(pid, "")),
-                "actual": None,
-            })
+        rows.append({
+            "pitcher_id": pid,
+            "name": starter["name"],
+            "team": starter["team"],
+            "opponent": starter["opponent"],
+            "opponent_id": starter["opponent_id"],
+            "event_id": event.get("id"),
+            "commence_time": (event.get("commence_time")
+                              or starter.get("game_time")),
+            "date": date_str,
+            "line": line,
+            "reference": reference,
+            "over_odds": quote.get("over") if quote else None,
+            "under_odds": quote.get("under") if quote else None,
+            "books": quote.get("books") if quote else None,
+            "projection": projection,
+            "gap": gap,
+            "suspect": gap is not None and abs(gap) > SUSPECT_GAP,
+            "k_pct": season_stats.get("k_pct"),
+            "k_per_9": season_stats.get("k_per_9"),
+            "era": season_stats.get("era"),
+            "w": season_stats.get("w"),
+            "l": season_stats.get("l"),
+            "innings": season_stats.get("innings"),
+            "opp_k_per_game": opp_rate,
+            "opp_k_rank": rank_of.get(starter["opponent_id"]),
+            "opp_teams_ranked": len(ranked),
+            "recent": starts,
+            "recent_over": sum(cleared),
+            "recent_n": len(starts),
+            "last5_over": sum(cleared[-5:]),
+            "last5_n": len(cleared[-5:]),
+            "vs_opp": vs,
+            "vs_roster": roster_panel(pid, starter["opponent_id"], season),
+            "hand": hands.get(pid, ""),
+            "opp_split": opponent_split(k_table, k_summary,
+                                        starter["opponent_id"],
+                                        hands.get(pid, "")),
+            "matchup": matchup.verdict(k_table, k_summary,
+                                       starter["opponent_id"],
+                                       hands.get(pid, "")),
+            "actual": None,
+        })
 
     rows.sort(key=lambda r: r.get("commence_time") or "")
     if verbose:
@@ -335,17 +359,26 @@ def summary(history: list[dict]) -> dict:
     """How wrong the projections are, and whether the line beats them."""
     done = [r for r in history if r.get("actual") is not None]
     if not done:
-        return {"rated": len(history), "graded": 0, "mae": None,
+        return {"rated": len(history), "graded": 0, "priced": 0, "mae": None,
                 "line_mae": None, "over_rate": None, "called_right": None,
                 "buckets": []}
 
+    # Two populations, and they are NOT the same one. Every graded start has
+    # a projection to score; only the starts on a day props were bought have
+    # a posted line to score it against. Averaging both under one `n` is the
+    # mistake projection.error_summary already had to fix once with
+    # baseline_n, so the priced count is reported beside the numbers built
+    # from it.
+    priced = [r for r in done if r.get("line") is not None]
+
     mae = sum(abs(r["actual"] - r["projection"]) for r in done) / len(done)
-    line_mae = sum(abs(r["actual"] - r["line"]) for r in done) / len(done)
+    line_mae = (sum(abs(r["actual"] - r["line"]) for r in priced) / len(priced)
+                if priced else None)
 
     # Of the starters we called over, how many went over? Ties on the line
     # can't happen — books post halves — but a projection can sit exactly on
     # it, and those are excluded rather than counted as a call.
-    calls = [r for r in done if abs(r["projection"] - r["line"]) >= 0.1]
+    calls = [r for r in priced if abs(r["projection"] - r["line"]) >= 0.1]
     right = sum(1 for r in calls
                 if (r["projection"] > r["line"]) == (r["actual"] > r["line"]))
 
@@ -370,11 +403,98 @@ def summary(history: list[dict]) -> dict:
     return {
         "rated": len(history),
         "graded": len(done),
+        "priced": len(priced),
         "mae": round(mae, 2),
-        "line_mae": round(line_mae, 2),
-        "over_rate": round(sum(1 for r in done if r["actual"] > r["line"])
-                           / len(done) * 100, 1),
+        "line_mae": round(line_mae, 2) if line_mae is not None else None,
+        "over_rate": (round(sum(1 for r in priced if r["actual"] > r["line"])
+                            / len(priced) * 100, 1) if priced else None),
         "called_right": round(right / len(calls) * 100, 1) if calls else None,
         "calls": len(calls),
         "buckets": buckets,
     }
+
+
+# --------------------------------------------------------------- tests ---
+def _self_test() -> None:
+    """The board's first test, and it exists because of what it caught.
+
+    build() used to loop over prop events, so a credit gate three files
+    away decided whether a free projection got published. Nothing in this
+    file noticed, because nothing in this file was ever run.
+    """
+    import types
+
+    log = [{"date": "2026-09-08", "strikeouts": 7, "innings": 6.0},
+           {"date": "2026-09-02", "strikeouts": 4, "innings": 5.0}]
+    fake_api = types.SimpleNamespace(
+        probable_starters=lambda d: [
+            {"pitcher_id": 1, "name": "A Pitcher", "team": "DET",
+             "opponent": "Cleveland Guardians", "opponent_id": 114,
+             "game_time": "2026-09-08T18:10:00Z"},
+            {"pitcher_id": 2, "name": "B Pitcher", "team": "CLE",
+             "opponent": "Detroit Tigers", "opponent_id": 116,
+             "game_time": "2026-09-08T18:10:00Z"}],
+        pitch_hands=lambda ids: {1: "R", 2: "L"},
+        team_k_splits=lambda s: {},
+        team_k_per_game=lambda tid, s: 8.4,
+        pitcher_season=lambda pid, s: {"k_per_9": 9.0, "k_pct": 0.25,
+                                       "era": 3.2, "w": 8, "l": 5,
+                                       "innings": 120.0},
+        pitcher_vs_team=lambda *a, **k: None,
+        season_game_log=lambda pid, s: [],
+        vs_roster=lambda *a, **k: None,
+    )
+    keep_api, keep_src, keep_sav = mlb_api, screen_source, savant
+    globals()["mlb_api"] = fake_api
+    globals()["screen_source"] = types.SimpleNamespace(
+        normalize=lambda n: n.strip().lower(),
+        lines_for_event=lambda e: e.get("lines", {}))
+    globals()["savant"] = types.SimpleNamespace(
+        warm=lambda *a, **k: 0, load=lambda p: {}, span=lambda d: "",
+        roster_xwoba=lambda *a: (None, 0), THIN_PA=50)
+    try:
+        # 1. No prop events at all -- the whole point of this change.
+        free = build([], "09/08/2026", 2026, verbose=False)
+        assert len(free) == 2, free
+        assert all(r["line"] is None for r in free), free
+        assert all(r["gap"] is None for r in free), free
+        assert all(r["suspect"] is False for r in free), free
+        assert all(r["projection"] > 0 for r in free), free
+        # The card still knows when the game starts, from the starter.
+        assert all(r["commence_time"] for r in free), free
+        # And the strip is drawn against our own number.
+        assert all(r["reference"] == r["projection"] for r in free), free
+
+        # 2. A priced morning still prices.
+        event = {"id": "evt", "commence_time": "2026-09-08T18:10:00Z",
+                 "lines": {"a pitcher": {"line": 5.5, "over": -110,
+                                         "under": -110, "books": 6}}}
+        mixed = build([event], "09/08/2026", 2026, verbose=False)
+        priced = [r for r in mixed if r["line"] is not None]
+        assert len(mixed) == 2 and len(priced) == 1, mixed
+        assert priced[0]["event_id"] == "evt"
+        assert priced[0]["gap"] == round(priced[0]["projection"] - 5.5, 1)
+        assert priced[0]["reference"] == 5.5
+        # The unpriced starter on the same morning is still on the board.
+        assert any(r["line"] is None for r in mixed)
+    finally:
+        globals()["mlb_api"] = keep_api
+        globals()["screen_source"] = keep_src
+        globals()["savant"] = keep_sav
+
+    # 3. summary() reads both populations without confusing them.
+    s = summary([{"projection": 5.0, "line": 4.5, "actual": 6},
+                 {"projection": 5.0, "line": None, "actual": 4}])
+    assert s["graded"] == 2 and s["priced"] == 1, s
+    assert abs(s["mae"] - 1.0) < 1e-9, s
+    assert abs(s["line_mae"] - 1.5) < 1e-9, s
+    # A board that has never been priced reports no line comparison rather
+    # than a zero, which would read as the line being perfect.
+    s2 = summary([{"projection": 5.0, "line": None, "actual": 4}])
+    assert s2["line_mae"] is None and s2["over_rate"] is None, s2
+
+    print("pitchers self-test: a free morning still produces a board")
+
+
+if __name__ == "__main__":
+    _self_test()

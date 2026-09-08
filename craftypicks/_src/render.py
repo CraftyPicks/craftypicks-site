@@ -923,11 +923,21 @@ def pitcher_cards(rows: list[dict]) -> str:
         return f'<div class="empty-board">{_("pitch_empty")}</div>' 
     out = []
     for r in rows:
-        line = r.get("line") or 0
+        # A starter with no posted line is the normal case now: the board is
+        # built from StatsAPI every morning and prices are attached only on
+        # the mornings props were bought. `line` therefore has to stay None
+        # here rather than collapsing to 0, which would print a real-looking
+        # "0.0" and score every projection as an over.
+        line = r.get("line")
         proj = r.get("projection") or 0
         gap = r.get("gap")
+        reference = r.get("reference")
+        if reference is None:
+            reference = line if line is not None else proj
 
-        if r.get("suspect"):
+        if line is None:
+            lean = ""
+        elif r.get("suspect"):
             lean = (f'<span class="flagged" title="{_("pb_flagtip")}">'
                     f'{_("off_the_line", v=f"{abs(gap):.1f}")}</span>')
         elif gap is None or abs(gap) < 0.4:
@@ -940,7 +950,7 @@ def pitcher_cards(rows: list[dict]) -> str:
         if actual is None:
             status_txt = _("rated")
         else:
-            went = _("over") if actual > line else _("under")
+            went = _("over") if actual > reference else _("under")
             status_txt = _("final_k", n=actual, side=went)
 
 
@@ -964,10 +974,16 @@ def pitcher_cards(rows: list[dict]) -> str:
         # it we are". Scaling to the projection instead would move the tick
         # from card to card and make fifteen cards incomparable, which is the
         # whole thing the canvas layout is for.
-        span = max(line * 2.0, proj * 1.15, 1.0)
+        span = max(reference * 2.0, proj * 1.15, 1.0)
         fill = max(0.0, min(100.0, proj / span * 100))
-        tick = max(0.0, min(100.0, line / span * 100))
-        if gap is None or abs(gap) < 0.4:
+        # No posted line, no tick. There is nothing on the market to mark,
+        # and a tick sitting on our own number would draw the projection
+        # twice and read as agreement with a price nobody offered.
+        tick = (max(0.0, min(100.0, line / span * 100))
+                if line is not None else None)
+        if line is None:
+            edge = ""
+        elif gap is None or abs(gap) < 0.4:
             edge = f'<span class="ge none">{_("cv_noedge")}</span>'
         elif gap > 0:
             edge = (f'<span class="ge up">'
@@ -976,21 +992,32 @@ def pitcher_cards(rows: list[dict]) -> str:
             edge = (f'<span class="ge down">'
                     f'{_("cv_fade", v=f"&minus;{abs(gap):.1f}")}</span>')
 
+        tick_html = (f'<i class="cv-tick" style="left:{tick:.1f}%"></i>'
+                     if tick is not None else "")
+        foot_left = (f'{_("posted_line")} {line:g}' if line is not None
+                     else _("cv_noline"))
+
         # The strip, the season rows and the prices come off the face and go
         # behind the disclosure, where the game card put its price rows.
-        inner = (
+        price_sec = (
             f'<section class="pk"><h4>{_("pnl_prices")}</h4>'
             f'<div class="pb-foot"><span>{esc(" / ".join(prices)) or "&mdash;"}</span>'
-            f'{lean}</div></section>'
+            f'{lean}</div></section>') if line is not None else ""
+        # The record label names whatever the strip is drawn against -- the
+        # posted line when there is one, our own number when there is not.
+        over_label = (_("over_line", v=f"{line:g}") if line is not None
+                      else _("cv_clears", v=f"{proj:.1f}"))
+        inner = (
+            price_sec +
             f'<section class="pk"><h4>{_("last_n_starts", n=r.get("recent_n", 0))}</h4>'
             f'<div class="pb-striphead"><span></span>'
             f'<span class="pb-rec"><b>{r.get("recent_over",0)}&ndash;'
             f'{max(0,(r.get("recent_n",0)-r.get("recent_over",0)))}</b> '
-            f'{_("over_line", v=f"{line:g}")} &middot; {_("l5")} '
+            f'{over_label} &middot; {_("l5")} '
             f'<b>{r.get("last5_over",0)}&ndash;'
             f'{max(0,(r.get("last5_n",0)-r.get("last5_over",0)))}</b>'
             f'</span></div>'
-            f'{_strip(r.get("recent") or [], line)}</section>'
+            f'{_strip(r.get("recent") or [], reference)}</section>'
             f'<section class="pk"><h4>{_("season")}</h4>'
             f'<div class="pb-rows">'
             f'<div class="pb-row"><span>{_("season")}</span><b>{_season_line(r)}</b></div>'
@@ -1014,9 +1041,9 @@ def pitcher_cards(rows: list[dict]) -> str:
               <span class="cv-pct">{proj:.1f}<span class="cv-u">{_("k_unit")}</span></span>
             </div>
             <div class="cv-bar"><i class="cv-fill" style="width:{fill:.1f}%"></i>
-              <i class="cv-tick" style="left:{tick:.1f}%"></i></div>
+              {tick_html}</div>
             <div class="cv-foot">
-              <span class="gm">{_("posted_line")} {line:g}</span>{edge}
+              <span class="gm">{foot_left}</span>{edge}
             </div>
             <details class="gmore" data-close="{_("close")}">
               <summary>{_("cv_prop_detail")}</summary>
@@ -2559,6 +2586,33 @@ def _self_test() -> None:
     out = _matchup_inner(thin)
     assert "has never faced" in out, out
     assert "%" not in out, "no split means no percentage invented"
+
+    # --- the pitcher card with no posted line -------------------------------
+    # The board is built from StatsAPI every morning now, so most cards have
+    # no price on them. The card must not invent one.
+    free_sp = {"name": "A Pitcher", "team": "DET",
+               "opponent": "Cleveland Guardians", "projection": 6.4,
+               "line": None, "gap": None, "suspect": False, "reference": 6.4,
+               "recent": [{"date": "2026-09-02", "strikeouts": 8,
+                           "innings": 6.0}],
+               "recent_over": 1, "recent_n": 1, "last5_over": 1, "last5_n": 1,
+               "k_per_9": 11.2, "matchup": "neutral", "actual": None}
+    free_html = pitcher_cards([free_sp])
+    assert 'class="cv-tick"' not in free_html, \
+        "no posted line means no tick; ours is already the fill"
+    assert 'class="ge ' not in free_html, \
+        "an edge against nothing is not a small edge"
+    assert i18n.t("cv_noline", LANG) in free_html, free_html
+    assert i18n.t("pnl_prices", LANG) not in free_html, \
+        "no prices section on a card with no prices"
+    assert "0.0" not in free_html.split('class="cv-foot"')[1][:120], \
+        "a missing line must not collapse to a real-looking zero"
+
+    priced_sp = dict(free_sp, line=6.5, gap=-0.1, reference=6.5,
+                     over_odds=-115, under_odds=-105)
+    priced_html = pitcher_cards([priced_sp])
+    assert 'class="cv-tick"' in priced_html and 'class="ge ' in priced_html
+    assert i18n.t("pnl_prices", LANG) in priced_html
 
     print("render self-test: all invariants hold")
 

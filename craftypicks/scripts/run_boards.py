@@ -42,6 +42,7 @@ import mlb_api             # noqa: E402
 import homers as homers_mod    # noqa: E402
 import batters as batters_mod  # noqa: E402
 import hits as hits_mod        # noqa: E402
+import pitchers as pitch_mod   # noqa: E402
 import projection              # noqa: E402
 import results_store           # noqa: E402
 import nfl_yards                # noqa: E402
@@ -148,6 +149,48 @@ def main() -> int:
                       f"{summary['graded']} bat(s)")
         else:
             print("!! batters: no lineup cleared the plate-appearance floor",
+                  file=sys.stderr)
+
+        # ---------------------------------------------------------- pitchers
+        # Free, and therefore here: the strikeout projection is K/9, the
+        # opponent's strikeout rate and an innings assumption, none of which
+        # cost a credit. This board used to appear only on mornings the
+        # daily job bought props, which meant the one page that could be
+        # published every day was the one that most often was not.
+        #
+        # No prop events are passed, so every row lands unpriced. When the
+        # daily job DOES buy props it rebuilds the same board with lines
+        # attached, and merges on (pitcher_id, date) so neither overwrites
+        # the other's grading.
+        try:
+            pitch_hist = load_json(DATA / "pitcher_ratings.json",
+                                   {"pitchers": []})["pitchers"]
+            pitch_rows = pitch_mod.build([], now.strftime("%m/%d/%Y"), season)
+            known = {(r.get("pitcher_id"), r.get("date")) for r in pitch_hist}
+            for row in pitch_rows:
+                if (row.get("pitcher_id"), row.get("date")) not in known:
+                    pitch_hist.append(dict(row))
+            pitch_mod.grade(pitch_hist, season)
+            pitch_summary = pitch_mod.summary(pitch_hist)
+            save_json(DATA / "pitcher_ratings.json", {"pitchers": pitch_hist})
+            if pitch_rows:
+                keys = {(r.get("pitcher_id"), r.get("date")) for r in pitch_rows}
+                board = [r for r in pitch_hist
+                         if (r.get("pitcher_id"), r.get("date")) in keys]
+                board.sort(key=lambda r: r.get("commence_time") or "")
+                save_json(DATA / "pitchers.json", {
+                    "date": today,
+                    "date_label": label,
+                    "pitchers": board,
+                    "summary": pitch_summary,
+                })
+                priced = sum(1 for r in board if r.get("line") is not None)
+                print(f"-- pitchers: {len(board)} starter(s) on the board, "
+                      f"{priced} with a posted line")
+            else:
+                print("!! pitchers: no starter could be rated", file=sys.stderr)
+        except Exception as e:                               # noqa: BLE001
+            print(f"!! pitcher board failed ({type(e).__name__}: {e})",
                   file=sys.stderr)
 
         # ---------------------------------------------------------- hits
