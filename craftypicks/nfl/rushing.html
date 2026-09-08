@@ -376,7 +376,8 @@ section{border-bottom:1px solid var(--line)}
    start has been graded. It replaces the old top strip, which on the canvas
    card has no place -- the canvas puts the matchup in the title. */
 .cv-sub{font-family:var(--mono);font-size:10px;letter-spacing:.1em;
-  text-transform:uppercase;color:var(--muted);margin:-12px 0 18px}
+  text-transform:uppercase;color:var(--muted);margin:-12px 0 16px;
+  line-height:1.6}
 /* The unit after a projection. --dim is allowed here for the same reason it
    is on .pb-num .unit: the figure beside it already carries the meaning. */
 .cv-u{font-size:15px;color:var(--dim);margin-left:4px;font-weight:500}
@@ -845,6 +846,39 @@ footer{background:var(--bg-2);padding:56px 0 40px}
 .h2s{color:var(--muted)} .h2s b{color:var(--txt);font-weight:500}
 .h2w{color:var(--muted);font-size:11px}
 .h2more{font-size:11px;color:var(--muted);padding:3px 0}
+/* The starter comparison. Label down the middle, a club above each
+   column, and the better number in each row lit. "Better" is per row --
+   high is good for strikeouts, low for everything else here -- and W-L
+   carries no mark at all, because a record is mostly a report on the
+   lineup behind the man. */
+/* The hitters table. Names left and every figure right, because a column
+   of numbers is only scannable when its digits line up. A row with no
+   history is dimmed rather than removed -- see _lineup_table for why. */
+.lutbl{width:100%;border-collapse:collapse;font-size:12.5px}
+.lutbl th{text-align:left;font-weight:500;color:var(--txt);
+  padding:7px 10px 7px 0;white-space:nowrap}
+.lutbl td{text-align:right;padding:7px 0 7px 10px;color:var(--sub);
+  font-family:var(--mono);white-space:nowrap}
+.lutbl tr+tr th,.lutbl tr+tr td{border-top:1px solid var(--line)}
+.lutbl tr.hd th,.lutbl tr.hd td{font-family:var(--mono);font-size:9.5px;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--muted);
+  font-weight:400;padding-bottom:3px}
+.lutbl .lav{color:var(--txt)}
+.lutbl .lz{color:var(--muted)}
+
+.sptbl{width:100%;border-collapse:collapse;margin-bottom:14px}
+.sptbl td,.sptbl th{padding:7px 6px;font-size:13px}
+.sptbl th{font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--muted);font-weight:400;
+  text-align:center;width:34%}
+.sptbl .spv{font-family:var(--mono);color:var(--sub);width:33%}
+.sptbl tr td:first-child{text-align:left}
+.sptbl tr td:last-child{text-align:right}
+.sptbl .spv.on{color:var(--green);font-weight:700}
+.sptbl tr.hd td{font-size:12px;font-weight:700;letter-spacing:.04em;
+  color:var(--txt);font-family:var(--mono)}
+.sptbl tr+tr td,.sptbl tr+tr th{border-top:1px solid var(--line)}
+
 /* A starter is a card inside a card in the canvas -- inset one step darker
    than the panel it sits on, with its own border. It reads as an object
    rather than as another line of the paragraph above it. */
@@ -1039,19 +1073,33 @@ footer{background:var(--bg-2);padding:56px 0 40px}
 .ftbl td.ft-s.bad{color:var(--red)}
 
 /* ============================== shared player-card boards (all sports) ==== */
-.bat-card .pb-top{gap:10px}
+/* The list boards -- home runs, hits, and the four NFL boards. They share
+   the canvas card's head, sub-line and rules; what they do not share is a
+   single 30px figure, because their unit is several players under one
+   pitcher or one defence. Each player row is the card's number in
+   miniature: name left, chance right, in the green the rest of the site
+   uses for "ours". */
 .bat-park{font-family:var(--mono);font-size:10.5px;color:var(--muted);
   white-space:nowrap}
 .bat-park.good{color:var(--green)} .bat-park.bad{color:var(--red)}
-.bat-vs{font-size:12.5px;color:var(--muted);line-height:1.5;
-  padding-bottom:10px;border-bottom:1px solid var(--line)}
-.bat{display:grid;grid-template-columns:1fr auto;gap:1px 12px;
-  padding:10px 0;border-bottom:1px solid var(--line)}
+.bats{border-top:1px solid var(--line)}
+.bat{display:grid;grid-template-columns:1fr auto;gap:2px 14px;
+  padding:12px 0;border-bottom:1px solid var(--line)}
 .bat:last-child{border-bottom:none;padding-bottom:2px}
-.bat-n{font-size:14px;color:var(--txt);font-weight:500}
-.bat-c{font-family:var(--mono);font-size:17px;color:var(--green);
-  text-align:right;white-space:nowrap;grid-row:span 2}
-.bat-w{font-size:11.5px;color:var(--muted)}
+.bat-n{font-size:15px;color:var(--txt);font-weight:700;letter-spacing:-.015em}
+/* Sans, and bigger. Same reasoning as the slate card's probability: this is
+   the number the row exists to deliver, and the mono was shrinking it. */
+.bat-c{font-family:var(--sans);font-size:21px;font-weight:700;
+  letter-spacing:-.025em;color:var(--green);
+  text-align:right;white-space:nowrap;grid-row:span 2;line-height:1}
+.bat-w{font-family:var(--mono);font-size:10.5px;color:var(--muted);
+  letter-spacing:.02em}
+/* The career line against tonight's starter. Almost always a handful of
+   plate appearances, so it sits at label weight rather than competing with
+   the projection above it, and nothing on the card is derived from it. */
+.bvp{font-family:var(--mono);font-size:10.5px;color:var(--sub);
+  letter-spacing:.02em;margin-top:3px}
+.bvp.none{color:var(--muted)}
 /* The position badge on the NFL yardage/touchdown cards. Named .ppos, not
    .pos -- the bare .pos rule above (monthly chart bars) would otherwise
    apply its height:180px flex-column layout to this inline badge. */
@@ -1080,10 +1128,13 @@ footer{background:var(--bg-2);padding:56px 0 40px}
   Running entirely on last season. This season has not played a single game yet for any player on this board.
   <div class="pb-grid">
         <article class="pb-card bat-card">
-          <div class="pb-top"><span>SEA &middot; 8:20 PM ET</span></div>
           <div class="pb-body">
-            <div class="bat-vs">vs NE — allows 102 a game, league average 117</div>
-            
+            <div class="cv-head">
+              <h3 class="cv-tm">SEA</h3>
+              <span class="cv-time">8:20 PM ET</span>
+            </div>
+            <div class="cv-sub">vs NE — allows 102 a game, league average 117</div>
+            <div class="bats">
           <div class="bat">
             <div class="bat-n">Kenneth Walker III
               <span class="ppos">RB</span></div>
@@ -1099,14 +1150,18 @@ footer{background:var(--bg-2);padding:56px 0 40px}
               <span class="unit">yds</span></div>
             <div class="bat-w">46 yds
               unadjusted</div>
-          </div>
+          </div></div>
+            
           </div>
         </article>
         <article class="pb-card bat-card">
-          <div class="pb-top"><span>NE &middot; 8:20 PM ET</span></div>
           <div class="pb-body">
-            <div class="bat-vs">vs SEA — allows 92 a game, league average 117</div>
-            
+            <div class="cv-head">
+              <h3 class="cv-tm">NE</h3>
+              <span class="cv-time">8:20 PM ET</span>
+            </div>
+            <div class="cv-sub">vs SEA — allows 92 a game, league average 117</div>
+            <div class="bats">
           <div class="bat">
             <div class="bat-n">TreVeyon Henderson
               <span class="ppos">RB</span></div>
@@ -1122,14 +1177,18 @@ footer{background:var(--bg-2);padding:56px 0 40px}
               <span class="unit">yds</span></div>
             <div class="bat-w">43 yds
               unadjusted</div>
-          </div>
+          </div></div>
+            
           </div>
         </article>
         <article class="pb-card bat-card">
-          <div class="pb-top"><span>LA &middot; 8:35 PM ET</span></div>
           <div class="pb-body">
-            <div class="bat-vs">vs SF — allows 108 a game, league average 117</div>
-            
+            <div class="cv-head">
+              <h3 class="cv-tm">LA</h3>
+              <span class="cv-time">8:35 PM ET</span>
+            </div>
+            <div class="cv-sub">vs SF — allows 108 a game, league average 117</div>
+            <div class="bats">
           <div class="bat">
             <div class="bat-n">Kyren Williams
               <span class="ppos">RB</span></div>
@@ -1145,14 +1204,18 @@ footer{background:var(--bg-2);padding:56px 0 40px}
               <span class="unit">yds</span></div>
             <div class="bat-w">44 yds
               unadjusted</div>
-          </div>
+          </div></div>
+            
           </div>
         </article>
         <article class="pb-card bat-card">
-          <div class="pb-top"><span>SF &middot; 8:35 PM ET</span></div>
           <div class="pb-body">
-            <div class="bat-vs">vs LA — allows 111 a game, league average 117</div>
-            
+            <div class="cv-head">
+              <h3 class="cv-tm">SF</h3>
+              <span class="cv-time">8:35 PM ET</span>
+            </div>
+            <div class="cv-sub">vs LA — allows 111 a game, league average 117</div>
+            <div class="bats">
           <div class="bat">
             <div class="bat-n">Christian McCaffrey
               <span class="ppos">RB</span></div>
@@ -1168,14 +1231,18 @@ footer{background:var(--bg-2);padding:56px 0 40px}
               <span class="unit">yds</span></div>
             <div class="bat-w">24 yds
               unadjusted</div>
-          </div>
+          </div></div>
+            
           </div>
         </article>
         <article class="pb-card bat-card">
-          <div class="pb-top"><span>IND &middot; 1:00 PM ET</span></div>
           <div class="pb-body">
-            <div class="bat-vs">vs BAL — allows 107 a game, league average 117</div>
-            
+            <div class="cv-head">
+              <h3 class="cv-tm">IND</h3>
+              <span class="cv-time">1:00 PM ET</span>
+            </div>
+            <div class="cv-sub">vs BAL — allows 107 a game, league average 117</div>
+            <div class="bats">
           <div class="bat">
             <div class="bat-n">Jonathan Taylor
               <span class="ppos">RB</span></div>
@@ -1191,14 +1258,18 @@ footer{background:var(--bg-2);padding:56px 0 40px}
               <span class="unit">yds</span></div>
             <div class="bat-w">19 yds
               unadjusted</div>
-          </div>
+          </div></div>
+            
           </div>
         </article>
         <article class="pb-card bat-card">
-          <div class="pb-top"><span>ATL &middot; 1:00 PM ET</span></div>
           <div class="pb-body">
-            <div class="bat-vs">vs PIT — allows 113 a game, league average 117</div>
-            
+            <div class="cv-head">
+              <h3 class="cv-tm">ATL</h3>
+              <span class="cv-time">1:00 PM ET</span>
+            </div>
+            <div class="cv-sub">vs PIT — allows 113 a game, league average 117</div>
+            <div class="bats">
           <div class="bat">
             <div class="bat-n">Bijan Robinson
               <span class="ppos">RB</span></div>
@@ -1214,14 +1285,18 @@ footer{background:var(--bg-2);padding:56px 0 40px}
               <span class="unit">yds</span></div>
             <div class="bat-w">30 yds
               unadjusted</div>
-          </div>
+          </div></div>
+            
           </div>
         </article>
         <article class="pb-card bat-card">
-          <div class="pb-top"><span>BAL &middot; 1:00 PM ET</span></div>
           <div class="pb-body">
-            <div class="bat-vs">vs IND — allows 102 a game, league average 117</div>
-            
+            <div class="cv-head">
+              <h3 class="cv-tm">BAL</h3>
+              <span class="cv-time">1:00 PM ET</span>
+            </div>
+            <div class="cv-sub">vs IND — allows 102 a game, league average 117</div>
+            <div class="bats">
           <div class="bat">
             <div class="bat-n">Derrick Henry
               <span class="ppos">RB</span></div>
@@ -1237,14 +1312,18 @@ footer{background:var(--bg-2);padding:56px 0 40px}
               <span class="unit">yds</span></div>
             <div class="bat-w">27 yds
               unadjusted</div>
-          </div>
+          </div></div>
+            
           </div>
         </article>
         <article class="pb-card bat-card">
-          <div class="pb-top"><span>BUF &middot; 1:00 PM ET</span></div>
           <div class="pb-body">
-            <div class="bat-vs">vs HOU — allows 94 a game, league average 117</div>
-            
+            <div class="cv-head">
+              <h3 class="cv-tm">BUF</h3>
+              <span class="cv-time">1:00 PM ET</span>
+            </div>
+            <div class="cv-sub">vs HOU — allows 94 a game, league average 117</div>
+            <div class="bats">
           <div class="bat">
             <div class="bat-n">James Cook
               <span class="ppos">RB</span></div>
@@ -1260,14 +1339,18 @@ footer{background:var(--bg-2);padding:56px 0 40px}
               <span class="unit">yds</span></div>
             <div class="bat-w">36 yds
               unadjusted</div>
-          </div>
+          </div></div>
+            
           </div>
         </article>
         <article class="pb-card bat-card">
-          <div class="pb-top"><span>TEN &middot; 1:00 PM ET</span></div>
           <div class="pb-body">
-            <div class="bat-vs">vs NYJ — allows 140 a game, league average 117</div>
-            
+            <div class="cv-head">
+              <h3 class="cv-tm">TEN</h3>
+              <span class="cv-time">1:00 PM ET</span>
+            </div>
+            <div class="cv-sub">vs NYJ — allows 140 a game, league average 117</div>
+            <div class="bats">
           <div class="bat">
             <div class="bat-n">Tony Pollard
               <span class="ppos">RB</span></div>
@@ -1283,14 +1366,18 @@ footer{background:var(--bg-2);padding:56px 0 40px}
               <span class="unit">yds</span></div>
             <div class="bat-w">22 yds
               unadjusted</div>
-          </div>
+          </div></div>
+            
           </div>
         </article>
         <article class="pb-card bat-card">
-          <div class="pb-top"><span>DET &middot; 1:00 PM ET</span></div>
           <div class="pb-body">
-            <div class="bat-vs">vs NO — allows 121 a game, league average 117</div>
-            
+            <div class="cv-head">
+              <h3 class="cv-tm">DET</h3>
+              <span class="cv-time">1:00 PM ET</span>
+            </div>
+            <div class="cv-sub">vs NO — allows 121 a game, league average 117</div>
+            <div class="bats">
           <div class="bat">
             <div class="bat-n">Jahmyr Gibbs
               <span class="ppos">RB</span></div>
@@ -1306,14 +1393,18 @@ footer{background:var(--bg-2);padding:56px 0 40px}
               <span class="unit">yds</span></div>
             <div class="bat-w">42 yds
               unadjusted</div>
-          </div>
+          </div></div>
+            
           </div>
         </article>
         <article class="pb-card bat-card">
-          <div class="pb-top"><span>TB &middot; 1:00 PM ET</span></div>
           <div class="pb-body">
-            <div class="bat-vs">vs CIN — allows 147 a game, league average 117</div>
-            
+            <div class="cv-head">
+              <h3 class="cv-tm">TB</h3>
+              <span class="cv-time">1:00 PM ET</span>
+            </div>
+            <div class="cv-sub">vs CIN — allows 147 a game, league average 117</div>
+            <div class="bats">
           <div class="bat">
             <div class="bat-n">Bucky Irving
               <span class="ppos">RB</span></div>
@@ -1329,14 +1420,18 @@ footer{background:var(--bg-2);padding:56px 0 40px}
               <span class="unit">yds</span></div>
             <div class="bat-w">34 yds
               unadjusted</div>
-          </div>
+          </div></div>
+            
           </div>
         </article>
         <article class="pb-card bat-card">
-          <div class="pb-top"><span>CAR &middot; 1:00 PM ET</span></div>
           <div class="pb-body">
-            <div class="bat-vs">vs CHI — allows 134 a game, league average 117</div>
-            
+            <div class="cv-head">
+              <h3 class="cv-tm">CAR</h3>
+              <span class="cv-time">1:00 PM ET</span>
+            </div>
+            <div class="cv-sub">vs CHI — allows 134 a game, league average 117</div>
+            <div class="bats">
           <div class="bat">
             <div class="bat-n">Rico Dowdle
               <span class="ppos">RB</span></div>
@@ -1352,14 +1447,18 @@ footer{background:var(--bg-2);padding:56px 0 40px}
               <span class="unit">yds</span></div>
             <div class="bat-w">34 yds
               unadjusted</div>
-          </div>
+          </div></div>
+            
           </div>
         </article>
         <article class="pb-card bat-card">
-          <div class="pb-top"><span>CHI &middot; 1:00 PM ET</span></div>
           <div class="pb-body">
-            <div class="bat-vs">vs CAR — allows 123 a game, league average 117</div>
-            
+            <div class="cv-head">
+              <h3 class="cv-tm">CHI</h3>
+              <span class="cv-time">1:00 PM ET</span>
+            </div>
+            <div class="cv-sub">vs CAR — allows 123 a game, league average 117</div>
+            <div class="bats">
           <div class="bat">
             <div class="bat-n">D'Andre Swift
               <span class="ppos">RB</span></div>
@@ -1375,14 +1474,18 @@ footer{background:var(--bg-2);padding:56px 0 40px}
               <span class="unit">yds</span></div>
             <div class="bat-w">46 yds
               unadjusted</div>
-          </div>
+          </div></div>
+            
           </div>
         </article>
         <article class="pb-card bat-card">
-          <div class="pb-top"><span>NYJ &middot; 1:00 PM ET</span></div>
           <div class="pb-body">
-            <div class="bat-vs">vs TEN — allows 115 a game, league average 117</div>
-            
+            <div class="cv-head">
+              <h3 class="cv-tm">NYJ</h3>
+              <span class="cv-time">1:00 PM ET</span>
+            </div>
+            <div class="cv-sub">vs TEN — allows 115 a game, league average 117</div>
+            <div class="bats">
           <div class="bat">
             <div class="bat-n">Breece Hall
               <span class="ppos">RB</span></div>
@@ -1398,14 +1501,18 @@ footer{background:var(--bg-2);padding:56px 0 40px}
               <span class="unit">yds</span></div>
             <div class="bat-w">43 yds
               unadjusted</div>
-          </div>
+          </div></div>
+            
           </div>
         </article>
         <article class="pb-card bat-card">
-          <div class="pb-top"><span>JAX &middot; 1:00 PM ET</span></div>
           <div class="pb-body">
-            <div class="bat-vs">vs CLE — allows 116 a game, league average 117</div>
-            
+            <div class="cv-head">
+              <h3 class="cv-tm">JAX</h3>
+              <span class="cv-time">1:00 PM ET</span>
+            </div>
+            <div class="cv-sub">vs CLE — allows 116 a game, league average 117</div>
+            <div class="bats">
           <div class="bat">
             <div class="bat-n">Travis Etienne
               <span class="ppos">RB</span></div>
@@ -1421,14 +1528,18 @@ footer{background:var(--bg-2);padding:56px 0 40px}
               <span class="unit">yds</span></div>
             <div class="bat-w">20 yds
               unadjusted</div>
-          </div>
+          </div></div>
+            
           </div>
         </article>
         <article class="pb-card bat-card">
-          <div class="pb-top"><span>PIT &middot; 1:00 PM ET</span></div>
           <div class="pb-body">
-            <div class="bat-vs">vs ATL — allows 126 a game, league average 117</div>
-            
+            <div class="cv-head">
+              <h3 class="cv-tm">PIT</h3>
+              <span class="cv-time">1:00 PM ET</span>
+            </div>
+            <div class="cv-sub">vs ATL — allows 126 a game, league average 117</div>
+            <div class="bats">
           <div class="bat">
             <div class="bat-n">Jaylen Warren
               <span class="ppos">RB</span></div>
@@ -1444,14 +1555,18 @@ footer{background:var(--bg-2);padding:56px 0 40px}
               <span class="unit">yds</span></div>
             <div class="bat-w">32 yds
               unadjusted</div>
-          </div>
+          </div></div>
+            
           </div>
         </article>
         <article class="pb-card bat-card">
-          <div class="pb-top"><span>HOU &middot; 1:00 PM ET</span></div>
           <div class="pb-body">
-            <div class="bat-vs">vs BUF — allows 136 a game, league average 117</div>
-            
+            <div class="cv-head">
+              <h3 class="cv-tm">HOU</h3>
+              <span class="cv-time">1:00 PM ET</span>
+            </div>
+            <div class="cv-sub">vs BUF — allows 136 a game, league average 117</div>
+            <div class="bats">
           <div class="bat">
             <div class="bat-n">Jawhar Jordan
               <span class="ppos">RB</span></div>
@@ -1467,14 +1582,18 @@ footer{background:var(--bg-2);padding:56px 0 40px}
               <span class="unit">yds</span></div>
             <div class="bat-w">44 yds
               unadjusted</div>
-          </div>
+          </div></div>
+            
           </div>
         </article>
         <article class="pb-card bat-card">
-          <div class="pb-top"><span>CIN &middot; 1:00 PM ET</span></div>
           <div class="pb-body">
-            <div class="bat-vs">vs TB — allows 99 a game, league average 117</div>
-            
+            <div class="cv-head">
+              <h3 class="cv-tm">CIN</h3>
+              <span class="cv-time">1:00 PM ET</span>
+            </div>
+            <div class="cv-sub">vs TB — allows 99 a game, league average 117</div>
+            <div class="bats">
           <div class="bat">
             <div class="bat-n">Chase Brown
               <span class="ppos">RB</span></div>
@@ -1490,14 +1609,18 @@ footer{background:var(--bg-2);padding:56px 0 40px}
               <span class="unit">yds</span></div>
             <div class="bat-w">26 yds
               unadjusted</div>
-          </div>
+          </div></div>
+            
           </div>
         </article>
         <article class="pb-card bat-card">
-          <div class="pb-top"><span>CLE &middot; 1:00 PM ET</span></div>
           <div class="pb-body">
-            <div class="bat-vs">vs JAX — allows 86 a game, league average 117</div>
-            
+            <div class="cv-head">
+              <h3 class="cv-tm">CLE</h3>
+              <span class="cv-time">1:00 PM ET</span>
+            </div>
+            <div class="cv-sub">vs JAX — allows 86 a game, league average 117</div>
+            <div class="bats">
           <div class="bat">
             <div class="bat-n">Quinshon Judkins
               <span class="ppos">RB</span></div>
@@ -1513,14 +1636,18 @@ footer{background:var(--bg-2);padding:56px 0 40px}
               <span class="unit">yds</span></div>
             <div class="bat-w">23 yds
               unadjusted</div>
-          </div>
+          </div></div>
+            
           </div>
         </article>
         <article class="pb-card bat-card">
-          <div class="pb-top"><span>NO &middot; 1:00 PM ET</span></div>
           <div class="pb-body">
-            <div class="bat-vs">vs DET — allows 114 a game, league average 117</div>
-            
+            <div class="cv-head">
+              <h3 class="cv-tm">NO</h3>
+              <span class="cv-time">1:00 PM ET</span>
+            </div>
+            <div class="cv-sub">vs DET — allows 114 a game, league average 117</div>
+            <div class="bats">
           <div class="bat">
             <div class="bat-n">Alvin Kamara
               <span class="ppos">RB</span></div>
@@ -1536,14 +1663,18 @@ footer{background:var(--bg-2);padding:56px 0 40px}
               <span class="unit">yds</span></div>
             <div class="bat-w">40 yds
               unadjusted</div>
-          </div>
+          </div></div>
+            
           </div>
         </article>
         <article class="pb-card bat-card">
-          <div class="pb-top"><span>PHI &middot; 4:25 PM ET</span></div>
           <div class="pb-body">
-            <div class="bat-vs">vs WAS — allows 142 a game, league average 117</div>
-            
+            <div class="cv-head">
+              <h3 class="cv-tm">PHI</h3>
+              <span class="cv-time">4:25 PM ET</span>
+            </div>
+            <div class="cv-sub">vs WAS — allows 142 a game, league average 117</div>
+            <div class="bats">
           <div class="bat">
             <div class="bat-n">Saquon Barkley
               <span class="ppos">RB</span></div>
@@ -1559,14 +1690,18 @@ footer{background:var(--bg-2);padding:56px 0 40px}
               <span class="unit">yds</span></div>
             <div class="bat-w">26 yds
               unadjusted</div>
-          </div>
+          </div></div>
+            
           </div>
         </article>
         <article class="pb-card bat-card">
-          <div class="pb-top"><span>MIA &middot; 4:25 PM ET</span></div>
           <div class="pb-body">
-            <div class="bat-vs">vs LV — allows 117 a game, league average 117</div>
-            
+            <div class="cv-head">
+              <h3 class="cv-tm">MIA</h3>
+              <span class="cv-time">4:25 PM ET</span>
+            </div>
+            <div class="cv-sub">vs LV — allows 117 a game, league average 117</div>
+            <div class="bats">
           <div class="bat">
             <div class="bat-n">De'Von Achane
               <span class="ppos">RB</span></div>
@@ -1582,14 +1717,18 @@ footer{background:var(--bg-2);padding:56px 0 40px}
               <span class="unit">yds</span></div>
             <div class="bat-w">32 yds
               unadjusted</div>
-          </div>
+          </div></div>
+            
           </div>
         </article>
         <article class="pb-card bat-card">
-          <div class="pb-top"><span>LAC &middot; 4:25 PM ET</span></div>
           <div class="pb-body">
-            <div class="bat-vs">vs ARI — allows 127 a game, league average 117</div>
-            
+            <div class="cv-head">
+              <h3 class="cv-tm">LAC</h3>
+              <span class="cv-time">4:25 PM ET</span>
+            </div>
+            <div class="cv-sub">vs ARI — allows 127 a game, league average 117</div>
+            <div class="bats">
           <div class="bat">
             <div class="bat-n">Omarion Hampton
               <span class="ppos">RB</span></div>
@@ -1605,14 +1744,18 @@ footer{background:var(--bg-2);padding:56px 0 40px}
               <span class="unit">yds</span></div>
             <div class="bat-w">50 yds
               unadjusted</div>
-          </div>
+          </div></div>
+            
           </div>
         </article>
         <article class="pb-card bat-card">
-          <div class="pb-top"><span>GB &middot; 4:25 PM ET</span></div>
           <div class="pb-body">
-            <div class="bat-vs">vs MIN — allows 124 a game, league average 117</div>
-            
+            <div class="cv-head">
+              <h3 class="cv-tm">GB</h3>
+              <span class="cv-time">4:25 PM ET</span>
+            </div>
+            <div class="cv-sub">vs MIN — allows 124 a game, league average 117</div>
+            <div class="bats">
           <div class="bat">
             <div class="bat-n">Josh Jacobs
               <span class="ppos">RB</span></div>
@@ -1628,14 +1771,18 @@ footer{background:var(--bg-2);padding:56px 0 40px}
               <span class="unit">yds</span></div>
             <div class="bat-w">29 yds
               unadjusted</div>
-          </div>
+          </div></div>
+            
           </div>
         </article>
         <article class="pb-card bat-card">
-          <div class="pb-top"><span>LV &middot; 4:25 PM ET</span></div>
           <div class="pb-body">
-            <div class="bat-vs">vs MIA — allows 132 a game, league average 117</div>
-            
+            <div class="cv-head">
+              <h3 class="cv-tm">LV</h3>
+              <span class="cv-time">4:25 PM ET</span>
+            </div>
+            <div class="cv-sub">vs MIA — allows 132 a game, league average 117</div>
+            <div class="bats">
           <div class="bat">
             <div class="bat-n">Ashton Jeanty
               <span class="ppos">RB</span></div>
@@ -1651,14 +1798,18 @@ footer{background:var(--bg-2);padding:56px 0 40px}
               <span class="unit">yds</span></div>
             <div class="bat-w">7 yds
               unadjusted</div>
-          </div>
+          </div></div>
+            
           </div>
         </article>
         <article class="pb-card bat-card">
-          <div class="pb-top"><span>WAS &middot; 4:25 PM ET</span></div>
           <div class="pb-body">
-            <div class="bat-vs">vs PHI — allows 124 a game, league average 117</div>
-            
+            <div class="cv-head">
+              <h3 class="cv-tm">WAS</h3>
+              <span class="cv-time">4:25 PM ET</span>
+            </div>
+            <div class="cv-sub">vs PHI — allows 124 a game, league average 117</div>
+            <div class="bats">
           <div class="bat">
             <div class="bat-n">Jacory Croskey-Merritt
               <span class="ppos">RB</span></div>
@@ -1674,14 +1825,18 @@ footer{background:var(--bg-2);padding:56px 0 40px}
               <span class="unit">yds</span></div>
             <div class="bat-w">42 yds
               unadjusted</div>
-          </div>
+          </div></div>
+            
           </div>
         </article>
         <article class="pb-card bat-card">
-          <div class="pb-top"><span>MIN &middot; 4:25 PM ET</span></div>
           <div class="pb-body">
-            <div class="bat-vs">vs GB — allows 118 a game, league average 117</div>
-            
+            <div class="cv-head">
+              <h3 class="cv-tm">MIN</h3>
+              <span class="cv-time">4:25 PM ET</span>
+            </div>
+            <div class="cv-sub">vs GB — allows 118 a game, league average 117</div>
+            <div class="bats">
           <div class="bat">
             <div class="bat-n">Jordan Mason
               <span class="ppos">RB</span></div>
@@ -1697,14 +1852,18 @@ footer{background:var(--bg-2);padding:56px 0 40px}
               <span class="unit">yds</span></div>
             <div class="bat-w">46 yds
               unadjusted</div>
-          </div>
+          </div></div>
+            
           </div>
         </article>
         <article class="pb-card bat-card">
-          <div class="pb-top"><span>ARI &middot; 4:25 PM ET</span></div>
           <div class="pb-body">
-            <div class="bat-vs">vs LAC — allows 105 a game, league average 117</div>
-            
+            <div class="cv-head">
+              <h3 class="cv-tm">ARI</h3>
+              <span class="cv-time">4:25 PM ET</span>
+            </div>
+            <div class="cv-sub">vs LAC — allows 105 a game, league average 117</div>
+            <div class="bats">
           <div class="bat">
             <div class="bat-n">Trey Benson
               <span class="ppos">RB</span></div>
@@ -1720,14 +1879,18 @@ footer{background:var(--bg-2);padding:56px 0 40px}
               <span class="unit">yds</span></div>
             <div class="bat-w">26 yds
               unadjusted</div>
-          </div>
+          </div></div>
+            
           </div>
         </article>
         <article class="pb-card bat-card">
-          <div class="pb-top"><span>DAL &middot; 8:20 PM ET</span></div>
           <div class="pb-body">
-            <div class="bat-vs">vs NYG — allows 145 a game, league average 117</div>
-            
+            <div class="cv-head">
+              <h3 class="cv-tm">DAL</h3>
+              <span class="cv-time">8:20 PM ET</span>
+            </div>
+            <div class="cv-sub">vs NYG — allows 145 a game, league average 117</div>
+            <div class="bats">
           <div class="bat">
             <div class="bat-n">Javonte Williams
               <span class="ppos">RB</span></div>
@@ -1743,14 +1906,18 @@ footer{background:var(--bg-2);padding:56px 0 40px}
               <span class="unit">yds</span></div>
             <div class="bat-w">26 yds
               unadjusted</div>
-          </div>
+          </div></div>
+            
           </div>
         </article>
         <article class="pb-card bat-card">
-          <div class="pb-top"><span>NYG &middot; 8:20 PM ET</span></div>
           <div class="pb-body">
-            <div class="bat-vs">vs DAL — allows 126 a game, league average 117</div>
-            
+            <div class="cv-head">
+              <h3 class="cv-tm">NYG</h3>
+              <span class="cv-time">8:20 PM ET</span>
+            </div>
+            <div class="cv-sub">vs DAL — allows 126 a game, league average 117</div>
+            <div class="bats">
           <div class="bat">
             <div class="bat-n">Cam Skattebo
               <span class="ppos">RB</span></div>
@@ -1766,14 +1933,18 @@ footer{background:var(--bg-2);padding:56px 0 40px}
               <span class="unit">yds</span></div>
             <div class="bat-w">49 yds
               unadjusted</div>
-          </div>
+          </div></div>
+            
           </div>
         </article>
         <article class="pb-card bat-card">
-          <div class="pb-top"><span>DEN &middot; 8:15 PM ET</span></div>
           <div class="pb-body">
-            <div class="bat-vs">vs KC — allows 106 a game, league average 117</div>
-            
+            <div class="cv-head">
+              <h3 class="cv-tm">DEN</h3>
+              <span class="cv-time">8:15 PM ET</span>
+            </div>
+            <div class="cv-sub">vs KC — allows 106 a game, league average 117</div>
+            <div class="bats">
           <div class="bat">
             <div class="bat-n">J.K. Dobbins
               <span class="ppos">RB</span></div>
@@ -1789,14 +1960,18 @@ footer{background:var(--bg-2);padding:56px 0 40px}
               <span class="unit">yds</span></div>
             <div class="bat-w">32 yds
               unadjusted</div>
-          </div>
+          </div></div>
+            
           </div>
         </article>
         <article class="pb-card bat-card">
-          <div class="pb-top"><span>KC &middot; 8:15 PM ET</span></div>
           <div class="pb-body">
-            <div class="bat-vs">vs DEN — allows 91 a game, league average 117</div>
-            
+            <div class="cv-head">
+              <h3 class="cv-tm">KC</h3>
+              <span class="cv-time">8:15 PM ET</span>
+            </div>
+            <div class="cv-sub">vs DEN — allows 91 a game, league average 117</div>
+            <div class="bats">
           <div class="bat">
             <div class="bat-n">Kareem Hunt
               <span class="ppos">RB</span></div>
@@ -1812,7 +1987,8 @@ footer{background:var(--bg-2);padding:56px 0 40px}
               <span class="unit">yds</span></div>
             <div class="bat-w">36 yds
               unadjusted</div>
-          </div>
+          </div></div>
+            
           </div>
         </article></div>
 

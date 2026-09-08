@@ -376,7 +376,8 @@ section{border-bottom:1px solid var(--line)}
    start has been graded. It replaces the old top strip, which on the canvas
    card has no place -- the canvas puts the matchup in the title. */
 .cv-sub{font-family:var(--mono);font-size:10px;letter-spacing:.1em;
-  text-transform:uppercase;color:var(--muted);margin:-12px 0 18px}
+  text-transform:uppercase;color:var(--muted);margin:-12px 0 16px;
+  line-height:1.6}
 /* The unit after a projection. --dim is allowed here for the same reason it
    is on .pb-num .unit: the figure beside it already carries the meaning. */
 .cv-u{font-size:15px;color:var(--dim);margin-left:4px;font-weight:500}
@@ -845,6 +846,39 @@ footer{background:var(--bg-2);padding:56px 0 40px}
 .h2s{color:var(--muted)} .h2s b{color:var(--txt);font-weight:500}
 .h2w{color:var(--muted);font-size:11px}
 .h2more{font-size:11px;color:var(--muted);padding:3px 0}
+/* The starter comparison. Label down the middle, a club above each
+   column, and the better number in each row lit. "Better" is per row --
+   high is good for strikeouts, low for everything else here -- and W-L
+   carries no mark at all, because a record is mostly a report on the
+   lineup behind the man. */
+/* The hitters table. Names left and every figure right, because a column
+   of numbers is only scannable when its digits line up. A row with no
+   history is dimmed rather than removed -- see _lineup_table for why. */
+.lutbl{width:100%;border-collapse:collapse;font-size:12.5px}
+.lutbl th{text-align:left;font-weight:500;color:var(--txt);
+  padding:7px 10px 7px 0;white-space:nowrap}
+.lutbl td{text-align:right;padding:7px 0 7px 10px;color:var(--sub);
+  font-family:var(--mono);white-space:nowrap}
+.lutbl tr+tr th,.lutbl tr+tr td{border-top:1px solid var(--line)}
+.lutbl tr.hd th,.lutbl tr.hd td{font-family:var(--mono);font-size:9.5px;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--muted);
+  font-weight:400;padding-bottom:3px}
+.lutbl .lav{color:var(--txt)}
+.lutbl .lz{color:var(--muted)}
+
+.sptbl{width:100%;border-collapse:collapse;margin-bottom:14px}
+.sptbl td,.sptbl th{padding:7px 6px;font-size:13px}
+.sptbl th{font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--muted);font-weight:400;
+  text-align:center;width:34%}
+.sptbl .spv{font-family:var(--mono);color:var(--sub);width:33%}
+.sptbl tr td:first-child{text-align:left}
+.sptbl tr td:last-child{text-align:right}
+.sptbl .spv.on{color:var(--green);font-weight:700}
+.sptbl tr.hd td{font-size:12px;font-weight:700;letter-spacing:.04em;
+  color:var(--txt);font-family:var(--mono)}
+.sptbl tr+tr td,.sptbl tr+tr th{border-top:1px solid var(--line)}
+
 /* A starter is a card inside a card in the canvas -- inset one step darker
    than the panel it sits on, with its own border. It reads as an object
    rather than as another line of the paragraph above it. */
@@ -1039,19 +1073,33 @@ footer{background:var(--bg-2);padding:56px 0 40px}
 .ftbl td.ft-s.bad{color:var(--red)}
 
 /* ============================== shared player-card boards (all sports) ==== */
-.bat-card .pb-top{gap:10px}
+/* The list boards -- home runs, hits, and the four NFL boards. They share
+   the canvas card's head, sub-line and rules; what they do not share is a
+   single 30px figure, because their unit is several players under one
+   pitcher or one defence. Each player row is the card's number in
+   miniature: name left, chance right, in the green the rest of the site
+   uses for "ours". */
 .bat-park{font-family:var(--mono);font-size:10.5px;color:var(--muted);
   white-space:nowrap}
 .bat-park.good{color:var(--green)} .bat-park.bad{color:var(--red)}
-.bat-vs{font-size:12.5px;color:var(--muted);line-height:1.5;
-  padding-bottom:10px;border-bottom:1px solid var(--line)}
-.bat{display:grid;grid-template-columns:1fr auto;gap:1px 12px;
-  padding:10px 0;border-bottom:1px solid var(--line)}
+.bats{border-top:1px solid var(--line)}
+.bat{display:grid;grid-template-columns:1fr auto;gap:2px 14px;
+  padding:12px 0;border-bottom:1px solid var(--line)}
 .bat:last-child{border-bottom:none;padding-bottom:2px}
-.bat-n{font-size:14px;color:var(--txt);font-weight:500}
-.bat-c{font-family:var(--mono);font-size:17px;color:var(--green);
-  text-align:right;white-space:nowrap;grid-row:span 2}
-.bat-w{font-size:11.5px;color:var(--muted)}
+.bat-n{font-size:15px;color:var(--txt);font-weight:700;letter-spacing:-.015em}
+/* Sans, and bigger. Same reasoning as the slate card's probability: this is
+   the number the row exists to deliver, and the mono was shrinking it. */
+.bat-c{font-family:var(--sans);font-size:21px;font-weight:700;
+  letter-spacing:-.025em;color:var(--green);
+  text-align:right;white-space:nowrap;grid-row:span 2;line-height:1}
+.bat-w{font-family:var(--mono);font-size:10.5px;color:var(--muted);
+  letter-spacing:.02em}
+/* The career line against tonight's starter. Almost always a handful of
+   plate appearances, so it sits at label weight rather than competing with
+   the projection above it, and nothing on the card is derived from it. */
+.bvp{font-family:var(--mono);font-size:10.5px;color:var(--sub);
+  letter-spacing:.02em;margin-top:3px}
+.bvp.none{color:var(--muted)}
 /* The position badge on the NFL yardage/touchdown cards. Named .ppos, not
    .pos -- the bare .pos rule above (monthly chart bars) would otherwise
    apply its height:180px flex-column layout to this inline badge. */
