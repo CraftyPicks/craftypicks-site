@@ -67,7 +67,11 @@
      inventing one to match a design that does not use it would be backwards. */
   --txt:#F5F6F8;      /* club names, primary numbers, best price */
   --sub:#C4CAD6;      /* records, starter, ERA, supporting stats */
-  --muted:#8A909C;    /* mono labels, card headers, units */
+  /* Raised from #8A909C, which was 5.80:1 on a card -- legal, and not
+     comfortable at the 10px mono this token is mostly set in. 7.23:1 is
+     inside AAA for normal text, which is the right target for a page whose
+     whole content is small numbers. */
+  --muted:#9AA2AF;    /* mono labels, card headers, units */
   --dim:#626D7A;      /* footnote captions only */
 
   --green:#5BE39C;
@@ -375,9 +379,13 @@ section{border-bottom:1px solid var(--line)}
 /* The prop card's second line: which club, which opponent, and whether the
    start has been graded. It replaces the old top strip, which on the canvas
    card has no place -- the canvas puts the matchup in the title. */
-.cv-sub{font-family:var(--mono);font-size:10px;letter-spacing:.1em;
+/* This line runs from three words on a prop card to a full sentence on a
+   hits card. Uppercase mono at 10px with .1em tracking is fine for three
+   words and a wall for a sentence, so: 11px, tracking halved, and the
+   leading opened up. */
+.cv-sub{font-family:var(--mono);font-size:11px;letter-spacing:.05em;
   text-transform:uppercase;color:var(--muted);margin:-12px 0 16px;
-  line-height:1.6}
+  line-height:1.65}
 /* The unit after a projection. --dim is allowed here for the same reason it
    is on .pb-num .unit: the figure beside it already carries the meaning. */
 .cv-u{font-size:15px;color:var(--dim);margin-left:4px;font-weight:500}
@@ -854,10 +862,10 @@ footer{background:var(--bg-2);padding:56px 0 40px}
 /* The hitters table. Names left and every figure right, because a column
    of numbers is only scannable when its digits line up. A row with no
    history is dimmed rather than removed -- see _lineup_table for why. */
-.lutbl{width:100%;border-collapse:collapse;font-size:12.5px}
+.lutbl{width:100%;border-collapse:collapse;font-size:13.5px}
 .lutbl th{text-align:left;font-weight:500;color:var(--txt);
   padding:7px 10px 7px 0;white-space:nowrap}
-.lutbl td{text-align:right;padding:7px 0 7px 10px;color:var(--sub);
+.lutbl td{text-align:right;padding:8px 0 8px 10px;color:var(--sub);
   font-family:var(--mono);white-space:nowrap}
 .lutbl tr+tr th,.lutbl tr+tr td{border-top:1px solid var(--line)}
 .lutbl tr.hd th,.lutbl tr.hd td{font-family:var(--mono);font-size:9.5px;
@@ -867,7 +875,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
 .lutbl .lz{color:var(--muted)}
 
 .sptbl{width:100%;border-collapse:collapse;margin-bottom:14px}
-.sptbl td,.sptbl th{padding:7px 6px;font-size:13px}
+.sptbl td,.sptbl th{padding:8px 6px;font-size:13.5px}
 .sptbl th{font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;
   text-transform:uppercase;color:var(--muted);font-weight:400;
   text-align:center;width:34%}
@@ -886,7 +894,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
   padding:11px 12px;margin-top:8px}
 .pst:first-of-type{margin-top:0}
 .pst-n{font-size:14px;font-weight:700;letter-spacing:-.01em;color:var(--txt)}
-.pst-v{font-family:var(--mono);font-size:10.5px;color:var(--muted);
+.pst-v{font-family:var(--mono);font-size:12px;color:var(--sub);
   line-height:1.6;margin-top:6px}
 .ppr{padding:7px 0;border-top:1px solid var(--line)}
 .ppr:first-of-type{border-top:none}
@@ -925,16 +933,22 @@ footer{background:var(--bg-2);padding:56px 0 40px}
   background:var(--line);border:1px solid var(--line)}
 .mxg>div{background:var(--panel);padding:7px 6px;display:flex;
   flex-direction:column;gap:3px;min-width:0}
-.mxg span{font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;
+.mxg span{font-size:10px;letter-spacing:.05em;text-transform:uppercase;
   color:var(--muted)}
-.mxg b{font-family:var(--mono);font-size:14px;color:var(--txt);font-weight:500}
+.mxg b{font-family:var(--mono);font-size:15px;color:var(--txt);font-weight:600}
 .mxg.four{grid-template-columns:repeat(4,1fr)}
 /* A small sample is shown, not hidden -- but it is not shown at the same
    weight as a number with six hundred plate appearances behind it. */
 .mxg.dim b{color:var(--sub)}
-.mxn{font-size:12.5px;line-height:1.55;color:var(--muted);margin:8px 0 0}
+/* The xwOBA denominator, which is the one thing the grid above cannot say
+   for itself: StatsAPI gives the career line and Savant gives the Statcast
+   rows, and the two rarely cover the same plate appearances. A caption, not
+   a sentence. */
+.mxcap{font-family:var(--mono);font-size:10px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--muted);margin-top:7px}
+.mxn{font-size:13px;line-height:1.6;color:var(--sub);margin:8px 0 0}
 .mxn.warn{font-style:italic}
-.mxt{width:100%;border-collapse:collapse;font-size:12.5px}
+.mxt{width:100%;border-collapse:collapse;font-size:13.5px}
 .mxt th{text-align:left;font-weight:400;color:var(--muted);padding:6px 8px 6px 0}
 .mxt td{padding:6px 0 6px 8px;text-align:right;font-family:var(--mono);
   color:var(--txt)}
@@ -1092,13 +1106,16 @@ footer{background:var(--bg-2);padding:56px 0 40px}
 .bat-c{font-family:var(--sans);font-size:21px;font-weight:700;
   letter-spacing:-.025em;color:var(--green);
   text-align:right;white-space:nowrap;grid-row:span 2;line-height:1}
-.bat-w{font-family:var(--mono);font-size:10.5px;color:var(--muted);
-  letter-spacing:.02em}
+/* "144 hits in 618 PA (23.3%)" is a supporting STAT, not a label, and it
+   was set at label size in the label colour. 12px in --sub is 11.31:1
+   against 5.80:1, and the mono digits are actually readable at a glance. */
+.bat-w{font-family:var(--mono);font-size:12px;color:var(--sub);
+  letter-spacing:.01em;line-height:1.5}
 /* The career line against tonight's starter. Almost always a handful of
    plate appearances, so it sits at label weight rather than competing with
    the projection above it, and nothing on the card is derived from it. */
-.bvp{font-family:var(--mono);font-size:10.5px;color:var(--sub);
-  letter-spacing:.02em;margin-top:3px}
+.bvp{font-family:var(--mono);font-size:11.5px;color:var(--sub);
+  letter-spacing:.01em;margin-top:4px;line-height:1.5}
 .bvp.none{color:var(--muted)}
 /* The position badge on the NFL yardage/touchdown cards. Named .ppos, not
    .pos -- the bare .pos rule above (monthly chart bars) would otherwise
