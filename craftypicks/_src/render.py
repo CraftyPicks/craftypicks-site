@@ -787,10 +787,14 @@ def _roster_block(row: dict, who: str, team: str) -> str:
     wider sample: a whole roster's career against this arm, rather than the
     two or three starts he has made against the club.
 
-    The denominator is printed under xwOBA on purpose. Career xwOBA against
-    an individual hitter is typically a handful of plate appearances, and a
-    three-decimal number is exactly the kind of thing that reads as
-    precision when it is noise. Under THIN_PA the whole block is dimmed.
+    The prose that used to sit under this grid is gone -- twice asked for
+    and twice justified, which is one more time than a caveat gets. What it
+    was protecting is real: xwOBA here often rests on twenty-odd plate
+    appearances and a three-decimal number reads as precision when it is
+    noise. So the protection stays, as DATA rather than as a paragraph --
+    the xwOBA denominator prints as a mono caption, and a thin sample still
+    dims the whole grid. A reader who wants to know the sample size can
+    read the PA cell, which is the first thing on the row.
     """
     rs = row.get("vs_roster")
     if not rs or not rs.get("pa"):
@@ -800,27 +804,23 @@ def _roster_block(row: dict, who: str, team: str) -> str:
         return f"{v:.3f}".lstrip("0") if v is not None else "&mdash;"
 
     k_txt = f'{rs["k_pct"] * 100:.1f}%' if rs.get("k_pct") is not None else "&mdash;"
-    n = rs.get("batters") or 0
-    note = _("rs_read", n=n, s=_pl(n), s2=_pl(n))
+    # The one thing the grid cannot say for itself: xwOBA's denominator is
+    # not the PA cell beside it. StatsAPI gives the career line, Savant the
+    # Statcast rows, and the two rarely cover the same plate appearances.
+    cap = ""
     if rs.get("xwoba") is not None:
-        note += " " + _("rs_xspan", span=esc(rs.get("xwoba_span") or ""),
-                        pa=format(rs.get("xwoba_pa") or 0, ","))
-    else:
-        note += " " + _("rs_xnone")
+        cap = (f'<div class="mxcap">{_("rs_xwoba")} &middot; '
+               f'{esc(rs.get("xwoba_span") or "")} &middot; '
+               f'{format(rs.get("xwoba_pa") or 0, ",")} {_("rs_pa")}</div>')
 
     thin = ' dim' if rs.get("thin") else ''
-    out = (f'<div class="mxh">{_("rs_head", who=who, team=team)}</div>'
-           f'<div class="mxg four{thin}">'
-           f'<div><span>{_("rs_pa")}</span><b>{format(rs["pa"], ",")}</b></div>'
-           f'<div><span>{_("rs_kpct")}</span><b>{k_txt}</b></div>'
-           f'<div><span>{_("rs_avg")}</span><b>{three(rs.get("avg"))}</b></div>'
-           f'<div><span>{_("rs_xwoba")}</span><b>{three(rs.get("xwoba"))}</b></div>'
-           f'</div>'
-           f'<p class="mxn">{note}</p>')
-    if rs.get("thin"):
-        out += (f'<p class="mxn warn">'
-                f'{_("rs_thin", pa=format(rs["pa"], ","))}</p>')
-    return out
+    return (f'<div class="mxh">{_("rs_head", who=who, team=team)}</div>'
+            f'<div class="mxg four{thin}">'
+            f'<div><span>{_("rs_pa")}</span><b>{format(rs["pa"], ",")}</b></div>'
+            f'<div><span>{_("rs_kpct")}</span><b>{k_txt}</b></div>'
+            f'<div><span>{_("rs_avg")}</span><b>{three(rs.get("avg"))}</b></div>'
+            f'<div><span>{_("rs_xwoba")}</span><b>{three(rs.get("xwoba"))}</b></div>'
+            f'</div>{cap}')
 
 
 def _matchup_inner(row: dict) -> str:
@@ -844,7 +844,6 @@ def _matchup_inner(row: dict) -> str:
     vs = row.get("vs_opp")
     if vs and vs.get("innings"):
         k9 = vs["strikeouts"] * 9 / vs["innings"]
-        season_k9 = row.get("k_per_9") or 0.0
         parts.append(
             f'<div class="mxh">'
             f'{_("mx_hist", who=who, team=team, span=esc(vs.get("span", "")))}'
@@ -855,24 +854,18 @@ def _matchup_inner(row: dict) -> str:
             f'<div><span>{_("mx_k")}</span><b>{vs["strikeouts"]}</b></div>'
             f'<div><span>{_("mx_k9")}</span><b>{k9:.1f}</b></div>'
             f'<div><span>{_("mx_era")}</span><b>{vs["era"]:.2f}</b></div>'
-            f'</div>'
-            f'<p class="mxn">'
-            f'{_("mx_read", k9=f"{k9:.1f}", season=f"{season_k9:.1f}")}</p>')
-        if vs["starts"] <= 2:
-            parts.append(f'<p class="mxn warn">'
-                         f'{_("mx_thin", n=vs["starts"], s=_pl(vs["starts"]))}'
-                         f'</p>')
+            f'</div>')
+        # No sentence restating K/9 against them versus K/9 all season --
+        # both numbers are already in the grid above, one of them twice.
+        # A thin sample dims the grid instead of being narrated.
     else:
-        parts.append(f'<div class="mxh">{_("mx_never", who=who, team=team)}</div>'
-                     f'<p class="mxn">{_("mx_never_v")}</p>')
+        parts.append(f'<div class="mxh">{_("mx_never", who=who, team=team)}</div>')
 
     split = row.get("opp_split")
     hand = row.get("hand") or ""
     if split and hand:
         row_label = _("mx_vs_l") if hand == "L" else _("mx_vs_r")
-        noun = _("mx_lefties") if hand == "L" else _("mx_righties")
         rank = split.get("rank")
-        rank_all = split.get("rank_all")
         of = split.get("of")
         # Every value is formatted before it enters the f-string. Python 3.11
         # cannot reuse the outer quote character inside an f-string
@@ -883,18 +876,11 @@ def _matchup_inner(row: dict) -> str:
         pa_txt = format(split["pa"], ",")
         pct_txt = f'{split["k_pct"]:.1f}'
         mean_txt = f'{split.get("league_mean") or 0.0:.1f}'
-        # _ordinal returns the suffix alone -- "th", not "28th" -- because
-        # pb_rank composes it as "{r}{ord} of {n}". Compose it here too.
-        def _nth(n):
-            return f"{n}{_ordinal(n)}"
-
-        note = _("mx_applies", who=who, team=team,
-                 hand=_("mx_left") if hand == "L" else _("mx_right"),
-                 overall=_nth(rank_all) if rank_all else "&mdash;")
-        if rank_all and rank and rank_all != rank:
-            note += _("mx_and_hand", split=_nth(rank), hand_word=noun)
-        else:
-            note += _("mx_same", hand_word=noun)
+        # The paragraph that used to explain which hand applies, and how the
+        # club's overall rank compares with its rank against that hand, is
+        # gone. The row is already labelled "vs right-handers", the rank is
+        # already in the row, and the verdict chip below already prints the
+        # gap against the league. It was three ways of saying one number.
         parts.append(
             f'<div class="mxh">{_("mx_how", team=team)}</div>'
             f'<table class="mxt">'
@@ -905,8 +891,7 @@ def _matchup_inner(row: dict) -> str:
             f'<tr class="avg"><th>{_("mx_league")}</th>'
             f'<td class="n">{mean_txt}%</td>'
             f'<td class="r"></td><td class="p"></td></tr>'
-            f'</table>'
-            f'<p class="mxn">{note}</p>')
+            f'</table>')
 
     verdict = row.get("matchup") or "neutral"
     delta = ""
@@ -2572,12 +2557,20 @@ def _self_test() -> None:
     assert "18.9%" in mx, mx
     assert "vs right-handers" in mx and "vs left-handers" not in mx, \
         "only the hand that applies is shown"
-    # The overall rank and the split rank differ, so the sentence names both
-    # -- that contrast is the whole argument for showing the split.
-    assert "28th" in mx and "29th" in mx, mx
+    assert "29th of 30" in mx, "the split rank stays, in the row"
     assert "3,665 PA" in mx, "the sample size prints with a thousands mark"
     assert "tough matchup" in mx
     assert "[[" not in mx, mx
+
+    # The panel is a grid, a table and a verdict -- no paragraphs. Asked for
+    # twice, so it is pinned rather than left to taste. Every sentence that
+    # used to sit here restated a number already on screen.
+    assert "<p" not in mx, f"the prop panel carries no prose:\n{mx}"
+    for gone in ("mx_read", "mx_thin", "mx_applies", "mx_and_hand",
+                 "mx_same", "mx_never_v"):
+        assert i18n.t(gone, LANG, k9="", season="", n=1, s="", who="",
+                      team="", hand="", overall="", split="",
+                      hand_word="") not in mx, gone
 
     # No split and no history still renders, and claims nothing.
     thin = {"name": "Nobody", "opponent": "TOR", "hand": "",

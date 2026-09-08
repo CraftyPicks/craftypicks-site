@@ -26,7 +26,13 @@ SRC = HERE.parent / "_src"
 FLOORS = {
     "txt":   12.0,   # club names, primary numbers, best price
     "sub":    9.0,   # records, starter, ERA, supporting stats
-    "muted":  5.5,   # market labels, card headers, units
+    # Raised from 5.5 on 2026-09-08. 5.5 was WCAG AA and it was not enough:
+    # this token is set almost entirely in 10-12px mono, and at 5.80:1 on a
+    # card the numbers under every batter were reported as painful to read.
+    # 7.0 is AAA for normal text, which is the honest floor for a page whose
+    # entire content is small figures. The floor is here rather than in a
+    # comment so a future palette cannot quietly walk back to "legal".
+    "muted":  7.0,   # market labels, card headers, units
     "green":  5.0,
     "red":    5.0,
     # --amber carries text (.gfoot .flagged, .pb-foot .flagged, .cverdict.out,
