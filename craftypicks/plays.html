@@ -1126,32 +1126,68 @@ footer{background:var(--bg-2);padding:56px 0 40px}
   <div class="wrap" style="padding:56px 28px 40px">
     <div class="split">
       <div>
-        <div class="eyebrow">Board scanned · Next card posts at 9:00 AM ET</div>
+        <div class="eyebrow">Tuesday, September 8, 2026 · Posted 9:00 AM ET</div>
         <h1 style="font-size:clamp(32px,4.2vw,50px);margin:14px 0 14px">System plays</h1>
-        <p class="lead">No plays on the card today. The board was scanned and nothing cleared the edge threshold — that's a normal result, not an outage.</p>
+        <p class="lead">2 plays on the card. Posted at 9:00 AM ET, with the price and book that was available at that moment. Every one gets graded here tomorrow morning.</p>
       </div>
       <div class="card" style="padding:18px 22px;min-width:240px">
         <div class="stamp">Card summary</div>
-        <div class="mono" style="font-size:30px;font-weight:600;margin:8px 0 2px">0.0u <span class="unit" style="font-size:15px">risked</span></div>
-        <div style="font-size:13px;color:var(--muted)">—</div>
+        <div class="mono" style="font-size:30px;font-weight:600;margin:8px 0 2px">2.0u <span class="unit" style="font-size:15px">risked</span></div>
+        <div style="font-size:13px;color:var(--muted)">2 MLB</div>
       </div>
     </div>
 
-    
+    <div class="filters" style="margin-top:36px"><button class="chip on" data-filter="all">All plays</button><button class="chip" data-filter="mlb">MLB &middot; 2</button></div>
   </div>
 </section>
 
 <section class="pad-sm">
   <div class="wrap">
     <div class="grid-2" id="board" style="align-items:stretch;gap:22px">
-      <div class="play" style="grid-column:1/-1">
+      <div class="play" data-league="mlb">
         <div class="play-top">
-          <span class="stamp">No qualifying plays</span>
-          <span class="stamp">Checked every game on the board</span>
+          <div style="display:flex;align-items:center;gap:9px">
+            <span class="dot"></span>
+            <span class="stamp on">Posted 10:18 AM ET</span>
+          </div>
+          <span class="stamp">Play 1 of 2</span>
         </div>
         <div class="play-body">
-          <div class="pick" style="color:var(--muted)">No plays today</div>
-          <p style="margin-top:10px;max-width:60ch">Nothing on the board cleared the edge threshold this morning. A card with no plays is a normal outcome — forcing one is how a good process turns into a bad month.</p>
+          <div class="pick">Drew Anderson over 4.5 strikeouts</div>
+          <div class="meta">MLB &middot; Strikeouts prop
+            &middot; −105 &middot; BetMGM</div>
+          <div class="matchup-line">Minnesota Twins @ Detroit Tigers &middot; 6:41 PM ET</div>
+          <ul class="reasons"><li>Vig-free consensus across <b>5 books</b> is −116</li><li>Best number on the board is <b>−105 at BetMGM</b></li><li><b>4 of 5</b> books price this shorter than we're getting it</li><li>Expected value at that price: <b>+4.9%</b> per unit risked</li></ul>
+          <div class="stats">
+            <div class="stat"><div class="k">Stake</div><div class="v">1.0u</div></div>
+            <div class="stat"><div class="k">Edge vs fair</div>
+              <div class="v g">+4.9%</div></div>
+            <div class="stat"><div class="k">Fair price</div>
+              <div class="v">−116</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="play" data-league="mlb">
+        <div class="play-top">
+          <div style="display:flex;align-items:center;gap:9px">
+            <span class="dot"></span>
+            <span class="stamp on">Posted 10:18 AM ET</span>
+          </div>
+          <span class="stamp">Play 2 of 2</span>
+        </div>
+        <div class="play-body">
+          <div class="pick">Freddy Peralta over 4.5 strikeouts</div>
+          <div class="meta">MLB &middot; Strikeouts · Screen A
+            &middot; −111 &middot; FanDuel</div>
+          <div class="matchup-line">Tampa Bay Rays @ Atlanta Braves &middot; 7:16 PM ET</div>
+          <ul class="reasons"><li><b>Screen A</b> — season K% 21.8%</li><li><b>Screen A</b> — opponent K/game 8.17</li><li><b>Screen A</b> — vs roster: 149 PA, K% 24.8%, AVG 0.224, wOBA 0.288</li></ul>
+          <div class="stats">
+            <div class="stat"><div class="k">Stake</div><div class="v">1.0u</div></div>
+            <div class="stat"><div class="k">Edge vs fair</div>
+              <div class="v r">−3.7%</div></div>
+            <div class="stat"><div class="k">Fair price</div>
+              <div class="v">−103</div></div>
+          </div>
         </div>
       </div></div>
 
@@ -1258,7 +1294,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
     <div class="foot-legal">
       <p class="disclaimer"><b>21+ only. For entertainment purposes.</b> Craftypicks is not a sportsbook and does not accept wagers, hold funds, or facilitate betting of any kind. Nothing here is financial advice or a guarantee of profit — every play posted can lose, and most winning stretches are followed by losing ones. Never wager money you cannot afford to lose. If gambling stops being fun, call <b>1-800-GAMBLER</b> or text 800GAM to 800177.</p>
       <p>&copy; 2026 Craftypicks. Plays are posted before the number moves and graded exactly as posted.</p>
-      <p class="foot-stamp">Picks posted 2026-09-07 12:16 ET</p>
+      <p class="foot-stamp">Picks posted 2026-09-08 10:18 ET</p>
     </div>
   </div>
 </footer>
