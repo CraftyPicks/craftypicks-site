@@ -85,7 +85,7 @@ def probable_starters(date_str: str) -> list[dict]:
 
 EMPTY_PITCHER = {"k_pct": None, "k_per_9": None, "innings": 0.0, "era": None,
                  "w": None, "l": None, "hr": None, "hr_per_9": None,
-                 "bf": None, "h": None}
+                 "bf": None, "h": None, "k": None, "bb": None, "whip": None}
 
 
 def parse_pitcher_season(payload) -> dict:
@@ -108,6 +108,13 @@ def parse_pitcher_season(payload) -> dict:
     wins, losses = s.get("wins"), s.get("losses")
     hr = s.get("homeRuns")
     hits = s.get("hits")
+    bb = s.get("baseOnBalls")
+    try:
+        whip = float(s.get("whip")) if s.get("whip") not in (None, "-.--") else None
+    except (TypeError, ValueError):
+        whip = None
+    if whip is None and ip and hits is not None and bb is not None:
+        whip = (float(hits) + float(bb)) / ip
     return {
         "k_pct": (k / bf) if bf else None,
         "k_per_9": (k * 9 / ip) if ip else None,
@@ -120,6 +127,12 @@ def parse_pitcher_season(payload) -> dict:
         # Recomputing keeps the precision and avoids parsing "-.--".
         "hr_per_9": (float(hr) * 9 / ip) if (hr is not None and ip) else None,
         "h": int(hits) if hits is not None else None,
+        "k": int(k) if k else None,
+        "bb": int(bb) if bb is not None else None,
+        # WHIP arrives as a string and can be "-.--", exactly like ERA. It is
+        # also just (H + BB) / IP, and both inputs are in this same payload,
+        # so a string that will not parse is computed rather than dropped.
+        "whip": whip,
         "w": int(wins) if wins is not None else None,
         "l": int(losses) if losses is not None else None,
     }
@@ -181,10 +194,66 @@ def team_hr_per_game(team_id: int, season: int) -> float | None:
 
 
 def team_roster(team_id: int, season: int) -> list[int]:
-    """Active roster, position players only."""
-    data = _get(f"/teams/{team_id}/roster", rosterType="active", season=season) or {}
-    return [p["person"]["id"] for p in data.get("roster", [])
-            if (p.get("position") or {}).get("abbreviation") != "P"]
+    """Active roster, position players only. Ids alone, for vs_roster."""
+    return [p["id"] for p in roster_detail(team_id, season)]
+
+
+def roster_detail(team_id: int, season: int) -> list[dict]:
+    """Active roster as {id, name, position}, position players only.
+
+    The position was always in this payload -- it is what filters the
+    pitchers out -- and was then thrown away. The hitters table needs it,
+    so it is kept.
+    """
+    data = _get(f"/teams/{team_id}/roster", rosterType="active",
+                season=season) or {}
+    out = []
+    for p in data.get("roster", []):
+        pos = (p.get("position") or {}).get("abbreviation") or ""
+        if pos == "P":
+            continue
+        person = p.get("person") or {}
+        if person.get("id"):
+            out.append({"id": person["id"],
+                        "name": person.get("fullName") or "",
+                        "position": pos})
+    return out
+
+
+def lineup_vs(pitcher_id: int, team_id: int, season: int,
+              limit: int = 9) -> list[dict]:
+    """Each hitter's career line against this starter.
+
+    One free request per hitter, and the roster call is cached for the run,
+    so a whole board costs requests rather than credits.
+
+    A hitter who has never faced him is KEPT, with every figure None. The
+    reference screenshot prints a row of dashes for exactly this, and it is
+    the right call: "has never faced him" is information, and dropping the
+    row would silently shorten one club's table against the other's.
+
+    Ordered by plate appearances against him, most first, because we do not
+    have the batting order -- see the note in lineup_note.
+    """
+    out = []
+    for player in roster_detail(team_id, season):
+        s = vs_batter(pitcher_id, player["id"], season) or {}
+        pa = s.get("plateAppearances") or 0
+        ab = s.get("atBats") or 0
+        h = s.get("hits")
+        out.append({
+            "id": player["id"], "name": player["name"],
+            "position": player["position"],
+            "pa": pa or None,
+            "ab": ab or None,
+            "h": h if pa else None,
+            "hr": s.get("homeRuns") if pa else None,
+            "rbi": s.get("rbi") if pa else None,
+            "k": s.get("strikeOuts") if pa else None,
+            "avg": (h / ab) if (ab and h is not None) else None,
+        })
+    out.sort(key=lambda r: (r["pa"] or 0), reverse=True)
+    return out[:limit]
 
 
 def _first_split(data):
@@ -249,6 +318,48 @@ def vs_roster(pitcher_id: int, opponent_team_id: int, season: int):
         agg.batters_seen += 1
         agg.faced.append(batter_id)
     return agg
+
+
+def batter_vs_pitcher(batter_id: int, pitcher_id: int, season: int):
+    """One hitter's career line against one starter, or None.
+
+    The same call the lineup table makes, for the boards whose row already
+    IS one batter against one named pitcher. Returns None rather than a row
+    of zeroes when they have never met: zero-for-zero and "never faced" look
+    identical once formatted, and only one of them is true.
+    """
+    if not (batter_id and pitcher_id):
+        return None
+    s = vs_batter(pitcher_id, batter_id, season) or {}
+    pa = s.get("plateAppearances") or 0
+    if not pa:
+        return None
+    ab, h = s.get("atBats") or 0, s.get("hits") or 0
+    return {"pa": pa, "ab": ab, "h": h,
+            "hr": s.get("homeRuns"), "rbi": s.get("rbi"),
+            "k": s.get("strikeOuts"), "bb": s.get("baseOnBalls"),
+            "avg": (h / ab) if ab else None}
+
+
+def attach_bvp(rows: list[dict], season: int, verbose: bool = True) -> int:
+    """Put a career batter-vs-pitcher line on each row that names a pitcher.
+
+    Called after the board has been cut to its top few per game, so the cost
+    is one free request per printed row rather than per rated batter. Every
+    call is wrapped: this is a display extra and must never cost the board.
+    """
+    got = 0
+    for r in rows:
+        try:
+            r["bvp"] = batter_vs_pitcher(r.get("batter_id"),
+                                        r.get("pitcher_id"), season)
+        except Exception:                                    # noqa: BLE001
+            r["bvp"] = None
+        if r.get("bvp"):
+            got += 1
+    if verbose:
+        print(f"   bvp: {got}/{len(rows)} batter(s) have faced their starter")
+    return got
 
 
 def team_index(season: int) -> dict:

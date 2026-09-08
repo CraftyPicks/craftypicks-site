@@ -129,6 +129,39 @@ T = {
     "cv_edge":       {"en": "{v} edge", "es": "ventaja {v}"},
     "cv_fade":       {"en": "{v} fade", "es": "{v} en contra"},
     "cv_noedge":     {"en": "no edge", "es": "sin ventaja"},
+    # ---- the starter comparison table
+    "sp_head":       {"en": "Probable pitchers", "es": "Abridores probables"},
+    "sp_wl":         {"en": "W-L", "es": "G-P"},
+    "sp_era":        {"en": "ERA", "es": "EFE"},
+    "sp_whip":       {"en": "WHIP", "es": "WHIP"},
+    "sp_ip":         {"en": "IP", "es": "IL"},
+    "sp_h":          {"en": "H", "es": "H"},
+    "sp_k":          {"en": "K", "es": "P"},
+    "sp_bb":         {"en": "BB", "es": "BB"},
+    "sp_hr":         {"en": "HR", "es": "HR"},
+    # ---- the hitters table
+    "bvp_line":      {"en": "vs {who}: {h}-{ab}, {hr} HR, {k} K &middot; {avg}",
+                      "es": "ante {who}: {h}-{ab}, {hr} HR, {k} P &middot; {avg}"},
+    "bvp_never":     {"en": "has not faced {who}",
+                      "es": "no ha enfrentado a {who}"},
+    "lu_head":       {"en": "{team} hitters vs {who}",
+                      "es": "Bateadores de {team} ante {who}"},
+    "lu_hitters":    {"en": "Hitters", "es": "Bateadores"},
+    "lu_hab":        {"en": "H-AB", "es": "H-VB"},
+    "lu_hr":         {"en": "HR", "es": "HR"},
+    "lu_rbi":        {"en": "RBI", "es": "CI"},
+    "lu_k":          {"en": "K", "es": "P"},
+    "lu_avg":        {"en": "AVG", "es": "PROM"},
+    "lu_note":       {"en": "Career, and not tonight's batting order &mdash; "
+                            "lineups post about two hours before first pitch "
+                            "and this board is built in the morning. Club "
+                            "regulars, most plate appearances against him "
+                            "first.",
+                      "es": "De por vida, y no el orden al bate de hoy "
+                            "&mdash; las alineaciones salen unas dos horas "
+                            "antes del primer lanzamiento y este tablero se "
+                            "arma por la mañana. Regulares del club, primero "
+                            "los de más apariciones ante él."},
     "pnl_prices":    {"en": "Prices", "es": "Precios"},
     "cv_detail":     {"en": "Game detail +", "es": "Detalle del partido +"},
     "cv_prop_detail":{"en": "Prop detail +", "es": "Detalle del prop +"},

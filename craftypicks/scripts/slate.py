@@ -58,6 +58,10 @@ def _iso(us_date: str) -> str:
     return f"{year}-{month}-{day}"
 
 
+# What the starter comparison table on the card prints, in its order.
+SP_FIELDS = ("w", "l", "era", "whip", "innings", "h", "k", "bb", "hr")
+
+
 def pair_starters(games: list[dict], teams: dict,
                   starters: list[dict]) -> dict:
     """Which starter belongs to which game, when a club plays twice.
@@ -152,7 +156,7 @@ def build(games: list[dict], date_str: str, season: int,
         def sp(team_id, opponent_id, _i=idx):
             s = assigned.get((_i, team_id))
             if not s:
-                return {}, None, None, ""
+                return {}, None, None, "", None
             stats = mlb_api.pitcher_season(s["pitcher_id"], season)
             vs = None
             if want_vs:
@@ -162,10 +166,24 @@ def build(games: list[dict], date_str: str, season: int,
                                                     opponent_id, season)
                 except Exception:                            # noqa: BLE001
                     vs = None
-            return stats, s["name"], vs, s.get("hand", "")
+            return stats, s["name"], vs, s.get("hand", ""), s["pitcher_id"]
 
-        home_stats, home_name, home_vs, home_hand = sp(home_id, away_id)
-        away_stats, away_name, away_vs, away_hand = sp(away_id, home_id)
+        home_stats, home_name, home_vs, home_hand, home_pid = sp(home_id, away_id)
+        away_stats, away_name, away_vs, away_hand, away_pid = sp(away_id, home_id)
+
+        # Each club's hitters against the OTHER club's starter. One free
+        # request per hitter, wrapped like every other display extra: a
+        # StatsAPI wobble must cost this table and nothing else.
+        def lineup(pid, team_id):
+            if not (want_vs and pid and team_id):
+                return None
+            try:
+                return mlb_api.lineup_vs(pid, team_id, season)
+            except Exception:                                # noqa: BLE001
+                return None
+
+        home_bats = lineup(away_pid, home_id)   # home hitters vs away starter
+        away_bats = lineup(home_pid, away_id)
 
         # The season series, one free request per game and display-only, so
         # guarded exactly like the vs-opponent line above it. StatsAPI answers
@@ -205,6 +223,12 @@ def build(games: list[dict], date_str: str, season: int,
                                 if away_stats.get("w") is not None else None),
             "home_sp_innings": home_stats.get("innings"),
             "away_sp_innings": away_stats.get("innings"),
+            # The whole season line, both starters, for the comparison table
+            # on the card. Already fetched -- pitcher_season returns all of
+            # this and the card was reading three fields out of it.
+            "home_sp": {k: home_stats.get(k) for k in SP_FIELDS},
+            "away_sp": {k: away_stats.get(k) for k in SP_FIELDS},
+            "home_bats": home_bats, "away_bats": away_bats,
             "home_hand": home_hand, "away_hand": away_hand,
             # Shown on the card, deliberately absent from the rating.
             "home_record": recs.get(home_id),

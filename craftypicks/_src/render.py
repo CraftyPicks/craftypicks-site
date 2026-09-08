@@ -1536,6 +1536,66 @@ def _h2h_block(row: dict, detail: dict) -> str:
     return head + f'<p class="pnl-note">{lead}</p>' + "".join(lines) + "</section>"
 
 
+# The comparison table's rows, in the reference's order, with which
+# direction is better. W-L carries no direction on purpose: a starter's
+# record is mostly a report on the lineup behind him, which is already why
+# it sits out of the projection.
+SP_ROWS = (
+    ("sp_wl",   "wl",      None),
+    ("sp_era",  "era",     "low"),
+    ("sp_whip", "whip",    "low"),
+    ("sp_ip",   "innings", "high"),
+    ("sp_h",    "h",       "low"),
+    ("sp_k",    "k",       "high"),
+    ("sp_bb",   "bb",      "low"),
+    ("sp_hr",   "hr",      "low"),
+)
+
+
+def _sp_cell(sp: dict, key: str) -> str:
+    """One number, formatted the way its own stat is normally written."""
+    if key == "wl":
+        w, l = sp.get("w"), sp.get("l")
+        return f"{w}&ndash;{l}" if w is not None and l is not None else "&mdash;"
+    v = sp.get(key)
+    if v is None:
+        return "&mdash;"
+    if key in ("era", "whip"):
+        return f"{v:.2f}"
+    if key == "innings":
+        return f"{v:.1f}"
+    return f"{int(v)}"
+
+
+def _sp_table(row: dict, detail: dict) -> str:
+    """Two starters, the label down the middle.
+
+    The centre column is what makes it readable. Two stat blocks side by
+    side make a reader hunt for which number pairs with which; a shared
+    label removes the hunt, which is why every scoreboard that shows this
+    comparison draws it the same way.
+    """
+    away, home = detail.get("away_sp") or {}, detail.get("home_sp") or {}
+    if not any(v is not None for v in away.values()) and \
+       not any(v is not None for v in home.values()):
+        return ""
+    body = []
+    for label, key, better in SP_ROWS:
+        a, h = _sp_cell(away, key), _sp_cell(home, key)
+        acls = hcls = ""
+        av, hv = away.get(key), home.get(key)
+        if better and av is not None and hv is not None and av != hv:
+            wins_away = (av < hv) if better == "low" else (av > hv)
+            acls, hcls = ("on", "") if wins_away else ("", "on")
+        body.append(f'<tr><td class="spv {acls}">{a}</td>'
+                    f'<th>{_(label)}</th>'
+                    f'<td class="spv {hcls}">{h}</td></tr>')
+    return (f'<table class="sptbl">'
+            f'<tr class="hd"><td>{esc(_abbr(row.get("away")))}</td>'
+            f'<th></th><td>{esc(_abbr(row.get("home")))}</td></tr>'
+            f'{"".join(body)}</table>')
+
+
 def _starters_block(row: dict, detail: dict) -> str:
     out = []
     for which, other in (("away", "home"), ("home", "away")):
@@ -1556,10 +1616,59 @@ def _starters_block(row: dict, detail: dict) -> str:
         head = esc(name) + (f" &middot; {era:.2f} ERA" if era else "")
         out.append(f'<div class="pst"><div class="pst-n">{head}</div>'
                    f'<div class="pst-v">{line}</div></div>')
-    if not out:
+    table = _sp_table(row, detail)
+    if not out and not table:
         return ""
-    return (f'<section class="pk"><h4>{_("pnl_starters")}</h4>'
-            + "".join(out) + "</section>")
+    return (f'<section class="pk"><h4>{_("sp_head")}</h4>'
+            + table + "".join(out) + "</section>")
+
+
+def _lineup_table(bats, team: str, who: str) -> str:
+    """One club's hitters against the other club's starter, career.
+
+    A hitter with no history keeps his row, every figure a dash. That is
+    what the reference does and it is the right call twice over: "has never
+    faced him" is information, and dropping those rows would silently
+    shorten one club's table against the other's, which reads as one lineup
+    being better documented rather than as one pitcher being newer to it.
+    """
+    if not bats:
+        return ""
+    rows = []
+    for b in bats:
+        pa = b.get("pa")
+        if not pa:
+            cells = ('<td class="lz">&mdash;</td>' * 5)
+        else:
+            avg = b.get("avg")
+            cells = (
+                f'<td>{b.get("h", 0)}&ndash;{b.get("ab", 0)}</td>'
+                f'<td>{b.get("hr") if b.get("hr") is not None else "&mdash;"}</td>'
+                f'<td>{b.get("rbi") if b.get("rbi") is not None else "&mdash;"}</td>'
+                f'<td>{b.get("k") if b.get("k") is not None else "&mdash;"}</td>'
+                f'<td class="lav">{f"{avg:.3f}".lstrip("0") if avg is not None else "&mdash;"}</td>')
+        rows.append(f'<tr><th>{esc(_short_name(b.get("name")))}'
+                    f'<span class="ppos">{esc(b.get("position", ""))}</span>'
+                    f'</th>{cells}</tr>')
+    return (f'<section class="pk">'
+            f'<h4>{_("lu_head", team=esc(_nickname(team)), who=esc(_short_name(who)))}</h4>'
+            f'<div class="sscroll"><table class="lutbl">'
+            f'<tr class="hd"><th>{_("lu_hitters")}</th>'
+            f'<td>{_("lu_hab")}</td><td>{_("lu_hr")}</td>'
+            f'<td>{_("lu_rbi")}</td><td>{_("lu_k")}</td>'
+            f'<td>{_("lu_avg")}</td></tr>'
+            f'{"".join(rows)}</table></div>'
+            f'<p class="pnl-note">{_("lu_note")}</p></section>')
+
+
+def _lineups_block(row: dict, detail: dict) -> str:
+    """Both clubs' tables, away first, matching the card's own order."""
+    out = []
+    for which, other in (("away", "home"), ("home", "away")):
+        out.append(_lineup_table(detail.get(f"{which}_bats"),
+                                 row.get(which),
+                                 detail.get(f"{other}_starter") or "?"))
+    return "".join(out)
 
 
 def _props_block(row: dict) -> str:
@@ -1631,7 +1740,7 @@ def _detail_panel(row: dict) -> str:
     if not (form or starters or props or price_block):
         return ""
     return (f'<div class="pnl">{price_block}{form}{_h2h_block(row, detail)}'
-            f'{starters}{props}</div>')
+            f'{starters}{_lineups_block(row, detail)}{props}</div>')
 
 
 def _disclosure(row: dict) -> str:
@@ -1853,6 +1962,60 @@ def ev_funnel(board: dict) -> str:
 # numbers behind it sit underneath, and the calibration strip above the cards
 # says what the model has actually delivered so far.
 
+def _bvp_line(r: dict) -> str:
+    """This batter's career line against tonight's starter, in one row.
+
+    The board's own unit is already one batter against one named pitcher,
+    so a whole table would be five columns of one row. A sentence carries
+    the same five numbers and does not have to be scanned.
+
+    The sample is almost always small -- five to twenty-five plate
+    appearances -- so it is set at label weight beside the projection rather
+    than beside it in size, and nothing on the card is derived from it.
+    """
+    who = _short_name(r.get("vs"))
+    bvp = r.get("bvp")
+    if not bvp or not bvp.get("pa"):
+        return (f'<div class="bvp none">'
+                f'{_("bvp_never", who=esc(who))}</div>')
+    avg = bvp.get("avg")
+    return (f'<div class="bvp">'
+            + _("bvp_line", who=esc(who),
+                h=bvp.get("h", 0), ab=bvp.get("ab", 0),
+                hr=bvp.get("hr") if bvp.get("hr") is not None else 0,
+                k=bvp.get("k") if bvp.get("k") is not None else 0,
+                avg=(f"{avg:.3f}".lstrip("0") if avg is not None else "&mdash;"))
+            + "</div>")
+
+
+def _group_card(title: str, when, sub: str, rows_html: str,
+                accent: str | None = None, right: str = "",
+                detail: str = "") -> str:
+    """The canvas card, for a board whose unit is a LIST rather than a number.
+
+    The home run, hits and NFL boards each show several players under one
+    pitcher or one defence, so they cannot borrow board_card's shape
+    literally -- there is no single figure to set at 30px. What they take
+    instead is the vocabulary: the same head, the same mono sub-line, the
+    same footer rule, the same disclosure button. Five boards through one
+    function, so the next change to the card is one change.
+    """
+    style = f' style="--accent:{accent}"' if accent else ""
+    right_html = f'<span class="cv-time">{right}</span>' if right else ""
+    return f"""
+        <article class="pb-card bat-card"{style}>
+          <div class="pb-body">
+            <div class="cv-head">
+              <h3 class="cv-tm">{title}</h3>
+              <span class="cv-time">{esc(game_time(when)) if when else ""}</span>
+            </div>
+            <div class="cv-sub">{sub}{(" &middot; " + right_html) if right else ""}</div>
+            <div class="bats">{rows_html}</div>
+            {detail}
+          </div>
+        </article>"""
+
+
 def batter_cards(rows: list[dict]) -> str:
     """Tonight's most dangerous bats, grouped by the game they appear in."""
     if not rows:
@@ -1876,21 +2039,16 @@ def batter_cards(rows: list[dict]) -> str:
             <div class="bat-w">{_("bat_season",
                 hr=b.get('hr', 0), pa=f"{b.get('pa', 0):,}",
                 rate=f"{b.get('hr_rate', 0) * 100:.1f}")}</div>
+            {_bvp_line(b)}
           </div>""" for b in group)
-        out.append(f"""
-        <article class="pb-card bat-card"
-                 style="--accent:{team_color(group[0].get('team')) or 'var(--line-2)'}">
-          <div class="pb-top">
-            <span>{club} &middot; {esc(game_time(when))}</span>
-            <span class="bat-park {park_cls}">{_("bat_park", v=f"{park:.2f}")}</span>
-          </div>
-          <div class="pb-body">
-            <div class="bat-vs">{_("bat_facing",
-                who=esc(pitcher or "?"), hand=hand_txt,
-                rate=f"{(group[0].get('vs_hr_per_bf') or 0) * 100:.1f}")}</div>
-            {bats}
-          </div>
-        </article>""")
+        out.append(_group_card(
+            club, when,
+            _("bat_facing", who=esc(pitcher or "?"), hand=hand_txt,
+              rate=f"{(group[0].get('vs_hr_per_bf') or 0) * 100:.1f}"),
+            bats,
+            accent=team_color(group[0].get("team")) or "var(--line-2)",
+            right=f'<span class="bat-park {park_cls}">'
+                  f'{_("bat_park", v=f"{park:.2f}")}</span>'))
     return '<div class="pb-grid">' + "".join(out) + "</div>"
 
 
@@ -1949,21 +2107,16 @@ def hit_cards(rows: list[dict]) -> str:
             <div class="bat-w">{_("hit_season",
                 h=b.get('h', 0), pa=f"{b.get('pa', 0):,}",
                 rate=f"{b.get('hit_rate', 0) * 100:.1f}")}</div>
+            {_bvp_line(b)}
           </div>""" for b in group)
         accent = team_color(group[0].get('team')) or 'var(--line-2)'
-        out.append(f"""
-        <article class="pb-card bat-card" style="--accent:{accent}">
-          <div class="pb-top">
-            <span>{club} &middot; {esc(game_time(when))}</span>
-            <span class="bat-park {park_cls}">{_("hit_park",
-                v=f"{park:.2f}")}</span>
-          </div>
-          <div class="pb-body">
-            <div class="bat-vs">{_("hit_facing",
-                who=esc(pitcher or "?"), hand=hand_txt, rate=vs_rate)}</div>
-            {bats}
-          </div>
-        </article>""")
+        out.append(_group_card(
+            club, when,
+            _("hit_facing", who=esc(pitcher or "?"), hand=hand_txt,
+              rate=vs_rate),
+            bats, accent=accent,
+            right=f'<span class="bat-park {park_cls}">'
+                  f'{_("hit_park", v=f"{park:.2f}")}</span>'))
     return '<div class="pb-grid">' + "".join(out) + "</div>"
 
 
@@ -2007,7 +2160,6 @@ def yard_cards(rows: list[dict], unit: str = "yds") -> str:
 
     out = []
     for (when, _team), group in games.items():
-        head = f"{esc(group[0].get('team',''))} &middot; {esc(game_time(when))}"
         opp = esc(group[0].get("opponent", ""))
         allowed = f"{group[0].get('opp_allowed', 0):.0f}"
         league = f"{group[0].get('league_allowed', 0):.0f}"
@@ -2020,15 +2172,10 @@ def yard_cards(rows: list[dict], unit: str = "yds") -> str:
             <div class="bat-w">{p.get('baseline', 0):.0f} {esc(unit)}
               unadjusted</div>
           </div>""" for p in group)
-        out.append(f"""
-        <article class="pb-card bat-card">
-          <div class="pb-top"><span>{head}</span></div>
-          <div class="pb-body">
-            <div class="bat-vs">{_("nfl_vs", opp=opp, allowed=allowed,
-                                   league=league)}</div>
-            {men}
-          </div>
-        </article>""")
+        out.append(_group_card(
+            esc(group[0].get("team", "")), when,
+            _("nfl_vs", opp=opp, allowed=allowed, league=league),
+            men))
     return '<div class="pb-grid">' + "".join(out) + "</div>"
 
 
@@ -2046,7 +2193,6 @@ def td_cards(rows: list[dict]) -> str:
         games.setdefault((r.get("commence_time"), r.get("team")), []).append(r)
     out = []
     for (when, _team), group in games.items():
-        head = f"{esc(group[0].get('team',''))} &middot; {esc(game_time(when))}"
         opp = esc(group[0].get("opponent", ""))
         allowed = f"{group[0].get('opp_allowed', 0):.2f}"
         league = f"{group[0].get('league_allowed', 0):.2f}"
@@ -2056,15 +2202,10 @@ def td_cards(rows: list[dict]) -> str:
               <span class="ppos">{esc(p.get('position',''))}</span></div>
             <div class="bat-c"><b>{p.get('chance', 0) * 100:.1f}%</b></div>
           </div>""" for p in group)
-        out.append(f"""
-        <article class="pb-card bat-card">
-          <div class="pb-top"><span>{head}</span></div>
-          <div class="pb-body">
-            <div class="bat-vs">{_("nfl_vs", opp=opp, allowed=allowed,
-                                   league=league)}</div>
-            {men}
-          </div>
-        </article>""")
+        out.append(_group_card(
+            esc(group[0].get("team", "")), when,
+            _("nfl_vs", opp=opp, allowed=allowed, league=league),
+            men))
     return '<div class="pb-grid">' + "".join(out) + "</div>"
 
 
@@ -2147,14 +2288,7 @@ def homer_cards(rows: list[dict]) -> str:
                     if hand in ("L", "R") else "")
         thin = r.get("thin")
         accent = team_color(r.get("opponent")) or "var(--line-2)"
-        out.append(f"""
-        <article class="pb-card hr-card" style="--accent:{accent}">
-          <div class="pb-top">
-            <span>{esc(r.get('team',''))} vs {opp}
-              &middot; {esc(game_time(r.get('commence_time')))}</span>
-          </div>
-          <div class="pb-body">
-            <div class="pb-name">{esc(r.get('name',''))}{hand_txt}</div>
+        body = f"""
             {_hr_row(_("hr_allows"), r.get("hr_per_9"), _("hr_per9_unit"),
                      r.get("hr_per_9_rank"), r.get("pitchers_ranked"),
                      r.get("league_hr_per_9"), r.get("pitcher_verdict"))}
@@ -2167,9 +2301,11 @@ def homer_cards(rows: list[dict]) -> str:
                 <b>{_("hr_season", hr=r.get("hr_allowed") or 0,
                       ip=f'{r.get("innings") or 0:.1f}')}</b></div>
             </div>
-            {f'<p class="hr-thin">{_("hr_too_few")}</p>' if thin else ""}
-          </div>
-        </article>""")
+            {f'<p class="hr-thin">{_("hr_too_few")}</p>' if thin else ""}"""
+        out.append(_group_card(
+            esc(r.get("name", "")), r.get("commence_time"),
+            f'{esc(r.get("team",""))} vs {opp}{hand_txt}',
+            body, accent=accent))
     return '<div class="pb-grid">' + "".join(out) + "</div>"
 
 

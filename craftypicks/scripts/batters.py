@@ -240,6 +240,10 @@ def build(starters: list[dict], season: int, verbose: bool = True) -> list[dict]
                 "hr_rate": b["hr"] / b["pa"], "pa_per_game": pa_pg,
                 "chance": chance,
                 "vs": s.get("name"), "vs_hand": s.get("hand", ""),
+                # The starter's id, so the card can print this
+                # batter's career line against him. It was in
+                # scope all along and simply not stored.
+                "pitcher_id": s.get("pitcher_id"),
                 "vs_hr_per_bf": p_rate,
                 "park": park, "park_raw": (parks.get(home_id) or {}).get("raw"),
                 "league_rate": league,
@@ -253,6 +257,8 @@ def build(starters: list[dict], season: int, verbose: bool = True) -> list[dict]
     if verbose:
         print(f"   batters: {len(rows)} bat(s) rated, league "
               f"{league * 100:.2f}% HR per PA")
+    # After the cut, so this costs one free request per PRINTED row.
+    mlb_api.attach_bvp(rows, season, verbose=verbose)
     return rows
 
 

@@ -173,7 +173,7 @@ def park_factors(season: int) -> dict[int, dict]:
     return parse_park(hitting, pitching)
 
 
-def build(starters: list[dict], season: int) -> list[dict]:
+def build(starters: list[dict], season: int, verbose: bool = True) -> list[dict]:
     """The best bats in each of tonight's games, with a hit chance attached.
 
     `starters` is what mlb_api.probable_starters returns, and each row here
@@ -230,6 +230,10 @@ def build(starters: list[dict], season: int) -> list[dict]:
                 "hit_rate": rate, "pa_per_game": pa_pg,
                 "chance": hit_chance(rate, p_rate, league, park, pa_pg),
                 "vs": s.get("name"), "vs_hand": s.get("hand", ""),
+                # The starter's id, so the card can print this
+                # batter's career line against him. It was in
+                # scope all along and simply not stored.
+                "pitcher_id": s.get("pitcher_id"),
                 "vs_h_per_bf": p_rate,
                 "park": park, "park_raw": park_row.get("raw"),
                 "league_rate": league,
@@ -244,6 +248,8 @@ def build(starters: list[dict], season: int) -> list[dict]:
     # sorting by chance alone would order tonight's games by whoever has the
     # hottest bat -- two sibling pages listing the same slate differently.
     rows.sort(key=lambda r: (r.get("commence_time") or "", -r["chance"]))
+    # After the cut, so this costs one free request per PRINTED row.
+    mlb_api.attach_bvp(rows, season, verbose=verbose)
     return rows
 
 
