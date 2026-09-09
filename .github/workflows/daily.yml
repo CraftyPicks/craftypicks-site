@@ -8,14 +8,28 @@ on:
     # different UTC hour in summer than in winter. Both hours are listed.
     #
     # Second — and this is the one that matters — GitHub does not run these
-    # when it says it will. This repo's own history has a scheduled run fire
-    # two and a half hours late. So the extra firings below are not "retries"
-    # in the sense of recovering from an error; they are extra chances for a
-    # scheduler that is allowed to be arbitrarily late or to drop a run
-    # outright. run_daily.py exits immediately if today's card is already
-    # committed, so every firing after the first costs nothing.
-    - cron: "0,20,40 13 * * *"    # 9 AM ET while daylight saving is in effect
-    - cron: "0,20,40 14 * * *"    # 9 AM ET the rest of the year
+    # when it says it will. They are queued on a shared scheduler and dropped
+    # outright under load. The extra firings below are not "retries" in the
+    # sense of recovering from an error; they are extra chances. run_daily.py
+    # exits immediately if today's card is already committed, so every firing
+    # after the first costs nothing.
+    #
+    # Third, and the reason these minutes look odd: THE MINUTE MATTERS. This
+    # repo's own history measures it. On minute 0 the card posted at +2 to
+    # +3 minutes from 2026-08-31 to 09-03, and then never once under +52
+    # minutes from 09-04 onward -- +145, +95, +52, +85, +82. Nothing in the
+    # repo changed on 09-04; the queue did. Minute 0 is the single most
+    # contended minute on GitHub's scheduler, with :15, :30 and :45 close
+    # behind, and boards.yml at :30 kept running throughout while this
+    # workflow did not.
+    #
+    # So: nothing on a quarter hour, and three widely spaced attempts in each
+    # of the three hours the card could reasonably post. Nine firings, eight
+    # of which normally do nothing at all.
+    - cron: "7,27,47 13 * * *"    # 9 AM ET while daylight saving is in effect
+    - cron: "7,27,47 14 * * *"    # 9 AM ET the rest of the year, and the
+                                  # first backup while it is in effect
+    - cron: "7,27,47 15 * * *"    # last resort, both halves of the year
   workflow_dispatch:
 
 permissions:
