@@ -31,6 +31,8 @@ DATA = ROOT / "data"
 import config              # noqa: E402
 import find_plays          # noqa: E402
 import grade as grader     # noqa: E402
+import grade_props as prop_grader  # noqa: E402
+import play_log           # noqa: E402
 import stats as statsmod   # noqa: E402
 
 # Props are an optional extra. If props.py is missing or won't import, the
@@ -208,6 +210,17 @@ def main() -> int:
         print("-- MOCK MODE: synthetic odds, no credits spent")
 
     # ------------------------------------------------------------- 1. grade
+    # Before grading, not after. Two NFL plays are in the log twice because
+    # the old posting rule only looked at this morning's ids; both copies are
+    # still ungraded, and dedupe deliberately refuses to touch a graded play.
+    # Left until after grading, both copies would settle and the record would
+    # count one bet twice -- permanently, and with no way to tell which entry
+    # was the real one.
+    dropped = play_log.dedupe(history)
+    if dropped:
+        print(f"-- log: dropped {dropped} duplicate posting(s) of a play "
+              f"already in the log")
+
     sports_to_grade = grader.pending_sports(history)
     scores_by_sport: dict[str, dict] = {}
     for sport in sorted(sports_to_grade):
@@ -219,6 +232,18 @@ def main() -> int:
         except OddsAPIError as e:
             print(f"!! scores for {sport} failed: {e}", file=sys.stderr)
     graded = grader.grade_pending(history, scores_by_sport)
+    # Player props are settled by a box score, not by two team scores, so
+    # grade.py cannot reach them: it returned None for every prop market and
+    # the play stayed pending forever. Since 25 August every play posted has
+    # been a strikeout prop, which meant the public log had quietly stopped
+    # recording. This runs on the free StatsAPI game log -- no credits -- and
+    # is deliberately outside the odds-client try above, so a scores failure
+    # or an exhausted budget does not also stop props being graded.
+    try:
+        import screen_config as _season_cfg
+        graded += prop_grader.grade_pending(history, _season_cfg.SEASON)
+    except Exception as e:                                   # noqa: BLE001
+        print(f"!! prop grading failed: {e}", file=sys.stderr)
     print(f"-- graded {graded} play(s); {sum(1 for p in history if not p.get('result'))} still pending")
 
     # -------------------------------------------------------------- 2. odds
@@ -385,14 +410,15 @@ def main() -> int:
 
     # ------------------------------------------------------- 3. today's card
     posted_at = now.isoformat(timespec="seconds")
-    existing_ids = {p.get("id") for p in history if p.get("posted_date") == today}
-    for play in card:
-        play["posted_date"] = today
-        play["posted_at"] = posted_at
-        play["result"] = None
-        play["profit"] = 0.0
-        if play["id"] not in existing_ids:
-            history.append(dict(play))
+    # play_log.post, not a set of today's ids. The old rule only compared a
+    # play against the ones posted THIS morning, so a play the card offered
+    # again tomorrow -- same event, same market, same side -- was appended a
+    # second time. Two NFL plays are already in the log twice for that
+    # reason; post() collapses them on the way past.
+    added = play_log.post(history, card, today, posted_at)
+    if added != len(card):
+        print(f"-- log: {added} new of {len(card)} on the card "
+              f"({len(card) - added} already posted on an earlier morning)")
 
     summary = find_plays.summarize(card)
     plays_doc = {

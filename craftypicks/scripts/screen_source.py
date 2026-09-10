@@ -252,6 +252,12 @@ def build_plays(prop_events: list[dict], date_str: str, verbose: bool = True) ->
             "market": MARKET, "market_label": f"Strikeouts · Screen {play.screen}",
             "side": f"{play.candidate.name} {play.side.title()}",
             "player": play.candidate.name,
+            # Carried so the play can be graded without looking the pitcher
+            # up by name later. The screens already know it; not recording it
+            # was free to do and cost a StatsAPI request per date at grading
+            # time -- and a silent failure whenever a book spells a name
+            # differently from StatsAPI.
+            "player_id": play.candidate.pitcher_id,
             "point": play.line, "price": int(play.odds),
             "book": book, "book_key": book_key,
             "fair_prob": round(fair, 5) if fair is not None else None,
