@@ -115,7 +115,9 @@
         "league_mean": 22.60519785674134
       },
       "matchup": "tough",
-      "actual": null
+      "actual": 4,
+      "actual_innings": 7.0,
+      "graded_at": "2026-09-10T18:38:31+00:00"
     },
     {
       "pitcher_id": 607259,
@@ -230,7 +232,9 @@
         "league_mean": 21.874609812943632
       },
       "matchup": "neutral",
-      "actual": null
+      "actual": 3,
+      "actual_innings": 6.3,
+      "graded_at": "2026-09-10T18:38:31+00:00"
     },
     {
       "pitcher_id": 554430,
@@ -352,7 +356,9 @@
         "league_mean": 21.874609812943632
       },
       "matchup": "neutral",
-      "actual": null
+      "actual": 8,
+      "actual_innings": 6.0,
+      "graded_at": "2026-09-10T18:38:31+00:00"
     },
     {
       "pitcher_id": 664299,
@@ -461,7 +467,9 @@
         "league_mean": 21.874609812943632
       },
       "matchup": "neutral",
-      "actual": null
+      "actual": 3,
+      "actual_innings": 5.3,
+      "graded_at": "2026-09-10T18:38:31+00:00"
     },
     {
       "pitcher_id": 669302,
@@ -1107,34 +1115,34 @@
   ],
   "summary": {
     "rated": 272,
-    "graded": 260,
-    "priced": 229,
-    "mae": 1.91,
-    "line_mae": 1.75,
+    "graded": 264,
+    "priced": 233,
+    "mae": 1.9,
+    "line_mae": 1.73,
     "over_rate": 51.5,
-    "called_right": 47.6,
-    "calls": 191,
+    "called_right": 47.2,
+    "calls": 195,
     "buckets": [
       {
         "id": "bk_half",
         "label": "within half a strikeout",
-        "n": 72,
+        "n": 74,
         "right": 33,
-        "pct": 45.8
+        "pct": 44.6
       },
       {
         "id": "bk_half_one",
         "label": "half to one",
-        "n": 80,
-        "right": 42,
-        "pct": 52.5
+        "n": 81,
+        "right": 43,
+        "pct": 53.1
       },
       {
         "id": "bk_one_two",
         "label": "one to two",
-        "n": 32,
+        "n": 33,
         "right": 13,
-        "pct": 40.6
+        "pct": 39.4
       },
       {
         "id": "bk_two_plus",
