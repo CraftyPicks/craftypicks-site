@@ -1087,6 +1087,36 @@ footer{background:var(--bg-2);padding:56px 0 40px}
 .ftbl td.ft-s.bad{color:var(--red)}
 
 /* ============================== shared player-card boards (all sports) ==== */
+/* ---------- the game picker on the NFL prop boards ----------
+   A row of the week's fixtures that both jumps to a game and filters to
+   it. Horizontally scrollable rather than wrapped: sixteen fixtures on a
+   phone is four wrapped lines, and four lines of navigation is the thing
+   the third nav row was going to be criticised for. */
+.gsel{display:flex;gap:8px;overflow-x:auto;overflow-y:hidden;
+  -webkit-overflow-scrolling:touch;scrollbar-width:none;
+  padding:0 0 14px;margin:0 0 4px}
+.gsel::-webkit-scrollbar{display:none}
+.gchip{flex:0 0 auto;font-family:var(--mono);font-size:11px;
+  letter-spacing:.08em;text-transform:uppercase;color:var(--muted);
+  border:1px solid var(--line);background:var(--panel-2);
+  padding:9px 13px;white-space:nowrap;transition:.15s}
+.gchip:hover{color:var(--txt);border-color:var(--line-2)}
+.gchip.on{color:var(--bg);background:var(--green);border-color:var(--green);
+  font-weight:700}
+/* The fixture heading over each group. It is what the reader was missing:
+   sixty-four player cards in one grid with the matchup in 10px mono under
+   each name is not a board, it is a list. */
+.gsec{margin:0 0 30px}
+.gsec-h{display:flex;align-items:baseline;justify-content:space-between;
+  gap:12px;padding:0 0 12px;margin-bottom:14px;
+  border-bottom:1px solid var(--line-2)}
+.gsec-h h3{font-size:19px;font-weight:700;letter-spacing:-.02em;
+  color:var(--txt);margin:0}
+.gsec-h h3 span{color:var(--muted);font-weight:400}
+.gsec-h>span{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--muted);white-space:nowrap}
+.gsec[hidden]{display:none}
+
 /* The list boards -- home runs, hits, and the four NFL boards. They share
    the canvas card's head, sub-line and rules; what they do not share is a
    single 30px figure, because their unit is several players under one
@@ -1149,7 +1179,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
 
 <section class="board-page">
   <div class="wrap">
-    <div class="pb-grid">
+    <nav class="gsel" aria-label="Jump to a game"><a href="#" class="gchip on" data-game="">All games</a><a href="#s-g0" class="gchip" data-game="g0">DET @ MIN</a><a href="#s-g1" class="gchip" data-game="g1">ATH @ TOR</a><a href="#s-g2" class="gchip" data-game="g2">SF @ STL</a><a href="#s-g3" class="gchip" data-game="g3">SD @ WSH</a><a href="#s-g4" class="gchip" data-game="g4">SEA @ TEX</a><a href="#s-g5" class="gchip" data-game="g5">BAL @ CLE</a><a href="#s-g6" class="gchip" data-game="g6">MIA @ NYM</a><a href="#s-g7" class="gchip" data-game="g7">PHI @ HOU</a><a href="#s-g8" class="gchip" data-game="g8">BOS @ LAA</a><a href="#s-g9" class="gchip" data-game="g9">NYY @ COL</a><a href="#s-g10" class="gchip" data-game="g10">ATL @ TB</a><a href="#s-g11" class="gchip" data-game="g11">KC @ AZ</a><a href="#s-g12" class="gchip" data-game="g12">MIL @ CHC</a><a href="#s-g13" class="gchip" data-game="g13">CWS @ PIT</a><a href="#s-g14" class="gchip" data-game="g14">LAD @ CIN</a></nav><section class="gsec" id="s-g0" data-game="g0"><div class="gsec-h"><h3>DET <span>@</span> MIN</h3><span>1:10 PM ET</span></div><div class="pb-grid">
         <article class="pb-card bat-card" style="--accent:var(--line-2)">
           <div class="pb-body">
             <div class="cv-head">
@@ -1185,7 +1215,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
             </div>
             
           </div>
-        </article>
+        </article></div></section><section class="gsec" id="s-g1" data-game="g1"><div class="gsec-h"><h3>ATH <span>@</span> TOR</h3><span>3:05 PM ET</span></div><div class="pb-grid">
         <article class="pb-card bat-card" style="--accent:var(--line-2)">
           <div class="pb-body">
             <div class="cv-head">
@@ -1221,7 +1251,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
             </div>
             
           </div>
-        </article>
+        </article></div></section><section class="gsec" id="s-g2" data-game="g2"><div class="gsec-h"><h3>SF <span>@</span> STL</h3><span>3:45 PM ET</span></div><div class="pb-grid">
         <article class="pb-card bat-card" style="--accent:var(--line-2)">
           <div class="pb-body">
             <div class="cv-head">
@@ -1257,7 +1287,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
             </div>
             
           </div>
-        </article>
+        </article></div></section><section class="gsec" id="s-g3" data-game="g3"><div class="gsec-h"><h3>SD <span>@</span> WSH</h3><span>4:10 PM ET</span></div><div class="pb-grid">
         <article class="pb-card bat-card" style="--accent:var(--line-2)">
           <div class="pb-body">
             <div class="cv-head">
@@ -1293,7 +1323,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
             </div>
             
           </div>
-        </article>
+        </article></div></section><section class="gsec" id="s-g4" data-game="g4"><div class="gsec-h"><h3>SEA <span>@</span> TEX</h3><span>4:10 PM ET</span></div><div class="pb-grid">
         <article class="pb-card bat-card" style="--accent:var(--line-2)">
           <div class="pb-body">
             <div class="cv-head">
@@ -1329,7 +1359,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
             </div>
             
           </div>
-        </article>
+        </article></div></section><section class="gsec" id="s-g5" data-game="g5"><div class="gsec-h"><h3>BAL <span>@</span> CLE</h3><span>6:35 PM ET</span></div><div class="pb-grid">
         <article class="pb-card bat-card" style="--accent:var(--line-2)">
           <div class="pb-body">
             <div class="cv-head">
@@ -1365,43 +1395,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
             </div>
             
           </div>
-        </article>
-        <article class="pb-card bat-card" style="--accent:var(--line-2)">
-          <div class="pb-body">
-            <div class="cv-head">
-              <h3 class="cv-tm">Cristopher Sánchez</h3>
-              <span class="cv-time">6:40 PM ET</span>
-            </div>
-            <div class="cv-sub">PHI vs HOU</div>
-            <div class="bats">
-            <div class="hrl bad"><span class="hrl-k">Allows</span><span class="hrl-v"><b>0.77</b> per 9 innings</span><span class="hrl-r">24th of 30</span><span class="hrl-m">league 1.14</span></div>
-            <div class="hrl good"><span class="hrl-k">HOU hit</span><span class="hrl-v"><b>1.32</b> per game</span><span class="hrl-r">5th of 30</span><span class="hrl-m">league 1.14</span></div>
-            <div class="pb-rows">
-              <div class="pb-row"><span>Season</span>
-                <b>16 allowed in 187.0 innings</b></div>
-            </div>
-            </div>
-            
-          </div>
-        </article>
-        <article class="pb-card bat-card" style="--accent:var(--line-2)">
-          <div class="pb-body">
-            <div class="cv-head">
-              <h3 class="cv-tm">Hunter Brown</h3>
-              <span class="cv-time">6:40 PM ET</span>
-            </div>
-            <div class="cv-sub">HOU vs PHI</div>
-            <div class="bats">
-            <div class="hrl "><span class="hrl-k">Allows</span><span class="hrl-v"><b>1.08</b> per 9 innings</span><span class="hrl-r">16th of 30</span><span class="hrl-m">league 1.14</span></div>
-            <div class="hrl "><span class="hrl-k">PHI hit</span><span class="hrl-v"><b>1.18</b> per game</span><span class="hrl-r">13th of 30</span><span class="hrl-m">league 1.14</span></div>
-            <div class="pb-rows">
-              <div class="pb-row"><span>Season</span>
-                <b>11 allowed in 92.0 innings</b></div>
-            </div>
-            </div>
-            
-          </div>
-        </article>
+        </article></div></section><section class="gsec" id="s-g6" data-game="g6"><div class="gsec-h"><h3>MIA <span>@</span> NYM</h3><span>6:40 PM ET</span></div><div class="pb-grid">
         <article class="pb-card bat-card" style="--accent:var(--line-2)">
           <div class="pb-body">
             <div class="cv-head">
@@ -1437,7 +1431,43 @@ footer{background:var(--bg-2);padding:56px 0 40px}
             </div>
             
           </div>
+        </article></div></section><section class="gsec" id="s-g7" data-game="g7"><div class="gsec-h"><h3>PHI <span>@</span> HOU</h3><span>6:40 PM ET</span></div><div class="pb-grid">
+        <article class="pb-card bat-card" style="--accent:var(--line-2)">
+          <div class="pb-body">
+            <div class="cv-head">
+              <h3 class="cv-tm">Cristopher Sánchez</h3>
+              <span class="cv-time">6:40 PM ET</span>
+            </div>
+            <div class="cv-sub">PHI vs HOU</div>
+            <div class="bats">
+            <div class="hrl bad"><span class="hrl-k">Allows</span><span class="hrl-v"><b>0.77</b> per 9 innings</span><span class="hrl-r">24th of 30</span><span class="hrl-m">league 1.14</span></div>
+            <div class="hrl good"><span class="hrl-k">HOU hit</span><span class="hrl-v"><b>1.32</b> per game</span><span class="hrl-r">5th of 30</span><span class="hrl-m">league 1.14</span></div>
+            <div class="pb-rows">
+              <div class="pb-row"><span>Season</span>
+                <b>16 allowed in 187.0 innings</b></div>
+            </div>
+            </div>
+            
+          </div>
         </article>
+        <article class="pb-card bat-card" style="--accent:var(--line-2)">
+          <div class="pb-body">
+            <div class="cv-head">
+              <h3 class="cv-tm">Hunter Brown</h3>
+              <span class="cv-time">6:40 PM ET</span>
+            </div>
+            <div class="cv-sub">HOU vs PHI</div>
+            <div class="bats">
+            <div class="hrl "><span class="hrl-k">Allows</span><span class="hrl-v"><b>1.08</b> per 9 innings</span><span class="hrl-r">16th of 30</span><span class="hrl-m">league 1.14</span></div>
+            <div class="hrl "><span class="hrl-k">PHI hit</span><span class="hrl-v"><b>1.18</b> per game</span><span class="hrl-r">13th of 30</span><span class="hrl-m">league 1.14</span></div>
+            <div class="pb-rows">
+              <div class="pb-row"><span>Season</span>
+                <b>11 allowed in 92.0 innings</b></div>
+            </div>
+            </div>
+            
+          </div>
+        </article></div></section><section class="gsec" id="s-g8" data-game="g8"><div class="gsec-h"><h3>BOS <span>@</span> LAA</h3><span>6:45 PM ET</span></div><div class="pb-grid">
         <article class="pb-card bat-card" style="--accent:var(--line-2)">
           <div class="pb-body">
             <div class="cv-head">
@@ -1473,7 +1503,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
             </div>
             
           </div>
-        </article>
+        </article></div></section><section class="gsec" id="s-g9" data-game="g9"><div class="gsec-h"><h3>NYY <span>@</span> COL</h3><span>7:05 PM ET</span></div><div class="pb-grid">
         <article class="pb-card bat-card" style="--accent:var(--line-2)">
           <div class="pb-body">
             <div class="cv-head">
@@ -1509,7 +1539,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
             </div>
             
           </div>
-        </article>
+        </article></div></section><section class="gsec" id="s-g10" data-game="g10"><div class="gsec-h"><h3>ATL <span>@</span> TB</h3><span>7:15 PM ET</span></div><div class="pb-grid">
         <article class="pb-card bat-card" style="--accent:var(--line-2)">
           <div class="pb-body">
             <div class="cv-head">
@@ -1545,7 +1575,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
             </div>
             
           </div>
-        </article>
+        </article></div></section><section class="gsec" id="s-g11" data-game="g11"><div class="gsec-h"><h3>KC <span>@</span> AZ</h3><span>7:40 PM ET</span></div><div class="pb-grid">
         <article class="pb-card bat-card" style="--accent:var(--line-2)">
           <div class="pb-body">
             <div class="cv-head">
@@ -1581,43 +1611,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
             </div>
             
           </div>
-        </article>
-        <article class="pb-card bat-card" style="--accent:var(--line-2)">
-          <div class="pb-body">
-            <div class="cv-head">
-              <h3 class="cv-tm">Davis Martin</h3>
-              <span class="cv-time">7:40 PM ET</span>
-            </div>
-            <div class="cv-sub">CWS vs PIT</div>
-            <div class="bats">
-            <div class="hrl bad"><span class="hrl-k">Allows</span><span class="hrl-v"><b>0.81</b> per 9 innings</span><span class="hrl-r">23rd of 30</span><span class="hrl-m">league 1.14</span></div>
-            <div class="hrl "><span class="hrl-k">PIT hit</span><span class="hrl-v"><b>1.14</b> per game</span><span class="hrl-r">15th of 30</span><span class="hrl-m">league 1.14</span></div>
-            <div class="pb-rows">
-              <div class="pb-row"><span>Season</span>
-                <b>12 allowed in 132.7 innings</b></div>
-            </div>
-            </div>
-            
-          </div>
-        </article>
-        <article class="pb-card bat-card" style="--accent:var(--line-2)">
-          <div class="pb-body">
-            <div class="cv-head">
-              <h3 class="cv-tm">Lake Bachar</h3>
-              <span class="cv-time">7:40 PM ET</span>
-            </div>
-            <div class="cv-sub">PIT vs CWS</div>
-            <div class="bats">
-            <div class="hrl good"><span class="hrl-k">Allows</span><span class="hrl-v"><b>1.47</b> per 9 innings</span><span class="hrl-r">6th of 30</span><span class="hrl-m">league 1.14</span></div>
-            <div class="hrl good"><span class="hrl-k">CWS hit</span><span class="hrl-v"><b>1.30</b> per game</span><span class="hrl-r">6th of 30</span><span class="hrl-m">league 1.14</span></div>
-            <div class="pb-rows">
-              <div class="pb-row"><span>Season</span>
-                <b>13 allowed in 79.3 innings</b></div>
-            </div>
-            </div>
-            
-          </div>
-        </article>
+        </article></div></section><section class="gsec" id="s-g12" data-game="g12"><div class="gsec-h"><h3>MIL <span>@</span> CHC</h3><span>7:40 PM ET</span></div><div class="pb-grid">
         <article class="pb-card bat-card" style="--accent:var(--line-2)">
           <div class="pb-body">
             <div class="cv-head">
@@ -1653,7 +1647,43 @@ footer{background:var(--bg-2);padding:56px 0 40px}
             </div>
             
           </div>
+        </article></div></section><section class="gsec" id="s-g13" data-game="g13"><div class="gsec-h"><h3>CWS <span>@</span> PIT</h3><span>7:40 PM ET</span></div><div class="pb-grid">
+        <article class="pb-card bat-card" style="--accent:var(--line-2)">
+          <div class="pb-body">
+            <div class="cv-head">
+              <h3 class="cv-tm">Davis Martin</h3>
+              <span class="cv-time">7:40 PM ET</span>
+            </div>
+            <div class="cv-sub">CWS vs PIT</div>
+            <div class="bats">
+            <div class="hrl bad"><span class="hrl-k">Allows</span><span class="hrl-v"><b>0.81</b> per 9 innings</span><span class="hrl-r">23rd of 30</span><span class="hrl-m">league 1.14</span></div>
+            <div class="hrl "><span class="hrl-k">PIT hit</span><span class="hrl-v"><b>1.14</b> per game</span><span class="hrl-r">15th of 30</span><span class="hrl-m">league 1.14</span></div>
+            <div class="pb-rows">
+              <div class="pb-row"><span>Season</span>
+                <b>12 allowed in 132.7 innings</b></div>
+            </div>
+            </div>
+            
+          </div>
         </article>
+        <article class="pb-card bat-card" style="--accent:var(--line-2)">
+          <div class="pb-body">
+            <div class="cv-head">
+              <h3 class="cv-tm">Lake Bachar</h3>
+              <span class="cv-time">7:40 PM ET</span>
+            </div>
+            <div class="cv-sub">PIT vs CWS</div>
+            <div class="bats">
+            <div class="hrl good"><span class="hrl-k">Allows</span><span class="hrl-v"><b>1.47</b> per 9 innings</span><span class="hrl-r">6th of 30</span><span class="hrl-m">league 1.14</span></div>
+            <div class="hrl good"><span class="hrl-k">CWS hit</span><span class="hrl-v"><b>1.30</b> per game</span><span class="hrl-r">6th of 30</span><span class="hrl-m">league 1.14</span></div>
+            <div class="pb-rows">
+              <div class="pb-row"><span>Season</span>
+                <b>13 allowed in 79.3 innings</b></div>
+            </div>
+            </div>
+            
+          </div>
+        </article></div></section><section class="gsec" id="s-g14" data-game="g14"><div class="gsec-h"><h3>LAD <span>@</span> CIN</h3><span>10:10 PM ET</span></div><div class="pb-grid">
         <article class="pb-card bat-card" style="--accent:var(--line-2)">
           <div class="pb-body">
             <div class="cv-head">
@@ -1689,7 +1719,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
             </div>
             
           </div>
-        </article></div>
+        </article></div></section>
   </div>
 </section>
 
@@ -1796,5 +1826,36 @@ footer{background:var(--bg-2);padding:56px 0 40px}
     });
     d.appendChild(b);
   }, true);
+
+  /* The game picker on the NFL prop boards. Progressive: the chips are
+     ordinary anchors pointing at each section, so with no JavaScript they
+     scroll to the right group and nothing is lost. With JavaScript they
+     filter instead, which on a sixteen-game slate is the difference
+     between finding a player and scrolling for him.
+
+     Filtering hides sections with the `hidden` attribute rather than a
+     class, so anything that reads the DOM -- a find-in-page, a screen
+     reader -- agrees with what the eye sees. */
+  var picker = document.querySelector(".gsel");
+  if (picker) {
+    picker.addEventListener("click", function (e) {
+      var chip = e.target.closest ? e.target.closest(".gchip") : null;
+      if (!chip) { return; }
+      e.preventDefault();
+      var want = chip.getAttribute("data-game") || "";
+      Array.prototype.forEach.call(
+        picker.querySelectorAll(".gchip"), function (c) {
+          c.classList.toggle("on", c === chip);
+        });
+      Array.prototype.forEach.call(
+        document.querySelectorAll(".gsec"), function (s) {
+          s.hidden = !!want && s.getAttribute("data-game") !== want;
+        });
+      /* Back to the top of the board, not of the page: the reader just
+         chose a game and wants to see it, and leaving them mid-scroll in
+         a list that just got shorter is disorienting. */
+      picker.scrollIntoView({block: "start"});
+    });
+  }
 })();
 </script>

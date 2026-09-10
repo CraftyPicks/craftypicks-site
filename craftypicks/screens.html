@@ -1087,6 +1087,36 @@ footer{background:var(--bg-2);padding:56px 0 40px}
 .ftbl td.ft-s.bad{color:var(--red)}
 
 /* ============================== shared player-card boards (all sports) ==== */
+/* ---------- the game picker on the NFL prop boards ----------
+   A row of the week's fixtures that both jumps to a game and filters to
+   it. Horizontally scrollable rather than wrapped: sixteen fixtures on a
+   phone is four wrapped lines, and four lines of navigation is the thing
+   the third nav row was going to be criticised for. */
+.gsel{display:flex;gap:8px;overflow-x:auto;overflow-y:hidden;
+  -webkit-overflow-scrolling:touch;scrollbar-width:none;
+  padding:0 0 14px;margin:0 0 4px}
+.gsel::-webkit-scrollbar{display:none}
+.gchip{flex:0 0 auto;font-family:var(--mono);font-size:11px;
+  letter-spacing:.08em;text-transform:uppercase;color:var(--muted);
+  border:1px solid var(--line);background:var(--panel-2);
+  padding:9px 13px;white-space:nowrap;transition:.15s}
+.gchip:hover{color:var(--txt);border-color:var(--line-2)}
+.gchip.on{color:var(--bg);background:var(--green);border-color:var(--green);
+  font-weight:700}
+/* The fixture heading over each group. It is what the reader was missing:
+   sixty-four player cards in one grid with the matchup in 10px mono under
+   each name is not a board, it is a list. */
+.gsec{margin:0 0 30px}
+.gsec-h{display:flex;align-items:baseline;justify-content:space-between;
+  gap:12px;padding:0 0 12px;margin-bottom:14px;
+  border-bottom:1px solid var(--line-2)}
+.gsec-h h3{font-size:19px;font-weight:700;letter-spacing:-.02em;
+  color:var(--txt);margin:0}
+.gsec-h h3 span{color:var(--muted);font-weight:400}
+.gsec-h>span{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--muted);white-space:nowrap}
+.gsec[hidden]{display:none}
+
 /* The list boards -- home runs, hits, and the four NFL boards. They share
    the canvas card's head, sub-line and rules; what they do not share is a
    single 30px figure, because their unit is several players under one
@@ -1462,5 +1492,36 @@ footer{background:var(--bg-2);padding:56px 0 40px}
     });
     d.appendChild(b);
   }, true);
+
+  /* The game picker on the NFL prop boards. Progressive: the chips are
+     ordinary anchors pointing at each section, so with no JavaScript they
+     scroll to the right group and nothing is lost. With JavaScript they
+     filter instead, which on a sixteen-game slate is the difference
+     between finding a player and scrolling for him.
+
+     Filtering hides sections with the `hidden` attribute rather than a
+     class, so anything that reads the DOM -- a find-in-page, a screen
+     reader -- agrees with what the eye sees. */
+  var picker = document.querySelector(".gsel");
+  if (picker) {
+    picker.addEventListener("click", function (e) {
+      var chip = e.target.closest ? e.target.closest(".gchip") : null;
+      if (!chip) { return; }
+      e.preventDefault();
+      var want = chip.getAttribute("data-game") || "";
+      Array.prototype.forEach.call(
+        picker.querySelectorAll(".gchip"), function (c) {
+          c.classList.toggle("on", c === chip);
+        });
+      Array.prototype.forEach.call(
+        document.querySelectorAll(".gsec"), function (s) {
+          s.hidden = !!want && s.getAttribute("data-game") !== want;
+        });
+      /* Back to the top of the board, not of the page: the reader just
+         chose a game and wants to see it, and leaving them mid-scroll in
+         a list that just got shorter is disorienting. */
+      picker.scrollIntoView({block: "start"});
+    });
+  }
 })();
 </script>

@@ -1087,6 +1087,36 @@ footer{background:var(--bg-2);padding:56px 0 40px}
 .ftbl td.ft-s.bad{color:var(--red)}
 
 /* ============================== shared player-card boards (all sports) ==== */
+/* ---------- the game picker on the NFL prop boards ----------
+   A row of the week's fixtures that both jumps to a game and filters to
+   it. Horizontally scrollable rather than wrapped: sixteen fixtures on a
+   phone is four wrapped lines, and four lines of navigation is the thing
+   the third nav row was going to be criticised for. */
+.gsel{display:flex;gap:8px;overflow-x:auto;overflow-y:hidden;
+  -webkit-overflow-scrolling:touch;scrollbar-width:none;
+  padding:0 0 14px;margin:0 0 4px}
+.gsel::-webkit-scrollbar{display:none}
+.gchip{flex:0 0 auto;font-family:var(--mono);font-size:11px;
+  letter-spacing:.08em;text-transform:uppercase;color:var(--muted);
+  border:1px solid var(--line);background:var(--panel-2);
+  padding:9px 13px;white-space:nowrap;transition:.15s}
+.gchip:hover{color:var(--txt);border-color:var(--line-2)}
+.gchip.on{color:var(--bg);background:var(--green);border-color:var(--green);
+  font-weight:700}
+/* The fixture heading over each group. It is what the reader was missing:
+   sixty-four player cards in one grid with the matchup in 10px mono under
+   each name is not a board, it is a list. */
+.gsec{margin:0 0 30px}
+.gsec-h{display:flex;align-items:baseline;justify-content:space-between;
+  gap:12px;padding:0 0 12px;margin-bottom:14px;
+  border-bottom:1px solid var(--line-2)}
+.gsec-h h3{font-size:19px;font-weight:700;letter-spacing:-.02em;
+  color:var(--txt);margin:0}
+.gsec-h h3 span{color:var(--muted);font-weight:400}
+.gsec-h>span{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--muted);white-space:nowrap}
+.gsec[hidden]{display:none}
+
 /* The list boards -- home runs, hits, and the four NFL boards. They share
    the canvas card's head, sub-line and rules; what they do not share is a
    single 30px figure, because their unit is several players under one
@@ -1143,7 +1173,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
   <p class="kicker">Wednesday, September 9, 2026 &middot; 64 players rated</p>
   <h1>Rushing yards</h1>
   Running entirely on last season. This season has not played a single game yet for any player on this board.
-  <div class="pb-grid">
+  <nav class="gsel" aria-label="Jump to a game"><a href="#" class="gchip on" data-game="">All games</a><a href="#s-g0" class="gchip" data-game="g0">NE @ SEA</a><a href="#s-g1" class="gchip" data-game="g1">SF @ LA</a><a href="#s-g2" class="gchip" data-game="g2">ATL @ PIT</a><a href="#s-g3" class="gchip" data-game="g3">BAL @ IND</a><a href="#s-g4" class="gchip" data-game="g4">BUF @ HOU</a><a href="#s-g5" class="gchip" data-game="g5">CHI @ CAR</a><a href="#s-g6" class="gchip" data-game="g6">CLE @ JAX</a><a href="#s-g7" class="gchip" data-game="g7">NO @ DET</a><a href="#s-g8" class="gchip" data-game="g8">NYJ @ TEN</a><a href="#s-g9" class="gchip" data-game="g9">TB @ CIN</a><a href="#s-g10" class="gchip" data-game="g10">ARI @ LAC</a><a href="#s-g11" class="gchip" data-game="g11">GB @ MIN</a><a href="#s-g12" class="gchip" data-game="g12">MIA @ LV</a><a href="#s-g13" class="gchip" data-game="g13">WAS @ PHI</a><a href="#s-g14" class="gchip" data-game="g14">DAL @ NYG</a><a href="#s-g15" class="gchip" data-game="g15">DEN @ KC</a></nav><section class="gsec" id="s-g0" data-game="g0"><div class="gsec-h"><h3>NE <span>@</span> SEA</h3><span>8:20 PM ET</span></div><div class="pb-grid">
         <div class="pb-card">
           <div class="pb-body">
             <div class="cv-head">
@@ -1251,7 +1281,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
       <div class="pb-ticks"><span>14</span><span>18</span><span>88</span><span>34</span><span>5</span><span>40</span><span>50</span><span>51</span><span>47</span><span>131</span></div></section><section class="pk"><h4>Defence</h4><div class="pb-rows"><div class="pb-row"><span>SEA allow</span><b>92 yds</b></div><div class="pb-row"><span>league average</span><b>117 yds</b></div></div></section></div></div>
             </details>
           </div>
-        </div>
+        </div></div></section><section class="gsec" id="s-g1" data-game="g1"><div class="gsec-h"><h3>SF <span>@</span> LA</h3><span>8:35 PM ET</span></div><div class="pb-grid">
         <div class="pb-card">
           <div class="pb-body">
             <div class="cv-head">
@@ -1359,34 +1389,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
       <div class="pb-ticks"><span>0</span><span>53</span><span>41</span><span>24</span><span>40</span><span>26</span><span>21</span><span>20</span><span>22</span><span>9</span></div></section><section class="pk"><h4>Defence</h4><div class="pb-rows"><div class="pb-row"><span>LA allow</span><b>111 yds</b></div><div class="pb-row"><span>league average</span><b>117 yds</b></div></div></section></div></div>
             </details>
           </div>
-        </div>
-        <div class="pb-card">
-          <div class="pb-body">
-            <div class="cv-head">
-              <h3 class="cv-tm">Jonathan Taylor</h3>
-              <span class="cv-time">1:00 PM ET</span>
-            </div>
-            <div class="cv-sub">IND vs BAL
-              &middot; RB</div>
-            <div class="cv-row">
-              <span class="cv-lab">Our projection</span>
-              <span class="cv-pct">85<span class="cv-u">yds</span></span>
-            </div>
-            
-            <div class="cv-foot">
-              <span class="gm">93 per game</span>
-            </div>
-            <details class="gmore" data-close="Close">
-              <summary>Player detail +</summary>
-              <div class="gmore-in"><div class="pnl"><section class="pk"><h4>Last 10 games</h4><div class="pb-striphead"><span></span><span class="pb-rec"><b>3&ndash;7</b> over 85 &middot; L5 <b>1&ndash;4</b></span></div>
-      <div class="pb-strip">
-        <div class="pb-line" style="bottom:30.3%"><span class="pb-linelab">85</span></div>
-        <div class="pb-bar hit" style="height:54.5%" title="W8 TEN &middot; 153"></div><div class="pb-bar" style="height:16.0%" title="W9 PIT &middot; 45"></div><div class="pb-bar hit" style="height:87.0%" title="W10 ATL &middot; 244"></div><div class="pb-bar" style="height:20.7%" title="W12 KC &middot; 58"></div><div class="pb-bar" style="height:30.3%" title="W13 HOU &middot; 85"></div><div class="pb-bar" style="height:26.4%" title="W14 JAX &middot; 74"></div><div class="pb-bar hit" style="height:31.0%" title="W15 SEA &middot; 87"></div><div class="pb-bar" style="height:16.4%" title="W16 SF &middot; 46"></div><div class="pb-bar" style="height:24.9%" title="W17 JAX &middot; 70"></div><div class="pb-bar" style="height:9.3%" title="W18 HOU &middot; 26"></div>
-      </div>
-      <div class="pb-ticks"><span>153</span><span>45</span><span>244</span><span>58</span><span>85</span><span>74</span><span>87</span><span>46</span><span>70</span><span>26</span></div></section><section class="pk"><h4>Defence</h4><div class="pb-rows"><div class="pb-row"><span>BAL allow</span><b>107 yds</b></div><div class="pb-row"><span>league average</span><b>117 yds</b></div></div></section></div></div>
-            </details>
-          </div>
-        </div>
+        </div></div></section><section class="gsec" id="s-g2" data-game="g2"><div class="gsec-h"><h3>ATL <span>@</span> PIT</h3><span>1:00 PM ET</span></div><div class="pb-grid">
         <div class="pb-card">
           <div class="pb-body">
             <div class="cv-head">
@@ -1411,6 +1414,114 @@ footer{background:var(--bg-2);padding:56px 0 40px}
         <div class="pb-bar" style="height:20.5%" title="W9 NE &middot; 46"></div><div class="pb-bar" style="height:37.5%" title="W10 IND &middot; 84"></div><div class="pb-bar hit" style="height:46.4%" title="W11 CAR &middot; 104"></div><div class="pb-bar" style="height:31.2%" title="W12 NO &middot; 70"></div><div class="pb-bar hit" style="height:63.3%" title="W13 NYJ &middot; 142"></div><div class="pb-bar hit" style="height:38.4%" title="W14 SEA &middot; 86"></div><div class="pb-bar hit" style="height:41.5%" title="W15 TB &middot; 93"></div><div class="pb-bar" style="height:33.9%" title="W16 ARI &middot; 76"></div><div class="pb-bar hit" style="height:87.0%" title="W17 LA &middot; 195"></div><div class="pb-bar" style="height:14.7%" title="W18 NO &middot; 33"></div>
       </div>
       <div class="pb-ticks"><span>46</span><span>84</span><span>104</span><span>70</span><span>142</span><span>86</span><span>93</span><span>76</span><span>195</span><span>33</span></div></section><section class="pk"><h4>Defence</h4><div class="pb-rows"><div class="pb-row"><span>PIT allow</span><b>113 yds</b></div><div class="pb-row"><span>league average</span><b>117 yds</b></div></div></section></div></div>
+            </details>
+          </div>
+        </div>
+        <div class="pb-card">
+          <div class="pb-body">
+            <div class="cv-head">
+              <h3 class="cv-tm">Jaylen Warren</h3>
+              <span class="cv-time">1:00 PM ET</span>
+            </div>
+            <div class="cv-sub">PIT vs ATL
+              &middot; RB</div>
+            <div class="cv-row">
+              <span class="cv-lab">Our projection</span>
+              <span class="cv-pct">65<span class="cv-u">yds</span></span>
+            </div>
+            
+            <div class="cv-foot">
+              <span class="gm">60 per game</span>
+            </div>
+            <details class="gmore" data-close="Close">
+              <summary>Player detail +</summary>
+              <div class="gmore-in"><div class="pnl"><section class="pk"><h4>Last 10 games</h4><div class="pb-striphead"><span></span><span class="pb-rec"><b>4&ndash;6</b> over 65 &middot; L5 <b>2&ndash;3</b></span></div>
+      <div class="pb-strip">
+        <div class="pb-line" style="bottom:39.3%"><span class="pb-linelab">64.6</span></div>
+        <div class="pb-bar" style="height:18.9%" title="W9 IND &middot; 31"></div><div class="pb-bar hit" style="height:42.6%" title="W10 LAC &middot; 70"></div><div class="pb-bar" style="height:37.7%" title="W11 CIN &middot; 62"></div><div class="pb-bar hit" style="height:41.3%" title="W12 CHI &middot; 68"></div><div class="pb-bar" style="height:21.3%" title="W13 BUF &middot; 35"></div><div class="pb-bar" style="height:7.9%" title="W14 BAL &middot; 13"></div><div class="pb-bar" style="height:20.1%" title="W15 MIA &middot; 33"></div><div class="pb-bar hit" style="height:87.0%" title="W16 DET &middot; 143"></div><div class="pb-bar" style="height:38.9%" title="W17 CLE &middot; 64"></div><div class="pb-bar hit" style="height:40.1%" title="W18 BAL &middot; 66"></div>
+      </div>
+      <div class="pb-ticks"><span>31</span><span>70</span><span>62</span><span>68</span><span>35</span><span>13</span><span>33</span><span>143</span><span>64</span><span>66</span></div></section><section class="pk"><h4>Defence</h4><div class="pb-rows"><div class="pb-row"><span>ATL allow</span><b>126 yds</b></div><div class="pb-row"><span>league average</span><b>117 yds</b></div></div></section></div></div>
+            </details>
+          </div>
+        </div>
+        <div class="pb-card">
+          <div class="pb-body">
+            <div class="cv-head">
+              <h3 class="cv-tm">Kenny Gainwell</h3>
+              <span class="cv-time">1:00 PM ET</span>
+            </div>
+            <div class="cv-sub">PIT vs ATL
+              &middot; RB</div>
+            <div class="cv-row">
+              <span class="cv-lab">Our projection</span>
+              <span class="cv-pct">34<span class="cv-u">yds</span></span>
+            </div>
+            
+            <div class="cv-foot">
+              <span class="gm">32 per game</span>
+            </div>
+            <details class="gmore" data-close="Close">
+              <summary>Player detail +</summary>
+              <div class="gmore-in"><div class="pnl"><section class="pk"><h4>Last 10 games</h4><div class="pb-striphead"><span></span><span class="pb-rec"><b>3&ndash;7</b> over 34 &middot; L5 <b>2&ndash;3</b></span></div>
+      <div class="pb-strip">
+        <div class="pb-line" style="bottom:32.2%"><span class="pb-linelab">34.1</span></div>
+        <div class="pb-bar" style="height:6.0%" title="W9 IND &middot; -1"></div><div class="pb-bar" style="height:6.0%" title="W10 LAC &middot; 0"></div><div class="pb-bar" style="height:22.7%" title="W11 CIN &middot; 24"></div><div class="pb-bar hit" style="height:87.0%" title="W12 CHI &middot; 92"></div><div class="pb-bar" style="height:18.9%" title="W13 BUF &middot; 20"></div><div class="pb-bar" style="height:14.2%" title="W14 BAL &middot; 15"></div><div class="pb-bar hit" style="height:75.6%" title="W15 MIA &middot; 80"></div><div class="pb-bar hit" style="height:47.3%" title="W16 DET &middot; 50"></div><div class="pb-bar" style="height:24.6%" title="W17 CLE &middot; 26"></div><div class="pb-bar" style="height:9.5%" title="W18 BAL &middot; 10"></div>
+      </div>
+      <div class="pb-ticks"><span>-1</span><span>0</span><span>24</span><span>92</span><span>20</span><span>15</span><span>80</span><span>50</span><span>26</span><span>10</span></div></section><section class="pk"><h4>Defence</h4><div class="pb-rows"><div class="pb-row"><span>ATL allow</span><b>126 yds</b></div><div class="pb-row"><span>league average</span><b>117 yds</b></div></div></section></div></div>
+            </details>
+          </div>
+        </div>
+        <div class="pb-card">
+          <div class="pb-body">
+            <div class="cv-head">
+              <h3 class="cv-tm">Tyler Allgeier</h3>
+              <span class="cv-time">1:00 PM ET</span>
+            </div>
+            <div class="cv-sub">ATL vs PIT
+              &middot; RB</div>
+            <div class="cv-row">
+              <span class="cv-lab">Our projection</span>
+              <span class="cv-pct">29<span class="cv-u">yds</span></span>
+            </div>
+            
+            <div class="cv-foot">
+              <span class="gm">30 per game</span>
+            </div>
+            <details class="gmore" data-close="Close">
+              <summary>Player detail +</summary>
+              <div class="gmore-in"><div class="pnl"><section class="pk"><h4>Last 10 games</h4><div class="pb-striphead"><span></span><span class="pb-rec"><b>4&ndash;6</b> over 29 &middot; L5 <b>2&ndash;3</b></span></div>
+      <div class="pb-strip">
+        <div class="pb-line" style="bottom:32.1%"><span class="pb-linelab">29.2</span></div>
+        <div class="pb-bar" style="height:6.6%" title="W9 NE &middot; 6"></div><div class="pb-bar hit" style="height:62.7%" title="W10 IND &middot; 57"></div><div class="pb-bar" style="height:11.0%" title="W11 CAR &middot; 10"></div><div class="pb-bar hit" style="height:48.4%" title="W12 NO &middot; 44"></div><div class="pb-bar" style="height:22.0%" title="W13 NYJ &middot; 20"></div><div class="pb-bar hit" style="height:37.4%" title="W14 SEA &middot; 34"></div><div class="pb-bar" style="height:19.8%" title="W15 TB &middot; 18"></div><div class="pb-bar hit" style="height:87.0%" title="W16 ARI &middot; 79"></div><div class="pb-bar" style="height:25.3%" title="W17 LA &middot; 23"></div><div class="pb-bar" style="height:17.6%" title="W18 NO &middot; 16"></div>
+      </div>
+      <div class="pb-ticks"><span>6</span><span>57</span><span>10</span><span>44</span><span>20</span><span>34</span><span>18</span><span>79</span><span>23</span><span>16</span></div></section><section class="pk"><h4>Defence</h4><div class="pb-rows"><div class="pb-row"><span>PIT allow</span><b>113 yds</b></div><div class="pb-row"><span>league average</span><b>117 yds</b></div></div></section></div></div>
+            </details>
+          </div>
+        </div></div></section><section class="gsec" id="s-g3" data-game="g3"><div class="gsec-h"><h3>BAL <span>@</span> IND</h3><span>1:00 PM ET</span></div><div class="pb-grid">
+        <div class="pb-card">
+          <div class="pb-body">
+            <div class="cv-head">
+              <h3 class="cv-tm">Jonathan Taylor</h3>
+              <span class="cv-time">1:00 PM ET</span>
+            </div>
+            <div class="cv-sub">IND vs BAL
+              &middot; RB</div>
+            <div class="cv-row">
+              <span class="cv-lab">Our projection</span>
+              <span class="cv-pct">85<span class="cv-u">yds</span></span>
+            </div>
+            
+            <div class="cv-foot">
+              <span class="gm">93 per game</span>
+            </div>
+            <details class="gmore" data-close="Close">
+              <summary>Player detail +</summary>
+              <div class="gmore-in"><div class="pnl"><section class="pk"><h4>Last 10 games</h4><div class="pb-striphead"><span></span><span class="pb-rec"><b>3&ndash;7</b> over 85 &middot; L5 <b>1&ndash;4</b></span></div>
+      <div class="pb-strip">
+        <div class="pb-line" style="bottom:30.3%"><span class="pb-linelab">85</span></div>
+        <div class="pb-bar hit" style="height:54.5%" title="W8 TEN &middot; 153"></div><div class="pb-bar" style="height:16.0%" title="W9 PIT &middot; 45"></div><div class="pb-bar hit" style="height:87.0%" title="W10 ATL &middot; 244"></div><div class="pb-bar" style="height:20.7%" title="W12 KC &middot; 58"></div><div class="pb-bar" style="height:30.3%" title="W13 HOU &middot; 85"></div><div class="pb-bar" style="height:26.4%" title="W14 JAX &middot; 74"></div><div class="pb-bar hit" style="height:31.0%" title="W15 SEA &middot; 87"></div><div class="pb-bar" style="height:16.4%" title="W16 SF &middot; 46"></div><div class="pb-bar" style="height:24.9%" title="W17 JAX &middot; 70"></div><div class="pb-bar" style="height:9.3%" title="W18 HOU &middot; 26"></div>
+      </div>
+      <div class="pb-ticks"><span>153</span><span>45</span><span>244</span><span>58</span><span>85</span><span>74</span><span>87</span><span>46</span><span>70</span><span>26</span></div></section><section class="pk"><h4>Defence</h4><div class="pb-rows"><div class="pb-row"><span>BAL allow</span><b>107 yds</b></div><div class="pb-row"><span>league average</span><b>117 yds</b></div></div></section></div></div>
             </details>
           </div>
         </div>
@@ -1444,6 +1555,60 @@ footer{background:var(--bg-2);padding:56px 0 40px}
         <div class="pb-card">
           <div class="pb-body">
             <div class="cv-head">
+              <h3 class="cv-tm">Lamar Jackson</h3>
+              <span class="cv-time">1:00 PM ET</span>
+            </div>
+            <div class="cv-sub">BAL vs IND
+              &middot; QB</div>
+            <div class="cv-row">
+              <span class="cv-lab">Our projection</span>
+              <span class="cv-pct">23<span class="cv-u">yds</span></span>
+            </div>
+            
+            <div class="cv-foot">
+              <span class="gm">27 per game</span>
+            </div>
+            <details class="gmore" data-close="Close">
+              <summary>Player detail +</summary>
+              <div class="gmore-in"><div class="pnl"><section class="pk"><h4>Last 10 games</h4><div class="pb-striphead"><span></span><span class="pb-rec"><b>5&ndash;5</b> over 23 &middot; L5 <b>3&ndash;2</b></span></div>
+      <div class="pb-strip">
+        <div class="pb-line" style="bottom:42.4%"><span class="pb-linelab">23.4</span></div>
+        <div class="pb-bar hit" style="height:87.0%" title="W4 KC &middot; 48"></div><div class="pb-bar" style="height:25.4%" title="W9 MIA &middot; 14"></div><div class="pb-bar hit" style="height:65.2%" title="W10 MIN &middot; 36"></div><div class="pb-bar" style="height:18.1%" title="W11 CLE &middot; 10"></div><div class="pb-bar" style="height:19.9%" title="W12 NYJ &middot; 11"></div><div class="pb-bar hit" style="height:48.9%" title="W13 CIN &middot; 27"></div><div class="pb-bar hit" style="height:77.9%" title="W14 PIT &middot; 43"></div><div class="pb-bar hit" style="height:47.1%" title="W15 CIN &middot; 26"></div><div class="pb-bar" style="height:12.7%" title="W16 NE &middot; 7"></div><div class="pb-bar" style="height:16.3%" title="W18 PIT &middot; 9"></div>
+      </div>
+      <div class="pb-ticks"><span>48</span><span>14</span><span>36</span><span>10</span><span>11</span><span>27</span><span>43</span><span>26</span><span>7</span><span>9</span></div></section><section class="pk"><h4>Defence</h4><div class="pb-rows"><div class="pb-row"><span>IND allow</span><b>102 yds</b></div><div class="pb-row"><span>league average</span><b>117 yds</b></div></div></section></div></div>
+            </details>
+          </div>
+        </div>
+        <div class="pb-card">
+          <div class="pb-body">
+            <div class="cv-head">
+              <h3 class="cv-tm">DJ Giddens</h3>
+              <span class="cv-time">1:00 PM ET</span>
+            </div>
+            <div class="cv-sub">IND vs BAL
+              &middot; RB</div>
+            <div class="cv-row">
+              <span class="cv-lab">Our projection</span>
+              <span class="cv-pct">18<span class="cv-u">yds</span></span>
+            </div>
+            
+            <div class="cv-foot">
+              <span class="gm">19 per game</span>
+            </div>
+            <details class="gmore" data-close="Close">
+              <summary>Player detail +</summary>
+              <div class="gmore-in"><div class="pnl"><section class="pk"><h4>Last 5 games</h4><div class="pb-striphead"><span></span><span class="pb-rec"><b>3&ndash;2</b> over 18 &middot; L5 <b>3&ndash;2</b></span></div>
+      <div class="pb-strip">
+        <div class="pb-line" style="bottom:37.1%"><span class="pb-linelab">17.5</span></div>
+        <div class="pb-bar hit" style="height:87.0%" title="W1 MIA &middot; 41"></div><div class="pb-bar" style="height:6.0%" title="W2 DEN &middot; 0"></div><div class="pb-bar" style="height:6.4%" title="W3 TEN &middot; 3"></div><div class="pb-bar hit" style="height:46.7%" title="W5 LV &middot; 22"></div><div class="pb-bar hit" style="height:63.6%" title="W18 HOU &middot; 30"></div>
+      </div>
+      <div class="pb-ticks"><span>41</span><span>0</span><span>3</span><span>22</span><span>30</span></div></section><section class="pk"><h4>Defence</h4><div class="pb-rows"><div class="pb-row"><span>BAL allow</span><b>107 yds</b></div><div class="pb-row"><span>league average</span><b>117 yds</b></div></div></section></div></div>
+            </details>
+          </div>
+        </div></div></section><section class="gsec" id="s-g4" data-game="g4"><div class="gsec-h"><h3>BUF <span>@</span> HOU</h3><span>1:00 PM ET</span></div><div class="pb-grid">
+        <div class="pb-card">
+          <div class="pb-body">
+            <div class="cv-head">
               <h3 class="cv-tm">James Cook</h3>
               <span class="cv-time">1:00 PM ET</span>
             </div>
@@ -1465,222 +1630,6 @@ footer{background:var(--bg-2);padding:56px 0 40px}
         <div class="pb-bar hit" style="height:68.8%" title="W9 KC &middot; 114"></div><div class="pb-bar" style="height:32.0%" title="W10 MIA &middot; 53"></div><div class="pb-bar" style="height:29.0%" title="W11 TB &middot; 48"></div><div class="pb-bar hit" style="height:70.0%" title="W12 HOU &middot; 116"></div><div class="pb-bar hit" style="height:87.0%" title="W13 PIT &middot; 144"></div><div class="pb-bar hit" style="height:48.3%" title="W14 CIN &middot; 80"></div><div class="pb-bar hit" style="height:64.6%" title="W15 NE &middot; 107"></div><div class="pb-bar hit" style="height:70.7%" title="W16 CLE &middot; 117"></div><div class="pb-bar" style="height:44.7%" title="W17 PHI &middot; 74"></div><div class="pb-bar" style="height:9.1%" title="W18 NYJ &middot; 15"></div>
       </div>
       <div class="pb-ticks"><span>114</span><span>53</span><span>48</span><span>116</span><span>144</span><span>80</span><span>107</span><span>117</span><span>74</span><span>15</span></div></section><section class="pk"><h4>Defence</h4><div class="pb-rows"><div class="pb-row"><span>HOU allow</span><b>94 yds</b></div><div class="pb-row"><span>league average</span><b>117 yds</b></div></div></section></div></div>
-            </details>
-          </div>
-        </div>
-        <div class="pb-card">
-          <div class="pb-body">
-            <div class="cv-head">
-              <h3 class="cv-tm">Tony Pollard</h3>
-              <span class="cv-time">1:00 PM ET</span>
-            </div>
-            <div class="cv-sub">TEN vs NYJ
-              &middot; RB</div>
-            <div class="cv-row">
-              <span class="cv-lab">Our projection</span>
-              <span class="cv-pct">76<span class="cv-u">yds</span></span>
-            </div>
-            
-            <div class="cv-foot">
-              <span class="gm">64 per game</span>
-            </div>
-            <details class="gmore" data-close="Close">
-              <summary>Player detail +</summary>
-              <div class="gmore-in"><div class="pnl"><section class="pk"><h4>Last 10 games</h4><div class="pb-striphead"><span></span><span class="pb-rec"><b>4&ndash;6</b> over 76 &middot; L5 <b>4&ndash;1</b></span></div>
-      <div class="pb-strip">
-        <div class="pb-line" style="bottom:41.0%"><span class="pb-linelab">75.9</span></div>
-        <div class="pb-bar" style="height:23.8%" title="W8 IND &middot; 44"></div><div class="pb-bar" style="height:30.2%" title="W9 LAC &middot; 56"></div><div class="pb-bar" style="height:11.9%" title="W11 HOU &middot; 22"></div><div class="pb-bar" style="height:10.8%" title="W12 SEA &middot; 20"></div><div class="pb-bar" style="height:32.4%" title="W13 JAX &middot; 60"></div><div class="pb-bar hit" style="height:87.0%" title="W14 CLE &middot; 161"></div><div class="pb-bar hit" style="height:56.2%" title="W15 SF &middot; 104"></div><div class="pb-bar hit" style="height:55.1%" title="W16 KC &middot; 102"></div><div class="pb-bar hit" style="height:45.9%" title="W17 NO &middot; 85"></div><div class="pb-bar" style="height:25.9%" title="W18 JAX &middot; 48"></div>
-      </div>
-      <div class="pb-ticks"><span>44</span><span>56</span><span>22</span><span>20</span><span>60</span><span>161</span><span>104</span><span>102</span><span>85</span><span>48</span></div></section><section class="pk"><h4>Defence</h4><div class="pb-rows"><div class="pb-row"><span>NYJ allow</span><b>140 yds</b></div><div class="pb-row"><span>league average</span><b>117 yds</b></div></div></section></div></div>
-            </details>
-          </div>
-        </div>
-        <div class="pb-card">
-          <div class="pb-body">
-            <div class="cv-head">
-              <h3 class="cv-tm">Jahmyr Gibbs</h3>
-              <span class="cv-time">1:00 PM ET</span>
-            </div>
-            <div class="cv-sub">DET vs NO
-              &middot; RB</div>
-            <div class="cv-row">
-              <span class="cv-lab">Our projection</span>
-              <span class="cv-pct">74<span class="cv-u">yds</span></span>
-            </div>
-            
-            <div class="cv-foot">
-              <span class="gm">72 per game</span>
-            </div>
-            <details class="gmore" data-close="Close">
-              <summary>Player detail +</summary>
-              <div class="gmore-in"><div class="pnl"><section class="pk"><h4>Last 10 games</h4><div class="pb-striphead"><span></span><span class="pb-rec"><b>3&ndash;7</b> over 74 &middot; L5 <b>1&ndash;4</b></span></div>
-      <div class="pb-strip">
-        <div class="pb-line" style="bottom:29.5%"><span class="pb-linelab">74.2</span></div>
-        <div class="pb-bar" style="height:9.9%" title="W9 MIN &middot; 25"></div><div class="pb-bar hit" style="height:56.4%" title="W10 WAS &middot; 142"></div><div class="pb-bar" style="height:15.5%" title="W11 PHI &middot; 39"></div><div class="pb-bar hit" style="height:87.0%" title="W12 NYG &middot; 219"></div><div class="pb-bar" style="height:27.0%" title="W13 GB &middot; 68"></div><div class="pb-bar" style="height:17.1%" title="W14 DAL &middot; 43"></div><div class="pb-bar" style="height:15.1%" title="W15 LA &middot; 38"></div><div class="pb-bar" style="height:6.0%" title="W16 PIT &middot; 2"></div><div class="pb-bar" style="height:16.3%" title="W17 MIN &middot; 41"></div><div class="pb-bar hit" style="height:31.8%" title="W18 CHI &middot; 80"></div>
-      </div>
-      <div class="pb-ticks"><span>25</span><span>142</span><span>39</span><span>219</span><span>68</span><span>43</span><span>38</span><span>2</span><span>41</span><span>80</span></div></section><section class="pk"><h4>Defence</h4><div class="pb-rows"><div class="pb-row"><span>NO allow</span><b>121 yds</b></div><div class="pb-row"><span>league average</span><b>117 yds</b></div></div></section></div></div>
-            </details>
-          </div>
-        </div>
-        <div class="pb-card">
-          <div class="pb-body">
-            <div class="cv-head">
-              <h3 class="cv-tm">Bucky Irving</h3>
-              <span class="cv-time">1:00 PM ET</span>
-            </div>
-            <div class="cv-sub">TB vs CIN
-              &middot; RB</div>
-            <div class="cv-row">
-              <span class="cv-lab">Our projection</span>
-              <span class="cv-pct">74<span class="cv-u">yds</span></span>
-            </div>
-            
-            <div class="cv-foot">
-              <span class="gm">59 per game</span>
-            </div>
-            <details class="gmore" data-close="Close">
-              <summary>Player detail +</summary>
-              <div class="gmore-in"><div class="pnl"><section class="pk"><h4>Last 10 games</h4><div class="pb-striphead"><span></span><span class="pb-rec"><b>1&ndash;9</b> over 74 &middot; L5 <b>1&ndash;4</b></span></div>
-      <div class="pb-strip">
-        <div class="pb-line" style="bottom:75.6%"><span class="pb-linelab">73.9</span></div>
-        <div class="pb-bar" style="height:37.9%" title="W1 ATL &middot; 37"></div><div class="pb-bar" style="height:72.6%" title="W2 HOU &middot; 71"></div><div class="pb-bar" style="height:67.5%" title="W3 NYJ &middot; 66"></div><div class="pb-bar" style="height:64.5%" title="W4 PHI &middot; 63"></div><div class="pb-bar" style="height:62.4%" title="W13 ARI &middot; 61"></div><div class="pb-bar" style="height:56.3%" title="W14 NO &middot; 55"></div><div class="pb-bar" style="height:61.4%" title="W15 ATL &middot; 60"></div><div class="pb-bar" style="height:72.6%" title="W16 CAR &middot; 71"></div><div class="pb-bar" style="height:19.4%" title="W17 MIA &middot; 19"></div><div class="pb-bar hit" style="height:87.0%" title="W18 CAR &middot; 85"></div>
-      </div>
-      <div class="pb-ticks"><span>37</span><span>71</span><span>66</span><span>63</span><span>61</span><span>55</span><span>60</span><span>71</span><span>19</span><span>85</span></div></section><section class="pk"><h4>Defence</h4><div class="pb-rows"><div class="pb-row"><span>CIN allow</span><b>147 yds</b></div><div class="pb-row"><span>league average</span><b>117 yds</b></div></div></section></div></div>
-            </details>
-          </div>
-        </div>
-        <div class="pb-card">
-          <div class="pb-body">
-            <div class="cv-head">
-              <h3 class="cv-tm">Rico Dowdle</h3>
-              <span class="cv-time">1:00 PM ET</span>
-            </div>
-            <div class="cv-sub">CAR vs CHI
-              &middot; RB</div>
-            <div class="cv-row">
-              <span class="cv-lab">Our projection</span>
-              <span class="cv-pct">73<span class="cv-u">yds</span></span>
-            </div>
-            
-            <div class="cv-foot">
-              <span class="gm">63 per game</span>
-            </div>
-            <details class="gmore" data-close="Close">
-              <summary>Player detail +</summary>
-              <div class="gmore-in"><div class="pnl"><section class="pk"><h4>Last 10 games</h4><div class="pb-striphead"><span></span><span class="pb-rec"><b>1&ndash;9</b> over 73 &middot; L5 <b>0&ndash;5</b></span></div>
-      <div class="pb-strip">
-        <div class="pb-line" style="bottom:48.7%"><span class="pb-linelab">72.8</span></div>
-        <div class="pb-bar" style="height:36.1%" title="W8 BUF &middot; 54"></div><div class="pb-bar hit" style="height:87.0%" title="W9 GB &middot; 130"></div><div class="pb-bar" style="height:35.5%" title="W10 NO &middot; 53"></div><div class="pb-bar" style="height:30.1%" title="W11 ATL &middot; 45"></div><div class="pb-bar" style="height:25.4%" title="W12 SF &middot; 38"></div><div class="pb-bar" style="height:38.8%" title="W13 LA &middot; 58"></div><div class="pb-bar" style="height:32.8%" title="W15 NO &middot; 49"></div><div class="pb-bar" style="height:19.4%" title="W16 TB &middot; 29"></div><div class="pb-bar" style="height:39.5%" title="W17 SEA &middot; 59"></div><div class="pb-bar" style="height:6.7%" title="W18 TB &middot; 10"></div>
-      </div>
-      <div class="pb-ticks"><span>54</span><span>130</span><span>53</span><span>45</span><span>38</span><span>58</span><span>49</span><span>29</span><span>59</span><span>10</span></div></section><section class="pk"><h4>Defence</h4><div class="pb-rows"><div class="pb-row"><span>CHI allow</span><b>134 yds</b></div><div class="pb-row"><span>league average</span><b>117 yds</b></div></div></section></div></div>
-            </details>
-          </div>
-        </div>
-        <div class="pb-card">
-          <div class="pb-body">
-            <div class="cv-head">
-              <h3 class="cv-tm">D'Andre Swift</h3>
-              <span class="cv-time">1:00 PM ET</span>
-            </div>
-            <div class="cv-sub">CHI vs CAR
-              &middot; RB</div>
-            <div class="cv-row">
-              <span class="cv-lab">Our projection</span>
-              <span class="cv-pct">72<span class="cv-u">yds</span></span>
-            </div>
-            
-            <div class="cv-foot">
-              <span class="gm">68 per game</span>
-            </div>
-            <details class="gmore" data-close="Close">
-              <summary>Player detail +</summary>
-              <div class="gmore-in"><div class="pnl"><section class="pk"><h4>Last 10 games</h4><div class="pb-striphead"><span></span><span class="pb-rec"><b>4&ndash;6</b> over 72 &middot; L5 <b>1&ndash;4</b></span></div>
-      <div class="pb-strip">
-        <div class="pb-line" style="bottom:49.8%"><span class="pb-linelab">71.6</span></div>
-        <div class="pb-bar" style="height:31.3%" title="W8 BAL &middot; 45"></div><div class="pb-bar hit" style="height:55.7%" title="W10 NYG &middot; 80"></div><div class="pb-bar hit" style="height:62.6%" title="W11 MIN &middot; 90"></div><div class="pb-bar" style="height:10.4%" title="W12 PIT &middot; 15"></div><div class="pb-bar hit" style="height:87.0%" title="W13 PHI &middot; 125"></div><div class="pb-bar" style="height:43.8%" title="W14 GB &middot; 63"></div><div class="pb-bar hit" style="height:68.2%" title="W15 CLE &middot; 98"></div><div class="pb-bar" style="height:40.3%" title="W16 GB &middot; 58"></div><div class="pb-bar" style="height:37.6%" title="W17 SF &middot; 54"></div><div class="pb-bar" style="height:27.8%" title="W18 DET &middot; 40"></div>
-      </div>
-      <div class="pb-ticks"><span>45</span><span>80</span><span>90</span><span>15</span><span>125</span><span>63</span><span>98</span><span>58</span><span>54</span><span>40</span></div></section><section class="pk"><h4>Defence</h4><div class="pb-rows"><div class="pb-row"><span>CAR allow</span><b>123 yds</b></div><div class="pb-row"><span>league average</span><b>117 yds</b></div></div></section></div></div>
-            </details>
-          </div>
-        </div>
-        <div class="pb-card">
-          <div class="pb-body">
-            <div class="cv-head">
-              <h3 class="cv-tm">Breece Hall</h3>
-              <span class="cv-time">1:00 PM ET</span>
-            </div>
-            <div class="cv-sub">NYJ vs TEN
-              &middot; RB</div>
-            <div class="cv-row">
-              <span class="cv-lab">Our projection</span>
-              <span class="cv-pct">65<span class="cv-u">yds</span></span>
-            </div>
-            
-            <div class="cv-foot">
-              <span class="gm">67 per game</span>
-            </div>
-            <details class="gmore" data-close="Close">
-              <summary>Player detail +</summary>
-              <div class="gmore-in"><div class="pnl"><section class="pk"><h4>Last 10 games</h4><div class="pb-striphead"><span></span><span class="pb-rec"><b>4&ndash;6</b> over 65 &middot; L5 <b>2&ndash;3</b></span></div>
-      <div class="pb-strip">
-        <div class="pb-line" style="bottom:42.6%"><span class="pb-linelab">65.2</span></div>
-        <div class="pb-bar" style="height:24.8%" title="W7 CAR &middot; 38"></div><div class="pb-bar hit" style="height:87.0%" title="W8 CIN &middot; 133"></div><div class="pb-bar hit" style="height:54.3%" title="W10 CLE &middot; 83"></div><div class="pb-bar" style="height:37.9%" title="W11 NE &middot; 58"></div><div class="pb-bar" style="height:28.8%" title="W12 BAL &middot; 44"></div><div class="pb-bar hit" style="height:44.5%" title="W13 ATL &middot; 68"></div><div class="pb-bar" style="height:28.1%" title="W14 MIA &middot; 43"></div><div class="pb-bar" style="height:15.0%" title="W15 JAX &middot; 23"></div><div class="pb-bar" style="height:35.3%" title="W16 NO &middot; 54"></div><div class="pb-bar hit" style="height:72.6%" title="W17 NE &middot; 111"></div>
-      </div>
-      <div class="pb-ticks"><span>38</span><span>133</span><span>83</span><span>58</span><span>44</span><span>68</span><span>43</span><span>23</span><span>54</span><span>111</span></div></section><section class="pk"><h4>Defence</h4><div class="pb-rows"><div class="pb-row"><span>TEN allow</span><b>115 yds</b></div><div class="pb-row"><span>league average</span><b>117 yds</b></div></div></section></div></div>
-            </details>
-          </div>
-        </div>
-        <div class="pb-card">
-          <div class="pb-body">
-            <div class="cv-head">
-              <h3 class="cv-tm">Travis Etienne</h3>
-              <span class="cv-time">1:00 PM ET</span>
-            </div>
-            <div class="cv-sub">JAX vs CLE
-              &middot; RB</div>
-            <div class="cv-row">
-              <span class="cv-lab">Our projection</span>
-              <span class="cv-pct">65<span class="cv-u">yds</span></span>
-            </div>
-            
-            <div class="cv-foot">
-              <span class="gm">65 per game</span>
-            </div>
-            <details class="gmore" data-close="Close">
-              <summary>Player detail +</summary>
-              <div class="gmore-in"><div class="pnl"><section class="pk"><h4>Last 10 games</h4><div class="pb-striphead"><span></span><span class="pb-rec"><b>5&ndash;5</b> over 65 &middot; L5 <b>2&ndash;3</b></span></div>
-      <div class="pb-strip">
-        <div class="pb-line" style="bottom:65.5%"><span class="pb-linelab">64.8</span></div>
-        <div class="pb-bar hit" style="height:84.9%" title="W9 LV &middot; 84"></div><div class="pb-bar" style="height:58.6%" title="W10 HOU &middot; 58"></div><div class="pb-bar hit" style="height:73.8%" title="W11 LAC &middot; 73"></div><div class="pb-bar hit" style="height:87.0%" title="W12 ARI &middot; 86"></div><div class="pb-bar" style="height:28.3%" title="W13 TEN &middot; 28"></div><div class="pb-bar hit" style="height:74.8%" title="W14 IND &middot; 74"></div><div class="pb-bar" style="height:32.4%" title="W15 NYJ &middot; 32"></div><div class="pb-bar" style="height:50.6%" title="W16 DEN &middot; 50"></div><div class="pb-bar hit" style="height:76.8%" title="W17 IND &middot; 76"></div><div class="pb-bar" style="height:32.4%" title="W18 TEN &middot; 32"></div>
-      </div>
-      <div class="pb-ticks"><span>84</span><span>58</span><span>73</span><span>86</span><span>28</span><span>74</span><span>32</span><span>50</span><span>76</span><span>32</span></div></section><section class="pk"><h4>Defence</h4><div class="pb-rows"><div class="pb-row"><span>CLE allow</span><b>116 yds</b></div><div class="pb-row"><span>league average</span><b>117 yds</b></div></div></section></div></div>
-            </details>
-          </div>
-        </div>
-        <div class="pb-card">
-          <div class="pb-body">
-            <div class="cv-head">
-              <h3 class="cv-tm">Jaylen Warren</h3>
-              <span class="cv-time">1:00 PM ET</span>
-            </div>
-            <div class="cv-sub">PIT vs ATL
-              &middot; RB</div>
-            <div class="cv-row">
-              <span class="cv-lab">Our projection</span>
-              <span class="cv-pct">65<span class="cv-u">yds</span></span>
-            </div>
-            
-            <div class="cv-foot">
-              <span class="gm">60 per game</span>
-            </div>
-            <details class="gmore" data-close="Close">
-              <summary>Player detail +</summary>
-              <div class="gmore-in"><div class="pnl"><section class="pk"><h4>Last 10 games</h4><div class="pb-striphead"><span></span><span class="pb-rec"><b>4&ndash;6</b> over 65 &middot; L5 <b>2&ndash;3</b></span></div>
-      <div class="pb-strip">
-        <div class="pb-line" style="bottom:39.3%"><span class="pb-linelab">64.6</span></div>
-        <div class="pb-bar" style="height:18.9%" title="W9 IND &middot; 31"></div><div class="pb-bar hit" style="height:42.6%" title="W10 LAC &middot; 70"></div><div class="pb-bar" style="height:37.7%" title="W11 CIN &middot; 62"></div><div class="pb-bar hit" style="height:41.3%" title="W12 CHI &middot; 68"></div><div class="pb-bar" style="height:21.3%" title="W13 BUF &middot; 35"></div><div class="pb-bar" style="height:7.9%" title="W14 BAL &middot; 13"></div><div class="pb-bar" style="height:20.1%" title="W15 MIA &middot; 33"></div><div class="pb-bar hit" style="height:87.0%" title="W16 DET &middot; 143"></div><div class="pb-bar" style="height:38.9%" title="W17 CLE &middot; 64"></div><div class="pb-bar hit" style="height:40.1%" title="W18 BAL &middot; 66"></div>
-      </div>
-      <div class="pb-ticks"><span>31</span><span>70</span><span>62</span><span>68</span><span>35</span><span>13</span><span>33</span><span>143</span><span>64</span><span>66</span></div></section><section class="pk"><h4>Defence</h4><div class="pb-rows"><div class="pb-row"><span>ATL allow</span><b>126 yds</b></div><div class="pb-row"><span>league average</span><b>117 yds</b></div></div></section></div></div>
             </details>
           </div>
         </div>
@@ -1741,27 +1690,81 @@ footer{background:var(--bg-2);padding:56px 0 40px}
         <div class="pb-card">
           <div class="pb-body">
             <div class="cv-head">
-              <h3 class="cv-tm">Chase Brown</h3>
+              <h3 class="cv-tm">Josh Allen</h3>
               <span class="cv-time">1:00 PM ET</span>
             </div>
-            <div class="cv-sub">CIN vs TB
-              &middot; RB</div>
+            <div class="cv-sub">BUF vs HOU
+              &middot; QB</div>
             <div class="cv-row">
               <span class="cv-lab">Our projection</span>
-              <span class="cv-pct">51<span class="cv-u">yds</span></span>
+              <span class="cv-pct">29<span class="cv-u">yds</span></span>
             </div>
             
             <div class="cv-foot">
-              <span class="gm">60 per game</span>
+              <span class="gm">36 per game</span>
             </div>
             <details class="gmore" data-close="Close">
               <summary>Player detail +</summary>
-              <div class="gmore-in"><div class="pnl"><section class="pk"><h4>Last 10 games</h4><div class="pb-striphead"><span></span><span class="pb-rec"><b>8&ndash;2</b> over 51 &middot; L5 <b>4&ndash;1</b></span></div>
+              <div class="gmore-in"><div class="pnl"><section class="pk"><h4>Last 10 games</h4><div class="pb-striphead"><span></span><span class="pb-rec"><b>5&ndash;5</b> over 29 &middot; L5 <b>3&ndash;2</b></span></div>
       <div class="pb-strip">
-        <div class="pb-line" style="bottom:41.3%"><span class="pb-linelab">50.8</span></div>
-        <div class="pb-bar hit" style="height:59.3%" title="W8 NYJ &middot; 73"></div><div class="pb-bar" style="height:30.1%" title="W9 CHI &middot; 37"></div><div class="pb-bar hit" style="height:80.5%" title="W11 PIT &middot; 99"></div><div class="pb-bar hit" style="height:87.0%" title="W12 NE &middot; 107"></div><div class="pb-bar hit" style="height:63.4%" title="W13 BAL &middot; 78"></div><div class="pb-bar" style="height:18.7%" title="W14 BUF &middot; 23"></div><div class="pb-bar hit" style="height:43.1%" title="W15 BAL &middot; 53"></div><div class="pb-bar hit" style="height:53.6%" title="W16 MIA &middot; 66"></div><div class="pb-bar hit" style="height:82.1%" title="W17 ARI &middot; 101"></div><div class="pb-bar hit" style="height:58.5%" title="W18 CLE &middot; 72"></div>
+        <div class="pb-line" style="bottom:32.3%"><span class="pb-linelab">29</span></div>
+        <div class="pb-bar" style="height:7.8%" title="W8 CAR &middot; 7"></div><div class="pb-bar" style="height:21.2%" title="W9 KC &middot; 19"></div><div class="pb-bar hit" style="height:34.6%" title="W10 MIA &middot; 31"></div><div class="pb-bar hit" style="height:44.6%" title="W11 TB &middot; 40"></div><div class="pb-bar" style="height:22.3%" title="W12 HOU &middot; 20"></div><div class="pb-bar hit" style="height:42.4%" title="W13 PIT &middot; 38"></div><div class="pb-bar hit" style="height:87.0%" title="W14 CIN &middot; 78"></div><div class="pb-bar hit" style="height:53.5%" title="W15 NE &middot; 48"></div><div class="pb-bar" style="height:19.0%" title="W16 CLE &middot; 17"></div><div class="pb-bar" style="height:30.1%" title="W17 PHI &middot; 27"></div>
       </div>
-      <div class="pb-ticks"><span>73</span><span>37</span><span>99</span><span>107</span><span>78</span><span>23</span><span>53</span><span>66</span><span>101</span><span>72</span></div></section><section class="pk"><h4>Defence</h4><div class="pb-rows"><div class="pb-row"><span>TB allow</span><b>99 yds</b></div><div class="pb-row"><span>league average</span><b>117 yds</b></div></div></section></div></div>
+      <div class="pb-ticks"><span>7</span><span>19</span><span>31</span><span>40</span><span>20</span><span>38</span><span>78</span><span>48</span><span>17</span><span>27</span></div></section><section class="pk"><h4>Defence</h4><div class="pb-rows"><div class="pb-row"><span>HOU allow</span><b>94 yds</b></div><div class="pb-row"><span>league average</span><b>117 yds</b></div></div></section></div></div>
+            </details>
+          </div>
+        </div></div></section><section class="gsec" id="s-g5" data-game="g5"><div class="gsec-h"><h3>CHI <span>@</span> CAR</h3><span>1:00 PM ET</span></div><div class="pb-grid">
+        <div class="pb-card">
+          <div class="pb-body">
+            <div class="cv-head">
+              <h3 class="cv-tm">Rico Dowdle</h3>
+              <span class="cv-time">1:00 PM ET</span>
+            </div>
+            <div class="cv-sub">CAR vs CHI
+              &middot; RB</div>
+            <div class="cv-row">
+              <span class="cv-lab">Our projection</span>
+              <span class="cv-pct">73<span class="cv-u">yds</span></span>
+            </div>
+            
+            <div class="cv-foot">
+              <span class="gm">63 per game</span>
+            </div>
+            <details class="gmore" data-close="Close">
+              <summary>Player detail +</summary>
+              <div class="gmore-in"><div class="pnl"><section class="pk"><h4>Last 10 games</h4><div class="pb-striphead"><span></span><span class="pb-rec"><b>1&ndash;9</b> over 73 &middot; L5 <b>0&ndash;5</b></span></div>
+      <div class="pb-strip">
+        <div class="pb-line" style="bottom:48.7%"><span class="pb-linelab">72.8</span></div>
+        <div class="pb-bar" style="height:36.1%" title="W8 BUF &middot; 54"></div><div class="pb-bar hit" style="height:87.0%" title="W9 GB &middot; 130"></div><div class="pb-bar" style="height:35.5%" title="W10 NO &middot; 53"></div><div class="pb-bar" style="height:30.1%" title="W11 ATL &middot; 45"></div><div class="pb-bar" style="height:25.4%" title="W12 SF &middot; 38"></div><div class="pb-bar" style="height:38.8%" title="W13 LA &middot; 58"></div><div class="pb-bar" style="height:32.8%" title="W15 NO &middot; 49"></div><div class="pb-bar" style="height:19.4%" title="W16 TB &middot; 29"></div><div class="pb-bar" style="height:39.5%" title="W17 SEA &middot; 59"></div><div class="pb-bar" style="height:6.7%" title="W18 TB &middot; 10"></div>
+      </div>
+      <div class="pb-ticks"><span>54</span><span>130</span><span>53</span><span>45</span><span>38</span><span>58</span><span>49</span><span>29</span><span>59</span><span>10</span></div></section><section class="pk"><h4>Defence</h4><div class="pb-rows"><div class="pb-row"><span>CHI allow</span><b>134 yds</b></div><div class="pb-row"><span>league average</span><b>117 yds</b></div></div></section></div></div>
+            </details>
+          </div>
+        </div>
+        <div class="pb-card">
+          <div class="pb-body">
+            <div class="cv-head">
+              <h3 class="cv-tm">D'Andre Swift</h3>
+              <span class="cv-time">1:00 PM ET</span>
+            </div>
+            <div class="cv-sub">CHI vs CAR
+              &middot; RB</div>
+            <div class="cv-row">
+              <span class="cv-lab">Our projection</span>
+              <span class="cv-pct">72<span class="cv-u">yds</span></span>
+            </div>
+            
+            <div class="cv-foot">
+              <span class="gm">68 per game</span>
+            </div>
+            <details class="gmore" data-close="Close">
+              <summary>Player detail +</summary>
+              <div class="gmore-in"><div class="pnl"><section class="pk"><h4>Last 10 games</h4><div class="pb-striphead"><span></span><span class="pb-rec"><b>4&ndash;6</b> over 72 &middot; L5 <b>1&ndash;4</b></span></div>
+      <div class="pb-strip">
+        <div class="pb-line" style="bottom:49.8%"><span class="pb-linelab">71.6</span></div>
+        <div class="pb-bar" style="height:31.3%" title="W8 BAL &middot; 45"></div><div class="pb-bar hit" style="height:55.7%" title="W10 NYG &middot; 80"></div><div class="pb-bar hit" style="height:62.6%" title="W11 MIN &middot; 90"></div><div class="pb-bar" style="height:10.4%" title="W12 PIT &middot; 15"></div><div class="pb-bar hit" style="height:87.0%" title="W13 PHI &middot; 125"></div><div class="pb-bar" style="height:43.8%" title="W14 GB &middot; 63"></div><div class="pb-bar hit" style="height:68.2%" title="W15 CLE &middot; 98"></div><div class="pb-bar" style="height:40.3%" title="W16 GB &middot; 58"></div><div class="pb-bar" style="height:37.6%" title="W17 SF &middot; 54"></div><div class="pb-bar" style="height:27.8%" title="W18 DET &middot; 40"></div>
+      </div>
+      <div class="pb-ticks"><span>45</span><span>80</span><span>90</span><span>15</span><span>125</span><span>63</span><span>98</span><span>58</span><span>54</span><span>40</span></div></section><section class="pk"><h4>Defence</h4><div class="pb-rows"><div class="pb-row"><span>CAR allow</span><b>123 yds</b></div><div class="pb-row"><span>league average</span><b>117 yds</b></div></div></section></div></div>
             </details>
           </div>
         </div>
@@ -1795,27 +1798,54 @@ footer{background:var(--bg-2);padding:56px 0 40px}
         <div class="pb-card">
           <div class="pb-body">
             <div class="cv-head">
-              <h3 class="cv-tm">David Montgomery</h3>
+              <h3 class="cv-tm">Chuba Hubbard</h3>
               <span class="cv-time">1:00 PM ET</span>
             </div>
-            <div class="cv-sub">DET vs NO
+            <div class="cv-sub">CAR vs CHI
               &middot; RB</div>
             <div class="cv-row">
               <span class="cv-lab">Our projection</span>
-              <span class="cv-pct">43<span class="cv-u">yds</span></span>
+              <span class="cv-pct">39<span class="cv-u">yds</span></span>
             </div>
             
             <div class="cv-foot">
-              <span class="gm">42 per game</span>
+              <span class="gm">34 per game</span>
             </div>
             <details class="gmore" data-close="Close">
               <summary>Player detail +</summary>
-              <div class="gmore-in"><div class="pnl"><section class="pk"><h4>Last 10 games</h4><div class="pb-striphead"><span></span><span class="pb-rec"><b>2&ndash;8</b> over 43 &middot; L5 <b>1&ndash;4</b></span></div>
+              <div class="gmore-in"><div class="pnl"><section class="pk"><h4>Last 10 games</h4><div class="pb-striphead"><span></span><span class="pb-rec"><b>1&ndash;9</b> over 39 &middot; L5 <b>1&ndash;4</b></span></div>
       <div class="pb-strip">
-        <div class="pb-line" style="bottom:53.2%"><span class="pb-linelab">43.4</span></div>
-        <div class="pb-bar" style="height:49.0%" title="W9 MIN &middot; 40"></div><div class="pb-bar hit" style="height:87.0%" title="W10 WAS &middot; 71"></div><div class="pb-bar" style="height:33.1%" title="W11 PHI &middot; 27"></div><div class="pb-bar" style="height:22.0%" title="W12 NYG &middot; 18"></div><div class="pb-bar" style="height:39.2%" title="W13 GB &middot; 32"></div><div class="pb-bar hit" style="height:73.5%" title="W14 DAL &middot; 60"></div><div class="pb-bar" style="height:39.2%" title="W15 LA &middot; 32"></div><div class="pb-bar" style="height:17.1%" title="W16 PIT &middot; 14"></div><div class="pb-bar" style="height:30.6%" title="W17 MIN &middot; 25"></div><div class="pb-bar" style="height:51.4%" title="W18 CHI &middot; 42"></div>
+        <div class="pb-line" style="bottom:41.1%"><span class="pb-linelab">39.2</span></div>
+        <div class="pb-bar" style="height:35.6%" title="W8 BUF &middot; 34"></div><div class="pb-bar" style="height:17.8%" title="W9 GB &middot; 17"></div><div class="pb-bar" style="height:14.7%" title="W10 NO &middot; 14"></div><div class="pb-bar" style="height:22.0%" title="W11 ATL &middot; 21"></div><div class="pb-bar" style="height:16.8%" title="W12 SF &middot; 16"></div><div class="pb-bar hit" style="height:87.0%" title="W13 LA &middot; 83"></div><div class="pb-bar" style="height:30.4%" title="W15 NO &middot; 29"></div><div class="pb-bar" style="height:28.3%" title="W16 TB &middot; 27"></div><div class="pb-bar" style="height:12.6%" title="W17 SEA &middot; 12"></div><div class="pb-bar" style="height:10.5%" title="W18 TB &middot; 10"></div>
       </div>
-      <div class="pb-ticks"><span>40</span><span>71</span><span>27</span><span>18</span><span>32</span><span>60</span><span>32</span><span>14</span><span>25</span><span>42</span></div></section><section class="pk"><h4>Defence</h4><div class="pb-rows"><div class="pb-row"><span>NO allow</span><b>121 yds</b></div><div class="pb-row"><span>league average</span><b>117 yds</b></div></div></section></div></div>
+      <div class="pb-ticks"><span>34</span><span>17</span><span>14</span><span>21</span><span>16</span><span>83</span><span>29</span><span>27</span><span>12</span><span>10</span></div></section><section class="pk"><h4>Defence</h4><div class="pb-rows"><div class="pb-row"><span>CHI allow</span><b>134 yds</b></div><div class="pb-row"><span>league average</span><b>117 yds</b></div></div></section></div></div>
+            </details>
+          </div>
+        </div></div></section><section class="gsec" id="s-g6" data-game="g6"><div class="gsec-h"><h3>CLE <span>@</span> JAX</h3><span>1:00 PM ET</span></div><div class="pb-grid">
+        <div class="pb-card">
+          <div class="pb-body">
+            <div class="cv-head">
+              <h3 class="cv-tm">Travis Etienne</h3>
+              <span class="cv-time">1:00 PM ET</span>
+            </div>
+            <div class="cv-sub">JAX vs CLE
+              &middot; RB</div>
+            <div class="cv-row">
+              <span class="cv-lab">Our projection</span>
+              <span class="cv-pct">65<span class="cv-u">yds</span></span>
+            </div>
+            
+            <div class="cv-foot">
+              <span class="gm">65 per game</span>
+            </div>
+            <details class="gmore" data-close="Close">
+              <summary>Player detail +</summary>
+              <div class="gmore-in"><div class="pnl"><section class="pk"><h4>Last 10 games</h4><div class="pb-striphead"><span></span><span class="pb-rec"><b>5&ndash;5</b> over 65 &middot; L5 <b>2&ndash;3</b></span></div>
+      <div class="pb-strip">
+        <div class="pb-line" style="bottom:65.5%"><span class="pb-linelab">64.8</span></div>
+        <div class="pb-bar hit" style="height:84.9%" title="W9 LV &middot; 84"></div><div class="pb-bar" style="height:58.6%" title="W10 HOU &middot; 58"></div><div class="pb-bar hit" style="height:73.8%" title="W11 LAC &middot; 73"></div><div class="pb-bar hit" style="height:87.0%" title="W12 ARI &middot; 86"></div><div class="pb-bar" style="height:28.3%" title="W13 TEN &middot; 28"></div><div class="pb-bar hit" style="height:74.8%" title="W14 IND &middot; 74"></div><div class="pb-bar" style="height:32.4%" title="W15 NYJ &middot; 32"></div><div class="pb-bar" style="height:50.6%" title="W16 DEN &middot; 50"></div><div class="pb-bar hit" style="height:76.8%" title="W17 IND &middot; 76"></div><div class="pb-bar" style="height:32.4%" title="W18 TEN &middot; 32"></div>
+      </div>
+      <div class="pb-ticks"><span>84</span><span>58</span><span>73</span><span>86</span><span>28</span><span>74</span><span>32</span><span>50</span><span>76</span><span>32</span></div></section><section class="pk"><h4>Defence</h4><div class="pb-rows"><div class="pb-row"><span>CLE allow</span><b>116 yds</b></div><div class="pb-row"><span>league average</span><b>117 yds</b></div></div></section></div></div>
             </details>
           </div>
         </div>
@@ -1849,27 +1879,108 @@ footer{background:var(--bg-2);padding:56px 0 40px}
         <div class="pb-card">
           <div class="pb-body">
             <div class="cv-head">
-              <h3 class="cv-tm">Rachaad White</h3>
+              <h3 class="cv-tm">Bhayshul Tuten</h3>
               <span class="cv-time">1:00 PM ET</span>
             </div>
-            <div class="cv-sub">TB vs CIN
+            <div class="cv-sub">JAX vs CLE
               &middot; RB</div>
             <div class="cv-row">
               <span class="cv-lab">Our projection</span>
-              <span class="cv-pct">42<span class="cv-u">yds</span></span>
+              <span class="cv-pct">20<span class="cv-u">yds</span></span>
             </div>
             
             <div class="cv-foot">
-              <span class="gm">34 per game</span>
+              <span class="gm">20 per game</span>
             </div>
             <details class="gmore" data-close="Close">
               <summary>Player detail +</summary>
-              <div class="gmore-in"><div class="pnl"><section class="pk"><h4>Last 10 games</h4><div class="pb-striphead"><span></span><span class="pb-rec"><b>3&ndash;7</b> over 42 &middot; L5 <b>2&ndash;3</b></span></div>
+              <div class="gmore-in"><div class="pnl"><section class="pk"><h4>Last 10 games</h4><div class="pb-striphead"><span></span><span class="pb-rec"><b>4&ndash;6</b> over 20 &middot; L5 <b>1&ndash;4</b></span></div>
       <div class="pb-strip">
-        <div class="pb-line" style="bottom:69.4%"><span class="pb-linelab">42.3</span></div>
-        <div class="pb-bar" style="height:57.4%" title="W8 NO &middot; 35"></div><div class="pb-bar" style="height:62.3%" title="W10 NE &middot; 38"></div><div class="pb-bar hit" style="height:83.7%" title="W11 BUF &middot; 51"></div><div class="pb-bar" style="height:62.3%" title="W12 LA &middot; 38"></div><div class="pb-bar" style="height:11.5%" title="W13 ARI &middot; 7"></div><div class="pb-bar hit" style="height:87.0%" title="W14 NO &middot; 53"></div><div class="pb-bar" style="height:32.8%" title="W15 ATL &middot; 20"></div><div class="pb-bar hit" style="height:73.8%" title="W16 CAR &middot; 45"></div><div class="pb-bar" style="height:16.4%" title="W17 MIA &middot; 10"></div><div class="pb-bar" style="height:37.7%" title="W18 CAR &middot; 23"></div>
+        <div class="pb-line" style="bottom:24.0%"><span class="pb-linelab">20.4</span></div>
+        <div class="pb-bar" style="height:16.5%" title="W6 SEA &middot; 14"></div><div class="pb-bar hit" style="height:25.9%" title="W7 LA &middot; 22"></div><div class="pb-bar hit" style="height:34.1%" title="W9 LV &middot; 29"></div><div class="pb-bar" style="height:6.0%" title="W10 HOU &middot; 5"></div><div class="pb-bar hit" style="height:87.0%" title="W11 LAC &middot; 74"></div><div class="pb-bar" style="height:20.0%" title="W12 ARI &middot; 17"></div><div class="pb-bar" style="height:20.0%" title="W13 TEN &middot; 17"></div><div class="pb-bar" style="height:6.0%" title="W14 IND &middot; 5"></div><div class="pb-bar" style="height:8.2%" title="W15 NYJ &middot; 7"></div><div class="pb-bar hit" style="height:27.0%" title="W18 TEN &middot; 23"></div>
       </div>
-      <div class="pb-ticks"><span>35</span><span>38</span><span>51</span><span>38</span><span>7</span><span>53</span><span>20</span><span>45</span><span>10</span><span>23</span></div></section><section class="pk"><h4>Defence</h4><div class="pb-rows"><div class="pb-row"><span>CIN allow</span><b>147 yds</b></div><div class="pb-row"><span>league average</span><b>117 yds</b></div></div></section></div></div>
+      <div class="pb-ticks"><span>14</span><span>22</span><span>29</span><span>5</span><span>74</span><span>17</span><span>17</span><span>5</span><span>7</span><span>23</span></div></section><section class="pk"><h4>Defence</h4><div class="pb-rows"><div class="pb-row"><span>CLE allow</span><b>116 yds</b></div><div class="pb-row"><span>league average</span><b>117 yds</b></div></div></section></div></div>
+            </details>
+          </div>
+        </div>
+        <div class="pb-card">
+          <div class="pb-body">
+            <div class="cv-head">
+              <h3 class="cv-tm">Raheim Sanders</h3>
+              <span class="cv-time">1:00 PM ET</span>
+            </div>
+            <div class="cv-sub">CLE vs JAX
+              &middot; RB</div>
+            <div class="cv-row">
+              <span class="cv-lab">Our projection</span>
+              <span class="cv-pct">17<span class="cv-u">yds</span></span>
+            </div>
+            
+            <div class="cv-foot">
+              <span class="gm">23 per game</span>
+            </div>
+            <details class="gmore" data-close="Close">
+              <summary>Player detail +</summary>
+              <div class="gmore-in"><div class="pnl"><section class="pk"><h4>Last 4 games</h4><div class="pb-striphead"><span></span><span class="pb-rec"><b>3&ndash;1</b> over 17 &middot; L5 <b>3&ndash;1</b></span></div>
+      <div class="pb-strip">
+        <div class="pb-line" style="bottom:34.8%"><span class="pb-linelab">16.8</span></div>
+        <div class="pb-bar" style="height:6.2%" title="W1 CIN &middot; 3"></div><div class="pb-bar hit" style="height:87.0%" title="W16 BUF &middot; 42"></div><div class="pb-bar hit" style="height:43.5%" title="W17 PIT &middot; 21"></div><div class="pb-bar hit" style="height:53.8%" title="W18 CIN &middot; 26"></div>
+      </div>
+      <div class="pb-ticks"><span>3</span><span>42</span><span>21</span><span>26</span></div></section><section class="pk"><h4>Defence</h4><div class="pb-rows"><div class="pb-row"><span>JAX allow</span><b>86 yds</b></div><div class="pb-row"><span>league average</span><b>117 yds</b></div></div></section></div></div>
+            </details>
+          </div>
+        </div></div></section><section class="gsec" id="s-g7" data-game="g7"><div class="gsec-h"><h3>NO <span>@</span> DET</h3><span>1:00 PM ET</span></div><div class="pb-grid">
+        <div class="pb-card">
+          <div class="pb-body">
+            <div class="cv-head">
+              <h3 class="cv-tm">Jahmyr Gibbs</h3>
+              <span class="cv-time">1:00 PM ET</span>
+            </div>
+            <div class="cv-sub">DET vs NO
+              &middot; RB</div>
+            <div class="cv-row">
+              <span class="cv-lab">Our projection</span>
+              <span class="cv-pct">74<span class="cv-u">yds</span></span>
+            </div>
+            
+            <div class="cv-foot">
+              <span class="gm">72 per game</span>
+            </div>
+            <details class="gmore" data-close="Close">
+              <summary>Player detail +</summary>
+              <div class="gmore-in"><div class="pnl"><section class="pk"><h4>Last 10 games</h4><div class="pb-striphead"><span></span><span class="pb-rec"><b>3&ndash;7</b> over 74 &middot; L5 <b>1&ndash;4</b></span></div>
+      <div class="pb-strip">
+        <div class="pb-line" style="bottom:29.5%"><span class="pb-linelab">74.2</span></div>
+        <div class="pb-bar" style="height:9.9%" title="W9 MIN &middot; 25"></div><div class="pb-bar hit" style="height:56.4%" title="W10 WAS &middot; 142"></div><div class="pb-bar" style="height:15.5%" title="W11 PHI &middot; 39"></div><div class="pb-bar hit" style="height:87.0%" title="W12 NYG &middot; 219"></div><div class="pb-bar" style="height:27.0%" title="W13 GB &middot; 68"></div><div class="pb-bar" style="height:17.1%" title="W14 DAL &middot; 43"></div><div class="pb-bar" style="height:15.1%" title="W15 LA &middot; 38"></div><div class="pb-bar" style="height:6.0%" title="W16 PIT &middot; 2"></div><div class="pb-bar" style="height:16.3%" title="W17 MIN &middot; 41"></div><div class="pb-bar hit" style="height:31.8%" title="W18 CHI &middot; 80"></div>
+      </div>
+      <div class="pb-ticks"><span>25</span><span>142</span><span>39</span><span>219</span><span>68</span><span>43</span><span>38</span><span>2</span><span>41</span><span>80</span></div></section><section class="pk"><h4>Defence</h4><div class="pb-rows"><div class="pb-row"><span>NO allow</span><b>121 yds</b></div><div class="pb-row"><span>league average</span><b>117 yds</b></div></div></section></div></div>
+            </details>
+          </div>
+        </div>
+        <div class="pb-card">
+          <div class="pb-body">
+            <div class="cv-head">
+              <h3 class="cv-tm">David Montgomery</h3>
+              <span class="cv-time">1:00 PM ET</span>
+            </div>
+            <div class="cv-sub">DET vs NO
+              &middot; RB</div>
+            <div class="cv-row">
+              <span class="cv-lab">Our projection</span>
+              <span class="cv-pct">43<span class="cv-u">yds</span></span>
+            </div>
+            
+            <div class="cv-foot">
+              <span class="gm">42 per game</span>
+            </div>
+            <details class="gmore" data-close="Close">
+              <summary>Player detail +</summary>
+              <div class="gmore-in"><div class="pnl"><section class="pk"><h4>Last 10 games</h4><div class="pb-striphead"><span></span><span class="pb-rec"><b>2&ndash;8</b> over 43 &middot; L5 <b>1&ndash;4</b></span></div>
+      <div class="pb-strip">
+        <div class="pb-line" style="bottom:53.2%"><span class="pb-linelab">43.4</span></div>
+        <div class="pb-bar" style="height:49.0%" title="W9 MIN &middot; 40"></div><div class="pb-bar hit" style="height:87.0%" title="W10 WAS &middot; 71"></div><div class="pb-bar" style="height:33.1%" title="W11 PHI &middot; 27"></div><div class="pb-bar" style="height:22.0%" title="W12 NYG &middot; 18"></div><div class="pb-bar" style="height:39.2%" title="W13 GB &middot; 32"></div><div class="pb-bar hit" style="height:73.5%" title="W14 DAL &middot; 60"></div><div class="pb-bar" style="height:39.2%" title="W15 LA &middot; 32"></div><div class="pb-bar" style="height:17.1%" title="W16 PIT &middot; 14"></div><div class="pb-bar" style="height:30.6%" title="W17 MIN &middot; 25"></div><div class="pb-bar" style="height:51.4%" title="W18 CHI &middot; 42"></div>
+      </div>
+      <div class="pb-ticks"><span>40</span><span>71</span><span>27</span><span>18</span><span>32</span><span>60</span><span>32</span><span>14</span><span>25</span><span>42</span></div></section><section class="pk"><h4>Defence</h4><div class="pb-rows"><div class="pb-row"><span>NO allow</span><b>121 yds</b></div><div class="pb-row"><span>league average</span><b>117 yds</b></div></div></section></div></div>
             </details>
           </div>
         </div>
@@ -1903,60 +2014,6 @@ footer{background:var(--bg-2);padding:56px 0 40px}
         <div class="pb-card">
           <div class="pb-body">
             <div class="cv-head">
-              <h3 class="cv-tm">Justin Fields</h3>
-              <span class="cv-time">1:00 PM ET</span>
-            </div>
-            <div class="cv-sub">NYJ vs TEN
-              &middot; QB</div>
-            <div class="cv-row">
-              <span class="cv-lab">Our projection</span>
-              <span class="cv-pct">42<span class="cv-u">yds</span></span>
-            </div>
-            
-            <div class="cv-foot">
-              <span class="gm">43 per game</span>
-            </div>
-            <details class="gmore" data-close="Close">
-              <summary>Player detail +</summary>
-              <div class="gmore-in"><div class="pnl"><section class="pk"><h4>Last 9 games</h4><div class="pb-striphead"><span></span><span class="pb-rec"><b>4&ndash;5</b> over 42 &middot; L5 <b>1&ndash;4</b></span></div>
-      <div class="pb-strip">
-        <div class="pb-line" style="bottom:44.8%"><span class="pb-linelab">41.7</span></div>
-        <div class="pb-bar hit" style="height:51.5%" title="W1 PIT &middot; 48"></div><div class="pb-bar hit" style="height:52.6%" title="W2 BUF &middot; 49"></div><div class="pb-bar hit" style="height:87.0%" title="W4 MIA &middot; 81"></div><div class="pb-bar" style="height:27.9%" title="W5 DAL &middot; 26"></div><div class="pb-bar" style="height:33.3%" title="W6 DEN &middot; 31"></div><div class="pb-bar" style="height:23.6%" title="W7 CAR &middot; 22"></div><div class="pb-bar" style="height:33.3%" title="W8 CIN &middot; 31"></div><div class="pb-bar" style="height:30.1%" title="W10 CLE &middot; 28"></div><div class="pb-bar hit" style="height:71.9%" title="W11 NE &middot; 67"></div>
-      </div>
-      <div class="pb-ticks"><span>48</span><span>49</span><span>81</span><span>26</span><span>31</span><span>22</span><span>31</span><span>28</span><span>67</span></div></section><section class="pk"><h4>Defence</h4><div class="pb-rows"><div class="pb-row"><span>TEN allow</span><b>115 yds</b></div><div class="pb-row"><span>league average</span><b>117 yds</b></div></div></section></div></div>
-            </details>
-          </div>
-        </div>
-        <div class="pb-card">
-          <div class="pb-body">
-            <div class="cv-head">
-              <h3 class="cv-tm">Chuba Hubbard</h3>
-              <span class="cv-time">1:00 PM ET</span>
-            </div>
-            <div class="cv-sub">CAR vs CHI
-              &middot; RB</div>
-            <div class="cv-row">
-              <span class="cv-lab">Our projection</span>
-              <span class="cv-pct">39<span class="cv-u">yds</span></span>
-            </div>
-            
-            <div class="cv-foot">
-              <span class="gm">34 per game</span>
-            </div>
-            <details class="gmore" data-close="Close">
-              <summary>Player detail +</summary>
-              <div class="gmore-in"><div class="pnl"><section class="pk"><h4>Last 10 games</h4><div class="pb-striphead"><span></span><span class="pb-rec"><b>1&ndash;9</b> over 39 &middot; L5 <b>1&ndash;4</b></span></div>
-      <div class="pb-strip">
-        <div class="pb-line" style="bottom:41.1%"><span class="pb-linelab">39.2</span></div>
-        <div class="pb-bar" style="height:35.6%" title="W8 BUF &middot; 34"></div><div class="pb-bar" style="height:17.8%" title="W9 GB &middot; 17"></div><div class="pb-bar" style="height:14.7%" title="W10 NO &middot; 14"></div><div class="pb-bar" style="height:22.0%" title="W11 ATL &middot; 21"></div><div class="pb-bar" style="height:16.8%" title="W12 SF &middot; 16"></div><div class="pb-bar hit" style="height:87.0%" title="W13 LA &middot; 83"></div><div class="pb-bar" style="height:30.4%" title="W15 NO &middot; 29"></div><div class="pb-bar" style="height:28.3%" title="W16 TB &middot; 27"></div><div class="pb-bar" style="height:12.6%" title="W17 SEA &middot; 12"></div><div class="pb-bar" style="height:10.5%" title="W18 TB &middot; 10"></div>
-      </div>
-      <div class="pb-ticks"><span>34</span><span>17</span><span>14</span><span>21</span><span>16</span><span>83</span><span>29</span><span>27</span><span>12</span><span>10</span></div></section><section class="pk"><h4>Defence</h4><div class="pb-rows"><div class="pb-row"><span>CHI allow</span><b>134 yds</b></div><div class="pb-row"><span>league average</span><b>117 yds</b></div></div></section></div></div>
-            </details>
-          </div>
-        </div>
-        <div class="pb-card">
-          <div class="pb-body">
-            <div class="cv-head">
               <h3 class="cv-tm">Audric Estimé</h3>
               <span class="cv-time">1:00 PM ET</span>
             </div>
@@ -1980,85 +2037,85 @@ footer{background:var(--bg-2);padding:56px 0 40px}
       <div class="pb-ticks"><span>11</span><span>11</span><span>19</span><span>94</span><span>63</span></div></section><section class="pk"><h4>Defence</h4><div class="pb-rows"><div class="pb-row"><span>DET allow</span><b>114 yds</b></div><div class="pb-row"><span>league average</span><b>117 yds</b></div></div></section></div></div>
             </details>
           </div>
-        </div>
+        </div></div></section><section class="gsec" id="s-g8" data-game="g8"><div class="gsec-h"><h3>NYJ <span>@</span> TEN</h3><span>1:00 PM ET</span></div><div class="pb-grid">
         <div class="pb-card">
           <div class="pb-body">
             <div class="cv-head">
-              <h3 class="cv-tm">Kenny Gainwell</h3>
+              <h3 class="cv-tm">Tony Pollard</h3>
               <span class="cv-time">1:00 PM ET</span>
             </div>
-            <div class="cv-sub">PIT vs ATL
+            <div class="cv-sub">TEN vs NYJ
               &middot; RB</div>
             <div class="cv-row">
               <span class="cv-lab">Our projection</span>
-              <span class="cv-pct">34<span class="cv-u">yds</span></span>
+              <span class="cv-pct">76<span class="cv-u">yds</span></span>
             </div>
             
             <div class="cv-foot">
-              <span class="gm">32 per game</span>
+              <span class="gm">64 per game</span>
             </div>
             <details class="gmore" data-close="Close">
               <summary>Player detail +</summary>
-              <div class="gmore-in"><div class="pnl"><section class="pk"><h4>Last 10 games</h4><div class="pb-striphead"><span></span><span class="pb-rec"><b>3&ndash;7</b> over 34 &middot; L5 <b>2&ndash;3</b></span></div>
+              <div class="gmore-in"><div class="pnl"><section class="pk"><h4>Last 10 games</h4><div class="pb-striphead"><span></span><span class="pb-rec"><b>4&ndash;6</b> over 76 &middot; L5 <b>4&ndash;1</b></span></div>
       <div class="pb-strip">
-        <div class="pb-line" style="bottom:32.2%"><span class="pb-linelab">34.1</span></div>
-        <div class="pb-bar" style="height:6.0%" title="W9 IND &middot; -1"></div><div class="pb-bar" style="height:6.0%" title="W10 LAC &middot; 0"></div><div class="pb-bar" style="height:22.7%" title="W11 CIN &middot; 24"></div><div class="pb-bar hit" style="height:87.0%" title="W12 CHI &middot; 92"></div><div class="pb-bar" style="height:18.9%" title="W13 BUF &middot; 20"></div><div class="pb-bar" style="height:14.2%" title="W14 BAL &middot; 15"></div><div class="pb-bar hit" style="height:75.6%" title="W15 MIA &middot; 80"></div><div class="pb-bar hit" style="height:47.3%" title="W16 DET &middot; 50"></div><div class="pb-bar" style="height:24.6%" title="W17 CLE &middot; 26"></div><div class="pb-bar" style="height:9.5%" title="W18 BAL &middot; 10"></div>
+        <div class="pb-line" style="bottom:41.0%"><span class="pb-linelab">75.9</span></div>
+        <div class="pb-bar" style="height:23.8%" title="W8 IND &middot; 44"></div><div class="pb-bar" style="height:30.2%" title="W9 LAC &middot; 56"></div><div class="pb-bar" style="height:11.9%" title="W11 HOU &middot; 22"></div><div class="pb-bar" style="height:10.8%" title="W12 SEA &middot; 20"></div><div class="pb-bar" style="height:32.4%" title="W13 JAX &middot; 60"></div><div class="pb-bar hit" style="height:87.0%" title="W14 CLE &middot; 161"></div><div class="pb-bar hit" style="height:56.2%" title="W15 SF &middot; 104"></div><div class="pb-bar hit" style="height:55.1%" title="W16 KC &middot; 102"></div><div class="pb-bar hit" style="height:45.9%" title="W17 NO &middot; 85"></div><div class="pb-bar" style="height:25.9%" title="W18 JAX &middot; 48"></div>
       </div>
-      <div class="pb-ticks"><span>-1</span><span>0</span><span>24</span><span>92</span><span>20</span><span>15</span><span>80</span><span>50</span><span>26</span><span>10</span></div></section><section class="pk"><h4>Defence</h4><div class="pb-rows"><div class="pb-row"><span>ATL allow</span><b>126 yds</b></div><div class="pb-row"><span>league average</span><b>117 yds</b></div></div></section></div></div>
+      <div class="pb-ticks"><span>44</span><span>56</span><span>22</span><span>20</span><span>60</span><span>161</span><span>104</span><span>102</span><span>85</span><span>48</span></div></section><section class="pk"><h4>Defence</h4><div class="pb-rows"><div class="pb-row"><span>NYJ allow</span><b>140 yds</b></div><div class="pb-row"><span>league average</span><b>117 yds</b></div></div></section></div></div>
             </details>
           </div>
         </div>
         <div class="pb-card">
           <div class="pb-body">
             <div class="cv-head">
-              <h3 class="cv-tm">Tyler Allgeier</h3>
+              <h3 class="cv-tm">Breece Hall</h3>
               <span class="cv-time">1:00 PM ET</span>
             </div>
-            <div class="cv-sub">ATL vs PIT
+            <div class="cv-sub">NYJ vs TEN
               &middot; RB</div>
             <div class="cv-row">
               <span class="cv-lab">Our projection</span>
-              <span class="cv-pct">29<span class="cv-u">yds</span></span>
+              <span class="cv-pct">65<span class="cv-u">yds</span></span>
             </div>
             
             <div class="cv-foot">
-              <span class="gm">30 per game</span>
+              <span class="gm">67 per game</span>
             </div>
             <details class="gmore" data-close="Close">
               <summary>Player detail +</summary>
-              <div class="gmore-in"><div class="pnl"><section class="pk"><h4>Last 10 games</h4><div class="pb-striphead"><span></span><span class="pb-rec"><b>4&ndash;6</b> over 29 &middot; L5 <b>2&ndash;3</b></span></div>
+              <div class="gmore-in"><div class="pnl"><section class="pk"><h4>Last 10 games</h4><div class="pb-striphead"><span></span><span class="pb-rec"><b>4&ndash;6</b> over 65 &middot; L5 <b>2&ndash;3</b></span></div>
       <div class="pb-strip">
-        <div class="pb-line" style="bottom:32.1%"><span class="pb-linelab">29.2</span></div>
-        <div class="pb-bar" style="height:6.6%" title="W9 NE &middot; 6"></div><div class="pb-bar hit" style="height:62.7%" title="W10 IND &middot; 57"></div><div class="pb-bar" style="height:11.0%" title="W11 CAR &middot; 10"></div><div class="pb-bar hit" style="height:48.4%" title="W12 NO &middot; 44"></div><div class="pb-bar" style="height:22.0%" title="W13 NYJ &middot; 20"></div><div class="pb-bar hit" style="height:37.4%" title="W14 SEA &middot; 34"></div><div class="pb-bar" style="height:19.8%" title="W15 TB &middot; 18"></div><div class="pb-bar hit" style="height:87.0%" title="W16 ARI &middot; 79"></div><div class="pb-bar" style="height:25.3%" title="W17 LA &middot; 23"></div><div class="pb-bar" style="height:17.6%" title="W18 NO &middot; 16"></div>
+        <div class="pb-line" style="bottom:42.6%"><span class="pb-linelab">65.2</span></div>
+        <div class="pb-bar" style="height:24.8%" title="W7 CAR &middot; 38"></div><div class="pb-bar hit" style="height:87.0%" title="W8 CIN &middot; 133"></div><div class="pb-bar hit" style="height:54.3%" title="W10 CLE &middot; 83"></div><div class="pb-bar" style="height:37.9%" title="W11 NE &middot; 58"></div><div class="pb-bar" style="height:28.8%" title="W12 BAL &middot; 44"></div><div class="pb-bar hit" style="height:44.5%" title="W13 ATL &middot; 68"></div><div class="pb-bar" style="height:28.1%" title="W14 MIA &middot; 43"></div><div class="pb-bar" style="height:15.0%" title="W15 JAX &middot; 23"></div><div class="pb-bar" style="height:35.3%" title="W16 NO &middot; 54"></div><div class="pb-bar hit" style="height:72.6%" title="W17 NE &middot; 111"></div>
       </div>
-      <div class="pb-ticks"><span>6</span><span>57</span><span>10</span><span>44</span><span>20</span><span>34</span><span>18</span><span>79</span><span>23</span><span>16</span></div></section><section class="pk"><h4>Defence</h4><div class="pb-rows"><div class="pb-row"><span>PIT allow</span><b>113 yds</b></div><div class="pb-row"><span>league average</span><b>117 yds</b></div></div></section></div></div>
+      <div class="pb-ticks"><span>38</span><span>133</span><span>83</span><span>58</span><span>44</span><span>68</span><span>43</span><span>23</span><span>54</span><span>111</span></div></section><section class="pk"><h4>Defence</h4><div class="pb-rows"><div class="pb-row"><span>TEN allow</span><b>115 yds</b></div><div class="pb-row"><span>league average</span><b>117 yds</b></div></div></section></div></div>
             </details>
           </div>
         </div>
         <div class="pb-card">
           <div class="pb-body">
             <div class="cv-head">
-              <h3 class="cv-tm">Josh Allen</h3>
+              <h3 class="cv-tm">Justin Fields</h3>
               <span class="cv-time">1:00 PM ET</span>
             </div>
-            <div class="cv-sub">BUF vs HOU
+            <div class="cv-sub">NYJ vs TEN
               &middot; QB</div>
             <div class="cv-row">
               <span class="cv-lab">Our projection</span>
-              <span class="cv-pct">29<span class="cv-u">yds</span></span>
+              <span class="cv-pct">42<span class="cv-u">yds</span></span>
             </div>
             
             <div class="cv-foot">
-              <span class="gm">36 per game</span>
+              <span class="gm">43 per game</span>
             </div>
             <details class="gmore" data-close="Close">
               <summary>Player detail +</summary>
-              <div class="gmore-in"><div class="pnl"><section class="pk"><h4>Last 10 games</h4><div class="pb-striphead"><span></span><span class="pb-rec"><b>5&ndash;5</b> over 29 &middot; L5 <b>3&ndash;2</b></span></div>
+              <div class="gmore-in"><div class="pnl"><section class="pk"><h4>Last 9 games</h4><div class="pb-striphead"><span></span><span class="pb-rec"><b>4&ndash;5</b> over 42 &middot; L5 <b>1&ndash;4</b></span></div>
       <div class="pb-strip">
-        <div class="pb-line" style="bottom:32.3%"><span class="pb-linelab">29</span></div>
-        <div class="pb-bar" style="height:7.8%" title="W8 CAR &middot; 7"></div><div class="pb-bar" style="height:21.2%" title="W9 KC &middot; 19"></div><div class="pb-bar hit" style="height:34.6%" title="W10 MIA &middot; 31"></div><div class="pb-bar hit" style="height:44.6%" title="W11 TB &middot; 40"></div><div class="pb-bar" style="height:22.3%" title="W12 HOU &middot; 20"></div><div class="pb-bar hit" style="height:42.4%" title="W13 PIT &middot; 38"></div><div class="pb-bar hit" style="height:87.0%" title="W14 CIN &middot; 78"></div><div class="pb-bar hit" style="height:53.5%" title="W15 NE &middot; 48"></div><div class="pb-bar" style="height:19.0%" title="W16 CLE &middot; 17"></div><div class="pb-bar" style="height:30.1%" title="W17 PHI &middot; 27"></div>
+        <div class="pb-line" style="bottom:44.8%"><span class="pb-linelab">41.7</span></div>
+        <div class="pb-bar hit" style="height:51.5%" title="W1 PIT &middot; 48"></div><div class="pb-bar hit" style="height:52.6%" title="W2 BUF &middot; 49"></div><div class="pb-bar hit" style="height:87.0%" title="W4 MIA &middot; 81"></div><div class="pb-bar" style="height:27.9%" title="W5 DAL &middot; 26"></div><div class="pb-bar" style="height:33.3%" title="W6 DEN &middot; 31"></div><div class="pb-bar" style="height:23.6%" title="W7 CAR &middot; 22"></div><div class="pb-bar" style="height:33.3%" title="W8 CIN &middot; 31"></div><div class="pb-bar" style="height:30.1%" title="W10 CLE &middot; 28"></div><div class="pb-bar hit" style="height:71.9%" title="W11 NE &middot; 67"></div>
       </div>
-      <div class="pb-ticks"><span>7</span><span>19</span><span>31</span><span>40</span><span>20</span><span>38</span><span>78</span><span>48</span><span>17</span><span>27</span></div></section><section class="pk"><h4>Defence</h4><div class="pb-rows"><div class="pb-row"><span>HOU allow</span><b>94 yds</b></div><div class="pb-row"><span>league average</span><b>117 yds</b></div></div></section></div></div>
+      <div class="pb-ticks"><span>48</span><span>49</span><span>81</span><span>26</span><span>31</span><span>22</span><span>31</span><span>28</span><span>67</span></div></section><section class="pk"><h4>Defence</h4><div class="pb-rows"><div class="pb-row"><span>TEN allow</span><b>115 yds</b></div><div class="pb-row"><span>league average</span><b>117 yds</b></div></div></section></div></div>
             </details>
           </div>
         </div>
@@ -2088,31 +2145,85 @@ footer{background:var(--bg-2);padding:56px 0 40px}
       <div class="pb-ticks"><span>59</span><span>26</span><span>3</span><span>4</span><span>-1</span><span>19</span><span>34</span><span>52</span><span>2</span><span>18</span></div></section><section class="pk"><h4>Defence</h4><div class="pb-rows"><div class="pb-row"><span>NYJ allow</span><b>140 yds</b></div><div class="pb-row"><span>league average</span><b>117 yds</b></div></div></section></div></div>
             </details>
           </div>
+        </div></div></section><section class="gsec" id="s-g9" data-game="g9"><div class="gsec-h"><h3>TB <span>@</span> CIN</h3><span>1:00 PM ET</span></div><div class="pb-grid">
+        <div class="pb-card">
+          <div class="pb-body">
+            <div class="cv-head">
+              <h3 class="cv-tm">Bucky Irving</h3>
+              <span class="cv-time">1:00 PM ET</span>
+            </div>
+            <div class="cv-sub">TB vs CIN
+              &middot; RB</div>
+            <div class="cv-row">
+              <span class="cv-lab">Our projection</span>
+              <span class="cv-pct">74<span class="cv-u">yds</span></span>
+            </div>
+            
+            <div class="cv-foot">
+              <span class="gm">59 per game</span>
+            </div>
+            <details class="gmore" data-close="Close">
+              <summary>Player detail +</summary>
+              <div class="gmore-in"><div class="pnl"><section class="pk"><h4>Last 10 games</h4><div class="pb-striphead"><span></span><span class="pb-rec"><b>1&ndash;9</b> over 74 &middot; L5 <b>1&ndash;4</b></span></div>
+      <div class="pb-strip">
+        <div class="pb-line" style="bottom:75.6%"><span class="pb-linelab">73.9</span></div>
+        <div class="pb-bar" style="height:37.9%" title="W1 ATL &middot; 37"></div><div class="pb-bar" style="height:72.6%" title="W2 HOU &middot; 71"></div><div class="pb-bar" style="height:67.5%" title="W3 NYJ &middot; 66"></div><div class="pb-bar" style="height:64.5%" title="W4 PHI &middot; 63"></div><div class="pb-bar" style="height:62.4%" title="W13 ARI &middot; 61"></div><div class="pb-bar" style="height:56.3%" title="W14 NO &middot; 55"></div><div class="pb-bar" style="height:61.4%" title="W15 ATL &middot; 60"></div><div class="pb-bar" style="height:72.6%" title="W16 CAR &middot; 71"></div><div class="pb-bar" style="height:19.4%" title="W17 MIA &middot; 19"></div><div class="pb-bar hit" style="height:87.0%" title="W18 CAR &middot; 85"></div>
+      </div>
+      <div class="pb-ticks"><span>37</span><span>71</span><span>66</span><span>63</span><span>61</span><span>55</span><span>60</span><span>71</span><span>19</span><span>85</span></div></section><section class="pk"><h4>Defence</h4><div class="pb-rows"><div class="pb-row"><span>CIN allow</span><b>147 yds</b></div><div class="pb-row"><span>league average</span><b>117 yds</b></div></div></section></div></div>
+            </details>
+          </div>
         </div>
         <div class="pb-card">
           <div class="pb-body">
             <div class="cv-head">
-              <h3 class="cv-tm">Lamar Jackson</h3>
+              <h3 class="cv-tm">Chase Brown</h3>
               <span class="cv-time">1:00 PM ET</span>
             </div>
-            <div class="cv-sub">BAL vs IND
-              &middot; QB</div>
+            <div class="cv-sub">CIN vs TB
+              &middot; RB</div>
             <div class="cv-row">
               <span class="cv-lab">Our projection</span>
-              <span class="cv-pct">23<span class="cv-u">yds</span></span>
+              <span class="cv-pct">51<span class="cv-u">yds</span></span>
             </div>
             
             <div class="cv-foot">
-              <span class="gm">27 per game</span>
+              <span class="gm">60 per game</span>
             </div>
             <details class="gmore" data-close="Close">
               <summary>Player detail +</summary>
-              <div class="gmore-in"><div class="pnl"><section class="pk"><h4>Last 10 games</h4><div class="pb-striphead"><span></span><span class="pb-rec"><b>5&ndash;5</b> over 23 &middot; L5 <b>3&ndash;2</b></span></div>
+              <div class="gmore-in"><div class="pnl"><section class="pk"><h4>Last 10 games</h4><div class="pb-striphead"><span></span><span class="pb-rec"><b>8&ndash;2</b> over 51 &middot; L5 <b>4&ndash;1</b></span></div>
       <div class="pb-strip">
-        <div class="pb-line" style="bottom:42.4%"><span class="pb-linelab">23.4</span></div>
-        <div class="pb-bar hit" style="height:87.0%" title="W4 KC &middot; 48"></div><div class="pb-bar" style="height:25.4%" title="W9 MIA &middot; 14"></div><div class="pb-bar hit" style="height:65.2%" title="W10 MIN &middot; 36"></div><div class="pb-bar" style="height:18.1%" title="W11 CLE &middot; 10"></div><div class="pb-bar" style="height:19.9%" title="W12 NYJ &middot; 11"></div><div class="pb-bar hit" style="height:48.9%" title="W13 CIN &middot; 27"></div><div class="pb-bar hit" style="height:77.9%" title="W14 PIT &middot; 43"></div><div class="pb-bar hit" style="height:47.1%" title="W15 CIN &middot; 26"></div><div class="pb-bar" style="height:12.7%" title="W16 NE &middot; 7"></div><div class="pb-bar" style="height:16.3%" title="W18 PIT &middot; 9"></div>
+        <div class="pb-line" style="bottom:41.3%"><span class="pb-linelab">50.8</span></div>
+        <div class="pb-bar hit" style="height:59.3%" title="W8 NYJ &middot; 73"></div><div class="pb-bar" style="height:30.1%" title="W9 CHI &middot; 37"></div><div class="pb-bar hit" style="height:80.5%" title="W11 PIT &middot; 99"></div><div class="pb-bar hit" style="height:87.0%" title="W12 NE &middot; 107"></div><div class="pb-bar hit" style="height:63.4%" title="W13 BAL &middot; 78"></div><div class="pb-bar" style="height:18.7%" title="W14 BUF &middot; 23"></div><div class="pb-bar hit" style="height:43.1%" title="W15 BAL &middot; 53"></div><div class="pb-bar hit" style="height:53.6%" title="W16 MIA &middot; 66"></div><div class="pb-bar hit" style="height:82.1%" title="W17 ARI &middot; 101"></div><div class="pb-bar hit" style="height:58.5%" title="W18 CLE &middot; 72"></div>
       </div>
-      <div class="pb-ticks"><span>48</span><span>14</span><span>36</span><span>10</span><span>11</span><span>27</span><span>43</span><span>26</span><span>7</span><span>9</span></div></section><section class="pk"><h4>Defence</h4><div class="pb-rows"><div class="pb-row"><span>IND allow</span><b>102 yds</b></div><div class="pb-row"><span>league average</span><b>117 yds</b></div></div></section></div></div>
+      <div class="pb-ticks"><span>73</span><span>37</span><span>99</span><span>107</span><span>78</span><span>23</span><span>53</span><span>66</span><span>101</span><span>72</span></div></section><section class="pk"><h4>Defence</h4><div class="pb-rows"><div class="pb-row"><span>TB allow</span><b>99 yds</b></div><div class="pb-row"><span>league average</span><b>117 yds</b></div></div></section></div></div>
+            </details>
+          </div>
+        </div>
+        <div class="pb-card">
+          <div class="pb-body">
+            <div class="cv-head">
+              <h3 class="cv-tm">Rachaad White</h3>
+              <span class="cv-time">1:00 PM ET</span>
+            </div>
+            <div class="cv-sub">TB vs CIN
+              &middot; RB</div>
+            <div class="cv-row">
+              <span class="cv-lab">Our projection</span>
+              <span class="cv-pct">42<span class="cv-u">yds</span></span>
+            </div>
+            
+            <div class="cv-foot">
+              <span class="gm">34 per game</span>
+            </div>
+            <details class="gmore" data-close="Close">
+              <summary>Player detail +</summary>
+              <div class="gmore-in"><div class="pnl"><section class="pk"><h4>Last 10 games</h4><div class="pb-striphead"><span></span><span class="pb-rec"><b>3&ndash;7</b> over 42 &middot; L5 <b>2&ndash;3</b></span></div>
+      <div class="pb-strip">
+        <div class="pb-line" style="bottom:69.4%"><span class="pb-linelab">42.3</span></div>
+        <div class="pb-bar" style="height:57.4%" title="W8 NO &middot; 35"></div><div class="pb-bar" style="height:62.3%" title="W10 NE &middot; 38"></div><div class="pb-bar hit" style="height:83.7%" title="W11 BUF &middot; 51"></div><div class="pb-bar" style="height:62.3%" title="W12 LA &middot; 38"></div><div class="pb-bar" style="height:11.5%" title="W13 ARI &middot; 7"></div><div class="pb-bar hit" style="height:87.0%" title="W14 NO &middot; 53"></div><div class="pb-bar" style="height:32.8%" title="W15 ATL &middot; 20"></div><div class="pb-bar hit" style="height:73.8%" title="W16 CAR &middot; 45"></div><div class="pb-bar" style="height:16.4%" title="W17 MIA &middot; 10"></div><div class="pb-bar" style="height:37.7%" title="W18 CAR &middot; 23"></div>
+      </div>
+      <div class="pb-ticks"><span>35</span><span>38</span><span>51</span><span>38</span><span>7</span><span>53</span><span>20</span><span>45</span><span>10</span><span>23</span></div></section><section class="pk"><h4>Defence</h4><div class="pb-rows"><div class="pb-row"><span>CIN allow</span><b>147 yds</b></div><div class="pb-row"><span>league average</span><b>117 yds</b></div></div></section></div></div>
             </details>
           </div>
         </div>
@@ -2142,142 +2253,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
       <div class="pb-ticks"><span>16</span><span>31</span><span>94</span><span>5</span><span>39</span><span>31</span><span>42</span><span>25</span><span>5</span><span>42</span></div></section><section class="pk"><h4>Defence</h4><div class="pb-rows"><div class="pb-row"><span>TB allow</span><b>99 yds</b></div><div class="pb-row"><span>league average</span><b>117 yds</b></div></div></section></div></div>
             </details>
           </div>
-        </div>
-        <div class="pb-card">
-          <div class="pb-body">
-            <div class="cv-head">
-              <h3 class="cv-tm">Bhayshul Tuten</h3>
-              <span class="cv-time">1:00 PM ET</span>
-            </div>
-            <div class="cv-sub">JAX vs CLE
-              &middot; RB</div>
-            <div class="cv-row">
-              <span class="cv-lab">Our projection</span>
-              <span class="cv-pct">20<span class="cv-u">yds</span></span>
-            </div>
-            
-            <div class="cv-foot">
-              <span class="gm">20 per game</span>
-            </div>
-            <details class="gmore" data-close="Close">
-              <summary>Player detail +</summary>
-              <div class="gmore-in"><div class="pnl"><section class="pk"><h4>Last 10 games</h4><div class="pb-striphead"><span></span><span class="pb-rec"><b>4&ndash;6</b> over 20 &middot; L5 <b>1&ndash;4</b></span></div>
-      <div class="pb-strip">
-        <div class="pb-line" style="bottom:24.0%"><span class="pb-linelab">20.4</span></div>
-        <div class="pb-bar" style="height:16.5%" title="W6 SEA &middot; 14"></div><div class="pb-bar hit" style="height:25.9%" title="W7 LA &middot; 22"></div><div class="pb-bar hit" style="height:34.1%" title="W9 LV &middot; 29"></div><div class="pb-bar" style="height:6.0%" title="W10 HOU &middot; 5"></div><div class="pb-bar hit" style="height:87.0%" title="W11 LAC &middot; 74"></div><div class="pb-bar" style="height:20.0%" title="W12 ARI &middot; 17"></div><div class="pb-bar" style="height:20.0%" title="W13 TEN &middot; 17"></div><div class="pb-bar" style="height:6.0%" title="W14 IND &middot; 5"></div><div class="pb-bar" style="height:8.2%" title="W15 NYJ &middot; 7"></div><div class="pb-bar hit" style="height:27.0%" title="W18 TEN &middot; 23"></div>
-      </div>
-      <div class="pb-ticks"><span>14</span><span>22</span><span>29</span><span>5</span><span>74</span><span>17</span><span>17</span><span>5</span><span>7</span><span>23</span></div></section><section class="pk"><h4>Defence</h4><div class="pb-rows"><div class="pb-row"><span>CLE allow</span><b>116 yds</b></div><div class="pb-row"><span>league average</span><b>117 yds</b></div></div></section></div></div>
-            </details>
-          </div>
-        </div>
-        <div class="pb-card">
-          <div class="pb-body">
-            <div class="cv-head">
-              <h3 class="cv-tm">DJ Giddens</h3>
-              <span class="cv-time">1:00 PM ET</span>
-            </div>
-            <div class="cv-sub">IND vs BAL
-              &middot; RB</div>
-            <div class="cv-row">
-              <span class="cv-lab">Our projection</span>
-              <span class="cv-pct">18<span class="cv-u">yds</span></span>
-            </div>
-            
-            <div class="cv-foot">
-              <span class="gm">19 per game</span>
-            </div>
-            <details class="gmore" data-close="Close">
-              <summary>Player detail +</summary>
-              <div class="gmore-in"><div class="pnl"><section class="pk"><h4>Last 5 games</h4><div class="pb-striphead"><span></span><span class="pb-rec"><b>3&ndash;2</b> over 18 &middot; L5 <b>3&ndash;2</b></span></div>
-      <div class="pb-strip">
-        <div class="pb-line" style="bottom:37.1%"><span class="pb-linelab">17.5</span></div>
-        <div class="pb-bar hit" style="height:87.0%" title="W1 MIA &middot; 41"></div><div class="pb-bar" style="height:6.0%" title="W2 DEN &middot; 0"></div><div class="pb-bar" style="height:6.4%" title="W3 TEN &middot; 3"></div><div class="pb-bar hit" style="height:46.7%" title="W5 LV &middot; 22"></div><div class="pb-bar hit" style="height:63.6%" title="W18 HOU &middot; 30"></div>
-      </div>
-      <div class="pb-ticks"><span>41</span><span>0</span><span>3</span><span>22</span><span>30</span></div></section><section class="pk"><h4>Defence</h4><div class="pb-rows"><div class="pb-row"><span>BAL allow</span><b>107 yds</b></div><div class="pb-row"><span>league average</span><b>117 yds</b></div></div></section></div></div>
-            </details>
-          </div>
-        </div>
-        <div class="pb-card">
-          <div class="pb-body">
-            <div class="cv-head">
-              <h3 class="cv-tm">Raheim Sanders</h3>
-              <span class="cv-time">1:00 PM ET</span>
-            </div>
-            <div class="cv-sub">CLE vs JAX
-              &middot; RB</div>
-            <div class="cv-row">
-              <span class="cv-lab">Our projection</span>
-              <span class="cv-pct">17<span class="cv-u">yds</span></span>
-            </div>
-            
-            <div class="cv-foot">
-              <span class="gm">23 per game</span>
-            </div>
-            <details class="gmore" data-close="Close">
-              <summary>Player detail +</summary>
-              <div class="gmore-in"><div class="pnl"><section class="pk"><h4>Last 4 games</h4><div class="pb-striphead"><span></span><span class="pb-rec"><b>3&ndash;1</b> over 17 &middot; L5 <b>3&ndash;1</b></span></div>
-      <div class="pb-strip">
-        <div class="pb-line" style="bottom:34.8%"><span class="pb-linelab">16.8</span></div>
-        <div class="pb-bar" style="height:6.2%" title="W1 CIN &middot; 3"></div><div class="pb-bar hit" style="height:87.0%" title="W16 BUF &middot; 42"></div><div class="pb-bar hit" style="height:43.5%" title="W17 PIT &middot; 21"></div><div class="pb-bar hit" style="height:53.8%" title="W18 CIN &middot; 26"></div>
-      </div>
-      <div class="pb-ticks"><span>3</span><span>42</span><span>21</span><span>26</span></div></section><section class="pk"><h4>Defence</h4><div class="pb-rows"><div class="pb-row"><span>JAX allow</span><b>86 yds</b></div><div class="pb-row"><span>league average</span><b>117 yds</b></div></div></section></div></div>
-            </details>
-          </div>
-        </div>
-        <div class="pb-card">
-          <div class="pb-body">
-            <div class="cv-head">
-              <h3 class="cv-tm">Saquon Barkley</h3>
-              <span class="cv-time">4:25 PM ET</span>
-            </div>
-            <div class="cv-sub">PHI vs WAS
-              &middot; RB</div>
-            <div class="cv-row">
-              <span class="cv-lab">Our projection</span>
-              <span class="cv-pct">86<span class="cv-u">yds</span></span>
-            </div>
-            
-            <div class="cv-foot">
-              <span class="gm">71 per game</span>
-            </div>
-            <details class="gmore" data-close="Close">
-              <summary>Player detail +</summary>
-              <div class="gmore-in"><div class="pnl"><section class="pk"><h4>Last 10 games</h4><div class="pb-striphead"><span></span><span class="pb-rec"><b>3&ndash;7</b> over 86 &middot; L5 <b>2&ndash;3</b></span></div>
-      <div class="pb-strip">
-        <div class="pb-line" style="bottom:50.1%"><span class="pb-linelab">86.4</span></div>
-        <div class="pb-bar" style="height:25.5%" title="W7 MIN &middot; 44"></div><div class="pb-bar hit" style="height:87.0%" title="W8 NYG &middot; 150"></div><div class="pb-bar" style="height:34.8%" title="W10 GB &middot; 60"></div><div class="pb-bar" style="height:48.1%" title="W11 DET &middot; 83"></div><div class="pb-bar" style="height:12.8%" title="W12 DAL &middot; 22"></div><div class="pb-bar" style="height:32.5%" title="W13 CHI &middot; 56"></div><div class="pb-bar hit" style="height:70.7%" title="W14 LAC &middot; 122"></div><div class="pb-bar" style="height:45.2%" title="W15 LV &middot; 78"></div><div class="pb-bar hit" style="height:76.5%" title="W16 WAS &middot; 132"></div><div class="pb-bar" style="height:39.4%" title="W17 BUF &middot; 68"></div>
-      </div>
-      <div class="pb-ticks"><span>44</span><span>150</span><span>60</span><span>83</span><span>22</span><span>56</span><span>122</span><span>78</span><span>132</span><span>68</span></div></section><section class="pk"><h4>Defence</h4><div class="pb-rows"><div class="pb-row"><span>WAS allow</span><b>142 yds</b></div><div class="pb-row"><span>league average</span><b>117 yds</b></div></div></section></div></div>
-            </details>
-          </div>
-        </div>
-        <div class="pb-card">
-          <div class="pb-body">
-            <div class="cv-head">
-              <h3 class="cv-tm">De'Von Achane</h3>
-              <span class="cv-time">4:25 PM ET</span>
-            </div>
-            <div class="cv-sub">MIA vs LV
-              &middot; RB</div>
-            <div class="cv-row">
-              <span class="cv-lab">Our projection</span>
-              <span class="cv-pct">84<span class="cv-u">yds</span></span>
-            </div>
-            
-            <div class="cv-foot">
-              <span class="gm">84 per game</span>
-            </div>
-            <details class="gmore" data-close="Close">
-              <summary>Player detail +</summary>
-              <div class="gmore-in"><div class="pnl"><section class="pk"><h4>Last 10 games</h4><div class="pb-striphead"><span></span><span class="pb-rec"><b>4&ndash;6</b> over 84 &middot; L5 <b>2&ndash;3</b></span></div>
-      <div class="pb-strip">
-        <div class="pb-line" style="bottom:42.1%"><span class="pb-linelab">84.3</span></div>
-        <div class="pb-bar" style="height:41.0%" title="W7 CLE &middot; 82"></div><div class="pb-bar" style="height:33.5%" title="W8 ATL &middot; 67"></div><div class="pb-bar" style="height:33.5%" title="W9 BAL &middot; 67"></div><div class="pb-bar hit" style="height:87.0%" title="W10 BUF &middot; 174"></div><div class="pb-bar hit" style="height:60.0%" title="W11 WAS &middot; 120"></div><div class="pb-bar hit" style="height:67.0%" title="W13 NO &middot; 134"></div><div class="pb-bar hit" style="height:46.0%" title="W14 NYJ &middot; 92"></div><div class="pb-bar" style="height:30.0%" title="W15 PIT &middot; 60"></div><div class="pb-bar" style="height:40.5%" title="W16 CIN &middot; 81"></div><div class="pb-bar" style="height:41.5%" title="W17 TB &middot; 83"></div>
-      </div>
-      <div class="pb-ticks"><span>82</span><span>67</span><span>67</span><span>174</span><span>120</span><span>134</span><span>92</span><span>60</span><span>81</span><span>83</span></div></section><section class="pk"><h4>Defence</h4><div class="pb-rows"><div class="pb-row"><span>LV allow</span><b>117 yds</b></div><div class="pb-row"><span>league average</span><b>117 yds</b></div></div></section></div></div>
-            </details>
-          </div>
-        </div>
+        </div></div></section><section class="gsec" id="s-g10" data-game="g10"><div class="gsec-h"><h3>ARI <span>@</span> LAC</h3><span>4:25 PM ET</span></div><div class="pb-grid">
         <div class="pb-card">
           <div class="pb-body">
             <div class="cv-head">
@@ -2302,60 +2278,6 @@ footer{background:var(--bg-2);padding:56px 0 40px}
         <div class="pb-bar" style="height:32.6%" title="W1 KC &middot; 48"></div><div class="pb-bar" style="height:16.3%" title="W2 LV &middot; 24"></div><div class="pb-bar hit" style="height:47.6%" title="W3 DEN &middot; 70"></div><div class="pb-bar hit" style="height:87.0%" title="W4 NYG &middot; 128"></div><div class="pb-bar" style="height:29.9%" title="W5 WAS &middot; 44"></div><div class="pb-bar" style="height:38.0%" title="W14 PHI &middot; 56"></div><div class="pb-bar" style="height:41.4%" title="W15 KC &middot; 61"></div><div class="pb-bar hit" style="height:57.7%" title="W16 DAL &middot; 85"></div><div class="pb-bar" style="height:19.7%" title="W17 HOU &middot; 29"></div>
       </div>
       <div class="pb-ticks"><span>48</span><span>24</span><span>70</span><span>128</span><span>44</span><span>56</span><span>61</span><span>85</span><span>29</span></div></section><section class="pk"><h4>Defence</h4><div class="pb-rows"><div class="pb-row"><span>ARI allow</span><b>127 yds</b></div><div class="pb-row"><span>league average</span><b>117 yds</b></div></div></section></div></div>
-            </details>
-          </div>
-        </div>
-        <div class="pb-card">
-          <div class="pb-body">
-            <div class="cv-head">
-              <h3 class="cv-tm">Josh Jacobs</h3>
-              <span class="cv-time">4:25 PM ET</span>
-            </div>
-            <div class="cv-sub">GB vs MIN
-              &middot; RB</div>
-            <div class="cv-row">
-              <span class="cv-lab">Our projection</span>
-              <span class="cv-pct">66<span class="cv-u">yds</span></span>
-            </div>
-            
-            <div class="cv-foot">
-              <span class="gm">62 per game</span>
-            </div>
-            <details class="gmore" data-close="Close">
-              <summary>Player detail +</summary>
-              <div class="gmore-in"><div class="pnl"><section class="pk"><h4>Last 10 games</h4><div class="pb-striphead"><span></span><span class="pb-rec"><b>5&ndash;5</b> over 66 &middot; L5 <b>3&ndash;2</b></span></div>
-      <div class="pb-strip">
-        <div class="pb-line" style="bottom:65.7%"><span class="pb-linelab">65.7</span></div>
-        <div class="pb-bar" style="height:55.0%" title="W7 ARI &middot; 55"></div><div class="pb-bar" style="height:33.0%" title="W8 PIT &middot; 33"></div><div class="pb-bar hit" style="height:87.0%" title="W9 CAR &middot; 87"></div><div class="pb-bar hit" style="height:74.0%" title="W10 PHI &middot; 74"></div><div class="pb-bar" style="height:40.0%" title="W11 NYG &middot; 40"></div><div class="pb-bar hit" style="height:83.0%" title="W13 DET &middot; 83"></div><div class="pb-bar hit" style="height:86.0%" title="W14 CHI &middot; 86"></div><div class="pb-bar hit" style="height:73.0%" title="W15 DEN &middot; 73"></div><div class="pb-bar" style="height:36.0%" title="W16 CHI &middot; 36"></div><div class="pb-bar" style="height:6.0%" title="W17 BAL &middot; 3"></div>
-      </div>
-      <div class="pb-ticks"><span>55</span><span>33</span><span>87</span><span>74</span><span>40</span><span>83</span><span>86</span><span>73</span><span>36</span><span>3</span></div></section><section class="pk"><h4>Defence</h4><div class="pb-rows"><div class="pb-row"><span>MIN allow</span><b>124 yds</b></div><div class="pb-row"><span>league average</span><b>117 yds</b></div></div></section></div></div>
-            </details>
-          </div>
-        </div>
-        <div class="pb-card">
-          <div class="pb-body">
-            <div class="cv-head">
-              <h3 class="cv-tm">Ashton Jeanty</h3>
-              <span class="cv-time">4:25 PM ET</span>
-            </div>
-            <div class="cv-sub">LV vs MIA
-              &middot; RB</div>
-            <div class="cv-row">
-              <span class="cv-lab">Our projection</span>
-              <span class="cv-pct">65<span class="cv-u">yds</span></span>
-            </div>
-            
-            <div class="cv-foot">
-              <span class="gm">57 per game</span>
-            </div>
-            <details class="gmore" data-close="Close">
-              <summary>Player detail +</summary>
-              <div class="gmore-in"><div class="pnl"><section class="pk"><h4>Last 10 games</h4><div class="pb-striphead"><span></span><span class="pb-rec"><b>2&ndash;8</b> over 65 &middot; L5 <b>2&ndash;3</b></span></div>
-      <div class="pb-strip">
-        <div class="pb-line" style="bottom:44.1%"><span class="pb-linelab">64.9</span></div>
-        <div class="pb-bar" style="height:28.5%" title="W9 JAX &middot; 42"></div><div class="pb-bar" style="height:40.8%" title="W10 DEN &middot; 60"></div><div class="pb-bar" style="height:6.0%" title="W11 DAL &middot; 7"></div><div class="pb-bar" style="height:34.0%" title="W12 CLE &middot; 50"></div><div class="pb-bar" style="height:21.1%" title="W13 LAC &middot; 31"></div><div class="pb-bar" style="height:20.4%" title="W14 DEN &middot; 30"></div><div class="pb-bar" style="height:23.8%" title="W15 PHI &middot; 35"></div><div class="pb-bar hit" style="height:87.0%" title="W16 HOU &middot; 128"></div><div class="pb-bar" style="height:40.8%" title="W17 NYG &middot; 60"></div><div class="pb-bar hit" style="height:59.1%" title="W18 KC &middot; 87"></div>
-      </div>
-      <div class="pb-ticks"><span>42</span><span>60</span><span>7</span><span>50</span><span>31</span><span>30</span><span>35</span><span>128</span><span>60</span><span>87</span></div></section><section class="pk"><h4>Defence</h4><div class="pb-rows"><div class="pb-row"><span>MIA allow</span><b>132 yds</b></div><div class="pb-row"><span>league average</span><b>117 yds</b></div></div></section></div></div>
             </details>
           </div>
         </div>
@@ -2389,27 +2311,81 @@ footer{background:var(--bg-2);padding:56px 0 40px}
         <div class="pb-card">
           <div class="pb-body">
             <div class="cv-head">
-              <h3 class="cv-tm">Jacory Croskey-Merritt</h3>
+              <h3 class="cv-tm">Trey Benson</h3>
               <span class="cv-time">4:25 PM ET</span>
             </div>
-            <div class="cv-sub">WAS vs PHI
+            <div class="cv-sub">ARI vs LAC
               &middot; RB</div>
             <div class="cv-row">
               <span class="cv-lab">Our projection</span>
-              <span class="cv-pct">50<span class="cv-u">yds</span></span>
+              <span class="cv-pct">36<span class="cv-u">yds</span></span>
             </div>
             
             <div class="cv-foot">
-              <span class="gm">47 per game</span>
+              <span class="gm">40 per game</span>
             </div>
             <details class="gmore" data-close="Close">
               <summary>Player detail +</summary>
-              <div class="gmore-in"><div class="pnl"><section class="pk"><h4>Last 10 games</h4><div class="pb-striphead"><span></span><span class="pb-rec"><b>2&ndash;8</b> over 50 &middot; L5 <b>2&ndash;3</b></span></div>
+              <div class="gmore-in"><div class="pnl"><section class="pk"><h4>Last 4 games</h4><div class="pb-striphead"><span></span><span class="pb-rec"><b>2&ndash;2</b> over 36 &middot; L5 <b>2&ndash;2</b></span></div>
       <div class="pb-strip">
-        <div class="pb-line" style="bottom:41.7%"><span class="pb-linelab">50.4</span></div>
-        <div class="pb-bar" style="height:20.7%" title="W8 KC &middot; 25"></div><div class="pb-bar" style="height:31.5%" title="W9 SEA &middot; 38"></div><div class="pb-bar" style="height:24.8%" title="W10 DET &middot; 30"></div><div class="pb-bar" style="height:23.2%" title="W11 MIA &middot; 28"></div><div class="pb-bar" style="height:16.6%" title="W13 DEN &middot; 20"></div><div class="pb-bar" style="height:26.5%" title="W14 MIN &middot; 32"></div><div class="pb-bar hit" style="height:79.5%" title="W15 NYG &middot; 96"></div><div class="pb-bar" style="height:20.7%" title="W16 PHI &middot; 25"></div><div class="pb-bar hit" style="height:87.0%" title="W17 DAL &middot; 105"></div><div class="pb-bar" style="height:24.0%" title="W18 PHI &middot; 29"></div>
+        <div class="pb-line" style="bottom:45.4%"><span class="pb-linelab">36</span></div>
+        <div class="pb-bar hit" style="height:87.0%" title="W1 NO &middot; 69"></div><div class="pb-bar" style="height:17.6%" title="W2 CAR &middot; 14"></div><div class="pb-bar hit" style="height:52.9%" title="W3 SF &middot; 42"></div><div class="pb-bar" style="height:44.1%" title="W4 SEA &middot; 35"></div>
       </div>
-      <div class="pb-ticks"><span>25</span><span>38</span><span>30</span><span>28</span><span>20</span><span>32</span><span>96</span><span>25</span><span>105</span><span>29</span></div></section><section class="pk"><h4>Defence</h4><div class="pb-rows"><div class="pb-row"><span>PHI allow</span><b>124 yds</b></div><div class="pb-row"><span>league average</span><b>117 yds</b></div></div></section></div></div>
+      <div class="pb-ticks"><span>69</span><span>14</span><span>42</span><span>35</span></div></section><section class="pk"><h4>Defence</h4><div class="pb-rows"><div class="pb-row"><span>LAC allow</span><b>105 yds</b></div><div class="pb-row"><span>league average</span><b>117 yds</b></div></div></section></div></div>
+            </details>
+          </div>
+        </div>
+        <div class="pb-card">
+          <div class="pb-body">
+            <div class="cv-head">
+              <h3 class="cv-tm">Michael Carter</h3>
+              <span class="cv-time">4:25 PM ET</span>
+            </div>
+            <div class="cv-sub">ARI vs LAC
+              &middot; RB</div>
+            <div class="cv-row">
+              <span class="cv-lab">Our projection</span>
+              <span class="cv-pct">23<span class="cv-u">yds</span></span>
+            </div>
+            
+            <div class="cv-foot">
+              <span class="gm">26 per game</span>
+            </div>
+            <details class="gmore" data-close="Close">
+              <summary>Player detail +</summary>
+              <div class="gmore-in"><div class="pnl"><section class="pk"><h4>Last 10 games</h4><div class="pb-striphead"><span></span><span class="pb-rec"><b>4&ndash;6</b> over 23 &middot; L5 <b>3&ndash;2</b></span></div>
+      <div class="pb-strip">
+        <div class="pb-line" style="bottom:30.9%"><span class="pb-linelab">23.1</span></div>
+        <div class="pb-bar" style="height:14.7%" title="W7 GB &middot; 11"></div><div class="pb-bar" style="height:6.0%" title="W10 SEA &middot; 4"></div><div class="pb-bar" style="height:8.0%" title="W11 SF &middot; 6"></div><div class="pb-bar hit" style="height:37.5%" title="W12 JAX &middot; 28"></div><div class="pb-bar" style="height:22.7%" title="W13 TB &middot; 17"></div><div class="pb-bar" style="height:17.4%" title="W14 LA &middot; 13"></div><div class="pb-bar hit" style="height:74.9%" title="W15 HOU &middot; 56"></div><div class="pb-bar hit" style="height:87.0%" title="W16 ATL &middot; 65"></div><div class="pb-bar hit" style="height:38.8%" title="W17 CIN &middot; 29"></div><div class="pb-bar" style="height:24.1%" title="W18 LA &middot; 18"></div>
+      </div>
+      <div class="pb-ticks"><span>11</span><span>4</span><span>6</span><span>28</span><span>17</span><span>13</span><span>56</span><span>65</span><span>29</span><span>18</span></div></section><section class="pk"><h4>Defence</h4><div class="pb-rows"><div class="pb-row"><span>LAC allow</span><b>105 yds</b></div><div class="pb-row"><span>league average</span><b>117 yds</b></div></div></section></div></div>
+            </details>
+          </div>
+        </div></div></section><section class="gsec" id="s-g11" data-game="g11"><div class="gsec-h"><h3>GB <span>@</span> MIN</h3><span>4:25 PM ET</span></div><div class="pb-grid">
+        <div class="pb-card">
+          <div class="pb-body">
+            <div class="cv-head">
+              <h3 class="cv-tm">Josh Jacobs</h3>
+              <span class="cv-time">4:25 PM ET</span>
+            </div>
+            <div class="cv-sub">GB vs MIN
+              &middot; RB</div>
+            <div class="cv-row">
+              <span class="cv-lab">Our projection</span>
+              <span class="cv-pct">66<span class="cv-u">yds</span></span>
+            </div>
+            
+            <div class="cv-foot">
+              <span class="gm">62 per game</span>
+            </div>
+            <details class="gmore" data-close="Close">
+              <summary>Player detail +</summary>
+              <div class="gmore-in"><div class="pnl"><section class="pk"><h4>Last 10 games</h4><div class="pb-striphead"><span></span><span class="pb-rec"><b>5&ndash;5</b> over 66 &middot; L5 <b>3&ndash;2</b></span></div>
+      <div class="pb-strip">
+        <div class="pb-line" style="bottom:65.7%"><span class="pb-linelab">65.7</span></div>
+        <div class="pb-bar" style="height:55.0%" title="W7 ARI &middot; 55"></div><div class="pb-bar" style="height:33.0%" title="W8 PIT &middot; 33"></div><div class="pb-bar hit" style="height:87.0%" title="W9 CAR &middot; 87"></div><div class="pb-bar hit" style="height:74.0%" title="W10 PHI &middot; 74"></div><div class="pb-bar" style="height:40.0%" title="W11 NYG &middot; 40"></div><div class="pb-bar hit" style="height:83.0%" title="W13 DET &middot; 83"></div><div class="pb-bar hit" style="height:86.0%" title="W14 CHI &middot; 86"></div><div class="pb-bar hit" style="height:73.0%" title="W15 DEN &middot; 73"></div><div class="pb-bar" style="height:36.0%" title="W16 CHI &middot; 36"></div><div class="pb-bar" style="height:6.0%" title="W17 BAL &middot; 3"></div>
+      </div>
+      <div class="pb-ticks"><span>55</span><span>33</span><span>87</span><span>74</span><span>40</span><span>83</span><span>86</span><span>73</span><span>36</span><span>3</span></div></section><section class="pk"><h4>Defence</h4><div class="pb-rows"><div class="pb-row"><span>MIN allow</span><b>124 yds</b></div><div class="pb-row"><span>league average</span><b>117 yds</b></div></div></section></div></div>
             </details>
           </div>
         </div>
@@ -2470,54 +2446,81 @@ footer{background:var(--bg-2);padding:56px 0 40px}
         <div class="pb-card">
           <div class="pb-body">
             <div class="cv-head">
-              <h3 class="cv-tm">Chris Rodriguez Jr.</h3>
+              <h3 class="cv-tm">Emanuel Wilson</h3>
               <span class="cv-time">4:25 PM ET</span>
             </div>
-            <div class="cv-sub">WAS vs PHI
+            <div class="cv-sub">GB vs MIN
               &middot; RB</div>
             <div class="cv-row">
               <span class="cv-lab">Our projection</span>
-              <span class="cv-pct">44<span class="cv-u">yds</span></span>
+              <span class="cv-pct">31<span class="cv-u">yds</span></span>
             </div>
             
             <div class="cv-foot">
-              <span class="gm">42 per game</span>
+              <span class="gm">29 per game</span>
             </div>
             <details class="gmore" data-close="Close">
               <summary>Player detail +</summary>
-              <div class="gmore-in"><div class="pnl"><section class="pk"><h4>Last 10 games</h4><div class="pb-striphead"><span></span><span class="pb-rec"><b>5&ndash;5</b> over 44 &middot; L5 <b>4&ndash;1</b></span></div>
+              <div class="gmore-in"><div class="pnl"><section class="pk"><h4>Last 10 games</h4><div class="pb-striphead"><span></span><span class="pb-rec"><b>4&ndash;6</b> over 31 &middot; L5 <b>2&ndash;3</b></span></div>
       <div class="pb-strip">
-        <div class="pb-line" style="bottom:48.8%"><span class="pb-linelab">44.3</span></div>
-        <div class="pb-bar" style="height:7.7%" title="W5 LAC &middot; 7"></div><div class="pb-bar" style="height:13.2%" title="W7 DAL &middot; 12"></div><div class="pb-bar" style="height:6.0%" title="W8 KC &middot; 2"></div><div class="pb-bar hit" style="height:71.5%" title="W9 SEA &middot; 65"></div><div class="pb-bar" style="height:17.6%" title="W10 DET &middot; 16"></div><div class="pb-bar hit" style="height:87.0%" title="W11 MIA &middot; 79"></div><div class="pb-bar" style="height:45.1%" title="W13 DEN &middot; 41"></div><div class="pb-bar hit" style="height:57.2%" title="W14 MIN &middot; 52"></div><div class="pb-bar hit" style="height:69.3%" title="W16 PHI &middot; 63"></div><div class="pb-bar hit" style="height:71.5%" title="W18 PHI &middot; 65"></div>
+        <div class="pb-line" style="bottom:25.2%"><span class="pb-linelab">31</span></div>
+        <div class="pb-bar" style="height:13.0%" title="W9 CAR &middot; 16"></div><div class="pb-bar" style="height:6.0%" title="W10 PHI &middot; 2"></div><div class="pb-bar hit" style="height:32.5%" title="W11 NYG &middot; 40"></div><div class="pb-bar hit" style="height:87.0%" title="W12 MIN &middot; 107"></div><div class="pb-bar" style="height:11.4%" title="W13 DET &middot; 14"></div><div class="pb-bar" style="height:8.1%" title="W14 CHI &middot; 10"></div><div class="pb-bar" style="height:6.0%" title="W15 DEN &middot; 3"></div><div class="pb-bar hit" style="height:66.6%" title="W16 CHI &middot; 82"></div><div class="pb-bar" style="height:13.0%" title="W17 BAL &middot; 16"></div><div class="pb-bar hit" style="height:35.8%" title="W18 MIN &middot; 44"></div>
       </div>
-      <div class="pb-ticks"><span>7</span><span>12</span><span>2</span><span>65</span><span>16</span><span>79</span><span>41</span><span>52</span><span>63</span><span>65</span></div></section><section class="pk"><h4>Defence</h4><div class="pb-rows"><div class="pb-row"><span>PHI allow</span><b>124 yds</b></div><div class="pb-row"><span>league average</span><b>117 yds</b></div></div></section></div></div>
+      <div class="pb-ticks"><span>16</span><span>2</span><span>40</span><span>107</span><span>14</span><span>10</span><span>3</span><span>82</span><span>16</span><span>44</span></div></section><section class="pk"><h4>Defence</h4><div class="pb-rows"><div class="pb-row"><span>MIN allow</span><b>124 yds</b></div><div class="pb-row"><span>league average</span><b>117 yds</b></div></div></section></div></div>
+            </details>
+          </div>
+        </div></div></section><section class="gsec" id="s-g12" data-game="g12"><div class="gsec-h"><h3>MIA <span>@</span> LV</h3><span>4:25 PM ET</span></div><div class="pb-grid">
+        <div class="pb-card">
+          <div class="pb-body">
+            <div class="cv-head">
+              <h3 class="cv-tm">De'Von Achane</h3>
+              <span class="cv-time">4:25 PM ET</span>
+            </div>
+            <div class="cv-sub">MIA vs LV
+              &middot; RB</div>
+            <div class="cv-row">
+              <span class="cv-lab">Our projection</span>
+              <span class="cv-pct">84<span class="cv-u">yds</span></span>
+            </div>
+            
+            <div class="cv-foot">
+              <span class="gm">84 per game</span>
+            </div>
+            <details class="gmore" data-close="Close">
+              <summary>Player detail +</summary>
+              <div class="gmore-in"><div class="pnl"><section class="pk"><h4>Last 10 games</h4><div class="pb-striphead"><span></span><span class="pb-rec"><b>4&ndash;6</b> over 84 &middot; L5 <b>2&ndash;3</b></span></div>
+      <div class="pb-strip">
+        <div class="pb-line" style="bottom:42.1%"><span class="pb-linelab">84.3</span></div>
+        <div class="pb-bar" style="height:41.0%" title="W7 CLE &middot; 82"></div><div class="pb-bar" style="height:33.5%" title="W8 ATL &middot; 67"></div><div class="pb-bar" style="height:33.5%" title="W9 BAL &middot; 67"></div><div class="pb-bar hit" style="height:87.0%" title="W10 BUF &middot; 174"></div><div class="pb-bar hit" style="height:60.0%" title="W11 WAS &middot; 120"></div><div class="pb-bar hit" style="height:67.0%" title="W13 NO &middot; 134"></div><div class="pb-bar hit" style="height:46.0%" title="W14 NYJ &middot; 92"></div><div class="pb-bar" style="height:30.0%" title="W15 PIT &middot; 60"></div><div class="pb-bar" style="height:40.5%" title="W16 CIN &middot; 81"></div><div class="pb-bar" style="height:41.5%" title="W17 TB &middot; 83"></div>
+      </div>
+      <div class="pb-ticks"><span>82</span><span>67</span><span>67</span><span>174</span><span>120</span><span>134</span><span>92</span><span>60</span><span>81</span><span>83</span></div></section><section class="pk"><h4>Defence</h4><div class="pb-rows"><div class="pb-row"><span>LV allow</span><b>117 yds</b></div><div class="pb-row"><span>league average</span><b>117 yds</b></div></div></section></div></div>
             </details>
           </div>
         </div>
         <div class="pb-card">
           <div class="pb-body">
             <div class="cv-head">
-              <h3 class="cv-tm">Trey Benson</h3>
+              <h3 class="cv-tm">Ashton Jeanty</h3>
               <span class="cv-time">4:25 PM ET</span>
             </div>
-            <div class="cv-sub">ARI vs LAC
+            <div class="cv-sub">LV vs MIA
               &middot; RB</div>
             <div class="cv-row">
               <span class="cv-lab">Our projection</span>
-              <span class="cv-pct">36<span class="cv-u">yds</span></span>
+              <span class="cv-pct">65<span class="cv-u">yds</span></span>
             </div>
             
             <div class="cv-foot">
-              <span class="gm">40 per game</span>
+              <span class="gm">57 per game</span>
             </div>
             <details class="gmore" data-close="Close">
               <summary>Player detail +</summary>
-              <div class="gmore-in"><div class="pnl"><section class="pk"><h4>Last 4 games</h4><div class="pb-striphead"><span></span><span class="pb-rec"><b>2&ndash;2</b> over 36 &middot; L5 <b>2&ndash;2</b></span></div>
+              <div class="gmore-in"><div class="pnl"><section class="pk"><h4>Last 10 games</h4><div class="pb-striphead"><span></span><span class="pb-rec"><b>2&ndash;8</b> over 65 &middot; L5 <b>2&ndash;3</b></span></div>
       <div class="pb-strip">
-        <div class="pb-line" style="bottom:45.4%"><span class="pb-linelab">36</span></div>
-        <div class="pb-bar hit" style="height:87.0%" title="W1 NO &middot; 69"></div><div class="pb-bar" style="height:17.6%" title="W2 CAR &middot; 14"></div><div class="pb-bar hit" style="height:52.9%" title="W3 SF &middot; 42"></div><div class="pb-bar" style="height:44.1%" title="W4 SEA &middot; 35"></div>
+        <div class="pb-line" style="bottom:44.1%"><span class="pb-linelab">64.9</span></div>
+        <div class="pb-bar" style="height:28.5%" title="W9 JAX &middot; 42"></div><div class="pb-bar" style="height:40.8%" title="W10 DEN &middot; 60"></div><div class="pb-bar" style="height:6.0%" title="W11 DAL &middot; 7"></div><div class="pb-bar" style="height:34.0%" title="W12 CLE &middot; 50"></div><div class="pb-bar" style="height:21.1%" title="W13 LAC &middot; 31"></div><div class="pb-bar" style="height:20.4%" title="W14 DEN &middot; 30"></div><div class="pb-bar" style="height:23.8%" title="W15 PHI &middot; 35"></div><div class="pb-bar hit" style="height:87.0%" title="W16 HOU &middot; 128"></div><div class="pb-bar" style="height:40.8%" title="W17 NYG &middot; 60"></div><div class="pb-bar hit" style="height:59.1%" title="W18 KC &middot; 87"></div>
       </div>
-      <div class="pb-ticks"><span>69</span><span>14</span><span>42</span><span>35</span></div></section><section class="pk"><h4>Defence</h4><div class="pb-rows"><div class="pb-row"><span>LAC allow</span><b>105 yds</b></div><div class="pb-row"><span>league average</span><b>117 yds</b></div></div></section></div></div>
+      <div class="pb-ticks"><span>42</span><span>60</span><span>7</span><span>50</span><span>31</span><span>30</span><span>35</span><span>128</span><span>60</span><span>87</span></div></section><section class="pk"><h4>Defence</h4><div class="pb-rows"><div class="pb-row"><span>MIA allow</span><b>132 yds</b></div><div class="pb-row"><span>league average</span><b>117 yds</b></div></div></section></div></div>
             </details>
           </div>
         </div>
@@ -2551,87 +2554,6 @@ footer{background:var(--bg-2);padding:56px 0 40px}
         <div class="pb-card">
           <div class="pb-body">
             <div class="cv-head">
-              <h3 class="cv-tm">Jalen Hurts</h3>
-              <span class="cv-time">4:25 PM ET</span>
-            </div>
-            <div class="cv-sub">PHI vs WAS
-              &middot; QB</div>
-            <div class="cv-row">
-              <span class="cv-lab">Our projection</span>
-              <span class="cv-pct">32<span class="cv-u">yds</span></span>
-            </div>
-            
-            <div class="cv-foot">
-              <span class="gm">26 per game</span>
-            </div>
-            <details class="gmore" data-close="Close">
-              <summary>Player detail +</summary>
-              <div class="gmore-in"><div class="pnl"><section class="pk"><h4>Last 10 games</h4><div class="pb-striphead"><span></span><span class="pb-rec"><b>3&ndash;7</b> over 32 &middot; L5 <b>2&ndash;3</b></span></div>
-      <div class="pb-strip">
-        <div class="pb-line" style="bottom:69.3%"><span class="pb-linelab">31.9</span></div>
-        <div class="pb-bar" style="height:6.0%" title="W7 MIN &middot; -10"></div><div class="pb-bar" style="height:47.8%" title="W8 NYG &middot; 22"></div><div class="pb-bar" style="height:58.7%" title="W10 GB &middot; 27"></div><div class="pb-bar" style="height:67.4%" title="W11 DET &middot; 31"></div><div class="pb-bar hit" style="height:71.7%" title="W12 DAL &middot; 33"></div><div class="pb-bar" style="height:67.4%" title="W13 CHI &middot; 31"></div><div class="pb-bar" style="height:17.4%" title="W14 LAC &middot; 8"></div><div class="pb-bar hit" style="height:84.8%" title="W15 LV &middot; 39"></div><div class="pb-bar hit" style="height:87.0%" title="W16 WAS &middot; 40"></div><div class="pb-bar" style="height:10.9%" title="W17 BUF &middot; 5"></div>
-      </div>
-      <div class="pb-ticks"><span>-10</span><span>22</span><span>27</span><span>31</span><span>33</span><span>31</span><span>8</span><span>39</span><span>40</span><span>5</span></div></section><section class="pk"><h4>Defence</h4><div class="pb-rows"><div class="pb-row"><span>WAS allow</span><b>142 yds</b></div><div class="pb-row"><span>league average</span><b>117 yds</b></div></div></section></div></div>
-            </details>
-          </div>
-        </div>
-        <div class="pb-card">
-          <div class="pb-body">
-            <div class="cv-head">
-              <h3 class="cv-tm">Emanuel Wilson</h3>
-              <span class="cv-time">4:25 PM ET</span>
-            </div>
-            <div class="cv-sub">GB vs MIN
-              &middot; RB</div>
-            <div class="cv-row">
-              <span class="cv-lab">Our projection</span>
-              <span class="cv-pct">31<span class="cv-u">yds</span></span>
-            </div>
-            
-            <div class="cv-foot">
-              <span class="gm">29 per game</span>
-            </div>
-            <details class="gmore" data-close="Close">
-              <summary>Player detail +</summary>
-              <div class="gmore-in"><div class="pnl"><section class="pk"><h4>Last 10 games</h4><div class="pb-striphead"><span></span><span class="pb-rec"><b>4&ndash;6</b> over 31 &middot; L5 <b>2&ndash;3</b></span></div>
-      <div class="pb-strip">
-        <div class="pb-line" style="bottom:25.2%"><span class="pb-linelab">31</span></div>
-        <div class="pb-bar" style="height:13.0%" title="W9 CAR &middot; 16"></div><div class="pb-bar" style="height:6.0%" title="W10 PHI &middot; 2"></div><div class="pb-bar hit" style="height:32.5%" title="W11 NYG &middot; 40"></div><div class="pb-bar hit" style="height:87.0%" title="W12 MIN &middot; 107"></div><div class="pb-bar" style="height:11.4%" title="W13 DET &middot; 14"></div><div class="pb-bar" style="height:8.1%" title="W14 CHI &middot; 10"></div><div class="pb-bar" style="height:6.0%" title="W15 DEN &middot; 3"></div><div class="pb-bar hit" style="height:66.6%" title="W16 CHI &middot; 82"></div><div class="pb-bar" style="height:13.0%" title="W17 BAL &middot; 16"></div><div class="pb-bar hit" style="height:35.8%" title="W18 MIN &middot; 44"></div>
-      </div>
-      <div class="pb-ticks"><span>16</span><span>2</span><span>40</span><span>107</span><span>14</span><span>10</span><span>3</span><span>82</span><span>16</span><span>44</span></div></section><section class="pk"><h4>Defence</h4><div class="pb-rows"><div class="pb-row"><span>MIN allow</span><b>124 yds</b></div><div class="pb-row"><span>league average</span><b>117 yds</b></div></div></section></div></div>
-            </details>
-          </div>
-        </div>
-        <div class="pb-card">
-          <div class="pb-body">
-            <div class="cv-head">
-              <h3 class="cv-tm">Michael Carter</h3>
-              <span class="cv-time">4:25 PM ET</span>
-            </div>
-            <div class="cv-sub">ARI vs LAC
-              &middot; RB</div>
-            <div class="cv-row">
-              <span class="cv-lab">Our projection</span>
-              <span class="cv-pct">23<span class="cv-u">yds</span></span>
-            </div>
-            
-            <div class="cv-foot">
-              <span class="gm">26 per game</span>
-            </div>
-            <details class="gmore" data-close="Close">
-              <summary>Player detail +</summary>
-              <div class="gmore-in"><div class="pnl"><section class="pk"><h4>Last 10 games</h4><div class="pb-striphead"><span></span><span class="pb-rec"><b>4&ndash;6</b> over 23 &middot; L5 <b>3&ndash;2</b></span></div>
-      <div class="pb-strip">
-        <div class="pb-line" style="bottom:30.9%"><span class="pb-linelab">23.1</span></div>
-        <div class="pb-bar" style="height:14.7%" title="W7 GB &middot; 11"></div><div class="pb-bar" style="height:6.0%" title="W10 SEA &middot; 4"></div><div class="pb-bar" style="height:8.0%" title="W11 SF &middot; 6"></div><div class="pb-bar hit" style="height:37.5%" title="W12 JAX &middot; 28"></div><div class="pb-bar" style="height:22.7%" title="W13 TB &middot; 17"></div><div class="pb-bar" style="height:17.4%" title="W14 LA &middot; 13"></div><div class="pb-bar hit" style="height:74.9%" title="W15 HOU &middot; 56"></div><div class="pb-bar hit" style="height:87.0%" title="W16 ATL &middot; 65"></div><div class="pb-bar hit" style="height:38.8%" title="W17 CIN &middot; 29"></div><div class="pb-bar" style="height:24.1%" title="W18 LA &middot; 18"></div>
-      </div>
-      <div class="pb-ticks"><span>11</span><span>4</span><span>6</span><span>28</span><span>17</span><span>13</span><span>56</span><span>65</span><span>29</span><span>18</span></div></section><section class="pk"><h4>Defence</h4><div class="pb-rows"><div class="pb-row"><span>LAC allow</span><b>105 yds</b></div><div class="pb-row"><span>league average</span><b>117 yds</b></div></div></section></div></div>
-            </details>
-          </div>
-        </div>
-        <div class="pb-card">
-          <div class="pb-body">
-            <div class="cv-head">
               <h3 class="cv-tm">Geno Smith</h3>
               <span class="cv-time">4:25 PM ET</span>
             </div>
@@ -2655,7 +2577,115 @@ footer{background:var(--bg-2);padding:56px 0 40px}
       <div class="pb-ticks"><span>-3</span><span>1</span><span>9</span><span>7</span><span>14</span><span>8</span><span>-6</span><span>4</span><span>0</span><span>1</span></div></section><section class="pk"><h4>Defence</h4><div class="pb-rows"><div class="pb-row"><span>MIA allow</span><b>132 yds</b></div><div class="pb-row"><span>league average</span><b>117 yds</b></div></div></section></div></div>
             </details>
           </div>
+        </div></div></section><section class="gsec" id="s-g13" data-game="g13"><div class="gsec-h"><h3>WAS <span>@</span> PHI</h3><span>4:25 PM ET</span></div><div class="pb-grid">
+        <div class="pb-card">
+          <div class="pb-body">
+            <div class="cv-head">
+              <h3 class="cv-tm">Saquon Barkley</h3>
+              <span class="cv-time">4:25 PM ET</span>
+            </div>
+            <div class="cv-sub">PHI vs WAS
+              &middot; RB</div>
+            <div class="cv-row">
+              <span class="cv-lab">Our projection</span>
+              <span class="cv-pct">86<span class="cv-u">yds</span></span>
+            </div>
+            
+            <div class="cv-foot">
+              <span class="gm">71 per game</span>
+            </div>
+            <details class="gmore" data-close="Close">
+              <summary>Player detail +</summary>
+              <div class="gmore-in"><div class="pnl"><section class="pk"><h4>Last 10 games</h4><div class="pb-striphead"><span></span><span class="pb-rec"><b>3&ndash;7</b> over 86 &middot; L5 <b>2&ndash;3</b></span></div>
+      <div class="pb-strip">
+        <div class="pb-line" style="bottom:50.1%"><span class="pb-linelab">86.4</span></div>
+        <div class="pb-bar" style="height:25.5%" title="W7 MIN &middot; 44"></div><div class="pb-bar hit" style="height:87.0%" title="W8 NYG &middot; 150"></div><div class="pb-bar" style="height:34.8%" title="W10 GB &middot; 60"></div><div class="pb-bar" style="height:48.1%" title="W11 DET &middot; 83"></div><div class="pb-bar" style="height:12.8%" title="W12 DAL &middot; 22"></div><div class="pb-bar" style="height:32.5%" title="W13 CHI &middot; 56"></div><div class="pb-bar hit" style="height:70.7%" title="W14 LAC &middot; 122"></div><div class="pb-bar" style="height:45.2%" title="W15 LV &middot; 78"></div><div class="pb-bar hit" style="height:76.5%" title="W16 WAS &middot; 132"></div><div class="pb-bar" style="height:39.4%" title="W17 BUF &middot; 68"></div>
+      </div>
+      <div class="pb-ticks"><span>44</span><span>150</span><span>60</span><span>83</span><span>22</span><span>56</span><span>122</span><span>78</span><span>132</span><span>68</span></div></section><section class="pk"><h4>Defence</h4><div class="pb-rows"><div class="pb-row"><span>WAS allow</span><b>142 yds</b></div><div class="pb-row"><span>league average</span><b>117 yds</b></div></div></section></div></div>
+            </details>
+          </div>
         </div>
+        <div class="pb-card">
+          <div class="pb-body">
+            <div class="cv-head">
+              <h3 class="cv-tm">Jacory Croskey-Merritt</h3>
+              <span class="cv-time">4:25 PM ET</span>
+            </div>
+            <div class="cv-sub">WAS vs PHI
+              &middot; RB</div>
+            <div class="cv-row">
+              <span class="cv-lab">Our projection</span>
+              <span class="cv-pct">50<span class="cv-u">yds</span></span>
+            </div>
+            
+            <div class="cv-foot">
+              <span class="gm">47 per game</span>
+            </div>
+            <details class="gmore" data-close="Close">
+              <summary>Player detail +</summary>
+              <div class="gmore-in"><div class="pnl"><section class="pk"><h4>Last 10 games</h4><div class="pb-striphead"><span></span><span class="pb-rec"><b>2&ndash;8</b> over 50 &middot; L5 <b>2&ndash;3</b></span></div>
+      <div class="pb-strip">
+        <div class="pb-line" style="bottom:41.7%"><span class="pb-linelab">50.4</span></div>
+        <div class="pb-bar" style="height:20.7%" title="W8 KC &middot; 25"></div><div class="pb-bar" style="height:31.5%" title="W9 SEA &middot; 38"></div><div class="pb-bar" style="height:24.8%" title="W10 DET &middot; 30"></div><div class="pb-bar" style="height:23.2%" title="W11 MIA &middot; 28"></div><div class="pb-bar" style="height:16.6%" title="W13 DEN &middot; 20"></div><div class="pb-bar" style="height:26.5%" title="W14 MIN &middot; 32"></div><div class="pb-bar hit" style="height:79.5%" title="W15 NYG &middot; 96"></div><div class="pb-bar" style="height:20.7%" title="W16 PHI &middot; 25"></div><div class="pb-bar hit" style="height:87.0%" title="W17 DAL &middot; 105"></div><div class="pb-bar" style="height:24.0%" title="W18 PHI &middot; 29"></div>
+      </div>
+      <div class="pb-ticks"><span>25</span><span>38</span><span>30</span><span>28</span><span>20</span><span>32</span><span>96</span><span>25</span><span>105</span><span>29</span></div></section><section class="pk"><h4>Defence</h4><div class="pb-rows"><div class="pb-row"><span>PHI allow</span><b>124 yds</b></div><div class="pb-row"><span>league average</span><b>117 yds</b></div></div></section></div></div>
+            </details>
+          </div>
+        </div>
+        <div class="pb-card">
+          <div class="pb-body">
+            <div class="cv-head">
+              <h3 class="cv-tm">Chris Rodriguez Jr.</h3>
+              <span class="cv-time">4:25 PM ET</span>
+            </div>
+            <div class="cv-sub">WAS vs PHI
+              &middot; RB</div>
+            <div class="cv-row">
+              <span class="cv-lab">Our projection</span>
+              <span class="cv-pct">44<span class="cv-u">yds</span></span>
+            </div>
+            
+            <div class="cv-foot">
+              <span class="gm">42 per game</span>
+            </div>
+            <details class="gmore" data-close="Close">
+              <summary>Player detail +</summary>
+              <div class="gmore-in"><div class="pnl"><section class="pk"><h4>Last 10 games</h4><div class="pb-striphead"><span></span><span class="pb-rec"><b>5&ndash;5</b> over 44 &middot; L5 <b>4&ndash;1</b></span></div>
+      <div class="pb-strip">
+        <div class="pb-line" style="bottom:48.8%"><span class="pb-linelab">44.3</span></div>
+        <div class="pb-bar" style="height:7.7%" title="W5 LAC &middot; 7"></div><div class="pb-bar" style="height:13.2%" title="W7 DAL &middot; 12"></div><div class="pb-bar" style="height:6.0%" title="W8 KC &middot; 2"></div><div class="pb-bar hit" style="height:71.5%" title="W9 SEA &middot; 65"></div><div class="pb-bar" style="height:17.6%" title="W10 DET &middot; 16"></div><div class="pb-bar hit" style="height:87.0%" title="W11 MIA &middot; 79"></div><div class="pb-bar" style="height:45.1%" title="W13 DEN &middot; 41"></div><div class="pb-bar hit" style="height:57.2%" title="W14 MIN &middot; 52"></div><div class="pb-bar hit" style="height:69.3%" title="W16 PHI &middot; 63"></div><div class="pb-bar hit" style="height:71.5%" title="W18 PHI &middot; 65"></div>
+      </div>
+      <div class="pb-ticks"><span>7</span><span>12</span><span>2</span><span>65</span><span>16</span><span>79</span><span>41</span><span>52</span><span>63</span><span>65</span></div></section><section class="pk"><h4>Defence</h4><div class="pb-rows"><div class="pb-row"><span>PHI allow</span><b>124 yds</b></div><div class="pb-row"><span>league average</span><b>117 yds</b></div></div></section></div></div>
+            </details>
+          </div>
+        </div>
+        <div class="pb-card">
+          <div class="pb-body">
+            <div class="cv-head">
+              <h3 class="cv-tm">Jalen Hurts</h3>
+              <span class="cv-time">4:25 PM ET</span>
+            </div>
+            <div class="cv-sub">PHI vs WAS
+              &middot; QB</div>
+            <div class="cv-row">
+              <span class="cv-lab">Our projection</span>
+              <span class="cv-pct">32<span class="cv-u">yds</span></span>
+            </div>
+            
+            <div class="cv-foot">
+              <span class="gm">26 per game</span>
+            </div>
+            <details class="gmore" data-close="Close">
+              <summary>Player detail +</summary>
+              <div class="gmore-in"><div class="pnl"><section class="pk"><h4>Last 10 games</h4><div class="pb-striphead"><span></span><span class="pb-rec"><b>3&ndash;7</b> over 32 &middot; L5 <b>2&ndash;3</b></span></div>
+      <div class="pb-strip">
+        <div class="pb-line" style="bottom:69.3%"><span class="pb-linelab">31.9</span></div>
+        <div class="pb-bar" style="height:6.0%" title="W7 MIN &middot; -10"></div><div class="pb-bar" style="height:47.8%" title="W8 NYG &middot; 22"></div><div class="pb-bar" style="height:58.7%" title="W10 GB &middot; 27"></div><div class="pb-bar" style="height:67.4%" title="W11 DET &middot; 31"></div><div class="pb-bar hit" style="height:71.7%" title="W12 DAL &middot; 33"></div><div class="pb-bar" style="height:67.4%" title="W13 CHI &middot; 31"></div><div class="pb-bar" style="height:17.4%" title="W14 LAC &middot; 8"></div><div class="pb-bar hit" style="height:84.8%" title="W15 LV &middot; 39"></div><div class="pb-bar hit" style="height:87.0%" title="W16 WAS &middot; 40"></div><div class="pb-bar" style="height:10.9%" title="W17 BUF &middot; 5"></div>
+      </div>
+      <div class="pb-ticks"><span>-10</span><span>22</span><span>27</span><span>31</span><span>33</span><span>31</span><span>8</span><span>39</span><span>40</span><span>5</span></div></section><section class="pk"><h4>Defence</h4><div class="pb-rows"><div class="pb-row"><span>WAS allow</span><b>142 yds</b></div><div class="pb-row"><span>league average</span><b>117 yds</b></div></div></section></div></div>
+            </details>
+          </div>
+        </div></div></section><section class="gsec" id="s-g14" data-game="g14"><div class="gsec-h"><h3>DAL <span>@</span> NYG</h3><span>8:20 PM ET</span></div><div class="pb-grid">
         <div class="pb-card">
           <div class="pb-body">
             <div class="cv-head">
@@ -2763,7 +2793,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
       <div class="pb-ticks"><span>7</span><span>0</span><span>29</span><span>29</span><span>64</span></div></section><section class="pk"><h4>Defence</h4><div class="pb-rows"><div class="pb-row"><span>NYG allow</span><b>145 yds</b></div><div class="pb-row"><span>league average</span><b>117 yds</b></div></div></section></div></div>
             </details>
           </div>
-        </div>
+        </div></div></section><section class="gsec" id="s-g15" data-game="g15"><div class="gsec-h"><h3>DEN <span>@</span> KC</h3><span>8:15 PM ET</span></div><div class="pb-grid">
         <div class="pb-card">
           <div class="pb-body">
             <div class="cv-head">
@@ -2871,7 +2901,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
       <div class="pb-ticks"><span>35</span><span>36</span><span>51</span><span>57</span><span>58</span><span>16</span><span>30</span><span>21</span><span>34</span><span>32</span></div></section><section class="pk"><h4>Defence</h4><div class="pb-rows"><div class="pb-row"><span>DEN allow</span><b>91 yds</b></div><div class="pb-row"><span>league average</span><b>117 yds</b></div></div></section></div></div>
             </details>
           </div>
-        </div></div>
+        </div></div></section>
 
   <h2>Graded</h2>
   <p class="pnl-note">Not graded yet. Every projection on this board is settled once its game has finished.</p>
@@ -2980,5 +3010,36 @@ footer{background:var(--bg-2);padding:56px 0 40px}
     });
     d.appendChild(b);
   }, true);
+
+  /* The game picker on the NFL prop boards. Progressive: the chips are
+     ordinary anchors pointing at each section, so with no JavaScript they
+     scroll to the right group and nothing is lost. With JavaScript they
+     filter instead, which on a sixteen-game slate is the difference
+     between finding a player and scrolling for him.
+
+     Filtering hides sections with the `hidden` attribute rather than a
+     class, so anything that reads the DOM -- a find-in-page, a screen
+     reader -- agrees with what the eye sees. */
+  var picker = document.querySelector(".gsel");
+  if (picker) {
+    picker.addEventListener("click", function (e) {
+      var chip = e.target.closest ? e.target.closest(".gchip") : null;
+      if (!chip) { return; }
+      e.preventDefault();
+      var want = chip.getAttribute("data-game") || "";
+      Array.prototype.forEach.call(
+        picker.querySelectorAll(".gchip"), function (c) {
+          c.classList.toggle("on", c === chip);
+        });
+      Array.prototype.forEach.call(
+        document.querySelectorAll(".gsec"), function (s) {
+          s.hidden = !!want && s.getAttribute("data-game") !== want;
+        });
+      /* Back to the top of the board, not of the page: the reader just
+         chose a game and wants to see it, and leaving them mid-scroll in
+         a list that just got shorter is disorienting. */
+      picker.scrollIntoView({block: "start"});
+    });
+  }
 })();
 </script>

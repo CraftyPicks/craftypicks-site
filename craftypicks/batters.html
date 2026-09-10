@@ -1087,6 +1087,36 @@ footer{background:var(--bg-2);padding:56px 0 40px}
 .ftbl td.ft-s.bad{color:var(--red)}
 
 /* ============================== shared player-card boards (all sports) ==== */
+/* ---------- the game picker on the NFL prop boards ----------
+   A row of the week's fixtures that both jumps to a game and filters to
+   it. Horizontally scrollable rather than wrapped: sixteen fixtures on a
+   phone is four wrapped lines, and four lines of navigation is the thing
+   the third nav row was going to be criticised for. */
+.gsel{display:flex;gap:8px;overflow-x:auto;overflow-y:hidden;
+  -webkit-overflow-scrolling:touch;scrollbar-width:none;
+  padding:0 0 14px;margin:0 0 4px}
+.gsel::-webkit-scrollbar{display:none}
+.gchip{flex:0 0 auto;font-family:var(--mono);font-size:11px;
+  letter-spacing:.08em;text-transform:uppercase;color:var(--muted);
+  border:1px solid var(--line);background:var(--panel-2);
+  padding:9px 13px;white-space:nowrap;transition:.15s}
+.gchip:hover{color:var(--txt);border-color:var(--line-2)}
+.gchip.on{color:var(--bg);background:var(--green);border-color:var(--green);
+  font-weight:700}
+/* The fixture heading over each group. It is what the reader was missing:
+   sixty-four player cards in one grid with the matchup in 10px mono under
+   each name is not a board, it is a list. */
+.gsec{margin:0 0 30px}
+.gsec-h{display:flex;align-items:baseline;justify-content:space-between;
+  gap:12px;padding:0 0 12px;margin-bottom:14px;
+  border-bottom:1px solid var(--line-2)}
+.gsec-h h3{font-size:19px;font-weight:700;letter-spacing:-.02em;
+  color:var(--txt);margin:0}
+.gsec-h h3 span{color:var(--muted);font-weight:400}
+.gsec-h>span{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--muted);white-space:nowrap}
+.gsec[hidden]{display:none}
+
 /* The list boards -- home runs, hits, and the four NFL boards. They share
    the canvas card's head, sub-line and rules; what they do not share is a
    single 30px figure, because their unit is several players under one
@@ -1149,7 +1179,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
 
 <section class="board-page">
   <div class="wrap">
-    <div class="pb-grid">
+    <nav class="gsel" aria-label="Jump to a game"><a href="#" class="gchip on" data-game="">All games</a><a href="#s-g0" class="gchip" data-game="g0">DET</a><a href="#s-g1" class="gchip" data-game="g1">MIN</a><a href="#s-g2" class="gchip" data-game="g2">ATH</a><a href="#s-g3" class="gchip" data-game="g3">TOR</a><a href="#s-g4" class="gchip" data-game="g4">SF</a><a href="#s-g5" class="gchip" data-game="g5">STL</a><a href="#s-g6" class="gchip" data-game="g6">SD</a><a href="#s-g7" class="gchip" data-game="g7">SEA</a><a href="#s-g8" class="gchip" data-game="g8">TEX</a><a href="#s-g9" class="gchip" data-game="g9">WSH</a><a href="#s-g10" class="gchip" data-game="g10">BAL</a><a href="#s-g11" class="gchip" data-game="g11">CLE</a><a href="#s-g12" class="gchip" data-game="g12">HOU</a><a href="#s-g13" class="gchip" data-game="g13">MIA</a><a href="#s-g14" class="gchip" data-game="g14">NYM</a><a href="#s-g15" class="gchip" data-game="g15">PHI</a><a href="#s-g16" class="gchip" data-game="g16">LAA</a><a href="#s-g17" class="gchip" data-game="g17">BOS</a><a href="#s-g18" class="gchip" data-game="g18">COL</a><a href="#s-g19" class="gchip" data-game="g19">NYY</a><a href="#s-g20" class="gchip" data-game="g20">ATL</a><a href="#s-g21" class="gchip" data-game="g21">TB</a><a href="#s-g22" class="gchip" data-game="g22">AZ</a><a href="#s-g23" class="gchip" data-game="g23">CHC</a><a href="#s-g24" class="gchip" data-game="g24">KC</a><a href="#s-g25" class="gchip" data-game="g25">MIL</a><a href="#s-g26" class="gchip" data-game="g26">PIT</a><a href="#s-g27" class="gchip" data-game="g27">CWS</a><a href="#s-g28" class="gchip" data-game="g28">CIN</a><a href="#s-g29" class="gchip" data-game="g29">LAD</a></nav><section class="gsec" id="s-g0" data-game="g0"><div class="gsec-h"><h3>DET</h3><span>1:10 PM ET</span></div><div class="pb-grid">
         <article class="pb-card bat-card" style="--accent:var(--line-2)">
           <div class="pb-body">
             <div class="cv-head">
@@ -1178,7 +1208,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           </div></div>
             
           </div>
-        </article>
+        </article></div></section><section class="gsec" id="s-g1" data-game="g1"><div class="gsec-h"><h3>MIN</h3><span>1:10 PM ET</span></div><div class="pb-grid">
         <article class="pb-card bat-card" style="--accent:var(--line-2)">
           <div class="pb-body">
             <div class="cv-head">
@@ -1207,36 +1237,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           </div></div>
             
           </div>
-        </article>
-        <article class="pb-card bat-card" style="--accent:var(--line-2)">
-          <div class="pb-body">
-            <div class="cv-head">
-              <h3 class="cv-tm">TOR</h3>
-              <span class="cv-time">3:05 PM ET</span>
-            </div>
-            <div class="cv-sub">facing Brady Basso, who allows a home run to 1.9% of the batters he faces &middot; <span class="cv-time"><span class="bat-park good">park 1.29</span></span></div>
-            <div class="bats">
-          <div class="bat">
-            <div class="bat-n">Kazuma Okamoto</div>
-            <div class="bat-c"><b>19.3%</b></div>
-            <div class="bat-w">30 HR in 576 plate appearances &middot; 5.2%</div>
-            <div class="bvp none">has not faced B. Basso</div>
-          </div>
-          <div class="bat">
-            <div class="bat-n">George Springer</div>
-            <div class="bat-c"><b>9.4%</b></div>
-            <div class="bat-w">14 HR in 465 plate appearances &middot; 3.0%</div>
-            <div class="bvp none">has not faced B. Basso</div>
-          </div>
-          <div class="bat">
-            <div class="bat-n">Nathan Lukes</div>
-            <div class="bat-c"><b>6.8%</b></div>
-            <div class="bat-w">10 HR in 400 plate appearances &middot; 2.5%</div>
-            <div class="bvp none">has not faced B. Basso</div>
-          </div></div>
-            
-          </div>
-        </article>
+        </article></div></section><section class="gsec" id="s-g2" data-game="g2"><div class="gsec-h"><h3>ATH</h3><span>3:05 PM ET</span></div><div class="pb-grid">
         <article class="pb-card bat-card" style="--accent:var(--line-2)">
           <div class="pb-body">
             <div class="cv-head">
@@ -1265,36 +1266,36 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           </div></div>
             
           </div>
-        </article>
+        </article></div></section><section class="gsec" id="s-g3" data-game="g3"><div class="gsec-h"><h3>TOR</h3><span>3:05 PM ET</span></div><div class="pb-grid">
         <article class="pb-card bat-card" style="--accent:var(--line-2)">
           <div class="pb-body">
             <div class="cv-head">
-              <h3 class="cv-tm">STL</h3>
-              <span class="cv-time">3:45 PM ET</span>
+              <h3 class="cv-tm">TOR</h3>
+              <span class="cv-time">3:05 PM ET</span>
             </div>
-            <div class="cv-sub">facing Blade Tidwell, who allows a home run to 3.0% of the batters he faces &middot; <span class="cv-time"><span class="bat-park bad">park 0.87</span></span></div>
+            <div class="cv-sub">facing Brady Basso, who allows a home run to 1.9% of the batters he faces &middot; <span class="cv-time"><span class="bat-park good">park 1.29</span></span></div>
             <div class="bats">
           <div class="bat">
-            <div class="bat-n">Jordan Walker</div>
-            <div class="bat-c"><b>16.0%</b></div>
-            <div class="bat-w">28 HR in 611 plate appearances &middot; 4.6%</div>
-            <div class="bvp none">has not faced B. Tidwell</div>
+            <div class="bat-n">Kazuma Okamoto</div>
+            <div class="bat-c"><b>19.3%</b></div>
+            <div class="bat-w">30 HR in 576 plate appearances &middot; 5.2%</div>
+            <div class="bvp none">has not faced B. Basso</div>
           </div>
           <div class="bat">
-            <div class="bat-n">Alec Burleson</div>
-            <div class="bat-c"><b>12.7%</b></div>
-            <div class="bat-w">22 HR in 618 plate appearances &middot; 3.6%</div>
-            <div class="bvp">vs B. Tidwell: 1-3, 0 HR, 0 K &middot; .333</div>
+            <div class="bat-n">George Springer</div>
+            <div class="bat-c"><b>9.4%</b></div>
+            <div class="bat-w">14 HR in 465 plate appearances &middot; 3.0%</div>
+            <div class="bvp none">has not faced B. Basso</div>
           </div>
           <div class="bat">
-            <div class="bat-n">JJ Wetherholt</div>
-            <div class="bat-c"><b>10.0%</b></div>
-            <div class="bat-w">17 HR in 586 plate appearances &middot; 2.9%</div>
-            <div class="bvp none">has not faced B. Tidwell</div>
+            <div class="bat-n">Nathan Lukes</div>
+            <div class="bat-c"><b>6.8%</b></div>
+            <div class="bat-w">10 HR in 400 plate appearances &middot; 2.5%</div>
+            <div class="bvp none">has not faced B. Basso</div>
           </div></div>
             
           </div>
-        </article>
+        </article></div></section><section class="gsec" id="s-g4" data-game="g4"><div class="gsec-h"><h3>SF</h3><span>3:45 PM ET</span></div><div class="pb-grid">
         <article class="pb-card bat-card" style="--accent:var(--line-2)">
           <div class="pb-body">
             <div class="cv-head">
@@ -1323,94 +1324,36 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           </div></div>
             
           </div>
-        </article>
+        </article></div></section><section class="gsec" id="s-g5" data-game="g5"><div class="gsec-h"><h3>STL</h3><span>3:45 PM ET</span></div><div class="pb-grid">
         <article class="pb-card bat-card" style="--accent:var(--line-2)">
           <div class="pb-body">
             <div class="cv-head">
-              <h3 class="cv-tm">TEX</h3>
-              <span class="cv-time">4:10 PM ET</span>
+              <h3 class="cv-tm">STL</h3>
+              <span class="cv-time">3:45 PM ET</span>
             </div>
-            <div class="cv-sub">facing Kade Anderson, who allows a home run to 4.6% of the batters he faces &middot; <span class="cv-time"><span class="bat-park good">park 1.05</span></span></div>
+            <div class="cv-sub">facing Blade Tidwell, who allows a home run to 3.0% of the batters he faces &middot; <span class="cv-time"><span class="bat-park bad">park 0.87</span></span></div>
             <div class="bats">
           <div class="bat">
-            <div class="bat-n">Jake Burger</div>
-            <div class="bat-c"><b>22.5%</b></div>
-            <div class="bat-w">26 HR in 554 plate appearances &middot; 4.7%</div>
-            <div class="bvp none">has not faced K. Anderson</div>
+            <div class="bat-n">Jordan Walker</div>
+            <div class="bat-c"><b>16.0%</b></div>
+            <div class="bat-w">28 HR in 611 plate appearances &middot; 4.6%</div>
+            <div class="bvp none">has not faced B. Tidwell</div>
           </div>
           <div class="bat">
-            <div class="bat-n">Joc Pederson</div>
-            <div class="bat-c"><b>21.9%</b></div>
-            <div class="bat-w">25 HR in 421 plate appearances &middot; 5.9%</div>
-            <div class="bvp none">has not faced K. Anderson</div>
-          </div>
-          <div class="bat">
-            <div class="bat-n">Corey Seager</div>
-            <div class="bat-c"><b>15.4%</b></div>
-            <div class="bat-w">17 HR in 366 plate appearances &middot; 4.6%</div>
-            <div class="bvp">vs K. Anderson: 1-3, 0 HR, 1 K &middot; .333</div>
-          </div></div>
-            
-          </div>
-        </article>
-        <article class="pb-card bat-card" style="--accent:var(--line-2)">
-          <div class="pb-body">
-            <div class="cv-head">
-              <h3 class="cv-tm">WSH</h3>
-              <span class="cv-time">4:10 PM ET</span>
-            </div>
-            <div class="cv-sub">facing Walker Buehler, who allows a home run to 3.2% of the batters he faces &middot; <span class="cv-time"><span class="bat-park bad">park 0.94</span></span></div>
-            <div class="bats">
-          <div class="bat">
-            <div class="bat-n">James Wood</div>
-            <div class="bat-c"><b>18.5%</b></div>
-            <div class="bat-w">30 HR in 566 plate appearances &middot; 5.3%</div>
-            <div class="bvp">vs W. Buehler: 0-4, 0 HR, 1 K &middot; .000</div>
-          </div>
-          <div class="bat">
-            <div class="bat-n">CJ Abrams</div>
-            <div class="bat-c"><b>18.5%</b></div>
-            <div class="bat-w">30 HR in 600 plate appearances &middot; 5.0%</div>
-            <div class="bvp">vs W. Buehler: 1-3, 0 HR, 1 K &middot; .333</div>
-          </div>
-          <div class="bat">
-            <div class="bat-n">Daylen Lile</div>
+            <div class="bat-n">Alec Burleson</div>
             <div class="bat-c"><b>12.7%</b></div>
-            <div class="bat-w">20 HR in 603 plate appearances &middot; 3.3%</div>
-            <div class="bvp">vs W. Buehler: 1-2, 0 HR, 0 K &middot; .500</div>
+            <div class="bat-w">22 HR in 618 plate appearances &middot; 3.6%</div>
+            <div class="bvp">vs B. Tidwell: 1-3, 0 HR, 0 K &middot; .333</div>
+          </div>
+          <div class="bat">
+            <div class="bat-n">JJ Wetherholt</div>
+            <div class="bat-c"><b>10.0%</b></div>
+            <div class="bat-w">17 HR in 586 plate appearances &middot; 2.9%</div>
+            <div class="bvp none">has not faced B. Tidwell</div>
           </div></div>
             
           </div>
-        </article>
-        <article class="pb-card bat-card" style="--accent:var(--line-2)">
-          <div class="pb-body">
-            <div class="cv-head">
-              <h3 class="cv-tm">SEA</h3>
-              <span class="cv-time">4:10 PM ET</span>
-            </div>
-            <div class="cv-sub">facing Cody Bradford, who allows a home run to 2.6% of the batters he faces &middot; <span class="cv-time"><span class="bat-park good">park 1.05</span></span></div>
-            <div class="bats">
-          <div class="bat">
-            <div class="bat-n">Randy Arozarena</div>
-            <div class="bat-c"><b>13.7%</b></div>
-            <div class="bat-w">22 HR in 598 plate appearances &middot; 3.7%</div>
-            <div class="bvp">vs C. Bradford: 1-2, 0 HR, 0 K &middot; .500</div>
-          </div>
-          <div class="bat">
-            <div class="bat-n">Dominic Canzone</div>
-            <div class="bat-c"><b>13.1%</b></div>
-            <div class="bat-w">21 HR in 461 plate appearances &middot; 4.6%</div>
-            <div class="bvp none">has not faced C. Bradford</div>
-          </div>
-          <div class="bat">
-            <div class="bat-n">Cal Raleigh</div>
-            <div class="bat-c"><b>13.1%</b></div>
-            <div class="bat-w">21 HR in 462 plate appearances &middot; 4.5%</div>
-            <div class="bvp">vs C. Bradford: 0-2, 0 HR, 0 K &middot; .000</div>
-          </div></div>
-            
-          </div>
-        </article>
+        </article></div></section><section class="gsec" id="s-g6" data-game="g6"><div class="gsec-h"><h3>SD</h3><span>4:10 PM ET</span></div><div class="pb-grid">
         <article class="pb-card bat-card" style="--accent:var(--line-2)">
           <div class="pb-body">
             <div class="cv-head">
@@ -1439,7 +1382,94 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           </div></div>
             
           </div>
-        </article>
+        </article></div></section><section class="gsec" id="s-g7" data-game="g7"><div class="gsec-h"><h3>SEA</h3><span>4:10 PM ET</span></div><div class="pb-grid">
+        <article class="pb-card bat-card" style="--accent:var(--line-2)">
+          <div class="pb-body">
+            <div class="cv-head">
+              <h3 class="cv-tm">SEA</h3>
+              <span class="cv-time">4:10 PM ET</span>
+            </div>
+            <div class="cv-sub">facing Cody Bradford, who allows a home run to 2.6% of the batters he faces &middot; <span class="cv-time"><span class="bat-park good">park 1.05</span></span></div>
+            <div class="bats">
+          <div class="bat">
+            <div class="bat-n">Randy Arozarena</div>
+            <div class="bat-c"><b>13.7%</b></div>
+            <div class="bat-w">22 HR in 598 plate appearances &middot; 3.7%</div>
+            <div class="bvp">vs C. Bradford: 1-2, 0 HR, 0 K &middot; .500</div>
+          </div>
+          <div class="bat">
+            <div class="bat-n">Dominic Canzone</div>
+            <div class="bat-c"><b>13.1%</b></div>
+            <div class="bat-w">21 HR in 461 plate appearances &middot; 4.6%</div>
+            <div class="bvp none">has not faced C. Bradford</div>
+          </div>
+          <div class="bat">
+            <div class="bat-n">Cal Raleigh</div>
+            <div class="bat-c"><b>13.1%</b></div>
+            <div class="bat-w">21 HR in 462 plate appearances &middot; 4.5%</div>
+            <div class="bvp">vs C. Bradford: 0-2, 0 HR, 0 K &middot; .000</div>
+          </div></div>
+            
+          </div>
+        </article></div></section><section class="gsec" id="s-g8" data-game="g8"><div class="gsec-h"><h3>TEX</h3><span>4:10 PM ET</span></div><div class="pb-grid">
+        <article class="pb-card bat-card" style="--accent:var(--line-2)">
+          <div class="pb-body">
+            <div class="cv-head">
+              <h3 class="cv-tm">TEX</h3>
+              <span class="cv-time">4:10 PM ET</span>
+            </div>
+            <div class="cv-sub">facing Kade Anderson, who allows a home run to 4.6% of the batters he faces &middot; <span class="cv-time"><span class="bat-park good">park 1.05</span></span></div>
+            <div class="bats">
+          <div class="bat">
+            <div class="bat-n">Jake Burger</div>
+            <div class="bat-c"><b>22.5%</b></div>
+            <div class="bat-w">26 HR in 554 plate appearances &middot; 4.7%</div>
+            <div class="bvp none">has not faced K. Anderson</div>
+          </div>
+          <div class="bat">
+            <div class="bat-n">Joc Pederson</div>
+            <div class="bat-c"><b>21.9%</b></div>
+            <div class="bat-w">25 HR in 421 plate appearances &middot; 5.9%</div>
+            <div class="bvp none">has not faced K. Anderson</div>
+          </div>
+          <div class="bat">
+            <div class="bat-n">Corey Seager</div>
+            <div class="bat-c"><b>15.4%</b></div>
+            <div class="bat-w">17 HR in 366 plate appearances &middot; 4.6%</div>
+            <div class="bvp">vs K. Anderson: 1-3, 0 HR, 1 K &middot; .333</div>
+          </div></div>
+            
+          </div>
+        </article></div></section><section class="gsec" id="s-g9" data-game="g9"><div class="gsec-h"><h3>WSH</h3><span>4:10 PM ET</span></div><div class="pb-grid">
+        <article class="pb-card bat-card" style="--accent:var(--line-2)">
+          <div class="pb-body">
+            <div class="cv-head">
+              <h3 class="cv-tm">WSH</h3>
+              <span class="cv-time">4:10 PM ET</span>
+            </div>
+            <div class="cv-sub">facing Walker Buehler, who allows a home run to 3.2% of the batters he faces &middot; <span class="cv-time"><span class="bat-park bad">park 0.94</span></span></div>
+            <div class="bats">
+          <div class="bat">
+            <div class="bat-n">James Wood</div>
+            <div class="bat-c"><b>18.5%</b></div>
+            <div class="bat-w">30 HR in 566 plate appearances &middot; 5.3%</div>
+            <div class="bvp">vs W. Buehler: 0-4, 0 HR, 1 K &middot; .000</div>
+          </div>
+          <div class="bat">
+            <div class="bat-n">CJ Abrams</div>
+            <div class="bat-c"><b>18.5%</b></div>
+            <div class="bat-w">30 HR in 600 plate appearances &middot; 5.0%</div>
+            <div class="bvp">vs W. Buehler: 1-3, 0 HR, 1 K &middot; .333</div>
+          </div>
+          <div class="bat">
+            <div class="bat-n">Daylen Lile</div>
+            <div class="bat-c"><b>12.7%</b></div>
+            <div class="bat-w">20 HR in 603 plate appearances &middot; 3.3%</div>
+            <div class="bvp">vs W. Buehler: 1-2, 0 HR, 0 K &middot; .500</div>
+          </div></div>
+            
+          </div>
+        </article></div></section><section class="gsec" id="s-g10" data-game="g10"><div class="gsec-h"><h3>BAL</h3><span>6:35 PM ET</span></div><div class="pb-grid">
         <article class="pb-card bat-card" style="--accent:var(--line-2)">
           <div class="pb-body">
             <div class="cv-head">
@@ -1468,7 +1498,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           </div></div>
             
           </div>
-        </article>
+        </article></div></section><section class="gsec" id="s-g11" data-game="g11"><div class="gsec-h"><h3>CLE</h3><span>6:35 PM ET</span></div><div class="pb-grid">
         <article class="pb-card bat-card" style="--accent:var(--line-2)">
           <div class="pb-body">
             <div class="cv-head">
@@ -1497,36 +1527,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           </div></div>
             
           </div>
-        </article>
-        <article class="pb-card bat-card" style="--accent:var(--line-2)">
-          <div class="pb-body">
-            <div class="cv-head">
-              <h3 class="cv-tm">PHI</h3>
-              <span class="cv-time">6:40 PM ET</span>
-            </div>
-            <div class="cv-sub">facing Hunter Brown, who allows a home run to 2.8% of the batters he faces &middot; <span class="cv-time"><span class="bat-park good">park 1.09</span></span></div>
-            <div class="bats">
-          <div class="bat">
-            <div class="bat-n">Kyle Schwarber</div>
-            <div class="bat-c"><b>27.5%</b></div>
-            <div class="bat-w">43 HR in 626 plate appearances &middot; 6.9%</div>
-            <div class="bvp">vs H. Brown: 0-3, 0 HR, 2 K &middot; .000</div>
-          </div>
-          <div class="bat">
-            <div class="bat-n">Bryce Harper</div>
-            <div class="bat-c"><b>18.1%</b></div>
-            <div class="bat-w">27 HR in 621 plate appearances &middot; 4.3%</div>
-            <div class="bvp">vs H. Brown: 1-3, 0 HR, 1 K &middot; .333</div>
-          </div>
-          <div class="bat">
-            <div class="bat-n">Trea Turner</div>
-            <div class="bat-c"><b>13.0%</b></div>
-            <div class="bat-w">19 HR in 626 plate appearances &middot; 3.0%</div>
-            <div class="bvp">vs H. Brown: 0-3, 0 HR, 2 K &middot; .000</div>
-          </div></div>
-            
-          </div>
-        </article>
+        </article></div></section><section class="gsec" id="s-g12" data-game="g12"><div class="gsec-h"><h3>HOU</h3><span>6:40 PM ET</span></div><div class="pb-grid">
         <article class="pb-card bat-card" style="--accent:var(--line-2)">
           <div class="pb-body">
             <div class="cv-head">
@@ -1555,36 +1556,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           </div></div>
             
           </div>
-        </article>
-        <article class="pb-card bat-card" style="--accent:var(--line-2)">
-          <div class="pb-body">
-            <div class="cv-head">
-              <h3 class="cv-tm">NYM</h3>
-              <span class="cv-time">6:40 PM ET</span>
-            </div>
-            <div class="cv-sub">facing Janson Junk, who allows a home run to 2.8% of the batters he faces &middot; <span class="cv-time"><span class="bat-park bad">park 0.88</span></span></div>
-            <div class="bats">
-          <div class="bat">
-            <div class="bat-n">Juan Soto</div>
-            <div class="bat-c"><b>12.9%</b></div>
-            <div class="bat-w">24 HR in 404 plate appearances &middot; 5.9%</div>
-            <div class="bvp">vs J. Junk: 1-4, 0 HR, 0 K &middot; .250</div>
-          </div>
-          <div class="bat">
-            <div class="bat-n">Francisco Lindor</div>
-            <div class="bat-c"><b>9.2%</b></div>
-            <div class="bat-w">17 HR in 389 plate appearances &middot; 4.4%</div>
-            <div class="bvp">vs J. Junk: 1-2, 0 HR, 1 K &middot; .500</div>
-          </div>
-          <div class="bat">
-            <div class="bat-n">Carson Benge</div>
-            <div class="bat-c"><b>8.7%</b></div>
-            <div class="bat-w">16 HR in 579 plate appearances &middot; 2.8%</div>
-            <div class="bvp">vs J. Junk: 1-2, 0 HR, 0 K &middot; .500</div>
-          </div></div>
-            
-          </div>
-        </article>
+        </article></div></section><section class="gsec" id="s-g13" data-game="g13"><div class="gsec-h"><h3>MIA</h3><span>6:40 PM ET</span></div><div class="pb-grid">
         <article class="pb-card bat-card" style="--accent:var(--line-2)">
           <div class="pb-body">
             <div class="cv-head">
@@ -1613,36 +1585,65 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           </div></div>
             
           </div>
-        </article>
+        </article></div></section><section class="gsec" id="s-g14" data-game="g14"><div class="gsec-h"><h3>NYM</h3><span>6:40 PM ET</span></div><div class="pb-grid">
         <article class="pb-card bat-card" style="--accent:var(--line-2)">
           <div class="pb-body">
             <div class="cv-head">
-              <h3 class="cv-tm">BOS</h3>
-              <span class="cv-time">6:45 PM ET</span>
+              <h3 class="cv-tm">NYM</h3>
+              <span class="cv-time">6:40 PM ET</span>
             </div>
-            <div class="cv-sub">facing Ryan Johnson, who allows a home run to 4.7% of the batters he faces &middot; <span class="cv-time"><span class="bat-park bad">park 0.96</span></span></div>
+            <div class="cv-sub">facing Janson Junk, who allows a home run to 2.8% of the batters he faces &middot; <span class="cv-time"><span class="bat-park bad">park 0.88</span></span></div>
             <div class="bats">
           <div class="bat">
-            <div class="bat-n">Willson Contreras</div>
-            <div class="bat-c"><b>21.5%</b></div>
-            <div class="bat-w">26 HR in 517 plate appearances &middot; 5.0%</div>
-            <div class="bvp">vs R. Johnson: 1-2, 1 HR, 1 K &middot; .500</div>
+            <div class="bat-n">Juan Soto</div>
+            <div class="bat-c"><b>12.9%</b></div>
+            <div class="bat-w">24 HR in 404 plate appearances &middot; 5.9%</div>
+            <div class="bvp">vs J. Junk: 1-4, 0 HR, 0 K &middot; .250</div>
           </div>
           <div class="bat">
-            <div class="bat-n">Wilyer Abreu</div>
-            <div class="bat-c"><b>19.1%</b></div>
-            <div class="bat-w">23 HR in 622 plate appearances &middot; 3.7%</div>
-            <div class="bvp">vs R. Johnson: 0-3, 0 HR, 1 K &middot; .000</div>
+            <div class="bat-n">Francisco Lindor</div>
+            <div class="bat-c"><b>9.2%</b></div>
+            <div class="bat-w">17 HR in 389 plate appearances &middot; 4.4%</div>
+            <div class="bvp">vs J. Junk: 1-2, 0 HR, 1 K &middot; .500</div>
           </div>
           <div class="bat">
-            <div class="bat-n">Jarren Duran</div>
-            <div class="bat-c"><b>16.8%</b></div>
-            <div class="bat-w">20 HR in 567 plate appearances &middot; 3.5%</div>
-            <div class="bvp">vs R. Johnson: 1-2, 1 HR, 1 K &middot; .500</div>
+            <div class="bat-n">Carson Benge</div>
+            <div class="bat-c"><b>8.7%</b></div>
+            <div class="bat-w">16 HR in 579 plate appearances &middot; 2.8%</div>
+            <div class="bvp">vs J. Junk: 1-2, 0 HR, 0 K &middot; .500</div>
           </div></div>
             
           </div>
-        </article>
+        </article></div></section><section class="gsec" id="s-g15" data-game="g15"><div class="gsec-h"><h3>PHI</h3><span>6:40 PM ET</span></div><div class="pb-grid">
+        <article class="pb-card bat-card" style="--accent:var(--line-2)">
+          <div class="pb-body">
+            <div class="cv-head">
+              <h3 class="cv-tm">PHI</h3>
+              <span class="cv-time">6:40 PM ET</span>
+            </div>
+            <div class="cv-sub">facing Hunter Brown, who allows a home run to 2.8% of the batters he faces &middot; <span class="cv-time"><span class="bat-park good">park 1.09</span></span></div>
+            <div class="bats">
+          <div class="bat">
+            <div class="bat-n">Kyle Schwarber</div>
+            <div class="bat-c"><b>27.5%</b></div>
+            <div class="bat-w">43 HR in 626 plate appearances &middot; 6.9%</div>
+            <div class="bvp">vs H. Brown: 0-3, 0 HR, 2 K &middot; .000</div>
+          </div>
+          <div class="bat">
+            <div class="bat-n">Bryce Harper</div>
+            <div class="bat-c"><b>18.1%</b></div>
+            <div class="bat-w">27 HR in 621 plate appearances &middot; 4.3%</div>
+            <div class="bvp">vs H. Brown: 1-3, 0 HR, 1 K &middot; .333</div>
+          </div>
+          <div class="bat">
+            <div class="bat-n">Trea Turner</div>
+            <div class="bat-c"><b>13.0%</b></div>
+            <div class="bat-w">19 HR in 626 plate appearances &middot; 3.0%</div>
+            <div class="bvp">vs H. Brown: 0-3, 0 HR, 2 K &middot; .000</div>
+          </div></div>
+            
+          </div>
+        </article></div></section><section class="gsec" id="s-g16" data-game="g16"><div class="gsec-h"><h3>LAA</h3><span>6:45 PM ET</span></div><div class="pb-grid">
         <article class="pb-card bat-card" style="--accent:var(--line-2)">
           <div class="pb-body">
             <div class="cv-head">
@@ -1671,36 +1672,36 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           </div></div>
             
           </div>
-        </article>
+        </article></div></section><section class="gsec" id="s-g17" data-game="g17"><div class="gsec-h"><h3>BOS</h3><span>6:45 PM ET</span></div><div class="pb-grid">
         <article class="pb-card bat-card" style="--accent:var(--line-2)">
           <div class="pb-body">
             <div class="cv-head">
-              <h3 class="cv-tm">NYY</h3>
-              <span class="cv-time">7:05 PM ET</span>
+              <h3 class="cv-tm">BOS</h3>
+              <span class="cv-time">6:45 PM ET</span>
             </div>
-            <div class="cv-sub">facing Tomoyuki Sugano, who allows a home run to 5.0% of the batters he faces &middot; <span class="cv-time"><span class="bat-park good">park 1.15</span></span></div>
+            <div class="cv-sub">facing Ryan Johnson, who allows a home run to 4.7% of the batters he faces &middot; <span class="cv-time"><span class="bat-park bad">park 0.96</span></span></div>
             <div class="bats">
           <div class="bat">
-            <div class="bat-n">Ben Rice</div>
-            <div class="bat-c"><b>35.1%</b></div>
-            <div class="bat-w">36 HR in 597 plate appearances &middot; 6.0%</div>
-            <div class="bvp">vs T. Sugano: 0-6, 0 HR, 1 K &middot; .000</div>
+            <div class="bat-n">Willson Contreras</div>
+            <div class="bat-c"><b>21.5%</b></div>
+            <div class="bat-w">26 HR in 517 plate appearances &middot; 5.0%</div>
+            <div class="bvp">vs R. Johnson: 1-2, 1 HR, 1 K &middot; .500</div>
           </div>
           <div class="bat">
-            <div class="bat-n">Luis García Jr.</div>
-            <div class="bat-c"><b>29.4%</b></div>
-            <div class="bat-w">29 HR in 492 plate appearances &middot; 5.9%</div>
-            <div class="bvp">vs T. Sugano: 2-5, 1 HR, 0 K &middot; .400</div>
+            <div class="bat-n">Wilyer Abreu</div>
+            <div class="bat-c"><b>19.1%</b></div>
+            <div class="bat-w">23 HR in 622 plate appearances &middot; 3.7%</div>
+            <div class="bvp">vs R. Johnson: 0-3, 0 HR, 1 K &middot; .000</div>
           </div>
           <div class="bat">
-            <div class="bat-n">Jazz Chisholm Jr.</div>
-            <div class="bat-c"><b>20.0%</b></div>
-            <div class="bat-w">19 HR in 520 plate appearances &middot; 3.7%</div>
-            <div class="bvp">vs T. Sugano: 1-7, 0 HR, 3 K &middot; .143</div>
+            <div class="bat-n">Jarren Duran</div>
+            <div class="bat-c"><b>16.8%</b></div>
+            <div class="bat-w">20 HR in 567 plate appearances &middot; 3.5%</div>
+            <div class="bvp">vs R. Johnson: 1-2, 1 HR, 1 K &middot; .500</div>
           </div></div>
             
           </div>
-        </article>
+        </article></div></section><section class="gsec" id="s-g18" data-game="g18"><div class="gsec-h"><h3>COL</h3><span>7:05 PM ET</span></div><div class="pb-grid">
         <article class="pb-card bat-card" style="--accent:var(--line-2)">
           <div class="pb-body">
             <div class="cv-head">
@@ -1729,36 +1730,36 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           </div></div>
             
           </div>
-        </article>
+        </article></div></section><section class="gsec" id="s-g19" data-game="g19"><div class="gsec-h"><h3>NYY</h3><span>7:05 PM ET</span></div><div class="pb-grid">
         <article class="pb-card bat-card" style="--accent:var(--line-2)">
           <div class="pb-body">
             <div class="cv-head">
-              <h3 class="cv-tm">TB</h3>
-              <span class="cv-time">7:15 PM ET</span>
+              <h3 class="cv-tm">NYY</h3>
+              <span class="cv-time">7:05 PM ET</span>
             </div>
-            <div class="cv-sub">facing Reynaldo López, who allows a home run to 3.4% of the batters he faces &middot; <span class="cv-time"><span class="bat-park good">park 1.03</span></span></div>
+            <div class="cv-sub">facing Tomoyuki Sugano, who allows a home run to 5.0% of the batters he faces &middot; <span class="cv-time"><span class="bat-park good">park 1.15</span></span></div>
             <div class="bats">
           <div class="bat">
-            <div class="bat-n">Junior Caminero</div>
-            <div class="bat-c"><b>26.5%</b></div>
-            <div class="bat-w">39 HR in 632 plate appearances &middot; 6.2%</div>
-            <div class="bvp none">has not faced R. López</div>
+            <div class="bat-n">Ben Rice</div>
+            <div class="bat-c"><b>35.1%</b></div>
+            <div class="bat-w">36 HR in 597 plate appearances &middot; 6.0%</div>
+            <div class="bvp">vs T. Sugano: 0-6, 0 HR, 1 K &middot; .000</div>
           </div>
           <div class="bat">
-            <div class="bat-n">Yandy Díaz</div>
-            <div class="bat-c"><b>15.8%</b></div>
-            <div class="bat-w">22 HR in 623 plate appearances &middot; 3.5%</div>
-            <div class="bvp">vs R. López: 5-9, 0 HR, 0 K &middot; .556</div>
+            <div class="bat-n">Luis García Jr.</div>
+            <div class="bat-c"><b>29.4%</b></div>
+            <div class="bat-w">29 HR in 492 plate appearances &middot; 5.9%</div>
+            <div class="bvp">vs T. Sugano: 2-5, 1 HR, 0 K &middot; .400</div>
           </div>
           <div class="bat">
-            <div class="bat-n">Jonathan Aranda</div>
-            <div class="bat-c"><b>13.7%</b></div>
-            <div class="bat-w">19 HR in 614 plate appearances &middot; 3.1%</div>
-            <div class="bvp">vs R. López: 0-3, 0 HR, 2 K &middot; .000</div>
+            <div class="bat-n">Jazz Chisholm Jr.</div>
+            <div class="bat-c"><b>20.0%</b></div>
+            <div class="bat-w">19 HR in 520 plate appearances &middot; 3.7%</div>
+            <div class="bvp">vs T. Sugano: 1-7, 0 HR, 3 K &middot; .143</div>
           </div></div>
             
           </div>
-        </article>
+        </article></div></section><section class="gsec" id="s-g20" data-game="g20"><div class="gsec-h"><h3>ATL</h3><span>7:15 PM ET</span></div><div class="pb-grid">
         <article class="pb-card bat-card" style="--accent:var(--line-2)">
           <div class="pb-body">
             <div class="cv-head">
@@ -1787,152 +1788,36 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           </div></div>
             
           </div>
-        </article>
+        </article></div></section><section class="gsec" id="s-g21" data-game="g21"><div class="gsec-h"><h3>TB</h3><span>7:15 PM ET</span></div><div class="pb-grid">
         <article class="pb-card bat-card" style="--accent:var(--line-2)">
           <div class="pb-body">
             <div class="cv-head">
-              <h3 class="cv-tm">CHC</h3>
-              <span class="cv-time">7:40 PM ET</span>
+              <h3 class="cv-tm">TB</h3>
+              <span class="cv-time">7:15 PM ET</span>
             </div>
-            <div class="cv-sub">facing Logan Henderson, who allows a home run to 3.8% of the batters he faces &middot; <span class="cv-time"><span class="bat-park ">park 1.01</span></span></div>
+            <div class="cv-sub">facing Reynaldo López, who allows a home run to 3.4% of the batters he faces &middot; <span class="cv-time"><span class="bat-park good">park 1.03</span></span></div>
             <div class="bats">
           <div class="bat">
-            <div class="bat-n">Pete Crow-Armstrong</div>
-            <div class="bat-c"><b>28.9%</b></div>
-            <div class="bat-w">41 HR in 656 plate appearances &middot; 6.2%</div>
-            <div class="bvp">vs L. Henderson: 1-3, 1 HR, 1 K &middot; .333</div>
+            <div class="bat-n">Junior Caminero</div>
+            <div class="bat-c"><b>26.5%</b></div>
+            <div class="bat-w">39 HR in 632 plate appearances &middot; 6.2%</div>
+            <div class="bvp none">has not faced R. López</div>
           </div>
           <div class="bat">
-            <div class="bat-n">Seiya Suzuki</div>
-            <div class="bat-c"><b>17.9%</b></div>
-            <div class="bat-w">24 HR in 570 plate appearances &middot; 4.2%</div>
-            <div class="bvp">vs L. Henderson: 0-3, 0 HR, 1 K &middot; .000</div>
+            <div class="bat-n">Yandy Díaz</div>
+            <div class="bat-c"><b>15.8%</b></div>
+            <div class="bat-w">22 HR in 623 plate appearances &middot; 3.5%</div>
+            <div class="bvp">vs R. López: 5-9, 0 HR, 0 K &middot; .556</div>
           </div>
           <div class="bat">
-            <div class="bat-n">Alex Bregman</div>
-            <div class="bat-c"><b>17.9%</b></div>
-            <div class="bat-w">24 HR in 654 plate appearances &middot; 3.7%</div>
-            <div class="bvp">vs L. Henderson: 1-3, 0 HR, 0 K &middot; .333</div>
+            <div class="bat-n">Jonathan Aranda</div>
+            <div class="bat-c"><b>13.7%</b></div>
+            <div class="bat-w">19 HR in 614 plate appearances &middot; 3.1%</div>
+            <div class="bvp">vs R. López: 0-3, 0 HR, 2 K &middot; .000</div>
           </div></div>
             
           </div>
-        </article>
-        <article class="pb-card bat-card" style="--accent:var(--line-2)">
-          <div class="pb-body">
-            <div class="cv-head">
-              <h3 class="cv-tm">CWS</h3>
-              <span class="cv-time">7:40 PM ET</span>
-            </div>
-            <div class="cv-sub">facing Lake Bachar, who allows a home run to 4.0% of the batters he faces &middot; <span class="cv-time"><span class="bat-park ">park 0.99</span></span></div>
-            <div class="bats">
-          <div class="bat">
-            <div class="bat-n">Colson Montgomery</div>
-            <div class="bat-c"><b>22.9%</b></div>
-            <div class="bat-w">31 HR in 576 plate appearances &middot; 5.4%</div>
-            <div class="bvp">vs L. Bachar: 0-2, 0 HR, 2 K &middot; .000</div>
-          </div>
-          <div class="bat">
-            <div class="bat-n">Munetaka Murakami</div>
-            <div class="bat-c"><b>22.4%</b></div>
-            <div class="bat-w">30 HR in 479 plate appearances &middot; 6.3%</div>
-            <div class="bvp">vs L. Bachar: 0-1, 0 HR, 0 K &middot; .000</div>
-          </div>
-          <div class="bat">
-            <div class="bat-n">Miguel Vargas</div>
-            <div class="bat-c"><b>22.2%</b></div>
-            <div class="bat-w">30 HR in 627 plate appearances &middot; 4.8%</div>
-            <div class="bvp">vs L. Bachar: 0-0, 0 HR, 0 K &middot; &mdash;</div>
-          </div></div>
-            
-          </div>
-        </article>
-        <article class="pb-card bat-card" style="--accent:var(--line-2)">
-          <div class="pb-body">
-            <div class="cv-head">
-              <h3 class="cv-tm">KC</h3>
-              <span class="cv-time">7:40 PM ET</span>
-            </div>
-            <div class="cv-sub">facing Zac Gallen, who allows a home run to 4.1% of the batters he faces &middot; <span class="cv-time"><span class="bat-park ">park 1.02</span></span></div>
-            <div class="bats">
-          <div class="bat">
-            <div class="bat-n">Jac Caglianone</div>
-            <div class="bat-c"><b>17.9%</b></div>
-            <div class="bat-w">23 HR in 510 plate appearances &middot; 4.5%</div>
-            <div class="bvp none">has not faced Z. Gallen</div>
-          </div>
-          <div class="bat">
-            <div class="bat-n">Carter Jensen</div>
-            <div class="bat-c"><b>17.1%</b></div>
-            <div class="bat-w">22 HR in 543 plate appearances &middot; 4.1%</div>
-            <div class="bvp none">has not faced Z. Gallen</div>
-          </div>
-          <div class="bat">
-            <div class="bat-n">Salvador Perez</div>
-            <div class="bat-c"><b>14.9%</b></div>
-            <div class="bat-w">19 HR in 570 plate appearances &middot; 3.3%</div>
-            <div class="bvp">vs Z. Gallen: 1-3, 0 HR, 1 K &middot; .333</div>
-          </div></div>
-            
-          </div>
-        </article>
-        <article class="pb-card bat-card" style="--accent:var(--line-2)">
-          <div class="pb-body">
-            <div class="cv-head">
-              <h3 class="cv-tm">MIL</h3>
-              <span class="cv-time">7:40 PM ET</span>
-            </div>
-            <div class="cv-sub">facing Kevin Gausman, who allows a home run to 3.3% of the batters he faces &middot; <span class="cv-time"><span class="bat-park ">park 1.01</span></span></div>
-            <div class="bats">
-          <div class="bat">
-            <div class="bat-n">Jake Bauers</div>
-            <div class="bat-c"><b>16.2%</b></div>
-            <div class="bat-w">24 HR in 522 plate appearances &middot; 4.6%</div>
-            <div class="bvp">vs K. Gausman: 1-9, 1 HR, 4 K &middot; .111</div>
-          </div>
-          <div class="bat">
-            <div class="bat-n">Jackson Chourio</div>
-            <div class="bat-c"><b>15.6%</b></div>
-            <div class="bat-w">23 HR in 506 plate appearances &middot; 4.5%</div>
-            <div class="bvp">vs K. Gausman: 1-6, 0 HR, 2 K &middot; .167</div>
-          </div>
-          <div class="bat">
-            <div class="bat-n">Brice Turang</div>
-            <div class="bat-c"><b>11.7%</b></div>
-            <div class="bat-w">17 HR in 615 plate appearances &middot; 2.8%</div>
-            <div class="bvp">vs K. Gausman: 1-12, 0 HR, 8 K &middot; .083</div>
-          </div></div>
-            
-          </div>
-        </article>
-        <article class="pb-card bat-card" style="--accent:var(--line-2)">
-          <div class="pb-body">
-            <div class="cv-head">
-              <h3 class="cv-tm">PIT</h3>
-              <span class="cv-time">7:40 PM ET</span>
-            </div>
-            <div class="cv-sub">facing Davis Martin, who allows a home run to 2.1% of the batters he faces &middot; <span class="cv-time"><span class="bat-park ">park 0.99</span></span></div>
-            <div class="bats">
-          <div class="bat">
-            <div class="bat-n">Brandon Lowe</div>
-            <div class="bat-c"><b>15.5%</b></div>
-            <div class="bat-w">29 HR in 593 plate appearances &middot; 4.9%</div>
-            <div class="bvp none">has not faced D. Martin</div>
-          </div>
-          <div class="bat">
-            <div class="bat-n">Oneil Cruz</div>
-            <div class="bat-c"><b>9.4%</b></div>
-            <div class="bat-w">17 HR in 360 plate appearances &middot; 4.7%</div>
-            <div class="bvp">vs D. Martin: 1-1, 0 HR, 0 K &middot; 1.000</div>
-          </div>
-          <div class="bat">
-            <div class="bat-n">Ryan O'Hearn</div>
-            <div class="bat-c"><b>9.4%</b></div>
-            <div class="bat-w">17 HR in 398 plate appearances &middot; 4.3%</div>
-            <div class="bvp">vs D. Martin: 2-6, 0 HR, 2 K &middot; .333</div>
-          </div></div>
-            
-          </div>
-        </article>
+        </article></div></section><section class="gsec" id="s-g22" data-game="g22"><div class="gsec-h"><h3>AZ</h3><span>7:40 PM ET</span></div><div class="pb-grid">
         <article class="pb-card bat-card" style="--accent:var(--line-2)">
           <div class="pb-body">
             <div class="cv-head">
@@ -1961,36 +1846,152 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           </div></div>
             
           </div>
-        </article>
+        </article></div></section><section class="gsec" id="s-g23" data-game="g23"><div class="gsec-h"><h3>CHC</h3><span>7:40 PM ET</span></div><div class="pb-grid">
         <article class="pb-card bat-card" style="--accent:var(--line-2)">
           <div class="pb-body">
             <div class="cv-head">
-              <h3 class="cv-tm">LAD</h3>
-              <span class="cv-time">10:10 PM ET</span>
+              <h3 class="cv-tm">CHC</h3>
+              <span class="cv-time">7:40 PM ET</span>
             </div>
-            <div class="cv-sub">facing Rhett Lowder, who allows a home run to 3.1% of the batters he faces &middot; <span class="cv-time"><span class="bat-park ">park 1.00</span></span></div>
+            <div class="cv-sub">facing Logan Henderson, who allows a home run to 3.8% of the batters he faces &middot; <span class="cv-time"><span class="bat-park ">park 1.01</span></span></div>
             <div class="bats">
           <div class="bat">
-            <div class="bat-n">Shohei Ohtani</div>
-            <div class="bat-c"><b>18.9%</b></div>
-            <div class="bat-w">30 HR in 596 plate appearances &middot; 5.0%</div>
-            <div class="bvp none">has not faced R. Lowder</div>
+            <div class="bat-n">Pete Crow-Armstrong</div>
+            <div class="bat-c"><b>28.9%</b></div>
+            <div class="bat-w">41 HR in 656 plate appearances &middot; 6.2%</div>
+            <div class="bvp">vs L. Henderson: 1-3, 1 HR, 1 K &middot; .333</div>
           </div>
           <div class="bat">
-            <div class="bat-n">Max Muncy</div>
-            <div class="bat-c"><b>16.7%</b></div>
-            <div class="bat-w">26 HR in 498 plate appearances &middot; 5.2%</div>
-            <div class="bvp none">has not faced R. Lowder</div>
+            <div class="bat-n">Seiya Suzuki</div>
+            <div class="bat-c"><b>17.9%</b></div>
+            <div class="bat-w">24 HR in 570 plate appearances &middot; 4.2%</div>
+            <div class="bvp">vs L. Henderson: 0-3, 0 HR, 1 K &middot; .000</div>
           </div>
           <div class="bat">
-            <div class="bat-n">Andy Pages</div>
-            <div class="bat-c"><b>13.6%</b></div>
-            <div class="bat-w">21 HR in 550 plate appearances &middot; 3.8%</div>
-            <div class="bvp none">has not faced R. Lowder</div>
+            <div class="bat-n">Alex Bregman</div>
+            <div class="bat-c"><b>17.9%</b></div>
+            <div class="bat-w">24 HR in 654 plate appearances &middot; 3.7%</div>
+            <div class="bvp">vs L. Henderson: 1-3, 0 HR, 0 K &middot; .333</div>
           </div></div>
             
           </div>
-        </article>
+        </article></div></section><section class="gsec" id="s-g24" data-game="g24"><div class="gsec-h"><h3>KC</h3><span>7:40 PM ET</span></div><div class="pb-grid">
+        <article class="pb-card bat-card" style="--accent:var(--line-2)">
+          <div class="pb-body">
+            <div class="cv-head">
+              <h3 class="cv-tm">KC</h3>
+              <span class="cv-time">7:40 PM ET</span>
+            </div>
+            <div class="cv-sub">facing Zac Gallen, who allows a home run to 4.1% of the batters he faces &middot; <span class="cv-time"><span class="bat-park ">park 1.02</span></span></div>
+            <div class="bats">
+          <div class="bat">
+            <div class="bat-n">Jac Caglianone</div>
+            <div class="bat-c"><b>17.9%</b></div>
+            <div class="bat-w">23 HR in 510 plate appearances &middot; 4.5%</div>
+            <div class="bvp none">has not faced Z. Gallen</div>
+          </div>
+          <div class="bat">
+            <div class="bat-n">Carter Jensen</div>
+            <div class="bat-c"><b>17.1%</b></div>
+            <div class="bat-w">22 HR in 543 plate appearances &middot; 4.1%</div>
+            <div class="bvp none">has not faced Z. Gallen</div>
+          </div>
+          <div class="bat">
+            <div class="bat-n">Salvador Perez</div>
+            <div class="bat-c"><b>14.9%</b></div>
+            <div class="bat-w">19 HR in 570 plate appearances &middot; 3.3%</div>
+            <div class="bvp">vs Z. Gallen: 1-3, 0 HR, 1 K &middot; .333</div>
+          </div></div>
+            
+          </div>
+        </article></div></section><section class="gsec" id="s-g25" data-game="g25"><div class="gsec-h"><h3>MIL</h3><span>7:40 PM ET</span></div><div class="pb-grid">
+        <article class="pb-card bat-card" style="--accent:var(--line-2)">
+          <div class="pb-body">
+            <div class="cv-head">
+              <h3 class="cv-tm">MIL</h3>
+              <span class="cv-time">7:40 PM ET</span>
+            </div>
+            <div class="cv-sub">facing Kevin Gausman, who allows a home run to 3.3% of the batters he faces &middot; <span class="cv-time"><span class="bat-park ">park 1.01</span></span></div>
+            <div class="bats">
+          <div class="bat">
+            <div class="bat-n">Jake Bauers</div>
+            <div class="bat-c"><b>16.2%</b></div>
+            <div class="bat-w">24 HR in 522 plate appearances &middot; 4.6%</div>
+            <div class="bvp">vs K. Gausman: 1-9, 1 HR, 4 K &middot; .111</div>
+          </div>
+          <div class="bat">
+            <div class="bat-n">Jackson Chourio</div>
+            <div class="bat-c"><b>15.6%</b></div>
+            <div class="bat-w">23 HR in 506 plate appearances &middot; 4.5%</div>
+            <div class="bvp">vs K. Gausman: 1-6, 0 HR, 2 K &middot; .167</div>
+          </div>
+          <div class="bat">
+            <div class="bat-n">Brice Turang</div>
+            <div class="bat-c"><b>11.7%</b></div>
+            <div class="bat-w">17 HR in 615 plate appearances &middot; 2.8%</div>
+            <div class="bvp">vs K. Gausman: 1-12, 0 HR, 8 K &middot; .083</div>
+          </div></div>
+            
+          </div>
+        </article></div></section><section class="gsec" id="s-g26" data-game="g26"><div class="gsec-h"><h3>PIT</h3><span>7:40 PM ET</span></div><div class="pb-grid">
+        <article class="pb-card bat-card" style="--accent:var(--line-2)">
+          <div class="pb-body">
+            <div class="cv-head">
+              <h3 class="cv-tm">PIT</h3>
+              <span class="cv-time">7:40 PM ET</span>
+            </div>
+            <div class="cv-sub">facing Davis Martin, who allows a home run to 2.1% of the batters he faces &middot; <span class="cv-time"><span class="bat-park ">park 0.99</span></span></div>
+            <div class="bats">
+          <div class="bat">
+            <div class="bat-n">Brandon Lowe</div>
+            <div class="bat-c"><b>15.5%</b></div>
+            <div class="bat-w">29 HR in 593 plate appearances &middot; 4.9%</div>
+            <div class="bvp none">has not faced D. Martin</div>
+          </div>
+          <div class="bat">
+            <div class="bat-n">Oneil Cruz</div>
+            <div class="bat-c"><b>9.4%</b></div>
+            <div class="bat-w">17 HR in 360 plate appearances &middot; 4.7%</div>
+            <div class="bvp">vs D. Martin: 1-1, 0 HR, 0 K &middot; 1.000</div>
+          </div>
+          <div class="bat">
+            <div class="bat-n">Ryan O'Hearn</div>
+            <div class="bat-c"><b>9.4%</b></div>
+            <div class="bat-w">17 HR in 398 plate appearances &middot; 4.3%</div>
+            <div class="bvp">vs D. Martin: 2-6, 0 HR, 2 K &middot; .333</div>
+          </div></div>
+            
+          </div>
+        </article></div></section><section class="gsec" id="s-g27" data-game="g27"><div class="gsec-h"><h3>CWS</h3><span>7:40 PM ET</span></div><div class="pb-grid">
+        <article class="pb-card bat-card" style="--accent:var(--line-2)">
+          <div class="pb-body">
+            <div class="cv-head">
+              <h3 class="cv-tm">CWS</h3>
+              <span class="cv-time">7:40 PM ET</span>
+            </div>
+            <div class="cv-sub">facing Lake Bachar, who allows a home run to 4.0% of the batters he faces &middot; <span class="cv-time"><span class="bat-park ">park 0.99</span></span></div>
+            <div class="bats">
+          <div class="bat">
+            <div class="bat-n">Colson Montgomery</div>
+            <div class="bat-c"><b>22.9%</b></div>
+            <div class="bat-w">31 HR in 576 plate appearances &middot; 5.4%</div>
+            <div class="bvp">vs L. Bachar: 0-2, 0 HR, 2 K &middot; .000</div>
+          </div>
+          <div class="bat">
+            <div class="bat-n">Munetaka Murakami</div>
+            <div class="bat-c"><b>22.4%</b></div>
+            <div class="bat-w">30 HR in 479 plate appearances &middot; 6.3%</div>
+            <div class="bvp">vs L. Bachar: 0-1, 0 HR, 0 K &middot; .000</div>
+          </div>
+          <div class="bat">
+            <div class="bat-n">Miguel Vargas</div>
+            <div class="bat-c"><b>22.2%</b></div>
+            <div class="bat-w">30 HR in 627 plate appearances &middot; 4.8%</div>
+            <div class="bvp">vs L. Bachar: 0-0, 0 HR, 0 K &middot; &mdash;</div>
+          </div></div>
+            
+          </div>
+        </article></div></section><section class="gsec" id="s-g28" data-game="g28"><div class="gsec-h"><h3>CIN</h3><span>10:10 PM ET</span></div><div class="pb-grid">
         <article class="pb-card bat-card" style="--accent:var(--line-2)">
           <div class="pb-body">
             <div class="cv-head">
@@ -2019,7 +2020,36 @@ footer{background:var(--bg-2);padding:56px 0 40px}
           </div></div>
             
           </div>
-        </article></div>
+        </article></div></section><section class="gsec" id="s-g29" data-game="g29"><div class="gsec-h"><h3>LAD</h3><span>10:10 PM ET</span></div><div class="pb-grid">
+        <article class="pb-card bat-card" style="--accent:var(--line-2)">
+          <div class="pb-body">
+            <div class="cv-head">
+              <h3 class="cv-tm">LAD</h3>
+              <span class="cv-time">10:10 PM ET</span>
+            </div>
+            <div class="cv-sub">facing Rhett Lowder, who allows a home run to 3.1% of the batters he faces &middot; <span class="cv-time"><span class="bat-park ">park 1.00</span></span></div>
+            <div class="bats">
+          <div class="bat">
+            <div class="bat-n">Shohei Ohtani</div>
+            <div class="bat-c"><b>18.9%</b></div>
+            <div class="bat-w">30 HR in 596 plate appearances &middot; 5.0%</div>
+            <div class="bvp none">has not faced R. Lowder</div>
+          </div>
+          <div class="bat">
+            <div class="bat-n">Max Muncy</div>
+            <div class="bat-c"><b>16.7%</b></div>
+            <div class="bat-w">26 HR in 498 plate appearances &middot; 5.2%</div>
+            <div class="bvp none">has not faced R. Lowder</div>
+          </div>
+          <div class="bat">
+            <div class="bat-n">Andy Pages</div>
+            <div class="bat-c"><b>13.6%</b></div>
+            <div class="bat-w">21 HR in 550 plate appearances &middot; 3.8%</div>
+            <div class="bvp none">has not faced R. Lowder</div>
+          </div></div>
+            
+          </div>
+        </article></div></section>
     <h2>Graded</h2>
     <p class="pnl-note">Across 496 graded bats this model promised <b>15.1%</b> and delivered <b>11.3%</b>.</p><div class="sscroll"><table class="stbl num"><tr><th></th><td class="en hd">bats</td><td class="en hd">promised</td><td class="en hd">delivered</td></tr><tr><th>0-8%</th><td class="en">29</td><td class="en">7.0%</td><td class="en eloss">0.0%</td></tr><tr><th>8-12%</th><td class="en">99</td><td class="en">10.3%</td><td class="en egain">11.1%</td></tr><tr><th>12-18%</th><td class="en">243</td><td class="en">14.6%</td><td class="en eloss">8.6%</td></tr><tr><th>18-100%</th><td class="en">125</td><td class="en">22.0%</td><td class="en eloss">19.2%</td></tr></table></div>
   </div>
@@ -2128,5 +2158,36 @@ footer{background:var(--bg-2);padding:56px 0 40px}
     });
     d.appendChild(b);
   }, true);
+
+  /* The game picker on the NFL prop boards. Progressive: the chips are
+     ordinary anchors pointing at each section, so with no JavaScript they
+     scroll to the right group and nothing is lost. With JavaScript they
+     filter instead, which on a sixteen-game slate is the difference
+     between finding a player and scrolling for him.
+
+     Filtering hides sections with the `hidden` attribute rather than a
+     class, so anything that reads the DOM -- a find-in-page, a screen
+     reader -- agrees with what the eye sees. */
+  var picker = document.querySelector(".gsel");
+  if (picker) {
+    picker.addEventListener("click", function (e) {
+      var chip = e.target.closest ? e.target.closest(".gchip") : null;
+      if (!chip) { return; }
+      e.preventDefault();
+      var want = chip.getAttribute("data-game") || "";
+      Array.prototype.forEach.call(
+        picker.querySelectorAll(".gchip"), function (c) {
+          c.classList.toggle("on", c === chip);
+        });
+      Array.prototype.forEach.call(
+        document.querySelectorAll(".gsec"), function (s) {
+          s.hidden = !!want && s.getAttribute("data-game") !== want;
+        });
+      /* Back to the top of the board, not of the page: the reader just
+         chose a game and wants to see it, and leaving them mid-scroll in
+         a list that just got shorter is disorienting. */
+      picker.scrollIntoView({block: "start"});
+    });
+  }
 })();
 </script>
