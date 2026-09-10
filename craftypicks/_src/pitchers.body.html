@@ -1,18 +1,24 @@
-<section style="background:var(--bg-2)">
-  <div class="wrap" style="padding:40px 28px 30px">
-    <div class="eyebrow">{{PITCH_DATE}}</div>
-    <h1 style="font-size:clamp(32px,4.2vw,50px);margin:12px 0 0">Pitchers prop</h1>
+<!-- The board header, compact. The old one spent a screen of a phone on a
+     50px title saying what the tab above it already said, over a date set in
+     wide-tracked uppercase mono. Title at 22px, one sentence-case meta line,
+     and tonight's edge count on the right rail the list rows also use. -->
+<section class="bhead">
+  <div class="wrap">
+    <div class="bhead-in">
+      <div class="bhead-t">
+        <h1>Pitchers prop</h1>
+        <div class="bhead-meta">{{PITCH_META}}</div>
+      </div>
+      <div class="bhead-n"><b>{{PITCH_EDGES}}</b><span>edges</span></div>
+    </div>
   </div>
 </section>
 
-<section class="pad-sm">
+<section class="pad-sm bpage">
   <div class="wrap">
-    <!-- No .pb-grid wrapper. pitcher_cards() now returns the whole board:
-         a game picker plus one section per fixture, each carrying its own
-         grid. Wrapping that in a grid made the SECTIONS the grid items, so
-         the picker sat in one column and "ATL @ PHI" in the other. Every
-         other board's renderer emits its own container for exactly this
-         reason; this template was the last one that did not. -->
+    <!-- No wrapper. pitcher_cards() returns the whole board: the picker,
+         then one flat list sorted by edge. Every row carries its fixture
+         so the picker can filter without a heading per game. -->
     {{PITCHER_CARDS}}
 
     <div class="clegend" style="margin-top:22px">

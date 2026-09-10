@@ -936,6 +936,20 @@ T = {
     "span_season": {"en": "{v} regular season", "es": "temporada regular {v}"},
     "them":        {"en": "them", "es": "ellos"},
     "k_unit":   {"en": "K", "es": "P"},
+
+    # The list board (the pitchers prop page). Labels here are set in mono
+    # under 12px, which is the only place the design doc still allows wide
+    # tracking -- everything longer than a couple of words is sentence case.
+    "pl_ks":        {"en": "strikeouts", "es": "ponches"},
+    "pl_line":      {"en": "line", "es": "línea"},
+    "pl_settled":   {"en": "settled", "es": "cerrado"},
+    "pl_noline":    {"en": "no line", "es": "sin línea"},
+    "pl_all":       {"en": "All {n}", "es": "Todos ({n})"},
+    "pl_edgesonly": {"en": "Edges only", "es": "Solo ventajas"},
+    "pb_flag":      {"en": "Check", "es": "Revisar"},
+    "bh_props":     {"en": "{n} props", "es": "{n} apuestas"},
+    "bh_games":     {"en": "{n} games", "es": "{n} partidos"},
+    "bh_edges":     {"en": "edges", "es": "ventajas"},
     "k_rate":   {"en": "{v}% K", "es": "{v}% P"},
     # Projection-accuracy buckets. The scripts store an id so the label can be
     # written here instead of being frozen into the data file in one language.

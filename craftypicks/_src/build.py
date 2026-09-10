@@ -242,9 +242,6 @@ HEAD = """<!DOCTYPE html>
 <meta property="og:type" content="website">
 <meta name="theme-color" content="#08090B">
 {hreflang}
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%2308090B'/><path d='M8 20 L14 12 L18 17 L24 9' stroke='%233BE081' stroke-width='2.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>">
 <style>
 {css}
@@ -493,6 +490,11 @@ def build() -> None:
             "{{SLATE_DATE}}": doc_date_label(slate_doc, lang) or L("not_rated"),
             "{{SLATE_ROWS}}": R.slate_rows(slate_doc.get("games", [])),
             "{{PITCH_DATE}}": doc_date_label(pitch_doc, lang) or L("not_rated"),
+            "{{PITCH_META}}": R.board_head_meta(
+                doc_date_label(pitch_doc, lang) or L("not_rated"),
+                pitch_doc.get("pitchers", [])),
+            "{{PITCH_EDGES}}": R.pitcher_head(
+                pitch_doc.get("pitchers", []))["edges"],
             "{{PITCHER_CARDS}}": R.pitcher_cards(pitch_doc.get("pitchers", [])),
             "{{PITCH_BUCKETS}}": R.pitcher_bucket_rows(pitch_doc.get("summary", {})),
             "{{PITCH_ACCURACY}}": R.pitcher_accuracy(pitch_doc.get("summary", {})),

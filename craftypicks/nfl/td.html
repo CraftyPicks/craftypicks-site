@@ -10,34 +10,31 @@
 <meta property="og:type" content="website">
 <meta name="theme-color" content="#08090B">
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%2308090B'/><path d='M8 20 L14 12 L18 17 L24 9' stroke='%233BE081' stroke-width='2.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>">
 <style>
-/* Space Grotesk and Space Mono, self-hosted.
+/* Geist and Geist Mono, self-hosted. OFL, Vercel / basement.studio.
+   Chosen from the type directions in the design doc: the neutral, tightly
+   fitted register where the numbers do the talking and the type gets out of
+   the way. Both ship as variable files with real tabular figures (tnum),
+   which is the reason for the switch -- Space Grotesk had no tnum, so every
+   column on the site was off by a fraction of a digit width per row.
+
    Not fetched from Google: a board people open every morning should not have
-   a third party in its critical render path, and the six subset files below
-   come to 96 KB in total. Vietnamese is dropped; latin-ext stays because the
-   site is bilingual and Spanish needs it. Space Grotesk ships as one
-   variable file, so all four weights point at the same URL. */
-@font-face{font-family:"Space Grotesk";font-style:normal;font-weight:400 700;
-  font-display:swap;src:url(../fonts/space-grotesk-latin-ext.woff2) format("woff2");
+   a third party in its critical render path. Four subset files, 78 KB in
+   total, which is 18 KB LESS than the six Space files they replace.
+   Vietnamese is dropped; latin-ext stays because the site is bilingual and
+   Spanish needs it. */
+@font-face{font-family:"Geist";font-style:normal;font-weight:100 900;
+  font-display:swap;src:url(../fonts/geist-latin-ext.woff2) format("woff2");
   unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
-@font-face{font-family:"Space Grotesk";font-style:normal;font-weight:400 700;
-  font-display:swap;src:url(../fonts/space-grotesk-latin.woff2) format("woff2");
+@font-face{font-family:"Geist";font-style:normal;font-weight:100 900;
+  font-display:swap;src:url(../fonts/geist-latin.woff2) format("woff2");
   unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
-@font-face{font-family:"Space Mono";font-style:normal;font-weight:400;
-  font-display:swap;src:url(../fonts/space-mono-400-latin-ext.woff2) format("woff2");
+@font-face{font-family:"Geist Mono";font-style:normal;font-weight:100 900;
+  font-display:swap;src:url(../fonts/geist-mono-latin-ext.woff2) format("woff2");
   unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
-@font-face{font-family:"Space Mono";font-style:normal;font-weight:400;
-  font-display:swap;src:url(../fonts/space-mono-400-latin.woff2) format("woff2");
-  unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
-@font-face{font-family:"Space Mono";font-style:normal;font-weight:700;
-  font-display:swap;src:url(../fonts/space-mono-700-latin-ext.woff2) format("woff2");
-  unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
-@font-face{font-family:"Space Mono";font-style:normal;font-weight:700;
-  font-display:swap;src:url(../fonts/space-mono-700-latin.woff2) format("woff2");
+@font-face{font-family:"Geist Mono";font-style:normal;font-weight:100 900;
+  font-display:swap;src:url(../fonts/geist-mono-latin.woff2) format("woff2");
   unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
 
 :root{
@@ -82,8 +79,8 @@
   --amber:#F2B23C;
 
   /* Two roles: mono labels the data, the sans carries everything else. */
-  --mono:"Space Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
-  --sans:"Space Grotesk","Helvetica Neue",Helvetica,Arial,sans-serif;
+  --mono:"Geist Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  --sans:"Geist","Helvetica Neue",Helvetica,Arial,sans-serif;
   /* The extrusion ramp under the stat row: six steps from the card grey down
      to the page. Named rather than inlined because palette.py can only judge
      what :root declares -- an unnamed hex in a shadow is exactly how the
@@ -104,6 +101,9 @@ html{scroll-behavior:smooth}
 body{
   background:var(--bg);color:var(--txt);font-family:var(--sans);
   -webkit-font-smoothing:antialiased;line-height:1.55;overflow-x:hidden;
+  /* Geist Sans carries real tabular figures. Set once here so every column
+     on the site -- tables, strips, card numbers -- lines up by default. */
+  font-variant-numeric:tabular-nums;
 }
 a{color:inherit;text-decoration:none}
 img{max-width:100%;display:block}
@@ -111,7 +111,7 @@ img{max-width:100%;display:block}
 
 /* ---------- type ---------- */
 .eyebrow{
-  font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;
+  font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;
   color:var(--green);font-weight:400;
 }
 .eyebrow.muted{color:var(--muted)}
@@ -126,7 +126,7 @@ h3{font-size:20px;letter-spacing:-.02em}
 p{color:var(--muted);font-size:16px}
 .lead{font-size:18px;max-width:56ch}
 .mono{font-family:var(--mono)}
-.up{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+.up{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
 .g{color:var(--green)}
 .r{color:var(--red)}
 
@@ -143,7 +143,7 @@ header.nav{
   text-transform:none;color:var(--txt)}
 .logo em{font-style:normal;color:var(--green)}
 .nav-links{display:flex;gap:28px;margin-right:auto;flex:1;min-width:0}
-.nav-links a{font-family:var(--mono);font-size:11.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);transition:color .15s}
+.nav-links a{font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);transition:color .15s}
 .nav-links a:hover,.nav-links a.on{color:var(--txt)}
 /* Both rows scroll sideways rather than pushing the document wider. The old
    nav overflowed the page by 367px on a 390px phone; a scrollable row is the
@@ -162,7 +162,7 @@ header.nav{
 .nav-cta{display:flex;align-items:center;gap:18px}
 .btn{
   display:inline-flex;align-items:center;justify-content:center;gap:8px;
-  font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;
+  font-family:var(--sans);font-size:12px;letter-spacing:.01em;
   font-weight:500;padding:13px 22px;border:1px solid var(--green);color:var(--green);
   background:transparent;cursor:pointer;transition:.15s;white-space:nowrap;
 }
@@ -204,7 +204,7 @@ section{border-bottom:1px solid var(--line)}
 .hero .wrap{padding-top:104px;padding-bottom:104px}
 .hero h1{margin:22px 0 24px}
 .hero-cta{display:flex;gap:14px;margin:36px 0 18px;flex-wrap:wrap}
-.fineprint{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.fineprint{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
 .gridlines{
   position:absolute;inset:0;pointer-events:none;opacity:.5;
   background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);
@@ -226,14 +226,14 @@ section{border-bottom:1px solid var(--line)}
 .dot{width:6px;height:6px;border-radius:50%;background:var(--green);display:inline-block;
   box-shadow:0 0 0 3px rgba(91,227,156,.16);animation:pulse 2.4s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
-.stamp{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+.stamp{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
 .stamp.on{color:var(--green)}
 .play-body{padding:22px 20px 20px}
 .pick{font-size:26px;font-weight:800;letter-spacing:-.02em;margin-bottom:8px}
-.meta{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:18px}
+.meta{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:18px}
 .mock-banner{
   background:rgba(242,178,60,.12);border-bottom:1px solid rgba(242,178,60,.35);
-  color:var(--amber);font-family:var(--mono);font-size:11.5px;letter-spacing:.04em;
+  color:var(--amber);font-family:var(--sans);font-size:11.5px;letter-spacing:.01em;
   padding:11px 28px;text-align:center;
 }
 .mock-banner b{color:var(--amber)}
@@ -246,13 +246,13 @@ section{border-bottom:1px solid var(--line)}
 .stats{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--line);}
 .stat{padding:14px 16px;border-right:1px solid var(--line)}
 .stat:last-child{border-right:0}
-.stat .k{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
-.stat .v{font-family:var(--mono);font-size:19px;font-weight:600;margin-top:6px}
+.stat .k{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.stat .v{font-family:var(--sans);font-size:19px;font-weight:600;margin-top:6px}
 
 /* ---------- feature tiles ---------- */
 .tile{background:var(--panel);border:1px solid var(--line);padding:28px 24px;transition:.18s}
 .tile:hover{border-color:var(--line-2);background:var(--panel-2)}
-.tile .num{font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:var(--green);
+.tile .num{font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--green);
   margin-bottom:18px;text-transform:uppercase}
 [id]{scroll-margin-top:96px}
 .tile h3{margin-bottom:10px}
@@ -262,7 +262,7 @@ section{border-bottom:1px solid var(--line)}
 .kpis{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line);background:var(--panel)}
 .kpi{padding:28px 24px;border-right:1px solid var(--line)}
 .kpi:last-child{border-right:0}
-.kpi .k{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+.kpi .k{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
 /* Extruded: six offset copies stepping down through the panel greys. It is
    the canvas's one purely decorative flourish, and it earns its place --
    it is what makes a season record read as a headline instead of a
@@ -276,16 +276,16 @@ section{border-bottom:1px solid var(--line)}
 /* ---------- table ---------- */
 .tbl{width:100%;border-collapse:collapse;border:1px solid var(--line);background:var(--panel)}
 .tbl th{
-  font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;
   color:var(--muted);text-align:left;padding:14px 18px;border-bottom:1px solid var(--line);font-weight:500;
   background:var(--bg-2);white-space:nowrap;
 }
 .tbl td{padding:15px 18px;border-bottom:1px solid var(--line);font-size:14px;color:var(--muted)}
 .tbl tr:last-child td{border-bottom:0}
 .tbl td.strong{color:var(--txt);font-weight:600}
-.tbl td.m{font-family:var(--mono);font-size:13px}
+.tbl td.m{font-family:var(--sans);font-size:13px}
 .tbl tbody tr:hover{background:var(--panel-2)}
-.tag{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+.tag{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;
   padding:4px 8px;border:1px solid var(--line-2);color:var(--muted)}
 .tag.win{color:var(--green);border-color:rgba(91,227,156,.4);background:rgba(91,227,156,.10)}
 .tag.loss{color:var(--red);border-color:rgba(255,107,77,.35);background:rgba(255,107,77,.08)}
@@ -320,7 +320,7 @@ section{border-bottom:1px solid var(--line)}
 .gcard-top{
   display:flex;align-items:center;justify-content:space-between;gap:10px;
   padding:11px 17px;border-bottom:1px solid var(--line);background:var(--bg-2);
-  font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--sub);
+  font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--sub);
 }
 .gcard-top .fin{color:var(--txt)}
 .gcard-body{padding:20px 20px 22px}
@@ -329,12 +329,12 @@ section{border-bottom:1px solid var(--line)}
 .mk{border-top:1px solid var(--line);margin-top:14px;padding-top:12px}
 .mk-row{display:flex;align-items:baseline;gap:12px;padding:5px 0}
 .mk-label{flex:0 0 62px;white-space:nowrap;font-family:var(--mono);
-  font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;
+  font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;
   color:var(--muted)}
 .mk-line{flex:1 1 auto;font-size:13.5px;color:var(--sub)}
-.mk-line b{color:var(--txt);font-family:var(--mono)}
+.mk-line b{color:var(--txt);font-family:var(--sans)}
 .mk-book{color:var(--muted);font-size:12.5px}
-.mk-edge{flex:0 0 auto;font-family:var(--mono);font-size:13px;
+.mk-edge{flex:0 0 auto;font-family:var(--sans);font-size:13px;
   font-weight:700;color:var(--txt)}
 .mk-edge.g{color:var(--green)}
 .mk-edge.r{color:var(--red)}
@@ -352,11 +352,11 @@ section{border-bottom:1px solid var(--line)}
 .cv-tm{font-size:20px;font-weight:700;letter-spacing:-.025em;color:var(--txt);
   line-height:1.15;margin:0}
 .cv-tm span{color:var(--muted);font-weight:400}
-.cv-time{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;
+.cv-time{font-family:var(--sans);font-size:10.5px;letter-spacing:.01em;
   color:var(--muted);white-space:nowrap}
 .cv-row{display:flex;align-items:baseline;justify-content:space-between;
   gap:12px;margin-bottom:10px}
-.cv-lab{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;
+.cv-lab{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;
   text-transform:uppercase;color:var(--muted)}
 /* The number the card exists to deliver. Sans, not mono -- display type. */
 .cv-pct{font-size:30px;font-weight:700;letter-spacing:-.03em;line-height:1;
@@ -380,16 +380,15 @@ section{border-bottom:1px solid var(--line)}
    start has been graded. It replaces the old top strip, which on the canvas
    card has no place -- the canvas puts the matchup in the title. */
 /* This line runs from three words on a prop card to a full sentence on a
-   hits card. Uppercase mono at 10px with .1em tracking is fine for three
-   words and a wall for a sentence, so: 11px, tracking halved, and the
-   leading opened up. */
-.cv-sub{font-family:var(--mono);font-size:11px;letter-spacing:.05em;
-  text-transform:uppercase;color:var(--muted);margin:-12px 0 16px;
-  line-height:1.65}
+   hits card. It is a sentence, not a label, and the design doc's rule is
+   that mono in caps belongs to labels under 12px only -- so it is now
+   sentence-case sans at 12.5px, the size the doc sets its meta line at. */
+.cv-sub{font-family:var(--sans);font-size:12.5px;letter-spacing:0;
+  color:var(--muted);margin:-12px 0 16px;line-height:1.6}
 /* The unit after a projection. --dim is allowed here for the same reason it
    is on .pb-num .unit: the figure beside it already carries the meaning. */
 .cv-u{font-size:15px;color:var(--dim);margin-left:4px;font-weight:500}
-.cv-none{font-family:var(--mono);font-size:11px;letter-spacing:.1em;
+.cv-none{font-family:var(--mono);font-size:11px;letter-spacing:.08em;
   text-transform:uppercase;color:var(--muted);padding:6px 0 2px}
 
 /* Disclosure, not a flip: the back of a card is the size of its front, and
@@ -401,14 +400,14 @@ section{border-bottom:1px solid var(--line)}
 .gmore{margin-top:14px}
 .gmore>summary{cursor:pointer;list-style:none;display:block;text-align:center;
   padding:11px 10px;border:1px solid var(--line);background:var(--bg-2);
-  font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;
   text-transform:uppercase;color:var(--muted);transition:.18s}
 .gmore>summary::-webkit-details-marker{display:none}
 .gmore>summary:hover{color:var(--txt);border-color:var(--line-2);background:var(--panel-2)}
 .gmore-in{margin-top:14px;border-top:1px solid var(--line-2);padding-top:16px}
 .gtbl{width:100%;border-collapse:collapse;font-size:12.5px}
 .gtbl td{padding:5px 0;color:var(--sub);border-top:1px solid var(--line)}
-.gtbl td.m{font-family:var(--mono);text-align:right;color:var(--txt)}
+.gtbl td.m{font-family:var(--sans);text-align:right;color:var(--txt)}
 @media (prefers-reduced-motion:no-preference){
   @supports (interpolate-size:allow-keywords){
     :root{interpolate-size:allow-keywords}
@@ -431,20 +430,20 @@ section{border-bottom:1px solid var(--line)}
    disclosure. Full width, so a thumb finds it without aiming. */
 .d-close{display:block;width:100%;margin-top:12px;padding:9px 0;
   background:none;border:1px solid var(--line-2);border-radius:6px;
-  font-family:var(--mono);font-size:10.5px;letter-spacing:.13em;
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;
   text-transform:uppercase;color:var(--muted);cursor:pointer}
 .d-close:hover{color:var(--txt);border-color:var(--line-2)}
 
 /* The "picks posted" date. The user kept this stamp when the rest of
    the status strip was cut, precisely because it is the thing that says
    the board is today's -- so it is read, and it gets --muted. */
-.foot-stamp{font-family:var(--mono);font-size:11px;letter-spacing:.08em;
+.foot-stamp{font-family:var(--sans);font-size:11px;letter-spacing:.01em;
   color:var(--muted)}
 
-.grec{font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;
+.grec{font-family:var(--sans);font-size:12.5px;letter-spacing:0;
   color:var(--txt);margin-top:7px}
-.gsp{font-family:var(--mono);font-size:11.5px;letter-spacing:.04em;color:var(--sub);margin-top:6px}
-.gvs{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;
+.gsp{font-family:var(--sans);font-size:11.5px;letter-spacing:.01em;color:var(--sub);margin-top:6px}
+.gvs{font-family:var(--sans);font-size:12.5px;letter-spacing:0;
   color:var(--sub);margin-top:7px;padding-left:10px;border-left:2px solid var(--green-dim)}
 .gvs.thin{color:var(--muted);border-left-color:var(--line-2)}
 /* 12px, and the filled half is a gradient rather than a flat block: it
@@ -472,9 +471,9 @@ section{border-bottom:1px solid var(--line)}
 @media(max-width:720px){ .ev{grid-template-columns:1fr} }
 .ev-col{background:var(--panel);border:1px solid var(--line);padding:20px 22px 22px}
 .ev-col.lead{border-left:3px solid var(--green)}
-.ev-k{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;
+.ev-k{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;
   color:var(--muted);margin-bottom:12px}
-.ev-n{font-family:var(--mono);font-size:38px;font-weight:700;letter-spacing:-.02em;
+.ev-n{font-family:var(--sans);font-size:38px;font-weight:700;letter-spacing:-.02em;
   line-height:1;color:var(--sub);margin-bottom:12px}
 .ev-n.g{color:var(--green)}
 .ev-col p{font-size:14.5px;line-height:1.6;margin:0;color:var(--muted)}
@@ -490,8 +489,8 @@ section{border-bottom:1px solid var(--line)}
 .crow{display:grid;grid-template-columns:96px 84px 1fr 168px;gap:18px;align-items:center;
   padding:14px 18px;border-bottom:1px solid var(--line)}
 .crow:last-child{border-bottom:0}
-.crow .cl{font-family:var(--mono);font-size:13px;color:var(--txt);font-weight:600}
-.crow .cn{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--sub)}
+.crow .cl{font-family:var(--sans);font-size:13px;color:var(--txt);font-weight:600}
+.crow .cn{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--sub)}
 .ctrack{position:relative;height:24px;background:var(--bg-2);border:1px solid var(--line)}
 .cband{position:absolute;top:0;bottom:0;background:rgba(91,227,156,.09);
   border-left:1px solid rgba(91,227,156,.18);border-right:1px solid rgba(91,227,156,.18)}
@@ -503,11 +502,11 @@ section{border-bottom:1px solid var(--line)}
 .cact{position:absolute;top:50%;width:9px;height:9px;margin:-5px 0 0 -5px;border-radius:50%;
   background:var(--txt);box-shadow:0 0 0 3px var(--panel)}
 .cact.out{background:var(--amber)}
-.cverdict{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;
+.cverdict{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;
   color:var(--sub);text-align:right}
 .cverdict.out{color:var(--amber)}
 .clegend{display:flex;flex-wrap:wrap;gap:22px;align-items:center;margin-top:18px;
-  font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--sub)}
+  font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--sub)}
 .clegend span{display:flex;align-items:center;gap:8px}
 .clegend i{display:inline-block}
 .key-line{width:2px;height:13px;background:var(--green)}
@@ -540,14 +539,14 @@ section{border-bottom:1px solid var(--line)}
 .pb-card.flag{border-color:rgba(242,178,60,.42)}
 .pb-top{display:flex;align-items:center;justify-content:space-between;gap:10px;
   padding:11px 17px;border-bottom:1px solid var(--line);background:var(--bg-2);
-  font-family:var(--mono);font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--sub)}
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--sub)}
 .pb-top .fin{color:var(--txt);white-space:nowrap}
 .pb-body{padding:20px 20px 22px}
 .pb-name{font-size:20px;font-weight:700;letter-spacing:-.025em;color:var(--txt);margin-bottom:15px}
 .pb-head{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--line);margin-bottom:18px}
 .pb-num{padding:12px 14px;border-right:1px solid var(--line)}
 .pb-num.alt{border-right:0;background:var(--bg-2)}
-.pb-num .k{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.pb-num .k{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
 /* Sans, like the slate card's probability: the projection is the number the
    card exists to deliver, and the mono was shrinking it. */
 .pb-num .v{font-family:var(--sans);font-size:29px;font-weight:700;
@@ -559,7 +558,7 @@ section{border-bottom:1px solid var(--line)}
 .unit{color:var(--dim)}
 .pb-num .unit{font-size:13px;color:var(--dim);margin-left:4px;font-weight:500}
 .pb-striphead{display:flex;justify-content:space-between;align-items:baseline;gap:10px;
-  font-family:var(--mono);font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;
   color:var(--sub);margin-bottom:9px}
 .pb-rec b{color:var(--txt);font-weight:600}
 .pb-strip{position:relative;display:flex;align-items:flex-end;gap:2px;height:92px;
@@ -568,27 +567,27 @@ section{border-bottom:1px solid var(--line)}
 .pb-bar.hit{background:var(--green)}
 .pb-line{position:absolute;left:0;right:0;height:0;border-top:2px dashed var(--txt);
   opacity:.9;pointer-events:none}
-.pb-linelab{position:absolute;right:0;top:-9px;font-family:var(--mono);font-size:10.5px;
+.pb-linelab{position:absolute;right:0;top:-9px;font-family:var(--sans);font-size:10.5px;
   font-weight:600;color:var(--txt);background:var(--panel);padding:0 4px}
 .pb-ticks{display:flex;gap:2px;padding-right:28px;margin-top:5px;
-  font-family:var(--mono);font-size:10px;color:var(--sub)}
+  font-family:var(--sans);font-size:10px;color:var(--sub)}
 .pb-ticks span{flex:1;text-align:center}
-.pb-nostrip{font-family:var(--mono);font-size:11px;color:var(--muted);
+.pb-nostrip{font-family:var(--sans);font-size:11px;color:var(--muted);
   padding:24px 0;text-align:center;border-bottom:1px solid var(--line-2)}
 .pb-rows{margin-top:16px;display:grid;gap:7px}
 .pb-row{display:flex;justify-content:space-between;gap:12px;
-  font-family:var(--mono);font-size:11px;letter-spacing:.04em;color:var(--sub)}
+  font-family:var(--sans);font-size:11px;letter-spacing:.01em;color:var(--sub)}
 .pb-row b{color:var(--txt);font-weight:500;text-align:right}
 .pb-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;
   padding-top:13px;margin-top:15px;border-top:1px solid var(--line);
-  font-family:var(--mono);font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--sub)}
+  font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--sub)}
 .pb-foot .lean{color:var(--txt)}
 .pb-foot .flagged{color:var(--amber)}
 
 /* ---------- filters ---------- */
 .filters{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 .chip{
-  font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+  font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;
   padding:9px 15px;border:1px solid var(--line-2);color:var(--muted);background:transparent;
   cursor:pointer;transition:.15s;
 }
@@ -618,7 +617,7 @@ section{border-bottom:1px solid var(--line)}
 .form-row{display:flex;gap:10px;max-width:440px;margin:30px auto 14px;flex-wrap:wrap}
 .form-row input{
   flex:1;min-width:220px;background:var(--panel);border:1px solid var(--line-2);color:var(--txt);
-  padding:13px 16px;font-family:var(--mono);font-size:13px;outline:none;
+  padding:13px 16px;font-family:var(--sans);font-size:13px;outline:none;
 }
 .form-row input:focus{border-color:var(--green)}
 .form-row input::placeholder{color:var(--muted)}
@@ -634,8 +633,8 @@ section{border-bottom:1px solid var(--line)}
   border-radius:4px 4px 0 0;transition:filter .15s}
 .col i.down{background:var(--red);border-radius:0 0 4px 4px}
 .col:hover i{filter:brightness(1.18)}
-.col .val{font-family:var(--mono);font-size:12px;font-weight:500;letter-spacing:.02em}
-.col .mlab{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+.col .val{font-family:var(--sans);font-size:12px;font-weight:500;letter-spacing:.01em}
+.col .mlab{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;
   color:var(--muted);text-align:center;margin-top:10px}
 @media(max-width:620px){
   .bars{gap:6px}
@@ -646,7 +645,7 @@ section{border-bottom:1px solid var(--line)}
 /* ---------- footer ---------- */
 footer{background:var(--bg-2);padding:56px 0 40px}
 .foot-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:36px;margin-bottom:44px}
-.foot-grid h4{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;
+.foot-grid h4{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;
   color:var(--muted);font-weight:500;margin-bottom:16px}
 .foot-grid a{display:block;font-size:14px;color:var(--muted);margin-bottom:10px}
 .foot-grid a:hover{color:var(--txt)}
@@ -663,11 +662,18 @@ footer{background:var(--bg-2);padding:56px 0 40px}
   .kpi:nth-child(2){border-right:0}
   .kpi:nth-child(-n+2){border-bottom:1px solid var(--line)}
   .foot-grid{grid-template-columns:1fr 1fr}
-  .nav-in{height:auto;flex-wrap:wrap;padding-top:16px;gap:16px}
-  .nav-links{order:3;width:100%;margin-right:0;gap:24px;overflow-x:auto;
-    border-top:1px solid var(--line);padding:12px 0}
-  .nav-links a{font-size:13.5px;white-space:nowrap}
-  .nav-cta{margin-left:auto}
+  /* One nav row, not two. The sport tabs used to drop to a full-width row
+     of their own under the logo, so a phone spent three rows -- logo,
+     sports, sections -- and about 180px before any content. They are now
+     small pills sharing the logo's row, which is what the design doc does
+     and what buys back the first card. */
+  .nav-in{height:auto;padding:10px 0;gap:10px;flex-wrap:nowrap}
+  .nav-links{order:2;width:auto;margin-left:auto;margin-right:0;gap:6px;
+    overflow-x:auto;border-top:0;padding:0;flex:0 1 auto}
+  .nav-links a{font-size:10.5px;letter-spacing:.06em;white-space:nowrap;
+    padding:5px 8px;background:var(--ext-4);color:var(--sub)}
+  .nav-links a.on{color:var(--bg);background:var(--green);font-weight:700}
+  .nav-cta{margin-left:0;flex:0 0 auto}
   .pad{padding:68px 0}
 }
 @media(max-width:620px){
@@ -675,20 +681,42 @@ footer{background:var(--bg-2);padding:56px 0 40px}
   .grid-3,.grid-4{grid-template-columns:1fr}
   .hero .wrap{padding-top:64px;padding-bottom:72px}
   .nav-cta .link-quiet{display:none}
-  .nav-cta .btn{padding:8px 12px;font-size:10px}
+  /* At this width the logo, four sport pills and a call to action do not
+     fit on one row, and the row is worth more than the button: the same
+     link sits in the section row's Board tab and in the footer. */
+  .nav-cta{display:none}
   .stats{grid-template-columns:1fr 1fr}
   .stat:nth-child(2){border-right:0}
 }
 
 /* Phone board. 390px is the layout contract: zero document overflow,
    one card per row, nav rows scroll instead of wrapping the page. */
+/* Every board's header, on the pitchers board's terms. The title used to
+   run to 52px over a date set in wide-tracked uppercase mono -- most of a
+   phone screen spent restating the tab above it. Title at 22px, date and
+   counts as one sentence-case line under it, and the flex order puts them
+   in that order without touching five body templates. */
 .board-hero{background:var(--bg-2)}
-.board-hero .wrap{padding:44px 28px 30px}
-.board-hero h1{font-size:clamp(30px,8vw,52px);line-height:1.04;margin:10px 0 0}
+.board-hero .wrap{padding:18px 28px 16px;display:flex;flex-direction:column;
+  align-items:flex-start}
+.board-hero h1{font-size:22px;line-height:1.05;letter-spacing:-.03em;
+  margin:0;order:1}
+.board-hero .eyebrow{order:2;font-family:var(--sans);font-size:12.5px;
+  letter-spacing:0;text-transform:none;color:var(--muted);margin-top:5px}
+.board-hero .ecap{order:3;margin-top:8px;font-size:13px;max-width:62ch}
+/* The other half of the boards head themselves with a kicker line instead
+   of an eyebrow, inside a wrap that also holds the whole board -- so these
+   cannot be reordered, only sized. */
+.kicker{font-size:12.5px;color:var(--muted);margin-bottom:2px}
+.kicker + h1{font-size:22px;line-height:1.05;letter-spacing:-.03em;
+  margin:0 0 4px}
 .board-page{padding:26px 28px 60px}
+/* The list board sits straight under its header. .pad-sm's 64px was
+   most of a screen of nothing between the title and the first chip. */
+.bpage{padding:18px 0 56px}
 @media(max-width:760px){
   .board{grid-template-columns:1fr;gap:12px}
-  .board-hero .wrap{padding:28px 16px 20px}
+  .board-hero .wrap{padding:16px 16px 14px}
   .board-page{padding:16px 16px 48px}
   .gcard-top{padding:10px 14px;font-size:10px;letter-spacing:.1em;gap:8px}
   .gcard-body{padding:14px}
@@ -810,14 +838,20 @@ footer{background:var(--bg-2);padding:56px 0 40px}
    ugly. Let the strip scroll itself instead. */
 .nav-links a{white-space:nowrap}
 @media(max-width:860px){
-  /* Logo and CTA keep the first row; the links get a full-width second row
-     they can scroll inside. Squeezing them onto the first row leaves about
-     70px of usable width, which is worse than clipping them. */
-  .nav-in{flex-wrap:wrap;height:auto;padding-top:12px;padding-bottom:0;gap:14px}
-  .logo{margin-right:auto}
-  .nav-links{order:3;flex-basis:100%;margin-right:0;gap:22px;
-    overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;
-    padding:4px 0 12px}
+  /* One row. This block used to give the sport links a full-width second
+     row of their own, on the grounds that squeezing them beside the logo
+     left about 70px of usable width. That was true of 13.5px links with
+     .13em tracking; as 10.5px pills they fit, and the row they no longer
+     take is roughly a card's worth of a phone screen. */
+  .nav-in{flex-wrap:nowrap;height:auto;padding-top:10px;padding-bottom:10px;
+    gap:10px}
+  .logo{flex:0 0 auto}
+  .nav-links{order:2;flex:0 1 auto;flex-basis:auto;margin-left:auto;
+    margin-right:0;gap:6px;overflow-x:auto;scrollbar-width:none;
+    -webkit-overflow-scrolling:touch;padding:0;border-top:0}
+  .nav-links a{font-size:10.5px;letter-spacing:.06em;padding:5px 8px;
+    background:var(--ext-4);color:var(--sub)}
+  .nav-links a.on{color:var(--bg);background:var(--green);font-weight:700}
   .nav-links::-webkit-scrollbar{display:none}
   .nav-cta .link-quiet{display:none}
 }
@@ -830,7 +864,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
 /* Green, not muted. In the canvas the section label is the only coloured
    thing inside an open card, and it is what lets a reader scan straight to
    "Starting pitchers" without reading the two blocks above it. */
-.pk h4{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;
+.pk h4{font-family:var(--mono);font-size:9.5px;letter-spacing:.08em;
   text-transform:uppercase;color:var(--green);margin:0 0 9px;font-weight:400}
 .pkt{width:100%;border-collapse:collapse;font-size:12.5px}
 .pkt th{text-align:left;font-weight:400;color:var(--muted);
@@ -838,19 +872,19 @@ footer{background:var(--bg-2);padding:56px 0 40px}
 .pkt td{padding:5px 0 5px 10px;color:var(--txt);width:38%}
 .pkt tr+tr th,.pkt tr+tr td{border-top:1px solid var(--line)}
 .pkt tr.hd th,.pkt tr.hd td{font-family:var(--mono);font-size:10px;
-  letter-spacing:.1em;text-transform:uppercase;color:var(--muted);
+  letter-spacing:.08em;text-transform:uppercase;color:var(--muted);
   padding-bottom:2px}
-.pkt.fm td b{font-family:var(--mono);font-size:13px}
+.pkt.fm td b{font-family:var(--sans);font-size:13px}
 .pkt.fm td b.good{color:var(--green)} .pkt.fm td b.bad{color:var(--red)}
 .pkt.fm td i{display:block;font-style:normal;color:var(--muted);
   font-size:11px;margin-top:1px}
 .pnl-note{font-size:13px;color:var(--muted);margin:0;line-height:1.55;
   border-left:2px solid var(--green-dim);padding-left:12px}
-.pnl-note b{color:var(--txt);font-family:var(--mono)}
+.pnl-note b{color:var(--txt);font-family:var(--sans)}
 .h2g{display:grid;grid-template-columns:52px 1fr auto;gap:8px;
   font-size:12.5px;padding:4px 0;border-top:1px solid var(--line);
   align-items:baseline}
-.h2d{font-family:var(--mono);font-size:11px;color:var(--muted)}
+.h2d{font-family:var(--sans);font-size:11px;color:var(--muted)}
 .h2s{color:var(--muted)} .h2s b{color:var(--txt);font-weight:500}
 .h2w{color:var(--muted);font-size:11px}
 .h2more{font-size:11px;color:var(--muted);padding:3px 0}
@@ -866,25 +900,25 @@ footer{background:var(--bg-2);padding:56px 0 40px}
 .lutbl th{text-align:left;font-weight:500;color:var(--txt);
   padding:7px 10px 7px 0;white-space:nowrap}
 .lutbl td{text-align:right;padding:8px 0 8px 10px;color:var(--sub);
-  font-family:var(--mono);white-space:nowrap}
+  font-family:var(--sans);white-space:nowrap}
 .lutbl tr+tr th,.lutbl tr+tr td{border-top:1px solid var(--line)}
 .lutbl tr.hd th,.lutbl tr.hd td{font-family:var(--mono);font-size:9.5px;
-  letter-spacing:.12em;text-transform:uppercase;color:var(--muted);
+  letter-spacing:.08em;text-transform:uppercase;color:var(--muted);
   font-weight:400;padding-bottom:3px}
 .lutbl .lav{color:var(--txt)}
 .lutbl .lz{color:var(--muted)}
 
 .sptbl{width:100%;border-collapse:collapse;margin-bottom:14px}
 .sptbl td,.sptbl th{padding:8px 6px;font-size:13.5px}
-.sptbl th{font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;
+.sptbl th{font-family:var(--mono);font-size:9.5px;letter-spacing:.08em;
   text-transform:uppercase;color:var(--muted);font-weight:400;
   text-align:center;width:34%}
-.sptbl .spv{font-family:var(--mono);color:var(--sub);width:33%}
+.sptbl .spv{font-family:var(--sans);color:var(--sub);width:33%}
 .sptbl tr td:first-child{text-align:left}
 .sptbl tr td:last-child{text-align:right}
 .sptbl .spv.on{color:var(--green);font-weight:700}
-.sptbl tr.hd td{font-size:12px;font-weight:700;letter-spacing:.04em;
-  color:var(--txt);font-family:var(--mono)}
+.sptbl tr.hd td{font-size:12px;font-weight:700;letter-spacing:.01em;
+  color:var(--txt);font-family:var(--sans)}
 .sptbl tr+tr td,.sptbl tr+tr th{border-top:1px solid var(--line)}
 
 /* A starter is a card inside a card in the canvas -- inset one step darker
@@ -894,7 +928,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
   padding:11px 12px;margin-top:8px}
 .pst:first-of-type{margin-top:0}
 .pst-n{font-size:14px;font-weight:700;letter-spacing:-.01em;color:var(--txt)}
-.pst-v{font-family:var(--mono);font-size:12px;color:var(--sub);
+.pst-v{font-family:var(--sans);font-size:12px;color:var(--sub);
   line-height:1.6;margin-top:6px}
 .ppr{padding:7px 0;border-top:1px solid var(--line)}
 .ppr:first-of-type{border-top:none}
@@ -903,7 +937,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
 .ppr-v{font-size:11px;letter-spacing:.03em;color:var(--muted);white-space:nowrap}
 .ppr-v.good{color:var(--green)} .ppr-v.bad{color:var(--red)}
 .ppr-line{font-size:12.5px;color:var(--muted);line-height:1.6;margin-top:2px}
-.ppr-line b{font-family:var(--mono);color:var(--txt);font-weight:500}
+.ppr-line b{font-family:var(--sans);color:var(--txt);font-weight:500}
 .ppr-line .good{color:var(--green)} .ppr-line .bad{color:var(--red)}
 @media (max-width:560px){
   .pkt th{white-space:nowrap;width:1%}
@@ -913,7 +947,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
 /* ============================================= prop card matchup panel ==== */
 .mx{border-top:1px solid var(--line)}
 .mx summary{list-style:none;cursor:pointer;padding:10px 15px;
-  font-family:var(--mono);font-size:10.5px;letter-spacing:.13em;
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;
   text-transform:uppercase;color:var(--muted);display:flex;
   align-items:center;justify-content:space-between;gap:8px}
 .mx summary::-webkit-details-marker{display:none}
@@ -926,7 +960,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
 .mxb{padding:2px 15px 14px}
 /* Green, matching the slate card's detail labels. The two boards' open
    cards now use one vocabulary: a green mono label over each block. */
-.mxh{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;
+.mxh{font-family:var(--mono);font-size:9.5px;letter-spacing:.08em;
   text-transform:uppercase;color:var(--green);margin:16px 0 9px}
 .mxb>.mxh:first-child{margin-top:0}
 .mxg{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;
@@ -935,7 +969,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
   flex-direction:column;gap:3px;min-width:0}
 .mxg span{font-size:10px;letter-spacing:.05em;text-transform:uppercase;
   color:var(--muted)}
-.mxg b{font-family:var(--mono);font-size:15px;color:var(--txt);font-weight:600}
+.mxg b{font-family:var(--sans);font-size:15px;color:var(--txt);font-weight:600}
 .mxg.four{grid-template-columns:repeat(4,1fr)}
 /* A small sample is shown, not hidden -- but it is not shown at the same
    weight as a number with six hundred plate appearances behind it. */
@@ -944,13 +978,13 @@ footer{background:var(--bg-2);padding:56px 0 40px}
    for itself: StatsAPI gives the career line and Savant gives the Statcast
    rows, and the two rarely cover the same plate appearances. A caption, not
    a sentence. */
-.mxcap{font-family:var(--mono);font-size:10px;letter-spacing:.1em;
+.mxcap{font-family:var(--mono);font-size:10px;letter-spacing:.08em;
   text-transform:uppercase;color:var(--muted);margin-top:7px}
 .mxn{font-size:13px;line-height:1.6;color:var(--sub);margin:8px 0 0}
 .mxn.warn{font-style:italic}
 .mxt{width:100%;border-collapse:collapse;font-size:13.5px}
 .mxt th{text-align:left;font-weight:400;color:var(--muted);padding:6px 8px 6px 0}
-.mxt td{padding:6px 0 6px 8px;text-align:right;font-family:var(--mono);
+.mxt td{padding:6px 0 6px 8px;text-align:right;font-family:var(--sans);
   color:var(--txt)}
 .mxt td.r,.mxt td.p{color:var(--muted);font-size:11.5px;white-space:nowrap}
 .mxt tr{border-bottom:1px solid var(--line)}
@@ -961,7 +995,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
 .mxt tr.avg th,.mxt tr.avg td{color:var(--muted);font-size:11.5px;padding-top:8px}
 .verdict{display:flex;justify-content:space-between;align-items:baseline;
   gap:10px;margin:0;padding:9px 15px;font-family:var(--mono);font-size:10.5px;
-  letter-spacing:.13em;text-transform:uppercase;color:var(--muted);
+  letter-spacing:.08em;text-transform:uppercase;color:var(--muted);
   border-top:1px solid var(--line);background:var(--panel-2)}
 .verdict.good{color:var(--green)} .verdict.bad{color:var(--red)}
 .verdict .vd{font-size:10px;letter-spacing:.06em;text-transform:none;
@@ -978,8 +1012,8 @@ footer{background:var(--bg-2);padding:56px 0 40px}
 
 /* A starter's win-loss, beside his name on both cards. Recessive on purpose:
    it is the number readers look for and the one that tells them least. */
-.gwl{font-family:var(--mono);color:var(--muted)}
-.pb-wl{font-family:var(--mono);font-size:12px;color:var(--muted);
+.gwl{font-family:var(--sans);color:var(--muted)}
+.pb-wl{font-family:var(--sans);font-size:12px;color:var(--muted);
   font-weight:400;margin-left:2px}
 
 /* ==================================================================== +EV = */
@@ -990,21 +1024,21 @@ footer{background:var(--bg-2);padding:56px 0 40px}
 .sp h2:first-child{margin-top:0}
 .sp p{font-size:15px;line-height:1.66;color:var(--sub);margin:10px 0}
 .sp b.shl{color:var(--txt);font-weight:600}
-.sp .ek{font-family:var(--mono);color:var(--txt)}
+.sp .ek{font-family:var(--sans);color:var(--txt)}
 .stbl{width:100%;border-collapse:collapse;margin:16px 0;font-size:13.5px}
 .stbl th{text-align:left;font-weight:400;color:var(--txt);
   padding:11px 14px 11px 0;vertical-align:top;white-space:nowrap;width:1%;
   border-top:1px solid var(--line)}
 .stbl td{padding:11px 0 11px 14px;vertical-align:top;
   border-top:1px solid var(--line)}
-.stbl td.en{font-family:var(--mono);color:var(--txt);white-space:nowrap;
+.stbl td.en{font-family:var(--sans);color:var(--txt);white-space:nowrap;
   width:1%;text-align:right}
 .stbl td.en.hd{color:var(--muted);font-size:11px}
-.gn{font-family:var(--mono);font-size:10px;color:var(--muted);margin-right:9px}
+.gn{font-family:var(--sans);font-size:10px;color:var(--muted);margin-right:9px}
 .sval{white-space:nowrap;width:1%}
-.skey{display:block;font-family:var(--mono);font-size:10px;color:var(--muted);
-  letter-spacing:.04em}
-.snum{display:block;font-family:var(--mono);font-size:13px;color:var(--green);
+.skey{display:block;font-family:var(--sans);font-size:10px;color:var(--muted);
+  letter-spacing:.01em}
+.snum{display:block;font-family:var(--sans);font-size:13px;color:var(--green);
   margin-top:2px;white-space:nowrap}
 .stbl td.snum{width:1%;padding-top:11px}
 .swhy{color:var(--sub);line-height:1.6;font-size:13.5px}
@@ -1014,25 +1048,25 @@ footer{background:var(--bg-2);padding:56px 0 40px}
 .sum div{display:flex;justify-content:space-between;gap:16px;padding:10px 16px;
   align-items:baseline}
 .sum div+div{border-top:1px solid var(--line)}
-.sum div span:last-child{font-family:var(--mono);color:var(--txt);
+.sum div span:last-child{font-family:var(--sans);color:var(--txt);
   white-space:nowrap}
 .sum div.tot{background:var(--panel-2)}
 .sum div.tot span:last-child{color:var(--green);font-size:15px}
 .swork{border:1px solid var(--line);background:var(--panel);margin:18px 0}
 .swork-h{padding:11px 15px;border-bottom:1px solid var(--line);
-  font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;
   text-transform:uppercase;color:var(--muted)}
 .swork-r{display:flex;justify-content:space-between;gap:14px;padding:8px 15px;
   font-size:13.5px;align-items:baseline}
 .swork-r+.swork-r{border-top:1px solid var(--line)}
-.swork-r span:last-child{font-family:var(--mono);color:var(--green);
+.swork-r span:last-child{font-family:var(--sans);color:var(--green);
   white-space:nowrap}
 .swork-r.fail{background:var(--panel-2)}
 .swork-r.fail span:last-child{color:var(--red)}
 .swork-r.fail span:first-child{color:var(--txt)}
 .snote{border-left:2px solid var(--line-2);padding:2px 0 2px 16px;margin:18px 0}
 .snote p{font-size:14px;margin:8px 0}
-.sp p.sbig{font-family:var(--mono);font-size:34px;color:var(--txt);
+.sp p.sbig{font-family:var(--sans);font-size:34px;color:var(--txt);
   letter-spacing:-.02em;margin:14px 0 0}
 .sp p.sbig small{display:block;font-family:var(--sans);font-size:13px;
   color:var(--muted);letter-spacing:0;margin-top:4px}
@@ -1057,10 +1091,10 @@ footer{background:var(--bg-2);padding:56px 0 40px}
 .hrl{display:grid;grid-template-columns:1fr auto;gap:2px 12px;
   padding:9px 0;border-top:1px solid var(--line)}
 .hrl-k{font-size:12.5px;color:var(--muted)}
-.hrl-v{font-family:var(--mono);font-size:14px;color:var(--txt);text-align:right;
+.hrl-v{font-family:var(--sans);font-size:14px;color:var(--txt);text-align:right;
   white-space:nowrap}
 .hrl-v b{font-weight:600}
-.hrl-r{font-family:var(--mono);font-size:10.5px;color:var(--muted)}
+.hrl-r{font-family:var(--sans);font-size:10.5px;color:var(--muted)}
 .hrl-m{font-size:10.5px;color:var(--muted);text-align:right;white-space:nowrap}
 /* The verdict tints the number and adds a rule at the left edge, so the
    colour is never the only thing saying which way this one goes. */
@@ -1073,12 +1107,12 @@ footer{background:var(--bg-2);padding:56px 0 40px}
 .ftbl{width:100%;border-collapse:collapse;font-size:13.5px}
 .ftbl th{text-align:left;font-weight:500;color:var(--txt);padding:9px 12px 9px 0;
   white-space:nowrap}
-.ftbl td{padding:9px 0 9px 12px;text-align:right;font-family:var(--mono);
+.ftbl td{padding:9px 0 9px 12px;text-align:right;font-family:var(--sans);
   color:var(--txt);white-space:nowrap}
 .ftbl tr{border-top:1px solid var(--line)}
 .ftbl tr.hd{border-top:none}
 .ftbl tr.hd th,.ftbl tr.hd td{font-family:var(--mono);font-size:10px;
-  letter-spacing:.1em;text-transform:uppercase;color:var(--muted);
+  letter-spacing:.08em;text-transform:uppercase;color:var(--muted);
   font-weight:400;padding-bottom:6px}
 .ftbl td.ft-n{text-align:left;color:var(--muted);font-size:11px;
   padding-left:0;padding-right:10px;width:1%}
@@ -1113,7 +1147,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
 .gsec-h h3{font-size:19px;font-weight:700;letter-spacing:-.02em;
   color:var(--txt);margin:0}
 .gsec-h h3 span{color:var(--muted);font-weight:400}
-.gsec-h>span{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;
+.gsec-h>span{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;
   text-transform:uppercase;color:var(--muted);white-space:nowrap}
 .gsec[hidden]{display:none}
 
@@ -1123,7 +1157,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
    pitcher or one defence. Each player row is the card's number in
    miniature: name left, chance right, in the green the rest of the site
    uses for "ours". */
-.bat-park{font-family:var(--mono);font-size:10.5px;color:var(--muted);
+.bat-park{font-family:var(--sans);font-size:10.5px;color:var(--muted);
   white-space:nowrap}
 .bat-park.good{color:var(--green)} .bat-park.bad{color:var(--red)}
 .bats{border-top:1px solid var(--line)}
@@ -1139,12 +1173,12 @@ footer{background:var(--bg-2);padding:56px 0 40px}
 /* "144 hits in 618 PA (23.3%)" is a supporting STAT, not a label, and it
    was set at label size in the label colour. 12px in --sub is 11.31:1
    against 5.80:1, and the mono digits are actually readable at a glance. */
-.bat-w{font-family:var(--mono);font-size:12px;color:var(--sub);
+.bat-w{font-family:var(--sans);font-size:12px;color:var(--sub);
   letter-spacing:.01em;line-height:1.5}
 /* The career line against tonight's starter. Almost always a handful of
    plate appearances, so it sits at label weight rather than competing with
    the projection above it, and nothing on the card is derived from it. */
-.bvp{font-family:var(--mono);font-size:11.5px;color:var(--sub);
+.bvp{font-family:var(--sans);font-size:11.5px;color:var(--sub);
   letter-spacing:.01em;margin-top:4px;line-height:1.5}
 .bvp.none{color:var(--muted)}
 /* The position badge on the NFL yardage/touchdown cards. Named .ppos, not
@@ -1152,6 +1186,97 @@ footer{background:var(--bg-2);padding:56px 0 40px}
    apply its height:180px flex-column layout to this inline badge. */
 .ppos{font-family:var(--mono);font-size:10px;letter-spacing:.08em;
   text-transform:uppercase;color:var(--muted);margin-left:6px}
+
+
+/* ================================================= the list board =========
+   The pitchers prop board, rebuilt from the design doc's edge-sorted list.
+   What it replaces: a grid of cards, two per phone screen, most of each
+   card's height spent on a disclosure button and a projection set at 30px.
+   The reader's question is which of tonight's numbers disagree with the
+   market, and a card grid made that question cost one scroll per starter.
+
+   The row IS the summary of a <details>, so the panel that used to sit
+   behind a "Prop detail +" button is still one tap away and costs no
+   height at all. */
+.bhead{background:var(--bg-2)}
+.bhead .wrap{padding:18px 28px 16px}
+.bhead-in{display:flex;align-items:baseline;justify-content:space-between;
+  gap:14px}
+.bhead-t{min-width:0}
+/* 22px, not clamp(32px,4.2vw,50px). The tab above already says which board
+   this is; at display size the title was buying nothing and costing a row. */
+.bhead h1{font-size:22px;line-height:1.05;letter-spacing:-.03em;margin:0}
+.bhead-meta{font-size:12.5px;color:var(--muted);margin-top:5px;
+  letter-spacing:0}
+.bhead-n{text-align:right;white-space:nowrap}
+.bhead-n b{display:block;font-size:22px;font-weight:700;line-height:1;
+  letter-spacing:-.02em;color:var(--green)}
+.bhead-n span{display:block;font-family:var(--mono);font-size:9.5px;
+  letter-spacing:.08em;text-transform:uppercase;color:var(--muted);
+  margin-top:5px}
+
+.pl-list{border-top:1px solid var(--line)}
+.pl{border-bottom:1px solid var(--line);background:transparent}
+.pl>summary{list-style:none;cursor:pointer;display:grid;
+  grid-template-columns:minmax(0,1fr) 68px;gap:12px;align-items:center;
+  padding:13px 2px}
+.pl>summary::-webkit-details-marker{display:none}
+.pl>summary:hover{background:var(--ext-5)}
+.pl[open]>summary{background:var(--ext-5)}
+.pl-main{min-width:0}
+.pl-name{display:flex;align-items:baseline;gap:8px;min-width:0}
+.pl-name>span{font-weight:600;font-size:16.5px;letter-spacing:-.015em;
+  color:var(--txt);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pl-badge{flex:0 0 auto;font-family:var(--mono);font-style:normal;
+  font-size:9.5px;letter-spacing:.06em;padding:2px 5px;white-space:nowrap;
+  color:var(--green);background:rgba(91,227,156,.13)}
+.pl-badge.hit{color:var(--bg);background:var(--green)}
+.pl-badge.miss{color:var(--sub);background:var(--ext-1)}
+.pl-badge.flag{color:var(--amber);background:rgba(242,178,60,.14)}
+/* A sentence, in the sans, at a size meant to be read. */
+.pl-meta{font-size:12.5px;color:var(--muted);margin-top:3px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pl-bar{position:relative;height:6px;background:var(--ext-4);margin-top:9px}
+.pl-fill{position:absolute;left:0;top:0;bottom:0;background:var(--line-2)}
+.pl-tick{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--txt);
+  box-shadow:0 0 0 1px rgba(8,9,11,.85)}
+/* Both ends of the axis and the market's own number, printed. A fill with
+   no scale under it is decoration; this is the difference between a bar
+   the reader can measure and one they have to trust. */
+.pl-scale{display:flex;justify-content:space-between;gap:8px;
+  font-family:var(--mono);font-size:10px;letter-spacing:.06em;
+  color:var(--muted);margin-top:5px}
+.pl-edge{text-align:right}
+.pl-edge b{display:block;font-size:20px;font-weight:700;line-height:1;
+  letter-spacing:-.02em;color:var(--muted)}
+.pl-edge span{display:block;font-family:var(--mono);font-size:9.5px;
+  letter-spacing:.06em;text-transform:uppercase;color:var(--muted);
+  margin-top:5px;line-height:1.3}
+/* Our own number, small, under the edge. The design doc drops it; it stays
+   because this board's whole claim is a projection, and a page that never
+   prints one is arguing from a difference alone. */
+.pl-edge em{display:block;font-style:normal;font-size:12.5px;
+  color:var(--sub);margin-top:6px;font-weight:600}
+.pl-edge em i{font-style:normal;color:var(--dim);font-weight:400;
+  margin-left:2px}
+.pl.up .pl-fill{background:var(--green)}
+.pl.up .pl-edge b{color:var(--green)}
+.pl.down .pl-fill{background:var(--amber)}
+.pl.down .pl-edge b{color:var(--amber)}
+.pl.done .pl-fill{background:var(--ext-1)}
+/* Settled rows sink and dim: they are a result, not a call. .66 puts the
+   muted token at 4.8:1, inside the --dim allowance and above its floor --
+   and nothing in a dimmed row is the only place a number appears. */
+.pl.done{opacity:.66}
+.pl.done:hover,.pl.done[open]{opacity:1}
+.pl>.gmore-in{padding:0 2px 18px}
+.pl[hidden]{display:none}
+
+@media(max-width:390px){
+  .pl>summary{grid-template-columns:minmax(0,1fr) 56px;gap:10px}
+  .pl-name>span{font-size:15.5px}
+  .pl-edge b{font-size:18px}
+}
 
 </style>
 </head>
@@ -4755,19 +4880,48 @@ footer{background:var(--bg-2);padding:56px 0 40px}
       if (!chip) { return; }
       e.preventDefault();
       var want = chip.getAttribute("data-game") || "";
+      var mode = chip.getAttribute("data-filter") || "";
       Array.prototype.forEach.call(
         picker.querySelectorAll(".gchip"), function (c) {
           c.classList.toggle("on", c === chip);
         });
+      /* Two shapes of board share this picker. The card boards group into
+         one <section> per fixture; the list board is one flat list whose
+         rows each carry their own fixture. Filtering both by the same
+         attribute keeps one picker and one code path. */
       Array.prototype.forEach.call(
-        document.querySelectorAll(".gsec"), function (s) {
-          s.hidden = !!want && s.getAttribute("data-game") !== want;
+        document.querySelectorAll(".gsec,.pl"), function (s) {
+          if (mode === "edges") {
+            s.hidden = s.getAttribute("data-edge") !== "1";
+          } else if (want) {
+            s.hidden = s.getAttribute("data-game") !== want;
+          } else {
+            s.hidden = false;
+          }
         });
       /* Back to the top of the board, not of the page: the reader just
          chose a game and wants to see it, and leaving them mid-scroll in
          a list that just got shorter is disorienting. */
       picker.scrollIntoView({block: "start"});
     });
+  }
+  /* The sport row scrolls, and on a narrow phone the sport the reader is
+     actually looking at can start off-screen. Nudge it into view. Not a
+     smooth scroll: this happens on load, and animating the nav on arrival
+     looks like a fault. */
+  var sports = document.querySelector(".nav-links");
+  if (sports) {
+    var here = sports.querySelector("a.on");
+    if (here) {
+      /* Measured against the row's own box, not offsetLeft: the pills have
+         no positioned ancestor, so offsetLeft is relative to the page and
+         scrolled the first pill half out of view -- which looked like a
+         clipped word rather than a nudge. */
+      var a = here.getBoundingClientRect();
+      var b = sports.getBoundingClientRect();
+      if (a.right > b.right) { sports.scrollLeft += (a.right - b.right) + 12; }
+      else if (a.left < b.left) { sports.scrollLeft -= (b.left - a.left) + 12; }
+    }
   }
 })();
 </script>

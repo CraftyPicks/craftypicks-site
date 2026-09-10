@@ -6,6 +6,7 @@ story simple and the build instant.
 """
 from __future__ import annotations
 
+import math
 import html
 import re
 import sys
@@ -930,149 +931,257 @@ def _matchup_inner(row: dict) -> str:
             f'{_(MX_LABEL[verdict])}{delta}</div>')
 
 
-def pitcher_cards(rows: list[dict]) -> str:
-    """Every probable starter, grouped into the game he is starting.
+# The axis every row on the list board is drawn against. One axis for the
+# whole board rather than one per row: the point of a list is that fifteen
+# bars are comparable, and a bar scaled to its own line moves the tick from
+# row to row and makes them incomparable.
+#
+# Nine is the design doc's number and holds for almost every slate. It is a
+# floor, not a fixed value, because a pegged bar is a lie -- an eleven-K
+# projection drawn at 100% would read as the same call as a nine.
+PL_AXIS_MIN = 9.0
 
-    Twenty-seven cards in one flat grid asks the reader to hold the fixture
-    in their head from a line of 11px mono under each name. Grouped, the
-    two starters in a matchup sit side by side, which is the comparison a
-    reader of this board is making anyway.
+
+def _pl_axis(rows) -> float:
+    top = max([r.get("projection") or 0 for r in rows]
+              + [r.get("line") or 0 for r in rows] + [0.0])
+    return max(PL_AXIS_MIN, math.ceil(top))
+
+
+def _pl_fixture(r: dict) -> tuple:
+    away, home = _mlb_sides(r)
+    return (r.get("commence_time") or "", frozenset({away, home}))
+
+
+def _pl_edge(r: dict):
+    """The number the list is sorted by, or None when there is nothing to sort.
+
+    A starter with no posted line has no edge -- not a zero one. Returning
+    None keeps him out of the sort's arithmetic and sinks him to the foot
+    with the settled rows, which is where an unpriced projection belongs on
+    a board whose headline is disagreement with the market.
+    """
+    gap = r.get("gap")
+    if r.get("line") is None or gap is None or abs(gap) < 0.4:
+        return None
+    return gap
+
+
+def board_head_meta(date_label: str, rows: list[dict]) -> str:
+    """The board header's one meta line: the date, then what is on the board.
+
+    Sentence case, not the wide-tracked uppercase mono this used to be. A
+    date is a sentence; the design doc's rule is that caps and tracking
+    belong to labels of a couple of words, and "Wednesday, September 9,
+    2026" set in .16em uppercase mono was the single ugliest line on the
+    site.
+    """
+    n = pitcher_head(rows)
+    parts = [esc(date_label)]
+    if rows:
+        parts.append(_("bh_props", n=n["props"]))
+        parts.append(_("bh_games", n=n["games"]))
+    return " &middot; ".join(parts)
+
+
+def pitcher_head(rows: list[dict]) -> dict:
+    """The three counts the board's header prints, as a dict of strings."""
+    games = {_pl_fixture(r) for r in rows}
+    edges = sum(1 for r in rows if _pl_edge(r) is not None
+                and r.get("actual") is None)
+    return {"props": str(len(rows)), "games": str(len(games)),
+            "edges": str(edges)}
+
+
+def pitcher_cards(rows: list[dict]) -> str:
+    """Every probable starter as one row of a list, biggest edge first.
+
+    Rewritten from a grid of cards after the design pass. The cards were
+    honest but expensive: a phone showed two of them, most of that height
+    spent on a disclosure button and a projection set at display size, and
+    the reader's actual question -- where does our number disagree with the
+    market tonight -- took a scroll per starter to answer.
+
+    A list answers it in one screen. The edge moves to a fixed right rail
+    in colour and size, the board sorts by it, and settled and unpriced
+    rows sink to the foot dimmed. Nothing is lost: every card's panel is
+    still here, one tap away, because the row IS the summary of a
+    <details> rather than a card with a button in it.
+
+    The fixture stays on every row's meta line and the picker above still
+    filters by game, so the grouping asked for on the NFL boards is kept
+    without spending a heading and a grid on each of eleven fixtures.
     """
     if not rows:
-        return f'<div class="empty-board">{_("pitch_empty")}</div>' 
+        return f'<div class="empty-board">{_("pitch_empty")}</div>'
 
-    def card(r):
-        # A starter with no posted line is the normal case now: the board is
-        # built from StatsAPI every morning and prices are attached only on
-        # the mornings props were bought. `line` therefore has to stay None
-        # here rather than collapsing to 0, which would print a real-looking
-        # "0.0" and score every projection as an over.
+    # The picker's chips, built from the same fixture key the rows carry, so
+    # a chip and its rows cannot disagree about what a game is.
+    order = sorted({_pl_fixture(r) for r in rows},
+                   key=lambda g: (g[0], str(sorted(g[1]))))
+    slug = {g: f"g{i}" for i, g in enumerate(order)}
+
+    axis = _pl_axis(rows)
+
+    def row(r):
         line = r.get("line")
         proj = r.get("projection") or 0
         gap = r.get("gap")
         reference = r.get("reference")
         if reference is None:
             reference = line if line is not None else proj
-
-        if line is None:
-            lean = ""
-        elif r.get("suspect"):
-            lean = (f'<span class="flagged" title="{_("pb_flagtip")}">'
-                    f'{_("off_the_line", v=f"{abs(gap):.1f}")}</span>')
-        elif gap is None or abs(gap) < 0.4:
-            lean = f'<span>{_("in_line")}</span>'
-        else:
-            key = "over_the_line" if gap > 0 else "under_the_line"
-            lean = f'<span class="lean">{_(key, v=f"{abs(gap):.1f}")}</span>' 
-
         actual = r.get("actual")
-        if actual is None:
-            status_txt = _("rated")
+        settled = actual is not None
+        edge = _pl_edge(r)
+
+        # Colour says one thing: which way we disagree, and only when we do.
+        # A settled row is grey whatever it once said -- it is a result now,
+        # not a call, and leaving it green would put six loud rows on a
+        # board whose live section is the part anyone can act on.
+        if settled:
+            tone = "done"
+        elif edge is None:
+            tone = "none"
+        elif edge > 0:
+            tone = "up"
         else:
-            went = _("over") if actual > reference else _("under")
-            status_txt = _("final_k", n=actual, side=went)
+            tone = "down"
 
-
-        rank = r.get("opp_k_rank")
-        rank_txt = (" &middot; " + _("pb_rank", r=rank, ord=_ordinal(rank),
-                                     n=r.get("opp_teams_ranked", 30))
-                    if rank else "")
-        opp_rate = r.get("opp_k_per_game")
-        prices = []
-        if r.get("over_odds") is not None:
-            prices.append(f"o{om.format_american(r['over_odds'])}")
-        if r.get("under_odds") is not None:
-            prices.append(f"u{om.format_american(r['under_odds'])}")
-
-        # The canvas card, applied to a prop. Same five lines as a game:
-        # who, one number, a bar with the market's own number ticked onto it,
-        # what the market says and the size of the disagreement.
-        #
-        # The bar is scaled to twice the posted line, so the line always sits
-        # at the halfway mark and the fill reads directly as "how far past
-        # it we are". Scaling to the projection instead would move the tick
-        # from card to card and make fifteen cards incomparable, which is the
-        # whole thing the canvas layout is for.
-        span = max(reference * 2.0, proj * 1.15, 1.0)
-        fill = max(0.0, min(100.0, proj / span * 100))
-        # No posted line, no tick. There is nothing on the market to mark,
-        # and a tick sitting on our own number would draw the projection
-        # twice and read as agreement with a price nobody offered.
-        tick = (max(0.0, min(100.0, line / span * 100))
+        fill = max(0.0, min(100.0, proj / axis * 100))
+        tick = (max(0.0, min(100.0, line / axis * 100))
                 if line is not None else None)
-        if line is None:
-            edge = ""
-        elif gap is None or abs(gap) < 0.4:
-            edge = f'<span class="ge none">{_("cv_noedge")}</span>'
-        elif gap > 0:
-            edge = (f'<span class="ge up">'
-                    f'{_("cv_edge", v=f"+{abs(gap):.1f}")}</span>')
-        else:
-            edge = (f'<span class="ge down">'
-                    f'{_("cv_fade", v=f"&minus;{abs(gap):.1f}")}</span>')
-
-        tick_html = (f'<i class="cv-tick" style="left:{tick:.1f}%"></i>'
+        tick_html = (f'<i class="pl-tick" style="left:{tick:.1f}%"></i>'
                      if tick is not None else "")
-        foot_left = (f'{_("posted_line")} {line:g}' if line is not None
-                     else _("cv_noline"))
 
-        # The strip, the season rows and the prices come off the face and go
-        # behind the disclosure, where the game card put its price rows.
-        price_sec = (
-            f'<section class="pk"><h4>{_("pnl_prices")}</h4>'
-            f'<div class="pb-foot"><span>{esc(" / ".join(prices)) or "&mdash;"}</span>'
-            f'{lean}</div></section>') if line is not None else ""
-        # The record label names whatever the strip is drawn against -- the
-        # posted line when there is one, our own number when there is not.
-        over_label = (_("over_line", v=f"{line:g}") if line is not None
-                      else _("cv_clears", v=f"{proj:.1f}"))
-        inner = (
-            price_sec +
-            f'<section class="pk"><h4>{_("last_n_starts", n=r.get("recent_n", 0))}</h4>'
-            f'<div class="pb-striphead"><span></span>'
-            f'<span class="pb-rec"><b>{r.get("recent_over",0)}&ndash;'
-            f'{max(0,(r.get("recent_n",0)-r.get("recent_over",0)))}</b> '
-            f'{over_label} &middot; {_("l5")} '
-            f'<b>{r.get("last5_over",0)}&ndash;'
-            f'{max(0,(r.get("last5_n",0)-r.get("last5_over",0)))}</b>'
-            f'</span></div>'
-            f'{_strip(r.get("recent") or [], reference, scale=PITCH_MAX_K, tip=_k_tip)}</section>'
-            f'<section class="pk"><h4>{_("season")}</h4>'
-            f'<div class="pb-rows">'
-            f'<div class="pb-row"><span>{_("season")}</span><b>{_season_line(r)}</b></div>'
-            f'<div class="pb-row"><span>'
-            f'{_("opp_ks", team=esc(_nickname(r.get("opponent"))))}</span>'
-            f'<b>{_("per_game", v=f"{opp_rate:.1f}") if opp_rate else "&mdash;"}'
-            f'{rank_txt}</b></div></div></section>')
+        if settled:
+            went = _("over") if actual > reference else _("under")
+            badge_txt = _("final_k", n=actual, side=went)
+            hit = (actual > reference) == (edge is not None and edge > 0)
+            badge = (f'<i class="pl-badge {"hit" if hit and edge is not None else "miss"}">'
+                     f'{badge_txt}</i>')
+        elif r.get("suspect"):
+            badge = f'<i class="pl-badge flag" title="{_("pb_flagtip")}">{_("pb_flag")}</i>'
+        else:
+            badge = ""
 
-        return f"""
-        <div class="pb-card{' flag' if r.get('suspect') else ''}"
-             style="--accent:{team_color(r.get('opponent')) or 'var(--line-2)'}">
-          <div class="pb-body">
-            <div class="cv-head">
-              <h3 class="cv-tm">{esc(r.get('name',''))}</h3>
-              <span class="cv-time">{esc(game_time(r.get('commence_time')))}</span>
-            </div>
-            <div class="cv-sub">{esc(r.get('team',''))} vs {esc(_nickname(r.get('opponent')))}
-              &middot; {status_txt}</div>
-            <div class="cv-row">
-              <span class="cv-lab">{_("our_projection")}</span>
-              <span class="cv-pct">{proj:.1f}<span class="cv-u">{_("k_unit")}</span></span>
-            </div>
-            <div class="cv-bar"><i class="cv-fill" style="width:{fill:.1f}%"></i>
-              {tick_html}</div>
-            <div class="cv-foot">
-              <span class="gm">{foot_left}</span>{edge}
-            </div>
-            <details class="gmore" data-close="{_("close")}">
-              <summary>{_("cv_prop_detail")}</summary>
-              <div class="gmore-in"><div class="pnl">{inner}
-                {_matchup_inner(r)}</div></div>
-            </details>
-          </div>
-        </div>"""
+        if edge is None:
+            edge_n, edge_lab = "&mdash;", (_("pl_settled") if settled
+                                          else (_("cv_noedge") if line is not None
+                                                else _("pl_noline")))
+        else:
+            edge_n = f"+{edge:.1f}" if edge > 0 else f"&minus;{abs(edge):.1f}"
+            edge_lab = _("over") if edge > 0 else _("under")
 
-    return _game_board(rows, card, sides=_mlb_sides, nickname=True)
+        # Nothing in the middle when there is no line: the right rail
+        # already says so, and printing it twice made the row read as
+        # though the absence were the finding.
+        scale_mid = f'{_("pl_line")} {line:g}' if line is not None else ""
+
+        away, home = _mlb_sides(r)
+        meta = (f'{esc(_nickname(away))} @ {esc(_nickname(home))} '
+                f'&middot; {_("pl_ks")}'
+                if away and home
+                else f'{esc(_nickname(r.get("team","")))} &middot; {_("pl_ks")}')
+
+        return (
+            f'<details class="pl {tone}" data-game="{slug[_pl_fixture(r)]}"'
+            f' data-edge="{0 if edge is None or settled else 1}"'
+            f' data-close="{_("close")}">'
+            f'<summary class="pl-row">'
+            f'<div class="pl-main">'
+            f'<div class="pl-name"><span>{esc(r.get("name",""))}</span>{badge}</div>'
+            f'<div class="pl-meta">{meta}</div>'
+            f'<div class="pl-bar"><i class="pl-fill" style="width:{fill:.1f}%"></i>'
+            f'{tick_html}</div>'
+            f'<div class="pl-scale"><span>0</span><span>{scale_mid}</span>'
+            f'<span>{axis:g}</span></div>'
+            f'</div>'
+            f'<div class="pl-edge"><b>{edge_n}</b><span>{edge_lab}</span>'
+            f'<em>{proj:.1f}<i>{_("k_unit")}</i></em></div>'
+            f'</summary>'
+            f'<div class="gmore-in"><div class="pnl">{_pl_panel(r, reference)}'
+            f'{_matchup_inner(r)}</div></div>'
+            f'</details>')
+
+    # Biggest disagreement first; unpriced and settled rows sink. Ties break
+    # on first pitch so the order is stable from one build to the next.
+    def sort_key(r):
+        edge = _pl_edge(r)
+        return (r.get("actual") is not None,
+                edge is None,
+                -abs(edge) if edge is not None else 0.0,
+                r.get("commence_time") or "", r.get("name") or "")
+
+    chips = [f'<a href="#" class="gchip on" data-filter="all">'
+             f'{_("pl_all", n=len(rows))}</a>']
+    # No edges tonight, no chip. A filter that empties the board and says
+    # nothing about why reads as a broken page; on a morning when no props
+    # were bought that would be every morning.
+    if any(_pl_edge(r) is not None and r.get("actual") is None for r in rows):
+        chips.append(f'<a href="#" class="gchip" data-filter="edges">'
+                     f'{_("pl_edgesonly")}</a>')
+    for g in order:
+        away, home = _mlb_sides([r for r in rows if _pl_fixture(r) == g][0])
+        label = (f"{_nickname(away)} @ {_nickname(home)}"
+                 if away and home else (away or home))
+        chips.append(f'<a href="#" class="gchip" data-game="{slug[g]}">'
+                     f'{esc(label)}</a>')
+
+    body = "".join(row(r) for r in sorted(rows, key=sort_key))
+    return (f'<nav class="gsel" aria-label="{_("nfl_pickgame")}">'
+            + "".join(chips) + '</nav><div class="pl-list">' + body + '</div>')
+
+
+def _pl_panel(r: dict, reference: float) -> str:
+    """What used to be behind the card's disclosure, unchanged in content."""
+    line = r.get("line")
+    proj = r.get("projection") or 0
+    gap = r.get("gap")
+    prices = []
+    if r.get("over_odds") is not None:
+        prices.append(f"o{om.format_american(r['over_odds'])}")
+    if r.get("under_odds") is not None:
+        prices.append(f"u{om.format_american(r['under_odds'])}")
+    if line is None:
+        lean = ""
+    elif r.get("suspect"):
+        lean = (f'<span class="flagged" title="{_("pb_flagtip")}">'
+                f'{_("off_the_line", v=f"{abs(gap or 0):.1f}")}</span>')
+    elif gap is None or abs(gap) < 0.4:
+        lean = f'<span>{_("in_line")}</span>'
+    else:
+        key = "over_the_line" if gap > 0 else "under_the_line"
+        lean = f'<span class="lean">{_(key, v=f"{abs(gap):.1f}")}</span>'
+    price_sec = (
+        f'<section class="pk"><h4>{_("pnl_prices")}</h4>'
+        f'<div class="pb-foot"><span>{esc(" / ".join(prices)) or "&mdash;"}</span>'
+        f'{lean}</div></section>') if line is not None else ""
+
+    rank = r.get("opp_k_rank")
+    rank_txt = (" &middot; " + _("pb_rank", r=rank, ord=_ordinal(rank),
+                                 n=r.get("opp_teams_ranked", 30))
+                if rank else "")
+    opp_rate = r.get("opp_k_per_game")
+    over_label = (_("over_line", v=f"{line:g}") if line is not None
+                  else _("cv_clears", v=f"{proj:.1f}"))
+    return (
+        price_sec +
+        f'<section class="pk"><h4>{_("last_n_starts", n=r.get("recent_n", 0))}</h4>'
+        f'<div class="pb-striphead"><span></span>'
+        f'<span class="pb-rec"><b>{r.get("recent_over",0)}&ndash;'
+        f'{max(0,(r.get("recent_n",0)-r.get("recent_over",0)))}</b> '
+        f'{over_label} &middot; {_("l5")} '
+        f'<b>{r.get("last5_over",0)}&ndash;'
+        f'{max(0,(r.get("last5_n",0)-r.get("last5_over",0)))}</b>'
+        f'</span></div>'
+        f'{_strip(r.get("recent") or [], reference, scale=PITCH_MAX_K, tip=_k_tip)}</section>'
+        f'<section class="pk"><h4>{_("season")}</h4>'
+        f'<div class="pb-rows">'
+        f'<div class="pb-row"><span>{_("season")}</span><b>{_season_line(r)}</b></div>'
+        f'<div class="pb-row"><span>'
+        f'{_("opp_ks", team=esc(_nickname(r.get("opponent"))))}</span>'
+        f'<b>{_("per_game", v=f"{opp_rate:.1f}") if opp_rate else "&mdash;"}'
+        f'{rank_txt}</b></div></div></section>')
 
 
 def _wl_tag(r: dict) -> str:
@@ -2786,21 +2895,52 @@ def _self_test() -> None:
                "recent_over": 1, "recent_n": 1, "last5_over": 1, "last5_n": 1,
                "k_per_9": 11.2, "matchup": "neutral", "actual": None}
     free_html = pitcher_cards([free_sp])
-    assert 'class="cv-tick"' not in free_html, \
+    assert 'class="pl-tick"' not in free_html, \
         "no posted line means no tick; ours is already the fill"
-    assert 'class="ge ' not in free_html, \
-        "an edge against nothing is not a small edge"
-    assert i18n.t("cv_noline", LANG) in free_html, free_html
+    assert i18n.t("pl_noline", LANG) in free_html, free_html
     assert i18n.t("pnl_prices", LANG) not in free_html, \
         "no prices section on a card with no prices"
-    assert "0.0" not in free_html.split('class="cv-foot"')[1][:120], \
+    assert 'data-edge="0"' in free_html, \
+        "an edge against nothing is not a small edge"
+    assert "0.0" not in free_html.split('class="pl-edge"')[1][:160], \
         "a missing line must not collapse to a real-looking zero"
+    # The rewrite's whole claim is that nothing behind the disclosure was
+    # lost. The row is a <summary>, so the panel has to still be in it.
+    assert "<details" in free_html and "<summary" in free_html, free_html[:300]
+    assert i18n.t("season", LANG) in free_html
 
     priced_sp = dict(free_sp, line=6.5, gap=-0.1, reference=6.5,
                      over_odds=-115, under_odds=-105)
     priced_html = pitcher_cards([priced_sp])
-    assert 'class="cv-tick"' in priced_html and 'class="ge ' in priced_html
+    assert 'class="pl-tick"' in priced_html
     assert i18n.t("pnl_prices", LANG) in priced_html
+    # Under the 0.4 K threshold is not an edge, and must not be printed as
+    # one: the board sorts by this and a 0.1 K "edge" at the top would be
+    # the page arguing something it cannot support.
+    assert i18n.t("cv_noedge", LANG) in priced_html, priced_html
+
+    # --- the list sorts by edge, and settled rows sink ----------------------
+    edged = dict(free_sp, name="Big Edge", line=5.0, gap=1.8, reference=5.0)
+    small = dict(free_sp, name="Small Edge", line=6.0, gap=0.6, reference=6.0)
+    done = dict(free_sp, name="Yesterday", line=5.0, gap=2.4, reference=5.0,
+                actual=7)
+    board = pitcher_cards([done, small, edged])
+    order = [board.index(n) for n in ("Big Edge", "Small Edge", "Yesterday")]
+    assert order == sorted(order), "biggest edge first, settled last"
+    assert pitcher_head([done, small, edged])["edges"] == "2", \
+        "a settled row is a result, not one of tonight's edges"
+    # Every row carries its fixture so the picker can filter a flat list --
+    # three rows plus the one chip their shared fixture earns.
+    assert board.count('<details class="pl') == 3, board[:300]
+    assert board.count('data-game="g') == 4, board[:300]
+    assert 'data-filter="edges"' in board, "two live edges earns the chip"
+    assert 'data-filter="edges"' not in pitcher_cards([free_sp]), \
+        "a board with no edges must not offer a filter that empties it"
+    # The axis is a floor, not a fixed nine: a projection above it would be
+    # drawn pegged at 100% and read as the same call as a nine.
+    tall = pitcher_cards([dict(free_sp, name="Tall", projection=11.4)])
+    assert "<span>12</span>" in tall, tall[tall.index("pl-scale"):][:160]
+    assert "width:100.0%" not in tall, "no row may sit pegged at the axis"
 
     # --- boards grouped into fixtures ---------------------------------------
     # Both clubs of one game must land in ONE section. They arrive as

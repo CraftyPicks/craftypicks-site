@@ -249,6 +249,10 @@ DIM_ALLOWED = {
     # The unit after a prop projection ("3.7 K"), same case as .pb-num .unit:
     # the number beside it already carries the meaning.
     ".cv-u",
+    # The same "K", on the list board's right rail. Identical case: it
+    # trails a figure, and the row's meta line has already said the prop is
+    # strikeouts, so the letter is confirming rather than carrying.
+    ".pl-edge em i",
 }
 
 

@@ -85,18 +85,47 @@
       if (!chip) { return; }
       e.preventDefault();
       var want = chip.getAttribute("data-game") || "";
+      var mode = chip.getAttribute("data-filter") || "";
       Array.prototype.forEach.call(
         picker.querySelectorAll(".gchip"), function (c) {
           c.classList.toggle("on", c === chip);
         });
+      /* Two shapes of board share this picker. The card boards group into
+         one <section> per fixture; the list board is one flat list whose
+         rows each carry their own fixture. Filtering both by the same
+         attribute keeps one picker and one code path. */
       Array.prototype.forEach.call(
-        document.querySelectorAll(".gsec"), function (s) {
-          s.hidden = !!want && s.getAttribute("data-game") !== want;
+        document.querySelectorAll(".gsec,.pl"), function (s) {
+          if (mode === "edges") {
+            s.hidden = s.getAttribute("data-edge") !== "1";
+          } else if (want) {
+            s.hidden = s.getAttribute("data-game") !== want;
+          } else {
+            s.hidden = false;
+          }
         });
       /* Back to the top of the board, not of the page: the reader just
          chose a game and wants to see it, and leaving them mid-scroll in
          a list that just got shorter is disorienting. */
       picker.scrollIntoView({block: "start"});
     });
+  }
+  /* The sport row scrolls, and on a narrow phone the sport the reader is
+     actually looking at can start off-screen. Nudge it into view. Not a
+     smooth scroll: this happens on load, and animating the nav on arrival
+     looks like a fault. */
+  var sports = document.querySelector(".nav-links");
+  if (sports) {
+    var here = sports.querySelector("a.on");
+    if (here) {
+      /* Measured against the row's own box, not offsetLeft: the pills have
+         no positioned ancestor, so offsetLeft is relative to the page and
+         scrolled the first pill half out of view -- which looked like a
+         clipped word rather than a nudge. */
+      var a = here.getBoundingClientRect();
+      var b = sports.getBoundingClientRect();
+      if (a.right > b.right) { sports.scrollLeft += (a.right - b.right) + 12; }
+      else if (a.left < b.left) { sports.scrollLeft -= (b.left - a.left) + 12; }
+    }
   }
 })();
