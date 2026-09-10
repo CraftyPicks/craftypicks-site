@@ -164,6 +164,8 @@ T = {
                             "los de más apariciones ante él."},
     "pnl_prices":    {"en": "Prices", "es": "Precios"},
     "cv_detail":     {"en": "Game detail +", "es": "Detalle del partido +"},
+    "nfl_allgames":  {"en": "All games", "es": "Todos los partidos"},
+    "nfl_pickgame":  {"en": "Jump to a game", "es": "Ir a un partido"},
     "nfl_proj":      {"en": "Our projection", "es": "Nuestra proyección"},
     "nfl_chance":    {"en": "Anytime TD chance", "es": "Prob. TD en cualquier momento"},
     "nfl_last":      {"en": "Last {n} game{s}", "es": "Últimos {n} partido{s}"},

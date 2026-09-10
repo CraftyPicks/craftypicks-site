@@ -7,7 +7,13 @@
 
 <section class="pad-sm">
   <div class="wrap">
-    <div class="pb-grid">{{PITCHER_CARDS}}</div>
+    <!-- No .pb-grid wrapper. pitcher_cards() now returns the whole board:
+         a game picker plus one section per fixture, each carrying its own
+         grid. Wrapping that in a grid made the SECTIONS the grid items, so
+         the picker sat in one column and "ATL @ PHI" in the other. Every
+         other board's renderer emits its own container for exactly this
+         reason; this template was the last one that did not. -->
+    {{PITCHER_CARDS}}
 
     <div class="clegend" style="margin-top:22px">
       <span><i style="display:inline-block;width:10px;height:13px;background:var(--green);border-radius:2px 2px 0 0"></i> cleared tonight's line</span>

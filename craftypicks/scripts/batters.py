@@ -244,6 +244,12 @@ def build(starters: list[dict], season: int, verbose: bool = True) -> list[dict]
                 # batter's career line against him. It was in
                 # scope all along and simply not stored.
                 "pitcher_id": s.get("pitcher_id"),
+                # The row is a BATTER facing this starter, so his club is
+                # the starter's opponent -- and he is at home exactly when
+                # the starter is not. Both are needed to group the board
+                # by fixture and head each group "AWAY @ HOME".
+                "vs_team": s.get("team"),
+                "is_home": not bool(s.get("is_home")),
                 "vs_hr_per_bf": p_rate,
                 "park": park, "park_raw": (parks.get(home_id) or {}).get("raw"),
                 "league_rate": league,

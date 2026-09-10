@@ -931,10 +931,17 @@ def _matchup_inner(row: dict) -> str:
 
 
 def pitcher_cards(rows: list[dict]) -> str:
+    """Every probable starter, grouped into the game he is starting.
+
+    Twenty-seven cards in one flat grid asks the reader to hold the fixture
+    in their head from a line of 11px mono under each name. Grouped, the
+    two starters in a matchup sit side by side, which is the comparison a
+    reader of this board is making anyway.
+    """
     if not rows:
         return f'<div class="empty-board">{_("pitch_empty")}</div>' 
-    out = []
-    for r in rows:
+
+    def card(r):
         # A starter with no posted line is the normal case now: the board is
         # built from StatsAPI every morning and prices are attached only on
         # the mornings props were bought. `line` therefore has to stay None
@@ -1038,7 +1045,7 @@ def pitcher_cards(rows: list[dict]) -> str:
             f'<b>{_("per_game", v=f"{opp_rate:.1f}") if opp_rate else "&mdash;"}'
             f'{rank_txt}</b></div></div></section>')
 
-        out.append(f"""
+        return f"""
         <div class="pb-card{' flag' if r.get('suspect') else ''}"
              style="--accent:{team_color(r.get('opponent')) or 'var(--line-2)'}">
           <div class="pb-body">
@@ -1063,8 +1070,9 @@ def pitcher_cards(rows: list[dict]) -> str:
                 {_matchup_inner(r)}</div></div>
             </details>
           </div>
-        </div>""")
-    return "".join(out)
+        </div>"""
+
+    return _game_board(rows, card, sides=_mlb_sides, nickname=True)
 
 
 def _wl_tag(r: dict) -> str:
@@ -2080,15 +2088,17 @@ def batter_cards(rows: list[dict]) -> str:
                 rate=f"{b.get('hr_rate', 0) * 100:.1f}")}</div>
             {_bvp_line(b)}
           </div>""" for b in group)
-        out.append(_group_card(
+        out.append((group[0], _group_card(
             club, when,
             _("bat_facing", who=esc(pitcher or "?"), hand=hand_txt,
               rate=f"{(group[0].get('vs_hr_per_bf') or 0) * 100:.1f}"),
             bats,
             accent=team_color(group[0].get("team")) or "var(--line-2)",
             right=f'<span class="bat-park {park_cls}">'
-                  f'{_("bat_park", v=f"{park:.2f}")}</span>'))
-    return '<div class="pb-grid">' + "".join(out) + "</div>"
+                  f'{_("bat_park", v=f"{park:.2f}")}</span>')))
+    return _game_board(out, lambda c: c[1], sides=lambda c: _mlb_sides(c[0]),
+                       when=lambda c: c[0].get("commence_time") or "",
+                       nickname=True)
 
 
 def batter_calibration(summary: dict) -> str:
@@ -2149,14 +2159,16 @@ def hit_cards(rows: list[dict]) -> str:
             {_bvp_line(b)}
           </div>""" for b in group)
         accent = team_color(group[0].get('team')) or 'var(--line-2)'
-        out.append(_group_card(
+        out.append((group[0], _group_card(
             club, when,
             _("hit_facing", who=esc(pitcher or "?"), hand=hand_txt,
               rate=vs_rate),
             bats, accent=accent,
             right=f'<span class="bat-park {park_cls}">'
-                  f'{_("hit_park", v=f"{park:.2f}")}</span>'))
-    return '<div class="pb-grid">' + "".join(out) + "</div>"
+                  f'{_("hit_park", v=f"{park:.2f}")}</span>')))
+    return _game_board(out, lambda c: c[1], sides=lambda c: _mlb_sides(c[0]),
+                       when=lambda c: c[0].get("commence_time") or "",
+                       nickname=True)
 
 
 def hit_calibration(summary: dict) -> str:
@@ -2180,6 +2192,103 @@ def hit_calibration(summary: dict) -> str:
 # defines a bare .pos rule for the monthly chart's positive bars
 # (height:180px, flex column), and a player's position badge would have
 # inherited that layout by accident.
+
+def _game_sides(row: dict) -> tuple[str, str]:
+    """(away, home) for an NFL row.
+
+    nflverse game ids are season_week_AWAY_HOME, which is the only place a
+    row says which side is at home -- `team` and `opponent` are written from
+    the player's point of view and cannot say. Falls back to the player's own
+    pair when the id is not the shape we expect, because a header naming the
+    right two clubs in the wrong order still beats no header.
+    """
+    parts = (row.get("game_id") or "").split("_")
+    if len(parts) >= 4 and parts[2] and parts[3]:
+        return parts[2], parts[3]
+    return row.get("opponent", ""), row.get("team", "")
+
+
+def _mlb_sides(row: dict) -> tuple[str, str]:
+    """(away, home) for an MLB row, from is_home rather than from a guess.
+
+    probable_starters has carried is_home all along; it simply never
+    reached the rows. `team` and `opponent` are written from one side's
+    point of view and cannot say which dugout is which on their own.
+    """
+    a, b = row.get("team") or "", row.get("opponent") or row.get("vs_team") or ""
+    return (b, a) if row.get("is_home") else (a, b)
+
+
+def _game_board(rows, card, *, sides, key=None, nickname: bool = False,
+                when=None) -> str:
+    """Cards grouped into the fixtures they belong to, with a game picker.
+
+    Written for the NFL boards after "it's all over the place, I don't know
+    which team each player is on", and then wanted for MLB for the same
+    reason -- so it takes the two things that differ as arguments: how a
+    row names its two clubs, and what makes two rows the same fixture.
+
+    The picker is progressive. The chips are ordinary anchors pointing at
+    each section, so with no JavaScript they scroll to the right group and
+    nothing is lost; board.js upgrades them to a filter, which on a
+    sixteen-game slate is the difference between finding a player and
+    scrolling for him.
+    """
+    if not rows:
+        return ""
+    # Rows are not always dicts: the home-run and hits boards hand this
+    # (row, rendered card) pairs, because their card is already a group of
+    # several batters and only one of those rows can speak for it.
+    when = when or (lambda r: r.get("commence_time") or "")
+
+    def fixture(r):
+        if key is not None:
+            return key(r)
+        away, home = sides(r)
+        # frozenset, so both clubs' rows land in one group no matter which
+        # side wrote them. Paired with first pitch, because two clubs meet
+        # twice in a doubleheader and those are different games.
+        return (when(r), frozenset({away, home}))
+
+    games: dict = {}
+    for r in rows:
+        games.setdefault(fixture(r), []).append(r)
+    order = sorted(games, key=lambda g: (when(games[g][0]), str(g)))
+
+    chips = [f'<a href="#" class="gchip on" data-game="">{_("nfl_allgames")}</a>']
+    blocks = []
+    for i, gid in enumerate(order):
+        group = games[gid]
+        away, home = sides(group[0])
+        if nickname:
+            away, home = _nickname(away), _nickname(home)
+        # One side unknown -- an older data file written before the board
+        # stored the opposing club -- heads the group with the club it does
+        # know rather than with "ATL @ ", which reads as a rendering fault.
+        title = (f'{esc(away)} <span>@</span> {esc(home)}'
+                 if away and home else esc(away or home))
+        chip = f"{away} @ {home}" if away and home else (away or home)
+        tip = esc(game_time(when(group[0])))
+        slug = f"g{i}"
+        chips.append(f'<a href="#s-{slug}" class="gchip" data-game="{slug}">'
+                     f'{esc(chip)}</a>')
+        blocks.append(
+            f'<section class="gsec" id="s-{slug}" data-game="{slug}">'
+            f'<div class="gsec-h">'
+            f'<h3>{title}</h3>'
+            f'<span>{tip}</span></div>'
+            f'<div class="pb-grid">{"".join(card(r) for r in group)}</div>'
+            f'</section>')
+    return (f'<nav class="gsel" aria-label="{_("nfl_pickgame")}">'
+            + "".join(chips) + "</nav>" + "".join(blocks))
+
+
+def _nfl_board(rows: list[dict], card) -> str:
+    if not rows:
+        return f'<div class="empty-board">{_("nfl_empty")}</div>'
+    return _game_board(rows, card, sides=_game_sides,
+                       key=lambda r: r.get("game_id") or "")
+
 
 def _nfl_card(r: dict, *, big: str, label: str, ref: float, ref_label: str,
               key: str, fmt, unit: str = "", strip_line: float | None = None,
@@ -2259,12 +2368,10 @@ def yard_cards(rows: list[dict], unit: str = "yds") -> str:
     of recent games as a strip, and the defensive context behind the
     disclosure.
     """
-    if not rows:
-        return f'<div class="empty-board">{_("nfl_empty")}</div>'
     def yd(v):
         return f"{v:.0f}"
-    out = []
-    for r in rows:
+
+    def card(r):
         proj = r.get("projection") or 0
         opp = esc(r.get("opponent", ""))
         rows_html = (
@@ -2272,11 +2379,12 @@ def yard_cards(rows: list[dict], unit: str = "yds") -> str:
             f'<b>{r.get("opp_allowed", 0):.0f} {esc(unit)}</b></div>'
             f'<div class="pb-row"><span>{_("nfl_league")}</span>'
             f'<b>{r.get("league_allowed", 0):.0f} {esc(unit)}</b></div>')
-        out.append(_nfl_card(
+        return _nfl_card(
             r, big=yd(proj), label=_("nfl_proj"), ref=proj,
             ref_label=_("nfl_clears", v=yd(proj)),
-            key="value", fmt=yd, unit=unit, rows_html=rows_html))
-    return '<div class="pb-grid">' + "".join(out) + "</div>"
+            key="value", fmt=yd, unit=unit, rows_html=rows_html)
+
+    return _nfl_board(rows, card)
 
 
 def td_cards(rows: list[dict]) -> str:
@@ -2287,12 +2395,10 @@ def td_cards(rows: list[dict]) -> str:
     a two-touchdown game is not twice as much of a hit. Comparing a count
     against a percentage would be a category error drawn as a chart.
     """
-    if not rows:
-        return f'<div class="empty-board">{_("nfl_empty")}</div>'
     def td(v):
         return f"{v:g}"
-    out = []
-    for r in rows:
+
+    def card(r):
         chance = (r.get("chance") or 0) * 100
         opp = esc(r.get("opponent", ""))
         rows_html = (
@@ -2300,11 +2406,12 @@ def td_cards(rows: list[dict]) -> str:
             f'<b>{r.get("opp_allowed", 0):.2f}</b></div>'
             f'<div class="pb-row"><span>{_("nfl_league")}</span>'
             f'<b>{r.get("league_allowed", 0):.2f}</b></div>')
-        out.append(_nfl_card(
+        return _nfl_card(
             r, big=f"{chance:.1f}%", label=_("nfl_chance"), ref=chance,
             ref_label=_("nfl_scored"), key="value", fmt=td,
-            strip_line=0.5, rows_html=rows_html, bar_pct=chance))
-    return '<div class="pb-grid">' + "".join(out) + "</div>"
+            strip_line=0.5, rows_html=rows_html, bar_pct=chance)
+
+    return _nfl_board(rows, card)
 
 
 def td_calibration(summary: dict) -> str:
@@ -2400,11 +2507,13 @@ def homer_cards(rows: list[dict]) -> str:
                       ip=f'{r.get("innings") or 0:.1f}')}</b></div>
             </div>
             {f'<p class="hr-thin">{_("hr_too_few")}</p>' if thin else ""}"""
-        out.append(_group_card(
+        out.append((r, _group_card(
             esc(r.get("name", "")), r.get("commence_time"),
             f'{esc(r.get("team",""))} vs {opp}{hand_txt}',
-            body, accent=accent))
-    return '<div class="pb-grid">' + "".join(out) + "</div>"
+            body, accent=accent)))
+    return _game_board(out, lambda c: c[1], sides=lambda c: _mlb_sides(c[0]),
+                       when=lambda c: c[0].get("commence_time") or "",
+                       nickname=True)
 
 
 # ------------------------------------------------------------------ form ---
@@ -2692,6 +2801,39 @@ def _self_test() -> None:
     priced_html = pitcher_cards([priced_sp])
     assert 'class="cv-tick"' in priced_html and 'class="ge ' in priced_html
     assert i18n.t("pnl_prices", LANG) in priced_html
+
+    # --- boards grouped into fixtures ---------------------------------------
+    # Both clubs of one game must land in ONE section. They arrive as
+    # separate rows written from each side's point of view, and the only
+    # thing that makes them the same fixture is is_home plus the pair of
+    # club names -- which is why is_home had to be carried down to the row.
+    def _bats(team, vs_team, home, pitcher):
+        return [{"name": f"Bat{i}", "team": team, "vs_team": vs_team,
+                 "is_home": home, "vs": pitcher, "chance": 0.6,
+                 "commence_time": "2026-09-10T23:05:00Z",
+                 "h": 140, "pa": 600, "hit_rate": 0.23, "park": 1.0,
+                 "vs_h_per_bf": 0.22, "vs_hand": "R", "bvp": None}
+                for i in range(2)]
+
+    grouped = hit_cards(_bats("ATL", "PHI", False, "A") +
+                        _bats("PHI", "ATL", True, "B"))
+    assert grouped.count('class="gsec"') == 1, \
+        "both clubs of a fixture belong in one section"
+    assert "ATL <span>@</span> PHI" in grouped, grouped[:400]
+
+    # A doubleheader is two fixtures, not one: same clubs, different first
+    # pitch. slate.py had to learn this the hard way once already.
+    dh = _bats("ATL", "PHI", False, "A") + _bats("PHI", "ATL", True, "B")
+    for r in dh[:2]:
+        r["commence_time"] = "2026-09-10T17:05:00Z"
+    assert hit_cards(dh).count('class="gsec"') >= 2, \
+        "two games between the same clubs are two sections"
+
+    # An older data file with no opposing club heads the group with the club
+    # it knows rather than with "ATL @ ", which reads as a rendering fault.
+    legacy = _bats("ATL", None, False, "A")
+    out = hit_cards(legacy)
+    assert "@ </h3>" not in out and "@</span> </h3>" not in out, out[:400]
 
     print("render self-test: all invariants hold")
 

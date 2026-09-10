@@ -68,4 +68,35 @@
     });
     d.appendChild(b);
   }, true);
+
+  /* The game picker on the NFL prop boards. Progressive: the chips are
+     ordinary anchors pointing at each section, so with no JavaScript they
+     scroll to the right group and nothing is lost. With JavaScript they
+     filter instead, which on a sixteen-game slate is the difference
+     between finding a player and scrolling for him.
+
+     Filtering hides sections with the `hidden` attribute rather than a
+     class, so anything that reads the DOM -- a find-in-page, a screen
+     reader -- agrees with what the eye sees. */
+  var picker = document.querySelector(".gsel");
+  if (picker) {
+    picker.addEventListener("click", function (e) {
+      var chip = e.target.closest ? e.target.closest(".gchip") : null;
+      if (!chip) { return; }
+      e.preventDefault();
+      var want = chip.getAttribute("data-game") || "";
+      Array.prototype.forEach.call(
+        picker.querySelectorAll(".gchip"), function (c) {
+          c.classList.toggle("on", c === chip);
+        });
+      Array.prototype.forEach.call(
+        document.querySelectorAll(".gsec"), function (s) {
+          s.hidden = !!want && s.getAttribute("data-game") !== want;
+        });
+      /* Back to the top of the board, not of the page: the reader just
+         chose a game and wants to see it, and leaving them mid-scroll in
+         a list that just got shorter is disorienting. */
+      picker.scrollIntoView({block: "start"});
+    });
+  }
 })();

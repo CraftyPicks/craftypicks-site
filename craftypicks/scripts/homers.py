@@ -98,6 +98,9 @@ def build(starters: list[dict], season: int, verbose: bool = True) -> list[dict]
             "hand": s.get("hand", ""),
             "team": s.get("team"),
             "opponent": s.get("opponent"),
+            # Which dugout, so the board can group both starters in a
+            # fixture together and head the group "AWAY @ HOME".
+            "is_home": bool(s.get("is_home")),
             "opponent_id": tid,
             "commence_time": s.get("game_time"),
             "innings": st.get("innings"),
