@@ -1,14 +1,110 @@
 {
-  "generated_at": "2026-09-09T10:13:13-04:00",
-  "date": "2026-09-09",
-  "date_label": "Wednesday, September 9, 2026",
+  "generated_at": "2026-09-10T09:51:52-04:00",
+  "date": "2026-09-10",
+  "date_label": "Thursday, September 10, 2026",
   "post_time": "9:00 AM ET",
-  "plays": [],
+  "plays": [
+    {
+      "event_id": "de5c4fe6a041ce8073e59e063fe7f31f",
+      "sport_key": "baseball_mlb",
+      "league": "MLB",
+      "league_short": "mlb",
+      "commence_time": "2026-09-10T23:05:00Z",
+      "home_team": "New York Yankees",
+      "away_team": "Colorado Rockies",
+      "matchup": "Colorado Rockies @ New York Yankees",
+      "matchup_short": "Rockies / Yankees",
+      "market": "spreads",
+      "market_label": "Spread",
+      "side": "Colorado Rockies",
+      "point": 1.5,
+      "price": 125,
+      "book": "BetUS",
+      "book_key": "betus",
+      "fair_prob": 0.45614,
+      "fair_price": 119,
+      "edge_pct": 2.63,
+      "edge_pp": 1.17,
+      "books_counted": 6,
+      "books_shorter": 5,
+      "stake": 1.0,
+      "source": "value",
+      "pick": "Rockies +1.5",
+      "reasons": [
+        {
+          "k": "consensus",
+          "books": 6,
+          "fair": "+119",
+          "pct": "45.6%"
+        },
+        {
+          "k": "best_price",
+          "price": "+125",
+          "book": "BetUS"
+        },
+        {
+          "k": "consensus_number",
+          "point": "1.5"
+        },
+        {
+          "k": "books_shorter",
+          "shorter": 5,
+          "books": 6
+        }
+      ],
+      "slot": 1,
+      "id": "de5c4fe6a041ce8073e59e063fe7f31f-spreads-Colorado_Rockies",
+      "posted_date": "2026-09-10",
+      "posted_at": "2026-09-10T09:51:52-04:00",
+      "result": null,
+      "profit": 0.0
+    },
+    {
+      "event_id": "de5c4fe6a041ce8073e59e063fe7f31f",
+      "sport_key": "baseball_mlb",
+      "league": "MLB",
+      "league_short": "mlb",
+      "commence_time": "2026-09-10T23:05:00Z",
+      "home_team": "New York Yankees",
+      "away_team": "Colorado Rockies",
+      "matchup": "Colorado Rockies @ New York Yankees",
+      "market": "pitcher_strikeouts",
+      "market_label": "Strikeouts · Screen A",
+      "side": "Max Fried Over",
+      "player": "Max Fried",
+      "point": 5.5,
+      "price": 110,
+      "book": "BetOnline.ag",
+      "book_key": "betonlineag",
+      "fair_prob": 0.48122,
+      "fair_price": 108,
+      "edge_pct": 1.06,
+      "books_counted": 6,
+      "stake": 1.0,
+      "pick": "Max Fried over 5.5 strikeouts",
+      "reasons": [
+        "<b>Screen A</b> — season K% 23.6%",
+        "<b>Screen A</b> — opponent K/game 8.76",
+        "<b>Screen A</b> — vs roster: 31 PA, K% 25.8%, AVG 0.250, wOBA 0.265"
+      ],
+      "is_prop": true,
+      "source": "screen",
+      "screen": "A",
+      "slot": 2,
+      "id": "de5c4fe6a041ce8073e59e063fe7f31f-pitcher_strikeouts-Max_Fried_Over",
+      "posted_date": "2026-09-10",
+      "posted_at": "2026-09-10T09:51:52-04:00",
+      "result": null,
+      "profit": 0.0
+    }
+  ],
   "summary": {
-    "count": 0,
-    "units_risked": 0,
-    "by_league": {},
-    "avg_edge": 0.0
+    "count": 2,
+    "units_risked": 2.0,
+    "by_league": {
+      "MLB": 2
+    },
+    "avg_edge": 1.84
   },
   "note": "",
   "mock": false
