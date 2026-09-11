@@ -52,7 +52,7 @@
       "week": 1,
       "game_id": "2026_01_SF_LA",
       "commence_time": "2026-09-10T20:35:00-04:00",
-      "actual": null
+      "actual": 155.0
     },
     {
       "player_id": "00-0037834",
@@ -70,7 +70,7 @@
       "week": 1,
       "game_id": "2026_01_SF_LA",
       "commence_time": "2026-09-10T20:35:00-04:00",
-      "actual": null
+      "actual": 205.0
     },
     {
       "player_id": "00-0035710",
@@ -556,6 +556,50 @@
       "week": 1,
       "game_id": "2026_01_DEN_KC",
       "commence_time": "2026-09-14T20:15:00-04:00",
+      "actual": null
+    },
+    {
+      "player_id": "00-0033662",
+      "name": "Cooper Rush",
+      "team": "ATL",
+      "opponent": "PIT",
+      "position": "QB",
+      "per_game": 75.8,
+      "baseline": 75.8,
+      "projection": 88.2,
+      "weight": 0.0,
+      "opp_allowed": 261.0,
+      "league_allowed": 224.1,
+      "def_factor": 1.165,
+      "week": 1,
+      "game_id": "2026_01_ATL_PIT",
+      "commence_time": "2026-09-13T13:00:00-04:00",
+      "recent": [
+        {
+          "season": 2025,
+          "week": 2,
+          "opponent": "CLE",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 4,
+          "opponent": "KC",
+          "value": 52.0
+        },
+        {
+          "season": 2025,
+          "week": 5,
+          "opponent": "HOU",
+          "value": 179.0
+        },
+        {
+          "season": 2025,
+          "week": 6,
+          "opponent": "LA",
+          "value": 72.0
+        }
+      ],
       "actual": null
     }
   ]
