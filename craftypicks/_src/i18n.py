@@ -955,6 +955,25 @@ T = {
     "hr_last":      {"en": "L{n}", "es": "U{n}"},
     "hr_market":    {"en": "market", "es": "mercado"},
 
+    # The batter boards say which they are showing. Two facts, not one
+    # apology: before lineups post the board rates a club's regulars, and
+    # after they post it rates the nine men in them. The page said the first
+    # of those all day, including the evening when it was no longer true.
+    "lu_regulars":  {"en": "Club regulars &mdash; lineups post about two "
+                           "hours before first pitch, and this page is "
+                           "rebuilt when they do.",
+                     "es": "Regulares del equipo &mdash; las alineaciones se "
+                           "publican unas dos horas antes del primer "
+                           "lanzamiento y esta página se reconstruye "
+                           "entonces."},
+    "lu_posted":    {"en": "Tonight's posted lineups, for {n} of {of} clubs.",
+                     "es": "Alineaciones publicadas de hoy, en {n} de {of} "
+                           "equipos."},
+    "lu_mixed":     {"en": "Posted lineups where they are out ({n} of {of} "
+                           "clubs); club regulars elsewhere.",
+                     "es": "Alineaciones publicadas donde ya salieron ({n} de "
+                           "{of}); regulares del equipo en el resto."},
+
     # Rows of the two-starter comparison on an MLB game card.
     "sp_tonight":   {"en": "Tonight's strikeouts", "es": "Ponches de hoy"},
     "sp_projk":     {"en": "Our projection", "es": "Nuestra proyección"},

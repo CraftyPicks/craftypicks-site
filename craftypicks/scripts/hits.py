@@ -173,7 +173,8 @@ def park_factors(season: int) -> dict[int, dict]:
     return parse_park(hitting, pitching)
 
 
-def build(starters: list[dict], season: int, verbose: bool = True) -> list[dict]:
+def build(starters: list[dict], season: int, verbose: bool = True,
+          lineups: dict | None = None) -> list[dict]:
     """The best bats in each of tonight's games, with a hit chance attached.
 
     `starters` is what mlb_api.probable_starters returns, and each row here
@@ -217,8 +218,13 @@ def build(starters: list[dict], season: int, verbose: bool = True) -> list[dict]
         park_row = parks.get(home_id) or {}
         park = park_row.get("factor", 1.0)
 
+        # Same rule as the home-run board: the posted nine when there is one,
+        # the club's regulars until then.
+        posted = set((lineups or {}).get(opp_id) or [])
         cand = []
         for pid, b in by_team.get(opp_id, []):
+            if posted and pid not in posted:
+                continue
             gp = games.get(opp_id) or 0
             if not gp:
                 continue
@@ -244,6 +250,11 @@ def build(starters: list[dict], season: int, verbose: bool = True) -> list[dict]
                 "park": park, "park_raw": park_row.get("raw"),
                 "league_rate": league,
                 "commence_time": s.get("game_time"),
+                # Whether this row is one of tonight's posted nine or one of
+                # the club's regulars. The page says which; without this it
+                # would have to guess, and it would guess wrong on the
+                # evening run for any club that had not posted yet.
+                "lineup": bool(posted),
                 "h_at_projection": b["h"], "got_hit": None,
             })
         cand.sort(key=lambda r: r["chance"], reverse=True)
@@ -263,6 +274,47 @@ def build(starters: list[dict], season: int, verbose: bool = True) -> list[dict]
 
 
 def _self_test() -> None:
+
+    # --- the posted lineup filters the board --------------------------------
+    # The home-run board's twin, and tested the same way: stub the two data
+    # calls and drive build() itself, so what is verified is the filter in
+    # the code rather than a copy of it in the test.
+    import mlb_api as _api
+
+    table = {i: {"name": f"Bat{i}", "team_id": 200, "pa": 600, "h": 180 - i}
+             for i in range(1, 7)}
+    starters = [{"pitcher_id": 55, "name": "SP", "team": "OPP",
+                 "team_id": 300, "opponent": "HOME", "opponent_id": 200,
+                 "is_home": False, "hand": "R",
+                 "game_time": "2026-09-11T23:05:00Z"}]
+    saved = (batters_mod.all_batters, park_factors, _api.pitcher_season,
+             _api.attach_bvp, batters_mod.attach_recent)
+    try:
+        batters_mod.all_batters = lambda season: table
+        globals()["park_factors"] = lambda season: {
+            200: {"factor": 1.0, "raw": 1.0, "home_games": 81},
+            300: {"factor": 1.0, "raw": 1.0, "home_games": 81}}
+        _api.pitcher_season = lambda pid, season: {"bf": 700, "h": 160}
+        _api.attach_bvp = lambda rows, season, verbose=True: 0
+        batters_mod.attach_recent = (
+            lambda rows, season, field, verbose=True, budget=0, fetch=None: 0)
+
+        free = build(starters, 2026, verbose=False)
+        assert free and all(r["lineup"] is False for r in free)
+        names_free = {r["name"] for r in free}
+
+        picked = build(starters, 2026, verbose=False, lineups={200: [5, 6]})
+        assert {r["name"] for r in picked} == {"Bat5", "Bat6"}, picked
+        assert all(r["lineup"] is True for r in picked)
+        assert names_free != {"Bat5", "Bat6"}
+
+        # Not posted, not touched.
+        other = build(starters, 2026, verbose=False, lineups={999: [1]})
+        assert {r["name"] for r in other} == names_free
+    finally:
+        (batters_mod.all_batters, globals()["park_factors"],
+         _api.pitcher_season, _api.attach_bvp,
+         batters_mod.attach_recent) = saved
     # A league-average batter against a league-average pitcher returns the
     # league rate. If this fails the model is not log5.
     lg = 0.25
@@ -356,9 +408,16 @@ def _self_test() -> None:
     # the ones a careless copy from batters.build gets wrong, and none of
     # them would raise -- each would just produce a quietly wrong board.
     import mlb_api as _api
+    # attach_bvp and attach_recent are stubbed too. Neither would raise --
+    # both swallow a failed request -- so unstubbed they turned a self-test
+    # into something that quietly needs the network to be fast.
     _real_ps, _real_ab, _real_pf = (_api.pitcher_season,
                                     batters_mod.all_batters, park_factors)
+    _real_bvp, _real_rec = _api.attach_bvp, batters_mod.attach_recent
     try:
+        _api.attach_bvp = lambda rows, season, verbose=True: 0
+        batters_mod.attach_recent = (
+            lambda rows, season, field, verbose=True, budget=0, fetch=None: 0)
         _api.pitcher_season = lambda pid, yr: {"bf": 700, "h": 175, "hr": 20}
         batters_mod.all_batters = lambda yr: {
             7: {"name": "A Batter", "team_id": 119, "h": 150, "pa": 600},
@@ -376,6 +435,7 @@ def _self_test() -> None:
     finally:
         _api.pitcher_season, batters_mod.all_batters = _real_ps, _real_ab
         globals()["park_factors"] = _real_pf
+        _api.attach_bvp, batters_mod.attach_recent = _real_bvp, _real_rec
 
     assert len(rows) == 1, f"the 20-PA bench bat must not be ranked: {rows}"
     r = rows[0]

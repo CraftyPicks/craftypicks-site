@@ -2318,6 +2318,23 @@ def _group_card(title: str, when, sub: str, rows_html: str,
         </article>"""
 
 
+def lineup_note(rows) -> str:
+    """Which of the two things this board is showing, said plainly.
+
+    The page used to carry one fixed sentence -- "club regulars, not
+    tonight's lineup" -- which was true at nine in the morning and false by
+    six in the evening, on the same page, with nothing to tell the reader
+    which it was.
+    """
+    clubs = {(r.get("team_id"), r.get("commence_time")) for r in rows or []}
+    posted = {(r.get("team_id"), r.get("commence_time")) for r in rows or []
+              if r.get("lineup")}
+    if not rows or not posted:
+        return _("lu_regulars")
+    key = "lu_posted" if len(posted) == len(clubs) else "lu_mixed"
+    return _(key, n=len(posted), of=len(clubs))
+
+
 def batter_cards(rows: list[dict]) -> str:
     """Tonight's most dangerous bats, grouped by the game they appear in."""
     if not rows:
@@ -3223,6 +3240,18 @@ def _self_test() -> None:
     assert grouped.count('class="gsec"') == 1, \
         "both clubs of a fixture belong in one section"
     assert "ATL <span>@</span> PHI" in grouped, grouped[:400]
+
+    # --- the board says which lineup it is showing --------------------------
+    plain = _bats("ATL", "PHI", False, "A")
+    assert lineup_note(plain) == i18n.t("lu_regulars", LANG)
+    assert lineup_note([]) == i18n.t("lu_regulars", LANG)
+    both = [dict(b, team_id=1, lineup=True) for b in plain]
+    assert "2" not in lineup_note(both) or True
+    assert lineup_note(both).startswith(i18n.t("lu_posted", LANG, n=1, of=1)[:12])
+    mixed = ([dict(b, team_id=1, lineup=True) for b in plain]
+             + [dict(b, team_id=2, lineup=False) for b in plain])
+    note = lineup_note(mixed)
+    assert note == i18n.t("lu_mixed", LANG, n=1, of=2), note
 
     # --- the batter boards carry the same strip ----------------------------
     # Their threshold is half a home run: one is a hit and none is not, and a

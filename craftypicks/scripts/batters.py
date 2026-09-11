@@ -189,7 +189,8 @@ def park_factors(season: int) -> dict[int, dict]:
     return parse_park(hitting, pitching)
 
 
-def build(starters: list[dict], season: int, verbose: bool = True) -> list[dict]:
+def build(starters: list[dict], season: int, verbose: bool = True,
+          lineups: dict | None = None) -> list[dict]:
     """The best bats in each of tonight's games, with a chance attached.
 
     `starters` is what mlb_api.probable_starters returns, and each row here is
@@ -227,8 +228,14 @@ def build(starters: list[dict], season: int, verbose: bool = True) -> list[dict]
         home_id = s.get("team_id") if s.get("is_home") else opp_id
         park = (parks.get(home_id) or {}).get("factor", 1.0)
 
+        # When the club has posted, the board rates the nine men who are
+        # actually batting. Until then it rates the regulars, which is what
+        # the page's small print has been apologising for since it was built.
+        posted = set((lineups or {}).get(opp_id) or [])
         cand = []
         for pid, b in by_team.get(opp_id, []):
+            if posted and pid not in posted:
+                continue
             gp = games.get(opp_id) or 0
             if not gp:
                 continue
@@ -254,6 +261,11 @@ def build(starters: list[dict], season: int, verbose: bool = True) -> list[dict]
                 "park": park, "park_raw": (parks.get(home_id) or {}).get("raw"),
                 "league_rate": league,
                 "commence_time": s.get("game_time"),
+                # Whether this row is one of tonight's posted nine or one of
+                # the club's regulars. The page says which; without this it
+                # would have to guess, and it would guess wrong on the
+                # evening run for any club that had not posted yet.
+                "lineup": bool(posted),
                 "hr_at_projection": b["hr"], "homered": None,
             })
         cand.sort(key=lambda c: -c["chance"])
@@ -389,6 +401,54 @@ def _self_test() -> None:
     assert parse_recent([{"date": "x", "stat": {"homeRuns": "-"}}],
                         "homeRuns") is None, "unparseable is unknown too"
     assert parse_recent([], "homeRuns") == []
+
+    # --- the posted lineup filters the board --------------------------------
+    # build() is exercised end to end with its two data calls stubbed, so the
+    # filter is tested where it actually lives rather than re-implemented in
+    # the test. The point that matters: a club that has NOT posted keeps its
+    # regulars, so an evening run that finds nothing cannot make the board
+    # worse than the morning's.
+    import mlb_api as _api
+
+    table = {int(f"{i}"): {"name": f"Bat{i}", "team_id": 200,
+                           "pa": 600, "hr": 30 - i, "h": 150}
+             for i in range(1, 7)}
+    starters = [{"pitcher_id": 55, "name": "SP", "team": "OPP",
+                 "team_id": 300, "opponent": "HOME", "opponent_id": 200,
+                 "is_home": False, "hand": "R",
+                 "game_time": "2026-09-11T23:05:00Z"}]
+    saved = (all_batters, park_factors, _api.pitcher_season,
+             _api.attach_bvp, attach_recent)
+    try:
+        globals()["all_batters"] = lambda season: table
+        globals()["park_factors"] = lambda season: {
+            200: {"factor": 1.0, "raw": 1.0, "home_games": 81},
+            300: {"factor": 1.0, "raw": 1.0, "home_games": 81}}
+        _api.pitcher_season = lambda pid, season: {"bf": 700, "hr": 20,
+                                                   "h": 150}
+        _api.attach_bvp = lambda rows, season, verbose=True: 0
+        globals()["attach_recent"] = (
+            lambda rows, season, field, verbose=True, budget=0, fetch=None: 0)
+
+        free = build(starters, 2026, verbose=False)
+        assert free and all(r["lineup"] is False for r in free), free[:1]
+        names_free = {r["name"] for r in free}
+
+        picked = build(starters, 2026, verbose=False, lineups={200: [5, 6]})
+        assert {r["name"] for r in picked} == {"Bat5", "Bat6"}, picked
+        assert all(r["lineup"] is True for r in picked)
+        assert names_free != {"Bat5", "Bat6"}, \
+            "the stub has to actually change the board, or this proves nothing"
+
+        # A club that has not posted is untouched -- same rows as the free run.
+        other = build(starters, 2026, verbose=False, lineups={999: [1, 2]})
+        assert {r["name"] for r in other} == names_free
+        assert all(r["lineup"] is False for r in other)
+    finally:
+        (globals()["all_batters"], globals()["park_factors"],
+         _api.pitcher_season, _api.attach_bvp,
+         globals()["attach_recent"]) = saved
+
 
     # One request per hitter however many cards he appears on, and the cap
     # is a cap.

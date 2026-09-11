@@ -560,6 +560,12 @@ def build() -> None:
             "{{HIT_CARDS}}": R.hit_cards(hit_doc.get("batters", [])),
             "{{HIT_CALIBRATION}}": R.hit_calibration(
                 hit_doc.get("summary", {})),
+            # One per board, because the two can disagree: a club can have
+            # posted for the early game and not for the late one, and the
+            # home-run board and the hits board cover different clubs.
+            "{{BAT_LINEUP_NOTE}}": R.lineup_note(
+                batter_doc.get("batters", [])),
+            "{{HIT_LINEUP_NOTE}}": R.lineup_note(hit_doc.get("batters", [])),
             "{{HIT_COUNT}}": L("hit_count", n=len(hit_doc.get("batters", [])),
                               s=pl(len(hit_doc.get("batters", [])))),
             "{{HR_DATE}}": doc_date_label(homer_doc, lang) or L("not_rated"),

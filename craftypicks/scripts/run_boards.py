@@ -37,6 +37,7 @@ ROOT = HERE.parent
 DATA = ROOT / "data"
 
 import config              # noqa: E402
+import lineups as lineups_mod  # noqa: E402
 import screen_config       # noqa: E402
 import mlb_api             # noqa: E402
 import homers as homers_mod    # noqa: E402
@@ -101,6 +102,21 @@ def main() -> int:
 
     starters = mlb_api.probable_starters(now.strftime("%m/%d/%Y"))
     print(f"-- schedule: {len(starters)} probable starter(s) listed")
+
+    # Posted batting orders, if there are any yet. One free request. In the
+    # morning this comes back empty and the batter boards rate club regulars
+    # exactly as they always have; run again after lineups post and the same
+    # code rates the nine men actually in them.
+    #
+    # Not gated on the clock. Whether a lineup exists is a fact about the
+    # payload, and asking the payload is more reliable than asking the hour --
+    # a 1pm game has posted by 11am and a west-coast night game has not
+    # posted by six.
+    try:
+        posted = lineups_mod.fetch(now.strftime("%m/%d/%Y"))
+    except Exception as e:                                   # noqa: BLE001
+        print(f"!! lineups: {type(e).__name__}: {e}", file=sys.stderr)
+        posted = {}
     if not starters:
         # Not an error. MLB posts probables through the morning, and on an
         # off day there are none at all. Leaving yesterday's boards up would
@@ -129,7 +145,7 @@ def main() -> int:
                   f"graded before their game had started", file=sys.stderr)
         table = batters_mod.all_batters(season)
         settled = batters_mod.grade(history, table)
-        rows = batters_mod.build(starters, season)
+        rows = batters_mod.build(starters, season, lineups=posted)
 
         added = projection.merge(history, rows, ("batter_id", "commence_time"))
         summary = batters_mod.summary(history)
@@ -200,7 +216,7 @@ def main() -> int:
             print(f"!! hit_ratings: reset {hit_repaired} verdict(s) that were "
                   f"graded before their game had started", file=sys.stderr)
         hit_settled = hits_mod.grade(hit_hist, table)
-        hit_rows = hits_mod.build(starters, season)
+        hit_rows = hits_mod.build(starters, season, lineups=posted)
         hit_added = projection.merge(hit_hist, hit_rows,
                                      ("batter_id", "commence_time"))
         hit_summary = hits_mod.summary(hit_hist)
