@@ -47,6 +47,36 @@ def _won(game: dict, team: str) -> bool | None:
     return None
 
 
+# Every league that uses this store -- NFL, NBA, college basketball -- opens
+# its season somewhere between August and November, so the first of July is
+# the one date that separates "this season" from "last" for all three. MLB
+# does not come through here; its records come from StatsAPI's standings.
+SEASON_START_MONTH = 7
+
+
+def since_season_start(games, today: str = "") -> list[dict]:
+    """Only this season's games, for a record that means what it says.
+
+    The store deliberately holds several seasons: an Elo rating needs the
+    history, and so does a head-to-head between clubs that meet once a year.
+    A club's RECORD does not. Handed the lot, form_store.table() answered
+    "25-9" for a team that is 1-0, on a card whose label says Record -- a
+    true number to a question nobody asked.
+    """
+    from datetime import date
+
+    if today:
+        try:
+            now = date.fromisoformat(today[:10])
+        except ValueError:
+            now = date.today()
+    else:
+        now = date.today()
+    start_year = now.year if now.month >= SEASON_START_MONTH else now.year - 1
+    cutoff = f"{start_year:04d}-{SEASON_START_MONTH:02d}-01"
+    return [g for g in (games or []) if (g.get("date") or "") >= cutoff]
+
+
 def table(games) -> dict[str, dict]:
     """Club name -> record, streak and last ten.
 
@@ -104,6 +134,37 @@ def series(games, a: str, b: str) -> list[dict]:
 
 
 def _self_test() -> None:
+
+    # --- this season only, for the record ----------------------------------
+    seasons = [{"date": "2024-12-15", "home": "A", "away": "B",
+                "home_score": 1, "away_score": 0, "completed": True},
+               {"date": "2025-11-02", "home": "A", "away": "B",
+                "home_score": 1, "away_score": 0, "completed": True},
+               {"date": "2026-09-10", "home": "A", "away": "B",
+                "home_score": 1, "away_score": 0, "completed": True}]
+    # Mid-season: everything back to the July before. It is a cutoff, not a
+    # window -- there is nothing after today in a store of finished games.
+    assert [g["date"] for g in since_season_start(seasons, "2026-09-11")] \
+        == ["2026-09-10"]
+    assert [g["date"] for g in since_season_start(seasons, "2025-12-25")] \
+        == ["2025-11-02", "2026-09-10"]
+    # Before July, the season that began in the PREVIOUS calendar year is
+    # still the current one -- a January playoff game belongs to it, and the
+    # autumn before it is the same season, not the last one.
+    winter = [{"date": "2024-12-15", "home": "A", "away": "B",
+               "home_score": 1, "away_score": 0, "completed": True},
+              {"date": "2025-11-02", "home": "A", "away": "B",
+               "home_score": 1, "away_score": 0, "completed": True},
+              {"date": "2026-01-10", "home": "A", "away": "B",
+               "home_score": 2, "away_score": 1, "completed": True}]
+    assert [g["date"] for g in since_season_start(winter, "2026-02-01")] \
+        == ["2025-11-02", "2026-01-10"]
+    assert since_season_start([], "2026-09-11") == []
+    assert since_season_start(seasons, "not a date"), "a bad date is not fatal"
+
+    # The point of the whole thing: one season in, not three.
+    assert table(since_season_start(seasons, "2026-09-11"))["A"]["w"] == 1
+    assert table(seasons)["A"]["w"] == 3
     games = [
         {"date": "2026-09-06", "away": "Chicago Bears", "away_score": 10,
          "home": "Green Bay Packers", "home_score": 24, "completed": True},

@@ -96,9 +96,11 @@ from odds_client import BudgetExhausted, OddsAPIError, OddsClient  # noqa: E402
 try:
     import results         # noqa: E402
     import results_store   # noqa: E402
+    import form_store      # noqa: E402
 except Exception as _rs_err:                                 # noqa: BLE001
     results = None
     results_store = None
+    form_store = None
     print(f"!! results store unavailable ({_rs_err})", file=sys.stderr)
 
 
@@ -698,7 +700,27 @@ def main() -> int:
                 # MLB fills these from StatsAPI in slate.py. Every other
                 # league has no free source, so it uses the same stored
                 # finals the Elo model just read.
-                f = board_mod.merge_form(rows, stored)
+                # The Elo above reads the whole store, because a rating
+                # wants every game it can get. The RECORD does not: handed
+                # three seasons it answered "25-9" for a club that is 1-0,
+                # under a label saying Record. Head-to-head keeps the long
+                # view -- two clubs that meet once a year have no season
+                # series worth the name.
+                season = form_store.since_season_start(stored, today)
+                f = board_mod.merge_form(rows, season)
+                # setdefault, not get: merge_form skips a row entirely when
+                # a club has not played yet, so in the opening weeks there
+                # is no detail block to hang this on -- and the head-to-head
+                # is exactly what the board has to show in those weeks.
+                h2h = 0
+                for board_row in rows:
+                    met = form_store.series(stored, board_row.get("home"),
+                                            board_row.get("away"))
+                    if met:
+                        board_row.setdefault("detail", {})["series"] = met
+                        h2h += 1
+                print(f"-- h2h: {h2h} {short} card(s) carry previous "
+                      f"meetings")
                 print(f"-- form: {f} {short} card(s) carry a streak and a "
                       f"season series")
             except Exception as e:                           # noqa: BLE001

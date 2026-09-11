@@ -46,6 +46,8 @@ import hits as hits_mod        # noqa: E402
 import pitchers as pitch_mod   # noqa: E402
 import projection              # noqa: E402
 import results_store           # noqa: E402
+import nfl_data               # noqa: E402
+import nfl_history            # noqa: E402
 import nfl_yards                # noqa: E402
 import nfl_td                   # noqa: E402
 
@@ -239,6 +241,27 @@ def main() -> int:
     # Guarded as a whole: the NFL feed is a third party, and a bad day
     # there must not cost the MLB boards their run.
     try:
+        # Seed the NFL results store from nflverse before anything else uses
+        # it. The board's records, head-to-head and rating all read this
+        # file, and it held one game -- the season is two days old. The same
+        # games.csv the yardage boards already download has every completed
+        # game in it, so the board can carry a real record on day three
+        # instead of in November.
+        try:
+            sched = nfl_data.fetch_csv(
+                nfl_data.asset_urls().get("games.csv") or "") or []
+            # collapse_adjacent, because nflverse dates a Thursday night
+            # kickoff by local gameday and our own results feed by UTC, so
+            # the same game arrives a day apart. Safe here and nowhere else:
+            # an NFL club cannot play twice in two days.
+            gained = results_store.seed("nfl", nfl_history.finals(sched),
+                                        collapse_adjacent=True)
+            if gained:
+                print(f"-- results: nfl store gained {gained} completed "
+                      f"game(s) from nflverse")
+        except Exception as e:                               # noqa: BLE001
+            print(f"!! nfl history: {type(e).__name__}: {e}", file=sys.stderr)
+
         nfl_weekly = nfl_yards.season_weekly(NFL_SEASON)
         for name, cat in (("nfl_passing", "passing"),
                           ("nfl_rushing", "rushing"),

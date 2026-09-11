@@ -67,7 +67,42 @@ def _key(row: dict) -> tuple:
     return (row.get("date"), row.get("home"), row.get("away"))
 
 
-def merge(existing: list[dict], fresh: list[dict]) -> list[dict]:
+def _day_apart(a: str, b: str) -> int | None:
+    """Whole days between two ISO dates, or None if either will not parse."""
+    from datetime import date
+
+    try:
+        return abs((date.fromisoformat(a[:10]) - date.fromisoformat(b[:10])).days)
+    except (TypeError, ValueError):
+        return None
+
+
+def _twin(row: dict, rows) -> dict | None:
+    """An existing row that is the same game under a different date.
+
+    Two sources dated the New England game at Seattle differently -- nflverse
+    wrote 2026-09-09, our own results feed 2026-09-10 -- because a Thursday
+    night kickoff is the next day in UTC. Keyed on the date, they became two
+    games, and Seattle's record read 2-0 off a season one game old.
+
+    The test is deliberately narrow: same clubs, same way round, the SAME
+    SCORE, within a day. A club does not play the same opponent twice in two
+    days and lose 13-10 both times. An MLB doubleheader has one date and two
+    different scores, so it is untouched by this.
+    """
+    for other in rows:
+        if (other.get("home") == row.get("home")
+                and other.get("away") == row.get("away")
+                and other.get("home_score") == row.get("home_score")
+                and other.get("away_score") == row.get("away_score")):
+            gap = _day_apart(other.get("date") or "", row.get("date") or "")
+            if gap is not None and 0 < gap <= 1:
+                return other
+    return None
+
+
+def merge(existing: list[dict], fresh: list[dict],
+          collapse_adjacent: bool = False) -> list[dict]:
     """Existing results plus new ones, deduplicated and sorted by date.
 
     A row already present is replaced by the fresh copy, so a score corrected
@@ -86,6 +121,18 @@ def merge(existing: list[dict], fresh: list[dict]) -> list[dict]:
         if row.get("home_score") is None or row.get("away_score") is None:
             continue
         if not row.get("home") or not row.get("away") or not row.get("date"):
+            continue
+        # Same game under a different date? Keep the one already stored --
+        # our own feed's convention is the one every other row in the file
+        # uses, and a store that mixes two date conventions cannot be
+        # deduplicated at all later.
+        #
+        # Off by default, and it has to be: in baseball a club plays the same
+        # opponent on consecutive days, and winning 5-3 on Monday and 5-3 on
+        # Tuesday is two games, not one row written twice. board.py's own
+        # fixture is exactly that shape and caught this. Only the caller
+        # knows whether its league can play twice in two days.
+        if collapse_adjacent and _twin(row, out.values()) is not None:
             continue
         out[_key(row)] = row
     return sorted(out.values(), key=lambda r: (r["date"], r["home"]))
@@ -117,6 +164,27 @@ def _write_atomic(path: pathlib.Path, text: str) -> None:
     except BaseException:
         tmp.unlink(missing_ok=True)
         raise
+
+
+def seed(league: str, fresh: list[dict],
+         collapse_adjacent: bool = False) -> int:
+    """Add a batch of already-fetched finals to a league's store.
+
+    append_day() exists for the one-day-at-a-time case and owns its own
+    fetching. This is for a source that hands over a season at once --
+    nflverse's games.csv, which the yardage boards already download -- where
+    there is nothing to fetch and nothing to rate-limit.
+
+    Same merge, same atomic write, same envelope, so the two cannot drift
+    into writing the file differently. Returns rows gained.
+    """
+    existing = load(league)
+    merged = merge(existing, fresh or [], collapse_adjacent=collapse_adjacent)
+    gained = len(merged) - len(existing)
+    if gained or merged != existing:
+        _write_atomic(path_for(league),
+                      json.dumps({"league": league, "games": merged}, indent=1))
+    return gained
 
 
 def append_day(league: str, date_str: str, fetch=results.finals) -> int:
@@ -176,6 +244,61 @@ def _self_test() -> None:
     # A row missing a score is dropped rather than stored as zero.
     assert merge([], [{"date": "2026-09-01", "home": "G", "away": "H",
                        "completed": True}]) == []
+
+    # --- one game, two sources, two dates -----------------------------------
+    thu = {"home": "Seattle Seahawks", "away": "New England Patriots",
+           "home_score": 13, "away_score": 10, "completed": True,
+           "date": "2026-09-10"}
+    nflverse = dict(thu, date="2026-09-09")
+    once = merge([thu], [nflverse], collapse_adjacent=True)
+    assert len(once) == 1, once
+    assert once[0]["date"] == "2026-09-10", \
+        "the stored date wins; the file must not mix two conventions"
+    # ... and it stays one however many times it is seeded.
+    assert len(merge(once, [nflverse, nflverse], collapse_adjacent=True)) == 1
+    # Off by default, because baseball plays the same club on consecutive
+    # days and can win 5-3 twice running. That is two games.
+    assert len(merge([thu], [nflverse])) == 2, \
+        "collapsing adjacent dates is opt-in, per league"
+
+    # A different score is a different game, even on an adjacent date.
+    assert len(merge([thu], [dict(nflverse, home_score=21)])) == 2
+    # Two days apart is two games, not a rounding of one.
+    assert len(merge([thu], [dict(thu, date="2026-09-12")])) == 2
+    # Reversed home and away is the return fixture, not a duplicate.
+    assert len(merge([thu], [dict(nflverse, home=thu["away"],
+                                  away=thu["home"])], collapse_adjacent=True)) == 2
+    # An MLB doubleheader -- one date, two scores -- is untouched by any of
+    # this, and its two games have always collided on the date key anyway.
+    dh = {"home": "H", "away": "A", "home_score": 3, "away_score": 1,
+          "completed": True, "date": "2026-07-04"}
+    assert len(merge([dh], [dict(dh, home_score=5)],
+                     collapse_adjacent=True)) == 1, \
+        "same date and clubs has always been one key; unchanged here"
+    # The shape that caught this: a baseball series, consecutive days, the
+    # same score twice. Two games, and the default must keep them.
+    series_ = [{"home": "H", "away": "A", "home_score": 5, "away_score": 3,
+                "completed": True, "date": f"2026-07-0{d}"} for d in (4, 5)]
+    assert len(merge([], series_)) == 2, "a series is not a duplicate"
+
+    # seed() writes the same envelope append_day() does. Written because the
+    # first version of the nflverse seeding wrote a bare list, which load()
+    # then read as {} -> [] and the store silently emptied itself.
+    import tempfile as _tf
+    with _tf.TemporaryDirectory() as _d:
+        _real = globals()["DATA"]
+        try:
+            globals()["DATA"] = pathlib.Path(_d)
+            batch = [{"home": "H", "away": "A", "home_score": 3,
+                      "away_score": 1, "completed": True,
+                      "date": "2026-09-10"}]
+            assert seed("nfl", batch) == 1
+            assert load("nfl") == batch, load("nfl")
+            assert seed("nfl", batch) == 0, "seeding twice adds nothing"
+            doc = json.loads(path_for("nfl").read_text())
+            assert doc["league"] == "nfl" and isinstance(doc["games"], list)
+        finally:
+            globals()["DATA"] = _real
 
     # The store stays sorted by date, so a reader can trust the order and
     # ratings.run gets its input in the order it expects.
