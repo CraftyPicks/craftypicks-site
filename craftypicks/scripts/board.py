@@ -315,6 +315,12 @@ DETAIL_KEYS = (
     "home_starter_wl", "away_starter_wl",
     "home_hand", "away_hand",
     "home_vs_opp", "away_vs_opp",
+    # slate.py has written these since the starter adjustment was added, and
+    # render has had a table to draw them in for as long -- but they were not
+    # on this list, so merge_model never copied them onto a board row and the
+    # comparison has never once appeared on the site. Everything else in the
+    # chain was already built.
+    "home_sp", "away_sp",
 )
 
 
@@ -766,7 +772,11 @@ def _self_test() -> None:
          "home_starter": "Hunter Greene", "home_starter_era": 3.11,
          "home_hand": "R", "away_starter": "Yu Darvish",
          "away_starter_era": 4.02, "away_hand": "R",
-         "home_vs_opp": None, "away_vs_opp": None},
+         "home_vs_opp": None, "away_vs_opp": None,
+         "home_sp": {"w": 11, "l": 6, "era": 3.11, "whip": 1.09,
+                     "innings": 168.0, "h": 140, "k": 190, "bb": 44, "hr": 18},
+         "away_sp": {"w": 7, "l": 9, "era": 4.02, "whip": 1.24,
+                     "innings": 151.0, "h": 148, "k": 141, "bb": 43, "hr": 21}},
         # A rated game that is not on the board at all — a postponement, or a
         # game the pricing dropped for want of books. It must be ignored, not
         # appended: the board is the list of games we can price.
@@ -787,6 +797,12 @@ def _self_test() -> None:
     d = board_rows[0]["detail"]
     assert d["home_starter"] == "Hunter Greene"
     assert d["home_record"] == {"w": 70, "l": 60}
+    # The starters' season lines have to survive the merge. slate.py wrote
+    # them, render has a table for them, and for months DETAIL_KEYS did not
+    # name them -- so the comparison silently did not exist.
+    assert d["home_sp"]["era"] == 3.11 and d["away_sp"]["k"] == 141, d
+    assert set(d["home_sp"]) == {"w", "l", "era", "whip", "innings",
+                                 "h", "k", "bb", "hr"}
     assert "home_win_prob" not in d, \
         "the general numbers live in model; detail is the sport-specific extra"
 

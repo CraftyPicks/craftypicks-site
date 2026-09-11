@@ -1782,6 +1782,10 @@ def _h2h_block(row: dict, detail: dict) -> str:
 # direction is better. W-L carries no direction on purpose: a starter's
 # record is mostly a report on the lineup behind him, which is already why
 # it sits out of the projection.
+# What the two starters are compared on. The season block first, then the
+# strikeout numbers this site actually models -- which used to sit under the
+# table as a stacked list per pitcher, where comparing them meant reading two
+# paragraphs and doing the subtraction yourself.
 SP_ROWS = (
     ("sp_wl",   "wl",      None),
     ("sp_era",  "era",     "low"),
@@ -1791,6 +1795,17 @@ SP_ROWS = (
     ("sp_k",    "k",       "high"),
     ("sp_bb",   "bb",      "low"),
     ("sp_hr",   "hr",      "low"),
+)
+
+# The prop half. "better" means "lit", not "superior": a higher projected
+# strikeout count is not a better pitcher, it is the number this board is
+# about, and lighting the larger one is what makes the pair scannable. The
+# posted line is lit on neither side -- it is the market's number, not a
+# contest between the two men.
+SP_PROP_ROWS = (
+    ("sp_projk", "projection",     "high"),
+    ("sp_line",  "line",           None),
+    ("sp_oppk",  "opp_k_per_game", "high"),
 )
 
 
@@ -1809,7 +1824,28 @@ def _sp_cell(sp: dict, key: str) -> str:
     return f"{int(v)}"
 
 
-def _sp_table(row: dict, detail: dict) -> str:
+# TEAM_ABBR is written the way a US broadcast writes a club; the pitcher
+# board carries whatever StatsAPI calls it. They agree on 29 of 30 clubs and
+# disagree on Arizona -- ARI against AZ -- which would have dropped both
+# starters from every Diamondbacks card, silently, and only on that one
+# fixture. Found by comparing the two sets rather than by waiting for it.
+SP_ALIAS = {"ARI": "AZ"}
+
+
+def _club_key(abbr: str) -> str:
+    return SP_ALIAS.get(abbr, abbr)
+
+
+def _sp_prop_cell(p: dict, key: str) -> str:
+    v = p.get(key)
+    if v is None:
+        return "&mdash;"
+    if key == "line":
+        return f"{v:g}"
+    return f"{v:.1f}"
+
+
+def _sp_table(row: dict, detail: dict, props=None) -> str:
     """Two starters, the label down the middle.
 
     The centre column is what makes it readable. Two stat blocks side by
@@ -1818,8 +1854,31 @@ def _sp_table(row: dict, detail: dict) -> str:
     comparison draws it the same way.
     """
     away, home = detail.get("away_sp") or {}, detail.get("home_sp") or {}
-    if not any(v is not None for v in away.values()) and \
-       not any(v is not None for v in home.values()):
+    # Which prop row belongs to which side, by club. The pitcher board writes
+    # StatsAPI's abbreviation ("ATL"); the odds feed writes the full club
+    # name. _abbr already reconciles the two for the card's own headings.
+    a_prop = h_prop = {}
+    rest = []
+    for p in props or []:
+        team = p.get("team")
+        if team and team == _club_key(_abbr(row.get("away"))):
+            a_prop = p
+        elif team and team == _club_key(_abbr(row.get("home"))):
+            h_prop = p
+        else:
+            rest.append(p)
+    # A club neither abbreviation recognises still lands on the right side
+    # when the other one is already placed: a game has exactly two starters,
+    # so the remaining slot is not a guess. With both unmatched they are left
+    # out rather than assigned by order.
+    if len(rest) == 1 and bool(a_prop) != bool(h_prop):
+        if a_prop:
+            h_prop = rest[0]
+        else:
+            a_prop = rest[0]
+    has_season = any(v is not None for v in away.values()) or \
+        any(v is not None for v in home.values())
+    if not has_season and not (a_prop or h_prop):
         return ""
     body = []
     for label, key, better in SP_ROWS:
@@ -1832,6 +1891,42 @@ def _sp_table(row: dict, detail: dict) -> str:
         body.append(f'<tr><td class="spv {acls}">{a}</td>'
                     f'<th>{_(label)}</th>'
                     f'<td class="spv {hcls}">{h}</td></tr>')
+
+    if a_prop or h_prop:
+        body.append(f'<tr class="sep"><td colspan="3">{_("sp_tonight")}</td></tr>')
+        for label, key, better in SP_PROP_ROWS:
+            av, hv = a_prop.get(key), h_prop.get(key)
+            acls = hcls = ""
+            if better and av is not None and hv is not None and av != hv:
+                acls, hcls = ("on", "") if av > hv else ("", "on")
+            body.append(
+                f'<tr><td class="spv {acls}">{_sp_prop_cell(a_prop, key)}</td>'
+                f'<th>{_(label)}</th>'
+                f'<td class="spv {hcls}">{_sp_prop_cell(h_prop, key)}</td></tr>')
+        # The verdict, in its own colour rather than lit like a number: it is
+        # a judgement about the opponent, and both starters can have a good
+        # one on the same night.
+        av, hv = a_prop.get("matchup"), h_prop.get("matchup")
+        if av in MXB_LABEL or hv in MXB_LABEL:
+            body.append(
+                f'<tr><td class="spv {MX_CLASS.get(av, "")}">'
+                f'{_(MXB_LABEL[av]) if av in MXB_LABEL else "&mdash;"}</td>'
+                f'<th>{_("sp_matchup")}</th>'
+                f'<td class="spv {MX_CLASS.get(hv, "")}">'
+                f'{_(MXB_LABEL[hv]) if hv in MXB_LABEL else "&mdash;"}</td></tr>')
+        prices = []
+        for p in (a_prop, h_prop):
+            bits = []
+            if p.get("over_odds") is not None:
+                bits.append("o" + om.format_american(p["over_odds"]))
+            if p.get("under_odds") is not None:
+                bits.append("u" + om.format_american(p["under_odds"]))
+            prices.append(esc(" / ".join(bits)) if bits else "&mdash;")
+        if prices != ["&mdash;", "&mdash;"]:
+            body.append(f'<tr><td class="spv sm">{prices[0]}</td>'
+                        f'<th>{_("pnl_prices")}</th>'
+                        f'<td class="spv sm">{prices[1]}</td></tr>')
+
     return (f'<table class="sptbl">'
             f'<tr class="hd"><td>{esc(_abbr(row.get("away")))}</td>'
             f'<th></th><td>{esc(_abbr(row.get("home")))}</td></tr>'
@@ -1858,7 +1953,7 @@ def _starters_block(row: dict, detail: dict) -> str:
         head = esc(name) + (f" &middot; {era:.2f} ERA" if era else "")
         out.append(f'<div class="pst"><div class="pst-n">{head}</div>'
                    f'<div class="pst-v">{line}</div></div>')
-    table = _sp_table(row, detail)
+    table = _sp_table(row, detail, _PROPS.get(row.get("event_id") or ""))
     if not out and not table:
         return ""
     return (f'<section class="pk"><h4>{_("sp_head")}</h4>'
@@ -1913,50 +2008,6 @@ def _lineups_block(row: dict, detail: dict) -> str:
     return "".join(out)
 
 
-def _props_block(row: dict) -> str:
-    """The strikeout props for this game, joined to it by event id.
-
-    The props already exist on their own page. Repeating them here is the
-    point: a reader looking at the game should not have to go and find them.
-    """
-    props = _PROPS.get(row.get("event_id") or "") or []
-    if not props:
-        return ""
-    out = []
-    for p in props:
-        gap = p.get("gap") or 0.0
-        # Reuses the pitcher board's own three words rather than inventing a
-        # fourth vocabulary for the same judgement.
-        if abs(gap) < 0.4:
-            lean, lean_cls = _("in_line"), ""
-        elif gap > 0:
-            lean, lean_cls = _("over_the_line", v=f"{abs(gap):.1f}"), "good"
-        else:
-            lean, lean_cls = _("under_the_line", v=f"{abs(gap):.1f}"), "bad"
-        prices = []
-        if p.get("over_odds") is not None:
-            prices.append("o" + om.format_american(p["over_odds"]))
-        if p.get("under_odds") is not None:
-            prices.append("u" + om.format_american(p["under_odds"]))
-        # esc() escapes '&', so the em-dash entity is substituted after
-        # escaping rather than passed through it.
-        price_txt = esc(" / ".join(prices)) if prices else "&mdash;"
-        verdict = p.get("matchup") or "neutral"
-        line = _("pnl_prop_line",
-                 ours=f'{p.get("projection") or 0:.1f}',
-                 line=f'{p.get("line") or 0:g}',
-                 prices=price_txt)
-        out.append(
-            f'<div class="ppr"><div class="ppr-top">'
-            f'<span class="ppr-n">{esc(p.get("name", ""))}</span>'
-            f'<span class="ppr-v {MX_CLASS[verdict]}">'
-            f'{_(MX_LABEL[verdict])}</span></div>'
-            f'<div class="ppr-line">{line} &middot; '
-            f'<span class="{lean_cls}">{lean}</span></div></div>')
-    return (f'<section class="pk"><h4>{_("pnl_props")}</h4>'
-            + "".join(out) + "</section>")
-
-
 def _detail_panel(row: dict) -> str:
     """Everything behind the card's disclosure.
 
@@ -1968,7 +2019,11 @@ def _detail_panel(row: dict) -> str:
     detail = row.get("detail") or {}
     form = _form_block(row, detail)
     starters = _starters_block(row, detail)
-    props = _props_block(row)
+    # _props_block is gone: it listed the two starters' strikeout numbers one
+    # under the other, so comparing them meant reading two paragraphs and
+    # doing the subtraction. The same numbers are now rows of the starters'
+    # comparison table, which is what a reader was doing with them anyway.
+    props = ""
     # The head-to-head block is the only one that speaks when it has nothing
     # ("they have not met yet this season"), which is worth saying on a card
     # that has other material and is just noise on a card that has none. So it
@@ -2909,11 +2964,14 @@ def _self_test() -> None:
                         "strikeouts": 5, "span": "2025-2026"},
     }
     set_props([
-        {"event_id": "evt1", "name": "Matthew Boyd", "line": 4.5,
-         "projection": 4.2, "gap": -0.3, "over_odds": 112, "under_odds": -120,
-         "matchup": "tough"},
-        {"event_id": "other", "name": "Nobody At All", "line": 1.5,
-         "projection": 1.5, "gap": 0.0, "matchup": "neutral"},
+        {"event_id": "evt1", "name": "Matthew Boyd", "team": "MIL",
+         "line": 4.5, "projection": 4.2, "gap": -0.3, "over_odds": 112,
+         "under_odds": -120, "matchup": "tough", "opp_k_per_game": 7.4},
+        {"event_id": "evt1", "name": "Robert Gasser", "team": "CLE",
+         "line": 5.5, "projection": 6.3, "gap": 0.8, "over_odds": -105,
+         "under_odds": -115, "matchup": "favourable", "opp_k_per_game": 9.1},
+        {"event_id": "other", "name": "Nobody At All", "team": "SEA",
+         "line": 1.5, "projection": 1.5, "gap": 0.0, "matchup": "neutral"},
     ])
     panel = _detail_panel(row)
     assert "Last 10" in panel, panel
@@ -2924,7 +2982,26 @@ def _self_test() -> None:
     assert "has not faced" in panel
     # Props join by event id, and only this game's appear.
     assert "Nobody At All" not in panel, panel
-    assert "tough matchup" in panel
+    # The two starters' strikeout numbers are ROWS of the comparison, not two
+    # stacked paragraphs -- the whole point is that the pair can be read
+    # against each other without doing the subtraction in your head.
+    assert i18n.t("sp_tonight", LANG) in panel, panel
+    assert "4.2" in panel and "6.3" in panel, "both projections"
+    assert i18n.t("mxb_tough", LANG) in panel
+    assert i18n.t("mxb_favourable", LANG) in panel
+    assert "o+112" in panel and "u\u2212115" in panel, "both starters' prices"
+    # Arizona is the club where TEAM_ABBR and StatsAPI disagree (ARI / AZ).
+    az_row = dict(row, event_id="az1", home="Arizona Diamondbacks",
+                  away="Colorado Rockies")
+    set_props([
+        {"event_id": "az1", "name": "A Snake", "team": "AZ", "line": 5.5,
+         "projection": 6.1, "gap": 0.6, "matchup": "favourable"},
+        {"event_id": "az1", "name": "A Rockie", "team": "COL", "line": 3.5,
+         "projection": 3.2, "gap": -0.3, "matchup": "tough"},
+    ])
+    az = _detail_panel(az_row)
+    assert "6.1" in az and "3.2" in az, \
+        "ARI/AZ is an alias, not a missing club"
     assert "[[" not in panel, panel
 
     # A card whose rating never merged has no detail, and must still render.

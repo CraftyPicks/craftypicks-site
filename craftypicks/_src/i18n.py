@@ -954,6 +954,13 @@ T = {
     # allows caps for -- two or three characters each.
     "hr_last":      {"en": "L{n}", "es": "U{n}"},
     "hr_market":    {"en": "market", "es": "mercado"},
+
+    # Rows of the two-starter comparison on an MLB game card.
+    "sp_tonight":   {"en": "Tonight's strikeouts", "es": "Ponches de hoy"},
+    "sp_projk":     {"en": "Our projection", "es": "Nuestra proyección"},
+    "sp_line":      {"en": "Posted line", "es": "Línea publicada"},
+    "sp_oppk":      {"en": "Opp K/game", "es": "Ponches/juego rival"},
+    "sp_matchup":   {"en": "Matchup", "es": "Duelo"},
     "pl_all":       {"en": "All {n}", "es": "Todos ({n})"},
     "pl_edgesonly": {"en": "Edges only", "es": "Solo ventajas"},
     "pb_flag":      {"en": "Check", "es": "Revisar"},

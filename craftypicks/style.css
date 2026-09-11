@@ -900,8 +900,21 @@ footer{background:var(--bg-2);padding:56px 0 40px}
   text-transform:uppercase;color:var(--muted);font-weight:400;
   text-align:center;width:34%}
 .sptbl .spv{font-family:var(--sans);color:var(--sub);width:33%}
+/* The rule between the season block and tonight's numbers. Without it the
+   table reads as one twelve-row list and the reader has no idea which half
+   is a career and which is a prediction about tonight. */
+.sptbl tr.sep>td{padding:13px 0 5px;text-align:center;font-family:var(--mono);
+  font-size:9px;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--green);border-top:1px solid var(--line)}
+.sptbl .spv.sm{font-size:11.5px;color:var(--muted)}
+.sptbl .spv.good{color:var(--green)}
+.sptbl .spv.bad{color:var(--amber)}
 .sptbl tr td:first-child{text-align:left}
 .sptbl tr td:last-child{text-align:right}
+/* After the two alignment rules above, not before: the separator spans all
+   three columns and belongs to neither side, and :last-child was winning on
+   specificity and pushing it to the right edge. */
+.sptbl tr.sep>td{text-align:center}
 .sptbl .spv.on{color:var(--green);font-weight:700}
 .sptbl tr.hd td{font-size:12px;font-weight:700;letter-spacing:.01em;
   color:var(--txt);font-family:var(--sans)}
