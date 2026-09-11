@@ -182,25 +182,78 @@ def archive_board(sport: str, day: str, games: list[dict]) -> None:
     print(f"   archived {len(games)} {sport} boards")
 
 
+def _rebuild_pages() -> None:
+    """Regenerate the static site from whatever is on disk right now.
+
+    Section 5 does this at the end of a full run. The early return after the
+    guard needs it too: a prop graded a moment ago has to reach the track
+    record page today rather than waiting for tomorrow's card.
+    """
+    sys.path.insert(0, str(ROOT / "_src"))
+    import build  # noqa: PLC0415
+    build.build()
+
+
 def main() -> int:
     now = local_now()
     today = now.date().isoformat()
     print(f"== Craftypicks daily run — {now:%Y-%m-%d %H:%M %Z}")
 
+    history = load_json(DATA / "history.json", {"plays": []})["plays"]
+
+    # ------------------------------------------------- 0. the free upkeep
+    # Everything here costs nothing -- local file work and StatsAPI -- and is
+    # idempotent, so it runs on EVERY invocation, before the guard below.
+    #
+    # It used to sit after the guard, which was the wrong boundary: the guard
+    # exists to stop a retry buying a second set of odds, and it was also
+    # stopping the parts that keep the public record honest. The effect was
+    # that grading happened at most once a day, in whichever run posted the
+    # card -- so on 2026-09-11, when GitHub dropped all three morning
+    # attempts, nine settled props stayed pending, two duplicate plays stayed
+    # in the log and eleven stray files stayed at the repo root, and the
+    # 14:21 retry the day before had reported "nothing to do" while all of
+    # that was outstanding.
+    try:
+        tidy.run(DATA.parent.parent, DATA)
+    except Exception as e:                                   # noqa: BLE001
+        print(f"!! tidy failed: {e}", file=sys.stderr)
+
+    dropped = play_log.dedupe(history)
+    if dropped:
+        print(f"-- log: dropped {dropped} duplicate posting(s) of a play "
+              f"already in the log")
+
+    free_graded = 0
+    try:
+        import screen_config as _season_cfg
+        free_graded = prop_grader.grade_pending(history, _season_cfg.SEASON)
+    except Exception as e:                                   # noqa: BLE001
+        print(f"!! prop grading failed: {e}", file=sys.stderr)
+
+    if dropped or free_graded:
+        save_json(DATA / "history.json", {"plays": history})
+
     # Already posted today? Then this is a retry of a scheduled run that
     # already succeeded, and it must not spend a second set of credits.
     # GitHub's scheduler is unreliable enough that the workflow fires several
     # times in the 9 AM hour; this is what makes that safe.
+    #
+    # Note what is above this line and what is below it: free work runs
+    # always, paid work runs once.
     posted = load_json(DATA / "plays.json", {})
     forced = os.environ.get("CRAFTYPICKS_FORCE", "").strip() == "1"
     if (posted.get("date") == today and not forced
             and os.environ.get("CRAFTYPICKS_MOCK", "").strip() != "1"):
         print(f"-- already posted a card for {today} at "
-              f"{posted.get('generated_at', 'an earlier run')}; nothing to do.")
+              f"{posted.get('generated_at', 'an earlier run')}; "
+              f"no odds will be bought.")
         print("   (set CRAFTYPICKS_FORCE=1 to re-run anyway)")
+        # The pages still get rebuilt: a prop graded a moment ago has to
+        # reach the track record today, not tomorrow morning.
+        if dropped or free_graded:
+            _rebuild_pages()
         return 0
-
-    history = load_json(DATA / "history.json", {"plays": []})["plays"]
 
     try:
         client = OddsClient()
@@ -210,28 +263,7 @@ def main() -> int:
     if client.mock:
         print("-- MOCK MODE: synthetic odds, no credits spent")
 
-    # Downloads committed to the repository root by mistake. Half a megabyte
-    # of them had accumulated -- four copies of a saved page, two odds
-    # payloads, and root-level duplicates of five files whose real home is
-    # data/. They are served as live URLs, and a three-week-old plays.json one
-    # path away from the real one is worse than clutter.
-    try:
-        tidy.run(DATA.parent.parent, DATA)
-    except Exception as e:                                   # noqa: BLE001
-        print(f"!! tidy failed: {e}", file=sys.stderr)
-
     # ------------------------------------------------------------- 1. grade
-    # Before grading, not after. Two NFL plays are in the log twice because
-    # the old posting rule only looked at this morning's ids; both copies are
-    # still ungraded, and dedupe deliberately refuses to touch a graded play.
-    # Left until after grading, both copies would settle and the record would
-    # count one bet twice -- permanently, and with no way to tell which entry
-    # was the real one.
-    dropped = play_log.dedupe(history)
-    if dropped:
-        print(f"-- log: dropped {dropped} duplicate posting(s) of a play "
-              f"already in the log")
-
     sports_to_grade = grader.pending_sports(history)
     scores_by_sport: dict[str, dict] = {}
     for sport in sorted(sports_to_grade):
@@ -243,18 +275,9 @@ def main() -> int:
         except OddsAPIError as e:
             print(f"!! scores for {sport} failed: {e}", file=sys.stderr)
     graded = grader.grade_pending(history, scores_by_sport)
-    # Player props are settled by a box score, not by two team scores, so
-    # grade.py cannot reach them: it returned None for every prop market and
-    # the play stayed pending forever. Since 25 August every play posted has
-    # been a strikeout prop, which meant the public log had quietly stopped
-    # recording. This runs on the free StatsAPI game log -- no credits -- and
-    # is deliberately outside the odds-client try above, so a scores failure
-    # or an exhausted budget does not also stop props being graded.
-    try:
-        import screen_config as _season_cfg
-        graded += prop_grader.grade_pending(history, _season_cfg.SEASON)
-    except Exception as e:                                   # noqa: BLE001
-        print(f"!! prop grading failed: {e}", file=sys.stderr)
+    # Props were graded in section 0, before the guard, because that costs
+    # nothing. This line only carries the count into the same summary.
+    graded += free_graded
     print(f"-- graded {graded} play(s); {sum(1 for p in history if not p.get('result'))} still pending")
 
     # -------------------------------------------------------------- 2. odds
@@ -713,9 +736,7 @@ def main() -> int:
                       f"the allowance runs out in {left // max(1, used)} day(s).")
 
     # ------------------------------------------------------------- 5. build
-    sys.path.insert(0, str(ROOT / "_src"))
-    import build  # noqa: E402
-    build.build()
+    _rebuild_pages()
     return 0
 
 
