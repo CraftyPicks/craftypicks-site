@@ -10,6 +10,7 @@ with no build step at serve time.
 """
 from __future__ import annotations
 
+import hashlib
 import json
 import sys
 from collections import defaultdict, namedtuple
@@ -28,6 +29,9 @@ import render as R  # noqa: E402
 import i18n         # noqa: E402
 
 CSS = (SRC / "base.css").read_text(encoding="utf-8")
+# Content hash, so a changed stylesheet is fetched and an unchanged one
+# is not. Short on purpose: this is a cache key, not a checksum.
+CSS_VERSION = hashlib.sha1(CSS.encode("utf-8")).hexdigest()[:8]
 JS = (SRC / "board.js").read_text(encoding="utf-8")
 
 # out    — path relative to the output root; the subdirectory is in here
@@ -243,9 +247,7 @@ HEAD = """<!DOCTYPE html>
 <meta name="theme-color" content="#08090B">
 {hreflang}
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%2308090B'/><path d='M8 20 L14 12 L18 17 L24 9' stroke='%233BE081' stroke-width='2.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>">
-<style>
-{css}
-</style>
+<link rel="stylesheet" href="{up}style.css?v={cssv}">
 </head>
 <body>
 <header class="nav">
@@ -600,6 +602,21 @@ def build() -> None:
 
     written: set = set()
 
+    # One stylesheet, linked, instead of the same 68 KB inlined into 44 pages.
+    # 53% of the site's HTML was one file copied over and over, and inline CSS
+    # cannot be cached -- a reader moving Board -> Pitchers -> Hits downloaded
+    # it again every time. Linked, it is fetched once and the rest of the
+    # session is a cache hit.
+    #
+    # url() inside a LINKED stylesheet resolves against the stylesheet, not
+    # the document, so the {{UP}} prefix the inline version needed is now
+    # simply empty: style.css and fonts/ are siblings at the site root, at
+    # every page depth. The version query busts the cache when it changes.
+    css_out = ROOT / "style.css"
+    css_out.write_text(CSS.replace("{{UP}}", ""), encoding="utf-8")
+    written.add(css_out.resolve())
+    print(f"built style.css  ({len(CSS) // 1024} KB, v{CSS_VERSION})")
+
     for lang in i18n.LANGS:
         R.set_lang(lang)
         # The board's cards carry each game's strikeout props. render holds
@@ -676,14 +693,8 @@ def build() -> None:
             for token, value in page_tokens.items():
                 body = body.replace(token, str(value))
 
-            # The stylesheet is inlined into pages at two depths, and a
-            # relative url() inside an inlined <style> resolves against the
-            # DOCUMENT, not the stylesheet. Every other link on the site is
-            # relative (there is no CNAME and no fixed root), so the font
-            # URLs have to be too -- and that means substituting the same
-            # `up` prefix the nav uses.
             head = HEAD.format(
-                title=title, css=CSS.replace("{{UP}}", up), links=links, site=config.SITE_NAME,
+                title=title, cssv=CSS_VERSION, links=links, site=config.SITE_NAME,
                 lang=lang, desc=META_DESC[lang].format(site=config.SITE_NAME),
                 hreflang=hreflang, up=up, views=views,
                 views_empty=("" if views else " is-empty"),

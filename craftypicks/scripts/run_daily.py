@@ -33,6 +33,7 @@ import find_plays          # noqa: E402
 import grade as grader     # noqa: E402
 import grade_props as prop_grader  # noqa: E402
 import play_log           # noqa: E402
+import tidy               # noqa: E402
 import stats as statsmod   # noqa: E402
 
 # Props are an optional extra. If props.py is missing or won't import, the
@@ -208,6 +209,16 @@ def main() -> int:
         return 1
     if client.mock:
         print("-- MOCK MODE: synthetic odds, no credits spent")
+
+    # Downloads committed to the repository root by mistake. Half a megabyte
+    # of them had accumulated -- four copies of a saved page, two odds
+    # payloads, and root-level duplicates of five files whose real home is
+    # data/. They are served as live URLs, and a three-week-old plays.json one
+    # path away from the real one is worse than clutter.
+    try:
+        tidy.run(DATA.parent.parent, DATA)
+    except Exception as e:                                   # noqa: BLE001
+        print(f"!! tidy failed: {e}", file=sys.stderr)
 
     # ------------------------------------------------------------- 1. grade
     # Before grading, not after. Two NFL plays are in the log twice because
@@ -452,8 +463,13 @@ def main() -> int:
             # graded plays. `ratings` is taken by the slate block further down.
             # Every list in this function gets its own name from now on.
             pitch_ratings = load_json(DATA / "pitcher_ratings.json", {"pitchers": []})["pitchers"]
+            # The MLB board rows go in so every starter gets his fixture,
+            # not just the ones a prop was bought on. Without this an
+            # unpriced starter carried event_id None and the game board
+            # could not find him.
             todays = pitch_mod.build(prop_events, now.strftime("%m/%d/%Y"),
-                                     _scfg.SEASON)
+                                     _scfg.SEASON,
+                                     board_rows=boards.get("mlb"))
             known = {(r.get("pitcher_id"), r.get("date")) for r in pitch_ratings}
             for row in todays:
                 if (row.get("pitcher_id"), row.get("date")) not in known:

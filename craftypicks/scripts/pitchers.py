@@ -159,8 +159,30 @@ def roster_panel(pitcher_id: int, opponent_team_id: int, season: int) -> dict | 
     }
 
 
+def event_index(board_rows, team_ids: dict) -> dict:
+    """{StatsAPI team id: (event_id, commence_time)} for one day's board.
+
+    Clubs are joined by StatsAPI id, not by name. The odds feed writes
+    "Atlanta Braves", StatsAPI's probable-starter payload writes "ATL", and
+    guessing between the two is how a board silently drops a club.
+    `mlb_api.team_index` already normalises the feed's names to ids for the
+    game board; this reuses it rather than inventing a second mapping.
+    """
+    out: dict = {}
+    for row in board_rows or []:
+        eid = row.get("event_id")
+        if not eid:
+            continue
+        for club in (row.get("home"), row.get("away")):
+            tid = team_ids.get(str(club or "").strip().lower())
+            if tid:
+                out[tid] = (eid, row.get("commence_time"))
+    return out
+
+
 def build(prop_events: list[dict], date_str: str, season: int,
-          verbose: bool = True) -> list[dict]:
+          verbose: bool = True, board_rows=None,
+          team_ids: dict | None = None) -> list[dict]:
     """One rated row per probable starter, priced or not.
 
     The projection has always been free -- K/9, the opponent's strikeout
@@ -229,9 +251,23 @@ def build(prop_events: list[dict], date_str: str, season: int,
         except Exception:                                    # noqa: BLE001
             continue
 
+    # The fixture every starter belongs to, whether or not anyone priced him.
+    # `event` below is the PROP event, which exists only on mornings props
+    # were bought -- so event.get("id") was None for an unpriced starter, and
+    # anything joining the game board to its two starters by event_id lost
+    # him. The board knows the fixture from the schedule regardless.
+    if board_rows is not None and team_ids is None:
+        try:
+            team_ids = mlb_api.team_index(season)
+        except Exception:                                    # noqa: BLE001
+            team_ids = {}
+    fixtures = event_index(board_rows, team_ids or {})
+
     rows = []
     for player, starter in by_name.items():
         quote, event = quotes.get(player, (None, {}))
+        fixture_id, fixture_time = fixtures.get(starter.get("team_id"),
+                                                (None, None))
         pid = starter["pitcher_id"]
         season_stats = mlb_api.pitcher_season(pid, season)
         opp_rate = opp_rates.get(starter["opponent_id"])
@@ -260,8 +296,8 @@ def build(prop_events: list[dict], date_str: str, season: int,
             "team": starter["team"],
             "opponent": starter["opponent"],
             "opponent_id": starter["opponent_id"],
-            "event_id": event.get("id"),
-            "commence_time": (event.get("commence_time")
+            "event_id": event.get("id") or fixture_id,
+            "commence_time": (event.get("commence_time") or fixture_time
                               or starter.get("game_time")),
             "date": date_str,
             "line": line,
@@ -422,6 +458,27 @@ def _self_test() -> None:
     away decided whether a free projection got published. Nothing in this
     file noticed, because nothing in this file was ever run.
     """
+
+    # --- every starter gets his fixture, priced or not ----------------------
+    # An unpriced starter used to carry event_id None, because the only place
+    # build() learned an event was a price quote. Anything joining the game
+    # board to its two starters then lost him -- silently, and only on the
+    # games where no prop was sold, which is most of them.
+    ids = {"atlanta braves": 144, "tampa bay rays": 139}
+    board = [{"event_id": "evt1", "home": "Atlanta Braves",
+              "away": "Tampa Bay Rays",
+              "commence_time": "2026-09-10T16:15:00Z"}]
+    idx = event_index(board, ids)
+    assert idx[144] == ("evt1", "2026-09-10T16:15:00Z")
+    assert idx[139] == ("evt1", "2026-09-10T16:15:00Z")
+    # A club the feed names differently than StatsAPI is left out rather than
+    # matched to whoever else is playing.
+    assert event_index(board, {"atlanta braves": 144})[144][0] == "evt1"
+    assert 139 not in event_index(board, {"atlanta braves": 144})
+    # A row with no event id contributes nothing.
+    assert event_index([{"home": "Atlanta Braves", "away": "Tampa Bay Rays"}],
+                       ids) == {}
+    assert event_index(None, ids) == {} and event_index([], {}) == {}
     import types
 
     log = [{"date": "2026-09-08", "strikeouts": 7, "innings": 6.0},

@@ -1038,14 +1038,19 @@ def pitcher_cards(rows: list[dict]) -> str:
         # A settled row is grey whatever it once said -- it is a result now,
         # not a call, and leaving it green would put six loud rows on a
         # board whose live section is the part anyone can act on.
+        # Prefixed, every one of them. "up" on its own is a utility class in
+        # base.css -- mono, 11px, letterspaced caps -- so `class="pl up"` set
+        # the whole positive-edge row in uppercase mono. It shipped invisible
+        # because the board that morning was entirely settled rows, and would
+        # have appeared the first time a priced edge did.
         if settled:
-            tone = "done"
+            tone = "pl-done"
         elif edge is None:
-            tone = "none"
+            tone = "pl-none"
         elif edge > 0:
-            tone = "up"
+            tone = "pl-up"
         else:
-            tone = "down"
+            tone = "pl-down"
 
         fill = max(0.0, min(100.0, proj / axis * 100))
         tick = (max(0.0, min(100.0, line / axis * 100))
@@ -2936,6 +2941,34 @@ def _self_test() -> None:
     assert 'data-filter="edges"' in board, "two live edges earns the chip"
     assert 'data-filter="edges"' not in pitcher_cards([free_sp]), \
         "a board with no edges must not offer a filter that empties it"
+
+    # --- modifier classes must not collide with base.css's utilities --------
+    # `class="pl up"` set every positive-edge row in letterspaced uppercase
+    # mono, because base.css styles a bare `.up` as a label utility. It
+    # shipped unseen: that morning's board was entirely settled rows, so the
+    # one tone that collides never rendered.
+    #
+    # This reads the stylesheet rather than checking a list, so a utility
+    # added later is covered without anyone remembering to come back here. A
+    # modifier namespaced under its own component -- "pl pl-done" -- is the
+    # intended pattern and is not a collision.
+    import re as _re
+    css = (Path(__file__).resolve().parent / "base.css").read_text()
+    bare = {m.group(1) for m in _re.finditer(r"(?m)^\.([a-z][a-z0-9-]*)\{", css)}
+    sample = [dict(free_sp, name="Up", line=5.0, gap=1.8, reference=5.0),
+              dict(free_sp, name="Down", line=8.0, gap=-1.6, reference=8.0),
+              dict(free_sp, name="Flat", line=6.4, gap=0.0, reference=6.4),
+              dict(free_sp, name="Done", line=5.0, gap=1.4, reference=5.0,
+                   actual=7)]
+    for attr in _re.findall(r'class="([^"]+)"', pitcher_cards(sample)):
+        tokens = attr.split()
+        for extra in tokens[1:]:
+            if extra.startswith(tokens[0] + "-"):
+                continue                      # namespaced under its component
+            assert extra not in bare, (
+                f'class="{attr}" -- {extra!r} is styled bare in base.css and '
+                f"will restyle the whole element. Prefix the modifier.")
+
     # The axis is a floor, not a fixed nine: a projection above it would be
     # drawn pegged at 100% and read as the same call as a nine.
     tall = pitcher_cards([dict(free_sp, name="Tall", projection=11.4)])
