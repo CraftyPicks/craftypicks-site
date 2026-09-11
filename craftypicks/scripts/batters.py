@@ -265,7 +265,86 @@ def build(starters: list[dict], season: int, verbose: bool = True) -> list[dict]
               f"{league * 100:.2f}% HR per PA")
     # After the cut, so this costs one free request per PRINTED row.
     mlb_api.attach_bvp(rows, season, verbose=verbose)
+    attach_recent(rows, season, "homeRuns", verbose=verbose)
     return rows
+
+
+# How many games the strip on a card looks back over, and the ceiling on how
+# many hitters one run will fetch a log for. StatsAPI is free but it is not
+# ours, and a board that quietly grew to two hundred requests a morning would
+# be a thing we discovered from a rate limit rather than from a decision.
+RECENT_GAMES = 10
+LOG_BUDGET = 70
+
+
+def parse_recent(splits, field: str, limit: int = RECENT_GAMES):
+    """[{date, value}] oldest first, or None when the field is not there.
+
+    None rather than zeros, deliberately. If StatsAPI renames the field or
+    hands back a different stat object, a list of zeros would render as a
+    hitter who has not managed one all month -- a plausible-looking lie on
+    every card. None is unmistakable and the caller says so out loud.
+    """
+    rows = []
+    for sp in (splits or [])[-limit:]:
+        stat = sp.get("stat") or {}
+        if field not in stat:
+            return None
+        try:
+            rows.append({"date": str(sp.get("date") or ""),
+                         "value": float(stat[field] or 0)})
+        except (TypeError, ValueError):
+            return None
+    return rows
+
+
+def attach_recent(rows: list[dict], season: int, field: str,
+                  verbose: bool = True, budget: int = LOG_BUDGET,
+                  fetch=None) -> int:
+    """Hang each card's last ten games on it. One request per hitter.
+
+    Called after the board has been cut to the players it will actually
+    show, not before: the candidate list is every qualified bat on the club
+    and fetching a log for all of them would be twenty times the requests for
+    the same three cards.
+    """
+    fetch = fetch or mlb_api.batter_game_log
+    logs: dict = {}
+    fetched = 0
+    missing = 0
+    for row in rows:
+        pid = row.get("batter_id")
+        if not pid:
+            continue
+        if pid not in logs:
+            if fetched >= budget:
+                continue
+            fetched += 1
+            try:
+                logs[pid] = fetch(pid, season)
+            except Exception as e:                           # noqa: BLE001
+                if verbose:
+                    print(f"!! batters: game log for {pid} failed "
+                          f"({type(e).__name__}: {e})")
+                logs[pid] = []
+        recent = parse_recent(logs[pid], field)
+        if recent is None:
+            missing += 1
+            continue
+        # No games is not a strip. A hitter called up yesterday, or one whose
+        # log did not come back, gets no strip rather than an empty frame
+        # that reads as a player who has done nothing.
+        if not recent:
+            continue
+        row["recent"] = recent
+    if verbose:
+        print(f"-- batters: {fetched} game log(s) fetched for {field}")
+        if missing:
+            # Loud on purpose. This is the shape of the failure that would
+            # otherwise look like a cold streak.
+            print(f"!! batters: {missing} row(s) had no {field!r} in the game "
+                  f"log -- the field may have been renamed; strips omitted")
+    return fetched
 
 
 def grade(history: list[dict], table: dict[int, dict]) -> int:
@@ -292,6 +371,59 @@ def summary(history: list[dict]) -> dict:
 
 
 def _self_test() -> None:
+
+    # --- the game-log strip -------------------------------------------------
+    log = [{"date": f"2026-09-{d:02d}", "stat": {"homeRuns": hr, "hits": h}}
+           for d, hr, h in ((1, 0, 1), (2, 1, 2), (3, 0, 0), (4, 0, 1),
+                            (5, 2, 3), (6, 0, 0), (7, 1, 1), (8, 0, 2),
+                            (9, 0, 0), (10, 0, 1), (11, 1, 1))]
+    hrs = parse_recent(log, "homeRuns")
+    assert len(hrs) == RECENT_GAMES, "the strip looks back ten games, not all"
+    assert hrs[-1]["value"] == 1.0 and hrs[-1]["date"] == "2026-09-11", \
+        "oldest first, so the last entry is the most recent game"
+    assert parse_recent(log, "hits")[-1]["value"] == 1.0
+
+    # A renamed or absent field must not read as a month without a home run.
+    assert parse_recent(log, "triples") is None, \
+        "a missing field is unknown, not zero"
+    assert parse_recent([{"date": "x", "stat": {"homeRuns": "-"}}],
+                        "homeRuns") is None, "unparseable is unknown too"
+    assert parse_recent([], "homeRuns") == []
+
+    # One request per hitter however many cards he appears on, and the cap
+    # is a cap.
+    calls = []
+
+    def fake(pid, season):
+        calls.append(pid)
+        return log
+
+    cards = [{"batter_id": 1}, {"batter_id": 1}, {"batter_id": 2},
+             {"batter_id": 3}]
+    attach_recent(cards, 2026, "homeRuns", verbose=False, fetch=fake)
+    assert calls == [1, 2, 3], calls
+    assert all("recent" in c for c in cards)
+    assert cards[0]["recent"] == cards[1]["recent"]
+
+    calls.clear()
+    capped = [{"batter_id": i} for i in range(10)]
+    attach_recent(capped, 2026, "homeRuns", verbose=False, budget=4, fetch=fake)
+    assert len(calls) == 4, calls
+    assert sum(1 for c in capped if "recent" in c) == 4, \
+        "past the cap a card simply has no strip -- it does not get a wrong one"
+
+    # A row with no batter id is skipped rather than fetched for None.
+    calls.clear()
+    attach_recent([{"name": "?"}], 2026, "homeRuns", verbose=False, fetch=fake)
+    assert calls == []
+
+    # A fetch that raises costs that hitter his strip and nothing else.
+    def boom(pid, season):
+        raise RuntimeError("502")
+
+    hurt = [{"batter_id": 9}]
+    attach_recent(hurt, 2026, "homeRuns", verbose=False, fetch=boom)
+    assert "recent" not in hurt[0]
     payload = {"stats": [{"splits": [
         {"player": {"id": 1, "fullName": "Big Bat"}, "team": {"id": 113},
          "stat": {"homeRuns": 40, "plateAppearances": 600, "hits": 150}},

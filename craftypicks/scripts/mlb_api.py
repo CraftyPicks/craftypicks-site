@@ -485,6 +485,24 @@ def season_game_log(pitcher_id: int, season: int) -> list:
     return rows
 
 
+def batter_game_log(batter_id: int, season: int) -> list:
+    """Every game this hitter has played this season, oldest first.
+
+    The pitching twin of this call has been in use since the strikeout strip
+    was built; this is the same endpoint with group="hitting", which is the
+    only thing that changes which stat object comes back. Cached per
+    batter-season by _get, so a hitter who appears on both the home-run board
+    and the hits board costs one request, not two.
+    """
+    data = _get(f"/people/{batter_id}/stats", stats="gameLog",
+                group="hitting", season=season, sportId=1)
+    rows = []
+    for block in (data or {}).get("stats") or []:
+        rows.extend(block.get("splits") or [])
+    rows.sort(key=lambda sp: str(sp.get("date") or ""))
+    return rows
+
+
 def _from_game_log(pitcher_id: int, opponent_team_id: int,
                    seasons: list[int]) -> dict | None:
     """Rebuild the same line by filtering this pitcher's appearances.

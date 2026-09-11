@@ -1038,6 +1038,11 @@ def hit_strip(recent, threshold, *, key, odds=None, priced=True,
     bar, or our projection printed in the rail beside it, and a third copy of
     a figure already twice on screen is clutter, not context.
     """
+    # No games, no strip. A row of em-dashes looks like a player who has
+    # done nothing rather than one we have no log for, and that is the same
+    # lie the strip exists to avoid telling.
+    if not recent:
+        return ""
     cells = []
     for n in spans:
         pct, over, of = hit_rate(recent, threshold, n, key)
@@ -2337,6 +2342,7 @@ def batter_cards(rows: list[dict]) -> str:
                 hr=b.get('hr', 0), pa=f"{b.get('pa', 0):,}",
                 rate=f"{b.get('hr_rate', 0) * 100:.1f}")}</div>
             {_bvp_line(b)}
+            {hit_strip(b.get("recent"), 0.5, key="value", priced=False)}
           </div>""" for b in group)
         out.append((group[0], _group_card(
             club, when,
@@ -2407,6 +2413,7 @@ def hit_cards(rows: list[dict]) -> str:
                 h=b.get('h', 0), pa=f"{b.get('pa', 0):,}",
                 rate=f"{b.get('hit_rate', 0) * 100:.1f}")}</div>
             {_bvp_line(b)}
+            {hit_strip(b.get("recent"), 0.5, key="value", priced=False)}
           </div>""" for b in group)
         accent = team_color(group[0].get('team')) or 'var(--line-2)'
         out.append((group[0], _group_card(
@@ -3160,6 +3167,8 @@ def _self_test() -> None:
     assert "0.5" not in td_, td_
     assert "67%" in td_ and "(2/3)" in td_, td_
 
+    assert hit_strip([], 5.5, key="k") == "", "no log, no strip"
+    assert hit_strip(None, 5.5, key="k") == ""
     assert implied_prob(-110) is not None and implied_prob(None) is None
     assert abs(implied_prob(100) - 0.5) < 1e-9
 
@@ -3214,6 +3223,21 @@ def _self_test() -> None:
     assert grouped.count('class="gsec"') == 1, \
         "both clubs of a fixture belong in one section"
     assert "ATL <span>@</span> PHI" in grouped, grouped[:400]
+
+    # --- the batter boards carry the same strip ----------------------------
+    # Their threshold is half a home run: one is a hit and none is not, and a
+    # two-homer game is not twice as much of a hit. Same rule as anytime
+    # touchdowns, for the same reason.
+    logged = [dict(b, recent=[{"date": f"2026-09-{d:02d}", "value": v}
+                              for d, v in enumerate([0, 1, 0, 0, 2, 0, 1, 0,
+                                                     0, 1], start=1)])
+              for b in _bats("ATL", "PHI", False, "A")]
+    strip_html = hit_cards(logged)
+    assert '<div class="hrs">' in strip_html, "the strip reaches the card"
+    assert "40% <u>(4/10)</u>" in strip_html, strip_html[:400]
+    # A hitter with no log gets no strip rather than an empty frame.
+    assert '<div class="hrs">' not in hit_cards(_bats("ATL", "PHI", False, "A"))
+
 
     # A doubleheader is two fixtures, not one: same clubs, different first
     # pitch. slate.py had to learn this the hard way once already.

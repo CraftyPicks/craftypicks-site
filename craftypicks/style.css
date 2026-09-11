@@ -1180,6 +1180,10 @@ footer{background:var(--bg-2);padding:56px 0 40px}
 .bvp{font-family:var(--sans);font-size:11.5px;color:var(--sub);
   letter-spacing:.01em;margin-top:4px;line-height:1.5}
 .bvp.none{color:var(--muted)}
+/* The strip spans both columns: the chance sits in column two across two
+   rows, and a strip confined to column one would be half a card wide and
+   read as belonging to the line above it rather than to the hitter. */
+.bat .hrs{grid-column:1 / -1;margin-top:8px}
 /* The position badge on the NFL yardage/touchdown cards. Named .ppos, not
    .pos -- the bare .pos rule above (monthly chart bars) would otherwise
    apply its height:180px flex-column layout to this inline badge. */

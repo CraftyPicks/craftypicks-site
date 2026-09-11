@@ -256,6 +256,9 @@ def build(starters: list[dict], season: int, verbose: bool = True) -> list[dict]
     rows.sort(key=lambda r: (r.get("commence_time") or "", -r["chance"]))
     # After the cut, so this costs one free request per PRINTED row.
     mlb_api.attach_bvp(rows, season, verbose=verbose)
+    # The same hitters appear on the home-run board, and mlb_api caches by
+    # batter-season, so on a run that builds both boards this is free.
+    batters_mod.attach_recent(rows, season, "hits", verbose=verbose)
     return rows
 
 
