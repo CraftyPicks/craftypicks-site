@@ -984,6 +984,75 @@ def board_head_meta(date_label: str, rows: list[dict]) -> str:
     return " &middot; ".join(parts)
 
 
+# ---------------------------------------------------------- the hit strip
+# Seven steps, black at exactly 50%. The midpoint is deliberately colourless:
+# a coin flip is not a signal, and tinting it would put a colour on every row
+# whether or not there is anything to see. Taken from Outlier's prop grid,
+# recoloured to this site's own green and red.
+HIT_BANDS = ((0.80, "h3"), (0.66, "h2"), (0.5001, "h1"), (0.4999, "mid"),
+             (0.30, "l1"), (0.15, "l2"), (0.0, "l3"))
+
+
+def hit_band(pct: float | None) -> str:
+    if pct is None:
+        return "na"
+    for floor, name in HIT_BANDS:
+        if pct >= floor:
+            return name
+    return "l3"
+
+
+def hit_rate(recent: list[dict], threshold: float | None, n: int,
+             key: str) -> tuple[float | None, int, int]:
+    """How often the last `n` games cleared `threshold`. (pct, cleared, of)."""
+    if threshold is None:
+        return None, 0, 0
+    got = [g for g in (recent or [])[-n:] if g.get(key) is not None]
+    if not got:
+        return None, 0, 0
+    over = sum(1 for g in got if float(g[key]) > float(threshold))
+    return over / len(got), over, len(got)
+
+
+def implied_prob(odds) -> float | None:
+    """The market's own number, before anyone's model touches it."""
+    if odds is None:
+        return None
+    o = float(odds)
+    return (-o) / (-o + 100) if o < 0 else 100 / (o + 100)
+
+
+def hit_strip(recent, threshold, *, key, odds=None, priced=True,
+              spans=(5, 10)) -> str:
+    """L5 / L10 against the line, then what the market says about it.
+
+    The raw fraction is printed beside the percentage on purpose. "100%" off
+    three starts and "100%" off ten are the same number and nothing like the
+    same claim, and a board that shows only the percentage invites the reader
+    to treat them alike.
+
+    The last cell is the market's own implied probability, and it appears
+    only where a price exists -- which is the comparison this whole site is
+    about. There is deliberately no cell naming the number the percentages
+    were measured against: that number is the posted line printed under the
+    bar, or our projection printed in the rail beside it, and a third copy of
+    a figure already twice on screen is clutter, not context.
+    """
+    cells = []
+    for n in spans:
+        pct, over, of = hit_rate(recent, threshold, n, key)
+        body = (f'{pct * 100:.0f}% <u>({over}/{of})</u>' if pct is not None
+                else "&mdash;")
+        cells.append(f'<span class="hr {hit_band(pct)}">'
+                     f'<i>{_("hr_last", n=n)}</i>{body}</span>')
+    prob = implied_prob(odds) if priced else None
+    if prob is not None:
+        cells.append(f'<span class="hr mkt"><i>{_("hr_market")}</i>'
+                     f'{prob * 100:.0f}%</span>')
+
+    return f'<div class="hrs">{"".join(cells)}</div>' if cells else ""
+
+
 def pitcher_head(rows: list[dict]) -> dict:
     """The three counts the board's header prints, as a dict of strings."""
     games = {_pl_fixture(r) for r in rows}
@@ -1058,6 +1127,12 @@ def pitcher_cards(rows: list[dict]) -> str:
         tick_html = (f'<i class="pl-tick" style="left:{tick:.1f}%"></i>'
                      if tick is not None else "")
 
+        # The verdict moves onto the row. It was behind the disclosure, which
+        # meant checking ten starters cost ten taps to read one word each.
+        verdict = r.get("matchup")
+        mx = (f'<i class="mxb {MX_CLASS.get(verdict, "")}">'
+              f'{_(MXB_LABEL[verdict])}</i>' if verdict in MXB_LABEL else "")
+
         if settled:
             went = _("over") if actual > reference else _("under")
             badge_txt = _("final_k", n=actual, side=went)
@@ -1081,6 +1156,8 @@ def pitcher_cards(rows: list[dict]) -> str:
         # already says so, and printing it twice made the row read as
         # though the absence were the finding.
         scale_mid = f'{_("pl_line")} {line:g}' if line is not None else ""
+        strip = hit_strip(r.get("recent"), reference, key="strikeouts",
+                          odds=r.get("over_odds"), priced=line is not None)
 
         away, home = _mlb_sides(r)
         meta = (f'{esc(_nickname(away))} @ {esc(_nickname(home))} '
@@ -1094,12 +1171,13 @@ def pitcher_cards(rows: list[dict]) -> str:
             f' data-close="{_("close")}">'
             f'<summary class="pl-row">'
             f'<div class="pl-main">'
-            f'<div class="pl-name"><span>{esc(r.get("name",""))}</span>{badge}</div>'
-            f'<div class="pl-meta">{meta}</div>'
+            f'<div class="pl-name"><span>{esc(r.get("name",""))}</span>{mx}</div>'
+            f'<div class="pl-meta"><span>{meta}</span>{badge}</div>'
             f'<div class="pl-bar"><i class="pl-fill" style="width:{fill:.1f}%"></i>'
             f'{tick_html}</div>'
             f'<div class="pl-scale"><span>0</span><span>{scale_mid}</span>'
             f'<span>{axis:g}</span></div>'
+            f'{strip}'
             f'</div>'
             f'<div class="pl-edge"><b>{edge_n}</b><span>{edge_lab}</span>'
             f'<em>{proj:.1f}<i>{_("k_unit")}</i></em></div>'
@@ -1565,6 +1643,9 @@ SERIES_SHOWN = 5
 
 MX_LABEL = {"favourable": "mx_favourable", "tough": "mx_tough",
             "neutral": "mx_neutral"}
+# The same three verdicts, in one word, for the badge on a row's face.
+MXB_LABEL = {"favourable": "mxb_favourable", "tough": "mxb_tough",
+             "neutral": "mxb_neutral"}
 MX_CLASS = {"favourable": "good", "tough": "bad", "neutral": ""}
 
 # Tonight's strikeout props, indexed by event id. Module-level for the same
@@ -2406,7 +2487,8 @@ def _nfl_board(rows: list[dict], card) -> str:
 
 def _nfl_card(r: dict, *, big: str, label: str, ref: float, ref_label: str,
               key: str, fmt, unit: str = "", strip_line: float | None = None,
-              rows_html: str = "", bar_pct: float | None = None) -> str:
+              rows_html: str = "", bar_pct: float | None = None,
+              base_fmt=None) -> str:
     """One NFL player, in the pitcher card's shape.
 
     Asked for directly: the NFL boards listed three players under a club
@@ -2444,6 +2526,13 @@ def _nfl_card(r: dict, *, big: str, label: str, ref: float, ref_label: str,
     # posted line to sit against on this board, and scaling it to itself
     # would draw the same bar on every card -- decoration that looks like
     # a measurement. Same rule as the lineless pitcher card.
+    # The same strip the pitcher board carries, on the face. These boards are
+    # never priced, so there is no market cell to put beside it: the third
+    # cell names our own number where that number means something, and is
+    # dropped where it does not.
+    face_strip = hit_strip(recent, strip_line if strip_line is not None else ref,
+                           key=key, priced=False)
+
     bar = ""
     if bar_pct is not None:
         w = max(0.0, min(100.0, bar_pct))
@@ -2463,8 +2552,9 @@ def _nfl_card(r: dict, *, big: str, label: str, ref: float, ref_label: str,
               <span class="cv-pct">{big}{f'<span class="cv-u">{esc(unit)}</span>' if unit else ''}</span>
             </div>
             {bar}
+            {face_strip}
             <div class="cv-foot">
-              <span class="gm">{fmt(r.get('per_game') or 0)} {_("nfl_base")}</span>
+              <span class="gm">{(base_fmt or fmt)(r.get('per_game') or 0)} {_("nfl_base")}</span>
             </div>
             <details class="gmore" data-close="{_("close")}">
               <summary>{_("nfl_detail")}</summary>
@@ -2523,7 +2613,10 @@ def td_cards(rows: list[dict]) -> str:
         return _nfl_card(
             r, big=f"{chance:.1f}%", label=_("nfl_chance"), ref=chance,
             ref_label=_("nfl_scored"), key="value", fmt=td,
-            strip_line=0.5, rows_html=rows_html, bar_pct=chance)
+            strip_line=0.5, rows_html=rows_html, bar_pct=chance,
+            # "0.671 per game" is a float that escaped. The strip's own
+            # ticks stay whole, because those are touchdown counts.
+            base_fmt=lambda v: f"{v:.2f}")
 
     return _nfl_board(rows, card)
 
@@ -2941,6 +3034,57 @@ def _self_test() -> None:
     assert 'data-filter="edges"' in board, "two live edges earns the chip"
     assert 'data-filter="edges"' not in pitcher_cards([free_sp]), \
         "a board with no edges must not offer a filter that empties it"
+
+    # --- the hit strip ------------------------------------------------------
+    # The midpoint is the whole point of the scale: a coin flip must not be
+    # tinted, in either direction, or every row carries a colour and none of
+    # them mean anything.
+    assert hit_band(0.50) == "mid"
+    assert hit_band(0.51) == "h1" and hit_band(0.49) == "l1"
+    assert hit_band(0.85) == "h3" and hit_band(0.05) == "l3"
+    assert hit_band(None) == "na"
+
+    games = [{"k": v} for v in (2, 8, 9, 3, 7, 6, 1, 9, 8, 4)]
+    pct, over, of = hit_rate(games, 5.5, 10, "k")
+    assert (over, of) == (6, 10) and abs(pct - 0.6) < 1e-9
+    # The last five, not the first five: `recent` is oldest-first.
+    pct5, over5, of5 = hit_rate(games, 5.5, 5, "k")
+    assert (over5, of5) == (3, 5), (over5, of5)
+    # Fewer games than the span is not an error, and is not padded out to
+    # look like a full sample.
+    assert hit_rate(games[:3], 5.5, 10, "k")[2] == 3
+    assert hit_rate([], 5.5, 5, "k") == (None, 0, 0)
+    assert hit_rate(games, None, 5, "k") == (None, 0, 0), \
+        "no number to clear is not a 0% hit rate"
+    # Exactly on the number is not over it. A 6-K start does not clear 6.
+    assert hit_rate([{"k": 6}], 6, 1, "k")[1] == 0
+
+    # The raw fraction rides along with the percentage, always.
+    html_ = hit_strip(games, 5.5, key="k", odds=-140)
+    assert "60%" in html_ and "(6/10)" in html_, html_
+    assert "58%" in html_, "a -140 price is a 58% market"     # 140/240
+    assert 'class="hr mkt"' in html_
+    # No price, no market cell -- and no cell restating the threshold, which
+    # is already printed under the bar or in the rail.
+    unpriced = hit_strip(games, 6.4, key="k", odds=None, priced=False)
+    assert i18n.t("hr_market", LANG) not in unpriced, \
+        "there is no market number on a prop nobody priced"
+    assert len(re.findall(r'class="hr [a-z0-9]+"', unpriced)) == 2, unpriced
+    assert "6.4" not in unpriced, "the basis is on the row already"
+    # An odds value with priced=False is still not printed -- the flag is the
+    # authority, so a stale price on an unpriced row cannot leak onto a board.
+    assert i18n.t("hr_market", LANG) not in hit_strip(
+        games, 6.4, key="k", odds=-140, priced=False)
+
+    # An anytime touchdown clears 0.5, which is arithmetic rather than a
+    # number anyone wants on their screen. It is never printed.
+    td_ = hit_strip([{"value": 1}, {"value": 0}, {"value": 1}], 0.5,
+                    key="value", priced=False)
+    assert "0.5" not in td_, td_
+    assert "67%" in td_ and "(2/3)" in td_, td_
+
+    assert implied_prob(-110) is not None and implied_prob(None) is None
+    assert abs(implied_prob(100) - 0.5) < 1e-9
 
     # --- modifier classes must not collide with base.css's utilities --------
     # `class="pl up"` set every positive-edge row in letterspaced uppercase

@@ -474,6 +474,12 @@ T = {
                             "línea <b>{line}</b> &middot; {prices}"},
 
     # ---- the matchup verdict, shared by both panels
+    # Short forms, for the badge on the row's face. The sentence-length
+    # versions above still head the panel, where there is room for them; at
+    # 9.5px beside a name they pushed "Cristian Javier" down to "Cristi...".
+    "mxb_favourable": {"en": "Favourable", "es": "Favorable"},
+    "mxb_tough":      {"en": "Tough", "es": "Difícil"},
+    "mxb_neutral":    {"en": "Ordinary", "es": "Normal"},
     "mx_favourable": {"en": "favourable matchup", "es": "duelo favorable"},
     "mx_tough":      {"en": "tough matchup", "es": "duelo difícil"},
     "mx_neutral":    {"en": "ordinary matchup", "es": "duelo normal"},
@@ -944,6 +950,10 @@ T = {
     "pl_line":      {"en": "line", "es": "línea"},
     "pl_settled":   {"en": "settled", "es": "cerrado"},
     "pl_noline":    {"en": "no line", "es": "sin línea"},
+    # The hit strip. Labels here are the small mono kind the design doc still
+    # allows caps for -- two or three characters each.
+    "hr_last":      {"en": "L{n}", "es": "U{n}"},
+    "hr_market":    {"en": "market", "es": "mercado"},
     "pl_all":       {"en": "All {n}", "es": "Todos ({n})"},
     "pl_edgesonly": {"en": "Edges only", "es": "Solo ventajas"},
     "pb_flag":      {"en": "Check", "es": "Revisar"},

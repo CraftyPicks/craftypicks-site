@@ -1211,8 +1211,11 @@ footer{background:var(--bg-2);padding:56px 0 40px}
 .pl[open]>summary{background:var(--ext-5)}
 .pl-main{min-width:0}
 .pl-name{display:flex;align-items:baseline;gap:8px;min-width:0}
-.pl-name>span{font-weight:600;font-size:16.5px;letter-spacing:-.015em;
-  color:var(--txt);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* The name gets the room first and the badge shrinks, not the other way
+   round. A board of "Cristi..." and "Jar..." is not a board. */
+.pl-name>span{flex:0 1 auto;min-width:0;font-weight:600;font-size:16.5px;
+  letter-spacing:-.015em;color:var(--txt);white-space:nowrap;
+  overflow:hidden;text-overflow:ellipsis}
 .pl-badge{flex:0 0 auto;font-family:var(--mono);font-style:normal;
   font-size:9.5px;letter-spacing:.06em;padding:2px 5px;white-space:nowrap;
   color:var(--green);background:rgba(91,227,156,.13)}
@@ -1220,8 +1223,10 @@ footer{background:var(--bg-2);padding:56px 0 40px}
 .pl-badge.miss{color:var(--sub);background:var(--ext-1)}
 .pl-badge.flag{color:var(--amber);background:rgba(242,178,60,.14)}
 /* A sentence, in the sans, at a size meant to be read. */
-.pl-meta{font-size:12.5px;color:var(--muted);margin-top:3px;
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pl-meta{display:flex;align-items:baseline;gap:7px;font-size:12.5px;
+  color:var(--muted);margin-top:3px;min-width:0}
+.pl-meta>span:first-child{white-space:nowrap;overflow:hidden;
+  text-overflow:ellipsis}
 .pl-bar{position:relative;height:6px;background:var(--ext-4);margin-top:9px}
 .pl-fill{position:absolute;left:0;top:0;bottom:0;background:var(--line-2)}
 .pl-tick{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--txt);
@@ -1286,4 +1291,46 @@ footer{background:var(--bg-2);padding:56px 0 40px}
 .pl-list>.pl:nth-child(n+6){
   content-visibility:auto;
   contain-intrinsic-size:auto none auto 128px;
+}
+
+/* ---------- the hit strip on a prop row ----------
+   How often this player cleared the number, in his last five and last ten,
+   with the market's own implied probability beside it. The whole argument of
+   the site in four cells, so the board can be read without opening a row.
+
+   The tint is the seven-step scale from the design research, recoloured to
+   this site's green and red. 50% is deliberately left uncoloured: a coin
+   flip is not a signal, and a scale that tints the midpoint puts a colour on
+   every row whether or not there is anything to see. */
+.hrs{display:flex;gap:4px;margin-top:9px}
+.hr{flex:1 1 0;min-width:0;text-align:center;padding:5px 2px 6px;
+  font-size:12px;font-weight:600;color:var(--txt);background:var(--ext-4)}
+.hr i{display:block;font-style:normal;font-family:var(--mono);font-size:9px;
+  letter-spacing:.06em;text-transform:uppercase;color:var(--muted);
+  font-weight:400;margin-bottom:2px}
+/* The raw fraction, beside the percentage. Three-for-three and ten-for-ten
+   are both "100%" and are not the same claim. */
+.hr u{text-decoration:none;font-weight:400;color:var(--sub);font-size:10.5px}
+.hr.h3{background:rgba(91,227,156,.34)}
+.hr.h2{background:rgba(91,227,156,.22)}
+.hr.h1{background:rgba(91,227,156,.12)}
+.hr.mid{background:var(--panel-2)}
+.hr.l1{background:rgba(255,107,77,.12)}
+.hr.l2{background:rgba(255,107,77,.22)}
+.hr.l3{background:rgba(255,107,77,.34)}
+.hr.na{background:var(--ext-5);color:var(--muted)}
+/* The market's cell is outlined rather than filled: it is the thing being
+   compared against, not another measurement of ours. */
+.hr.mkt{background:transparent;border:1px solid var(--line-2)}
+
+/* The matchup verdict, on the row's face. */
+.mxb{flex:0 0 auto;font-style:normal;font-family:var(--mono);font-size:9.5px;
+  letter-spacing:.06em;padding:2px 5px;white-space:nowrap;
+  color:var(--sub);background:var(--ext-1)}
+.mxb.good{color:var(--bg);background:var(--green)}
+.mxb.bad{color:var(--amber);background:rgba(242,178,60,.15)}
+@media(max-width:390px){
+  .hrs{gap:3px}
+  .hr{font-size:11.5px;padding:4px 1px 5px}
+  .hr u{font-size:10px}
 }
