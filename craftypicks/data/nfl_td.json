@@ -1,6 +1,6 @@
 {
-  "date": "2026-09-11",
-  "date_label": "Friday, September 11, 2026",
+  "date": "2026-09-12",
+  "date_label": "Saturday, September 12, 2026",
   "rows": [
     {
       "player_id": "00-0039165",
@@ -1083,14 +1083,14 @@
       "scored": null
     },
     {
-      "player_id": "00-0031408",
-      "name": "Mike Evans",
+      "player_id": "00-0037112",
+      "name": "Jake Tonges",
       "team": "SF",
       "opponent": "LA",
-      "position": "WR",
+      "position": "TE",
       "per_game": 0.5,
       "chance": 0.365983804408765,
-      "weight": 0.2,
+      "weight": 0.0,
       "opp_allowed": 2.2,
       "league_allowed": 2.41,
       "week": 1,
@@ -1100,55 +1100,61 @@
         {
           "season": 2025,
           "week": 1,
-          "opponent": "ATL",
-          "value": 0.0
+          "opponent": "SEA",
+          "value": 1.0
         },
         {
           "season": 2025,
           "week": 2,
-          "opponent": "HOU",
+          "opponent": "NO",
           "value": 0.0
         },
         {
           "season": 2025,
           "week": 3,
-          "opponent": "NYJ",
-          "value": 1.0
-        },
-        {
-          "season": 2025,
-          "week": 7,
-          "opponent": "DET",
+          "opponent": "ARI",
           "value": 0.0
         },
         {
           "season": 2025,
-          "week": 15,
-          "opponent": "ATL",
+          "week": 4,
+          "opponent": "JAX",
+          "value": 1.0
+        },
+        {
+          "season": 2025,
+          "week": 5,
+          "opponent": "LA",
+          "value": 1.0
+        },
+        {
+          "season": 2025,
+          "week": 6,
+          "opponent": "TB",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 8,
+          "opponent": "HOU",
+          "value": 1.0
+        },
+        {
+          "season": 2025,
+          "week": 11,
+          "opponent": "ARI",
           "value": 0.0
         },
         {
           "season": 2025,
           "week": 16,
-          "opponent": "CAR",
-          "value": 1.0
+          "opponent": "IND",
+          "value": 0.0
         },
         {
           "season": 2025,
           "week": 17,
-          "opponent": "MIA",
-          "value": 1.0
-        },
-        {
-          "season": 2025,
-          "week": 18,
-          "opponent": "CAR",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 1,
-          "opponent": "LA",
+          "opponent": "CHI",
           "value": 1.0
         }
       ],
@@ -8199,8 +8205,8 @@
       "scored": null
     },
     {
-      "player_id": "00-0039849",
-      "name": "Marvin Harrison Jr.",
+      "player_id": "00-0035500",
+      "name": "Greg Dortch",
       "team": "ARI",
       "opponent": "LAC",
       "position": "WR",
@@ -8223,7 +8229,7 @@
           "season": 2025,
           "week": 4,
           "opponent": "SEA",
-          "value": 1.0
+          "value": 0.0
         },
         {
           "season": 2025,
@@ -8235,7 +8241,7 @@
           "season": 2025,
           "week": 6,
           "opponent": "IND",
-          "value": 0.0
+          "value": 1.0
         },
         {
           "season": 2025,
@@ -8247,7 +8253,7 @@
           "season": 2025,
           "week": 9,
           "opponent": "DAL",
-          "value": 1.0
+          "value": 0.0
         },
         {
           "season": 2025,
@@ -8257,20 +8263,20 @@
         },
         {
           "season": 2025,
+          "week": 11,
+          "opponent": "SF",
+          "value": 1.0
+        },
+        {
+          "season": 2025,
+          "week": 12,
+          "opponent": "JAX",
+          "value": 1.0
+        },
+        {
+          "season": 2025,
           "week": 13,
           "opponent": "TB",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 16,
-          "opponent": "ATL",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 17,
-          "opponent": "CIN",
           "value": 0.0
         }
       ],
@@ -9622,9 +9628,9 @@
     }
   ],
   "summary": {
-    "graded": 11,
-    "expected": 42.0,
-    "actual": 18.2,
+    "graded": 12,
+    "expected": 41.6,
+    "actual": 25.0,
     "buckets": [
       {
         "label": "20-30%",
@@ -9634,9 +9640,9 @@
       },
       {
         "label": "30-45%",
-        "n": 5,
-        "expected": 38.3,
-        "actual": 20.0
+        "n": 6,
+        "expected": 38.0,
+        "actual": 33.3
       },
       {
         "label": "45-100%",
