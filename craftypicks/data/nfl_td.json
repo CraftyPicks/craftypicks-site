@@ -1083,14 +1083,14 @@
       "scored": null
     },
     {
-      "player_id": "00-0037112",
-      "name": "Jake Tonges",
+      "player_id": "00-0031408",
+      "name": "Mike Evans",
       "team": "SF",
       "opponent": "LA",
-      "position": "TE",
+      "position": "WR",
       "per_game": 0.5,
       "chance": 0.365983804408765,
-      "weight": 0.0,
+      "weight": 0.2,
       "opp_allowed": 2.2,
       "league_allowed": 2.41,
       "week": 1,
@@ -1100,61 +1100,55 @@
         {
           "season": 2025,
           "week": 1,
-          "opponent": "SEA",
-          "value": 1.0
+          "opponent": "ATL",
+          "value": 0.0
         },
         {
           "season": 2025,
           "week": 2,
-          "opponent": "NO",
+          "opponent": "HOU",
           "value": 0.0
         },
         {
           "season": 2025,
           "week": 3,
-          "opponent": "ARI",
+          "opponent": "NYJ",
+          "value": 1.0
+        },
+        {
+          "season": 2025,
+          "week": 7,
+          "opponent": "DET",
           "value": 0.0
         },
         {
           "season": 2025,
-          "week": 4,
-          "opponent": "JAX",
-          "value": 1.0
-        },
-        {
-          "season": 2025,
-          "week": 5,
-          "opponent": "LA",
-          "value": 1.0
-        },
-        {
-          "season": 2025,
-          "week": 6,
-          "opponent": "TB",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 8,
-          "opponent": "HOU",
-          "value": 1.0
-        },
-        {
-          "season": 2025,
-          "week": 11,
-          "opponent": "ARI",
+          "week": 15,
+          "opponent": "ATL",
           "value": 0.0
         },
         {
           "season": 2025,
           "week": 16,
-          "opponent": "IND",
-          "value": 0.0
+          "opponent": "CAR",
+          "value": 1.0
         },
         {
           "season": 2025,
           "week": 17,
-          "opponent": "CHI",
+          "opponent": "MIA",
+          "value": 1.0
+        },
+        {
+          "season": 2025,
+          "week": 18,
+          "opponent": "CAR",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 1,
+          "opponent": "LA",
           "value": 1.0
         }
       ],
@@ -2931,84 +2925,6 @@
       "scored": null
     },
     {
-      "player_id": "00-0036139",
-      "name": "Rico Dowdle",
-      "team": "CAR",
-      "opponent": "CHI",
-      "position": "RB",
-      "per_game": 0.412,
-      "chance": 0.3759917076779209,
-      "weight": 0.0,
-      "opp_allowed": 2.76,
-      "league_allowed": 2.41,
-      "week": 1,
-      "game_id": "2026_01_CHI_CAR",
-      "commence_time": "2026-09-13T13:00:00-04:00",
-      "recent": [
-        {
-          "season": 2025,
-          "week": 8,
-          "opponent": "BUF",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 9,
-          "opponent": "GB",
-          "value": 2.0
-        },
-        {
-          "season": 2025,
-          "week": 10,
-          "opponent": "NO",
-          "value": 1.0
-        },
-        {
-          "season": 2025,
-          "week": 11,
-          "opponent": "ATL",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 12,
-          "opponent": "SF",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 13,
-          "opponent": "LA",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 15,
-          "opponent": "NO",
-          "value": 1.0
-        },
-        {
-          "season": 2025,
-          "week": 16,
-          "opponent": "TB",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 17,
-          "opponent": "SEA",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 18,
-          "opponent": "TB",
-          "value": 0.0
-        }
-      ],
-      "scored": null
-    },
-    {
       "player_id": "00-0040124",
       "name": "Tetairoa McMillan",
       "team": "CAR",
@@ -3070,6 +2986,84 @@
           "week": 16,
           "opponent": "TB",
           "value": 1.0
+        },
+        {
+          "season": 2025,
+          "week": 17,
+          "opponent": "SEA",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 18,
+          "opponent": "TB",
+          "value": 0.0
+        }
+      ],
+      "scored": null
+    },
+    {
+      "player_id": "00-0036139",
+      "name": "Rico Dowdle",
+      "team": "CAR",
+      "opponent": "CHI",
+      "position": "RB",
+      "per_game": 0.412,
+      "chance": 0.3759917076779209,
+      "weight": 0.0,
+      "opp_allowed": 2.76,
+      "league_allowed": 2.41,
+      "week": 1,
+      "game_id": "2026_01_CHI_CAR",
+      "commence_time": "2026-09-13T13:00:00-04:00",
+      "recent": [
+        {
+          "season": 2025,
+          "week": 8,
+          "opponent": "BUF",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 9,
+          "opponent": "GB",
+          "value": 2.0
+        },
+        {
+          "season": 2025,
+          "week": 10,
+          "opponent": "NO",
+          "value": 1.0
+        },
+        {
+          "season": 2025,
+          "week": 11,
+          "opponent": "ATL",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 12,
+          "opponent": "SF",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 13,
+          "opponent": "LA",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 15,
+          "opponent": "NO",
+          "value": 1.0
+        },
+        {
+          "season": 2025,
+          "week": 16,
+          "opponent": "TB",
+          "value": 0.0
         },
         {
           "season": 2025,
@@ -4581,84 +4575,6 @@
       "scored": null
     },
     {
-      "player_id": "00-0034753",
-      "name": "Mark Andrews",
-      "team": "BAL",
-      "opponent": "IND",
-      "position": "TE",
-      "per_game": 0.353,
-      "chance": 0.2910839773855275,
-      "weight": 0.0,
-      "opp_allowed": 2.35,
-      "league_allowed": 2.41,
-      "week": 1,
-      "game_id": "2026_01_BAL_IND",
-      "commence_time": "2026-09-13T13:00:00-04:00",
-      "recent": [
-        {
-          "season": 2025,
-          "week": 9,
-          "opponent": "MIA",
-          "value": 2.0
-        },
-        {
-          "season": 2025,
-          "week": 10,
-          "opponent": "MIN",
-          "value": 1.0
-        },
-        {
-          "season": 2025,
-          "week": 11,
-          "opponent": "CLE",
-          "value": 1.0
-        },
-        {
-          "season": 2025,
-          "week": 12,
-          "opponent": "NYJ",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 13,
-          "opponent": "CIN",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 14,
-          "opponent": "PIT",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 15,
-          "opponent": "CIN",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 16,
-          "opponent": "NE",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 17,
-          "opponent": "GB",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 18,
-          "opponent": "PIT",
-          "value": 0.0
-        }
-      ],
-      "scored": null
-    },
-    {
       "player_id": "00-0039064",
       "name": "Zay Flowers",
       "team": "BAL",
@@ -4732,6 +4648,84 @@
           "week": 18,
           "opponent": "PIT",
           "value": 2.0
+        }
+      ],
+      "scored": null
+    },
+    {
+      "player_id": "00-0034753",
+      "name": "Mark Andrews",
+      "team": "BAL",
+      "opponent": "IND",
+      "position": "TE",
+      "per_game": 0.353,
+      "chance": 0.2910839773855275,
+      "weight": 0.0,
+      "opp_allowed": 2.35,
+      "league_allowed": 2.41,
+      "week": 1,
+      "game_id": "2026_01_BAL_IND",
+      "commence_time": "2026-09-13T13:00:00-04:00",
+      "recent": [
+        {
+          "season": 2025,
+          "week": 9,
+          "opponent": "MIA",
+          "value": 2.0
+        },
+        {
+          "season": 2025,
+          "week": 10,
+          "opponent": "MIN",
+          "value": 1.0
+        },
+        {
+          "season": 2025,
+          "week": 11,
+          "opponent": "CLE",
+          "value": 1.0
+        },
+        {
+          "season": 2025,
+          "week": 12,
+          "opponent": "NYJ",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 13,
+          "opponent": "CIN",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 14,
+          "opponent": "PIT",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 15,
+          "opponent": "CIN",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 16,
+          "opponent": "NE",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 17,
+          "opponent": "GB",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 18,
+          "opponent": "PIT",
+          "value": 0.0
         }
       ],
       "scored": null
@@ -5625,78 +5619,6 @@
       "scored": null
     },
     {
-      "player_id": "00-0040202",
-      "name": "Devin Neal",
-      "team": "NO",
-      "opponent": "DET",
-      "position": "RB",
-      "per_game": 0.222,
-      "chance": 0.22470351702217994,
-      "weight": 0.0,
-      "opp_allowed": 2.76,
-      "league_allowed": 2.41,
-      "week": 1,
-      "game_id": "2026_01_NO_DET",
-      "commence_time": "2026-09-13T13:00:00-04:00",
-      "recent": [
-        {
-          "season": 2025,
-          "week": 1,
-          "opponent": "ARI",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 7,
-          "opponent": "CHI",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 8,
-          "opponent": "TB",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 9,
-          "opponent": "LA",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 10,
-          "opponent": "CAR",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 12,
-          "opponent": "ATL",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 13,
-          "opponent": "MIA",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 14,
-          "opponent": "TB",
-          "value": 1.0
-        },
-        {
-          "season": 2025,
-          "week": 15,
-          "opponent": "CAR",
-          "value": 1.0
-        }
-      ],
-      "scored": null
-    },
-    {
       "player_id": "00-0039424",
       "name": "Devaughn Vele",
       "team": "NO",
@@ -5764,6 +5686,78 @@
           "week": 15,
           "opponent": "CAR",
           "value": 0.0
+        }
+      ],
+      "scored": null
+    },
+    {
+      "player_id": "00-0040202",
+      "name": "Devin Neal",
+      "team": "NO",
+      "opponent": "DET",
+      "position": "RB",
+      "per_game": 0.222,
+      "chance": 0.22470351702217994,
+      "weight": 0.0,
+      "opp_allowed": 2.76,
+      "league_allowed": 2.41,
+      "week": 1,
+      "game_id": "2026_01_NO_DET",
+      "commence_time": "2026-09-13T13:00:00-04:00",
+      "recent": [
+        {
+          "season": 2025,
+          "week": 1,
+          "opponent": "ARI",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 7,
+          "opponent": "CHI",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 8,
+          "opponent": "TB",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 9,
+          "opponent": "LA",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 10,
+          "opponent": "CAR",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 12,
+          "opponent": "ATL",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 13,
+          "opponent": "MIA",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 14,
+          "opponent": "TB",
+          "value": 1.0
+        },
+        {
+          "season": 2025,
+          "week": 15,
+          "opponent": "CAR",
+          "value": 1.0
         }
       ],
       "scored": null
