@@ -2593,7 +2593,7 @@ def _nfl_board(rows: list[dict], card) -> str:
 def _nfl_card(r: dict, *, big: str, label: str, ref: float, ref_label: str,
               key: str, fmt, unit: str = "", strip_line: float | None = None,
               rows_html: str = "", bar_pct: float | None = None,
-              base_fmt=None) -> str:
+              base_fmt=None, extra: str = "") -> str:
     """One NFL player, in the pitcher card's shape.
 
     Asked for directly: the NFL boards listed three players under a club
@@ -2652,6 +2652,7 @@ def _nfl_card(r: dict, *, big: str, label: str, ref: float, ref_label: str,
             </div>
             <div class="cv-sub">{esc(r.get('team', ''))} vs {esc(r.get('opponent', ''))}
               &middot; {esc(r.get('position', ''))}</div>
+            {extra}
             <div class="cv-row">
               <span class="cv-lab">{label}</span>
               <span class="cv-pct">{big}{f'<span class="cv-u">{esc(unit)}</span>' if unit else ''}</span>
@@ -2724,6 +2725,90 @@ def td_cards(rows: list[dict]) -> str:
             base_fmt=lambda v: f"{v:.2f}")
 
     return _nfl_board(rows, card)
+
+
+def _nba_sides(row: dict) -> tuple[str, str]:
+    """(away, home) for an NBA row.
+
+    The schedule says which club is hosting and build() writes the row from
+    one player's point of view, so `is_home` is carried rather than guessed
+    at -- the mistake the NFL boards had to unpick from game ids.
+    """
+    if row.get("is_home"):
+        return row.get("opponent", ""), row.get("team", "")
+    return row.get("team", ""), row.get("opponent", "")
+
+
+def nba_cards(rows: list[dict], unit: str = "") -> str:
+    """Tonight's NBA projections, grouped into the game each belongs to.
+
+    The NFL card, unchanged: the same projection-against-a-defence argument
+    in a sport that plays every night, so it gets the same shape rather than
+    a second design meaning the same thing.
+    """
+    if not rows:
+        return f'<div class="empty-board">{_("nba_empty")}</div>'
+
+    def fmt(v):
+        return f"{v:.0f}" if abs(v - round(v)) < 0.05 else f"{v:.1f}"
+
+    def card(r):
+        proj = r.get("projection") or 0
+        opp = esc(r.get("opponent", ""))
+        rows_html = (
+            f'<div class="pb-row"><span>{_("nfl_allows", opp=opp)}</span>'
+            f'<b>{r.get("opp_allowed", 0):.1f}</b></div>'
+            f'<div class="pb-row"><span>{_("nfl_league")}</span>'
+            f'<b>{r.get("league_allowed", 0):.1f}</b></div>'
+            f'<div class="pb-row"><span>{_("nba_average")}</span>'
+            f'<b>{r.get("per_game", 0):.1f}</b></div>')
+        vs = r.get("vs_opp") or {}
+        # How he has gone against this club. In basketball two teams meet
+        # three or four times a season, so this is a real matchup sample --
+        # unlike the two or three plate appearances a baseball card hedges
+        # about -- and it belongs on the face rather than behind a tap.
+        if vs:
+            line = _("nba_vs", n=vs["games"], s=_pl(vs["games"]),
+                     team=esc(r.get("opponent", "")),
+                     v=f'{vs["per_game"]:.1f}',
+                     hi=fmt(vs["best"]), lo=fmt(vs["worst"]))
+            face = f'<div class="bvp">{line}</div>'
+        else:
+            face = (f'<div class="bvp none">'
+                    f'{_("nba_vs_never", team=esc(r.get("opponent", "")))}'
+                    f'</div>')
+        return _nfl_card(
+            r, big=fmt(proj), label=_("nfl_proj"), ref=proj,
+            ref_label=_("nfl_clears", v=fmt(proj)),
+            key="value", fmt=fmt, unit=unit, rows_html=rows_html,
+            base_fmt=lambda v: f"{v:.1f}", extra=face)
+
+    return _game_board(rows, card, sides=_nba_sides,
+                       key=lambda r: r.get("game_id") or "")
+
+
+def nba_accuracy(summary: dict) -> str:
+    """How far off the projections were -- against doing nothing at all.
+
+    There is no posted line on this board, so the benchmark is the simplest
+    alternative to having a model: the player's own season average, with no
+    opponent adjustment. A backtest over 37 nights of last season put the
+    adjustment inside one standard error of zero on points and assists, so
+    this comparison is the honest headline rather than a footnote, and it
+    keeps being published as the sample grows.
+    """
+    graded = (summary or {}).get("graded") or 0
+    if not graded:
+        return f'<p class="pnl-note">{_("nba_ungraded")}</p>'
+    mae, base = summary.get("mae"), summary.get("baseline")
+    if mae is None:
+        return f'<p class="pnl-note">{_("nba_ungraded")}</p>'
+    text = _("nba_mae", n=graded, v=f"{mae:.2f}")
+    if base is not None:
+        rel = ("nba_beats" if mae < base
+               else ("nba_loses" if mae > base else "nba_level"))
+        text += " " + _(rel, v=f"{base:.2f}")
+    return f'<p class="disclaimer">{text}</p>'
 
 
 def td_calibration(summary: dict) -> str:

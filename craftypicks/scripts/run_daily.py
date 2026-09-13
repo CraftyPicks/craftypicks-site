@@ -744,6 +744,14 @@ def main() -> int:
                 # series worth the name.
                 season = form_store.since_season_start(stored, today)
                 f = board_mod.merge_form(rows, season)
+                if short == "nba":
+                    try:
+                        import nba_history                   # noqa: PLC0415
+                        warn = nba_history.report(f, len(rows))
+                        if warn:
+                            print(warn, file=sys.stderr)
+                    except Exception:                        # noqa: BLE001
+                        pass
                 # setdefault, not get: merge_form skips a row entirely when
                 # a club has not played yet, so in the opening weeks there
                 # is no detail block to hang this on -- and the head-to-head

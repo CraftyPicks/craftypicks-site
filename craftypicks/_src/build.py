@@ -55,6 +55,9 @@ PAGES: dict[str, Page] = {
     "homers.html":   Page("homers.html",   "homers",   "homers",   "mlb"),
     "batters.html":  Page("batters.html",  "batters",  "batters",  "mlb"),
     "hits.html":     Page("hits.html",     "hits",     "hits",     "mlb"),
+    "nba/points.html":    Page("nba/points.html",    "nba_points",    "nba_points",    "nba"),
+    "nba/assists.html":   Page("nba/assists.html",   "nba_assists",   "nba_assists",   "nba"),
+    "nba/rebounds.html":  Page("nba/rebounds.html",  "nba_rebounds",  "nba_rebounds",  "nba"),
     "nfl/passing.html":   Page("nfl/passing.html",   "nfl_passing",   "nfl_passing",   "nfl"),
     "nfl/rushing.html":   Page("nfl/rushing.html",   "nfl_rushing",   "nfl_rushing",   "nfl"),
     "nfl/receiving.html": Page("nfl/receiving.html", "nfl_receiving", "nfl_receiving", "nfl"),
@@ -101,6 +104,9 @@ _EXTRA_VIEWS: dict[str, list[tuple[str, str]]] = {
             ("batters.html", "nav_batters"),
             ("hits.html", "nav_hits"),
             ("homers.html", "nav_homers")],
+    "nba": [("nba/points.html", "nav_nbapts"),
+            ("nba/assists.html", "nav_nbaast"),
+            ("nba/rebounds.html", "nav_nbareb")],
     "nfl": [("nfl/passing.html", "nav_pass"),
             ("nfl/rushing.html", "nav_rush"),
             ("nfl/receiving.html", "nav_recv"),
@@ -208,6 +214,12 @@ TITLES = {
                      "es": f"Jonrones — {config.SITE_NAME}"},
     "hits.html": {"en": f"Hits — {config.SITE_NAME}",
                   "es": f"Hits — {config.SITE_NAME}"},
+    "nba/points.html": {"en": f"Points — {config.SITE_NAME}",
+                        "es": f"Puntos — {config.SITE_NAME}"},
+    "nba/assists.html": {"en": f"Assists — {config.SITE_NAME}",
+                         "es": f"Asistencias — {config.SITE_NAME}"},
+    "nba/rebounds.html": {"en": f"Rebounds — {config.SITE_NAME}",
+                          "es": f"Rebotes — {config.SITE_NAME}"},
     "nfl/passing.html": {"en": f"Passing yards — {config.SITE_NAME}",
                          "es": f"Yardas de pase — {config.SITE_NAME}"},
     "nfl/rushing.html": {"en": f"Rushing yards — {config.SITE_NAME}",
@@ -446,6 +458,13 @@ def build() -> None:
                        {"date_label": "", "rows": [], "summary": {}}),
     }
 
+    # The three NBA boards, the same shape as the NFL four.
+    NBA_DOCS = {
+        f"nba_{stat}": load(f"nba_{stat}.json",
+                            {"date_label": "", "rows": [], "summary": {}})
+        for stat in ("points", "assists", "rebounds")
+    }
+
     def build_tokens(lang, plays_doc, stats, history, slate_doc,
                      pitch_doc, closing_doc=None):
         """Every {{TOKEN}} a page body can contain, for one language."""
@@ -599,6 +618,8 @@ def build() -> None:
             "{{LEAGUE_BOARD}}": "",
             "{{LEAGUE_NAME}}": "",
             "{{LEAGUE_CALIBRATION}}": "",
+            "{{NBA_CARDS}}": "", "{{NBA_ACCURACY}}": "", "{{NBA_NOTE}}": "",
+            "{{NBA_COUNT}}": "", "{{NBA_DATE}}": "",
         }
 
 
@@ -691,6 +712,26 @@ def build() -> None:
                 # safe to point it at the hits document here instead.
                 page_tokens["{{DATE_LABEL}}"] = (
                     doc_date_label(hit_doc, lang) or i18n.t("not_rated", lang))
+            elif page.body in NBA_DOCS:
+                nba_doc = NBA_DOCS[page.body]
+                nba_rows = nba_doc.get("rows", [])
+                page_tokens["{{NBA_CARDS}}"] = R.nba_cards(nba_rows)
+                page_tokens["{{NBA_ACCURACY}}"] = R.nba_accuracy(
+                    nba_doc.get("summary", {}))
+                # Every row still entirely last season's rate, because this
+                # one has not played the games yet. blend sets weight 0.0 for
+                # exactly that case, and the page says so rather than letting
+                # an October number look like a February one.
+                cold = bool(nba_rows) and all(
+                    (r.get("weight") or 0) == 0 for r in nba_rows)
+                page_tokens["{{NBA_NOTE}}"] = (
+                    f'<p class="ecap">{i18n.t("nba_cold", lang)}</p>'
+                    if cold else "")
+                page_tokens["{{NBA_COUNT}}"] = i18n.t(
+                    "nba_count", lang, n=len(nba_rows),
+                    s=i18n.plural(len(nba_rows), lang))
+                page_tokens["{{NBA_DATE}}"] = (
+                    doc_date_label(nba_doc, lang) or i18n.t("not_rated", lang))
             elif page.body in NFL_DOCS:
                 # Four sibling pages sharing one set of token names. Each
                 # page's own document supplies the values, the same way the

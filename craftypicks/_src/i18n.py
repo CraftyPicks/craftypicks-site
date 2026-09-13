@@ -955,6 +955,46 @@ T = {
     "hr_last":      {"en": "L{n}", "es": "U{n}"},
     "hr_market":    {"en": "market", "es": "mercado"},
 
+    # The NBA boards.
+    "nba_empty":    {"en": "No games on the board tonight.",
+                     "es": "No hay partidos en el tablero esta noche."},
+    "nba_average":  {"en": "His season average", "es": "Su promedio"},
+    "nba_count":    {"en": "{n} player{s} rated", "es": "{n} jugador{s} evaluado{s}"},
+    "nba_ungraded": {"en": "Nothing graded yet. Every projection on this "
+                           "board is scored against what the player actually "
+                           "did, and against his season average alone.",
+                     "es": "Nada calificado todavía. Cada proyección se mide "
+                           "contra lo que el jugador hizo y contra su propio "
+                           "promedio."},
+    "nba_mae":      {"en": "Across {n} graded projections we miss by "
+                           "<b>{v}</b> on average.",
+                     "es": "En {n} proyecciones calificadas fallamos por "
+                           "<b>{v}</b> en promedio."},
+    "nba_beats":    {"en": "The player's season average alone misses by "
+                           "{v} \u2014 so the opponent adjustment is earning "
+                           "its place, for now.",
+                     "es": "El promedio del jugador solo falla por {v}."},
+    "nba_loses":    {"en": "The player's season average alone misses by "
+                           "{v} \u2014 so the opponent adjustment is costing "
+                           "us accuracy, not adding it.",
+                     "es": "El promedio del jugador solo falla por {v}."},
+    "nba_level":    {"en": "The player's season average alone misses by the "
+                           "same {v}. The adjustment is adding nothing.",
+                     "es": "El promedio solo falla lo mismo, {v}."},
+    "nav_nbapts":   {"en": "Points", "es": "Puntos"},
+    "nav_nbaast":   {"en": "Assists", "es": "Asistencias"},
+    "nav_nbareb":   {"en": "Rebounds", "es": "Rebotes"},
+    "nba_vs":       {"en": "vs {team}: {v} in {n} game{s} "
+                           "(best {hi}, worst {lo})",
+                     "es": "vs {team}: {v} en {n} partido{s} "
+                           "(máx {hi}, mín {lo})"},
+    "nba_vs_never": {"en": "Has not faced {team} in two seasons",
+                     "es": "No ha enfrentado a {team} en dos temporadas"},
+    "nba_cold":     {"en": "Running entirely on last season until this one "
+                           "has games behind it.",
+                     "es": "Basado en la temporada pasada hasta que esta "
+                           "tenga partidos."},
+
     # The calibration section, now that every league board can carry one.
     "cal_eyebrow":  {"en": "The scoreboard for the numbers",
                      "es": "El marcador de los números"},
