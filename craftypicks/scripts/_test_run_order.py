@@ -38,6 +38,7 @@ def _self_test() -> None:
         ("the play-log dedupe", r"play_log\.dedupe\("),
         ("prop grading", r"prop_grader\.grade_pending\("),
         ("loading the play log", r'load_json\(DATA / "history\.json"'),
+        ("grading stored win probabilities", r"board_ratings\.grade\("),
     ):
         at = line_of(pattern)
         assert at < guard, (
@@ -51,6 +52,9 @@ def _self_test() -> None:
         ("buying odds", r"client\.odds\("),
         ("buying scores", r"client\.scores\("),
         ("posting the card", r"play_log\.post\("),
+        # Recording a NEW rating needs today's priced board, so it is paid
+        # work. Grading an old one is not -- see above.
+        ("recording today's ratings", r"board_ratings\.record\("),
     ):
         at = line_of(pattern)
         assert at > guard, (

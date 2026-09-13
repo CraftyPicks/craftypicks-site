@@ -415,6 +415,20 @@ def build() -> None:
     homer_doc = load("homers.json", {"date_label": "", "starters": []})
     batter_doc = load("batters.json",
                       {"date_label": "", "batters": [], "summary": {}})
+    # Every win probability the non-MLB boards have published, with whatever
+    # has been graded. Summarised per league so a board page can show its own
+    # score rather than borrowing MLB's.
+    rating_doc = load("board_ratings.json", {"ratings": []})
+    rating_summaries = {}
+    try:
+        sys.path.insert(0, str(ROOT / "scripts"))
+        import board_ratings as _br                          # noqa: PLC0415
+        for _lg in sorted({r.get("league") for r in rating_doc.get("ratings")
+                           or [] if r.get("league")}):
+            rating_summaries[_lg] = _br.summary(rating_doc["ratings"], _lg)
+    except Exception as _br_err:                             # noqa: BLE001
+        print(f"!! board ratings unavailable ({_br_err})", file=sys.stderr)
+
     hit_doc = load("hits.json",
                    {"date_label": "", "batters": [], "summary": {}})
 
@@ -584,6 +598,7 @@ def build() -> None:
             "{{EV_DAY}}": _board_day(board_doc.get("date", ""), lang) or "&mdash;",
             "{{LEAGUE_BOARD}}": "",
             "{{LEAGUE_NAME}}": "",
+            "{{LEAGUE_CALIBRATION}}": "",
         }
 
 
@@ -663,6 +678,13 @@ def build() -> None:
                     "board_eyebrow", lang,
                     n=(board_doc.get("counts") or {}).get(page.league, 0),
                     d=_board_day(board_doc.get("date", ""), lang))
+                # How this league's own number has scored. MLB's lives on the
+                # slate page, which is its home; every other league had no
+                # such page and, until now, nothing scoring it at all.
+                scored = (rating_summaries.get(page.league) or {}
+                          if page.league != "mlb" else {})
+                page_tokens["{{LEAGUE_CALIBRATION}}"] = \
+                    R.calibration_section(scored)
             if page.body == "hits":
                 # {{DATE_LABEL}} is otherwise the plays board's date; the
                 # hits page is the only body that consumes it, so it is

@@ -733,6 +733,32 @@ def calibration_rows(rows: list[dict]) -> str:
     return "".join(out)
 
 
+def calibration_section(summary: dict) -> str:
+    """A league board's own calibration, or nothing at all.
+
+    Returns the empty string until the league has a graded rating. An empty
+    chart under the heading "Are we calibrated?" reads as a claim that we
+    looked and found nothing, which is not the same as not having looked
+    yet -- and in the opening weeks of a season it would be on every board.
+    """
+    if not (summary or {}).get("graded"):
+        return ""
+    return (
+        f'<section class="pad-sm" id="calibration"><div class="wrap">'
+        f'<div class="sec-head" style="margin-bottom:26px">'
+        f'<div class="eyebrow">{_("cal_eyebrow")}</div>'
+        f'<h2 style="font-size:26px;margin-top:10px">{_("cal_head")}</h2>'
+        f'<p class="lead" style="margin-top:12px">{_("cal_lead")}</p></div>'
+        f'<div class="calib">{calibration_rows(summary.get("calibration") or [])}</div>'
+        f'<div class="clegend">'
+        f'<span><i class="key-line"></i> {_("cal_said")}</span>'
+        f'<span><i class="key-dot"></i> {_("cal_happened")}</span>'
+        f'<span><i class="key-band"></i> {_("cal_band")}</span></div>'
+        f'<div class="note" style="margin-top:26px">'
+        f'<p class="disclaimer">{brier_line(summary)}</p></div>'
+        f'</div></section>')
+
+
 def brier_line(summary: dict) -> str:
     ours, theirs = summary.get("brier"), summary.get("market_brier")
     if ours is None:
@@ -3183,6 +3209,18 @@ def _self_test() -> None:
                     key="value", priced=False)
     assert "0.5" not in td_, td_
     assert "67%" in td_ and "(2/3)" in td_, td_
+
+    # A league with nothing graded shows no calibration section at all.
+    assert calibration_section({}) == ""
+    assert calibration_section({"graded": 0, "calibration": []}) == ""
+    shown = calibration_section({"graded": 12, "brier": 0.2401,
+                                 "market_brier": 0.2380,
+                                 "market_compared": 12,
+                                 "calibration": [{"lo": .5, "hi": .6, "n": 12,
+                                                  "predicted": 55.0,
+                                                  "actual": 58.3, "gap": 3.3}]})
+    assert 'id="calibration"' in shown and "0.2401" in shown, shown[:200]
+    assert "0.2380" in shown, "the market's score on the same games"
 
     assert hit_strip([], 5.5, key="k") == "", "no log, no strip"
     assert hit_strip(None, 5.5, key="k") == ""

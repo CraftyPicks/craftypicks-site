@@ -955,6 +955,21 @@ T = {
     "hr_last":      {"en": "L{n}", "es": "U{n}"},
     "hr_market":    {"en": "market", "es": "mercado"},
 
+    # The calibration section, now that every league board can carry one.
+    "cal_eyebrow":  {"en": "The scoreboard for the numbers",
+                     "es": "El marcador de los números"},
+    "cal_head":     {"en": "Are we calibrated?", "es": "¿Estamos calibrados?"},
+    "cal_lead":     {"en": "When we say a team wins 60% of the time, does it? "
+                           "Every rated game on this board counts &mdash; not "
+                           "just the ones we bet.",
+                     "es": "Cuando decimos que un equipo gana el 60% de las "
+                           "veces, ¿ocurre? Cuenta cada partido evaluado de "
+                           "este tablero, no solo los que jugamos."},
+    "cal_said":     {"en": "what we said", "es": "lo que dijimos"},
+    "cal_happened": {"en": "what actually happened", "es": "lo que pasó"},
+    "cal_band":     {"en": "the range chance alone explains",
+                     "es": "el rango que explica el azar"},
+
     # The batter boards say which they are showing. Two facts, not one
     # apology: before lineups post the board rates a club's regulars, and
     # after they post it rates the nine men in them. The page said the first

@@ -97,10 +97,12 @@ try:
     import results         # noqa: E402
     import results_store   # noqa: E402
     import form_store      # noqa: E402
+    import board_ratings   # noqa: E402
 except Exception as _rs_err:                                 # noqa: BLE001
     results = None
     results_store = None
     form_store = None
+    board_ratings = None
     print(f"!! results store unavailable ({_rs_err})", file=sys.stderr)
 
 
@@ -202,6 +204,10 @@ def main() -> int:
     print(f"== Craftypicks daily run — {now:%Y-%m-%d %H:%M %Z}")
 
     history = load_json(DATA / "history.json", {"plays": []})["plays"]
+    # Every win probability the non-MLB boards have published, and whether it
+    # came true. Loaded here so section 0 can grade it for free.
+    board_rated = load_json(DATA / "board_ratings.json",
+                            {"ratings": []})["ratings"]
 
     # ------------------------------------------------- 0. the free upkeep
     # Everything here costs nothing -- local file work and StatsAPI -- and is
@@ -235,6 +241,36 @@ def main() -> int:
 
     if dropped or free_graded:
         save_json(DATA / "history.json", {"plays": history})
+
+    # The win probabilities the non-MLB boards published, settled against the
+    # finals the store already holds. Free -- results_store is filled by the
+    # boards job and, for the NFL, from nflverse -- so it belongs up here
+    # with the rest of the upkeep rather than behind the credit guard.
+    #
+    # The leagues come from the stored rows, not from today's board: a rating
+    # published on Sunday is graded on Monday, when that league may have no
+    # games at all.
+    if board_ratings is not None and results_store is not None:
+        try:
+            finals = {lg: results_store.load(lg)
+                      for lg in sorted({r.get("league") for r in board_rated
+                                        if r.get("league")})}
+            settled = board_ratings.grade(board_rated, finals)
+            if settled:
+                save_json(DATA / "board_ratings.json",
+                          {"ratings": board_rated})
+                print(f"-- ratings: graded {settled} stored "
+                      f"probability(ies)")
+            for lg in sorted(finals):
+                scored = board_ratings.summary(board_rated, lg)
+                if scored["graded"]:
+                    market = (f" (market {scored['market_brier']})"
+                              if scored["market_brier"] is not None else "")
+                    print(f"-- ratings: {lg} Brier {scored['brier']} on "
+                          f"{scored['graded']} graded{market}")
+        except Exception as e:                               # noqa: BLE001
+            print(f"!! rating grades failed ({type(e).__name__}: {e})",
+                  file=sys.stderr)
 
     # Already posted today? Then this is a retry of a scheduled run that
     # already succeeded, and it must not spend a second set of credits.
@@ -721,6 +757,19 @@ def main() -> int:
                         h2h += 1
                 print(f"-- h2h: {h2h} {short} card(s) carry previous "
                       f"meetings")
+
+                # Store what we just published, so it can be graded later.
+                # The MLB number has been scored since the slate was built;
+                # every other league's has never been checked at all, which
+                # is the one thing this site is not allowed to do.
+                if board_ratings is not None:
+                    fresh = board_ratings.record(rows, short)
+                    n_new = board_ratings.merge(board_rated, fresh)
+                    if n_new:
+                        save_json(DATA / "board_ratings.json",
+                                  {"ratings": board_rated})
+                        print(f"-- ratings: stored {n_new} {short} "
+                              f"probability(ies) to grade later")
                 print(f"-- form: {f} {short} card(s) carry a streak and a "
                       f"season series")
             except Exception as e:                           # noqa: BLE001
