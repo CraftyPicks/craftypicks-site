@@ -106,6 +106,32 @@ def project(rate: float | None, allowed: float | None,
     return round(rate * (allowed / league), 1)
 
 
+def _position_context(position: str, opponent: str, by_pos: dict,
+                      pos_league: dict) -> dict:
+    """What this opponent gives up to players of this man's position.
+
+    Rank is out of the clubs that have faced that position at all, and it is
+    stated that way rather than as "of 30" -- in October that denominator is
+    not 30 and rounding it up would be a small lie on every card.
+    """
+    slot = nba_data.bucket(position)
+    allowed = (by_pos.get(opponent) or {}).get(slot)
+    if not slot or allowed is None:
+        return {"pos_slot": slot, "pos_allowed": None, "pos_league": None,
+                "pos_rank": None, "pos_of": 0}
+    peers = sorted((v[slot] for v in by_pos.values() if slot in v),
+                   reverse=True)
+    return {
+        "pos_slot": slot,
+        "pos_allowed": round(allowed, 1),
+        "pos_league": round(pos_league.get(slot, 0.0), 1) or None,
+        # 1 is the most generous, which is the way a reader of a prop board
+        # reads a defensive rank.
+        "pos_rank": peers.index(allowed) + 1,
+        "pos_of": len(peers),
+    }
+
+
 def build(season: int, field: str, date_str: str, verbose: bool = True,
           top_n: int = TOP_N) -> list[dict]:
     """One row per player worth showing in tonight's games."""
@@ -131,6 +157,14 @@ def build(season: int, field: str, date_str: str, verbose: bool = True,
     # season's, which is the honest answer rather than a table of noise.
     allowed = nba_data.defence(current, field) or nba_data.defence(prior, field)
     league = nba_data.league_rate(allowed)
+    # Allowed by position, as CONTEXT only. It was backtested as a projection
+    # input over the same 37 nights and came out worse than the team-level
+    # number on all three stats and worse than no adjustment at all on points
+    # (+0.066 +/- 0.041 MAE). It is a fact worth printing about an opponent;
+    # it is not a better model, and it is not allowed to move the number.
+    src = current or prior
+    by_pos = nba_data.defence_by_position(src, field)
+    pos_league = nba_data.league_by_position(by_pos)
 
     by_team: dict[str, list] = {}
     for pid, row in rates.items():
@@ -163,6 +197,8 @@ def build(season: int, field: str, date_str: str, verbose: bool = True,
                     "projection": projection,
                     "opp_allowed": round(allowed.get(other) or 0.0, 1),
                     "league_allowed": round(league, 1),
+                    **_position_context(row.get("position", ""), other,
+                                        by_pos, pos_league),
                     "weight": row["weight"],
                     "recent": nba_data.recent(current or prior, pid, field),
                     # Both seasons, because in October this season holds no
@@ -256,6 +292,24 @@ def _self_test() -> None:
     assert project(20.0, None, 100.0) == 20.0
     assert project(20.0, 110.0, 0.0) == 20.0
     assert project(None, 110.0, 100.0) is None
+
+    # --- allowed to this man's position -------------------------------------
+    by_pos = {"GS": {"C": 35.0, "G": 20.0}, "LAL": {"C": 25.0, "G": 30.0}}
+    lg = {"C": 30.0, "G": 25.0}
+    ctx = _position_context("C", "GS", by_pos, lg)
+    assert ctx["pos_slot"] == "C" and ctx["pos_allowed"] == 35.0
+    assert ctx["pos_league"] == 30.0
+    # Most generous is first. Golden State gives centres more than the
+    # Lakers do, so it ranks 1 of the 2 clubs that have faced one.
+    assert ctx["pos_rank"] == 1 and ctx["pos_of"] == 2
+    assert _position_context("C", "LAL", by_pos, lg)["pos_rank"] == 2
+    # A finer label folds into its family rather than falling out.
+    assert _position_context("PF", "GS", by_pos, lg)["pos_allowed"] is None, \
+        "GS has faced no forwards in this fixture, so there is no number"
+    # No position, or an opponent nobody has played, yields nothing rather
+    # than a zero that would render as a shutout defence.
+    assert _position_context("", "GS", by_pos, lg)["pos_allowed"] is None
+    assert _position_context("C", "NOPE", by_pos, lg)["pos_rank"] is None
 
     # --- the opponent line ---------------------------------------------------
     # It is built from BOTH seasons on purpose. Checked here because an

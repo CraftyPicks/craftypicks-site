@@ -1672,6 +1672,10 @@ def board_card(row: dict) -> str:
 # few and counts the rest.
 SERIES_SHOWN = 5
 
+# ESPN publishes three positions for basketball, not five. POSITIONS in
+# nba_data says why.
+POS_LABEL = {"G": "nba_pos_g", "F": "nba_pos_f", "C": "nba_pos_c"}
+
 MX_LABEL = {"favourable": "mx_favourable", "tough": "mx_tough",
             "neutral": "mx_neutral"}
 # The same three verdicts, in one word, for the badge on a row's face.
@@ -2762,6 +2766,23 @@ def nba_cards(rows: list[dict], unit: str = "") -> str:
             f'<b>{r.get("league_allowed", 0):.1f}</b></div>'
             f'<div class="pb-row"><span>{_("nba_average")}</span>'
             f'<b>{r.get("per_game", 0):.1f}</b></div>')
+        # What this opponent gives up to men in his position. Context, not
+        # an input: adjusting the projection by it was measured and made the
+        # projection worse, so it is reported and nothing more.
+        if r.get("pos_allowed") is not None:
+            rank = (_("nba_pos_rank", r=r["pos_rank"],
+                      ord=_ordinal(r["pos_rank"]), n=r["pos_of"])
+                    if r.get("pos_rank") else "")
+            label = _("nba_pos_allows",
+                      opp=esc(r.get("opponent", "")),
+                      pos=_(POS_LABEL.get(r.get("pos_slot", ""),
+                                          "nba_pos_any")))
+            rows_html += (f'<div class="pb-row"><span>{label}</span>'
+                          f'<b>{r["pos_allowed"]:.1f}{rank}</b></div>')
+            if r.get("pos_league"):
+                rows_html += (
+                    f'<div class="pb-row"><span>{_("nba_pos_league")}</span>'
+                    f'<b>{r["pos_league"]:.1f}</b></div>')
         vs = r.get("vs_opp") or {}
         # How he has gone against this club. In basketball two teams meet
         # three or four times a season, so this is a real matchup sample --

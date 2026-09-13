@@ -217,6 +217,57 @@ def defence(rows, field: str) -> dict[str, float]:
             for team, games in per_game.items() if games}
 
 
+# The position buckets ESPN actually publishes. Not PG/SG/SF/PF/C: those
+# appear on 110 of 34,883 box-score rows and 1 of 537 roster rows, so a
+# five-way split would be 99.7% guesswork wearing a precise-looking label.
+POSITIONS = ("G", "F", "C")
+
+
+def bucket(position: str) -> str:
+    """G, F or C. Anything else is unknown and counted nowhere."""
+    p = (position or "").strip().upper()
+    if p in POSITIONS:
+        return p
+    # The handful of finer labels that do appear, folded to their family.
+    return {"PG": "G", "SG": "G", "SF": "F", "PF": "F"}.get(p, "")
+
+
+def defence_by_position(rows, field: str) -> dict[str, dict[str, float]]:
+    """{team: {G/F/C: the stat it allows per game to that position}}.
+
+    Team-level "points allowed" hides the shape of a defence: a club can be
+    stingy overall and still leak to centres, and a reader looking at a
+    centre wants the second number, not the first.
+
+    Summed per game per position first, then averaged over games, for the
+    same reason the team version is -- a per-player average moves with how
+    many men a club plays rather than with how it defends.
+    """
+    tally: dict[str, dict[str, dict[str, float]]] = {}
+    for r in rows:
+        if r.get(field) is None or not r["opponent"]:
+            continue
+        pos = bucket(r.get("position", ""))
+        if not pos:
+            continue
+        games = tally.setdefault(r["opponent"], {}).setdefault(pos, {})
+        games[r["game_id"]] = games.get(r["game_id"], 0.0) + r[field]
+    return {team: {pos: sum(g.values()) / len(g)
+                   for pos, g in by_pos.items() if g}
+            for team, by_pos in tally.items()}
+
+
+def league_by_position(allowed: dict[str, dict[str, float]]
+                       ) -> dict[str, float]:
+    """The league average allowed to each position."""
+    out = {}
+    for pos in POSITIONS:
+        vals = [v[pos] for v in allowed.values() if pos in v]
+        if vals:
+            out[pos] = sum(vals) / len(vals)
+    return out
+
+
 def league_rate(allowed: dict[str, float]) -> float:
     return (sum(allowed.values()) / len(allowed)) if allowed else 0.0
 
@@ -304,6 +355,37 @@ def _self_test() -> None:
     # And it is dropped from whichever side is fake, not just the first.
     assert parse([dict(raw[0], opponent_team_abbreviation="WORLD")]) == []
     assert len(CLUBS) == 30, sorted(CLUBS)
+
+    # --- allowed by position ------------------------------------------------
+    # ESPN gives G/F/C and nothing finer. The finer labels that do turn up
+    # fold into their family rather than being dropped or invented.
+    assert bucket("G") == "G" and bucket("PG") == "G" and bucket("SG") == "G"
+    assert bucket("PF") == "F" and bucket("SF") == "F" and bucket("F") == "F"
+    assert bucket("C") == "C"
+    assert bucket("") == "" and bucket("DH") == "" and bucket(None) == ""
+
+    pos_rows = [
+        {"player_id": "1", "opponent": "GS", "game_id": "g1", "position": "C",
+         "points": 20.0},
+        {"player_id": "2", "opponent": "GS", "game_id": "g1", "position": "C",
+         "points": 10.0},
+        {"player_id": "3", "opponent": "GS", "game_id": "g1", "position": "G",
+         "points": 8.0},
+        {"player_id": "1", "opponent": "GS", "game_id": "g2", "position": "C",
+         "points": 40.0},
+    ]
+    by_pos = defence_by_position(pos_rows, "points")
+    # Two centres for 30 in one game, one for 40 in the next: 35 a game.
+    assert by_pos["GS"]["C"] == 35.0, by_pos
+    assert by_pos["GS"]["G"] == 8.0
+    # A position with no rows is absent, not zero.
+    assert "F" not in by_pos["GS"]
+    lg = league_by_position(by_pos)
+    assert lg["C"] == 35.0 and "F" not in lg
+    assert league_by_position({}) == {}
+    # A row with no position counts nowhere rather than into a bucket.
+    assert defence_by_position(
+        [dict(pos_rows[0], position="")], "points") == {}
 
     # --- against one opponent ------------------------------------------------
     vs = vs_opponent(rows, "1", "GS", "points")

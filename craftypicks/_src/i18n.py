@@ -990,6 +990,16 @@ T = {
                            "(máx {hi}, mín {lo})"},
     "nba_vs_never": {"en": "Has not faced {team} in two seasons",
                      "es": "No ha enfrentado a {team} en dos temporadas"},
+    "nba_pos_g":     {"en": "guards", "es": "bases y escoltas"},
+    "nba_pos_f":     {"en": "forwards", "es": "aleros"},
+    "nba_pos_c":     {"en": "centres", "es": "pivots"},
+    "nba_pos_any":   {"en": "his position", "es": "su posición"},
+    "nba_pos_allows": {"en": "{opp} allows to {pos}",
+                       "es": "{opp} permite a {pos}"},
+    "nba_pos_league": {"en": "League average to that position",
+                       "es": "Promedio de la liga a esa posición"},
+    "nba_pos_rank":  {"en": " &middot; {r}{ord} most of {n}",
+                      "es": " &middot; {r}.\u00ba de {n}"},
     "nba_cold":     {"en": "Running entirely on last season until this one "
                            "has games behind it.",
                      "es": "Basado en la temporada pasada hasta que esta "
