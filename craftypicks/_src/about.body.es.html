@@ -1,8 +1,8 @@
 <section style="background:var(--bg-2)">
   <div class="wrap" style="padding:56px 28px 46px">
     <div class="eyebrow">Cómo funciona</div>
-    <h1 style="font-size:clamp(32px,4.2vw,50px);margin:14px 0 16px">Jugadas gratis,<br>y por qué van a seguir siéndolo.</h1>
-    <p class="lead">Craftypicks existe porque el negocio de la información en las apuestas deportivas está casi todo roto. Alguien te vende una selección, esconde el historial y te echa la culpa cuando pierde. Esta es la versión sin nada de eso &mdash; incluso sin la parte donde fingimos saber quién gana.</p>
+    <h1 style="font-size:clamp(32px,4.2vw,50px);margin:14px 0 16px">Pizarras gratis,<br>y por qué van a seguir siéndolo.</h1>
+    <p class="lead">Craftypicks existe porque el negocio de la información en las apuestas deportivas está casi todo roto. Alguien te vende una selección, esconde el historial y te echa la culpa cuando pierde. Este sitio no vende nada y no selecciona nada. Le pone precio a la pizarra, publica su propio número junto al del mercado, y lleva la cuenta de qué tan cerca estuvo ese número.</p>
   </div>
 </section>
 
@@ -11,7 +11,7 @@
     <div class="sec-head">
       <div class="eyebrow">Metodología</div>
       <h2>No predecimos juegos. Les ponemos precio.</h2>
-      <p class="lead">Esta es la versión honesta de lo que hace el sistema, y vale la pena entenderla antes de seguir una sola jugada. Craftypicks no tiene modelo de lesiones, ni motor de simulación, ni opinión sobre quién va a ganar esta noche. Tiene una sola cosa: el precio en cada casa de apuestas, y la aritmética para saber cuándo una de ellas está fuera de línea.</p>
+      <p class="lead">Esta es la versión honesta de lo que hace el sistema. Craftypicks no tiene modelo de lesiones, ni motor de simulación, ni opinión sobre quién va a ganar esta noche. Tiene una sola cosa: el precio en cada casa de apuestas, y la aritmética para saber cuándo una de ellas está fuera de línea.</p>
     </div>
     <div class="grid-2" style="gap:44px;align-items:start">
       <div class="tile">
@@ -31,8 +31,8 @@
       </div>
       <div class="tile">
         <div class="num">Paso 04</div>
-        <h3>Publicar solo lo que pasa la barra</h3>
-        <p style="margin-top:10px">Si el mejor número disponible le gana al consenso por {{MIN_EDGE}} o más en valor esperado, entra a la cartelera con un riesgo fijo de 1 unidad. Máximo {{MAX_PLAYS}} jugadas al día. Después se califica contra el marcador final y nunca se vuelve a tocar.</p>
+        <h3>Publicar la pizarra completa</h3>
+        <p style="margin-top:10px">Cada juego recibe su número, el mejor precio disponible y la diferencia entre los dos &mdash; incluidos aquellos donde no hay diferencia, que son la mayoría. Después cada número publicado se califica contra el resultado final y la precisión se queda en la página.</p>
       </div>
     </div>
 
@@ -41,37 +41,35 @@
     </div>
 
     <div class="note" style="margin-top:16px">
-      <p class="disclaimer"><b style="color:var(--txt)">Lo que no hacemos:</b> parlays vendidos como "candados", jugadas de 10u del "juego del año", jugadas publicadas después de que el número ya se movió, ni historiales que empiezan a contar desde la última racha buena. Si un día no hay ninguna ventaja que califique, la cartelera dice cero jugadas &mdash; eso pasa más seguido de lo que uno creería, y es la característica que más cuesta mantener.</p>
+      <p class="disclaimer"><b style="color:var(--txt)">Lo que no hacemos:</b> vender selecciones, rankear "candados", decirte cuánto apostar, ni corregir un número en silencio después de conocer el resultado. Nada de esto es una recomendación. Casi todas las noches nuestro número y el del mercado coinciden lo suficiente como para que no haya nada que mirar, y la pizarra lo dice en vez de inventar algo.</p>
     </div>
   </div>
 </section>
 
-<section class="pad" id="units">
+<section class="pad" id="accuracy">
   <div class="wrap">
     <div class="grid-2">
       <div>
-        <div class="eyebrow">Unidades y banca</div>
-        <h2 style="margin:14px 0 20px">Una unidad es el 1% de tu banca. No 100 dólares.</h2>
-        <p class="lead" style="margin-bottom:20px">Cada jugada de este sitio es de 1 unidad fija. Es a propósito &mdash; el riesgo fijo es lo que hace honesto un historial, porque no puedes esconder una mala racha subiendo el tamaño en silencio sobre las ganadoras después del hecho.</p>
-        <p style="margin-bottom:18px">Si tu banca es de $1,000, una unidad son $10. Si es de $300, una unidad son $3. El número que importa son las unidades ganadas, no los dólares, porque las unidades son lo único que se puede comparar entre bancas distintas.</p>
-        <div class="quote">Un método que produce una ventaja de {{MIN_EDGE}} pierde de todos modos cerca de la mitad de sus jugadas. Una racha de 20 jugadas perdidas es completamente normal &mdash; dimensiona tu unidad pensando en eso, no en una buena semana.</div>
+        <div class="eyebrow">Llevar la cuenta</div>
+        <h2 style="margin:14px 0 20px">Un número que nadie califica es solo una opinión.</h2>
+        <p class="lead" style="margin-bottom:20px">Cada probabilidad y cada proyección que publica este sitio se guarda la mañana en que sale, y luego se liquida contra el resultado final. Nada se edita después.</p>
+        <p style="margin-bottom:18px">Cada pizarra lleva su propia calificación, porque no son el mismo problema: una proyección de ponches se juzga por cuántos ponches falló; una probabilidad de victoria, por su Brier frente al del mercado.</p>
+        <div class="quote">La vara no es "¿ganó?". La vara es si nuestro número quedó más cerca de la verdad que el precio que ya estaba en pantalla &mdash; y en casi todas las pizarras, casi todas las noches, no lo logra. Para eso están las tiras de calibración.</div>
       </div>
       <div class="card" style="padding:0">
-        <div class="play-top"><span class="stamp">Aritmética de banca</span><span class="stamp on">1u = 1%</span></div>
+        <div class="play-top"><span class="stamp">Lo que reporta cada pizarra</span><span class="stamp on">Diario</span></div>
         <div class="scroll-x">
           <table class="tbl" style="border:0">
-            <thead><tr><th>Banca</th><th>1 unidad</th><th>Día típico de {{MAX_PLAYS}} jugadas</th><th>Mala semana (&minus;8u)</th></tr></thead>
+            <thead><tr><th>Pizarra</th><th>Se califica con</th><th>Se compara contra</th></tr></thead>
             <tbody>
-              <tr><td class="strong">$200</td><td class="m">$2</td><td class="m">$12 arriesgados</td><td class="m r">&minus;$16</td></tr>
-              <tr><td class="strong">$500</td><td class="m">$5</td><td class="m">$30 arriesgados</td><td class="m r">&minus;$40</td></tr>
-              <tr><td class="strong">$1,000</td><td class="m">$10</td><td class="m">$60 arriesgados</td><td class="m r">&minus;$80</td></tr>
-              <tr><td class="strong">$2,500</td><td class="m">$25</td><td class="m">$150 arriesgados</td><td class="m r">&minus;$200</td></tr>
-              <tr><td class="strong">$5,000</td><td class="m">$50</td><td class="m">$300 arriesgados</td><td class="m r">&minus;$400</td></tr>
+              <tr><td class="strong">Pizarras de juego</td><td class="m">Brier</td><td class="m">El propio precio del mercado</td></tr>
+              <tr><td class="strong">Ponches de abridores</td><td class="m">Error medio, en K</td><td class="m">La línea publicada</td></tr>
+              <tr><td class="strong">Props de jugadores</td><td class="m">Bandas de calibración</td><td class="m">Con qué frecuencia acertó</td></tr>
             </tbody>
           </table>
         </div>
         <div style="padding:16px 20px;border-top:1px solid var(--line)">
-          <span class="stamp">Si la columna de la mala semana te asusta, tu unidad es demasiado grande.</span>
+          <span class="stamp">Una pizarra con muy pocos números calificados lo dice en vez de mostrar uno.</span>
         </div>
       </div>
     </div>
@@ -88,12 +86,12 @@
       <div class="tile">
         <div class="num">01</div>
         <h3>No hay nivel premium</h3>
-        <p style="margin-top:8px">Cada jugada que encuentra el sistema está en la cartelera. No hay un grupo de pago recibiendo jugadas distintas ni más temprano &mdash; esa es exactamente la estafa contra la que se construyó esto.</p>
+        <p style="margin-top:8px">Todo lo que produce el sistema está en estas páginas. No hay un grupo de pago recibiendo números distintos ni más temprano &mdash; esa es exactamente la estafa contra la que se construyó esto.</p>
       </div>
       <div class="tile">
         <div class="num">02</div>
         <h3>No vendemos tu correo</h3>
-        <p style="margin-top:8px">La lista se usa para una sola cosa: enviar la cartelera diaria. Sin intermediarios de datos, sin "ofertas de socios", sin spam de casas de apuestas ajenas.</p>
+        <p style="margin-top:8px">No hay lista. Aquí nada te pide un correo, así que no hay nada que vender, ni "ofertas de socios", ni spam de casas de apuestas ajenas.</p>
       </div>
       <div class="tile">
         <div class="num">03</div>
@@ -113,31 +111,31 @@
     <div class="faq">
       <details open>
         <summary>¿Puedo apostar en este sitio?</summary>
-        <p>No. Craftypicks no es una casa de apuestas. No recibimos apuestas, no manejamos dinero ni procesamos ninguna transacción. El sitio publica jugadas y sus resultados &mdash; tú apuestas donde ya lo hagas, si es que decides hacerlo.</p>
+        <p>No. Craftypicks no es una casa de apuestas. No recibimos apuestas, no manejamos dinero ni procesamos ninguna transacción. El sitio publica precios y qué tan acertados resultaron &mdash; lo que hagas con eso es asunto tuyo.</p>
       </details>
       <details>
-        <summary>¿A qué hora se publican las jugadas?</summary>
-        <p>A las {{POST_TIME}} todos los días. El escáner corre, se escribe la cartelera y el sitio se vuelve a compilar solo &mdash; no hay una persona decidiendo qué incluir o qué dejar fuera después de ver los resultados.</p>
+        <summary>¿A qué hora se publican las pizarras?</summary>
+        <p>A las {{POST_TIME}} todos los días. El escáner corre, se valoran las pizarras y el sitio se vuelve a compilar solo &mdash; no hay una persona decidiendo qué incluir o qué dejar fuera después de ver los resultados. Las pizarras de props se actualizan otra vez por la tarde, cuando salen las alineaciones.</p>
       </details>
       <details>
-        <summary>La línea se movió desde que la publicaron. ¿Todavía la apuesto?</summary>
-        <p>Probablemente no. Toda la ventaja es la distancia entre el precio publicado y el consenso del mercado. Si el número se movió en contra de la jugada, esa distancia se cerró y ya no queda nada que apostar. Tomar un número peor que el que calificó es como un método ganador se convierte en un mes perdedor.</p>
+        <summary>La línea se movió desde que valoraron la pizarra. ¿Sigue valiendo algo?</summary>
+        <p>Menos que antes, y a menudo nada. Toda la idea de una diferencia es la distancia entre el número de una casa y el resto del mercado; en cuanto el número se mueve, esa distancia desaparece. Por eso cada pizarra lleva la hora a la que fue valorada.</p>
       </details>
       <details>
         <summary>¿Necesito cuenta en la casa que aparece?</summary>
-        <p>Para conseguir la jugada exacta, sí &mdash; la ventaja existe en el número de esa casa, no en el promedio del mercado. Esta es la verdad poco glamorosa de apostar por precio: comparar líneas entre varias casas es la mayor parte del trabajo. Ninguna nos paga y no enlazamos a ninguna.</p>
+        <p>Para ver el número que aparece, sí &mdash; la diferencia existe en el precio de esa casa, no en el promedio del mercado. Esta es la verdad poco glamorosa de apostar por precio: comparar líneas entre varias casas es la mayor parte del trabajo. Ninguna nos paga y no enlazamos a ninguna.</p>
       </details>
       <details>
-        <summary>¿Por qué muestran las perdedoras tan a la vista?</summary>
-        <p>Porque un historial sin perdedoras es ficción. Un método con una ventaja real de {{MIN_EDGE}} pierde de todas formas una buena parte de sus jugadas &mdash; la ganancia viene de que el precio esté bien, no de acertar juegos. Quien te enseñe 70% de aciertos está escogiendo lo que le conviene o está mintiendo.</p>
+        <summary>¿Por qué las cifras de precisión se ven tan poco impresionantes?</summary>
+        <p>Porque son reales. El precio del mercado es un pronóstico muy bueno, y ganarle por un pelo sobre unos cientos de juegos es exactamente cómo se ve un modelo que funciona. Donde nuestro número no le gana al del mercado, la página lo dice en vez de esconderlo.</p>
       </details>
       <details>
-        <summary>¿Tengo que apostar todas las jugadas?</summary>
-        <p>No, y mucha gente no lo hace. Algunos lectores usan la cartelera solo como fuente para comparar líneas. Seguir la cartelera completa es simplemente la única versión que se puede calificar con honestidad.</p>
+        <summary>¿Entonces para qué sirve esto?</summary>
+        <p>Para leer la pizarra más rápido de lo que podrías abriendo seis casas de apuestas. Dónde está cada casa, dónde está el mejor número, qué piensa nuestro modelo y con qué frecuencia ha acertado. Nada en la página te está diciendo que hagas algo.</p>
       </details>
       <details>
         <summary>¿Esto siempre va a ser gratis?</summary>
-        <p>Sí. Y si eso llegara a cambiar, el registro existente seguiría siendo público y gratuito de todos modos &mdash; poner el historial detrás de un muro de pago acabaría con la razón misma de llevarlo.</p>
+        <p>Sí. Y si eso llegara a cambiar, el historial de precisión seguiría siendo público y gratuito de todos modos &mdash; ponerlo detrás de un muro de pago acabaría con la razón misma de llevarlo.</p>
       </details>
     </div>
   </div>
@@ -147,9 +145,9 @@
   <div class="wrap">
     <div class="grid-2" style="gap:44px;align-items:start">
       <div>
-        <div class="eyebrow">Juega con responsabilidad</div>
+        <div class="eyebrow">Apuesta con responsabilidad</div>
         <h2 style="font-size:28px;margin:14px 0 18px">Lee esta parte con cuidado</h2>
-        <p style="margin-bottom:16px">Apostar en deportes es entretenimiento con valor esperado negativo para casi todo el que lo hace. Un buen proceso reduce cuánto pierdes &mdash; no convierte las apuestas en un ingreso, y nadie debería tratarlas así.</p>
+        <p style="margin-bottom:16px">Apostar en deportes es entretenimiento con valor esperado negativo para casi todo el que lo hace. Un mejor precio reduce cuánto pierdes &mdash; no convierte las apuestas en un ingreso, y nadie debería tratarlas así.</p>
         <p>Si estás apostando para recuperar pérdidas, apostando dinero apartado para la renta o las cuentas, escondiéndolo de la gente cercana a ti, o sintiendo ansiedad cuando no tienes una apuesta viva &mdash; esos no son problemas de estrategia. Aléjate y habla con alguien.</p>
       </div>
       <div class="card" style="padding:28px 26px">
@@ -169,10 +167,10 @@
   <div class="wrap">
     <div class="eyebrow">Cuando quieras</div>
     <h2>Empieza por la cartelera de hoy</h2>
-    <p>Las jugadas de hoy, la aritmética detrás de cada una, y la cartelera anterior ya calificada.</p>
+    <p>Cada juego valorado, nuestro número junto al del mercado, y la precisión de cada pizarra a la vista.</p>
     <div class="hero-cta">
-      <a href="plays.html" class="btn solid">Ver las jugadas de hoy</a>
-      <a href="record.html" class="btn ghost">Leer el historial</a>
+      <a href="index.html" class="btn solid">Ver los juegos de hoy</a>
+      <a href="slate.html" class="btn ghost">Pizarra MLB</a>
     </div>
     <div class="fineprint" style="margin-top:22px">Gratis &middot; Aquí no se vende nada &middot; 21+</div>
   </div>

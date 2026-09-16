@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-"""The free work must sit ABOVE the already-posted guard, the paid work below.
+"""The free work must sit ABOVE the already-ran guard, the paid work below.
 
 This is a source-order test rather than a behavioural one on purpose. What
 went wrong was not a wrong value; it was a correct guard placed one section
-too early, so grading, the play-log dedupe and the root tidy were all skipped
-on any run that was not the one posting the day's card. Nothing raised,
-nothing printed a warning, and the site simply stopped keeping its own record
-up to date -- which is the failure the whole track-record page exists to make
+too early, so settling stored win probabilities and the root tidy were both
+skipped on any run that was not the first of the day. Nothing raised, nothing
+printed a warning, and the site simply stopped keeping its own numbers up to
+date -- which is the failure the calibration strips exist to make
 impossible.
 
 A behavioural test would need the Odds API. This one needs nothing, runs in
@@ -30,14 +30,13 @@ def line_of(pattern: str) -> int:
 
 
 def _self_test() -> None:
-    guard = line_of(r'posted\.get\("date"\) == today')
+    guard = line_of(r'marker\.get\("date"\) == today')
 
     # Free and idempotent: local file work and StatsAPI. Always runs.
     for what, pattern in (
         ("the root tidy", r"tidy\.run\("),
-        ("the play-log dedupe", r"play_log\.dedupe\("),
-        ("prop grading", r"prop_grader\.grade_pending\("),
-        ("loading the play log", r'load_json\(DATA / "history\.json"'),
+        ("loading the stored win probabilities",
+         r'load_json\(DATA / "board_ratings\.json"'),
         ("grading stored win probabilities", r"board_ratings\.grade\("),
     ):
         at = line_of(pattern)
@@ -51,7 +50,7 @@ def _self_test() -> None:
     for what, pattern in (
         ("buying odds", r"client\.odds\("),
         ("buying scores", r"client\.scores\("),
-        ("posting the card", r"play_log\.post\("),
+        ("writing the run marker", r"save_json\(RUN_MARKER"),
         # Recording a NEW rating needs today's priced board, so it is paid
         # work. Grading an old one is not -- see above.
         ("recording today's ratings", r"board_ratings\.record\("),
@@ -61,9 +60,9 @@ def _self_test() -> None:
             f"{what} is at line {at}, ABOVE the guard at {guard}. A dropped "
             f"or retried run would spend a second set of credits.")
 
-    # The early return has to rebuild, or a prop graded on a retry sits in
-    # history.json all day without reaching the track record page.
-    tail = SOURCE[SOURCE.index('posted.get("date") == today'):]
+    # The early return has to rebuild, or a probability settled on a retry
+    # sits in board_ratings.json all day without reaching the page.
+    tail = SOURCE[SOURCE.index('marker.get("date") == today'):]
     early = tail[:tail.index("return 0") + len("return 0")]
     assert "_rebuild_pages()" in early, (
         "the early return after the guard does not rebuild the pages, so "

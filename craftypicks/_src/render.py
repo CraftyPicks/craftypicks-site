@@ -77,84 +77,8 @@ def game_time(iso: str | None) -> str:
         return ""
 
 
-def posted_time(iso: str | None) -> str:
-    if not iso:
-        return config.POST_TIME_LABEL
-    try:
-        dt = datetime.fromisoformat(iso)
-        return f"{dt:%-I:%M %p} ET"
-    except Exception:
-        return config.POST_TIME_LABEL
-
-
 # ------------------------------------------------------------------ play card
-def play_card(play: dict, index: int, total: int) -> str:
-    reasons = "".join(f"<li>{i18n.reason_text(r, LANG)}</li>"
-                      for r in play.get("reasons", []))
-    tip = game_time(play.get("commence_time"))
-    return f"""
-      <div class="play" data-league="{esc(play.get('league_short',''))}">
-        <div class="play-top">
-          <div style="display:flex;align-items:center;gap:9px">
-            <span class="dot"></span>
-            <span class="stamp on">{_("posted", v=esc(posted_time(play.get("posted_at"))))}</span>
-          </div>
-          <span class="stamp">{_("play_n_of", i=index, n=total)}</span>
-        </div>
-        <div class="play-body">
-          <div class="pick">{esc(play.get('pick',''))}</div>
-          <div class="meta">{esc(play.get('league',''))} &middot; {esc(play.get('market_label',''))}
-            &middot; {esc(om.format_american(play['price']))} &middot; {esc(play.get('book',''))}</div>
-          <div class="matchup-line">{esc(play.get('matchup',''))}{f' &middot; {tip}' if tip else ''}</div>
-          <ul class="reasons">{reasons}</ul>
-          <div class="stats">
-            <div class="stat"><div class="k">{_("stake")}</div><div class="v">{play.get('stake',1.0):.1f}u</div></div>
-            <div class="stat"><div class="k">{_("edge_vs_fair")}</div>
-              <div class="v {cls_for(play.get('edge_pct',0))}">{pct(play.get('edge_pct',0))}</div></div>
-            <div class="stat"><div class="k">{_("fair_price")}</div>
-              <div class="v">{esc(om.format_american(play.get('fair_price',0)))}</div></div>
-          </div>
-        </div>
-      </div>"""
-
-
-def empty_card(note: str = "") -> str:
-    body = note or _("no_plays_body")
-    return f"""
-      <div class="play" style="grid-column:1/-1">
-        <div class="play-top">
-          <span class="stamp">{_("no_plays_h")}</span>
-          <span class="stamp">{_("no_plays_sub")}</span>
-        </div>
-        <div class="play-body">
-          <div class="pick" style="color:var(--muted)">{_("no_plays_t")}</div>
-          <p style="margin-top:10px;max-width:60ch">{esc(body)}</p>
-        </div>
-      </div>"""
-
-
-def play_cards(plays: list[dict], note: str = "") -> str:
-    if not plays:
-        return empty_card(note)
-    return "".join(play_card(p, i, len(plays)) for i, p in enumerate(plays, 1))
-
-
 # --------------------------------------------------------------------- chips
-def filter_chips(plays: list[dict]) -> str:
-    if len(plays) < 2:
-        return ""
-    counts: dict[str, tuple[str, int]] = {}
-    for p in plays:
-        short = p.get("league_short", "")
-        label, n = counts.get(short, (p.get("league", short), 0))
-        counts[short] = (label, n + 1)
-    chips = [f'<button class="chip on" data-filter="all">{_("all_plays")}</button>']
-    for short, (label, n) in sorted(counts.items(), key=lambda kv: -kv[1][1]):
-        chips.append(
-            f'<button class="chip" data-filter="{esc(short)}">{esc(label)} &middot; {n}</button>')
-    return "".join(chips)
-
-
 # -------------------------------------------------------------------- tables
 # The tag class is stable; the label is looked up at render time so it
 # follows the page's language rather than being frozen at import.
@@ -168,94 +92,7 @@ def _result_tag(result: str, fallback: str = "&mdash;") -> tuple[str, str]:
     return cls, (_(key) if key else fallback)
 
 
-def result_rows(plays: list[dict], columns: str = "full") -> str:
-    if not plays:
-        colspan = 7 if columns == "full" else 5
-        return (f'<tr><td colspan="{colspan}" style="text-align:center;padding:34px 18px">'
-                f'{_("no_graded")}</td></tr>')
-    rows = []
-    for p in plays:
-        tag, label = _result_tag(p.get("result", ""))
-        profit = p.get("profit", 0.0)
-        if columns == "full":
-            clv = p.get("clv_ev")
-            clv_cell = (f'<td class="m {cls_for(clv)}">{pct(clv)}</td>'
-                        if clv is not None else '<td class="m" style="color:var(--muted)">—</td>')
-            rows.append(f"""<tr>
-              <td class="m">{esc(_short_date(p))}</td>
-              <td class="strong">{esc(p.get('pick',''))}</td>
-              <td class="m">{esc(p.get('league',''))}</td>
-              <td class="m">{esc(om.format_american(p.get('price',0)))}</td>
-              <td class="m">{pct(p.get('edge_pct',0))}</td>
-              {clv_cell}
-              <td><span class="tag {tag}">{label}</span></td>
-              <td class="m {cls_for(profit)}">{u(profit)}</td></tr>""")
-        else:
-            rows.append(f"""<tr>
-              <td class="strong">{esc(p.get('pick',''))}</td>
-              <td class="m">{esc(p.get('league',''))}</td>
-              <td class="m">{esc(om.format_american(p.get('price',0)))}</td>
-              <td><span class="tag {tag}">{label}</span></td>
-              <td class="m {cls_for(profit)}">{u(profit)}</td></tr>""")
-    return "".join(rows)
-
-
-def yesterday_rows(plays: list[dict]) -> str:
-    if not plays:
-        return ('<tr><td colspan="7" style="text-align:center;padding:34px 18px">'
-                f'{_("nothing_yesterday")}</td></tr>')
-    rows = []
-    for p in plays:
-        tag, label = _result_tag(p.get("result", ""), _("res_pending"))
-        profit = p.get("profit", 0.0)
-        rows.append(f"""<tr>
-          <td class="strong">{esc(p.get('pick',''))}</td>
-          <td class="m">{esc(p.get('league',''))}</td>
-          <td class="m">{esc(p.get('market_label',''))}</td>
-          <td class="m">{esc(om.format_american(p.get('price',0)))}</td>
-          <td class="m">{p.get('stake',1.0):.1f}u</td>
-          <td><span class="tag {tag}">{label}</span></td>
-          <td class="m {cls_for(profit)}">{u(profit)}</td></tr>""")
-    return "".join(rows)
-
-
-def league_rows(rows: list[dict]) -> str:
-    if not rows:
-        return ('<tr><td colspan="6" style="text-align:center;padding:34px 18px">'
-                f'{_("no_graded_short")}</td></tr>')
-    out = []
-    for r in rows:
-        out.append(f"""<tr>
-          <td class="strong">{esc(r['league'])}</td>
-          <td class="m">{r['plays']}</td>
-          <td class="m">{esc(r['record'])}</td>
-          <td class="m">{r['win_pct']:.1f}%</td>
-          <td class="m {cls_for(r['units'])}">{u(r['units'])}</td>
-          <td class="m {cls_for(r['roi'])}">{pct(r['roi'])}</td></tr>""")
-    return "".join(out)
-
-
 SOURCE_KEY = {"value": "src_value", "screen": "src_screen"}
-
-
-def source_rows(rows: list[dict]) -> str:
-    """Head-to-head: which approach is actually beating the closing number."""
-    if not rows:
-        return ('<tr><td colspan="6" style="text-align:center;padding:34px 18px">'
-                f'{_("nothing_posted")}</td></tr>')
-    out = []
-    for r in rows:
-        clv = r.get("clv_beat_pct", 0.0)
-        clv_cell = (f'<td class="m {cls_for(clv - 50)}">{clv:.0f}%</td>'
-                    if r.get("clv_n") else '<td class="m" style="color:var(--muted)">—</td>')
-        out.append(f"""<tr>
-          <td class="strong">{esc(_(SOURCE_KEY[r['source']]) if r['source'] in SOURCE_KEY else r['source'])}</td>
-          <td class="m">{r['posted']}</td>
-          <td class="m">{esc(r['record'])}</td>
-          <td class="m {cls_for(r['units'])}">{u(r['units'])}</td>
-          <td class="m {cls_for(r['roi'])}">{pct(r['roi'])}</td>
-          {clv_cell}</tr>""")
-    return "".join(out)
 
 
 def _short_date(play: dict) -> str:
@@ -267,144 +104,8 @@ def _short_date(play: dict) -> str:
 
 
 # ---------------------------------------------------------------------- KPIs
-def kpi_strip(s: dict, variant: str = "home") -> str:
-    units, roi = s.get("units", 0.0), s.get("roi", 0.0)
-    if variant == "home":
-        cards = [
-            (_("kpi_units"), u(units), cls_for(units), _("kpi_units_sub")),
-            (_("kpi_roi"), pct(roi), cls_for(roi),
-             _("kpi_roi_home", n=s.get("graded", 0))),
-            (_("kpi_record"), esc(s.get("record", "0–0–0")), "",
-             _("kpi_record_sub", v=f"{s.get('win_pct',0):.1f}")),
-            (_("kpi_losing"), f"{s.get('losing_months',0)}<span style=\"color:var(--muted)\">/"
-             f"{max(s.get('total_months',0),1)}</span>", "", _("kpi_losing_sub")),
-        ]
-    else:
-        # Beat-the-close leads. It converges in tens of plays where win/loss
-        # needs thousands, so on any record this site will realistically have
-        # it is the only figure carrying real information — putting ROI first
-        # would be leading with the number that means least.
-        ci = s.get("roi_interval") or {}
-        clv_n = s.get("clv_n", 0)
-        sigma = s.get("clv_sigma")
-        cards = [
-            (_("kpi_clv"),
-             f"{s.get('clv_beat_pct', 0):.0f}%" if clv_n else "—",
-             cls_for(s.get("clv_beat_pct", 0) - 50) if clv_n else "",
-             _("kpi_clv_sigma", v=f"{sigma:.1f}", n=clv_n)
-             if clv_n and sigma is not None else _("kpi_clv_sub", n=clv_n)),
-            (_("kpi_units"), u(units), cls_for(units), _("kpi_units_sub")),
-            (_("kpi_roi"), pct(roi), cls_for(roi),
-             _("kpi_roi_range", lo=pct(ci["lo"]), hi=pct(ci["hi"]))
-             if ci.get("lo") is not None
-             else _("kpi_roi_rec", v=f"{s.get('risked',0):.0f}")),
-            (_("kpi_record"), esc(s.get("record", "0–0–0")), "",
-             _("kpi_record_sub", v=f"{s.get('win_pct',0):.1f}")),
-        ]
-    return "".join(
-        f'<div class="kpi"><div class="k">{k}</div>'
-        f'<div class="v {c}">{v}</div><div class="s">{esc(sub)}</div></div>'
-        for k, v, c, sub in cards
-    )
-
-
-def evidence_block(s: dict) -> str:
-    """Why this page leads with the closing line instead of the profit.
-
-    The argument is arithmetic and the arithmetic moves with the data, so it
-    is rendered from the numbers rather than written into the page copy. A
-    static sentence claiming the record proves something would become a lie
-    the first time the sample changed.
-    """
-    ci = s.get("roi_interval") or {}
-    clv_n, sigma = s.get("clv_n", 0), s.get("clv_sigma")
-    needed, n = ci.get("needed"), ci.get("n", 0)
-
-    # Left: what the profit column can and cannot support yet.
-    if not n:
-        profit_line = _("ev_profit_none")
-    elif ci.get("lo") is None:
-        profit_line = _("ev_profit_thin", n=n)
-    elif needed is None:
-        profit_line = _("ev_profit_losing", n=n)
-    elif needed > 0:
-        profit_line = _("ev_profit_needs", n=n, more=f"{needed:,}")
-    else:
-        profit_line = _("ev_profit_proven", n=n)
-
-    # Right: what the closing line already supports.
-    if not clv_n:
-        clv_line = _("ev_clv_none")
-    elif sigma is None or sigma < 2:
-        clv_line = _("ev_clv_early", n=clv_n)
-    else:
-        clv_line = _("ev_clv_strong", n=clv_n, v=f"{sigma:.1f}")
-
-    approx = (f'<div class="ev-note">{_("ev_approx")}</div>'
-              if ci.get("approximate") and n else "")
-    return f"""
-      <div class="ev">
-        <div class="ev-col">
-          <div class="ev-k">{_("ev_by_profit")}</div>
-          <div class="ev-n">{esc(f"{n:,}") if n else "&mdash;"}</div>
-          <p>{profit_line}</p>
-        </div>
-        <div class="ev-col lead">
-          <div class="ev-k">{_("ev_by_close")}</div>
-          <div class="ev-n g">{esc(f"{clv_n:,}") if clv_n else "&mdash;"}</div>
-          <p>{clv_line}</p>
-        </div>
-      </div>{approx}"""
-
-
 # --------------------------------------------------------------------- chart
-def month_chart(months: list[dict]) -> str:
-    if not months:
-        return ('<p style="padding:40px 0;text-align:center;color:var(--muted)">'
-                f'{_("chart_empty")}</p>')
-    def mlabel(m: dict) -> str:
-        key = m.get("key") or ""
-        try:
-            return i18n.MONTHS_SHORT[LANG][int(key.split("-")[1]) - 1]
-        except (IndexError, ValueError):
-            return str(m.get("label", ""))
-
-    peak = max((abs(m["units"]) for m in months), default=1.0) or 1.0
-    up_px, down_px = 150.0, 66.0
-    cols, described = [], []
-    for m in months:
-        val = m["units"]
-        described.append(f"{mlabel(m)} {u(val)}")
-        if val >= 0:
-            h = max(3, round(val / peak * up_px))
-            body = (f'<div class="pos"><span class="val g">{u(val,1)}</span>'
-                    f'<i style="height:{h}px"></i></div><div class="neg"></div>')
-        else:
-            h = max(3, round(abs(val) / peak * down_px))
-            body = (f'<div class="pos"></div><div class="neg">'
-                    f'<i class="down" style="height:{h}px"></i>'
-                    f'<span class="val r">{u(val,1)}</span></div>')
-        cols.append(
-            f'<div class="col" title="{esc(_("chart_tip", month=mlabel(m), year=m["year"], units=u(val), n=m["plays"]))}">'
-            f'{body}<span class="mlab">{esc(mlabel(m))}</span></div>')
-    label = _("chart_alt", v=", ".join(described))
-    return (f'<div class="chart" role="img" aria-label="{esc(label)}">'
-            f'<div class="bars">{"".join(cols)}</div></div>')
-
-
 # -------------------------------------------------------------------- signup
-def signup_form(button: str | None = None) -> str:
-    button = button or _("signup_btn")
-    if config.BEEHIIV_EMBED_URL:
-        return (f'<iframe src="{esc(config.BEEHIIV_EMBED_URL)}" class="signup-embed" '
-                f'title="{_("signup_title")}" scrolling="no" frameborder="0"></iframe>')
-    return f"""<form class="form-row" data-signup>
-      <input type="email" required placeholder="you@email.com" aria-label="{_("signup_aria")}">
-      <button class="btn solid" type="submit">{esc(button)}</button>
-    </form>
-    <p class="form-msg" role="status"></p>"""
-
-
 # ------------------------------------------------------- screen methodology
 # Labels for the screen thresholds. The page renders straight from
 # screen_config.py, so the rules shown to readers can never drift from the
@@ -442,41 +143,6 @@ def _fmt_threshold(value, kind: str) -> str:
     if kind == "odds":
         return om.format_american(value)
     return str(value)
-
-
-def screen_rule_rows(cfg: dict, skip=("fade_list",)) -> str:
-    """A None threshold means the rule is switched off — say so plainly
-    rather than printing 'None' at a reader."""
-    rows = []
-    for key, value in cfg.items():
-        if key in skip or key not in SCREEN_LABELS:
-            continue
-        label_key, cmp_key, kind = SCREEN_LABELS[key]
-        label = _(label_key)
-        comparator = _(cmp_key) if cmp_key else ""
-        if value is None:
-            rows.append(f"""<tr>
-              <td class="strong" style="color:var(--muted)">{esc(label)}</td>
-              <td style="color:var(--muted)">{_("rule_nolimit")}</td>
-              <td class="m" style="color:var(--muted)">{_("rule_off")}</td></tr>""")
-            continue
-        rows.append(f"""<tr>
-          <td class="strong">{esc(label)}</td>
-          <td>{esc(comparator)}</td>
-          <td class="m">{esc(_fmt_threshold(value, kind))}</td></tr>""")
-    return "".join(rows)
-
-
-def breakeven_rows(prices=(-150, -130, -120, -110, 100, 110, 120, 140)) -> str:
-    """What each price has to hit just to break even."""
-    rows = []
-    for price in prices:
-        need = (100 / (price + 100)) if price > 0 else (abs(price) / (abs(price) + 100))
-        rows.append(f"""<tr>
-          <td class="m strong">{esc(om.format_american(price))}</td>
-          <td class="m">{need * 100:.1f}%</td>
-          <td>{_breakeven_note(need)}</td></tr>""")
-    return "".join(rows)
 
 
 def _breakeven_note(need: float) -> str:
@@ -2112,22 +1778,6 @@ def board_cards(rows: list[dict], empty_key: str = "board_empty") -> str:
 EV_PRICES = (-200, -110, 100, 150, 900)
 
 
-def ev_price_table() -> str:
-    """What five prices imply, and what $100 returns on each."""
-    rows = "".join(
-        f'<tr><th>{om.format_american(p)}</th>'
-        f'<td class="en">{om.american_to_decimal(p):.2f}</td>'
-        f'<td class="en">{om.american_to_prob(p) * 100:.1f}%</td>'
-        f'<td class="en">${100 * om.american_to_decimal(p):,.0f}</td></tr>'
-        for p in EV_PRICES)
-    return (f'<div class="sscroll"><table class="stbl num">'
-            f'<tr><th></th>'
-            f'<td class="en hd">{_("ev_decimal")}</td>'
-            f'<td class="en hd">{_("ev_implies")}</td>'
-            f'<td class="en hd">{_("ev_returns")}</td></tr>'
-            f'{rows}</table></div>')
-
-
 def _ev_hold(width) -> float:
     """Hold implied by a two-way market that wide, quoted symmetrically."""
     if not width:
@@ -2135,26 +1785,6 @@ def _ev_hold(width) -> float:
     p = 100.0 + width / 2.0
     imp = p / (p + 100.0)
     return (2 * imp - 1) / (2 * imp)
-
-
-def ev_numbers(board: dict) -> dict:
-    """The board's own arithmetic, for the prose to quote."""
-    import statistics
-    holds, edges = [], []
-    for entry in (board.get("leagues") or {}).values():
-        for game in entry.get("games") or []:
-            for m in (game.get("markets") or {}).values():
-                if m.get("width"):
-                    holds.append(_ev_hold(m["width"]))
-                for k in ("edge_home", "edge_away"):
-                    if m.get(k) is not None:
-                        edges.append(m[k])
-    return {
-        "hold": statistics.median(holds) * 100 if holds else 0.0,
-        "sides": len(edges),
-        "negative": sum(1 for e in edges if e < 0),
-        "best": max(edges) if edges else 0.0,
-    }
 
 
 def _ev_best_side(board: dict):
@@ -2174,119 +1804,6 @@ def _ev_best_side(board: dict):
                                 "books": m.get("books"),
                                 "point": m.get("point")}
     return best
-
-
-def ev_example(board: dict) -> str:
-    """One real price, with the multiplication shown rather than asserted."""
-    b = _ev_best_side(board)
-    if not b or b["best"].get("price") is None:
-        return f'<p class="pnl-note">{_("ev_no_board")}</p>'
-    price = b["best"]["price"]
-    dec = om.american_to_decimal(price)
-    implied = om.american_to_prob(price) * 100
-    fair = (b["fair"] or 0.0)
-    game = b["game"]
-    club = _nickname(game.get("away") if b["tag"] == "away" else game.get("home"))
-    point = b["point"]
-    if point is not None:
-        point = -point if b["tag"] == "away" else point
-    label = f"{esc(club)}" + (f" {point:+g}" if point is not None else "")
-    market = _(leagues.market_label_key(game.get("league", ""), b["market"]))
-    return f"""<div class="sum">
-      <div><span>{label} &middot; {esc(market.lower())}, {_("ev_best_price")}</span>
-        <span>{esc(om.format_american(price))}</span></div>
-      <div><span>{_("ev_which_implies")}</span><span>{implied:.2f}%</span></div>
-      <div><span>{_("ev_books_say", n=b["books"] or 0)}</span>
-        <span>{fair * 100:.2f}%</span></div>
-      <div class="tot"><span>{_("ev_chance_paid", pct=f"{fair * 100:.2f}",
-                              dec=f"{dec:.4f}")}</span>
-        <span>{fair:.4f} &times; {dec:.4f} = {fair * dec:.4f}</span></div>
-    </div>
-    <p>{_("ev_example_read", back=f"{100 * fair * dec:.2f}",
-          ev=f"{b['edge']:+.2f}")}</p>"""
-
-
-def ev_gates() -> str:
-    """Every gate a price has to survive, read out of config."""
-    gates = [
-        ("ev_g_today", "SAME_DAY_ONLY", str(config.SAME_DAY_ONLY)),
-        ("ev_g_stale", "STALE_MINUTES", _("ev_minutes", n=config.STALE_MINUTES)),
-        ("ev_g_books", "MIN_BOOKS", str(config.MIN_BOOKS)),
-        ("ev_g_point", "&mdash;", _("ev_consensus_point")),
-        ("ev_g_devig", "DEVIG_METHOD", config.DEVIG_METHOD),
-        ("ev_g_band", "MIN_PRICE / MAX_PRICE",
-         f"{config.MIN_PRICE:+d} to {config.MAX_PRICE:+d}"),
-        ("ev_g_loo", "&mdash;", _("ev_n_others", n=config.MIN_BOOKS - 1)),
-        ("ev_g_ev", "MIN_EDGE_PCT", f"{config.MIN_EDGE_PCT:.1f}%"),
-        ("ev_g_pp", "MIN_EDGE_PP", f"{config.MIN_EDGE_PP:.1f} pp"),
-        ("ev_g_ceiling", "MAX_EDGE_PCT", f"{config.MAX_EDGE_PCT:.1f}%"),
-    ]
-    rows = "".join(
-        f'<tr><th><span class="gn">{i:02d}</span>{_(key + "_n")}</th>'
-        f'<td class="sval"><span class="skey">{const}</span>'
-        f'<span class="snum">{val}</span></td>'
-        f'<td class="swhy">{_(key + "_w")}</td></tr>'
-        for i, (key, const, val) in enumerate(gates, 1))
-    return f'<div class="sscroll"><table class="stbl">{rows}</table></div>'
-
-
-def ev_card_rules() -> str:
-    """And what fits on the card once a price has cleared."""
-    rules = [
-        ("ev_c_side", "&mdash;"),
-        ("ev_c_league", str(config.MAX_PLAYS_PER_LEAGUE)),
-        ("ev_c_day", str(config.MAX_PLAYS_PER_DAY)),
-        ("ev_c_stake", _("ev_one_unit")),
-    ]
-    rows = "".join(
-        f'<tr><th>{_(key + "_n")}</th><td class="snum">{val}</td>'
-        f'<td class="swhy">{_(key + "_w")}</td></tr>' for key, val in rules)
-    return f'<div class="sscroll"><table class="stbl">{rows}</table></div>'
-
-
-def ev_funnel(board: dict) -> str:
-    """The same real price, walked through every gate until it stops."""
-    b = _ev_best_side(board)
-    if not b or b["best"].get("price") is None:
-        return ""
-    price = b["best"]["price"]
-    fair = b["fair"] or 0.0
-    edge = b["edge"]
-    pp = (fair - om.american_to_prob(price)) * 100
-    game = b["game"]
-    market = _(leagues.market_label_key(game.get("league", ""), b["market"]))
-    ok = (b["books"] or 0) >= config.MIN_BOOKS
-    rows = [
-        (_("ev_f_books"), f'{b["books"]} &ge; {config.MIN_BOOKS}', ok),
-        (_("ev_f_best"),
-         f'{esc(om.format_american(price))} {_("ev_at")} '
-         f'{esc(b["best"].get("book", ""))}', True),
-        (_("ev_f_band"), f"{config.MIN_PRICE:+d} to {config.MAX_PRICE:+d}", True),
-        (_("ev_f_fair", book=esc(b["best"].get("book", ""))),
-         esc(om.format_american(om.prob_to_american(fair))), True),
-        (_("ev_f_ev"),
-         f'{edge:+.2f}% &lt; {config.MIN_EDGE_PCT:.1f}%'
-         if edge < config.MIN_EDGE_PCT
-         else f'{edge:+.2f}% &ge; {config.MIN_EDGE_PCT:.1f}%',
-         edge >= config.MIN_EDGE_PCT),
-        (_("ev_f_pp"),
-         f'{pp:+.2f} pp &lt; {config.MIN_EDGE_PP:.1f} pp'
-         if pp < config.MIN_EDGE_PP
-         else f'{pp:+.2f} pp &ge; {config.MIN_EDGE_PP:.1f} pp',
-         pp >= config.MIN_EDGE_PP),
-    ]
-    posted = all(good for _lab, _v, good in rows)
-    body = "".join(
-        f'<div class="swork-r{"" if good else " fail"}">'
-        f'<span>{lab}</span><span>{val}</span></div>'
-        for lab, val, good in rows)
-    body += (f'<div class="swork-r{"" if posted else " fail"}">'
-             f'<span>{_("ev_f_posted")}</span>'
-             f'<span>{_("ev_yes") if posted else _("ev_no")}</span></div>')
-    return (f'<div class="swork"><div class="swork-h">'
-            f'{esc(game.get("away",""))} {_("ev_at")} '
-            f'{esc(game.get("home",""))} &middot; {esc(market.lower())}</div>'
-            f'{body}</div>')
 
 
 # --------------------------------------------------------- batter homers ---

@@ -1,20 +1,20 @@
 #!/usr/bin/env python3
-"""Capture a late line on every posted play, and score it against our number.
+"""Capture a late line on every side the board priced, and score it against
+our number.
 
-Why this exists: win/loss takes thousands of bets to prove anything, because
-coin flips are loud. Whether the market moved TOWARD our number is visible in
-a couple of hundred plays, because it measures the price instead of the
-outcome. If we're consistently getting a better number than the market
-settles on, the edge is real even during a losing month. If we're not, no
-amount of winning proves anything — we just ran hot.
+Why this exists: whether the market moved TOWARD our number is visible in a
+couple of hundred sides, because it measures the price instead of the
+outcome. If our morning number is consistently closer to the close than the
+morning market was, the model is seeing something. If it isn't, no amount of
+agreeable-looking boards proves otherwise.
 
-Run a few hours after the card posts, close to when games start:
+Run a few hours after the morning build, close to when games start:
 
     ODDS_API_KEY=xxx python scripts/closing.py
 
-Two things keep it inside the free tier: it asks only for the markets
-actually on today's card, and it stands down entirely when the month's
-credits are running low. The morning card always takes priority.
+Two things keep it inside the free tier: it asks only for the markets the
+board actually carries, and it stands down entirely when the month's credits
+are running low. The morning build always takes priority.
 """
 from __future__ import annotations
 
@@ -35,7 +35,7 @@ import leagues             # noqa: E402
 import odds_math as om     # noqa: E402
 from odds_client import BudgetExhausted, OddsAPIError, OddsClient  # noqa: E402
 
-# Don't spend the month's last credits on measurement — the card matters more.
+# Don't spend the month's last credits on measurement — the boards matter more.
 SNAPSHOT_CREDIT_FLOOR = 120
 # A "late line" only means something if it was taken near tip-off.
 MAX_MINUTES_BEFORE = 240
@@ -192,26 +192,6 @@ def minutes_until(iso: str | None, now: datetime) -> float | None:
 CAPTURE_WINDOW_MINUTES = MAX_MINUTES_BEFORE
 
 
-def awaiting_close(history: list[dict], now: datetime) -> list[dict]:
-    """Plays whose closing line should be taken on this run.
-
-    Ungraded, not yet captured, and inside the window: at most
-    CAPTURE_WINDOW_MINUTES before first pitch and no more than an hour after
-    it. A play outside the window is left alone so a later run can take it,
-    rather than being spent on a number taken days out.
-    """
-    out = []
-    for p in history:
-        if p.get("result") or p.get("close_status") is not None:
-            continue
-        mins = minutes_until(p.get("commence_time"), now)
-        if mins is None:
-            continue
-        if -60 < mins <= CAPTURE_WINDOW_MINUTES:
-            out.append(p)
-    return out
-
-
 # ---------------------------------------------------------------- board ---
 # The card posts 0-3 plays on a good day and has posted two in the last nine.
 # Closing-line value needs tens of observations before it says anything, so at
@@ -321,26 +301,6 @@ def merge_board_clv(store: list[dict], rows: list[dict]) -> int:
 def _self_test() -> None:
     base = datetime(2026, 9, 1, 21, 0, tzinfo=timezone.utc)
 
-    def play(hours_ahead, **kw):
-        start = base + timedelta(hours=hours_ahead)
-        return {"commence_time": start.isoformat().replace("+00:00", "Z"),
-                "pick": f"+{hours_ahead}h", **kw}
-
-    hist = [
-        play(2),            # inside the window -- take it
-        play(0.5),          # about to start -- take it
-        play(-0.5),         # just started -- still counts
-        play(-3),           # long underway -- too late
-        play(5),            # tonight but not yet close -- leave for a later run
-        play(19 * 24),      # the August NFL case -- must never be taken now
-        play(2, result="win"),          # already graded
-        play(2, close_status="captured"),  # already taken
-    ]
-    got = [p["pick"] for p in awaiting_close(hist, base)]
-    assert got == ["+2h", "+0.5h", "+-0.5h"], got
-    assert "+456h" not in got, "a game nineteen days out is not a closing line"
-    assert "+5h" not in got, "leave it pending; a later run can still take it"
-    # The board is scored whether or not anything was bet.
     board = {"date": "2026-09-01", "leagues": {"mlb": {"games": [
         {"event_id": "e1",
          "commence_time": (base + timedelta(hours=2)).isoformat().replace("+00:00", "Z"),
@@ -380,30 +340,21 @@ def _self_test() -> None:
 
 def main() -> int:
     now = datetime.now(timezone.utc)
-    history = load(DATA / "history.json", {"plays": []})["plays"]
-
-    pending = awaiting_close(history, now)
     board = load(DATA / "board.json", {})
     due = board_sides(board, now)
 
     needed: dict[str, set] = defaultdict(set)
-    for p in pending:
-        needed[p["sport_key"]].add(p["market"])
-    # The board is snapshotted from the same responses. Its leagues are added
-    # to the request whether or not anything was bet -- which is the point:
-    # on most days nothing was.
     for row in due:
         lg = leagues.LEAGUES.get(row["league"])
         if lg:
             needed[lg.sport_key].add(row["market"])
 
     if not needed:
-        print("-- nothing to snapshot: no plays awaiting a late line and no "
-              "board game inside the window")
+        print("-- nothing to snapshot: no board game inside the window")
         return 0
 
-    print(f"-- {len(pending)} play(s) and {len(due)} board side(s) awaiting a "
-          f"late line across {len(needed)} sport(s)")
+    print(f"-- {len(due)} board side(s) awaiting a late line across "
+          f"{len(needed)} sport(s)")
     for sport, markets in needed.items():
         print(f"   {sport}: {', '.join(sorted(markets))}")
 
@@ -417,12 +368,11 @@ def main() -> int:
         print(f"!! {e}", file=sys.stderr)
         return 1
 
-    captured = skipped = 0
     for sport, markets in needed.items():
         if (client.credits_remaining is not None
                 and client.credits_remaining < SNAPSHOT_CREDIT_FLOOR):
             print(f"!! only {client.credits_remaining} credits left; skipping the "
-                  "snapshot so the morning card keeps running")
+                  "snapshot so the morning build keeps running")
             break
         try:
             games = {g["id"]: g for g in client.odds(sport, markets=sorted(markets))}
@@ -441,47 +391,6 @@ def main() -> int:
             if snap:
                 board_scored.append(score_board_side(row, snap["fair_prob"],
                                                      snap["books"]))
-
-        for play in [p for p in pending if p["sport_key"] == sport]:
-            game = games.get(play.get("event_id"))
-            if not game:
-                play["close_status"] = "unavailable"
-                skipped += 1
-                continue
-            snap = closing_consensus(game, play["market"], play["side"],
-                                     play.get("point"), play.get("book_key"))
-            if not snap:
-                play["close_status"] = "no_match"
-                skipped += 1
-                continue
-
-            mins = minutes_until(game.get("commence_time"), now)
-            play["close_status"] = "captured"
-            play["close_captured_at"] = now.isoformat(timespec="seconds")
-            play["close_minutes_before"] = mins
-            play["close_books"] = snap["books"]
-            play["close_fair_price"] = snap["fair_price"]
-            play["close_best_price"] = snap["best_price"]
-            # Level: what our price is worth against the late consensus.
-            close_edge = om.expected_value_pct(snap["fair_prob"], play["price"])
-            play["close_edge"] = round(close_edge, 2)
-            # Movement: how much BETTER that got between posting and tip-off.
-            # This is the real signal. The level alone is always positive —
-            # we take the best number on the board by definition — so only
-            # the change tells us whether the market came to us or ran away.
-            play["clv_ev"] = round(close_edge - float(play.get("edge_pct", 0.0)), 2)
-            if snap.get("consensus_point") is not None and play.get("point") is not None:
-                play["close_point"] = snap["consensus_point"]
-                play["point_move"] = round(float(snap["consensus_point"]) - float(play["point"]), 2)
-            captured += 1
-            arrow = "↑" if play["clv_ev"] > 0 else "↓"
-            print(f"   {arrow} {play.get('pick','?'):<26} posted "
-                  f"{om.format_american(play['price'])} | edge at post "
-                  f"{float(play.get('edge_pct',0)):+.1f}% → at close "
-                  f"{close_edge:+.1f}% | moved {play['clv_ev']:+.2f}%"
-                  f"  ({mins:.0f} min out)")
-
-    save(DATA / "history.json", {"plays": history})
 
     # The board log. This is the one that will actually reach a usable sample:
     # the card posts a play every few days, the board prices ninety sides a
@@ -507,29 +416,12 @@ def main() -> int:
             print(f"   ({len(store)} sides — this needs a few hundred before "
                   "it means anything)")
 
-    print(f"-- captured {captured}, unavailable {skipped}")
     if client.credits_remaining is not None:
         print(f"-- credits: {client.credits_used_this_run} used, "
               f"{client.credits_remaining} left this month")
 
-    scored = [p for p in history if p.get("clv_ev") is not None
-              and (p.get("close_minutes_before") or 0) <= MAX_MINUTES_BEFORE]
-    if scored:
-        beat = sum(1 for p in scored if p["clv_ev"] > 0)
-        avg = sum(p["clv_ev"] for p in scored) / len(scored)
-        print(f"-- running CLV: {beat}/{len(scored)} plays beat the close "
-              f"({beat/len(scored)*100:.1f}%), average {avg:+.2f}%")
-        if len(scored) < 100:
-            print(f"   ({len(scored)} plays is far too few to conclude anything — "
-                  "this needs a couple hundred)")
-    else:
-        print("-- no plays yet inside the "
-              f"{MAX_MINUTES_BEFORE}-minute window, so nothing is scored")
-
-    # Refresh the public numbers so the record page reflects tonight's capture
-    # rather than waiting for tomorrow morning's run.
-    import stats as statsmod                                  # noqa: E402
-    save(DATA / "stats.json", statsmod.compute(history))
+    # Rebuild so tonight's capture reaches the pages rather than waiting for
+    # tomorrow morning's run.
     sys.path.insert(0, str(ROOT / "_src"))
     import build                                              # noqa: E402
     build.build()

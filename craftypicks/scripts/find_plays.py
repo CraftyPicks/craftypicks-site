@@ -62,20 +62,6 @@ def todays_games(games: list[dict], now: datetime | None = None) -> list[dict]:
     return kept
 
 
-def find_candidates(games: list[dict]) -> list[dict]:
-    """Every qualifying edge across every game, unsorted."""
-    REJECTED.clear()
-    NEAR_MISSES.clear()
-    out = []
-    for game in games:
-        books = game.get("bookmakers") or []
-        if len(books) < config.MIN_BOOKS:
-            continue
-        for market_key in config.MARKETS:
-            out.extend(_scan_market(game, books, market_key))
-    return out
-
-
 def _anchor_point(outcomes: list[dict], game: dict, market_key: str) -> float | None:
     """The number a book is offering, expressed on one fixed reference side.
 
@@ -236,109 +222,6 @@ def _scan_market(game: dict, books: list[dict], market_key: str) -> list[dict]:
             "stake": config.STAKE_UNITS,
         })
     return results
-
-
-def build_card(candidates: list[dict]) -> list[dict]:
-    """Rank, thin out, and label the plays that make today's card."""
-    # Screen plays are a separate experiment, not competitors on edge. They
-    # are rules-based and can legitimately show a negative price edge — the
-    # question we're testing is whether the rules beat the number anyway.
-    # Ranking them against value plays would quietly delete the experiment.
-    screen_cands = [c for c in candidates if c.get("source") == "screen"]
-    value_cands = [c for c in candidates if c.get("source") != "screen"]
-    ranked = (sorted(screen_cands, key=lambda c: c.get("edge_pct", 0), reverse=True)
-              + sorted(value_cands, key=lambda c: c["edge_pct"], reverse=True))
-    card: list[dict] = []
-    per_league: Counter = Counter()
-    seen_events: set[tuple] = set()
-
-    props_taken = 0
-    for cand in ranked:
-        if len(card) >= (config.MAX_PLAYS_PER_DAY
-                         + getattr(config, "SCREEN_EXTRA_SLOTS", 3)):
-            break
-        is_prop = bool(cand.get("is_prop"))
-        # One side and at most one prop per game. Two sides on one event is
-        # correlated risk dressed up as diversification; a strikeout prop and
-        # the game total are related but not the same bet, so they're allowed
-        # to coexist — just never two of the same kind.
-        key = (cand["event_id"], is_prop)
-        if key in seen_events:
-            continue
-        if is_prop and props_taken >= getattr(config, "MAX_PROPS_PER_DAY", 2):
-            continue
-        is_screen = cand.get("source") == "screen"
-        if not is_screen and per_league[cand["league"]] >= config.MAX_PLAYS_PER_LEAGUE:
-            continue
-        seen_events.add(key)
-        if not is_screen:
-            per_league[cand["league"]] += 1
-        if is_prop:
-            props_taken += 1
-        # Props arrive with their own label and reasoning already attached.
-        if not cand.get("pick"):
-            cand["pick"] = _pick_label(cand)
-        if not cand.get("reasons"):
-            cand["reasons"] = _reasons(cand)
-        card.append(cand)
-
-    card.sort(key=lambda c: (c.get("commence_time") or "", -c["edge_pct"]))
-    for i, play in enumerate(card, 1):
-        play["slot"] = i
-        play["id"] = f"{play['event_id']}-{play['market']}-{play['side']}".replace(" ", "_")
-    return card
-
-
-def _nickname(team: str | None) -> str:
-    """'Cleveland Guardians' -> 'Guardians'. Keeps play labels short."""
-    if not team:
-        return ""
-    parts = str(team).split()
-    return parts[-1] if len(parts) > 1 else str(team)
-
-
-def _pick_label(play: dict) -> str:
-    side, market, point = play["side"], play["market"], play["point"]
-    if market == "h2h":
-        return f"{_nickname(side)} ML"
-    if market == "spreads":
-        return f"{_nickname(side)} {om.format_point(point)}"
-    letter = "o" if side.lower().startswith("over") else "u"
-    return f"{play['matchup_short']} {letter}{om._trim(abs(point))}"
-
-
-def _reasons(play: dict) -> list[dict]:
-    """The argument for a play, stored as data rather than as a sentence.
-
-    Each entry is a key plus the numbers it needs. The renderer turns that
-    into English or Spanish at build time, which is the only way a play
-    posted this morning can read correctly in both. Baking the sentence here
-    would permanently fix the language of every play in the archive.
-    """
-    reasons = [
-        {"k": "consensus", "books": play["books_counted"],
-         "fair": om.format_american(play.get("fair_price", 0)),
-         "pct": f"{play.get('fair_prob', 0) * 100:.1f}%"},
-        {"k": "best_price", "price": om.format_american(play.get("price", 0)),
-         "book": play["book"]},
-        {"k": "books_shorter", "shorter": play["books_shorter"],
-         "books": play["books_counted"]},
-        {"k": "edge", "edge": f"{play['edge_pct']:.1f}"},
-    ]
-    if play["market"] != "h2h":
-        reasons.insert(2, {"k": "consensus_number",
-                           "point": om._trim(abs(play["point"]))})
-    return reasons[:4]
-
-
-def summarize(card: list[dict]) -> dict:
-    by_league = Counter(p["league"] for p in card)
-    return {
-        "count": len(card),
-        "units_risked": round(sum(p["stake"] for p in card), 2),
-        "by_league": dict(by_league),
-        "avg_edge": round(sum(p["edge_pct"] for p in card) / len(card), 2) if card else 0.0,
-    }
 
 
 def now_iso() -> str:

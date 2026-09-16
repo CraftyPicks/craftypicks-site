@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """Assemble the Craftypicks static site.
 
-Reads data/plays.json, data/history.json and data/stats.json, renders the
-play cards, tables, KPI strips and chart, and writes four self-contained HTML
-files. Shared CSS is inlined so every page works on its own, on any host,
-with no build step at serve time.
+Reads the board documents in data/ — board.json, slate.json, pitchers.json
+and the per-league prop boards — renders the cards, tables and calibration
+strips, and writes the static pages. Shared CSS is linked, not inlined, so it
+is fetched once per session instead of once per page.
 
     python _src/build.py
 """
@@ -13,7 +13,7 @@ from __future__ import annotations
 import hashlib
 import json
 import sys
-from collections import defaultdict, namedtuple
+from collections import namedtuple
 from datetime import date, datetime
 from pathlib import Path
 
@@ -62,11 +62,7 @@ PAGES: dict[str, Page] = {
     "nfl/rushing.html":   Page("nfl/rushing.html",   "nfl_rushing",   "nfl_rushing",   "nfl"),
     "nfl/receiving.html": Page("nfl/receiving.html", "nfl_receiving", "nfl_receiving", "nfl"),
     "nfl/td.html":        Page("nfl/td.html",        "nfl_td",        "nfl_td",        "nfl"),
-    "record.html":   Page("record.html",   "record",   "record",   None),
     "about.html":    Page("about.html",    "about",    "about",    None),
-    "ev.html":       Page("ev.html",       "ev",       "ev",       None),
-    "plays.html":    Page("plays.html",    "plays",    "plays",    None),
-    "screens.html":  Page("screens.html",  "screens",  "screens",  None),
     "pitchers.html": Page("pitchers.html", "pitchers", "pitchers", "mlb"),
     "slate.html":    Page("slate.html",    "slate",    "slate",    None),
 }
@@ -202,10 +198,6 @@ TITLES = {
         "en": f"{leagues.LEAGUES[short].label} board — {config.SITE_NAME}",
         "es": f"Tablero {leagues.LEAGUES[short].label} — {config.SITE_NAME}"}
        for short in leagues.ORDER},
-    "plays.html": {"en": f"System Plays — {config.SITE_NAME}",
-                   "es": f"Jugadas del sistema — {config.SITE_NAME}"},
-    "record.html": {"en": f"Track Record — {config.SITE_NAME}",
-                    "es": f"Historial — {config.SITE_NAME}"},
     "about.html": {"en": f"How It Works — {config.SITE_NAME}",
                    "es": f"Cómo funciona — {config.SITE_NAME}"},
     "homers.html": {"en": f"Home runs allowed — {config.SITE_NAME}",
@@ -228,22 +220,18 @@ TITLES = {
                            "es": f"Yardas de recepción — {config.SITE_NAME}"},
     "nfl/td.html": {"en": f"Anytime touchdown — {config.SITE_NAME}",
                     "es": f"Touchdown en cualquier momento — {config.SITE_NAME}"},
-    "ev.html":    {"en": f"+EV — {config.SITE_NAME}",
-                   "es": f"+EV — {config.SITE_NAME}"},
-    "screens.html": {"en": f"The Strikeout Screens — {config.SITE_NAME}",
-                     "es": f"Los filtros de ponches — {config.SITE_NAME}"},
     "slate.html": {"en": f"MLB Board — {config.SITE_NAME}",
                    "es": f"Pizarra MLB — {config.SITE_NAME}"},
     "pitchers.html": {"en": f"Pitchers Prop — {config.SITE_NAME}",
                       "es": f"Props de lanzadores — {config.SITE_NAME}"},
 }
 META_DESC = {
-    "en": "{site} posts free NBA, NFL, MLB and college basketball plays every day — "
-          "the number, the price, the reasoning, and a fully public track record. "
-          "Nothing for sale.",
-    "es": "{site} publica jugadas gratis de NBA, NFL, MLB y básquetbol universitario "
-          "todos los días — el número, el precio, el razonamiento y un historial "
-          "totalmente público. Nada está a la venta.",
+    "en": "{site} prices the NBA, NFL, MLB and college basketball board every "
+          "day — our number beside the market's, with the reasoning and a public "
+          "accuracy score. Nothing for sale.",
+    "es": "{site} valora la pizarra de NBA, NFL, MLB y básquetbol universitario "
+          "todos los días — nuestro número junto al del mercado, con el razonamiento "
+          "y una precisión pública. Nada está a la venta.",
 }
 
 HEAD = """<!DOCTYPE html>
@@ -254,7 +242,7 @@ HEAD = """<!DOCTYPE html>
 <title>{title}</title>
 <meta name="description" content="{desc}">
 <meta property="og:title" content="{title}">
-<meta property="og:description" content="Free daily plays with receipts on every one.">
+<meta property="og:description" content="Free daily pricing boards, with the accuracy score in public.">
 <meta property="og:type" content="website">
 <meta name="theme-color" content="#08090B">
 {hreflang}
@@ -267,9 +255,7 @@ HEAD = """<!DOCTYPE html>
     <a href="{up}index.html" class="logo">Craftypicks<em>.</em></a>
     <nav class="nav-links">{links}</nav>
     <div class="nav-cta">
-      <a href="{ev_href}" class="link-quiet">+EV</a>
       <a href="{about_href}" class="link-quiet">{why_free}</a>
-      <a href="{plays_href}" class="btn solid sm">{cta}</a>
     </div>
   </div>
 </header>
@@ -291,6 +277,11 @@ def footer_html(lang: str, year: int, up: str = "",
     L = lambda k: i18n.t(k, lang)
     updated = (f'<p class="foot-stamp">{i18n.t("foot_stamp", lang, v=stamp)}</p>'
                if stamp else "")
+    # The league boards are what the site is now, so the footer lists them
+    # rather than a card that no longer exists.
+    board_links = "\n        ".join(
+        f'<a href="{up}{short}/index.html">{leagues.LEAGUES[short].label}</a>'
+        for short in leagues.ORDER)
     return f"""
 <footer>
   <div class="wrap">
@@ -300,16 +291,14 @@ def footer_html(lang: str, year: int, up: str = "",
         <p style="font-size:14px;max-width:34ch">{L("foot_tagline")}</p>
       </div>
       <div>
-        <h4>{L("foot_plays")}</h4>
-        <a href="{up}plays.html">{L("foot_today")}</a>
-        <a href="{up}plays.html#results">{L("foot_yest")}</a>
-        <a href="{up}record.html">{L("foot_log")}</a>
+        <h4>{L("foot_boards")}</h4>
+        {board_links}
       </div>
       <div>
         <h4>{L("foot_trans")}</h4>
-        <a href="{up}record.html">{L("nav_record")}</a>
+        <a href="{up}slate.html">{L("nav_slate")}</a>
         <a href="{up}about.html#method">{L("foot_method")}</a>
-        <a href="{up}screens.html">{L("nav_screens")}</a>
+        <a href="{up}about.html#accuracy">{L("foot_accuracy")}</a>
       </div>
       <div>
         <h4>{L("foot_about")}</h4>
@@ -342,30 +331,6 @@ def load(name: str, default):
         return default
 
 
-def latest_graded_day(history: list[dict], before: str) -> tuple[str, list[dict]]:
-    by_day: dict[str, list[dict]] = defaultdict(list)
-    for p in history:
-        if p.get("result") and p.get("posted_date"):
-            by_day[p["posted_date"]].append(p)
-    days = sorted((d for d in by_day if d < before), reverse=True)
-    if not days:
-        return "", []
-    return days[0], by_day[days[0]]
-
-
-def pretty_day(stamp: str, lang: str = "en") -> str:
-    """'Wednesday, August 26' / 'miércoles, 26 de agosto'.
-
-    Built from i18n's own month and weekday tables rather than strftime,
-    because the GitHub runner has no Spanish locale installed and would
-    silently print English dates on the Spanish pages.
-    """
-    try:
-        return i18n.day_and_date(datetime.fromisoformat(stamp), lang)
-    except Exception:
-        return stamp
-
-
 def doc_date_label(doc: dict, lang: str = "en") -> str:
     """The headline date for a data file, in the page's language.
 
@@ -382,45 +347,12 @@ def doc_date_label(doc: dict, lang: str = "en") -> str:
     return doc.get("date_label", "")
 
 
-def _caps_status(scfg, lang: str = "en") -> str:
-    """Describe the universal caps as they actually are right now."""
-    caps = scfg.HARD_CAPS
-    L = lambda k, **kw: i18n.t(k, lang, **kw)
-    if not [k for k, v in caps.items() if v is not None]:
-        return L("caps_off")
-    parts = []
-    if caps.get("max_line") is not None:
-        parts.append(L("cap_max_line", v=f"{caps['max_line']:g}"))
-    if caps.get("banned_line") is not None:
-        parts.append(L("cap_banned_line", v=f"{caps['banned_line']:g}"))
-    if caps.get("worst_juice") is not None:
-        parts.append(L("cap_worst_juice", v=f"{int(caps['worst_juice']):+d}"))
-    return L("caps_active", v="; ".join(parts))
-
-
-def _price_note(scfg, lang: str = "en") -> str:
-    # The plus-money requirement was removed from every screen rather than
-    # switched off. A screen's job is to say the matchup is good; whether the
-    # price is good is a separate question, answered against the vig-free
-    # number rather than against zero. Under the old rule a strong matchup
-    # could be thrown out for being correctly priced, which is backwards.
-    return i18n.t("price_note", lang)
-
-
-
 def esc_min(t) -> str:
     return str(t).replace("&", "&amp;").replace("<", "&lt;")
 
 
-def net_units(plays: list[dict]) -> float:
-    return round(sum(p.get("profit", 0.0) for p in plays), 2)
-
-
 # ---------------------------------------------------------------------- build
 def build() -> None:
-    plays_doc = load("plays.json", {"plays": [], "summary": {}, "date_label": "", "note": ""})
-    stats = load("stats.json", {})
-    history = load("history.json", {"plays": []})["plays"]
     slate_doc = load("slate.json", {"date_label": "", "games": [], "summary": {}})
     pitch_doc = load("pitchers.json", {"date_label": "", "pitchers": [], "summary": {}})
     board_doc = load("board.json", {})
@@ -465,63 +397,12 @@ def build() -> None:
         for stat in ("points", "assists", "rebounds")
     }
 
-    def build_tokens(lang, plays_doc, stats, history, slate_doc,
-                     pitch_doc, closing_doc=None):
+    def build_tokens(lang, slate_doc, pitch_doc):
         """Every {{TOKEN}} a page body can contain, for one language."""
         L = lambda k, **kw: i18n.t(k, lang, **kw)
         pl = lambda n: i18n.plural(n, lang)
 
-        card = plays_doc.get("plays", [])
-        today = plays_doc.get("date", datetime.utcnow().date().isoformat())
-        y_date, y_plays = latest_graded_day(history, today)
-        recent = (stats.get("recent") or [])
-
-        summary = plays_doc.get("summary", {})
-        by_league = summary.get("by_league", {})
-        league_line = " &middot; ".join(f"{n} {lg}" for lg, n in by_league.items()) or "—"
-
-        post_time = plays_doc.get("post_time", config.POST_TIME_LABEL)
-        if card:
-            count_line = L("count_line_card", n=len(card), s=pl(len(card)),
-                           time=post_time)
-        else:
-            count_line = L("count_line_none")
-
-        try:
-            import screen_config as scfg
-            screen_tokens = {
-                "{{SCREEN_A_ROWS}}": R.screen_rule_rows(scfg.SCREEN_A),
-                "{{SCREEN_B_ROWS}}": R.screen_rule_rows(scfg.SCREEN_B),
-                "{{HARD_CAP_ROWS}}": R.screen_rule_rows(scfg.HARD_CAPS),
-                "{{SCREEN_DAILY_CAP}}": str(getattr(scfg, "MAX_SCREEN_PLAYS_PER_DAY", 5)),
-                "{{CAPS_STATUS}}": _caps_status(scfg, lang),
-                "{{SCREEN_B_PRICE_NOTE}}": _price_note(scfg, lang),
-            }
-        except Exception as e:                                   # noqa: BLE001
-            print(f"!! screen config unavailable ({e}); methodology page will be thin")
-            blank = ('<tr><td colspan="3" style="text-align:center;padding:30px">'
-                     f'{L("screen_missing")}</td></tr>')
-            screen_tokens = {k: blank for k in
-                             ("{{SCREEN_A_ROWS}}", "{{SCREEN_B_ROWS}}",
-                              "{{HARD_CAP_ROWS}}")}
-            screen_tokens["{{SCREEN_DAILY_CAP}}"] = "5"
-            screen_tokens["{{CAPS_STATUS}}"] = ""
-            screen_tokens["{{SCREEN_B_PRICE_NOTE}}"] = ""
-
-        graded_n = stats.get("graded", 0)
-        if graded_n:
-            record_intro = L("record_intro", n=graded_n, p=stats.get("pending", 0))
-            months_line = L("months_line", n=stats.get("losing_months", 0),
-                            total=stats.get("total_months", 0))
-            log_heading = L("log_heading", n=min(20, len(recent)))
-        else:
-            record_intro = L("record_intro_empty")
-            months_line = L("months_line_empty")
-            log_heading = L("log_heading_empty")
-
         return {
-            **screen_tokens,
-            "{{BREAKEVEN_ROWS}}": R.breakeven_rows(),
             "{{SLATE_DATE}}": doc_date_label(slate_doc, lang) or L("not_rated"),
             "{{SLATE_ROWS}}": R.slate_rows(slate_doc.get("games", [])),
             "{{PITCH_DATE}}": doc_date_label(pitch_doc, lang) or L("not_rated"),
@@ -536,56 +417,16 @@ def build() -> None:
             "{{CALIBRATION_ROWS}}": R.calibration_rows(
                 (slate_doc.get("summary") or {}).get("calibration", [])),
             "{{BRIER_LINE}}": R.brier_line(slate_doc.get("summary") or {}),
-            "{{RECORD_INTRO}}": record_intro,
-            "{{DRAWDOWN_LINE}}": (
-                L("drawdown", v=R.u(stats.get("drawdown", 0.0))) if graded_n
-                else L("drawdown_empty", v=R.pct(stats.get("clv_avg", 0.0)))
-            ),
-            "{{MONTHS_LINE}}": months_line,
-            "{{LOG_HEADING}}": log_heading,
-            "{{DATE_LABEL}}": doc_date_label(plays_doc, lang),
-            "{{COUNT_LINE}}": count_line,
-            "{{PLAY_COUNT}}": str(len(card)),
-            "{{UNITS_RISKED}}": f"{summary.get('units_risked', 0):.1f}u",
-            "{{LEAGUE_LINE}}": league_line,
-            "{{FILTER_CHIPS}}": R.filter_chips(card),
-            "{{FILTER_BLOCK}}": (f'<div class="filters" style="margin-top:36px">'
-                                 f'{R.filter_chips(card)}</div>') if R.filter_chips(card) else "",
-            "{{BOARD_EYEBROW}}": (
-                L("eyebrow_posted", date=doc_date_label(plays_doc, lang), time=post_time)
-                if card else L("eyebrow_scan", time=post_time)),
-            "{{HERO_CARD}}": R.play_card(card[0], 1, len(card)) if card
-                             else R.empty_card(plays_doc.get("note", "")),
-            "{{PLAY_CARDS}}": R.play_cards(card, plays_doc.get("note", "")),
-            "{{YESTERDAY_LABEL}}": (pretty_day(y_date, lang) if y_date
-                                    else L("last_graded_card")),
-            "{{YESTERDAY_ROWS}}": R.yesterday_rows(y_plays),
-            "{{YESTERDAY_NET}}": R.u(net_units(y_plays)),
-            "{{YESTERDAY_NET_CLASS}}": R.cls_for(net_units(y_plays)),
-            "{{KPI_HOME}}": R.kpi_strip(stats, "home"),
-            "{{KPI_RECORD}}": R.kpi_strip(stats, "record"),
-            "{{EVIDENCE}}": R.evidence_block(stats),
-            "{{RECENT_ROWS}}": R.result_rows(recent[:6], "compact"),
-            "{{RECENT_NET}}": R.u(net_units(recent[:6])),
-            "{{RECENT_NET_CLASS}}": R.cls_for(net_units(recent[:6])),
-            "{{RECENT_COUNT}}": str(min(6, len(recent))),
-            "{{LOG_ROWS}}": R.result_rows(recent[:20], "full"),
-            "{{LOG_COUNT}}": str(min(20, len(recent))),
-            "{{LEAGUE_ROWS}}": R.league_rows(stats.get("by_league", [])),
-            "{{SOURCE_ROWS}}": R.source_rows(stats.get("by_source", [])),
-            "{{MONTH_CHART}}": R.month_chart(stats.get("months", [])),
-            "{{GRADED_COUNT}}": str(stats.get("graded", 0)),
-            "{{PENDING_COUNT}}": str(stats.get("pending", 0)),
-            "{{LOSING_MONTHS}}": str(stats.get("losing_months", 0)),
-            "{{TOTAL_MONTHS}}": str(stats.get("total_months", 0)),
+            # Overridden per page by the body that owns it (hits, the four
+            # NFL boards). Empty is the right default: nothing else has a date.
+            "{{DATE_LABEL}}": "",
+            # Overridden on every page that has one (tonight, each league).
+            "{{BOARD_EYEBROW}}": "",
             "{{MIN_EDGE}}": f"{config.MIN_EDGE_PCT:.1f}%",
             "{{MIN_BOOKS}}": str(config.MIN_BOOKS),
             "{{MAX_PLAYS}}": str(config.MAX_PLAYS_PER_DAY),
             "{{POST_TIME}}": config.POST_TIME_LABEL,
-            "{{SIGNUP}}": R.signup_form(),
-            "{{YEAR}}": str(datetime.utcnow().year),
             "{{TONIGHT_BOARD}}": R.board_cards(tonight_rows(board_doc)),
-            # ---- the +EV page, generated so it cannot drift from config
             "{{BAT_DATE}}": doc_date_label(batter_doc, lang) or L("not_rated"),
             "{{BATTER_CARDS}}": R.batter_cards(batter_doc.get("batters", [])),
             "{{BAT_CALIBRATION}}": R.batter_calibration(
@@ -603,18 +444,6 @@ def build() -> None:
                               s=pl(len(hit_doc.get("batters", [])))),
             "{{HR_DATE}}": doc_date_label(homer_doc, lang) or L("not_rated"),
             "{{HOMER_CARDS}}": R.homer_cards(homer_doc.get("starters", [])),
-            "{{FORM_TABLE}}": "",
-            "{{EV_PRICES}}": R.ev_price_table(),
-            "{{EV_EXAMPLE}}": R.ev_example(board_doc),
-            "{{EV_GATES}}": R.ev_gates(),
-            "{{EV_CARD}}": R.ev_card_rules(),
-            "{{EV_FUNNEL}}": R.ev_funnel(board_doc),
-            "{{EV_HOLD}}": f"{R.ev_numbers(board_doc)['hold']:.2f}",
-            "{{EV_SIDES}}": str(R.ev_numbers(board_doc)["sides"]),
-            "{{EV_NEGATIVE}}": str(R.ev_numbers(board_doc)["negative"]),
-            "{{EV_PLAYS}}": L("ev_n_plays", n=len(plays_doc.get("plays") or []),
-                              s=pl(len(plays_doc.get("plays") or []))),
-            "{{EV_DAY}}": _board_day(board_doc.get("date", ""), lang) or "&mdash;",
             "{{LEAGUE_BOARD}}": "",
             "{{LEAGUE_NAME}}": "",
             "{{LEAGUE_CALIBRATION}}": "",
@@ -625,7 +454,6 @@ def build() -> None:
 
 
 
-    updated = plays_doc.get("generated_at", "")[:16].replace("T", " ") or "—"
     year = datetime.utcnow().year
 
     # Any language tree we are no longer publishing is removed here rather
@@ -667,8 +495,7 @@ def build() -> None:
         out_dir = ROOT if lang == "en" else ROOT / lang
         out_dir.mkdir(parents=True, exist_ok=True)
 
-        tokens = build_tokens(lang, plays_doc, stats, history,
-                              slate_doc, pitch_doc)
+        tokens = build_tokens(lang, slate_doc, pitch_doc)
 
         for out_name, page in PAGES.items():
             key = page.key
@@ -707,9 +534,8 @@ def build() -> None:
                 page_tokens["{{LEAGUE_CALIBRATION}}"] = \
                     R.calibration_section(scored)
             if page.body == "hits":
-                # {{DATE_LABEL}} is otherwise the plays board's date; the
-                # hits page is the only body that consumes it, so it is
-                # safe to point it at the hits document here instead.
+                # {{DATE_LABEL}} has no site-wide value any more; each body
+                # that shows a date supplies its own here.
                 page_tokens["{{DATE_LABEL}}"] = (
                     doc_date_label(hit_doc, lang) or i18n.t("not_rated", lang))
             elif page.body in NBA_DOCS:
@@ -735,8 +561,7 @@ def build() -> None:
             elif page.body in NFL_DOCS:
                 # Four sibling pages sharing one set of token names. Each
                 # page's own document supplies the values, the same way the
-                # hits page above supplies its own DATE_LABEL rather than
-                # the plays board's.
+                # hits page above supplies its own DATE_LABEL.
                 nfl_doc = NFL_DOCS[page.body]
                 nfl_rows = nfl_doc.get("rows", [])
                 if page.body == "nfl_td":
@@ -767,12 +592,11 @@ def build() -> None:
                 lang=lang, desc=META_DESC[lang].format(site=config.SITE_NAME),
                 hreflang=hreflang, up=up, views=views,
                 views_empty=("" if views else " is-empty"),
-                about_href=f"{up}about.html", plays_href=f"{up}plays.html",
-                ev_href=f"{up}ev.html",
-                why_free=i18n.t("nav_why", lang), cta=i18n.t("cta_plays", lang),
-                banner=mock_banner(lang) if plays_doc.get("mock") else "",
+                about_href=f"{up}about.html",
+                why_free=i18n.t("nav_why", lang),
+                banner=mock_banner(lang) if board_doc.get("mock") else "",
             )
-            stamp = (plays_doc.get("generated_at", "") or "")[:16].replace("T", " ")
+            stamp = (board_doc.get("generated_at", "") or "")[:16].replace("T", " ")
             html_out = head + body + footer_html(lang, year, up, stamp)
             target = out_dir / out_name
             target.parent.mkdir(parents=True, exist_ok=True)

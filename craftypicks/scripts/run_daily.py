@@ -1,14 +1,13 @@
 #!/usr/bin/env python3
 """The whole daily job, in order:
 
-    1. grade every posted play that now has a final score
+    1. free upkeep — tidy the repo, settle stored win probabilities
     2. pull today's odds for the leagues that are in season
-    3. find the plays worth posting and write today's card
-    4. recompute the public stats
-    5. rebuild the static site from those files
+    3. price and rate every board from those odds
+    4. rebuild the static site from those files
 
-Safe to run more than once a day — plays are deduped by id, and grading is
-idempotent.
+Safe to run more than once a day: the free work is idempotent, and a marker
+file stops a retry buying a second set of odds.
 
     python scripts/run_daily.py              # live, needs ODDS_API_KEY
     CRAFTYPICKS_MOCK=1 python scripts/run_daily.py    # synthetic data, 0 credits
@@ -29,29 +28,20 @@ ROOT = HERE.parent
 DATA = ROOT / "data"
 
 import config              # noqa: E402
+# find_plays is imported for todays_games() only -- the day filter every
+# board shares. The play-selection half of this program is gone.
 import find_plays          # noqa: E402
 import grade as grader     # noqa: E402
-import grade_props as prop_grader  # noqa: E402
-import play_log           # noqa: E402
-import tidy               # noqa: E402
-import stats as statsmod   # noqa: E402
+import tidy                # noqa: E402
 
 # Props are an optional extra. If props.py is missing or won't import, the
-# daily card still has to go out — a nice-to-have must never be able to take
-# down the thing the site exists for.
+# game boards still have to go out — a nice-to-have must never be able to
+# take down the thing the site exists for.
 try:
     import props           # noqa: E402
 except Exception as _props_err:                              # noqa: BLE001
     props = None
     print(f"!! props module unavailable ({_props_err}); sides only", file=sys.stderr)
-
-# The strikeout screens. Also optional — a rules system that fails to import
-# must not stop the price scanner from posting.
-try:
-    import screen_source   # noqa: E402
-except Exception as _screen_err:                             # noqa: BLE001
-    screen_source = None
-    print(f"!! screen system unavailable ({_screen_err})", file=sys.stderr)
 
 # Pitcher projections. Optional like everything else.
 try:
@@ -81,7 +71,7 @@ except Exception as _slate_err:                              # noqa: BLE001
     print(f"!! slate rating unavailable ({_slate_err})", file=sys.stderr)
 
 # The board is the site's main page. It is still guarded like everything else
-# here: a failure to price must not stop the card going out.
+# here: a failure to price one league must not stop the rest.
 try:
     import board as board_mod   # noqa: E402
     import leagues              # noqa: E402
@@ -92,7 +82,7 @@ except Exception as _board_err:                              # noqa: BLE001
 from odds_client import BudgetExhausted, OddsAPIError, OddsClient  # noqa: E402
 
 # Yesterday's finals, from the free sources. Optional like everything else:
-# the card must go out whether or not ESPN answered.
+# the boards go out whether or not ESPN answered.
 try:
     import results         # noqa: E402
     import results_store   # noqa: E402
@@ -121,6 +111,9 @@ def save_json(path: Path, payload) -> None:
     path.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n")
 
 
+# The "we already bought odds today" marker. See the guard in main().
+RUN_MARKER = DATA / "last_run.json"
+
 CREDIT_LOG = DATA / "credits.json"
 CREDIT_LOG_KEEP = 60
 
@@ -147,7 +140,7 @@ def record_credits(date_str: str, spent: int, left, extras: int = 0) -> None:
     bought props for the first time in three days, its 17 credits became a
     22/day reserve, and that reserve would have skipped props the next
     morning -- the reserve using props spend as its reason to stop buying
-    props. A reserve exists to protect the card. Only the card belongs in
+    props. A reserve exists to protect the game boards. Only they belong in
     it."""
     days = [d for d in credit_history() if d.get("date") != date_str]
     days.append({"date": date_str, "spent": int(spent),
@@ -189,9 +182,9 @@ def archive_board(sport: str, day: str, games: list[dict]) -> None:
 def _rebuild_pages() -> None:
     """Regenerate the static site from whatever is on disk right now.
 
-    Section 5 does this at the end of a full run. The early return after the
-    guard needs it too: a prop graded a moment ago has to reach the track
-    record page today rather than waiting for tomorrow's card.
+    Section 4 does this at the end of a full run. The early return after the
+    guard needs it too: a win probability settled a moment ago has to reach
+    the calibration strip today rather than waiting for tomorrow.
     """
     sys.path.insert(0, str(ROOT / "_src"))
     import build  # noqa: PLC0415
@@ -203,7 +196,6 @@ def main() -> int:
     today = now.date().isoformat()
     print(f"== Craftypicks daily run — {now:%Y-%m-%d %H:%M %Z}")
 
-    history = load_json(DATA / "history.json", {"plays": []})["plays"]
     # Every win probability the non-MLB boards have published, and whether it
     # came true. Loaded here so section 0 can grade it for free.
     board_rated = load_json(DATA / "board_ratings.json",
@@ -215,32 +207,16 @@ def main() -> int:
     #
     # It used to sit after the guard, which was the wrong boundary: the guard
     # exists to stop a retry buying a second set of odds, and it was also
-    # stopping the parts that keep the public record honest. The effect was
-    # that grading happened at most once a day, in whichever run posted the
-    # card -- so on 2026-09-11, when GitHub dropped all three morning
-    # attempts, nine settled props stayed pending, two duplicate plays stayed
-    # in the log and eleven stray files stayed at the repo root, and the
-    # 14:21 retry the day before had reported "nothing to do" while all of
-    # that was outstanding.
+    # stopping the parts that keep the public numbers honest. On 2026-09-11,
+    # when GitHub dropped all three morning attempts, eleven stray files
+    # stayed at the repo root and the settled probabilities stayed ungraded,
+    # while the 14:21 retry the day before reported "nothing to do".
     try:
         tidy.run(DATA.parent.parent, DATA)
     except Exception as e:                                   # noqa: BLE001
         print(f"!! tidy failed: {e}", file=sys.stderr)
 
-    dropped = play_log.dedupe(history)
-    if dropped:
-        print(f"-- log: dropped {dropped} duplicate posting(s) of a play "
-              f"already in the log")
-
-    free_graded = 0
-    try:
-        import screen_config as _season_cfg
-        free_graded = prop_grader.grade_pending(history, _season_cfg.SEASON)
-    except Exception as e:                                   # noqa: BLE001
-        print(f"!! prop grading failed: {e}", file=sys.stderr)
-
-    if dropped or free_graded:
-        save_json(DATA / "history.json", {"plays": history})
+    settled = 0
 
     # The win probabilities the non-MLB boards published, settled against the
     # finals the store already holds. Free -- results_store is filled by the
@@ -272,24 +248,27 @@ def main() -> int:
             print(f"!! rating grades failed ({type(e).__name__}: {e})",
                   file=sys.stderr)
 
-    # Already posted today? Then this is a retry of a scheduled run that
+    # Already bought odds today? Then this is a retry of a scheduled run that
     # already succeeded, and it must not spend a second set of credits.
     # GitHub's scheduler is unreliable enough that the workflow fires several
     # times in the 9 AM hour; this is what makes that safe.
     #
+    # The marker is its own file rather than a board document, because
+    # run_boards.py writes board.json on its own schedule and this run would
+    # then read that as "I already went".
+    #
     # Note what is above this line and what is below it: free work runs
     # always, paid work runs once.
-    posted = load_json(DATA / "plays.json", {})
+    marker = load_json(RUN_MARKER, {})
     forced = os.environ.get("CRAFTYPICKS_FORCE", "").strip() == "1"
-    if (posted.get("date") == today and not forced
+    if (marker.get("date") == today and not forced
             and os.environ.get("CRAFTYPICKS_MOCK", "").strip() != "1"):
-        print(f"-- already posted a card for {today} at "
-              f"{posted.get('generated_at', 'an earlier run')}; "
-              f"no odds will be bought.")
+        print(f"-- odds for {today} were already bought at "
+              f"{marker.get('at', 'an earlier run')}; nothing more to buy.")
         print("   (set CRAFTYPICKS_FORCE=1 to re-run anyway)")
-        # The pages still get rebuilt: a prop graded a moment ago has to
-        # reach the track record today, not tomorrow morning.
-        if dropped or free_graded:
+        # The pages still get rebuilt: a probability settled a moment ago has
+        # to reach the calibration strip today, not tomorrow morning.
+        if settled:
             _rebuild_pages()
         return 0
 
@@ -301,29 +280,15 @@ def main() -> int:
     if client.mock:
         print("-- MOCK MODE: synthetic odds, no credits spent")
 
-    # ------------------------------------------------------------- 1. grade
-    sports_to_grade = grader.pending_sports(history)
+    # Finals are pulled on demand further down -- the slate grader asks for
+    # MLB scores only when it has a rated game still waiting on one, and
+    # results_store fetches the rest from the free sources. Nothing needs a
+    # blanket scores call any more.
     scores_by_sport: dict[str, dict] = {}
-    for sport in sorted(sports_to_grade):
-        try:
-            scores_by_sport[sport] = grader.score_map(client.scores(sport))
-        except BudgetExhausted as e:
-            print(f"!! {e}", file=sys.stderr)
-            break
-        except OddsAPIError as e:
-            print(f"!! scores for {sport} failed: {e}", file=sys.stderr)
-    graded = grader.grade_pending(history, scores_by_sport)
-    # Props were graded in section 0, before the guard, because that costs
-    # nothing. This line only carries the count into the same summary.
-    graded += free_graded
-    print(f"-- graded {graded} play(s); {sum(1 for p in history if not p.get('result'))} still pending")
 
     # -------------------------------------------------------------- 2. odds
-    card: list[dict] = []
-    note = ""
     # Declared out here on purpose: sections 3b and 3c read them, and an odds
     # failure inside the try must not leave those names undefined.
-    candidates: list[dict] = []
     prop_events: list[dict] = []
     slate_rows: list[dict] = []
     boards: dict[str, list[dict]] = {}
@@ -332,7 +297,7 @@ def main() -> int:
     # leave it undefined.
     in_season: list[str] = []
     # What the optional extras cost this run, so the reserve can be built on
-    # the card alone. See record_credits.
+    # the game boards alone. See record_credits.
     extra_credits = 0
     try:
         in_season = client.in_season_sports()
@@ -354,19 +319,9 @@ def main() -> int:
             all_games = client.odds(sport)
             archive_board(sport, today, all_games)
             games = find_plays.todays_games(all_games)
-            dropped = len(all_games) - len(games)
-            found = find_plays.find_candidates(games)
+            not_today = len(all_games) - len(games)
             print(f"   {sport}: {len(games)} games today "
-                  f"({dropped} not today, skipped), {len(found)} qualifying edges")
-            if getattr(find_plays, "REJECTED", None):
-                for reason, count in find_plays.REJECTED.most_common():
-                    print(f"      rejected — {reason}: {count}")
-                near = sorted(getattr(find_plays, "NEAR_MISSES", []),
-                              key=lambda n: -n[2])[:5]
-                for side, price, ev, pp, gate in near:
-                    print(f"      near miss ({gate}) {str(side)[:22]:<22} "
-                          f"{price:>5}  EV {ev:>5.2f}%  pp {pp:>5.2f}")
-            candidates.extend(found)
+                  f"({not_today} not today, skipped)")
 
             # Price the whole board for this league, not only the plays. This is
             # free: the odds were already pulled above, and nothing here calls
@@ -397,7 +352,7 @@ def main() -> int:
                 # Same event ids, so the two join cleanly.
                 # Guarded like every other module call in this loop. The board
                 # going out without our number is a worse day than usual; the
-                # card not going out at all is a broken morning.
+                # board not going out at all is a broken morning.
                 if board_mod and lg and boards.get(lg.short):
                     try:
                         n = board_mod.merge_model(boards[lg.short],
@@ -411,7 +366,7 @@ def main() -> int:
             # Props: per-event, so strictly capped. See config.PROP_MAX_EVENTS.
             # The whole block is wrapped: a prop market that's missing, shaped
             # unexpectedly, or unavailable for a given game must never cost us
-            # the card.
+            # the rest of the run.
             prop_cost = config.PROP_MAX_EVENTS * len(getattr(config, "PROP_MARKETS", []) or [])
             spare = config.spare_credits(client.credits_remaining,
                                          now.date(), len(in_season),
@@ -426,7 +381,7 @@ def main() -> int:
                 print(f"   props: skipped — {client.credits_remaining} credits left, "
                       f"{config.days_until_reset(now.date())} days to reset, "
                       f"reserving {per_day}/day ({why}), "
-                      f"spare after reserving the card is {spare}, props need {prop_cost}")
+                      f"spare after reserving the boards is {spare}, props need {prop_cost}")
             elif (props and getattr(config, "PROP_MARKETS", None)
                     and sport in getattr(config, "PROP_SPORTS", [])
                     and games):
@@ -445,67 +400,28 @@ def main() -> int:
                         # Kept so the screens can reuse this payload for free.
                         detail.setdefault("sport_key", sport)
                         prop_events.append(detail)
-                        for market_key in config.PROP_MARKETS:
-                            hits = props.scan_event(detail, market_key)
-                            if hits:
-                                print(f"     {market_key}: {len(hits)} edge(s)")
-                            candidates.extend(hits)
                 except Exception as e:                       # noqa: BLE001
                     print(f"   !! props failed ({type(e).__name__}: {e}) — "
-                          "continuing with sides only", file=sys.stderr)
-        for cand in candidates:
-            cand.setdefault("source", "value")
-
-        # The screens run on the games we already bought prop odds for, so
-        # they cost nothing extra. Tagged separately so the record can judge
-        # them against the price scanner rather than blending the two.
-        if screen_source and prop_events:
-            try:
-                screen_plays = screen_source.build_plays(
-                    prop_events, now.strftime("%m/%d/%Y"))
-                candidates.extend(screen_plays)
-            except Exception as e:                           # noqa: BLE001
-                print(f"   !! screens failed ({type(e).__name__}: {e}) — "
-                      "continuing without them", file=sys.stderr)
-
-        card = find_plays.build_card(candidates)
+                          "continuing without them", file=sys.stderr)
     except BudgetExhausted as e:
-        note = "Credit budget for the month is spent — no new plays until it resets."
         print(f"!! {e}", file=sys.stderr)
     except OddsAPIError as e:
-        note = "The odds feed didn't respond this morning. No plays posted."
         print(f"!! {e}", file=sys.stderr)
 
     if client.credits_remaining is not None:
         print(f"-- API credits: {client.credits_used_this_run} used this run, "
               f"{client.credits_remaining} left this month")
 
-    # ------------------------------------------------------- 3. today's card
-    posted_at = now.isoformat(timespec="seconds")
-    # play_log.post, not a set of today's ids. The old rule only compared a
-    # play against the ones posted THIS morning, so a play the card offered
-    # again tomorrow -- same event, same market, same side -- was appended a
-    # second time. Two NFL plays are already in the log twice for that
-    # reason; post() collapses them on the way past.
-    added = play_log.post(history, card, today, posted_at)
-    if added != len(card):
-        print(f"-- log: {added} new of {len(card)} on the card "
-              f"({len(card) - added} already posted on an earlier morning)")
-
-    summary = find_plays.summarize(card)
-    plays_doc = {
-        "generated_at": posted_at,
+    # ----------------------------------------------------- 3. the run marker
+    # Written as soon as the odds are in hand, which is the thing the guard
+    # is protecting. Everything below this line is free work on data already
+    # bought, so a crash in a board still leaves the marker honest: the
+    # credits were spent, and a retry must not spend them again.
+    save_json(RUN_MARKER, {
         "date": today,
-        "date_label": f"{now:%A, %B %-d, %Y}",
-        "post_time": config.POST_TIME_LABEL,
-        "plays": card,
-        "summary": summary,
-        "note": note,
+        "at": now.isoformat(timespec="seconds"),
         "mock": client.mock,
-    }
-    save_json(DATA / "plays.json", plays_doc)
-    save_json(DATA / "history.json", {"plays": history})
-    print(f"-- card: {len(card)} play(s), {summary['units_risked']}u risked")
+    })
 
     # --------------------------------------------------- 3c. pitcher board
     # No longer gated on prop_events. The projection is StatsAPI only, so a
@@ -516,13 +432,10 @@ def main() -> int:
     if pitch_mod:
         try:
             import screen_config as _scfg
-            # Not `history`, and not `ratings` either. `history` holds the play
-            # log loaded at the top of this function and statsmod.compute()
-            # below builds the whole track-record page from it -- rebinding it
-            # here fed 101 pitcher rows to the record page, which is why the
-            # site read "0-0-0, 101 pending" while history.json held seven
-            # graded plays. `ratings` is taken by the slate block further down.
-            # Every list in this function gets its own name from now on.
+            # Not `ratings` either -- that name is taken by the slate block
+            # further down. Every list in this function gets its own name:
+            # an earlier rebinding fed 101 pitcher rows to a page that was
+            # reading a different list entirely.
             pitch_ratings = load_json(DATA / "pitcher_ratings.json", {"pitchers": []})["pitchers"]
             # The MLB board rows go in so every starter gets his fixture,
             # not just the ones a prop was bought on. Without this an
@@ -696,7 +609,7 @@ def main() -> int:
                 return results.finals(lg, day, client=_c)
             # append_day swallows a failed fetch itself, but not a bug in its
             # own merge. Nothing below this line catches an exception, and the
-            # card has to go out.
+            # boards have to go out.
             try:
                 gained = results_store.append_day(short, yesterday,
                                                   fetch=fetch)
@@ -715,11 +628,9 @@ def main() -> int:
             if short == "mlb" or not rows:
                 continue
             # Guarded like every other module call in this file. A league
-            # going unrated is a worse board; an exception here is no card
+            # going unrated is a worse board; an exception here is no board
             # at all, because nothing below this catches it.
             try:
-                # Named `stored`, not `history`: `history` is the play log
-                # this function writes to stats.json further down.
                 stored = results_store.load(short)
                 rated, skipped = board_mod.elo_model(rows, stored, short)
                 # Printed whenever there is a store to rate from, including
@@ -793,12 +704,7 @@ def main() -> int:
         print(f"-- board.json: {total} game(s) across "
               f"{len(doc['leagues'])} league(s)")
 
-    # ------------------------------------------------------------- 4. stats
-    site_stats = statsmod.compute(history)
-    save_json(DATA / "stats.json", site_stats)
-    print(f"-- record {site_stats['record']} | {site_stats['units']:+}u | ROI {site_stats['roi']:+}%")
-
-    # ------------------------------------------------------ 4b. credit report
+    # ------------------------------------------------------- 4. credit report
     if not client.mock:
         left, used = client.credits_remaining, client.credits_used_this_run
         if left is not None:

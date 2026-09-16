@@ -57,26 +57,23 @@ WEEKDAYS = {
 
 T = {
     # ---- navigation and chrome
-    "nav_plays":    {"en": "System Plays",   "es": "Jugadas del sistema"},
     "nav_tonight":  {"en": "Today's Games",  "es": "Juegos de hoy"},
     "ev_label":     {"en": "EV", "es": "VE"},
     "close":        {"en": "Close", "es": "Cerrar"},
     "nav_board":    {"en": "Board",          "es": "Pizarra"},
     "nav_pitchers": {"en": "Pitchers Prop",  "es": "Props de lanzadores"},
-    "nav_record":   {"en": "Track Record",   "es": "Historial"},
+    "nav_slate":    {"en": "MLB board",      "es": "Pizarra MLB"},
     "nav_about":    {"en": "How It Works",   "es": "Cómo funciona"},
-    "nav_screens":  {"en": "The Screens",    "es": "Los filtros"},
+    "foot_accuracy": {"en": "Accuracy",       "es": "Precisión"},
     "nav_why":      {"en": "Why it's free",  "es": "Por qué es gratis"},
-    "cta_plays":    {"en": "System plays",   "es": "Jugadas del sistema"},
     "lang_other":   {"en": "Español",        "es": "English"},
 
     # ---- status strip
-    # Sourced from plays.json's generated_at, which is the moment the daily
-# card was written -- so it timestamps the PICKS, not the page it sits on.
-# Saying "board" would have implied the hits or home-run board on those
-# pages, which is built later in the day by a different job.
-"foot_stamp":   {"en": "Picks posted {v} ET",
-                 "es": "Jugadas publicadas {v} ET"},
+    # Sourced from board.json's generated_at: the moment the morning run
+    # priced the games. The prop boards are rebuilt later in the day by a
+    # different job, so this stamps the main board, not those.
+    "foot_stamp":   {"en": "Board priced {v} ET",
+                     "es": "Pizarra valorada {v} ET"},
     "pts":          {"en": "pts",            "es": "pts"},
 
     # ---- the board card
@@ -648,50 +645,49 @@ T = {
 
     # ---- footer
     "foot_tagline": {
-        "en": "Free plays, posted daily, graded in public. No packages, no premium tier, no DMs.",
-        "es": "Jugadas gratis, publicadas a diario, calificadas en público. Sin paquetes, "
+        "en": "Free pricing boards, rebuilt daily, scored in public. No packages, no premium tier, no DMs.",
+        "es": "Pizarras de precios gratis, rehechas a diario, evaluadas en público. Sin paquetes, "
               "sin nivel premium, sin mensajes privados.",
     },
-    "foot_plays":  {"en": "Plays",        "es": "Jugadas"},
+    "foot_boards": {"en": "Boards",       "es": "Pizarras"},
     "foot_trans":  {"en": "Transparency", "es": "Transparencia"},
     "foot_about":  {"en": "About",        "es": "Acerca de"},
-    "foot_today":  {"en": "Today's board",      "es": "Pizarra de hoy"},
-    "foot_yest":   {"en": "Yesterday's results", "es": "Resultados de ayer"},
-    "foot_log":    {"en": "Full play log",      "es": "Registro completo"},
     "foot_method": {"en": "Methodology",        "es": "Metodología"},
-    "foot_resp":   {"en": "Play responsibly",   "es": "Juega con responsabilidad"},
+    "foot_resp":   {"en": "Bet responsibly",    "es": "Apuesta con responsabilidad"},
     "foot_faq":    {"en": "FAQ",                "es": "Preguntas frecuentes"},
     "disclaimer": {
         "en": "<b>21+ only. For entertainment purposes.</b> Craftypicks is not a "
               "sportsbook and does not accept wagers, hold funds, or facilitate betting "
-              "of any kind. Nothing here is financial advice or a guarantee of profit — "
-              "every play posted can lose, and most winning stretches are followed by "
-              "losing ones. Never wager money you cannot afford to lose. If gambling "
+              "of any kind. Nothing here is a recommendation, financial advice or a "
+              "guarantee of profit — a price we call good can still lose, and no model "
+              "on this site is better than the market by much. Never wager money you "
+              "cannot afford to lose. If gambling "
               "stops being fun, call <b>1-800-GAMBLER</b> or text 800GAM to 800177.",
         "es": "<b>Solo para mayores de 21 años. Con fines de entretenimiento.</b> "
               "Craftypicks no es una casa de apuestas: no acepta apuestas, no retiene "
               "fondos ni facilita ningún tipo de juego. Nada de lo aquí publicado es "
-              "asesoría financiera ni una garantía de ganancia — toda jugada publicada "
-              "puede perder, y a la mayoría de las rachas ganadoras le siguen rachas "
-              "perdedoras. Nunca apuestes dinero que no puedas permitirte perder. Si el "
+              "una recomendación, asesoría financiera ni una garantía de ganancia — un "
+              "precio que llamemos bueno igual puede perder, y ningún modelo de este "
+              "sitio le gana al mercado por mucho. Nunca apuestes dinero que no puedas "
+              "permitirte perder. Si el "
               "juego deja de ser divertido, llama al <b>1-800-GAMBLER</b> o envía 800GAM "
               "al 800177.",
     },
     "foot_copy": {
-        "en": "&copy; {year} Craftypicks. Plays are posted before the number moves and "
-              "graded exactly as posted.",
-        "es": "&copy; {year} Craftypicks. Las jugadas se publican antes de que se mueva "
-              "el número y se califican exactamente como se publicaron.",
+        "en": "&copy; {year} Craftypicks. Every number is published before the games "
+              "and graded exactly as published.",
+        "es": "&copy; {year} Craftypicks. Cada número se publica antes de los juegos y "
+              "se califica exactamente como se publicó.",
     },
     "fineprint": {"en": "21+ &middot; Entertainment only &middot; Nothing here is for sale",
                   "es": "21+ &middot; Solo entretenimiento &middot; Aquí no se vende nada"},
     "sample_data": {
-        "en": "<b>Sample data.</b> These plays were generated for testing — no real odds "
+        "en": "<b>Sample data.</b> This board was generated for testing — no real odds "
               "feed is connected yet. Add your ODDS_API_KEY and run the daily job to "
-              "replace them.",
-        "es": "<b>Datos de prueba.</b> Estas jugadas se generaron para pruebas — todavía "
+              "replace it.",
+        "es": "<b>Datos de prueba.</b> Esta pizarra se generó para pruebas — todavía "
               "no hay una fuente de cuotas real conectada. Agrega tu ODDS_API_KEY y "
-              "ejecuta el trabajo diario para reemplazarlas.",
+              "ejecuta el trabajo diario para reemplazarla.",
     },
     "not_rated": {"en": "Not yet rated", "es": "Aún sin evaluar"},
 
