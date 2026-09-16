@@ -1,6 +1,6 @@
 {
-  "date": "2026-09-15",
-  "date_label": "Tuesday, September 15, 2026",
+  "date": "2026-09-16",
+  "date_label": "Wednesday, September 16, 2026",
   "rows": [
     {
       "player_id": "00-0039139",
@@ -4839,11 +4839,11 @@
       "scored": null
     },
     {
-      "player_id": "00-0036139",
-      "name": "Rico Dowdle",
+      "player_id": "00-0036252",
+      "name": "Michael Pittman",
       "team": "PIT",
       "opponent": "NE",
-      "position": "RB",
+      "position": "WR",
       "per_game": 0.329,
       "chance": 0.22047075506919,
       "weight": 0.2,
@@ -4856,55 +4856,55 @@
         {
           "season": 2025,
           "week": 9,
-          "opponent": "GB",
-          "value": 2.0
+          "opponent": "PIT",
+          "value": 0.0
         },
         {
           "season": 2025,
           "week": 10,
-          "opponent": "NO",
-          "value": 1.0
-        },
-        {
-          "season": 2025,
-          "week": 11,
           "opponent": "ATL",
           "value": 0.0
         },
         {
           "season": 2025,
           "week": 12,
-          "opponent": "SF",
-          "value": 0.0
+          "opponent": "KC",
+          "value": 1.0
         },
         {
           "season": 2025,
           "week": 13,
-          "opponent": "LA",
+          "opponent": "HOU",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 14,
+          "opponent": "JAX",
           "value": 0.0
         },
         {
           "season": 2025,
           "week": 15,
-          "opponent": "NO",
-          "value": 1.0
-        },
-        {
-          "season": 2025,
-          "week": 16,
-          "opponent": "TB",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 17,
           "opponent": "SEA",
           "value": 0.0
         },
         {
           "season": 2025,
+          "week": 16,
+          "opponent": "SF",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 17,
+          "opponent": "JAX",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
           "week": 18,
-          "opponent": "TB",
+          "opponent": "HOU",
           "value": 0.0
         },
         {
@@ -6081,84 +6081,6 @@
       "scored": null
     },
     {
-      "player_id": "00-0038935",
-      "name": "Brenton Strange",
-      "team": "JAX",
-      "opponent": "DEN",
-      "position": "TE",
-      "per_game": 0.4,
-      "chance": 0.29223370152610206,
-      "weight": 0.2,
-      "opp_allowed": 2.16,
-      "league_allowed": 2.51,
-      "week": 2,
-      "game_id": "2026_02_JAX_DEN",
-      "commence_time": "2026-09-20T16:05:00-04:00",
-      "recent": [
-        {
-          "season": 2025,
-          "week": 4,
-          "opponent": "SF",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 5,
-          "opponent": "KC",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 12,
-          "opponent": "ARI",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 13,
-          "opponent": "TEN",
-          "value": 1.0
-        },
-        {
-          "season": 2025,
-          "week": 14,
-          "opponent": "IND",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 15,
-          "opponent": "NYJ",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 16,
-          "opponent": "DEN",
-          "value": 1.0
-        },
-        {
-          "season": 2025,
-          "week": 17,
-          "opponent": "IND",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 18,
-          "opponent": "TEN",
-          "value": 1.0
-        },
-        {
-          "season": 2026,
-          "week": 1,
-          "opponent": "CLE",
-          "value": 1.0
-        }
-      ],
-      "scored": null
-    },
-    {
       "player_id": "00-0038611",
       "name": "Chris Rodriguez Jr.",
       "team": "JAX",
@@ -6232,6 +6154,84 @@
           "week": 1,
           "opponent": "CLE",
           "value": 0.0
+        }
+      ],
+      "scored": null
+    },
+    {
+      "player_id": "00-0038935",
+      "name": "Brenton Strange",
+      "team": "JAX",
+      "opponent": "DEN",
+      "position": "TE",
+      "per_game": 0.4,
+      "chance": 0.29223370152610206,
+      "weight": 0.2,
+      "opp_allowed": 2.16,
+      "league_allowed": 2.51,
+      "week": 2,
+      "game_id": "2026_02_JAX_DEN",
+      "commence_time": "2026-09-20T16:05:00-04:00",
+      "recent": [
+        {
+          "season": 2025,
+          "week": 4,
+          "opponent": "SF",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 5,
+          "opponent": "KC",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 12,
+          "opponent": "ARI",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 13,
+          "opponent": "TEN",
+          "value": 1.0
+        },
+        {
+          "season": 2025,
+          "week": 14,
+          "opponent": "IND",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 15,
+          "opponent": "NYJ",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 16,
+          "opponent": "DEN",
+          "value": 1.0
+        },
+        {
+          "season": 2025,
+          "week": 17,
+          "opponent": "IND",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 18,
+          "opponent": "TEN",
+          "value": 1.0
+        },
+        {
+          "season": 2026,
+          "week": 1,
+          "opponent": "CLE",
+          "value": 1.0
         }
       ],
       "scored": null
@@ -7239,84 +7239,6 @@
       "scored": null
     },
     {
-      "player_id": "00-0037112",
-      "name": "Jake Tonges",
-      "team": "SF",
-      "opponent": "MIA",
-      "position": "TE",
-      "per_game": 0.5,
-      "chance": 0.42947456928607175,
-      "weight": 0.0,
-      "opp_allowed": 2.81,
-      "league_allowed": 2.51,
-      "week": 2,
-      "game_id": "2026_02_MIA_SF",
-      "commence_time": "2026-09-20T16:25:00-04:00",
-      "recent": [
-        {
-          "season": 2025,
-          "week": 1,
-          "opponent": "SEA",
-          "value": 1.0
-        },
-        {
-          "season": 2025,
-          "week": 2,
-          "opponent": "NO",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 3,
-          "opponent": "ARI",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 4,
-          "opponent": "JAX",
-          "value": 1.0
-        },
-        {
-          "season": 2025,
-          "week": 5,
-          "opponent": "LA",
-          "value": 1.0
-        },
-        {
-          "season": 2025,
-          "week": 6,
-          "opponent": "TB",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 8,
-          "opponent": "HOU",
-          "value": 1.0
-        },
-        {
-          "season": 2025,
-          "week": 11,
-          "opponent": "ARI",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 16,
-          "opponent": "IND",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 17,
-          "opponent": "CHI",
-          "value": 1.0
-        }
-      ],
-      "scored": null
-    },
-    {
       "player_id": "00-0035719",
       "name": "Deebo Samuel Sr.",
       "team": "SF",
@@ -7383,6 +7305,78 @@
           "season": 2025,
           "week": 18,
           "opponent": "PHI",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 1,
+          "opponent": "LA",
+          "value": 1.0
+        }
+      ],
+      "scored": null
+    },
+    {
+      "player_id": "00-0031408",
+      "name": "Mike Evans",
+      "team": "SF",
+      "opponent": "MIA",
+      "position": "WR",
+      "per_game": 0.5,
+      "chance": 0.42947456928607175,
+      "weight": 0.2,
+      "opp_allowed": 2.81,
+      "league_allowed": 2.51,
+      "week": 2,
+      "game_id": "2026_02_MIA_SF",
+      "commence_time": "2026-09-20T16:25:00-04:00",
+      "recent": [
+        {
+          "season": 2025,
+          "week": 1,
+          "opponent": "ATL",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 2,
+          "opponent": "HOU",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 3,
+          "opponent": "NYJ",
+          "value": 1.0
+        },
+        {
+          "season": 2025,
+          "week": 7,
+          "opponent": "DET",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 15,
+          "opponent": "ATL",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 16,
+          "opponent": "CAR",
+          "value": 1.0
+        },
+        {
+          "season": 2025,
+          "week": 17,
+          "opponent": "MIA",
+          "value": 1.0
+        },
+        {
+          "season": 2025,
+          "week": 18,
+          "opponent": "CAR",
           "value": 0.0
         },
         {
