@@ -481,6 +481,98 @@
       "actual": null
     },
     {
+      "pitcher_id": 700249,
+      "name": "Cade Povich",
+      "team": "BAL",
+      "opponent": "MIL",
+      "opponent_id": 158,
+      "event_id": null,
+      "commence_time": "2026-09-18T23:05:00Z",
+      "date": "09/18/2026",
+      "line": null,
+      "reference": 4.0,
+      "over_odds": null,
+      "under_odds": null,
+      "books": null,
+      "projection": 4.0,
+      "gap": null,
+      "suspect": false,
+      "k_pct": 0.176056338028169,
+      "k_per_9": 6.749999999999999,
+      "era": 4.05,
+      "w": 2,
+      "l": 1,
+      "innings": 33.333333333333336,
+      "opp_k_per_game": 8.418300653594772,
+      "opp_k_rank": 11,
+      "opp_teams_ranked": 28,
+      "recent": [
+        {
+          "date": "2026-04-12",
+          "opponent": "San Francisco Giants",
+          "strikeouts": 5,
+          "innings": 6.7
+        },
+        {
+          "date": "2026-05-01",
+          "opponent": "New York Yankees",
+          "strikeouts": 4,
+          "innings": 4.0
+        },
+        {
+          "date": "2026-05-07",
+          "opponent": "Miami Marlins",
+          "strikeouts": 1,
+          "innings": 3.0
+        },
+        {
+          "date": "2026-08-04",
+          "opponent": "Los Angeles Angels",
+          "strikeouts": 7,
+          "innings": 6.0
+        },
+        {
+          "date": "2026-08-09",
+          "opponent": "Texas Rangers",
+          "strikeouts": 2,
+          "innings": 3.0
+        },
+        {
+          "date": "2026-08-31",
+          "opponent": "Colorado Rockies",
+          "strikeouts": 4,
+          "innings": 5.0
+        }
+      ],
+      "recent_over": 2,
+      "recent_n": 6,
+      "last5_over": 1,
+      "last5_n": 5,
+      "vs_opp": null,
+      "vs_roster": {
+        "pa": 5,
+        "k_pct": 0.0,
+        "bb_pct": 0.0,
+        "avg": 0.4,
+        "batters": 2,
+        "xwoba": null,
+        "xwoba_pa": 0,
+        "xwoba_span": "2026",
+        "thin": true
+      },
+      "hand": "L",
+      "opp_split": {
+        "k_pct": 21.07300884955752,
+        "pa": 1808,
+        "rank": 23,
+        "rank_all": 18,
+        "of": 30,
+        "league_mean": 22.542702931289853
+      },
+      "matchup": "tough",
+      "actual": null
+    },
+    {
       "pitcher_id": 669160,
       "name": "Dustin May",
       "team": "MIL",
@@ -1093,112 +1185,6 @@
         "rank_all": 14,
         "of": 30,
         "league_mean": 22.542702931289853
-      },
-      "matchup": "neutral",
-      "actual": null
-    },
-    {
-      "pitcher_id": 691725,
-      "name": "Andrew Painter",
-      "team": "PHI",
-      "opponent": "NYM",
-      "opponent_id": 121,
-      "event_id": "49deafc3a88bf69634e0f3510d62b0ee",
-      "commence_time": "2026-09-18T23:16:00Z",
-      "date": "09/18/2026",
-      "line": null,
-      "reference": 4.6,
-      "over_odds": null,
-      "under_odds": null,
-      "books": null,
-      "projection": 4.6,
-      "gap": null,
-      "suspect": false,
-      "k_pct": 0.19723865877712032,
-      "k_per_9": 7.803468208092486,
-      "era": 5.54,
-      "w": 3,
-      "l": 9,
-      "innings": 115.33333333333333,
-      "opp_k_per_game": 8.418300653594772,
-      "opp_k_rank": 11,
-      "opp_teams_ranked": 28,
-      "recent": [
-        {
-          "date": "2026-06-17",
-          "opponent": "Miami Marlins",
-          "strikeouts": 3,
-          "innings": 2.0
-        },
-        {
-          "date": "2026-07-31",
-          "opponent": "Baltimore Orioles",
-          "strikeouts": 6,
-          "innings": 6.0
-        },
-        {
-          "date": "2026-08-05",
-          "opponent": "Washington Nationals",
-          "strikeouts": 4,
-          "innings": 4.0
-        },
-        {
-          "date": "2026-08-10",
-          "opponent": "St. Louis Cardinals",
-          "strikeouts": 6,
-          "innings": 5.3
-        },
-        {
-          "date": "2026-08-16",
-          "opponent": "Minnesota Twins",
-          "strikeouts": 2,
-          "innings": 5.0
-        },
-        {
-          "date": "2026-08-22",
-          "opponent": "St. Louis Cardinals",
-          "strikeouts": 8,
-          "innings": 7.0
-        },
-        {
-          "date": "2026-08-28",
-          "opponent": "Los Angeles Angels",
-          "strikeouts": 6,
-          "innings": 6.0
-        },
-        {
-          "date": "2026-09-02",
-          "opponent": "Arizona Diamondbacks",
-          "strikeouts": 6,
-          "innings": 7.0
-        },
-        {
-          "date": "2026-09-08",
-          "opponent": "Houston Astros",
-          "strikeouts": 6,
-          "innings": 5.0
-        },
-        {
-          "date": "2026-09-13",
-          "opponent": "Atlanta Braves",
-          "strikeouts": 3,
-          "innings": 5.0
-        }
-      ],
-      "recent_over": 6,
-      "recent_n": 10,
-      "last5_over": 4,
-      "last5_n": 5,
-      "vs_opp": null,
-      "vs_roster": null,
-      "hand": "R",
-      "opp_split": {
-        "k_pct": 21.968962172647913,
-        "pa": 4124,
-        "rank": 10,
-        "rank_all": 12,
-        "of": 30,
-        "league_mean": 21.87536188052307
       },
       "matchup": "neutral",
       "actual": null
@@ -3037,7 +3023,7 @@
     }
   ],
   "summary": {
-    "rated": 491,
+    "rated": 492,
     "graded": 458,
     "priced": 294,
     "mae": 2.1,
