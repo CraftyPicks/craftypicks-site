@@ -23,9 +23,11 @@ Only three kinds of file are ever removed:
      copy has to exist for the root one to go, so this can only ever delete
      a duplicate, never the last copy of anything.
 
-  3. A path on the RETIRED list below, under craftypicks/. That list is
-     written by hand, one exact path at a time, and exists because an
-     uploaded archive can add a file but never delete one.
+  3. A path on the RETIRED list below, under craftypicks/data/. That list
+     is written by hand, one exact path at a time, and exists because an
+     uploaded archive can add a file but never delete one. It is confined
+     to data/ because that is the only place the daily workflow's `git add`
+     reaches -- see the long note above RETIRED.
 
 Nothing else, ever. Not a directory, not a dotfile, not README or CNAME, and
 nothing at the root outside rules 1 and 2 -- the whole site lives one level
@@ -51,30 +53,33 @@ KEEP = {"README.md", "LICENSE", "CNAME", ".gitignore", ".gitattributes",
 # uploaded archive can add and replace files but never delete one -- so a
 # retired module would otherwise sit in the tree forever.
 #
-# The whole list is the system-plays card: the daily play selection, the log
-# it was graded in, the pages that displayed it, and the strikeout screens
-# that posted into the same card. Adding to this list is how a future removal
-# finishes the job; the paths are exact, and a path that is already gone is
-# simply skipped.
+# ONLY data/. That is not taste, it is what the workflow can commit, and it
+# is written down here because getting it wrong took the daily job out for
+# two days.
+#
+# The commit step stages with:
+#
+#     git add -- data '*.html' ':(exclude)_src/**'
+#
+# and then refuses to continue if anything matching '*.html' is still
+# unstaged. So a deletion under _src/ is made on the runner, never staged,
+# and arrives at that check as " D craftypicks/_src/plays.body.html" -- the
+# job exits 1 AFTER the odds have been bought, every morning, forever. This
+# list named ten such files and did exactly that.
+#
+# scripts/ has the mirror-image problem and is just as pointless: those
+# deletions are not staged either, and not being *.html they do not trip the
+# check, so they are re-made and thrown away on every run.
+#
+# Retiring anything outside data/ therefore needs the workflow's `git add`
+# widened first. Until then such files stay on disk, dead and harmless, and
+# come out by hand through the GitHub UI. The self-test enforces the rule so
+# it cannot be rediscovered the hard way a second time.
 RETIRED = (
-    "scripts/play_log.py",
-    "scripts/stats.py",
-    "scripts/grade_props.py",
-    "_src/plays.body.html",
-    "_src/plays.body.es.html",
-    "_src/record.body.html",
-    "_src/record.body.es.html",
-    "_src/ev.body.html",
-    "_src/screens.body.html",
-    "_src/screens.body.es.html",
-    "_src/index.body.html",
-    "_src/index.body.es.html",
-    "_src/form.body.html",
     "data/plays.json",
     "data/history.json",
     "data/stats.json",
 )
-
 
 def retired(site: Path) -> list[Path]:
     """The RETIRED paths that still exist under `site` (craftypicks/)."""
@@ -153,14 +158,13 @@ def _self_test() -> None:
         assert "keepme.json" not in found, \
             "a root file with no twin in data/ is somebody's file"
 
-        # A retired file under craftypicks/ goes too, and one that is already
-        # gone is not an error.
-        (data.parent / "scripts").mkdir(parents=True, exist_ok=True)
-        (data.parent / "scripts" / "play_log.py").write_text("x")
-        assert [p.name for p in retired(data.parent)] == ["play_log.py"]
+        # A retired file goes too, and one that is already gone is not an
+        # error.
+        (data / "plays.json").write_text("x")
+        assert [q.name for q in retired(data.parent)] == ["plays.json"]
 
         assert run(root, data, verbose=False) == 6
-        assert not (data.parent / "scripts" / "play_log.py").exists()
+        assert not (data / "plays.json").exists()
         assert not retired(data.parent), "second run finds nothing"
         assert not strays(root, data), "second run finds nothing"
         assert (root / "keepme.json").exists()
@@ -175,6 +179,17 @@ def _self_test() -> None:
         # Nothing below the root is reachable from here at all.
         assert (data / "slate.json").exists()
         assert run(Path(tmp) / "nope", data, verbose=False) == 0
+
+    # Every retired path has to be one the daily workflow's `git add` will
+    # actually stage, or tidy deletes it on the runner and the commit step
+    # fails its "built pages that were not staged" check -- after the odds
+    # have been bought. Ten _src/ entries on this list did exactly that,
+    # every morning, and it was found in the Actions log rather than here.
+    for rel in RETIRED:
+        assert rel.startswith("data/"), (
+            f"{rel} is outside data/, which the workflow's git add does not "
+            f"reach. Widen the git add in daily.yml first, or remove the "
+            f"file by hand instead of listing it here.")
 
     print("tidy self-test: all invariants hold")
 
