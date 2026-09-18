@@ -321,6 +321,13 @@ DETAIL_KEYS = (
     # comparison has never once appeared on the site. Everything else in the
     # chain was already built.
     "home_sp", "away_sp",
+    # The same omission, found the same way and costing more: slate.py has
+    # fetched every hitter's career line against the opposing starter -- one
+    # request per hitter, every morning -- and render has had a table for it,
+    # and it has never reached a board card either. Paid for daily, displayed
+    # never.
+    "home_bats", "away_bats",
+    "venue",
 )
 
 
@@ -938,9 +945,14 @@ def _self_test() -> None:
     assert merge_model(upcoming, rated, "elo") == 1
     assert upcoming[0]["model"]["source"] == "elo"
 
-    # The detail block has to carry the form and the series, or the panel
-    # renders an empty section on a card whose rating merged fine.
-    for key in ("home_form", "away_form", "series"):
+    # The detail block has to carry every field the panel draws, or the
+    # panel renders an empty section on a card whose rating merged fine.
+    # Named one at a time rather than checked in a loop over the panel,
+    # because the whole failure mode is a field nobody remembered to list:
+    # home_sp went eight months unlisted and home_bats longer, each of them
+    # fetched every morning and displayed never.
+    for key in ("home_form", "away_form", "series",
+                "home_sp", "away_sp", "home_bats", "away_bats", "venue"):
         assert key in DETAIL_KEYS, f"{key} missing from DETAIL_KEYS"
     rows = [{"event_id": "e1", "league": "mlb",
              "markets": {"h2h": {"fair_home": 0.5}}}]
@@ -949,6 +961,10 @@ def _self_test() -> None:
                             "l10_w": 5, "l10_l": 5},
               "away_form": {"w": 65, "l": 73, "streak": "L1",
                             "l10_w": 4, "l10_l": 6},
+              "venue": "Petco Park",
+              "home_bats": [{"name": "Manny Machado", "pa": 14, "ab": 13,
+                             "h": 4, "k": 3, "avg": 0.308}],
+              "away_bats": [],
               "series": [{"date": "2026-06-08",
                           "away": "Cincinnati Reds", "away_runs": 2,
                           "home": "San Diego Padres", "home_runs": 6}]}]
@@ -956,6 +972,13 @@ def _self_test() -> None:
     detail = rows[0]["detail"]
     assert detail["home_form"]["streak"] == "W1", detail
     assert detail["series"][0]["home"] == "San Diego Padres", detail["series"]
+    assert detail["venue"] == "Petco Park", detail
+    assert detail["home_bats"][0]["pa"] == 14, detail["home_bats"]
+    # An EMPTY lineup is COPIED -- merge_model filters on "is not None", not
+    # on truth, so [] survives. That is fine and is asserted rather than left
+    # to chance: _lineup_table returns nothing for an empty list, so the
+    # panel draws no section rather than a table with no rows.
+    assert detail["away_bats"] == [], detail
 
     # Leagues with no free standings source take their form from the finals
     # the daily job stores. A league we have stored nothing for leaves the

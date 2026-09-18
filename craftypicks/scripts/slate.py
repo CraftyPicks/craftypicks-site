@@ -171,6 +171,12 @@ def build(games: list[dict], date_str: str, season: int,
         home_stats, home_name, home_vs, home_hand, home_pid = sp(home_id, away_id)
         away_stats, away_name, away_vs, away_hand, away_pid = sp(away_id, home_id)
 
+        # The park. Both starters' schedule rows carry the same one, so
+        # either will do and a game with no announced starter simply has no
+        # venue rather than a wrong one.
+        venue = (assigned.get((idx, home_id))
+                 or assigned.get((idx, away_id)) or {}).get("venue", "")
+
         # Each club's hitters against the OTHER club's starter. One free
         # request per hitter, wrapped like every other display extra: a
         # StatsAPI wobble must cost this table and nothing else.
@@ -230,6 +236,7 @@ def build(games: list[dict], date_str: str, season: int,
             "away_sp": {k: away_stats.get(k) for k in SP_FIELDS},
             "home_bats": home_bats, "away_bats": away_bats,
             "home_hand": home_hand, "away_hand": away_hand,
+            "venue": venue,
             # Shown on the card, deliberately absent from the rating.
             "home_record": recs.get(home_id),
             "away_record": recs.get(away_id),

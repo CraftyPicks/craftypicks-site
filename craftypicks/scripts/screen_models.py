@@ -34,6 +34,15 @@ class VsRoster:
         return self.k / self.pa if self.pa else None
 
     @property
+    def bb_pct(self) -> Optional[float]:
+        """Walks per plate appearance against this roster.
+
+        Denominator is PA, not AB, so it pairs with k_pct above: both are
+        "per trip to the plate", which is how both are normally quoted.
+        """
+        return self.bb / self.pa if self.pa else None
+
+    @property
     def avg(self) -> Optional[float]:
         return self.h / self.ab if self.ab else None
 

@@ -446,6 +446,34 @@ T = {
     "pnl_lost_n":    {"en": "lost {n} in a row", "es": "{n} derrotas seguidas"},
     "pnl_won_last":  {"en": "won its last", "es": "ganó el último"},
     "pnl_lost_last": {"en": "lost its last", "es": "perdió el último"},
+    # ---- the scorecard head
+    "sc_l10":        {"en": "L10 {w}-{l}", "es": "U10 {w}-{l}"},
+    "sc_runs":       {"en": "{v} runs/g", "es": "{v} carreras/j"},
+    # Says whose colour the chips are. A strip tinted "for the winner" would
+    # tell a reader nothing the scores do not already say.
+    "sc_chip_note":  {"en": "Green = {team} won &middot; last {date}, "
+                            "{who} {score}",
+                      "es": "Verde = ganaron los {team} &middot; \u00faltimo "
+                            "{date}, {who} {score}"},
+    # ---- the mirrored starter sheet
+    "sv_head":       {"en": "Starter vs current lineup &middot; career",
+                      "es": "Abridor vs alineaci\u00f3n actual &middot; carrera"},
+    "sv_line":       {"en": "vs {team} &middot; {n} PA",
+                      "es": "vs {team} &middot; {n} AP"},
+    "sv_note":       {"en": "Longer bar = the starter has suppressed that "
+                            "lineup more",
+                      "es": "Barra m\u00e1s larga = el abridor ha dominado "
+                            "m\u00e1s a esa alineaci\u00f3n"},
+    "sv_k":          {"en": "K%", "es": "P%"},
+    "sv_bb":         {"en": "BB%", "es": "BB%"},
+    "sv_avg":        {"en": "AVG", "es": "PROM"},
+    "sv_xwoba":      {"en": "xwOBA", "es": "xwOBA"},
+    "sv_rhp":        {"en": "RHP", "es": "LD"},
+    "sv_lhp":        {"en": "LHP", "es": "LZ"},
+    "sv_none":       {"en": "He has not faced these hitters.",
+                      "es": "No se ha enfrentado a estos bateadores."},
+    "sv_xwoba_note": {"en": "xwOBA from {span}, {n} PA",
+                      "es": "xwOBA de {span}, {n} AP"},
     "pnl_h2h":       {"en": "Head to head", "es": "Historial"},
     "pnl_h2h_none":  {"en": "They have not met yet this season.",
                       "es": "Aún no se han enfrentado esta temporada."},

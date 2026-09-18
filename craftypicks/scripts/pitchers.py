@@ -147,6 +147,10 @@ def roster_panel(pitcher_id: int, opponent_team_id: int, season: int) -> dict | 
     return {
         "pa": vs.pa,
         "k_pct": vs.k_pct,
+        # Aggregated by VsRoster since it was written and never exported.
+        # The walks are in the same StatsAPI response as the strikeouts, so
+        # this is a field that was already paid for and thrown away.
+        "bb_pct": vs.bb_pct,
         "avg": vs.avg,
         "batters": vs.batters_seen,
         # Savant's denominator is AB+BB+SF+HBP and the cache can be shallower

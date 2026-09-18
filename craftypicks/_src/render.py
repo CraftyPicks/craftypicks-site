@@ -1133,54 +1133,6 @@ def _tdot(team: str | None) -> str:
     return f'<span class="tdot" style="--tc:{c}"></span>' if c else ""
 
 
-def market_rows(row: dict) -> str:
-    """The card's market block: one row per market this game actually has.
-
-    Each row is the league's own name for the market, the best price with the
-    book offering it, and the edge against the vig-free fair number. A total
-    shows the market's line and says "market only" where the edge would be.
-
-    Does not show a Craftypicks number for a total. Elo produces a win
-    probability, not a run distribution; inventing a total here would be the
-    one number on the page with nothing behind it.
-    """
-    short = row.get("league", "")
-    out = []
-    for market in ("h2h", "spreads", "totals"):
-        m = (row.get("markets") or {}).get(market)
-        if not m:
-            continue
-        label = _(leagues.market_label_key(short, market))
-
-        point = m.get("point")
-        if market == "totals":
-            side = f'{om.format_point(point)} &middot; o'
-            price = m["best_home"]["price"]
-            book = m["best_home"]["book"]
-        elif market == "spreads":
-            side = f'{_nickname(row.get("home"))} {om.format_point(point)} '
-            price = m["best_home"]["price"]
-            book = m["best_home"]["book"]
-        else:
-            side = f'{_nickname(row.get("home"))} '
-            price = m["best_home"]["price"]
-            book = m["best_home"]["book"]
-
-        if market == "totals":
-            edge_cell = f'<span class="mk-note">{_("market_only")}</span>'
-        else:
-            edge = m.get("edge_home", 0.0)
-            edge_cell = f'<span class="mk-edge {cls_for(edge)}">{pct(edge)}</span>'
-
-        out.append(
-            f'<div class="mk-row">'
-            f'<span class="mk-label">{esc(label)}</span>'
-            f'<span class="mk-line">{side}<b>{esc(om.format_american(price))}</b>'
-            f' <span class="mk-book">{esc(book)}</span></span>'
-            f'{edge_cell}</div>')
-    return "".join(out)
-
-
 def _prob_bar(model: dict | None) -> str:
     """The two numbers as one bar, with the market's own number as a tick.
 
@@ -1334,9 +1286,10 @@ def board_card(row: dict) -> str:
 
 
 # Division rivals meet thirteen times a season. Listing every meeting buries
-# the starters and the props underneath it, so the panel shows the most recent
-# few and counts the rest.
-SERIES_SHOWN = 5
+# the starters and the props underneath it, so the strip shows the most recent
+# few and counts the rest. Six, because six chips fit one row at 320px and
+# seven wrap -- a strip that wraps stops reading as a timeline.
+SERIES_SHOWN = 6
 
 # ESPN publishes three positions for basketball, not five. POSITIONS in
 # nba_data says why.
@@ -1367,14 +1320,6 @@ def set_props(rows) -> None:
     _PROPS = index
 
 
-def _city(full_name: str) -> str:
-    """'San Diego Padres' -> 'San Diego'. A venue should read as a place."""
-    nick = _nickname(full_name)
-    if nick and full_name.endswith(nick):
-        return full_name[:-len(nick)].strip()
-    return full_name
-
-
 def _md(iso_date: str) -> str:
     """'2026-06-08' -> 'Jun 8', in the reader's language."""
     try:
@@ -1384,99 +1329,226 @@ def _md(iso_date: str) -> str:
     return f"{i18n.MONTHS[LANG][month - 1][:3]} {day}"
 
 
-def _streak_cell(code: str) -> str:
-    """'W3' with its meaning spelled out underneath."""
-    if not code or len(code) < 2 or not code[1:].isdigit():
-        return "&mdash;"
-    n = int(code[1:])
-    won = code.startswith("W")
-    if n == 1:
-        words = _("pnl_won_last") if won else _("pnl_lost_last")
-    else:
-        words = _("pnl_won_n", n=n) if won else _("pnl_lost_n", n=n)
-    return (f'<b class="{"good" if won else "bad"}">{esc(code)}</b>'
-            f'<i>{words}</i>')
+def _place(n: int) -> str:
+    """'2nd' / '2\u00ba'. A division place, in the reader's language.
 
-
-def _form_block(row: dict, detail: dict) -> str:
-    """Records, last ten and streak, both clubs side by side.
-
-    Falls back to the bare records when there is no form yet. That fallback
-    is load-bearing: the canvas card took the records off its face, so if
-    this block returned nothing without form data the records would not
-    appear anywhere on the site at all -- which is exactly what happened,
-    and what the fixture at the bottom of this file now catches.
+    Deliberately NOT named _ordinal. There is already an _ordinal in this
+    file and it returns the SUFFIX alone -- "nd", not "2nd" -- for the
+    "{r}{ord} of {n}" rank strings the prop boards build. A second function
+    by that name shadowed it and every rank on the site became "2ndnd of
+    30", which is how this comment came to exist.
     """
-    home, away = detail.get("home_form"), detail.get("away_form")
-    if not home or not away:
-        hr, ar = detail.get("home_record"), detail.get("away_record")
-        if not hr or not ar:
-            return ""
-        rows = [(_("pnl_record"), f'{ar["w"]}&ndash;{ar["l"]}',
-                                  f'{hr["w"]}&ndash;{hr["l"]}')]
-    else:
-        rows = [
-            (_("pnl_record"), f'{away["w"]}&ndash;{away["l"]}',
-                              f'{home["w"]}&ndash;{home["l"]}'),
-            (_("pnl_last10"), f'{away["l10_w"]}&ndash;{away["l10_l"]}',
-                              f'{home["l10_w"]}&ndash;{home["l10_l"]}'),
-            (_("pnl_streak"), _streak_cell(away.get("streak", "")),
-                              _streak_cell(home.get("streak", ""))),
-        ]
-    body = "".join(f"<tr><th>{lab}</th><td>{a}</td><td>{h}</td></tr>"
-                   for lab, a, h in rows)
-    return (f'<section class="pk"><h4>{_("pnl_form")}</h4>'
-            f'<table class="pkt fm">'
-            f'<tr class="hd"><th></th>'
-            f'<td>{esc(_nickname(row.get("away")))}</td>'
-            f'<td>{esc(_nickname(row.get("home")))}</td></tr>'
-            f'{body}</table></section>')
+    if LANG == "es":
+        return f"{n}\u00ba"
+    return f"{n}{_ordinal(n)}"
+
+
+def _place_line(form: dict, record: dict) -> str:
+    """'84\u201361 \u00b7 2nd AL East', or as much of it as we have.
+
+    The record alone is the fallback and it is load-bearing: standings is one
+    request that can fail, and a card that then showed nothing where the
+    record goes would be worse than a card that shows the record.
+    """
+    src = form or record or {}
+    w, l = src.get("w"), src.get("l")
+    if w is None or l is None:
+        return ""
+    line = f"{w}&ndash;{l}"
+    rank, div = (form or {}).get("div_rank"), (form or {}).get("division")
+    if rank and div:
+        line += f' &middot; <span class="sc-div">{_place(rank)} {esc(div)}</span>'
+    return line
+
+
+def _streak_chip(code: str) -> str:
+    """'W4' as a tinted chip, or nothing.
+
+    Nothing, rather than a dash: the chip sits inline after the last-ten
+    record and a dash there reads as a missing number in that record.
+    """
+    if not code or len(code) < 2 or not code[1:].isdigit():
+        return ""
+    won = code.startswith("W")
+    return (f'<b class="sc-stk {"sc-up" if won else "sc-down"}" '
+            f'title="{_("pnl_streak")}">{esc(code)}</b>')
+
+
+def _scorecard(row: dict, detail: dict) -> str:
+    """Both clubs across the head of the panel, the way a scoreboard does it.
+
+    Replaces a three-row table of record / last ten / streak. The table was
+    honest and unreadable: a reader comparing two clubs had to track which
+    column was which down three rows, and the club names sat in a header row
+    they had already read on the face of the card.
+
+    Here each club owns a side. The abbreviation is the heading, the record
+    and division sit under it, the last ten and the streak sit under that,
+    and a rule in the club's own accent closes the block. Nothing has to be
+    tracked across a row because nothing crosses the middle.
+
+    The away club is left and the home club is right, matching "away @ home"
+    on the card's face. That order is not negotiable on a baseball card and
+    it is why the @ badge sits in the middle rather than beside a name.
+    """
+    away, home = row.get("away"), row.get("home")
+    # Nothing at all, rather than two abbreviations under the nicknames the
+    # card's face already carries. A college basketball card before any
+    # finals are stored has no records, no starters and no props, and a
+    # scorecard drawn from nothing is what would give it a disclosure that
+    # opens onto an empty box.
+    if not any(detail.get(f"{w}_form") or detail.get(f"{w}_record")
+               for w in ("away", "home")) and not detail.get("venue"):
+        return ""
+    sides = []
+    for which, team in (("away", away), ("home", home)):
+        form = detail.get(f"{which}_form") or {}
+        line = _place_line(form, detail.get(f"{which}_record") or {})
+        l10 = ""
+        if form.get("l10_w") is not None and form.get("l10_l") is not None:
+            l10 = _("sc_l10", w=form["l10_w"], l=form["l10_l"])
+        chip = _streak_chip(form.get("streak", ""))
+        colour = team_color(team)
+        style = f' style="--sc-accent:{colour}"' if colour else ""
+        sides.append(
+            f'<div class="sc-side sc-{which}"{style}>'
+            f'<div class="sc-abbr">{esc(_abbr(team))}</div>'
+            f'<div class="sc-rec">{line}</div>'
+            f'<div class="sc-l10">{l10}{chip}</div>'
+            f'<i class="sc-rule"></i></div>')
+
+    when = _fixture_line(row, detail)
+    fixture = f'<div class="sc-when">{when}</div>' if when else ""
+    return (f'<section class="pk sc">'
+            f'<div class="sc-grid">{sides[0]}'
+            f'<span class="sc-at">@</span>{sides[1]}</div>'
+            f'{fixture}</section>')
+
+
+def _fixture_line(row: dict, detail: dict) -> str:
+    """'Thu Sep 17 \u00b7 7:10 PM ET \u00b7 Citi Field', minus whatever is missing.
+
+    Joined from parts rather than formatted as one string so a game with no
+    announced starter -- and therefore no venue, since the venue rides on the
+    schedule row the starter came from -- loses the park and keeps the time.
+    """
+    bits = []
+    iso = row.get("commence_time")
+    if iso:
+        try:
+            from zoneinfo import ZoneInfo
+            dt = datetime.fromisoformat(iso.replace("Z", "+00:00")).astimezone(
+                ZoneInfo(config.TIMEZONE))
+            wd = i18n.WEEKDAYS[LANG][dt.weekday()][:3]
+            mo = i18n.MONTHS[LANG][dt.month - 1][:3]
+            bits.append(esc(f"{wd} {mo} {dt.day}"))
+        except Exception:                                    # noqa: BLE001
+            pass
+    tip = game_time(iso)
+    if tip:
+        bits.append(esc(tip))
+    venue = detail.get("venue")
+    if venue:
+        bits.append(esc(venue))
+    return " &middot; ".join(bits)
 
 
 def _h2h_block(row: dict, detail: dict) -> str:
-    """The season series. Club names throughout -- slate.py converts
-    StatsAPI's ids before they reach here, so this draws all four leagues
-    identically."""
+    """The season series as a split bar, a run rate and one chip per meeting.
+
+    The old block was a paragraph and five lines of prose -- "Padres 6-2 at
+    San Diego" repeated. Everything in it was true and none of it was
+    scannable: who is ahead, by how much, and which way it has been going
+    are three questions a reader asks in one glance, and prose answers them
+    in the order it was written rather than the order they are asked.
+
+    So: the bar answers "who is ahead" before it is read, because one colour
+    is longer. The runs per game under each end answer "by how much" in the
+    units the sport uses. The chips answer "which way" by sitting in date
+    order with the winner's tint on each. Nothing here is a number the old
+    block did not have.
+
+    Clubs are named by name throughout -- slate.py converts StatsAPI's ids
+    before they reach here -- so this draws all four leagues identically.
+    """
     games = detail.get("series") or []
     home, away = row.get("home"), row.get("away")
     home_nick, away_nick = _nickname(home), _nickname(away)
-    head = f'<section class="pk"><h4>{_("pnl_h2h")}</h4>'
+    year = (games[-1]["date"][:4] if games and games[-1].get("date") else "")
+    head = (f'<section class="pk h2"><h4>{_("pnl_h2h")}'
+            + (f' <span class="h2yr">{esc(year)}</span>' if year else "")
+            + "</h4>")
     if not games or not home or not away:
         return head + f'<p class="pnl-note">{_("pnl_h2h_none")}</p></section>'
 
     wins = {home: 0, away: 0}
+    runs = {home: 0, away: 0}
     for g in games:
         winner = g["away"] if g["away_runs"] > g["home_runs"] else g["home"]
         if winner in wins:
             wins[winner] += 1
+        # Runs are totalled per CLUB, not per side of the fixture: the same
+        # two clubs swap home and away through a season series, so adding
+        # home_runs to the home club would credit half the games to the
+        # wrong team.
+        for side in ("away", "home"):
+            club = g.get(side)
+            if club in runs:
+                runs[club] += g.get(f"{side}_runs", 0) or 0
     aw, hw = wins[away], wins[home]
-    if aw > hw:
-        lead = _("pnl_h2h_lead", team=esc(away_nick), w=aw, l=hw)
-    elif hw > aw:
-        lead = _("pnl_h2h_lead", team=esc(home_nick), w=hw, l=aw)
-    else:
-        lead = _("pnl_h2h_even", w=aw, l=hw)
+    lead = (_("pnl_h2h_lead", team=esc(away_nick), w=aw, l=hw) if aw > hw else
+            _("pnl_h2h_lead", team=esc(home_nick), w=hw, l=aw) if hw > aw else
+            _("pnl_h2h_even", w=aw, l=hw))
 
-    nick = {home: home_nick, away: away_nick}
-    place = {home: _city(home), away: _city(away)}
+    # A swept series is 100/0 and still has to draw as a bar rather than as a
+    # single block with a number floating off one end, so both ends keep a
+    # sliver. With no games at all we have already returned above.
+    total = max(1, aw + hw)
+    a_pct = max(4.0, min(96.0, aw / total * 100))
+    bar = (f'<div class="h2bar"><span class="h2n">{aw}</span>'
+           f'<i class="h2track"><b class="h2a" style="width:{a_pct:.1f}%"></b></i>'
+           f'<span class="h2n">{hw}</span></div>')
+    rate = ""
+    if len(games):
+        rate = (f'<div class="h2rate">'
+                f'<span>{_("sc_runs", v=f"{runs[away] / len(games):.1f}")}</span>'
+                f'<span>{_("sc_runs", v=f"{runs[home] / len(games):.1f}")}</span>'
+                f'</div>')
+
+    # Most recent LAST, so the strip reads left to right like a calendar.
     shown = games[-SERIES_SHOWN:]
-    lines = []
-    hidden = len(games) - len(shown)
-    if hidden:
-        lines.append(f'<div class="h2more">'
-                     f'{_("pnl_h2h_more", n=hidden, s=_pl(hidden))}</div>')
+    chips = []
     for g in shown:
-        winner = g["away"] if g["away_runs"] > g["home_runs"] else g["home"]
+        away_won = g["away_runs"] > g["home_runs"]
+        winner = g["away"] if away_won else g["home"]
         hi = max(g["away_runs"], g["home_runs"])
         lo = min(g["away_runs"], g["home_runs"])
-        lines.append(
-            f'<div class="h2g"><span class="h2d">{esc(_md(g["date"]))}</span>'
-            f'<span class="h2s"><b>{esc(nick.get(winner, "?"))}</b> '
-            f'{hi}&ndash;{lo}</span>'
-            f'<span class="h2w">'
-            f'{_("pnl_h2h_at", place=esc(place.get(g["home"], "?")))}'
-            f'</span></div>')
-    return head + f'<p class="pnl-note">{lead}</p>' + "".join(lines) + "</section>"
+        # Lit for the AWAY club of today's card, whichever dugout it was in
+        # that night. The caption says whose colour it is, because a chip
+        # tinted for "the winner" would tell a reader nothing they cannot
+        # already read off the score.
+        cls = " on" if winner == away else ""
+        chips.append(f'<div class="h2c{cls}">'
+                     f'<span class="h2cd">{esc(_md(g["date"]))}</span>'
+                     f'<span class="h2cs">{hi}&ndash;{lo}</span></div>')
+    hidden = len(games) - len(shown)
+    # Its own line. Run on after the caption it read as part of the score --
+    # "CLE 7-6 6 earlier meetings not shown" -- which is a sentence with a
+    # number in the wrong place and a score with a digit too many.
+    more = (f'<p class="h2note">{_("pnl_h2h_more", n=hidden, s=_pl(hidden))}</p>'
+            if hidden else "")
+
+    last = games[-1]
+    last_winner = (last["away"] if last["away_runs"] > last["home_runs"]
+                   else last["home"])
+    note = _("sc_chip_note", team=esc(away_nick), date=esc(_md(last["date"])),
+             who=esc(_abbr(last_winner)),
+             score=f'{max(last["away_runs"], last["home_runs"])}'
+                   f'&ndash;{min(last["away_runs"], last["home_runs"])}')
+
+    return (head + f'<p class="pnl-note">{lead}</p>{bar}{rate}'
+            f'<div class="h2strip">{"".join(chips)}</div>'
+            f'<p class="h2note">{note}</p>{more}</section>')
 
 
 # The comparison table's rows, in the reference's order, with which
@@ -1487,49 +1559,14 @@ def _h2h_block(row: dict, detail: dict) -> str:
 # strikeout numbers this site actually models -- which used to sit under the
 # table as a stacked list per pitcher, where comparing them meant reading two
 # paragraphs and doing the subtraction yourself.
-SP_ROWS = (
-    ("sp_wl",   "wl",      None),
-    ("sp_era",  "era",     "low"),
-    ("sp_whip", "whip",    "low"),
-    ("sp_ip",   "innings", "high"),
-    ("sp_h",    "h",       "low"),
-    ("sp_k",    "k",       "high"),
-    ("sp_bb",   "bb",      "low"),
-    ("sp_hr",   "hr",      "low"),
-)
 
 # The prop half. "better" means "lit", not "superior": a higher projected
 # strikeout count is not a better pitcher, it is the number this board is
 # about, and lighting the larger one is what makes the pair scannable. The
 # posted line is lit on neither side -- it is the market's number, not a
 # contest between the two men.
-SP_PROP_ROWS = (
-    ("sp_projk", "projection",     "high"),
-    ("sp_line",  "line",           None),
-    ("sp_oppk",  "opp_k_per_game", "high"),
-)
 
 
-def _sp_cell(sp: dict, key: str) -> str:
-    """One number, formatted the way its own stat is normally written."""
-    if key == "wl":
-        w, l = sp.get("w"), sp.get("l")
-        return f"{w}&ndash;{l}" if w is not None and l is not None else "&mdash;"
-    v = sp.get(key)
-    if v is None:
-        return "&mdash;"
-    if key in ("era", "whip"):
-        return f"{v:.2f}"
-    if key == "innings":
-        return f"{v:.1f}"
-    return f"{int(v)}"
-
-
-# TEAM_ABBR is written the way a US broadcast writes a club; the pitcher
-# board carries whatever StatsAPI calls it. They agree on 29 of 30 clubs and
-# disagree on Arizona -- ARI against AZ -- which would have dropped both
-# starters from every Diamondbacks card, silently, and only on that one
-# fixture. Found by comparing the two sets rather than by waiting for it.
 SP_ALIAS = {"ARI": "AZ"}
 
 
@@ -1537,27 +1574,18 @@ def _club_key(abbr: str) -> str:
     return SP_ALIAS.get(abbr, abbr)
 
 
-def _sp_prop_cell(p: dict, key: str) -> str:
-    v = p.get(key)
-    if v is None:
-        return "&mdash;"
-    if key == "line":
-        return f"{v:g}"
-    return f"{v:.1f}"
+def _side_props(row: dict, props) -> tuple[dict, dict]:
+    """Which prop row belongs to which side of this game, by club.
 
+    The pitcher board writes StatsAPI's abbreviation ("ATL"); the odds feed
+    writes the full club name. _abbr reconciles the two for the card's own
+    headings and _club_key covers the one club they spell differently.
 
-def _sp_table(row: dict, detail: dict, props=None) -> str:
-    """Two starters, the label down the middle.
-
-    The centre column is what makes it readable. Two stat blocks side by
-    side make a reader hunt for which number pairs with which; a shared
-    label removes the hunt, which is why every scoreboard that shows this
-    comparison draws it the same way.
+    A club neither abbreviation recognises still lands on the right side when
+    the other one is already placed: a game has exactly two starters, so the
+    remaining slot is not a guess. With both unmatched they are left out
+    rather than assigned by order.
     """
-    away, home = detail.get("away_sp") or {}, detail.get("home_sp") or {}
-    # Which prop row belongs to which side, by club. The pitcher board writes
-    # StatsAPI's abbreviation ("ATL"); the odds feed writes the full club
-    # name. _abbr already reconciles the two for the card's own headings.
     a_prop = h_prop = {}
     rest = []
     for p in props or []:
@@ -1568,177 +1596,166 @@ def _sp_table(row: dict, detail: dict, props=None) -> str:
             h_prop = p
         else:
             rest.append(p)
-    # A club neither abbreviation recognises still lands on the right side
-    # when the other one is already placed: a game has exactly two starters,
-    # so the remaining slot is not a guess. With both unmatched they are left
-    # out rather than assigned by order.
     if len(rest) == 1 and bool(a_prop) != bool(h_prop):
         if a_prop:
             h_prop = rest[0]
         else:
             a_prop = rest[0]
-    has_season = any(v is not None for v in away.values()) or \
-        any(v is not None for v in home.values())
-    if not has_season and not (a_prop or h_prop):
-        return ""
-    body = []
-    for label, key, better in SP_ROWS:
-        a, h = _sp_cell(away, key), _sp_cell(home, key)
-        acls = hcls = ""
-        av, hv = away.get(key), home.get(key)
-        if better and av is not None and hv is not None and av != hv:
-            wins_away = (av < hv) if better == "low" else (av > hv)
-            acls, hcls = ("on", "") if wins_away else ("", "on")
-        body.append(f'<tr><td class="spv {acls}">{a}</td>'
-                    f'<th>{_(label)}</th>'
-                    f'<td class="spv {hcls}">{h}</td></tr>')
-
-    if a_prop or h_prop:
-        body.append(f'<tr class="sep"><td colspan="3">{_("sp_tonight")}</td></tr>')
-        for label, key, better in SP_PROP_ROWS:
-            av, hv = a_prop.get(key), h_prop.get(key)
-            acls = hcls = ""
-            if better and av is not None and hv is not None and av != hv:
-                acls, hcls = ("on", "") if av > hv else ("", "on")
-            body.append(
-                f'<tr><td class="spv {acls}">{_sp_prop_cell(a_prop, key)}</td>'
-                f'<th>{_(label)}</th>'
-                f'<td class="spv {hcls}">{_sp_prop_cell(h_prop, key)}</td></tr>')
-        # The verdict, in its own colour rather than lit like a number: it is
-        # a judgement about the opponent, and both starters can have a good
-        # one on the same night.
-        av, hv = a_prop.get("matchup"), h_prop.get("matchup")
-        if av in MXB_LABEL or hv in MXB_LABEL:
-            body.append(
-                f'<tr><td class="spv {MX_CLASS.get(av, "")}">'
-                f'{_(MXB_LABEL[av]) if av in MXB_LABEL else "&mdash;"}</td>'
-                f'<th>{_("sp_matchup")}</th>'
-                f'<td class="spv {MX_CLASS.get(hv, "")}">'
-                f'{_(MXB_LABEL[hv]) if hv in MXB_LABEL else "&mdash;"}</td></tr>')
-        prices = []
-        for p in (a_prop, h_prop):
-            bits = []
-            if p.get("over_odds") is not None:
-                bits.append("o" + om.format_american(p["over_odds"]))
-            if p.get("under_odds") is not None:
-                bits.append("u" + om.format_american(p["under_odds"]))
-            prices.append(esc(" / ".join(bits)) if bits else "&mdash;")
-        if prices != ["&mdash;", "&mdash;"]:
-            body.append(f'<tr><td class="spv sm">{prices[0]}</td>'
-                        f'<th>{_("pnl_prices")}</th>'
-                        f'<td class="spv sm">{prices[1]}</td></tr>')
-
-    return (f'<table class="sptbl">'
-            f'<tr class="hd"><td>{esc(_abbr(row.get("away")))}</td>'
-            f'<th></th><td>{esc(_abbr(row.get("home")))}</td></tr>'
-            f'{"".join(body)}</table>')
+    return a_prop, h_prop
 
 
-def _starters_block(row: dict, detail: dict) -> str:
-    out = []
-    for which, other in (("away", "home"), ("home", "away")):
-        name = detail.get(f"{which}_starter")
-        if not name:
-            continue
-        era = detail.get(f"{which}_starter_era")
-        opp = _nickname(row.get(other))
-        vs = detail.get(f"{which}_vs_opp")
-        if vs and vs.get("innings"):
-            k9 = vs["strikeouts"] * 9 / vs["innings"]
-            line = _("pnl_vs_line", n=vs["starts"], s=_pl(vs["starts"]),
-                     team=esc(opp), ip=f'{vs["innings"]:g}',
-                     k=vs["strikeouts"], k9=f"{k9:.1f}",
-                     era=f'{vs["era"]:.2f}')
-        else:
-            line = _("pnl_vs_never", team=esc(opp), span="2025&ndash;2026")
-        head = esc(name) + (f" &middot; {era:.2f} ERA" if era else "")
-        out.append(f'<div class="pst"><div class="pst-n">{head}</div>'
-                   f'<div class="pst-v">{line}</div></div>')
-    table = _sp_table(row, detail, _PROPS.get(row.get("event_id") or ""))
-    if not out and not table:
-        return ""
-    return (f'<section class="pk"><h4>{_("sp_head")}</h4>'
-            + table + "".join(out) + "</section>")
+# One row of the mirrored sheet: the label, the field on vs_roster, and the
+# two ends of its scale. `lo` is the value that draws an empty bar and `hi`
+# the value that fills it, so a stat where LOWER is better simply has hi
+# below lo and the same formula draws it. That is what lets the caption say
+# one thing -- longer means more suppressed -- about all four rows.
+#
+# The ends are fixed rather than taken from the two pitchers on the card. A
+# relative scale would fill one bar completely on every card ever drawn,
+# including the cards where both starters have been hit hard, which is the
+# one thing the panel must not say.
+SV_ROWS = (
+    ("sv_k",     "k_pct",  0.10, 0.40),
+    ("sv_bb",    "bb_pct", 0.14, 0.02),
+    ("sv_avg",   "avg",    0.320, 0.140),
+    ("sv_xwoba", "xwoba",  0.400, 0.220),
+)
 
 
-def _lineup_table(bats, team: str, who: str) -> str:
-    """One club's hitters against the other club's starter, career.
+def _sv_fmt(field: str, v: float) -> str:
+    """A rate as a percentage, an average as a three-place decimal."""
+    if field in ("k_pct", "bb_pct"):
+        return f"{v * 100:.1f}"
+    return f"{v:.3f}".lstrip("0")
 
-    A hitter with no history keeps his row, every figure a dash. That is
-    what the reference does and it is the right call twice over: "has never
-    faced him" is information, and dropping those rows would silently
-    shorten one club's table against the other's, which reads as one lineup
-    being better documented rather than as one pitcher being newer to it.
+
+def _sv_fill(lo: float, hi: float, v: float) -> float:
+    span = hi - lo
+    if not span:
+        return 0.0
+    return max(0.0, min(1.0, (v - lo) / span))
+
+
+def _sv_column(prop: dict, hand: str, era, opponent: str,
+               starter: str = "") -> str:
+    """One starter against the other club's hitters, or nothing.
+
+    The name comes from the prop row and the hand and ERA from the side of
+    the card, so the two have to be the same man. They are matched by club
+    and the clubs are spelled differently by the two feeds -- the ARI/AZ
+    case -- so when the abbreviations fail the fallback places a pitcher by
+    elimination. That fallback is right far more often than not, but "far
+    more often than not" is not a standard for printing one pitcher's
+    strikeout rate under another one's name.
+
+    So they are checked. A disagreement drops the column rather than drawing
+    a confident hybrid of two men, and the other side still renders.
     """
-    if not bats:
+    vs = (prop or {}).get("vs_roster") or {}
+    if not vs.get("pa"):
         return ""
+    if starter and _short_name(prop.get("name")) != _short_name(starter):
+        return ""
+    hand_txt = _("sv_rhp") if hand == "R" else _("sv_lhp") if hand == "L" else ""
+    meta = " &middot; ".join(
+        x for x in (hand_txt, f"{era:.2f} ERA" if era else "") if x)
     rows = []
-    for b in bats:
-        pa = b.get("pa")
-        if not pa:
-            cells = ('<td class="lz">&mdash;</td>' * 5)
-        else:
-            avg = b.get("avg")
-            cells = (
-                f'<td>{b.get("h", 0)}&ndash;{b.get("ab", 0)}</td>'
-                f'<td>{b.get("hr") if b.get("hr") is not None else "&mdash;"}</td>'
-                f'<td>{b.get("rbi") if b.get("rbi") is not None else "&mdash;"}</td>'
-                f'<td>{b.get("k") if b.get("k") is not None else "&mdash;"}</td>'
-                f'<td class="lav">{f"{avg:.3f}".lstrip("0") if avg is not None else "&mdash;"}</td>')
-        rows.append(f'<tr><th>{esc(_short_name(b.get("name")))}'
-                    f'<span class="ppos">{esc(b.get("position", ""))}</span>'
-                    f'</th>{cells}</tr>')
-    return (f'<section class="pk">'
-            f'<h4>{_("lu_head", team=esc(_nickname(team)), who=esc(_short_name(who)))}</h4>'
-            f'<div class="sscroll"><table class="lutbl">'
-            f'<tr class="hd"><th>{_("lu_hitters")}</th>'
-            f'<td>{_("lu_hab")}</td><td>{_("lu_hr")}</td>'
-            f'<td>{_("lu_rbi")}</td><td>{_("lu_k")}</td>'
-            f'<td>{_("lu_avg")}</td></tr>'
-            f'{"".join(rows)}</table></div>'
-            f'<p class="pnl-note">{_("lu_note")}</p></section>')
+    for label, field, lo, hi in SV_ROWS:
+        v = vs.get(field)
+        if v is None:
+            # A dash, and the bar's track with nothing in it. Dropping the
+            # row would silently shorten one column against the other, which
+            # reads as one pitcher being better rather than less documented.
+            rows.append(f'<div class="sv-r"><span class="sv-l">{_(label)}</span>'
+                        f'<span class="sv-v">&mdash;</span>'
+                        f'<i class="sv-track"></i></div>')
+            continue
+        rows.append(
+            f'<div class="sv-r" data-f="{field}">'
+            f'<span class="sv-l">{_(label)}</span>'
+            f'<span class="sv-v">{_sv_fmt(field, v)}</span>'
+            f'<i class="sv-track"><b style="width:'
+            f'{_sv_fill(lo, hi, v) * 100:.1f}%"></b></i></div>')
+    return (f'<div class="sv-col">'
+            f'<div class="sv-n">{esc(_short_name(prop.get("name")))}</div>'
+            f'<div class="sv-m">{meta}</div>'
+            f'<div class="sv-m">{_("sv_line", team=esc(_nickname(opponent)), n=vs["pa"])}</div>'
+            f'{"".join(rows)}</div>')
 
 
-def _lineups_block(row: dict, detail: dict) -> str:
-    """Both clubs' tables, away first, matching the card's own order."""
-    out = []
-    for which, other in (("away", "home"), ("home", "away")):
-        out.append(_lineup_table(detail.get(f"{which}_bats"),
-                                 row.get(which),
-                                 detail.get(f"{other}_starter") or "?"))
-    return "".join(out)
+def _sv_sheet(row: dict, detail: dict, props=None) -> str:
+    """Both starters against the lineup each actually has to get out.
+
+    This is the block the whole panel was rebuilt around. A starter's season
+    ERA says how he has pitched; this says how he has pitched AGAINST THESE
+    HITTERS, which is the question a reader opening a matchup card is
+    actually asking and the one no free scoreboard answers.
+
+    Two columns, mirrored, with the same four scales on both sides. Mirrored
+    rather than interleaved because these are not a contest: both starters
+    can have dominated their opposite number's lineup, and a shared centre
+    column would invite a reader to read the pair as a winner and a loser.
+
+    The numbers come from the pitcher board's roster panel, which is one
+    StatsAPI request per hitter and already made every morning. Nothing here
+    costs anything new.
+    """
+    a_prop, h_prop = _side_props(row, props)
+    cols = [
+        _sv_column(a_prop, detail.get("away_hand", ""),
+                   detail.get("away_starter_era"), row.get("home"),
+                   detail.get("away_starter", "")),
+        _sv_column(h_prop, detail.get("home_hand", ""),
+                   detail.get("home_starter_era"), row.get("away"),
+                   detail.get("home_starter", "")),
+    ]
+    if not any(cols):
+        return ""
+    # A side with no history keeps its half of the grid. An empty column is a
+    # column that says "these two have never met", which is worth the space;
+    # collapsing to one column would centre the other and break the mirror.
+    cols = [c or f'<div class="sv-col sv-empty">{_("sv_none")}</div>'
+            for c in cols]
+    notes = []
+    for prop in (a_prop, h_prop):
+        vs = (prop or {}).get("vs_roster") or {}
+        if vs.get("xwoba") is not None and vs.get("xwoba_span"):
+            notes.append(_("sv_xwoba_note", span=esc(vs["xwoba_span"]),
+                           n=vs.get("xwoba_pa") or 0))
+            break
+    return (f'<section class="pk sv"><h4>{_("sv_head")}</h4>'
+            f'<div class="sv-grid">{cols[0]}{cols[1]}</div>'
+            f'<p class="sv-note">{_("sv_note")}'
+            + (f' &middot; {notes[0]}' if notes else "")
+            + "</p></section>")
 
 
 def _detail_panel(row: dict) -> str:
-    """Everything behind the card's disclosure.
+    """Everything behind the card's disclosure: the three blocks of 5a.
 
-    Replaced a table of the home side's fair price, the market width in cents
-    and a book count, none of which were labelled. A reader could not tell
-    what the middle number was, and the summary promised matchup history and
-    props that were never there.
+    Three, and only three. The panel had grown a price table, an eight-row
+    season comparison, tonight's strikeout props, a matchup verdict and two
+    paragraphs of prose about each starter underneath the design it was
+    built to -- every one of them true, and together four times the height
+    of the thing a reader opened the card to see.
+
+    So the rule here is subtraction. Who is playing, how these two clubs
+    have gone against each other, and how tonight's arms have gone against
+    tonight's bats. Anything that is reference rather than answer belongs on
+    the board page that is about it -- the strikeout numbers on the pitcher
+    board, the prices on the face of the card.
     """
     detail = row.get("detail") or {}
-    form = _form_block(row, detail)
-    starters = _starters_block(row, detail)
-    # _props_block is gone: it listed the two starters' strikeout numbers one
-    # under the other, so comparing them meant reading two paragraphs and
-    # doing the subtraction. The same numbers are now rows of the starters'
-    # comparison table, which is what a reader was doing with them anyway.
-    props = ""
+    head = _scorecard(row, detail)
+    sheet = _sv_sheet(row, detail, _PROPS.get(row.get("event_id") or ""))
+    if not (head or sheet):
+        return ""
     # The head-to-head block is the only one that speaks when it has nothing
     # ("they have not met yet this season"), which is worth saying on a card
-    # that has other material and is just noise on a card that has none. So it
-    # is included only alongside something else.
-    # The price rows came off the face of the card when it took the canvas's
-    # shape, so they land here -- first, because a reader who opened the card
-    # after seeing an edge is looking for the price that edge is against.
-    prices = market_rows(row)
-    price_block = (f'<section class="pk"><h4>{_("pnl_prices")}</h4>'
-                   f'<div class="mk">{prices}</div></section>') if prices else ""
-    if not (form or starters or props or price_block):
-        return ""
-    return (f'<div class="pnl">{price_block}{form}{_h2h_block(row, detail)}'
-            f'{starters}{_lineups_block(row, detail)}{props}</div>')
+    # that has other material and is just noise on a card that has none. So
+    # it is included only alongside something else, which the guard above is.
+    return (f'<div class="pnl">{head}{_h2h_block(row, detail)}'
+            f'{sheet}</div>')
 
 
 def _disclosure(row: dict) -> str:
@@ -2497,47 +2514,26 @@ def _self_test() -> None:
     # made the reader do the comparison the card had already done.
     assert html_out.count('class="cv-pct"') == 1, html_out
 
-    # The prices moved behind the disclosure when the card took the canvas's
-    # shape, but they are still in the markup -- <details> keeps its content
-    # findable by Ctrl+F and by a crawler.
-    assert 'class="gmore"' in html_out
     assert "--dim" not in html_out, \
         "--dim may not appear in a card; it is 3:1 and this is all content"
 
-    # The league's own word for a spread, resolved through i18n.
-    assert i18n.t("mkt_run_line", LANG) in html_out, "MLB says run line"
-    assert i18n.t("mkt_spread", LANG) not in html_out, \
-        "a baseball card must not say 'spread'"
+    # The price table is gone from the card, and with it the only place the
+    # book names and the three market lines appeared. That was deliberate:
+    # the panel is the matchup, and everything that was not the matchup came
+    # out of it. The card keeps the disagreement, which is the number the
+    # board exists to publish.
+    assert "Caesars" not in html_out, "no book names on a card any more"
+    assert i18n.t("mkt_run_line", LANG) not in html_out, "no price rows"
+    assert 'class="mk-row"' not in html_out, html_out
+    assert 'class="ge' in html_out, "the edge stays on the face of the card"
 
-    # A total carries the market's number and never one of ours.
-    assert "8.5" in html_out
-    assert i18n.t("market_only", LANG) in html_out, \
-        "the total row must say it is market-only"
-
-    # This row has no form, starters or props -- the state of a college
-    # basketball card, and of an NFL card before enough finals are stored.
-    # It still gets a disclosure, because the price rows moved behind one
-    # when the card took the canvas's shape and prices are content.
-    assert "<details" in html_out, \
-        "a card with prices has something to disclose"
-
-    # A card with genuinely nothing behind it still renders none. An empty
-    # disclosure reads as a broken page.
+    # A row with no matchup material at all -- the state of a college
+    # basketball card, and of an NFL card before enough finals are stored --
+    # has nothing to disclose, and gets no control rather than an empty box.
     bare = dict(row)
-    bare["markets"] = {}
     bare["detail"] = {}
     assert "<details" not in board_card(bare), board_card(bare)
     assert "onclick" not in html_out, "the card needs no JavaScript"
-
-    # The best price and the book offering it both appear.
-    assert "Caesars" in html_out and "−125" in html_out, \
-        "prices use a real minus sign"
-
-    # A game with only a moneyline still renders, rather than raising on the
-    # markets it does not have. Half the NCAAB board looks like this.
-    thin = {**row, "markets": {"h2h": row["markets"]["h2h"]}}
-    thin_html = board_card(thin)
-    assert "8.5" not in thin_html
 
     # A game with no model has no win probability rather than a made-up one.
     unrated = {**row, "model": None}
@@ -2581,15 +2577,20 @@ def _self_test() -> None:
     # a decimal there implies a precision the model does not have.
     assert "44.4" not in card, card
 
-    # The records and the starters moved behind the disclosure, and are still
-    # in the markup. The whole record line, not the digits: "74" and "56" on
-    # their own also appear in event ids, prices and percentages, so a
-    # two-substring assertion would pass whether or not a record ever
-    # reached the card.
+    # The records moved behind the disclosure, and are still in the markup.
+    # The whole record line, not the digits: "74" and "56" on their own also
+    # appear in event ids and percentages, so a two-substring assertion would
+    # pass whether or not a record ever reached the card.
     assert "74&ndash;56" in card, \
         "the home club's record reaches the card as a record line"
     assert "77&ndash;53" in card
-    assert "Freddy Peralta" in card and "3.47" in card
+
+    # The starters are named by the mirrored sheet and nowhere else, so a
+    # card with no roster history for them names neither. That is the shape
+    # of the design: a starter with no line against tonight's hitters has
+    # nothing to say on a matchup panel, and a name with no numbers under it
+    # is what the old two-paragraph block was.
+    assert "Freddy Peralta" not in card, card
 
     # A card with no starter shows no starter line at all, rather than a
     # hardcoded English "TBA" — which every basketball and football card
@@ -2615,11 +2616,11 @@ def _self_test() -> None:
     fade = board_card({**rated, "model": {**rated["model"], "disagreement": -6.0}})
     assert 'class="ge down"' in fade and i18n.t("cv_fade", LANG, v="") .split()[-1] in fade
 
-    # A game we have not rated shows the market block and no percentages,
-    # rather than a placeholder or the market's number in our place.
+    # A game we have not rated shows no percentages at all, rather than a
+    # placeholder or the market's number standing in for ours.
     plain = board_card({**row, "model": None, "detail": None})
     assert "55.6" not in plain and 'class="cv-pct"' not in plain
-    assert "MONEYLINE" in plain.upper() or i18n.t("mkt_moneyline", LANG) in plain
+    assert i18n.t("not_rated", LANG) in plain, plain
 
     # ---- the detail panel is the card's whole second half.
     row["detail"] = {
@@ -2632,65 +2633,129 @@ def _self_test() -> None:
              "home": "Chicago Cubs", "home_runs": 2},
         ],
         "home_starter": "Robert Gasser", "away_starter": "Matthew Boyd",
+        "home_starter_era": 3.44, "away_starter_era": 4.12,
+        "home_hand": "L", "away_hand": "R",
+        "venue": "American Family Field",
         "home_vs_opp": None,
         "away_vs_opp": {"starts": 2, "innings": 10.3, "era": 7.84,
                         "strikeouts": 5, "span": "2025-2026"},
     }
     set_props([
-        {"event_id": "evt1", "name": "Matthew Boyd", "team": "MIL",
+        # Boyd is the AWAY starter on this card, so his prop row carries the
+        # away club. The pair used to be crossed -- Boyd on MIL, Gasser on a
+        # club not in the game at all -- which the panel silently untangled
+        # by elimination and drew each man's numbers under the other's hand.
+        {"event_id": "evt1", "name": "Matthew Boyd", "team": "CHC",
          "line": 4.5, "projection": 4.2, "gap": -0.3, "over_odds": 112,
-         "under_odds": -120, "matchup": "tough", "opp_k_per_game": 7.4},
-        {"event_id": "evt1", "name": "Robert Gasser", "team": "CLE",
+         "under_odds": -120, "matchup": "tough", "opp_k_per_game": 7.4,
+         "vs_roster": {"pa": 41, "k_pct": 0.381, "bb_pct": 0.049,
+                       "avg": 0.178, "batters": 9, "xwoba": 0.241,
+                       "xwoba_pa": 38, "xwoba_span": "2025-2026",
+                       "thin": True}},
+        {"event_id": "evt1", "name": "Robert Gasser", "team": "MIL",
          "line": 5.5, "projection": 6.3, "gap": 0.8, "over_odds": -105,
-         "under_odds": -115, "matchup": "favourable", "opp_k_per_game": 9.1},
+         "under_odds": -115, "matchup": "favourable", "opp_k_per_game": 9.1,
+         "vs_roster": {"pa": 18, "k_pct": 0.222, "bb_pct": 0.111,
+                       "avg": 0.333, "batters": 6, "xwoba": 0.398,
+                       "xwoba_pa": 16, "xwoba_span": "2025-2026",
+                       "thin": True}},
         {"event_id": "other", "name": "Nobody At All", "team": "SEA",
          "line": 1.5, "projection": 1.5, "gap": 0.0, "matchup": "neutral"},
     ])
     panel = _detail_panel(row)
-    assert "Last 10" in panel, panel
-    assert "L2" in panel and "W1" in panel
+    # _ordinal returns a SUFFIX and _place a whole word. Defining the second
+    # as another _ordinal shadowed the first and turned every rank on the
+    # site into "2ndnd of 30" -- in the prop boards, which this panel's test
+    # would never have looked at.
+    assert _ordinal(2) == "nd" and _place(2) == "2nd", (_ordinal(2), _place(2))
+    assert _place(11) == "11th" and _ordinal(11) == "th"
+
+    # ---- the scorecard head. Both clubs, each on its own side.
+    assert 'class="sc-abbr">CHC<' in panel and 'class="sc-abbr">MIL<' in panel
+    assert "78&ndash;60" in panel and "85&ndash;53" in panel, "both records"
+    assert i18n.t("sc_l10", LANG, w=4, l=6) in panel, "the away club's last ten"
+    assert "L2" in panel and "W1" in panel, "both streak chips"
+    assert "American Family Field" in panel, "the park, from the schedule row"
+    # The day is new information; the time is already on the card's face.
+    assert "Mon Aug 31" in panel, panel
+
+    # ---- head to head. The bar carries both counts and neither end is ever
+    # empty, or a sweep would print a number floating off a blank track.
     assert "Brewers lead the season series" in panel, panel
-    assert "Matthew Boyd" in panel
-    # A starter with no history says so rather than rendering a blank line.
-    assert "has not faced" in panel
+    assert 'class="h2a" style="width:4.0%"' in panel, \
+        "a club that has won none of them still keeps a sliver of bar"
+    assert i18n.t("sc_runs", LANG, v="1.5") in panel, "away runs per game"
+    assert i18n.t("sc_runs", LANG, v="5.5") in panel, "home runs per game"
+    # Counted with a real pattern, not a prefix: 'class="h2c' also matches
+    # the date and score spans INSIDE each chip, so a prefix count reads 6
+    # for two meetings and would pass whatever the strip actually drew.
+    assert len(re.findall(r'class="h2c( on)?"', panel)) == 2, \
+        "one chip per meeting"
+
+    # ---- the mirrored sheet. Four scales, both sides, fixed ends.
+    assert i18n.t("sv_head", LANG) in panel, panel
+    assert "38.1" in panel and "22.2" in panel, "both K% against the lineup"
+    assert "4.9" in panel and "11.1" in panel, "both BB%"
+    assert ".178" in panel and ".333" in panel, "both averages"
+    assert ".241" in panel and ".398" in panel, "both xwOBA"
+    assert i18n.t("sv_line", LANG, team="Brewers", n=41) in panel, panel
+    assert "RHP" in panel and "LHP" in panel, "both hands"
+    # Lower xwOBA has to draw the LONGER bar, or the caption is a lie. .241
+    # against a .400-.220 scale is nearly full; .398 is nearly empty.
+    fills = [float(m) for m in re.findall(
+        r'data-f="xwoba"[^>]*>.*?<b style="width:([0-9.]+)%"', panel)]
+    assert len(fills) == 2, fills
+    assert fills[0] > 85 and fills[1] < 15, fills
+    assert "M. Boyd" in panel and "R. Gasser" in panel, "both starters named"
     # Props join by event id, and only this game's appear.
     assert "Nobody At All" not in panel, panel
-    # The two starters' strikeout numbers are ROWS of the comparison, not two
-    # stacked paragraphs -- the whole point is that the pair can be read
-    # against each other without doing the subtraction in your head.
-    assert i18n.t("sp_tonight", LANG) in panel, panel
-    assert "4.2" in panel and "6.3" in panel, "both projections"
-    assert i18n.t("mxb_tough", LANG) in panel
-    assert i18n.t("mxb_favourable", LANG) in panel
-    assert "o+112" in panel and "u\u2212115" in panel, "both starters' prices"
+
+    # ---- and NOTHING else. The panel is these three blocks. It had grown a
+    # price table, an eight-row season comparison, tonight's strikeout props,
+    # a matchup verdict and a paragraph on each starter underneath the design
+    # it was built to. Each absence is named, because a block creeping back
+    # in is exactly how the panel got that way the first time.
+    for gone, what in (
+        ('class="mk-row"', "the price rows"),
+        ('class="sptbl"', "the season comparison table"),
+        (i18n.t("sp_tonight", LANG), "tonight's strikeout props"),
+        (i18n.t("mxb_tough", LANG), "the matchup verdict"),
+        ("o+112", "the prop prices"),
+        ('class="pst"', "the per-starter paragraphs"),
+        ('class="lutbl"', "the per-hitter tables"),
+    ):
+        assert gone not in panel, f"{what} belong on their own board, not here"
+    assert panel.count("<section") == 3, panel
+
     # Arizona is the club where TEAM_ABBR and StatsAPI disagree (ARI / AZ).
+    # The sheet's own identity guard drops a column whose prop names a
+    # different man than the card does, so the fixture names them both.
     az_row = dict(row, event_id="az1", home="Arizona Diamondbacks",
-                  away="Colorado Rockies")
+                  away="Colorado Rockies",
+                  detail={**row["detail"], "home_starter": "A Snake",
+                          "away_starter": "A Rockie"})
     set_props([
-        {"event_id": "az1", "name": "A Snake", "team": "AZ", "line": 5.5,
-         "projection": 6.1, "gap": 0.6, "matchup": "favourable"},
-        {"event_id": "az1", "name": "A Rockie", "team": "COL", "line": 3.5,
-         "projection": 3.2, "gap": -0.3, "matchup": "tough"},
+        {"event_id": "az1", "name": "A Snake", "team": "AZ",
+         "vs_roster": {"pa": 30, "k_pct": 0.30, "bb_pct": 0.06,
+                       "avg": 0.200, "batters": 8, "xwoba": 0.260}},
+        {"event_id": "az1", "name": "A Rockie", "team": "COL",
+         "vs_roster": {"pa": 25, "k_pct": 0.20, "bb_pct": 0.09,
+                       "avg": 0.280, "batters": 7, "xwoba": 0.340}},
     ])
     az = _detail_panel(az_row)
-    assert "6.1" in az and "3.2" in az, \
+    assert "A. Snake" in az and "A. Rockie" in az, \
         "ARI/AZ is an alias, not a missing club"
     assert "[[" not in panel, panel
 
-    # A card whose rating never merged has no detail, and must still render.
-    # It keeps a disclosure, because the price rows live behind one now.
+    # A card whose rating never merged has no detail and nothing to disclose.
+    # The prices used to keep a disclosure alive on exactly this card; they
+    # are gone, so it gets no control rather than an empty box.
     bare = dict(row)
     bare.pop("detail")
     set_props([])
-    assert "<details" in board_card(bare), "prices are still worth disclosing"
-
-    # Strip the prices too and there is genuinely nothing to expand -- the
-    # college basketball card, and the NFL card on the first morning after
-    # the scores fix lands. No control at all, rather than an empty box.
-    nothing = {**bare, "markets": {}}
-    assert _detail_panel(nothing) == "", "no detail means no panel, not a crash"
-    assert _disclosure(nothing) == "", "and no panel means no disclosure control"
-    assert "<details" not in board_card(nothing), board_card(nothing)
+    assert _detail_panel(bare) == "", "no detail means no panel, not a crash"
+    assert _disclosure(bare) == "", "and no panel means no disclosure control"
+    assert "<details" not in board_card(bare), board_card(bare)
     # And with a detail block it is a details element, not a flip.
     with_detail = board_card(row)
     assert "<details" in with_detail and "<summary" in with_detail

@@ -77,6 +77,11 @@ def probable_starters(date_str: str) -> list[dict]:
                         # has to guess which of the two names is hosting.
                         "is_home": side == "home",
                         "game_time": game.get("gameDate", ""),
+                        # The park, from the schedule row we already have.
+                        # The odds feed names neither the venue nor the city,
+                        # so without this a card can say when a game is and
+                        # not where.
+                        "venue": (game.get("venue") or {}).get("name", ""),
                     })
                 except (KeyError, TypeError):
                     continue
@@ -571,11 +576,29 @@ def pitch_hands(pitcher_ids) -> dict[int, str]:
 # The last-ten record hides among sixteen split records; this is its type.
 LAST_TEN = "lastTen"
 
+# The standings payload names each division by id, not by name. The six ids
+# are fixed and have been since the 1994 realignment, so they are written
+# here rather than bought with a hydrate that would add a request to every
+# morning for six strings that never change. An id this map does not know
+# yields an empty division rather than a guess.
+DIVISIONS = {
+    200: "AL West", 201: "AL East", 202: "AL Central",
+    203: "NL West", 204: "NL East", 205: "NL Central",
+}
+
 
 def parse_standings(payload) -> dict[int, dict]:
-    """Team id -> record, streak and last ten."""
+    """Team id -> record, streak, last ten and place in the division.
+
+    The division comes free: /standings answers one block PER DIVISION and
+    every team record in it already carries divisionRank. Reading them here
+    costs nothing and is what lets a card say "2nd AL East" rather than a
+    bare win-loss -- the line that tells a reader whether 84-61 is a good
+    season or a distant second.
+    """
     out = {}
     for record in (payload or {}).get("records", []) or []:
+        division = DIVISIONS.get((record.get("division") or {}).get("id"), "")
         for tr in record.get("teamRecords", []) or []:
             tid = (tr.get("team") or {}).get("id")
             if tid is None:
@@ -585,12 +608,18 @@ def parse_standings(payload) -> dict[int, dict]:
                 if sr.get("type") == LAST_TEN:
                     last10 = sr
                     break
+            try:
+                rank = int(tr.get("divisionRank"))
+            except (TypeError, ValueError):
+                rank = None
             out[int(tid)] = {
                 "w": int(tr.get("wins") or 0),
                 "l": int(tr.get("losses") or 0),
                 "streak": (tr.get("streak") or {}).get("streakCode") or "",
                 "l10_w": int(last10.get("wins") or 0),
                 "l10_l": int(last10.get("losses") or 0),
+                "division": division,
+                "div_rank": rank,
             }
     return out
 
@@ -704,25 +733,30 @@ def _self_test() -> None:
     assert parse_hands({}) == {} and parse_hands(None) == {}
 
     # ---- standings: the last ten hides among sixteen splitRecords.
-    st = {"records": [{"teamRecords": [
-        {"team": {"id": 135}, "wins": 73, "losses": 65,
+    st = {"records": [{"division": {"id": 203}, "teamRecords": [
+        {"team": {"id": 135}, "wins": 73, "losses": 65, "divisionRank": "2",
          "streak": {"streakCode": "W1"},
          "records": {"splitRecords": [
              {"type": "home", "wins": 41, "losses": 28},
              {"type": "lastTen", "wins": 5, "losses": 5}]}},
-        {"team": {"id": 113}, "wins": 65, "losses": 73,
+        {"team": {"id": 113}, "wins": 65, "losses": 73, "divisionRank": "4",
          "streak": {"streakCode": "L1"},
          "records": {"splitRecords": [{"type": "lastTen",
                                        "wins": 4, "losses": 6}]}}]}]}
     table = parse_standings(st)
     assert table[135] == {"w": 73, "l": 65, "streak": "W1",
-                          "l10_w": 5, "l10_l": 5}, table[135]
+                          "l10_w": 5, "l10_l": 5,
+                          "division": "NL West", "div_rank": 2}, table[135]
     assert table[113]["streak"] == "L1"
+    # divisionRank arrives as a STRING. Carried through unconverted, "2nd"
+    # would read correctly and any arithmetic on it would fail much later.
+    assert isinstance(table[135]["div_rank"], int), table[135]
     bare = parse_standings({"records": [{"teamRecords": [
         {"team": {"id": 1}, "wins": 1, "losses": 2,
          "streak": {}, "records": {}}]}]})
     assert bare[1] == {"w": 1, "l": 2, "streak": "",
-                       "l10_w": 0, "l10_l": 0}, bare
+                       "l10_w": 0, "l10_l": 0,
+                       "division": "", "div_rank": None}, bare
     assert parse_standings(None) == {}
 
     # ---- the season series. Only finals, oldest first.
