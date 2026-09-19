@@ -2013,14 +2013,14 @@
       "scored": null
     },
     {
-      "player_id": "00-0039923",
-      "name": "J.J. McCarthy",
+      "player_id": "00-0033293",
+      "name": "Aaron Jones",
       "team": "MIN",
       "opponent": "CHI",
-      "position": "QB",
+      "position": "RB",
       "per_game": 0.4,
       "chance": 0.39855745573017365,
-      "weight": 0.0,
+      "weight": 0.2,
       "opp_allowed": 3.21,
       "league_allowed": 2.53,
       "week": 2,
@@ -2029,27 +2029,15 @@
       "recent": [
         {
           "season": 2025,
-          "week": 1,
-          "opponent": "CHI",
-          "value": 1.0
-        },
-        {
-          "season": 2025,
-          "week": 2,
-          "opponent": "ATL",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
           "week": 9,
           "opponent": "DET",
-          "value": 1.0
+          "value": 0.0
         },
         {
           "season": 2025,
           "week": 10,
           "opponent": "BAL",
-          "value": 0.0
+          "value": 1.0
         },
         {
           "season": 2025,
@@ -2065,6 +2053,12 @@
         },
         {
           "season": 2025,
+          "week": 13,
+          "opponent": "SEA",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
           "week": 14,
           "opponent": "WAS",
           "value": 0.0
@@ -2073,19 +2067,25 @@
           "season": 2025,
           "week": 15,
           "opponent": "DAL",
-          "value": 1.0
+          "value": 0.0
         },
         {
           "season": 2025,
           "week": 16,
           "opponent": "NYG",
-          "value": 1.0
+          "value": 0.0
         },
         {
           "season": 2025,
-          "week": 18,
+          "week": 17,
+          "opponent": "DET",
+          "value": 1.0
+        },
+        {
+          "season": 2026,
+          "week": 1,
           "opponent": "GB",
-          "value": 0.0
+          "value": 1.0
         }
       ],
       "scored": null
@@ -6081,84 +6081,6 @@
       "scored": null
     },
     {
-      "player_id": "00-0038935",
-      "name": "Brenton Strange",
-      "team": "JAX",
-      "opponent": "DEN",
-      "position": "TE",
-      "per_game": 0.4,
-      "chance": 0.29013057371747053,
-      "weight": 0.2,
-      "opp_allowed": 2.16,
-      "league_allowed": 2.53,
-      "week": 2,
-      "game_id": "2026_02_JAX_DEN",
-      "commence_time": "2026-09-20T16:05:00-04:00",
-      "recent": [
-        {
-          "season": 2025,
-          "week": 4,
-          "opponent": "SF",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 5,
-          "opponent": "KC",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 12,
-          "opponent": "ARI",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 13,
-          "opponent": "TEN",
-          "value": 1.0
-        },
-        {
-          "season": 2025,
-          "week": 14,
-          "opponent": "IND",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 15,
-          "opponent": "NYJ",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 16,
-          "opponent": "DEN",
-          "value": 1.0
-        },
-        {
-          "season": 2025,
-          "week": 17,
-          "opponent": "IND",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 18,
-          "opponent": "TEN",
-          "value": 1.0
-        },
-        {
-          "season": 2026,
-          "week": 1,
-          "opponent": "CLE",
-          "value": 1.0
-        }
-      ],
-      "scored": null
-    },
-    {
       "player_id": "00-0038611",
       "name": "Chris Rodriguez Jr.",
       "team": "JAX",
@@ -6232,6 +6154,84 @@
           "week": 1,
           "opponent": "CLE",
           "value": 0.0
+        }
+      ],
+      "scored": null
+    },
+    {
+      "player_id": "00-0038935",
+      "name": "Brenton Strange",
+      "team": "JAX",
+      "opponent": "DEN",
+      "position": "TE",
+      "per_game": 0.4,
+      "chance": 0.29013057371747053,
+      "weight": 0.2,
+      "opp_allowed": 2.16,
+      "league_allowed": 2.53,
+      "week": 2,
+      "game_id": "2026_02_JAX_DEN",
+      "commence_time": "2026-09-20T16:05:00-04:00",
+      "recent": [
+        {
+          "season": 2025,
+          "week": 4,
+          "opponent": "SF",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 5,
+          "opponent": "KC",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 12,
+          "opponent": "ARI",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 13,
+          "opponent": "TEN",
+          "value": 1.0
+        },
+        {
+          "season": 2025,
+          "week": 14,
+          "opponent": "IND",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 15,
+          "opponent": "NYJ",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 16,
+          "opponent": "DEN",
+          "value": 1.0
+        },
+        {
+          "season": 2025,
+          "week": 17,
+          "opponent": "IND",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 18,
+          "opponent": "TEN",
+          "value": 1.0
+        },
+        {
+          "season": 2026,
+          "week": 1,
+          "opponent": "CLE",
+          "value": 1.0
         }
       ],
       "scored": null
@@ -7467,6 +7467,54 @@
       "scored": null
     },
     {
+      "player_id": "00-0038128",
+      "name": "Malik Willis",
+      "team": "MIA",
+      "opponent": "SF",
+      "position": "QB",
+      "per_game": 0.6,
+      "chance": 0.4035768548195324,
+      "weight": 0.2,
+      "opp_allowed": 2.18,
+      "league_allowed": 2.53,
+      "week": 2,
+      "game_id": "2026_02_MIA_SF",
+      "commence_time": "2026-09-20T16:25:00-04:00",
+      "recent": [
+        {
+          "season": 2025,
+          "week": 11,
+          "opponent": "NYG",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 12,
+          "opponent": "MIN",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 16,
+          "opponent": "CHI",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 17,
+          "opponent": "BAL",
+          "value": 2.0
+        },
+        {
+          "season": 2026,
+          "week": 1,
+          "opponent": "LV",
+          "value": 1.0
+        }
+      ],
+      "scored": null
+    },
+    {
       "player_id": "00-0039040",
       "name": "De'Von Achane",
       "team": "MIA",
@@ -7540,54 +7588,6 @@
           "week": 1,
           "opponent": "LV",
           "value": 0.0
-        }
-      ],
-      "scored": null
-    },
-    {
-      "player_id": "00-0038128",
-      "name": "Malik Willis",
-      "team": "MIA",
-      "opponent": "SF",
-      "position": "QB",
-      "per_game": 0.6,
-      "chance": 0.4035768548195324,
-      "weight": 0.2,
-      "opp_allowed": 2.18,
-      "league_allowed": 2.53,
-      "week": 2,
-      "game_id": "2026_02_MIA_SF",
-      "commence_time": "2026-09-20T16:25:00-04:00",
-      "recent": [
-        {
-          "season": 2025,
-          "week": 11,
-          "opponent": "NYG",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 12,
-          "opponent": "MIN",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 16,
-          "opponent": "CHI",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 17,
-          "opponent": "BAL",
-          "value": 2.0
-        },
-        {
-          "season": 2026,
-          "week": 1,
-          "opponent": "LV",
-          "value": 1.0
         }
       ],
       "scored": null
