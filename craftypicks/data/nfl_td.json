@@ -2013,14 +2013,14 @@
       "scored": null
     },
     {
-      "player_id": "00-0033293",
-      "name": "Aaron Jones",
+      "player_id": "00-0039923",
+      "name": "J.J. McCarthy",
       "team": "MIN",
       "opponent": "CHI",
-      "position": "RB",
+      "position": "QB",
       "per_game": 0.4,
       "chance": 0.39855745573017365,
-      "weight": 0.2,
+      "weight": 0.0,
       "opp_allowed": 3.21,
       "league_allowed": 2.53,
       "week": 2,
@@ -2029,15 +2029,27 @@
       "recent": [
         {
           "season": 2025,
+          "week": 1,
+          "opponent": "CHI",
+          "value": 1.0
+        },
+        {
+          "season": 2025,
+          "week": 2,
+          "opponent": "ATL",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
           "week": 9,
           "opponent": "DET",
-          "value": 0.0
+          "value": 1.0
         },
         {
           "season": 2025,
           "week": 10,
           "opponent": "BAL",
-          "value": 1.0
+          "value": 0.0
         },
         {
           "season": 2025,
@@ -2053,12 +2065,6 @@
         },
         {
           "season": 2025,
-          "week": 13,
-          "opponent": "SEA",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
           "week": 14,
           "opponent": "WAS",
           "value": 0.0
@@ -2067,25 +2073,19 @@
           "season": 2025,
           "week": 15,
           "opponent": "DAL",
-          "value": 0.0
+          "value": 1.0
         },
         {
           "season": 2025,
           "week": 16,
           "opponent": "NYG",
-          "value": 0.0
+          "value": 1.0
         },
         {
           "season": 2025,
-          "week": 17,
-          "opponent": "DET",
-          "value": 1.0
-        },
-        {
-          "season": 2026,
-          "week": 1,
+          "week": 18,
           "opponent": "GB",
-          "value": 1.0
+          "value": 0.0
         }
       ],
       "scored": null
@@ -7239,6 +7239,84 @@
       "scored": null
     },
     {
+      "player_id": "00-0037112",
+      "name": "Jake Tonges",
+      "team": "SF",
+      "opponent": "MIA",
+      "position": "TE",
+      "per_game": 0.5,
+      "chance": 0.4267194338305098,
+      "weight": 0.0,
+      "opp_allowed": 2.81,
+      "league_allowed": 2.53,
+      "week": 2,
+      "game_id": "2026_02_MIA_SF",
+      "commence_time": "2026-09-20T16:25:00-04:00",
+      "recent": [
+        {
+          "season": 2025,
+          "week": 1,
+          "opponent": "SEA",
+          "value": 1.0
+        },
+        {
+          "season": 2025,
+          "week": 2,
+          "opponent": "NO",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 3,
+          "opponent": "ARI",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 4,
+          "opponent": "JAX",
+          "value": 1.0
+        },
+        {
+          "season": 2025,
+          "week": 5,
+          "opponent": "LA",
+          "value": 1.0
+        },
+        {
+          "season": 2025,
+          "week": 6,
+          "opponent": "TB",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 8,
+          "opponent": "HOU",
+          "value": 1.0
+        },
+        {
+          "season": 2025,
+          "week": 11,
+          "opponent": "ARI",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 16,
+          "opponent": "IND",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 17,
+          "opponent": "CHI",
+          "value": 1.0
+        }
+      ],
+      "scored": null
+    },
+    {
       "player_id": "00-0035719",
       "name": "Deebo Samuel Sr.",
       "team": "SF",
@@ -7305,78 +7383,6 @@
           "season": 2025,
           "week": 18,
           "opponent": "PHI",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 1,
-          "opponent": "LA",
-          "value": 1.0
-        }
-      ],
-      "scored": null
-    },
-    {
-      "player_id": "00-0031408",
-      "name": "Mike Evans",
-      "team": "SF",
-      "opponent": "MIA",
-      "position": "WR",
-      "per_game": 0.5,
-      "chance": 0.4267194338305098,
-      "weight": 0.2,
-      "opp_allowed": 2.81,
-      "league_allowed": 2.53,
-      "week": 2,
-      "game_id": "2026_02_MIA_SF",
-      "commence_time": "2026-09-20T16:25:00-04:00",
-      "recent": [
-        {
-          "season": 2025,
-          "week": 1,
-          "opponent": "ATL",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 2,
-          "opponent": "HOU",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 3,
-          "opponent": "NYJ",
-          "value": 1.0
-        },
-        {
-          "season": 2025,
-          "week": 7,
-          "opponent": "DET",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 15,
-          "opponent": "ATL",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 16,
-          "opponent": "CAR",
-          "value": 1.0
-        },
-        {
-          "season": 2025,
-          "week": 17,
-          "opponent": "MIA",
-          "value": 1.0
-        },
-        {
-          "season": 2025,
-          "week": 18,
-          "opponent": "CAR",
           "value": 0.0
         },
         {
@@ -7467,6 +7473,54 @@
       "scored": null
     },
     {
+      "player_id": "00-0038128",
+      "name": "Malik Willis",
+      "team": "MIA",
+      "opponent": "SF",
+      "position": "QB",
+      "per_game": 0.6,
+      "chance": 0.4035768548195324,
+      "weight": 0.2,
+      "opp_allowed": 2.18,
+      "league_allowed": 2.53,
+      "week": 2,
+      "game_id": "2026_02_MIA_SF",
+      "commence_time": "2026-09-20T16:25:00-04:00",
+      "recent": [
+        {
+          "season": 2025,
+          "week": 11,
+          "opponent": "NYG",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 12,
+          "opponent": "MIN",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 16,
+          "opponent": "CHI",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 17,
+          "opponent": "BAL",
+          "value": 2.0
+        },
+        {
+          "season": 2026,
+          "week": 1,
+          "opponent": "LV",
+          "value": 1.0
+        }
+      ],
+      "scored": null
+    },
+    {
       "player_id": "00-0039040",
       "name": "De'Von Achane",
       "team": "MIA",
@@ -7540,54 +7594,6 @@
           "week": 1,
           "opponent": "LV",
           "value": 0.0
-        }
-      ],
-      "scored": null
-    },
-    {
-      "player_id": "00-0038128",
-      "name": "Malik Willis",
-      "team": "MIA",
-      "opponent": "SF",
-      "position": "QB",
-      "per_game": 0.6,
-      "chance": 0.4035768548195324,
-      "weight": 0.2,
-      "opp_allowed": 2.18,
-      "league_allowed": 2.53,
-      "week": 2,
-      "game_id": "2026_02_MIA_SF",
-      "commence_time": "2026-09-20T16:25:00-04:00",
-      "recent": [
-        {
-          "season": 2025,
-          "week": 11,
-          "opponent": "NYG",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 12,
-          "opponent": "MIN",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 16,
-          "opponent": "CHI",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 17,
-          "opponent": "BAL",
-          "value": 2.0
-        },
-        {
-          "season": 2026,
-          "week": 1,
-          "opponent": "LV",
-          "value": 1.0
         }
       ],
       "scored": null
