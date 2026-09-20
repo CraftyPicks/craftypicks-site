@@ -47,20 +47,37 @@ THROUGH = 7
 FULL_GAME_INNINGS = 9
 
 
+def parse_counted(payload) -> tuple[list[dict], int]:
+    """Every usable game in the payload, and how many were thrown away.
+
+    The count is the point. A shape change at StatsAPI -- an inning key
+    renamed, scheduledInnings no longer hydrated -- does not raise here, it
+    quietly shrinks the sample, and a season that is silently half its real
+    size still produces a confident-looking league baseline. The caller
+    reports the drop rate so that cannot happen unnoticed.
+    """
+    out, dropped = [], 0
+    for day in (payload or {}).get("dates", []) or []:
+        for game in day.get("games", []) or []:
+            row = _row(game, day.get("date") or "")
+            if row:
+                out.append(row)
+            elif (game.get("status") or {}).get(
+                    "abstractGameState") == "Final":
+                # Only FINISHED games count as drops. A game that has not
+                # been played yet is not a hole in the data.
+                dropped += 1
+    out.sort(key=lambda r: (r["date"], r["game_pk"]))
+    return out, dropped
+
+
 def parse(payload) -> list[dict]:
     """Every completed full-length game in the payload, as F7 rows.
 
     Pure: the fetch is next door. One row per GAME, carrying both clubs, so
     a caller can aggregate by club or by park without a second pass.
     """
-    out = []
-    for day in (payload or {}).get("dates", []) or []:
-        for game in day.get("games", []) or []:
-            row = _row(game, day.get("date") or "")
-            if row:
-                out.append(row)
-    out.sort(key=lambda r: (r["date"], r["game_pk"]))
-    return out
+    return parse_counted(payload)[0]
 
 
 def _row(game: dict, date: str) -> dict | None:
@@ -108,15 +125,29 @@ def _row(game: dict, date: str) -> dict | None:
     }
 
 
-def fetch(start: str, end: str) -> list[dict]:
-    """Every F7 row between two ISO dates. One request per call."""
-    return parse(mlb_api._get("/schedule", sportId=1, gameType="R",
-                              startDate=start, endDate=end,
-                              hydrate="linescore"))
+# Regular season, wild card, division series, league championship, world
+# series. NOT spring training or the all-star game.
+#
+# "R" alone was wrong in a way that only shows up in October: the board
+# projects whatever probable_starters lists, which includes the
+# postseason, and grading fetched the regular season only -- so every
+# playoff card ever published would have sat ungraded forever, during the
+# month the site is read most.
+GAME_TYPES = "R,F,D,L,W"
 
 
-def season(year: int, through: str | None = None) -> list[dict]:
-    """A whole regular season, in one request.
+def fetch(start: str, end: str) -> tuple[list[dict], int]:
+    """Every F7 row between two ISO dates, and the count of games dropped.
+
+    One request per call.
+    """
+    return parse_counted(mlb_api._get(
+        "/schedule", sportId=1, gameType=GAME_TYPES,
+        startDate=start, endDate=end, hydrate="linescore"))
+
+
+def season(year: int, through: str | None = None) -> tuple[list[dict], int]:
+    """A whole season, in one request, with the drop count.
 
     The schedule endpoint answers a full year happily; it is the hydrate that
     makes the payload large, not the range. Split it only if that changes.
@@ -127,22 +158,47 @@ def season(year: int, through: str | None = None) -> list[dict]:
 def team_rates(rows: list[dict]) -> dict[int, dict]:
     """Club id -> F7 runs scored and allowed, per game.
 
-    Both halves. A club's own F7 offence is what the board projects; its F7
-    defence is what the OTHER club's board needs, and computing them in one
-    pass keeps the two from ever being built off different game sets.
+    Both halves in one pass, so the two can never be built off different
+    game sets. `ra_pg` is carried for diagnostics only -- the board takes
+    its defence from the rotation/bullpen split in mlb_api, which knows
+    which arm pitches which inning, and this does not.
     """
     agg: dict[int, dict] = {}
     for r in rows:
         for side, other in (("away", "home"), ("home", "away")):
             t = agg.setdefault(r[f"{side}_id"],
-                               {"g": 0, "rs": 0, "ra": 0})
+                               {"g": 0, "rs": 0, "ra": 0,
+                                "away_g": 0, "away_rs": 0})
             t["g"] += 1
             t["rs"] += r[f"{side}_f7"]
             t["ra"] += r[f"{other}_f7"]
+            if side == "away":
+                # Road games only. A club's all-games scoring rate is about
+                # half its own park, so an offence index built from it
+                # carries that park into every game the model projects --
+                # including the ones played somewhere else entirely. The
+                # road split is the cheapest estimate that is already on a
+                # common footing, and it needs no park estimate to build.
+                t["away_g"] += 1
+                t["away_rs"] += r["away_f7"]
     for t in agg.values():
         t["rs_pg"] = t["rs"] / t["g"] if t["g"] else None
         t["ra_pg"] = t["ra"] / t["g"] if t["g"] else None
+        t["away_rs_pg"] = (t["away_rs"] / t["away_g"]) if t["away_g"] else None
     return agg
+
+
+def league_away_rate(rows: list[dict]) -> float | None:
+    """Runs per road club per game, through seven.
+
+    The denominator for the offence index. Pairing a road numerator with an
+    all-games denominator would push every club's index down by the home
+    advantage, uniformly -- harmless on its own, and exactly the kind of
+    quiet constant that later gets mistaken for the model being calibrated.
+    """
+    if not rows:
+        return None
+    return sum(r["away_f7"] for r in rows) / len(rows)
 
 
 def by_club(rows: list[dict]) -> dict:
@@ -259,6 +315,33 @@ def _self_test() -> None:
     assert s["n"] == 4 and s["counts"] == {3: 2, 4: 2}, s
     assert s["mean"] == 3.5
     assert spread([])["mean"] is None
+
+    # ---- away-only rates. A club's own park is baked into its all-games
+    # scoring rate, so an offence index built from it carries that park into
+    # every road game the model projects. Measured: the correlation between
+    # a club's road-game error and its OWN park factor was +0.53 before this
+    # existed and -0.06 after.
+    rates2 = team_rates(two)
+    assert rates2[112]["away_g"] == 1 and rates2[112]["away_rs"] == 4, rates2[112]
+    assert rates2[112]["away_rs_pg"] == 4.0
+    # The second fixture game swaps the CLUBS, not the linescore, so the
+    # away side scored 4 in both. Both clubs therefore read 4.0 on the road
+    # while both read 3.5 across all games -- which is the whole point: the
+    # two numbers are different, and the road one is the clean one.
+    assert rates2[158]["away_rs_pg"] == 4.0, rates2[158]
+    assert rates2[158]["rs_pg"] == 3.5, "all-games rate is unchanged"
+    assert league_away_rate(two) == 4.0, league_away_rate(two)
+    assert league_away_rate([]) is None
+
+    # ---- the drop count. The docstring has always promised one.
+    rain = {"gamePk": 9, "status": {"abstractGameState": "Final"},
+            "teams": {"away": {"team": {"id": 1}}, "home": {"team": {"id": 2}}},
+            "linescore": {"scheduledInnings": 9,
+                          "innings": [inning(1, 1, 0), inning(2, 0, 0)]}}
+    kept, dropped = parse_counted({"dates": [{"games": [full, rain]}]})
+    assert len(kept) == 1 and dropped == 1, (kept, dropped)
+    assert parse({"dates": [{"games": [full, rain]}]}) == kept, \
+        "parse stays the plain list; the counted form is the one that reports"
 
     # ---- the grading key. Two halves of a doubleheader are two entries,
     # which a date key could not express.

@@ -499,6 +499,17 @@ T = {
                           "el sitio."},
     "f7_level":    {"en": "Flat league average: {v}. Level with it.",
                     "es": "Promedio plano de la liga: {v}. Empatados."},
+    "f7_band":     {"en": "Projected {lo}\u2013{hi} &middot; {n}",
+                    "es": "Proyectado {lo}\u2013{hi} &middot; {n}"},
+    "f7_band_top": {"en": "Projected {lo}+ &middot; {n}",
+                    "es": "Proyectado {lo}+ &middot; {n}"},
+    "f7_band_note": {"en": "Projected &rarr; scored. The clubs we put highest "
+                           "have to actually score most, or the number is "
+                           "the league average wearing a disguise.",
+                     "es": "Proyectado &rarr; anotado. Los equipos que "
+                           "ponemos m\u00e1s arriba tienen que anotar m\u00e1s de "
+                           "verdad, o el n\u00famero es el promedio de la liga "
+                           "disfrazado."},
     "f7_rung":     {"en": "Over {v} &middot; {n} graded",
                     "es": "M\u00e1s de {v} &middot; {n} calificados"},
     "f7_rung_note": {"en": "Said &rarr; happened. A probability is only a "

@@ -2409,6 +2409,9 @@ def f7_cards(rows: list[dict]) -> str:
             f'</div></section>')
 
         where = _("f7_at") if r.get("is_home") else _("f7_away")
+        # The park is one of the four factors, so the card names it rather
+        # than carrying the field silently the way the row used to.
+        park_txt = (f' &middot; {esc(r["venue"])}' if r.get("venue") else "")
         return f"""
         <div class="pb-card">
           <div class="pb-body">
@@ -2417,7 +2420,7 @@ def f7_cards(rows: list[dict]) -> str:
               <span class="cv-time">{esc(game_time(r.get('commence_time')))}</span>
             </div>
             <div class="cv-sub">{where} {esc(_nickname(r.get('opponent', '')))}
-              &middot; {arm}</div>
+              &middot; {arm}{park_txt}</div>
             <div class="cv-row">
               <span class="cv-lab">{_("f7_proj")}</span>
               <span class="cv-pct">{r.get('projection', 0):.1f}<span
@@ -2454,6 +2457,24 @@ def f7_accuracy(summary: dict) -> str:
                else ("f7_loses" if mae > base else "f7_level"))
         text += " " + _(rel, v=f"{base:.2f}")
     out = f'<p class="disclaimer">{text}</p>'
+
+    # The resolution test. MAE and a pooled hit-rate can both look fine on a
+    # model with no discrimination at all -- this is the table that asks
+    # whether a club projected at 4.5 really does outscore one projected at
+    # 3.0. It was being computed every morning and rendered nowhere, which
+    # is the same bug as the lineup tables, so it is the first thing here.
+    bands = summary.get("bands") or []
+    if bands:
+        def band(b):
+            label = _("f7_band", lo=f'{b["lo"]:g}', hi=f'{b["hi"]:g}',
+                      n=b["n"]) if b["hi"] < 90 else _(
+                          "f7_band_top", lo=f'{b["lo"]:g}', n=b["n"])
+            return (f'<div class="pb-row"><span>{label}</span>'
+                    f'<b>{b["projected"]:.2f} &rarr; {b["actual"]:.2f}</b>'
+                    f'</div>')
+        out += (f'<div class="pb-rows">'
+                f'{"".join(band(b) for b in bands)}</div>'
+                f'<p class="pnl-note">{_("f7_band_note")}</p>')
 
     rungs = summary.get("over_rate") or []
     if rungs:

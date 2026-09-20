@@ -68,6 +68,12 @@ PEN_SHRINK_INNINGS = 120
 # because a pitcher with no starts has no ip_per_start to compute from.
 DEFAULT_START_LENGTH = 5.2
 
+# Start length settles faster than any rate does -- a man's usage pattern is
+# a decision his manager makes, not an outcome. Named rather than inlined,
+# because the docstring above promises these are all in one place and for a
+# while this one was a literal buried in project().
+LENGTH_SHRINK_STARTS = 6
+
 # Below this the projection is published without a probability. A line needs
 # a distribution and a distribution needs a shape, and a shape fitted to a
 # handful of games is a decoration.
@@ -83,7 +89,7 @@ def shrink(value: float | None, n: float | None, k: float,
     return toward + (value - toward) * w
 
 
-def dispersion(spread: dict) -> float | None:
+def dispersion(spread: dict, mean_var: float = 0.0) -> float | None:
     """The negative binomial shape r, from the observed mean and variance.
 
     Runs in seven innings are overdispersed against a Poisson of the same
@@ -91,14 +97,44 @@ def dispersion(spread: dict) -> float | None:
     rally is one inning. Pricing them as Poisson understates both tails,
     which is exactly the part of the distribution an over/under is about.
 
-    Returns None when the sample is too thin, or when the variance comes out
-    at or below the mean -- which means the data is not overdispersed and
-    this model does not apply, rather than meaning r is enormous.
+    `mean_var` is the variance of the projected means, and passing it is not
+    optional for honest pricing. The pooled variance of every club-game is
+    Var(runs | mu) + Var(mu): it contains the spread of the matchups
+    themselves, which is precisely what the projection exists to explain.
+    Fitting r to it and then applying that r AT a given mu prices with more
+    dispersion than exists around our own number -- pulling every published
+    probability toward 50%, always in the same direction, and invisibly,
+    because a pooled reliability table is the one statistic this error does
+    not move.
+
+    Measured on simulation at a true r of 5.0: pooled fitting returned 4.35
+    at sd(mu) = 0.6 and 3.94 at 0.8; subtracting Var(mu) returned 4.95 and
+    4.89. Left uncorrected the number is a floor on r, not an estimate.
+
+    Returns None when the sample is too thin, or when the remaining variance
+    is at or below the mean -- which means the data is not overdispersed
+    once the matchups are accounted for, and this model does not apply,
+    rather than meaning r is enormous.
     """
     n, mean, var = spread.get("n") or 0, spread.get("mean"), spread.get("var")
-    if n < MIN_SPREAD_SAMPLE or not mean or var is None or var <= mean:
+    if n < MIN_SPREAD_SAMPLE or not mean or var is None:
         return None
-    return (mean * mean) / (var - mean)
+    conditional = var - max(0.0, mean_var)
+    if conditional <= mean:
+        return None
+    return (mean * mean) / (conditional - mean)
+
+
+def neutral_starters(rows: list[dict]) -> int:
+    """How many rows got no usable line for the opposing starter.
+
+    Worth counting out loud. Both the fetch and the parser answer a changed
+    payload with an empty season line rather than an error, which regresses
+    sp_index to exactly 1.0 and leaves a card that looks entirely normal
+    with the opposing pitcher contributing nothing at all. Thirty of those
+    is a board that has quietly stopped modelling pitching.
+    """
+    return sum(1 for r in rows if not r.get("sp_used"))
 
 
 def _log_nb_pmf(x: int, mean: float, r: float) -> float:
@@ -139,20 +175,24 @@ def project(*, league_f7: float, team_rs_pg: float | None, team_games: int,
     if not league_f7 or not league_rpi:
         return None
 
-    offence = shrink((team_rs_pg / league_f7) if team_rs_pg else None,
-                     team_games, OFF_SHRINK_GAMES)
+    # `is not None`, not truthiness. A starter with fifteen shutout innings
+    # has an r_per_inning of exactly 0.0, which is a rate and not a missing
+    # value -- read as falsy he is handed the league average instead of
+    # being shrunk up from zero, which is the opposite of what he earned.
+    offence = shrink((team_rs_pg / league_f7) if team_rs_pg is not None
+                     else None, team_games, OFF_SHRINK_GAMES)
 
     sp = sp or {}
-    sp_index = shrink(
-        (sp.get("r_per_inning") / league_rpi) if sp.get("r_per_inning") else None,
-        sp.get("innings"), SP_SHRINK_INNINGS)
-    pen_index = shrink((pen_rpi / league_rpi) if pen_rpi else None,
+    sp_rate = sp.get("r_per_inning")
+    sp_index = shrink((sp_rate / league_rpi) if sp_rate is not None else None,
+                      sp.get("innings"), SP_SHRINK_INNINGS)
+    pen_index = shrink((pen_rpi / league_rpi) if pen_rpi is not None else None,
                        pen_ip, PEN_SHRINK_INNINGS)
 
     # How much of the seven is his. Regressed like everything else: a man
     # with three starts has not shown you how deep he goes.
-    length = shrink(sp.get("ip_per_start"), sp.get("starts"), 6,
-                    toward=DEFAULT_START_LENGTH)
+    length = shrink(sp.get("ip_per_start"), sp.get("starts"),
+                    LENGTH_SHRINK_STARTS, toward=DEFAULT_START_LENGTH)
     sp_innings = max(0.0, min(float(THROUGH), length))
     pen_innings = THROUGH - sp_innings
 
@@ -164,11 +204,18 @@ def project(*, league_f7: float, team_rs_pg: float | None, team_games: int,
     mean = league_f7 * offence * defence * park
     return {
         "projection": round(mean, 2),
+        # Whether the opposing starter's own line was readable at all, as
+        # opposed to being regressed to neutral because nothing came back.
+        # Without this the two cases are indistinguishable downstream.
+        "sp_used": sp_rate is not None,
         "league_f7": round(league_f7, 3),
         "offence": round(offence, 3),
         "sp_index": round(sp_index, 3),
         "pen_index": round(pen_index, 3),
-        "defence": round(defence, 3),
+        # `defence` is deliberately NOT stored. It is fully determined by
+        # sp_index, pen_index and sp_innings, all three of which the card
+        # shows, and a stored field nothing reads is how this repo has
+        # accumulated fetch-daily-display-never fields before.
         "park": round(park, 3),
         "sp_innings": round(sp_innings, 2),
     }
@@ -240,12 +287,17 @@ def merge(history: list[dict], fresh: list[dict]) -> int:
 BANDS = ((0.0, 3.0), (3.0, 3.75), (3.75, 4.5), (4.5, 99.0))
 
 
-def summary(history: list[dict]) -> dict:
+def summary(history: list[dict], league_f7: float | None = None) -> dict:
     """Mean absolute error, and what each band actually scored.
 
     MAE against a naive baseline is the only test that matters here: the
     baseline is the league's own F7 average applied to everybody, and a
     model that cannot beat it has learned nothing about pitching or parks.
+
+    `league_f7` is that average. Without it the realized mean of the graded
+    rows is used instead, which is the same number fitted IN SAMPLE -- an
+    advantage the model does not get, and not what the page claims it is
+    comparing against. Pass it.
     """
     graded = [r for r in history if r.get("actual") is not None]
     out = {"published": len(history), "graded": len(graded),
@@ -254,7 +306,9 @@ def summary(history: list[dict]) -> dict:
         return out
     out["mae"] = round(
         sum(abs(r["actual"] - r["projection"]) for r in graded) / len(graded), 3)
-    flat = sum(r["actual"] for r in graded) / len(graded)
+    flat = league_f7 if league_f7 else (
+        sum(r["actual"] for r in graded) / len(graded))
+    out["baseline_in_sample"] = league_f7 is None
     out["baseline_mae"] = round(
         sum(abs(r["actual"] - flat) for r in graded) / len(graded), 3)
     out["baseline"] = round(flat, 2)
@@ -289,6 +343,16 @@ def summary(history: list[dict]) -> dict:
 
 
 # --------------------------------------------------------------- the board
+# A game or two a season is called early and that is weather, not a bug.
+# Past this share of finished games something has changed shape.
+DROP_ALARM = 0.05
+
+
+def verbose_drop(kept: int, dropped: int) -> bool:
+    total = kept + dropped
+    return bool(total) and (dropped / total) > DROP_ALARM
+
+
 def inputs(season: int, through: str | None = None) -> dict:
     """Everything the projection needs, in four free requests.
 
@@ -297,7 +361,7 @@ def inputs(season: int, through: str | None = None) -> dict:
     and the park pair is already in _get's cache because the home-run board
     asked for the same two payloads this morning.
     """
-    rows = linescore.season(season, through)
+    rows, dropped = linescore.season(season, through)
     staff = mlb_api.staff_split(season)
     import batters as batters_mod                            # noqa: PLC0415
     try:
@@ -306,13 +370,20 @@ def inputs(season: int, through: str | None = None) -> dict:
         print(f"   !! f7 park factors unavailable ({type(e).__name__}: {e})",
               file=sys.stderr)
         park = {}
+    if dropped and verbose_drop(len(rows), dropped):
+        print(f"   !! f7: {dropped} finished game(s) of {len(rows) + dropped} "
+              f"could not be read for a first-seven line", file=sys.stderr)
     return {
         # Kept, not just counted: grading settles against these same rows,
         # and re-fetching them would be a second request for a payload we
         # are already holding.
         "rows": rows,
         "games": len(rows),
+        "dropped": dropped,
         "league_f7": linescore.league_rate(rows),
+        # The denominator for the offence index. Road games only -- see
+        # linescore.team_rates for why a club's own park must not ride in.
+        "league_away_f7": linescore.league_away_rate(rows),
         "teams": linescore.team_rates(rows),
         "spread": linescore.spread(rows),
         "staff": staff,
@@ -337,10 +408,10 @@ def build(starters: list[dict], season: int, verbose: bool = True,
         if verbose:
             print("   f7: no league baseline yet; nothing to project")
         return []
-    r = dispersion(d.get("spread") or {})
-    if verbose and r is None:
-        print(f"   f7: {(d.get('spread') or {}).get('n', 0)} club-games is "
-              f"too few to fit a shape; projections only, no probabilities")
+    # The offence index is a ROAD rate over a ROAD league rate. Falls back to
+    # the all-games pair only when there is no road split at all, which is
+    # opening week and nothing else.
+    league_off = d.get("league_away_f7") or league_f7
 
     out = []
     for sp in starters:
@@ -356,17 +427,29 @@ def build(starters: list[dict], season: int, verbose: bool = True,
         arms = (d["staff"].get(pitcher_team) or {})
         try:
             season_line = mlb_api.pitcher_season(sp["pitcher_id"], season)
-        except Exception:                                    # noqa: BLE001
+        except Exception as e:                               # noqa: BLE001
+            print(f"   !! f7: no season line for {sp.get('name')} "
+                  f"({type(e).__name__}: {e})", file=sys.stderr)
             season_line = {}
 
+        # Road runs over the road league rate, then scaled by the all-games
+        # baseline. Using the club's all-games rate here put its own park
+        # into every road projection: the correlation between a club's road
+        # error and its OWN park factor measured +0.53 before this line and
+        # -0.06 after.
+        road = bats.get("away_rs_pg")
+        offence_rate = (road / league_off * league_f7) if road is not None \
+            else bats.get("rs_pg")
+        offence_games = (bats.get("away_g") if road is not None
+                         else bats.get("g")) or 0
+
         row = project(league_f7=league_f7,
-                      team_rs_pg=bats.get("rs_pg"), team_games=bats.get("g") or 0,
+                      team_rs_pg=offence_rate, team_games=offence_games,
                       sp=season_line, pen_rpi=arms.get("rp_rpi"),
                       pen_ip=arms.get("rp_ip"), league_rpi=league_rpi,
                       park=park)
         if not row:
             continue
-        row = price(row, r)
         row.update({
             "game_pk": sp.get("game_pk"),
             "team_id": batting_team,
@@ -382,10 +465,39 @@ def build(starters: list[dict], season: int, verbose: bool = True,
         })
         out.append(row)
 
+    # The shape is fitted only now, because it needs the spread of the means
+    # this board is about to publish taken out of the pooled variance. See
+    # dispersion(). Two passes over the slate is the price of pricing
+    # honestly, and the slate is thirty rows.
+    means = [x["projection"] for x in out]
+    mean_var = (sum((m - sum(means) / len(means)) ** 2 for m in means)
+                / len(means)) if len(means) > 1 else 0.0
+    r = dispersion(d.get("spread") or {}, mean_var=mean_var)
+    if verbose and r is None:
+        print(f"   f7: {(d.get('spread') or {}).get('n', 0)} club-games is "
+              f"too few to fit a shape; projections only, no probabilities")
+    # The shape is stored on every row alongside the probabilities it
+    # produced. Without it a later look at the calibration table cannot
+    # separate "the projection was off" from "the shape was off".
+    out = [price(x, r) for x in out]
+    for x in out:
+        x["shape"] = round(r, 3) if r else None
+
     out.sort(key=lambda x: (x.get("commence_time") or "", x.get("team") or ""))
+    blind = neutral_starters(out)
     if verbose:
         print(f"   f7: {len(out)} club-game(s) projected from "
               f"{d['games']} game(s) of linescores")
+    if blind:
+        print(f"   !! f7: {blind} of {len(out)} card(s) had no usable line "
+              f"for the opposing starter; those are league-average arms",
+              file=sys.stderr)
+    # Most of the board blind is not a thin day, it is a broken endpoint, and
+    # a full page of plausible cards built on nothing is worse than no page.
+    if out and blind / len(out) > 0.5:
+        print("!! f7: over half the board has no starter; refusing to publish",
+              file=sys.stderr)
+        return []
     return out
 
 
@@ -543,6 +655,13 @@ def _self_test() -> None:
     assert s["graded"] == 2 and s["published"] == 2
     assert s["mae"] == round((2.2 + 2.4) / 2, 3), s
     assert s["baseline_mae"] is not None and s["baseline"] == 3.5
+    assert s["baseline_in_sample"] is True, \
+        "no league rate given, so the baseline is the rows' own mean"
+    # Given the real league rate, the baseline is that and it is flagged as
+    # out of sample. The page claims "flat league average"; this is the line
+    # that makes the claim true.
+    s2 = summary(hist, league_f7=3.61)
+    assert s2["baseline"] == 3.61 and s2["baseline_in_sample"] is False, s2
     # One rung, two rows: the board said 48.5% and one of the two went over.
     rung = next(r for r in s["over_rate"] if r["line"] == 3.5)
     assert rung["n"] == 2 and rung["said"] == 0.485 and rung["were"] == 0.5, rung
@@ -568,9 +687,15 @@ def _self_test() -> None:
              "game_time": "2026-09-20T17:10:00Z", "venue": "Progressive Field"},
         ]
         data = {
-            "games": 1200, "league_f7": 3.6, "league_rpi": 0.45,
-            "teams": {114: {"g": 150, "rs_pg": 4.1, "ra_pg": 3.4},
-                      145: {"g": 150, "rs_pg": 3.0, "ra_pg": 4.0}},
+            "games": 1200, "league_f7": 3.6, "league_away_f7": 3.5,
+            "league_rpi": 0.45,
+            # Cleveland's ROAD rate is well below its all-games rate: it
+            # plays in a park that helps it. A model reading the all-games
+            # number would carry that park to Chicago.
+            "teams": {114: {"g": 150, "rs_pg": 4.1, "ra_pg": 3.4,
+                            "away_g": 75, "away_rs_pg": 3.6},
+                      145: {"g": 150, "rs_pg": 3.0, "ra_pg": 4.0,
+                            "away_g": 75, "away_rs_pg": 3.1}},
             "staff": {114: {"rp_rpi": 0.38, "rp_ip": 520},
                       145: {"rp_rpi": 0.55, "rp_ip": 510}},
             "spread": obs,
@@ -601,6 +726,22 @@ def _self_test() -> None:
         assert (by_team["CLE"]["projection"]
                 > by_team["CWS"]["projection"]), by_team
 
+        # The offence index comes from the ROAD rate, not the all-games one.
+        # Cleveland at 3.6 on the road over a 3.5 road league is barely above
+        # average; its 4.1 all-games rate over a 3.6 league would read 1.14
+        # and put its own park into this game in Chicago.
+        assert by_team["CLE"]["offence"] < 1.06, by_team["CLE"]
+        # And the shape is recorded beside the probabilities it produced.
+        assert by_team["CLE"]["shape"] is not None
+        assert by_team["CLE"]["sp_used"] is True
+
+        # With no road split at all -- opening week -- it falls back rather
+        # than refusing to project.
+        rookie = build(slate, 2026, verbose=False, data={
+            **data, "teams": {114: {"g": 3, "rs_pg": 4.1},
+                              145: {"g": 3, "rs_pg": 3.0}}})
+        assert len(rookie) == 2, rookie
+
         # The home club is the one NOT in the starter row that made it.
         assert by_team["CLE"]["is_home"] is True
         assert by_team["CWS"]["is_home"] is False
@@ -614,6 +755,38 @@ def _self_test() -> None:
                      data={**data, "league_f7": None}) == []
     finally:
         mlb_api.pitcher_season = real_season
+
+    # ---- dispersion must be fitted to the CONDITIONAL variance.
+    # The pooled variance of every club-game contains the spread of the true
+    # means across matchups -- which is the thing the projection exists to
+    # explain -- so feeding it straight in prices with more dispersion than
+    # there actually is around our own number, always toward 50%.
+    # Measured at sd(mu) = 0.8: fitted r 3.94 against a true 5.0.
+    pooled = {"n": 5000, "mean": 3.6, "var": 6.4}
+    naive = dispersion(pooled)
+    corrected = dispersion(pooled, mean_var=0.64)
+    assert corrected > naive, (naive, corrected)
+    assert abs(corrected - (3.6 ** 2) / (6.4 - 0.64 - 3.6)) < 1e-9
+
+    # Taking out more spread than the pooled variance holds would give a
+    # negative denominator and a nonsense shape. Declines instead.
+    assert dispersion(pooled, mean_var=99.0) is None
+
+    # ---- a starter with no usable season line must be COUNTED, not just
+    # quietly regressed to league average. An index that collapses to 1.0
+    # across a whole board renders a completely normal-looking page.
+    assert neutral_starters([
+        {"sp_index": 1.0, "sp_used": False},
+        {"sp_index": 0.9, "sp_used": True},
+        {"sp_index": 1.0, "sp_used": False},
+    ]) == 2
+
+    # ---- a rate of exactly zero is a rate, not a missing value. A starter
+    # with fifteen shutout innings must be shrunk up from 0, not handed the
+    # league average because 0.0 is falsy.
+    zero = project(**{**base, "sp": {**base["sp"], "r_per_inning": 0.0}})
+    assert zero["sp_index"] < 1.0, zero
+    assert zero["sp_used"] is True, zero
 
     # ---- end to end: is the ladder honest?
     # A synthetic season where the projection is EXACTLY right by

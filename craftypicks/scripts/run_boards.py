@@ -257,7 +257,7 @@ def main() -> int:
                                       linescore.by_club(f7_data["rows"]))
             f7_rows = f7_mod.build(starters, season, data=f7_data)
             f7_added = f7_mod.merge(f7_hist, f7_rows)
-            f7_summary = f7_mod.summary(f7_hist)
+            f7_summary = f7_mod.summary(f7_hist, f7_data.get("league_f7"))
             save_json(DATA / "f7_ratings.json", {"rows": f7_hist})
             if f7_rows:
                 save_json(DATA / "f7.json", {
