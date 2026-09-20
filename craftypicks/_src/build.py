@@ -55,6 +55,7 @@ PAGES: dict[str, Page] = {
     "homers.html":   Page("homers.html",   "homers",   "homers",   "mlb"),
     "batters.html":  Page("batters.html",  "batters",  "batters",  "mlb"),
     "hits.html":     Page("hits.html",     "hits",     "hits",     "mlb"),
+    "f7.html":       Page("f7.html",       "f7",       "f7",       "mlb"),
     "nba/points.html":    Page("nba/points.html",    "nba_points",    "nba_points",    "nba"),
     "nba/assists.html":   Page("nba/assists.html",   "nba_assists",   "nba_assists",   "nba"),
     "nba/rebounds.html":  Page("nba/rebounds.html",  "nba_rebounds",  "nba_rebounds",  "nba"),
@@ -97,6 +98,7 @@ def rel_root(page: Page) -> str:
 # another for every sport added.
 _EXTRA_VIEWS: dict[str, list[tuple[str, str]]] = {
     "mlb": [("pitchers.html", "nav_pitchers"),
+            ("f7.html", "nav_f7"),
             ("batters.html", "nav_batters"),
             ("hits.html", "nav_hits"),
             ("homers.html", "nav_homers")],
@@ -206,6 +208,8 @@ TITLES = {
                      "es": f"Jonrones — {config.SITE_NAME}"},
     "hits.html": {"en": f"Hits — {config.SITE_NAME}",
                   "es": f"Hits — {config.SITE_NAME}"},
+    "f7.html": {"en": f"First 7 innings — {config.SITE_NAME}",
+                "es": f"Primeras 7 entradas — {config.SITE_NAME}"},
     "nba/points.html": {"en": f"Points — {config.SITE_NAME}",
                         "es": f"Puntos — {config.SITE_NAME}"},
     "nba/assists.html": {"en": f"Assists — {config.SITE_NAME}",
@@ -375,6 +379,7 @@ def build() -> None:
 
     hit_doc = load("hits.json",
                    {"date_label": "", "batters": [], "summary": {}})
+    f7_doc = load("f7.json", {"date_label": "", "rows": [], "summary": {}})
 
     # The four NFL boards: three yardage categories and one touchdown board,
     # each a sibling of hits.json above with its own rows and its own error
@@ -431,6 +436,11 @@ def build() -> None:
             "{{BATTER_CARDS}}": R.batter_cards(batter_doc.get("batters", [])),
             "{{BAT_CALIBRATION}}": R.batter_calibration(
                 batter_doc.get("summary", {})),
+            "{{F7_DATE}}": doc_date_label(f7_doc, lang) or L("not_rated"),
+            "{{F7_COUNT}}": L("f7_count", n=len(f7_doc.get("rows", [])),
+                              s=pl(len(f7_doc.get("rows", [])))),
+            "{{F7_CARDS}}": R.f7_cards(f7_doc.get("rows", [])),
+            "{{F7_ACCURACY}}": R.f7_accuracy(f7_doc.get("summary", {})),
             "{{HIT_CARDS}}": R.hit_cards(hit_doc.get("batters", [])),
             "{{HIT_CALIBRATION}}": R.hit_calibration(
                 hit_doc.get("summary", {})),

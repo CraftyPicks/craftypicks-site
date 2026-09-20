@@ -2342,6 +2342,133 @@ def nba_cards(rows: list[dict], unit: str = "") -> str:
                        key=lambda r: r.get("game_id") or "")
 
 
+# ------------------------------------------------------ first seven innings
+def _f7_pct(v) -> str:
+    return f"{v * 100:.0f}%"
+
+
+def f7_cards(rows: list[dict]) -> str:
+    """One club per game, with the runs it should score through seven.
+
+    The probability ladder sits on the FACE, not behind the disclosure.
+    That is the whole board: a reader has a line in front of them at a
+    sportsbook and wants our number for it, and making them tap to find it
+    would be like putting the price behind a tap on a pricing site.
+
+    Three rungs, not the book's own line, because reading the book's line
+    on this market costs a credit per game and this board is free. The
+    reader matches whichever rung their book is offering.
+    """
+    if not rows:
+        return f'<div class="empty-board">{_("f7_empty")}</div>'
+
+    def card(r):
+        probs = r.get("probs") or {}
+        ladder = "".join(
+            f'<div class="pb-row"><span>{_("f7_over", v=line)}</span>'
+            f'<b>{_f7_pct(probs[line])}</b></div>'
+            for line in ("2.5", "3.5", "4.5") if probs.get(line) is not None)
+        if not ladder:
+            # A projection with no shape behind it. Said out loud rather
+            # than drawn as an empty row, because a blank where a
+            # percentage goes reads as zero percent.
+            ladder = f'<p class="pnl-note">{_("f7_noshape")}</p>'
+
+        hand = (_("sv_rhp") if r.get("pitcher_hand") == "R"
+                else _("sv_lhp") if r.get("pitcher_hand") == "L" else "")
+        era = r.get("pitcher_era")
+        arm = " &middot; ".join(x for x in (
+            esc(_short_name(r.get("pitcher"))), hand,
+            f"{era:.2f} ERA" if era else "") if x)
+
+        # The working. Every factor that multiplied into the number, in the
+        # order the model applies them, so a reader can see WHICH of the
+        # four is doing the work on this card -- a 4.4 that is all park and
+        # a 4.4 that is all bullpen are different bets.
+        #
+        # The two innings counts are computed into locals first. Nesting
+        # them inside the f-string needed quotes inside quotes inside a
+        # format spec, which does not parse and is unreadable when it does.
+        sp_ip = float(r.get("sp_innings") or 0)
+        pen_ip = max(0.0, 7 - sp_ip)
+        sp_lab = _("f7_starter", ip=f"{sp_ip:.1f}")
+        pen_lab = _("f7_pen", ip=f"{pen_ip:.1f}")
+        inner = (
+            f'<section class="pk"><h4>{_("f7_working")}</h4>'
+            f'<div class="pb-rows">'
+            f'<div class="pb-row"><span>{_("f7_base")}</span>'
+            f'<b>{r.get("league_f7", 0):.2f}</b></div>'
+            f'<div class="pb-row"><span>{_("f7_offence")}</span>'
+            f'<b>{r.get("offence", 1):.2f}&times;</b></div>'
+            f'<div class="pb-row"><span>{sp_lab}</span>'
+            f'<b>{r.get("sp_index", 1):.2f}&times;</b></div>'
+            f'<div class="pb-row"><span>{pen_lab}</span>'
+            f'<b>{r.get("pen_index", 1):.2f}&times;</b></div>'
+            f'<div class="pb-row"><span>{_("f7_park")}</span>'
+            f'<b>{r.get("park", 1):.2f}&times;</b></div>'
+            f'</div></section>')
+
+        where = _("f7_at") if r.get("is_home") else _("f7_away")
+        return f"""
+        <div class="pb-card">
+          <div class="pb-body">
+            <div class="cv-head">
+              <h3 class="cv-tm">{esc(_nickname(r.get('team', '')))}</h3>
+              <span class="cv-time">{esc(game_time(r.get('commence_time')))}</span>
+            </div>
+            <div class="cv-sub">{where} {esc(_nickname(r.get('opponent', '')))}
+              &middot; {arm}</div>
+            <div class="cv-row">
+              <span class="cv-lab">{_("f7_proj")}</span>
+              <span class="cv-pct">{r.get('projection', 0):.1f}<span
+                class="cv-u">{_("f7_runs")}</span></span>
+            </div>
+            <div class="pb-rows f7-ladder">{ladder}</div>
+            <details class="gmore" data-close="{_("close")}">
+              <summary>{_("f7_detail")}</summary>
+              <div class="gmore-in"><div class="pnl">{inner}</div></div>
+            </details>
+          </div>
+        </div>"""
+
+    return '<div class="pb-grid">' + "".join(card(r) for r in rows) + "</div>"
+
+
+def f7_accuracy(summary: dict) -> str:
+    """How far off the projections were, and whether the ladder was honest.
+
+    Two different claims, so two different tests. The mean is judged
+    against the flat league average -- a model that cannot beat "everyone
+    scores 3.6" has learned nothing about pitching or parks. The ladder is
+    judged on whether the clubs it gave 44% to went over about 44% of the
+    time, which is the only thing that makes a probability a price.
+    """
+    graded = (summary or {}).get("graded") or 0
+    mae = (summary or {}).get("mae")
+    if not graded or mae is None:
+        return f'<p class="pnl-note">{_("f7_ungraded")}</p>'
+    base = summary.get("baseline_mae")
+    text = _("f7_mae", n=graded, v=f"{mae:.2f}")
+    if base is not None:
+        rel = ("f7_beats" if mae < base
+               else ("f7_loses" if mae > base else "f7_level"))
+        text += " " + _(rel, v=f"{base:.2f}")
+    out = f'<p class="disclaimer">{text}</p>'
+
+    rungs = summary.get("over_rate") or []
+    if rungs:
+        def rung(r):
+            label = _("f7_rung", v=f'{r["line"]:g}', n=r["n"])
+            return (f'<div class="pb-row"><span>{label}</span>'
+                    f'<b>{_f7_pct(r["said"])} &rarr; {_f7_pct(r["were"])}</b>'
+                    f'</div>')
+
+        rows = "".join(rung(r) for r in rungs)
+        out += (f'<div class="pb-rows">{rows}</div>'
+                f'<p class="pnl-note">{_("f7_rung_note")}</p>')
+    return out
+
+
 def nba_accuracy(summary: dict) -> str:
     """How far off the projections were -- against doing nothing at all.
 

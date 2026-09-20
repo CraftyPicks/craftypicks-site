@@ -456,6 +456,62 @@ T = {
                       "es": "Verde = ganaron los {team} &middot; \u00faltimo "
                             "{date}, {who} {score}"},
     # ---- the mirrored starter sheet
+    # ---- first seven innings
+    "f7_proj":     {"en": "Projected", "es": "Proyectado"},
+    "f7_runs":     {"en": "runs", "es": "carreras"},
+    "f7_over":     {"en": "Over {v}", "es": "M\u00e1s de {v}"},
+    "f7_at":       {"en": "vs", "es": "vs"},
+    "f7_away":     {"en": "at", "es": "en casa de"},
+    "f7_working":  {"en": "How the number was built",
+                    "es": "C\u00f3mo se arm\u00f3 el n\u00famero"},
+    "f7_base":     {"en": "League, through 7", "es": "Liga, hasta la 7\u00aa"},
+    "f7_offence":  {"en": "This lineup", "es": "Esta alineaci\u00f3n"},
+    "f7_starter":  {"en": "Starter, {ip} innings of it",
+                    "es": "Abridor, {ip} entradas de ellas"},
+    "f7_pen":      {"en": "Bullpen, the other {ip}",
+                    "es": "Bullpen, las otras {ip}"},
+    "f7_park":     {"en": "Park", "es": "Parque"},
+    "f7_empty":    {"en": "No starters posted yet, so nothing is projected.",
+                    "es": "A\u00fan no hay abridores anunciados, as\u00ed que no "
+                          "hay nada proyectado."},
+    "f7_noshape":  {"en": "Too few graded innings to put a probability on a "
+                          "line yet.",
+                    "es": "A\u00fan hay muy pocas entradas calificadas para "
+                          "poner una probabilidad sobre una l\u00ednea."},
+    "f7_ungraded": {"en": "Nothing graded yet. Every projection is stored the "
+                          "morning it goes up and settled against the "
+                          "linescore.",
+                    "es": "A\u00fan no hay nada calificado. Cada proyecci\u00f3n se "
+                          "guarda la ma\u00f1ana que sale y se liquida contra "
+                          "la pizarra de entradas."},
+    "f7_mae":      {"en": "Off by <b>{v}</b> runs on average, over {n} graded "
+                          "club-games.",
+                    "es": "Un error medio de <b>{v}</b> carreras en {n} "
+                          "equipo-juegos calificados."},
+    "f7_beats":    {"en": "Flat league average: {v}. Ours is closer.",
+                    "es": "Promedio plano de la liga: {v}. El nuestro est\u00e1 "
+                          "m\u00e1s cerca."},
+    "f7_loses":    {"en": "Flat league average: {v}. Ours is <b>further "
+                          "off</b> &mdash; the model is not earning its keep "
+                          "yet.",
+                    "es": "Promedio plano de la liga: {v}. El nuestro est\u00e1 "
+                          "<b>m\u00e1s lejos</b>: el modelo todav\u00eda no se gana "
+                          "el sitio."},
+    "f7_level":    {"en": "Flat league average: {v}. Level with it.",
+                    "es": "Promedio plano de la liga: {v}. Empatados."},
+    "f7_rung":     {"en": "Over {v} &middot; {n} graded",
+                    "es": "M\u00e1s de {v} &middot; {n} calificados"},
+    "f7_rung_note": {"en": "Said &rarr; happened. A probability is only a "
+                           "price if the clubs given 44% went over about "
+                           "44% of the time.",
+                     "es": "Dicho &rarr; ocurrido. Una probabilidad solo es un "
+                           "precio si los equipos a los que dimos 44% "
+                           "pasaron cerca del 44% de las veces."},
+    "f7_detail":   {"en": "How this was built +",
+                    "es": "C\u00f3mo se arm\u00f3 +"},
+    "nav_f7":      {"en": "First 7", "es": "Primeras 7"},
+    "f7_count":    {"en": "{n} club-game{s} projected",
+                    "es": "{n} equipo-juego{s} proyectado{s}"},
     "sv_head":       {"en": "Starter vs current lineup &middot; career",
                       "es": "Abridor vs alineaci\u00f3n actual &middot; carrera"},
     "sv_line":       {"en": "vs {team} &middot; {n} PA",

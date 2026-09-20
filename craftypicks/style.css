@@ -949,6 +949,11 @@ footer{background:var(--bg-2);padding:56px 0 40px}
 /* A caption under a figure that already carries the meaning, so it is set
    like one: quiet mono, no rule down the side. .pnl-note's green border
    belongs to a statement, and this is a key. */
+/* The first-seven ladder, on the face of the card. It is the point of that
+   board, so it gets the space a section would and not the margin a footnote
+   would -- everything else on the card exists to justify these three rows. */
+.f7-ladder{margin-top:14px;padding-top:12px;border-top:1px solid var(--line)}
+.f7-ladder .pb-row b{font-size:15px}
 .sv-note{font-family:var(--mono);font-size:10px;letter-spacing:.04em;
   color:var(--muted);margin:14px 0 0;line-height:1.5}
 /* The starter comparison. Label down the middle, a club above each

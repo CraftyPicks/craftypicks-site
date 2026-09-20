@@ -53,6 +53,8 @@ import nfl_data               # noqa: E402
 import nfl_history            # noqa: E402
 import nfl_yards                # noqa: E402
 import nfl_td                   # noqa: E402
+import linescore              # noqa: E402
+import f7 as f7_mod            # noqa: E402
 
 # The calendar year the NFL season starts in -- 2026 covers the games
 # played from September 2026 through early 2027.
@@ -238,6 +240,42 @@ def main() -> int:
                   f"{hit_settled} graded")
         else:
             print("!! hits: no lineup cleared the plate-appearance floor",
+                  file=sys.stderr)
+
+        # ------------------------------------------------ first seven
+        # Guarded as one block. It is the newest board and the only one
+        # that reads linescores, so a shape change at StatsAPI takes this
+        # and nothing else.
+        try:
+            f7_data = f7_mod.inputs(season)
+            f7_hist = load_json(DATA / "f7_ratings.json", {"rows": []})["rows"]
+            # Graded first, and against the SAME rows the projection is
+            # built from. Fetching the finals separately would let the two
+            # halves drift onto different game sets, which is the bug that
+            # makes a calibration table quietly meaningless.
+            f7_settled = f7_mod.grade(f7_hist,
+                                      linescore.by_club(f7_data["rows"]))
+            f7_rows = f7_mod.build(starters, season, data=f7_data)
+            f7_added = f7_mod.merge(f7_hist, f7_rows)
+            f7_summary = f7_mod.summary(f7_hist)
+            save_json(DATA / "f7_ratings.json", {"rows": f7_hist})
+            if f7_rows:
+                save_json(DATA / "f7.json", {
+                    "date": today,
+                    "date_label": label,
+                    "rows": f7_rows,
+                    "summary": f7_summary,
+                })
+                print(f"-- f7: {len(f7_rows)} club-game(s), {f7_added} new, "
+                      f"{f7_settled} graded")
+                if f7_summary.get("mae") is not None:
+                    print(f"   f7: MAE {f7_summary['mae']} on "
+                          f"{f7_summary['graded']} graded "
+                          f"(flat baseline {f7_summary['baseline_mae']})")
+            else:
+                print("!! f7: nothing projected", file=sys.stderr)
+        except Exception as e:                               # noqa: BLE001
+            print(f"!! f7 board failed ({type(e).__name__}: {e})",
                   file=sys.stderr)
 
     # ---------------------------------------------------------- NBA

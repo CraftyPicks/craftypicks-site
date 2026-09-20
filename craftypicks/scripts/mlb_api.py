@@ -82,6 +82,10 @@ def probable_starters(date_str: str) -> list[dict]:
                         # so without this a card can say when a game is and
                         # not where.
                         "venue": (game.get("venue") or {}).get("name", ""),
+                        # The schedule's own id for this game. The only key
+                        # that separates the two halves of a doubleheader:
+                        # same two clubs, same date, two different results.
+                        "game_pk": game.get("gamePk"),
                     })
                 except (KeyError, TypeError):
                     continue
@@ -90,7 +94,9 @@ def probable_starters(date_str: str) -> list[dict]:
 
 EMPTY_PITCHER = {"k_pct": None, "k_per_9": None, "innings": 0.0, "era": None,
                  "w": None, "l": None, "hr": None, "hr_per_9": None,
-                 "bf": None, "h": None, "k": None, "bb": None, "whip": None}
+                 "bf": None, "h": None, "k": None, "bb": None, "whip": None,
+                 "runs": None, "starts": None, "r_per_inning": None,
+                 "ip_per_start": None}
 
 
 def parse_pitcher_season(payload) -> dict:
@@ -120,11 +126,22 @@ def parse_pitcher_season(payload) -> dict:
         whip = None
     if whip is None and ip and hits is not None and bb is not None:
         whip = (float(hits) + float(bb)) / ip
+    # Runs, not earned runs, and starts, so a first-seven model can ask the
+    # two questions ERA cannot answer: how many runs does he actually allow
+    # -- an error that lets in two pays out like a double that does -- and
+    # how deep does he go, which decides how much of those seven innings is
+    # his at all.
+    runs = s.get("runs")
+    starts = s.get("gamesStarted")
     return {
         "k_pct": (k / bf) if bf else None,
         "k_per_9": (k * 9 / ip) if ip else None,
         "innings": ip,
         "era": era,
+        "runs": int(runs) if runs is not None else None,
+        "starts": int(starts) if starts else None,
+        "r_per_inning": (float(runs) / ip) if (runs is not None and ip) else None,
+        "ip_per_start": (ip / starts) if starts else None,
         "bf": int(bf) if bf else None,
         "hr": int(hr) if hr is not None else None,
         # StatsAPI publishes homeRunsPer9 as a string, but it is derived from
@@ -165,6 +182,76 @@ def _innings(value) -> float:
         return float(whole) + (float(thirds or 0) / 3.0)
     except ValueError:
         return 0.0
+
+
+# A pitcher counts as a starter for his club when most of his appearances
+# were starts. Not "any start": a reliever who opened twice in an emergency
+# is a reliever, and folding his innings into the rotation would drag a
+# club's bullpen number toward its rotation's for no reason. Not "all
+# starts" either, or an opener's bullpen game lands in the wrong half.
+STARTER_SHARE = 0.5
+
+
+def parse_staff_split(payload) -> dict[int, dict]:
+    """Club id -> runs allowed per inning, rotation and bullpen apart.
+
+    Why the split matters: the first seven innings of a game are pitched by
+    roughly five innings of starter and two of relief, so a model that knows
+    only tonight's starter is an ERA lookup in a hat. A club with a good
+    rotation and a poor bullpen and a club with the reverse can carry the
+    same team ERA and give up their runs at completely different times.
+
+    RUNS, not EARNED runs. The market is total runs, and an error that lets
+    in two of them pays out exactly like a double that does. ERA is the
+    wrong currency here and it is the one every free source reaches for
+    first.
+
+    A traded pitcher's lines are summed into whichever club the payload
+    reports for each stint, which is correct for this purpose: the innings
+    happened where they happened.
+    """
+    splits = (((payload or {}).get("stats") or [{}])[0] or {}).get("splits") or []
+    out: dict[int, dict] = {}
+    for sp in splits:
+        stat = sp.get("stat") or {}
+        team = (sp.get("team") or {}).get("id")
+        if team is None:
+            continue
+        ip = _innings(stat.get("inningsPitched"))
+        if not ip:
+            continue
+        games = stat.get("gamesPlayed") or 0
+        starts = stat.get("gamesStarted") or 0
+        role = ("sp" if games and starts / games >= STARTER_SHARE else "rp")
+        club = out.setdefault(int(team), {
+            "sp_ip": 0.0, "sp_r": 0, "rp_ip": 0.0, "rp_r": 0})
+        club[f"{role}_ip"] += ip
+        club[f"{role}_r"] += int(stat.get("runs") or 0)
+    for club in out.values():
+        for role in ("sp", "rp"):
+            ip = club[f"{role}_ip"]
+            club[f"{role}_rpi"] = (club[f"{role}_r"] / ip) if ip else None
+    return out
+
+
+def staff_split(season: int) -> dict[int, dict]:
+    """Every club's rotation and bullpen, in one request.
+
+    playerPool=All is not optional, for the same reason it is not optional
+    on the batter table: the default pool is qualifiers, and a bullpen is
+    made almost entirely of men who do not qualify for anything.
+    """
+    return parse_staff_split(_get(
+        "/stats", stats="season", group="pitching", season=season,
+        sportId=1, playerPool="All", limit=2000))
+
+
+def league_runs_per_inning(split: dict[int, dict]) -> float | None:
+    """Runs per inning across every club in the table, both roles."""
+    ip = sum(c["sp_ip"] + c["rp_ip"] for c in split.values())
+    if not ip:
+        return None
+    return sum(c["sp_r"] + c["rp_r"] for c in split.values()) / ip
 
 
 def team_k_per_game(team_id: int, season: int) -> float | None:
@@ -731,6 +818,45 @@ def _self_test() -> None:
     assert hands[681190] == "R" and hands[666157] == "L", hands
     assert hands[999999] == "", "a missing pitchHand is blank, not a crash"
     assert parse_hands({}) == {} and parse_hands(None) == {}
+
+    # ---- the rotation / bullpen split.
+    staff = {"stats": [{"splits": [
+        # A rotation man: 30 of 31 appearances were starts.
+        {"team": {"id": 158}, "stat": {"gamesPlayed": 31, "gamesStarted": 30,
+                                       "inningsPitched": "180.0", "runs": 72}},
+        # A closer.
+        {"team": {"id": 158}, "stat": {"gamesPlayed": 60, "gamesStarted": 0,
+                                       "inningsPitched": "60.0", "runs": 18}},
+        # An opener: two starts in twenty appearances is a reliever, and
+        # counting him as a starter would drag the rotation number toward
+        # the bullpen's for no reason.
+        {"team": {"id": 158}, "stat": {"gamesPlayed": 20, "gamesStarted": 2,
+                                       "inningsPitched": "30.0", "runs": 15}},
+        {"team": {"id": 112}, "stat": {"gamesPlayed": 32, "gamesStarted": 32,
+                                       "inningsPitched": "200.1", "runs": 90}},
+        # No innings at all: a September call-up who has not pitched. Kept
+        # out entirely rather than divided by zero.
+        {"team": {"id": 112}, "stat": {"gamesPlayed": 1, "gamesStarted": 0,
+                                       "inningsPitched": "0.0", "runs": 0}},
+        # No club: cannot be attributed, so it is not.
+        {"stat": {"gamesPlayed": 9, "gamesStarted": 9,
+                  "inningsPitched": "50.0", "runs": 25}},
+    ]}]}
+    sp = parse_staff_split(staff)
+    assert set(sp) == {158, 112}, sp
+    assert sp[158]["sp_ip"] == 180.0 and sp[158]["sp_r"] == 72
+    # The closer AND the opener, together: 90 innings, 33 runs.
+    assert sp[158]["rp_ip"] == 90.0 and sp[158]["rp_r"] == 33, sp[158]
+    assert round(sp[158]["sp_rpi"], 4) == 0.4
+    # 200.1 in StatsAPI's notation is 200 and a third, not 200.1 innings.
+    assert round(sp[112]["sp_ip"], 2) == 200.33, sp[112]
+    # A club with no bullpen rows reports None rather than a zero that would
+    # read as a bullpen that has never allowed a run.
+    assert sp[112]["rp_rpi"] is None, sp[112]
+    assert round(league_runs_per_inning(sp), 4) == round(
+        (72 + 33 + 90) / (180.0 + 90.0 + 200 + 1 / 3), 4)
+    assert parse_staff_split(None) == {}
+    assert league_runs_per_inning({}) is None
 
     # ---- standings: the last ten hides among sixteen splitRecords.
     st = {"records": [{"division": {"id": 203}, "teamRecords": [

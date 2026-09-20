@@ -94,13 +94,25 @@ def league_rate(table: dict[int, dict]) -> float:
     return (hr / pa) if pa else 0.0
 
 
-def parse_park(hitting, pitching) -> dict[int, dict]:
-    """Team id -> home-run park factor, from home and away splits.
+def parse_park(hitting, pitching, stat: str = "homeRuns") -> dict[int, dict]:
+    """Team id -> park factor for one counting stat, from home/away splits.
 
-    The factor is every home run in this club's home games -- hit and allowed
-    -- per game, over the same figure on the road. Both halves matter: a park
-    where the home side slugs and the visitors do not is a lineup, not a park.
+    The factor is every one of that stat in this club's home games -- by the
+    home side and by the visitors -- per game, over the same figure on the
+    road. Both halves matter: a park where the home side slugs and the
+    visitors do not is a lineup, not a park.
+
+    `stat` is a parameter because the same two requests already carry every
+    counting stat in them. "homeRuns" is what the home-run board has always
+    asked for; "runs" is what the first-seven board needs, and asking for it
+    costs nothing that has not already been paid.
     """
+    # The stat the caller asked for, held under a name the loop below does
+    # not reuse. `stat` is now a parameter and the loop's own per-split dict
+    # was also called `stat`; shadowing it read every club's home runs no
+    # matter what was requested, silently.
+    want = stat
+
     def collect(payload, key):
         out: dict[int, dict] = {}
         splits = (((payload or {}).get("stats") or [{}])[0] or {}).get("splits") or []
@@ -112,10 +124,10 @@ def parse_park(hitting, pitching) -> dict[int, dict]:
             if tid is None or code not in ("h", "a") or not games:
                 continue
             out.setdefault(int(tid), {})[code] = {
-                key: int(stat.get("homeRuns") or 0), "g": int(games)}
+                key: int(stat.get(want) or 0), "g": int(games)}
         return out
 
-    hit, pit = collect(hitting, "hr"), collect(pitching, "hr")
+    hit, pit = collect(hitting, "v"), collect(pitching, "v")
     out = {}
     for tid, h in hit.items():
         p = pit.get(tid) or {}
@@ -124,8 +136,8 @@ def parse_park(hitting, pitching) -> dict[int, dict]:
         home_g, away_g = h["h"]["g"], h["a"]["g"]
         if not home_g or not away_g:
             continue
-        home = (h["h"]["hr"] + p["h"]["hr"]) / home_g
-        away = (h["a"]["hr"] + p["a"]["hr"]) / away_g
+        home = (h["h"]["v"] + p["h"]["v"]) / home_g
+        away = (h["a"]["v"] + p["a"]["v"]) / away_g
         if not away:
             continue
         raw = home / away
@@ -180,13 +192,20 @@ def all_batters(season: int) -> dict[int, dict]:
         sportId=1, playerPool="All", limit=1500))
 
 
-def park_factors(season: int) -> dict[int, dict]:
-    """Every club's home-run park factor, in two requests."""
+def park_splits(season: int):
+    """The two payloads every park factor is built from. Cached by _get, so
+    a second caller asking for a different stat costs nothing."""
     hitting = mlb_api._get("/teams/stats", stats="statSplits", sitCodes="h,a",
                            season=season, group="hitting", sportIds=1, limit=100)
     pitching = mlb_api._get("/teams/stats", stats="statSplits", sitCodes="h,a",
                             season=season, group="pitching", sportIds=1, limit=100)
-    return parse_park(hitting, pitching)
+    return hitting, pitching
+
+
+def park_factors(season: int, stat: str = "homeRuns") -> dict[int, dict]:
+    """Every club's park factor for one stat, in two requests -- and in zero
+    for the second stat asked for, because _get caches the payloads."""
+    return parse_park(*park_splits(season), stat=stat)
 
 
 def build(starters: list[dict], season: int, verbose: bool = True,
@@ -537,6 +556,21 @@ def _self_test() -> None:
 
     # A club missing half its splits is dropped rather than half-computed.
     assert parse_park(hitting, {"stats": [{"splits": []}]}) == {}
+
+    # The same two payloads, a different stat. `stat` shadowed the loop's own
+    # per-split dict when this was first parameterised, so every request came
+    # back with home runs whatever was asked for -- and a runs park factor
+    # that is secretly a home-run park factor is the kind of wrong that never
+    # announces itself. Runs here are deliberately FLAT across home and away
+    # while the home runs are not, so the two answers cannot coincide.
+    for payload in (hitting, pitching):
+        for sp in payload["stats"][0]["splits"]:
+            sp["stat"]["runs"] = 350
+    runs_park = parse_park(hitting, pitching, stat="runs")
+    assert round(runs_park[115]["raw"], 2) == 1.00, runs_park[115]
+    assert round(runs_park[115]["factor"], 2) == 1.00, runs_park[115]
+    assert round(parse_park(hitting, pitching)[115]["raw"], 2) == 1.50, \
+        "the home-run factor is unchanged by the stat being a parameter"
 
     # ---- the chance itself
     lgr = 0.030
