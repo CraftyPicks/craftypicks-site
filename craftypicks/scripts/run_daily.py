@@ -62,6 +62,17 @@ except Exception as _pitch_err:                              # noqa: BLE001
     projection = None
     print(f"!! pitcher board unavailable ({_pitch_err})", file=sys.stderr)
 
+# The first-seven board. Imported on its own, not with the pitcher group:
+# it is the newest board and the only one that reads linescores, so a
+# failure here must cost this board and nothing beside it.
+try:
+    import f7 as f7_mod        # noqa: E402
+    import linescore           # noqa: E402
+except Exception as _f7_err:                                 # noqa: BLE001
+    f7_mod = None
+    linescore = None
+    print(f"!! f7 board unavailable ({_f7_err})", file=sys.stderr)
+
 # Full-board ratings. Optional too, but this is the piece that makes the
 # numbers checkable in weeks instead of years.
 try:
@@ -551,6 +562,40 @@ def main() -> int:
                           f"{hit_settled} graded")
         except Exception as e:                               # noqa: BLE001
             print(f"!! home-run board failed ({type(e).__name__}: {e})",
+                  file=sys.stderr)
+
+    # -------------------------------------------------- 3e. first seven
+    # Built here as well as in run_boards, for the same reason every other
+    # MLB board is: the boards job runs on :30 crons that GitHub drops on
+    # busy days, and a board with only one path goes stale silently while
+    # its siblings are rebuilt here and look current. That is exactly what
+    # happened on 2026-09-21. Free -- StatsAPI only -- and idempotent: merge
+    # never overwrites a published row and grade never re-grades one, so
+    # running it from both jobs cannot double anything.
+    if f7_mod and linescore and "baseball_mlb" in in_season:
+        try:
+            import screen_config as _fcfg
+            import mlb_api as _fapi
+            f7_starters = _fapi.probable_starters(now.strftime("%m/%d/%Y"))
+            f7_data = f7_mod.inputs(_fcfg.SEASON)
+            f7_hist = load_json(DATA / "f7_ratings.json", {"rows": []})["rows"]
+            f7_settled = f7_mod.grade(f7_hist,
+                                      linescore.by_club(f7_data["rows"]))
+            f7_rows = f7_mod.build(f7_starters, _fcfg.SEASON, data=f7_data)
+            f7_added = f7_mod.merge(f7_hist, f7_rows)
+            f7_summary = f7_mod.summary(f7_hist, f7_data.get("league_f7"))
+            save_json(DATA / "f7_ratings.json", {"rows": f7_hist})
+            if f7_rows:
+                save_json(DATA / "f7.json", {
+                    "date": today,
+                    "date_label": f"{now:%A, %B %-d, %Y}",
+                    "rows": f7_rows,
+                    "summary": f7_summary,
+                })
+                print(f"-- f7: {len(f7_rows)} club-game(s), {f7_added} new, "
+                      f"{f7_settled} graded")
+        except Exception as e:                               # noqa: BLE001
+            print(f"!! f7 board failed ({type(e).__name__}: {e})",
                   file=sys.stderr)
 
     # ------------------------------------------------------- 3b. rated board

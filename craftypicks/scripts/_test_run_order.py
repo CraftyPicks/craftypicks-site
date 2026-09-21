@@ -68,6 +68,23 @@ def _self_test() -> None:
         "the early return after the guard does not rebuild the pages, so "
         "anything graded on a retry would not reach the site until tomorrow")
 
+    # Every MLB board run_boards builds must ALSO be built here. The two jobs
+    # are each other's backup: run_boards runs on three :30 crons that
+    # GitHub drops on busy days, and this one runs on its own schedule.
+    # Four boards had that backup and one did not -- on 2026-09-21 the
+    # boards job did not fire at all, the four were rebuilt by this job at
+    # 18:28 and looked current, and the first-seven board sat on the
+    # previous day's slate with nothing to say why.
+    boards_src = (Path(__file__).resolve().parent / "run_boards.py").read_text()
+    for board in ("homers_mod.build(", "batters_mod.build(",
+                  "hits_mod.build(", "f7_mod.build("):
+        if board in boards_src:
+            assert board in SOURCE, (
+                f"run_boards.py calls {board}...) but run_daily.py does not. "
+                f"That board has no second path: when the boards job is "
+                f"dropped by the scheduler it goes stale, while its siblings "
+                f"get rebuilt here and hide the fact.")
+
     print("run_daily order self-test: free work above the guard, paid below")
 
 
