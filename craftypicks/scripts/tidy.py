@@ -79,6 +79,9 @@ RETIRED = (
     "data/plays.json",
     "data/history.json",
     "data/stats.json",
+    # The home-runs-allowed board, retired 2026-09-21. The page goes through
+    # the build's own orphan sweep; this is the data behind it.
+    "data/homers.json",
 )
 
 def retired(site: Path) -> list[Path]:

@@ -52,7 +52,6 @@ _LEAGUE_PAGES = {
 PAGES: dict[str, Page] = {
     "index.html":    Page("index.html",    "tonight",  "tonight",  None),
     **_LEAGUE_PAGES,
-    "homers.html":   Page("homers.html",   "homers",   "homers",   "mlb"),
     "batters.html":  Page("batters.html",  "batters",  "batters",  "mlb"),
     "hits.html":     Page("hits.html",     "hits",     "hits",     "mlb"),
     "f7.html":       Page("f7.html",       "f7",       "f7",       "mlb"),
@@ -100,8 +99,7 @@ _EXTRA_VIEWS: dict[str, list[tuple[str, str]]] = {
     "mlb": [("pitchers.html", "nav_pitchers"),
             ("f7.html", "nav_f7"),
             ("batters.html", "nav_batters"),
-            ("hits.html", "nav_hits"),
-            ("homers.html", "nav_homers")],
+            ("hits.html", "nav_hits")],
     "nba": [("nba/points.html", "nav_nbapts"),
             ("nba/assists.html", "nav_nbaast"),
             ("nba/rebounds.html", "nav_nbareb")],
@@ -202,8 +200,6 @@ TITLES = {
        for short in leagues.ORDER},
     "about.html": {"en": f"How It Works — {config.SITE_NAME}",
                    "es": f"Cómo funciona — {config.SITE_NAME}"},
-    "homers.html": {"en": f"Home runs allowed — {config.SITE_NAME}",
-                    "es": f"Jonrones permitidos — {config.SITE_NAME}"},
     "batters.html": {"en": f"Home runs — {config.SITE_NAME}",
                      "es": f"Jonrones — {config.SITE_NAME}"},
     "hits.html": {"en": f"Hits — {config.SITE_NAME}",
@@ -360,7 +356,6 @@ def build() -> None:
     slate_doc = load("slate.json", {"date_label": "", "games": [], "summary": {}})
     pitch_doc = load("pitchers.json", {"date_label": "", "pitchers": [], "summary": {}})
     board_doc = load("board.json", {})
-    homer_doc = load("homers.json", {"date_label": "", "starters": []})
     batter_doc = load("batters.json",
                       {"date_label": "", "batters": [], "summary": {}})
     # Every win probability the non-MLB boards have published, with whatever
@@ -452,8 +447,6 @@ def build() -> None:
             "{{HIT_LINEUP_NOTE}}": R.lineup_note(hit_doc.get("batters", [])),
             "{{HIT_COUNT}}": L("hit_count", n=len(hit_doc.get("batters", [])),
                               s=pl(len(hit_doc.get("batters", [])))),
-            "{{HR_DATE}}": doc_date_label(homer_doc, lang) or L("not_rated"),
-            "{{HOMER_CARDS}}": R.homer_cards(homer_doc.get("starters", [])),
             "{{LEAGUE_BOARD}}": "",
             "{{LEAGUE_NAME}}": "",
             "{{LEAGUE_CALIBRATION}}": "",
@@ -645,6 +638,15 @@ def _self_test() -> None:
     for out, page in PAGES.items():
         assert isinstance(page, Page), f"{out} is not a Page: {page!r}"
         assert page.out == out, f"{out} is filed under {page.out}"
+
+    # Retired pages stay retired. HR allowed was taken off because it was not
+    # used; a nav entry pointing at a page nothing builds is a 404 in the
+    # middle of the MLB tab row, and a page built with no nav entry is one
+    # nobody can reach -- so both halves are pinned.
+    for gone in ("homers.html",):
+        assert gone not in PAGES, f"{gone} is retired but still built"
+        assert all(gone != out for views in _EXTRA_VIEWS.values()
+                   for out, _key in views), f"{gone} is retired but in the nav"
 
     # Every league in the nav has a page, and every league page is a league.
     for short in leagues.ORDER:

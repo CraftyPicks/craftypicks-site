@@ -46,17 +46,15 @@ except Exception as _props_err:                              # noqa: BLE001
 # Pitcher projections. Optional like everything else.
 try:
     import pitchers as pitch_mod  # noqa: E402
-    import homers as homers_mod   # noqa: E402
     import batters as batters_mod # noqa: E402
     import hits as hits_mod       # noqa: E402
     import projection             # noqa: E402
 except Exception as _pitch_err:                              # noqa: BLE001
     # All are cleared, not just the first. They are imported together for
     # brevity, but a failure part-way through would otherwise leave the
-    # later names undefined, and `if homers_mod` further down would raise
+    # later names undefined, and `if batters_mod` further down would raise
     # NameError -- turning an optional board into a broken daily run.
     pitch_mod = None
-    homers_mod = None
     batters_mod = None
     hits_mod = None
     projection = None
@@ -492,19 +490,15 @@ def main() -> int:
     # prop events were bought; this one needs nothing but the free schedule,
     # and a page that disappears on a day the props were skipped would look
     # broken rather than thrifty.
-    if homers_mod and "baseball_mlb" in in_season:
+    # Gated on batters_mod, not on the home-runs-allowed board this section
+    # used to open with. That board was retired; the guard it owned also
+    # switched batters and hits on and off, so removing the board without
+    # moving the guard would have silently taken both of them down with it.
+    if batters_mod and "baseball_mlb" in in_season:
         try:
             import screen_config as _hcfg
             import mlb_api as _hapi
             hr_starters = _hapi.probable_starters(now.strftime("%m/%d/%Y"))
-            hr_rows = homers_mod.build(hr_starters, _hcfg.SEASON)
-            if hr_rows:
-                save_json(DATA / "homers.json", {
-                    "date": today,
-                    "date_label": f"{now:%A, %B %-d, %Y}",
-                    "starters": hr_rows,
-                })
-                print(f"-- homers: {len(hr_rows)} starter(s) on the board")
 
             # The batter board is a projection, so it is stored and graded
             # from the first night. Grading costs nothing: the leaderboard is
@@ -561,7 +555,7 @@ def main() -> int:
                     print(f"-- hits: {len(hit_rows)} rated, {hit_added} new, "
                           f"{hit_settled} graded")
         except Exception as e:                               # noqa: BLE001
-            print(f"!! home-run board failed ({type(e).__name__}: {e})",
+            print(f"!! batter boards failed ({type(e).__name__}: {e})",
                   file=sys.stderr)
 
     # -------------------------------------------------- 3e. first seven

@@ -2554,68 +2554,6 @@ def yard_accuracy(summary: dict) -> str:
     return '<p class="pnl-note">' + " ".join(bits) + "</p>"
 
 
-# ------------------------------------------------------------- home runs ---
-# The strikeout page's argument applied to a different number, and with the
-# same posture: matchup facts, no projection, no pick. There are no prices
-# here because a batter home-run market is billed per event and the strikeout
-# projection has not yet earned a second one.
-
-HR_CLASS = {"favourable": "good", "tough": "bad", "neutral": ""}
-HR_LABEL = {"favourable": "hr_v_high", "tough": "hr_v_low",
-            "neutral": "hr_v_ordinary"}
-
-
-def _hr_row(label: str, value, unit: str, rank, of, mean,
-            verdict: str) -> str:
-    """One measured line: the number, where it ranks, and the league beside it."""
-    if value is None:
-        return (f'<div class="hrl"><span class="hrl-k">{label}</span>'
-                f'<span class="hrl-v">&mdash;</span></div>')
-    rank_txt = (_("pb_rank", r=rank, ord=_ordinal(rank), n=of)
-                if rank and of else "")
-    mean_txt = _("hr_league", v=f"{mean:.2f}") if mean else ""
-    return (f'<div class="hrl {HR_CLASS[verdict]}">'
-            f'<span class="hrl-k">{label}</span>'
-            f'<span class="hrl-v"><b>{value:.2f}</b> {unit}</span>'
-            f'<span class="hrl-r">{rank_txt}</span>'
-            f'<span class="hrl-m">{mean_txt}</span></div>')
-
-
-def homer_cards(rows: list[dict]) -> str:
-    """One card per starter: how often he gives one up, how often they hit one."""
-    if not rows:
-        return f'<div class="empty-board">{_("hr_empty")}</div>'
-    out = []
-    for r in rows:
-        opp = esc(_nickname(r.get("opponent")))
-        hand = r.get("hand") or ""
-        hand_txt = (f' &middot; {_("mx_right") if hand == "R" else _("mx_left")}'
-                    if hand in ("L", "R") else "")
-        thin = r.get("thin")
-        accent = team_color(r.get("opponent")) or "var(--line-2)"
-        body = f"""
-            {_hr_row(_("hr_allows"), r.get("hr_per_9"), _("hr_per9_unit"),
-                     r.get("hr_per_9_rank"), r.get("pitchers_ranked"),
-                     r.get("league_hr_per_9"), r.get("pitcher_verdict"))}
-            {_hr_row(_("hr_lineup", team=opp), r.get("opp_hr_per_game"),
-                     _("hr_pergame_unit"), r.get("opp_hr_rank"),
-                     r.get("teams_ranked"), r.get("league_hr_per_game"),
-                     r.get("lineup_verdict"))}
-            <div class="pb-rows">
-              <div class="pb-row"><span>{_("season")}</span>
-                <b>{_("hr_season", hr=r.get("hr_allowed") or 0,
-                      ip=f'{r.get("innings") or 0:.1f}')}</b></div>
-            </div>
-            {f'<p class="hr-thin">{_("hr_too_few")}</p>' if thin else ""}"""
-        out.append((r, _group_card(
-            esc(r.get("name", "")), r.get("commence_time"),
-            f'{esc(r.get("team",""))} vs {opp}{hand_txt}',
-            body, accent=accent)))
-    return _game_board(out, lambda c: c[1], sides=lambda c: _mlb_sides(c[0]),
-                       when=lambda c: c[0].get("commence_time") or "",
-                       nickname=True)
-
-
 # ------------------------------------------------------------------ form ---
 # Every league's table, computed from the finals this project stores for
 # itself. MLB could take it from StatsAPI instead, but one code path that

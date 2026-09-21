@@ -11,7 +11,7 @@ the only way past that guard is CRAFTYPICKS_FORCE=1, which re-buys the odds.
 So on any day a board is added, changed, or simply arrives late, this is the
 way to fill it in without paying twice.
 
-It writes seven public boards -- data/homers.json, batters.json, hits.json,
+It writes the public boards -- data/batters.json, hits.json,
 nfl_passing.json, nfl_rushing.json, nfl_receiving.json, and nfl_td.json --
 each beside a *_ratings.json history of every row ever projected in that
 category, which is what grading reads and appends to.
@@ -40,7 +40,6 @@ import config              # noqa: E402
 import lineups as lineups_mod  # noqa: E402
 import screen_config       # noqa: E402
 import mlb_api             # noqa: E402
-import homers as homers_mod    # noqa: E402
 import batters as batters_mod  # noqa: E402
 import hits as hits_mod        # noqa: E402
 import pitchers as pitch_mod   # noqa: E402
@@ -132,18 +131,6 @@ def main() -> int:
         # NFL boards their run any more than an NFL failure should cost MLB's.
         print("   Nothing to build yet; the MLB boards keep whatever they hold.")
     else:
-        # ---------------------------------------------------------- home runs allowed
-        hr_rows = homers_mod.build(starters, season)
-        if hr_rows:
-            save_json(DATA / "homers.json", {
-                "date": today,
-                "date_label": label,
-                "starters": hr_rows,
-            })
-            print(f"-- homers: {len(hr_rows)} starter(s) on the board")
-        else:
-            print("!! homers: no starter had enough innings to rate", file=sys.stderr)
-
         # ---------------------------------------------------------- batters
         history = load_json(DATA / "batter_ratings.json", {"batters": []})["batters"]
         repaired = projection.repair_premature(history, verdict_key="homered")

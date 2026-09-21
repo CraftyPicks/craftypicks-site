@@ -1167,24 +1167,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
   .skey,.snum{display:inline-block;margin-right:10px}
 }
 
-/* ============================================== home runs and form ======== */
-.hr-card .pb-name{margin-bottom:10px}
-.hrl{display:grid;grid-template-columns:1fr auto;gap:2px 12px;
-  padding:9px 0;border-top:1px solid var(--line)}
-.hrl-k{font-size:12.5px;color:var(--muted)}
-.hrl-v{font-family:var(--sans);font-size:14px;color:var(--txt);text-align:right;
-  white-space:nowrap}
-.hrl-v b{font-weight:600}
-.hrl-r{font-family:var(--sans);font-size:10.5px;color:var(--muted)}
-.hrl-m{font-size:10.5px;color:var(--muted);text-align:right;white-space:nowrap}
-/* The verdict tints the number and adds a rule at the left edge, so the
-   colour is never the only thing saying which way this one goes. */
-.hrl.good{box-shadow:inset 3px 0 0 var(--green);padding-left:9px}
-.hrl.good .hrl-v{color:var(--green)}
-.hrl.bad{box-shadow:inset 3px 0 0 var(--red);padding-left:9px}
-.hrl.bad .hrl-v{color:var(--red)}
-.hr-thin{font-size:11.5px;color:var(--muted);font-style:italic;
-  line-height:1.5;margin:10px 0 0}
+/* ========================================================== form ======== */
 .ftbl{width:100%;border-collapse:collapse;font-size:13.5px}
 .ftbl th{text-align:left;font-weight:500;color:var(--txt);padding:9px 12px 9px 0;
   white-space:nowrap}

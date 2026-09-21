@@ -76,7 +76,7 @@ def _self_test() -> None:
     # 18:28 and looked current, and the first-seven board sat on the
     # previous day's slate with nothing to say why.
     boards_src = (Path(__file__).resolve().parent / "run_boards.py").read_text()
-    for board in ("homers_mod.build(", "batters_mod.build(",
+    for board in ("batters_mod.build(",
                   "hits_mod.build(", "f7_mod.build("):
         if board in boards_src:
             assert board in SOURCE, (
@@ -84,6 +84,13 @@ def _self_test() -> None:
                 f"That board has no second path: when the boards job is "
                 f"dropped by the scheduler it goes stale, while its siblings "
                 f"get rebuilt here and hide the fact.")
+
+    # And no job computes a board the site no longer publishes. A module
+    # that still runs every morning into a JSON file no page reads is the
+    # fetched-daily-displayed-never failure this repo has had three times.
+    for retired in ("homers_mod.build(",):
+        assert retired not in SOURCE, f"run_daily still calls {retired}...)"
+        assert retired not in boards_src, f"run_boards still calls {retired}...)"
 
     print("run_daily order self-test: free work above the guard, paid below")
 

@@ -274,7 +274,6 @@ T = {
                                   "justificando su lugar"},
 
     # ---- the home-run board
-    "nav_homers":    {"en": "HR allowed", "es": "JR permitidos"},
     "hr_empty":      {"en": "No probable starters listed yet. This board fills "
                             "in once tonight's pitchers are announced.",
                       "es": "Aún no hay abridores probables. Esta pizarra se "
