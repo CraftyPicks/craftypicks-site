@@ -327,13 +327,14 @@
       "pitcher_era": 2.52,
       "venue": "Rate Field",
       "commence_time": "2026-09-20T18:10:00Z",
-      "actual": null,
+      "actual": 6,
       "probs": {
         "2.5": 0.4989,
         "3.5": 0.3447,
         "4.5": 0.2288
       },
-      "shape": 2.864
+      "shape": 2.864,
+      "miss": 2.99
     },
     {
       "projection": 3.21,
@@ -354,13 +355,14 @@
       "pitcher_era": 3.96,
       "venue": "Rate Field",
       "commence_time": "2026-09-20T18:10:00Z",
-      "actual": null,
+      "actual": 0,
       "probs": {
         "2.5": 0.5287,
         "3.5": 0.3749,
         "4.5": 0.2558
       },
-      "shape": 2.864
+      "shape": 2.864,
+      "miss": -3.21
     },
     {
       "projection": 2.79,
@@ -801,13 +803,14 @@
       "pitcher_era": 1.89,
       "venue": "Oriole Park at Camden Yards",
       "commence_time": "2026-09-20T23:20:00Z",
-      "actual": null,
+      "actual": 0,
       "probs": {
         "2.5": 0.3972,
         "3.5": 0.2483,
         "4.5": 0.1485
       },
-      "shape": 2.864
+      "shape": 2.864,
+      "miss": -2.41
     },
     {
       "projection": 3.39,
@@ -828,13 +831,176 @@
       "pitcher_era": 3.65,
       "venue": "Oriole Park at Camden Yards",
       "commence_time": "2026-09-20T23:20:00Z",
-      "actual": null,
+      "actual": 3,
       "probs": {
         "2.5": 0.5538,
         "3.5": 0.4012,
         "4.5": 0.2799
       },
-      "shape": 2.864
+      "shape": 2.864,
+      "miss": -0.39
+    },
+    {
+      "projection": 3.16,
+      "sp_used": true,
+      "league_f7": 3.488,
+      "offence": 1.073,
+      "sp_index": 0.892,
+      "pen_index": 0.871,
+      "park": 0.951,
+      "sp_innings": 5.2,
+      "game_pk": 824787,
+      "team_id": 110,
+      "team": "BAL",
+      "opponent": "TOR",
+      "is_home": true,
+      "pitcher": "Trey Yesavage",
+      "pitcher_hand": "",
+      "pitcher_era": 3.65,
+      "venue": "Oriole Park at Camden Yards",
+      "commence_time": "2026-09-21T22:35:00Z",
+      "actual": null,
+      "probs": {
+        "2.5": 0.5175,
+        "3.5": 0.3661,
+        "4.5": 0.2499
+      },
+      "shape": 2.692
+    },
+    {
+      "projection": 3.11,
+      "sp_used": true,
+      "league_f7": 3.488,
+      "offence": 0.921,
+      "sp_index": 1.013,
+      "pen_index": 1.049,
+      "park": 0.951,
+      "sp_innings": 5.67,
+      "game_pk": 824787,
+      "team_id": 141,
+      "team": "TOR",
+      "opponent": "BAL",
+      "is_home": false,
+      "pitcher": "Shane Baz",
+      "pitcher_hand": "",
+      "pitcher_era": 4.11,
+      "venue": "Oriole Park at Camden Yards",
+      "commence_time": "2026-09-21T22:35:00Z",
+      "actual": null,
+      "probs": {
+        "2.5": 0.5102,
+        "3.5": 0.3588,
+        "4.5": 0.2432
+      },
+      "shape": 2.692
+    },
+    {
+      "projection": 3.62,
+      "sp_used": false,
+      "league_f7": 3.488,
+      "offence": 1.001,
+      "sp_index": 1.0,
+      "pen_index": 1.304,
+      "park": 0.961,
+      "sp_innings": 5.2,
+      "game_pk": 824221,
+      "team_id": 116,
+      "team": "DET",
+      "opponent": "WSH",
+      "is_home": true,
+      "pitcher": "DJ Herz",
+      "pitcher_hand": "",
+      "pitcher_era": null,
+      "venue": "Comerica Park",
+      "commence_time": "2026-09-21T22:40:00Z",
+      "actual": null,
+      "probs": {
+        "2.5": 0.5786,
+        "3.5": 0.4307,
+        "4.5": 0.31
+      },
+      "shape": 2.692
+    },
+    {
+      "projection": 3.63,
+      "sp_used": false,
+      "league_f7": 3.488,
+      "offence": 1.095,
+      "sp_index": 1.0,
+      "pen_index": 0.959,
+      "park": 0.961,
+      "sp_innings": 5.2,
+      "game_pk": 824221,
+      "team_id": 120,
+      "team": "WSH",
+      "opponent": "DET",
+      "is_home": false,
+      "pitcher": "River Ryan",
+      "pitcher_hand": "",
+      "pitcher_era": null,
+      "venue": "Comerica Park",
+      "commence_time": "2026-09-21T22:40:00Z",
+      "actual": null,
+      "probs": {
+        "2.5": 0.5798,
+        "3.5": 0.432,
+        "4.5": 0.3113
+      },
+      "shape": 2.692
+    },
+    {
+      "projection": 3.75,
+      "sp_used": true,
+      "league_f7": 3.488,
+      "offence": 1.062,
+      "sp_index": 1.018,
+      "pen_index": 1.177,
+      "park": 0.975,
+      "sp_innings": 6.04,
+      "game_pk": 823169,
+      "team_id": 142,
+      "team": "MIN",
+      "opponent": "SF",
+      "is_home": false,
+      "pitcher": "Blade Tidwell",
+      "pitcher_hand": "",
+      "pitcher_era": 4.56,
+      "venue": "Oracle Park",
+      "commence_time": "2026-09-22T01:45:00Z",
+      "actual": null,
+      "probs": {
+        "2.5": 0.5942,
+        "3.5": 0.4478,
+        "4.5": 0.3265
+      },
+      "shape": 2.692
+    },
+    {
+      "projection": 3.68,
+      "sp_used": true,
+      "league_f7": 3.488,
+      "offence": 1.0,
+      "sp_index": 1.081,
+      "pen_index": 1.092,
+      "park": 0.975,
+      "sp_innings": 5.59,
+      "game_pk": 823169,
+      "team_id": 137,
+      "team": "SF",
+      "opponent": "MIN",
+      "is_home": true,
+      "pitcher": "Zebby Matthews",
+      "pitcher_hand": "",
+      "pitcher_era": 4.74,
+      "venue": "Oracle Park",
+      "commence_time": "2026-09-22T01:45:00Z",
+      "actual": null,
+      "probs": {
+        "2.5": 0.5859,
+        "3.5": 0.4387,
+        "4.5": 0.3177
+      },
+      "shape": 2.692
     }
   ]
 }
