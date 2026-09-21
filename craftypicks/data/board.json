@@ -1,2592 +1,613 @@
 {
- "generated_at": "2026-09-20T09:26:34-04:00",
- "date": "2026-09-20",
+ "generated_at": "2026-09-21T14:27:01-04:00",
+ "date": "2026-09-21",
  "leagues": {
   "mlb": {
    "label": "MLB",
    "games": [
     {
-     "event_id": "09a8d21707b561bb7c88b6b936dff49c",
+     "event_id": "198233ed5390fadb40e84cac794551ab",
      "league": "mlb",
-     "commence_time": "2026-09-20T17:11:00Z",
-     "home": "New York Mets",
-     "away": "Philadelphia Phillies",
+     "commence_time": "2026-09-21T22:36:00Z",
+     "home": "Baltimore Orioles",
+     "away": "Toronto Blue Jays",
      "markets": {
       "h2h": {
        "point": null,
        "side_a": "home",
-       "fair_home": 0.39417093805586134,
-       "fair_away": 0.6094418765943115,
-       "fair_price_home": 154,
-       "fair_price_away": -156,
+       "fair_home": 0.5039890245672433,
+       "fair_away": 0.4966127105466674,
+       "fair_price_home": -102,
+       "fair_price_away": 101,
        "best_home": {
-        "book": "BetOnline.ag",
-        "price": 152
+        "book": "LowVig.ag",
+        "price": -106
        },
        "best_away": {
-        "book": "LowVig.ag",
-        "price": -149
+        "book": "BetUS",
+        "price": -102
        },
-       "edge_home": -0.6689236099229445,
-       "edge_away": 1.8463270281768807,
+       "edge_home": -2.054963150139516,
+       "edge_away": -1.6512083035031266,
        "books": 9,
-       "width": 26
+       "width": 17
       },
       "spreads": {
        "point": 1.5,
        "side_a": "home",
-       "fair_home": 0.5358184329169889,
-       "fair_away": 0.46926847504001984,
-       "fair_price_home": -115,
-       "fair_price_away": 113,
+       "fair_home": 0.6405997568189271,
+       "fair_away": 0.361955702439397,
+       "fair_price_home": -178,
+       "fair_price_away": 176,
        "best_home": {
-        "book": "BetRivers",
-        "price": -118
+        "book": "Bovada",
+        "price": -185
        },
        "best_away": {
-        "book": "LowVig.ag",
-        "price": 118
+        "book": "FanDuel",
+        "price": 164
        },
-       "edge_home": -1.0098149356749242,
-       "edge_away": 2.300527558724308,
-       "books": 9,
-       "width": 20
+       "edge_home": -1.3130104360031203,
+       "edge_away": -4.4436945559992,
+       "books": 6,
+       "width": 34.5
       },
       "totals": {
        "point": 7.5,
        "side_a": "over",
-       "fair_home": 0.5018238971170158,
-       "fair_away": 0.49950218857501516,
-       "fair_price_home": -101,
-       "fair_price_away": 100,
-       "best_home": {
-        "book": "LowVig.ag",
-        "price": -107
-       },
-       "best_away": {
-        "book": "FanDuel",
-        "price": -106
-       },
-       "edge_home": -2.9181806511941355,
-       "edge_away": -2.9269331637234663,
-       "books": 8,
-       "width": 20.0,
-       "model": null
-      }
-     },
-     "model": {
-      "home_win_prob": 0.4653,
-      "away_win_prob": 0.5347,
-      "market_home_prob": 0.393,
-      "disagreement": 7.2,
-      "suspect": false,
-      "source": "slate",
-      "ev_home": 17.3,
-      "ev_away": -10.6
-     },
-     "detail": {
-      "home_record": {
-       "w": 71,
-       "l": 84,
-       "hw": 36,
-       "hl": 44,
-       "aw": 35,
-       "al": 40
-      },
-      "away_record": {
-       "w": 85,
-       "l": 70,
-       "hw": 41,
-       "hl": 34,
-       "aw": 44,
-       "al": 36
-      },
-      "home_form": {
-       "w": 71,
-       "l": 84,
-       "streak": "W2",
-       "l10_w": 4,
-       "l10_l": 6,
-       "division": "NL East",
-       "div_rank": 5
-      },
-      "away_form": {
-       "w": 85,
-       "l": 70,
-       "streak": "L2",
-       "l10_w": 4,
-       "l10_l": 6,
-       "division": "NL East",
-       "div_rank": 2
-      },
-      "series": [
-       {
-        "date": "2026-06-18",
-        "away": "New York Mets",
-        "away_runs": 6,
-        "home": "Philadelphia Phillies",
-        "home_runs": 4
-       },
-       {
-        "date": "2026-06-20",
-        "away": "New York Mets",
-        "away_runs": 3,
-        "home": "Philadelphia Phillies",
-        "home_runs": 15
-       },
-       {
-        "date": "2026-06-21",
-        "away": "New York Mets",
-        "away_runs": 2,
-        "home": "Philadelphia Phillies",
-        "home_runs": 6
-       },
-       {
-        "date": "2026-06-26",
-        "away": "Philadelphia Phillies",
-        "away_runs": 2,
-        "home": "New York Mets",
-        "home_runs": 1
-       },
-       {
-        "date": "2026-06-27",
-        "away": "Philadelphia Phillies",
-        "away_runs": 2,
-        "home": "New York Mets",
-        "home_runs": 6
-       },
-       {
-        "date": "2026-06-28",
-        "away": "Philadelphia Phillies",
-        "away_runs": 5,
-        "home": "New York Mets",
-        "home_runs": 4
-       },
-       {
-        "date": "2026-07-16",
-        "away": "New York Mets",
-        "away_runs": 4,
-        "home": "Philadelphia Phillies",
-        "home_runs": 1
-       },
-       {
-        "date": "2026-07-18",
-        "away": "New York Mets",
-        "away_runs": 1,
-        "home": "Philadelphia Phillies",
-        "home_runs": 6
-       },
-       {
-        "date": "2026-07-19",
-        "away": "New York Mets",
-        "away_runs": 6,
-        "home": "Philadelphia Phillies",
-        "home_runs": 1
-       },
-       {
-        "date": "2026-09-17",
-        "away": "Philadelphia Phillies",
-        "away_runs": 3,
-        "home": "New York Mets",
-        "home_runs": 0
-       },
-       {
-        "date": "2026-09-18",
-        "away": "Philadelphia Phillies",
-        "away_runs": 3,
-        "home": "New York Mets",
-        "home_runs": 6
-       },
-       {
-        "date": "2026-09-19",
-        "away": "Philadelphia Phillies",
-        "away_runs": 3,
-        "home": "New York Mets",
-        "home_runs": 10
-       }
-      ],
-      "home_starter": "Jonah Tong",
-      "away_starter": "Cristopher S\u00e1nchez",
-      "home_starter_era": 3.43,
-      "away_starter_era": 2.93,
-      "home_starter_wl": [
-       2,
-       1
-      ],
-      "away_starter_wl": [
-       17,
-       6
-      ],
-      "home_hand": "R",
-      "away_hand": "L",
-      "away_vs_opp": {
-       "starts": 4,
-       "innings": 19.3,
-       "era": 4.66,
-       "strikeouts": 17,
-       "span": "2025\u20132026",
-       "source": "gameLog"
-      },
-      "home_sp": {
-       "w": 2,
-       "l": 1,
-       "era": 3.43,
-       "whip": 1.19,
-       "innings": 21.0,
-       "h": 16,
-       "k": 20,
-       "bb": 9,
-       "hr": 2
-      },
-      "away_sp": {
-       "w": 17,
-       "l": 6,
-       "era": 2.93,
-       "whip": 1.22,
-       "innings": 193.66666666666666,
-       "h": 193,
-       "k": 215,
-       "bb": 44,
-       "hr": 17
-      },
-      "home_bats": [
-       {
-        "id": 596019,
-        "name": "Francisco Lindor",
-        "position": "SS",
-        "pa": 20,
-        "ab": 17,
-        "h": 5,
-        "hr": 0,
-        "rbi": 1,
-        "k": 0,
-        "avg": 0.29411764705882354
-       },
-       {
-        "id": 665742,
-        "name": "Juan Soto",
-        "position": "LF",
-        "pa": 18,
-        "ab": 17,
-        "h": 6,
-        "hr": 0,
-        "rbi": 0,
-        "k": 4,
-        "avg": 0.35294117647058826
-       },
-       {
-        "id": 668901,
-        "name": "Mark Vientos",
-        "position": "1B",
-        "pa": 18,
-        "ab": 15,
-        "h": 4,
-        "hr": 1,
-        "rbi": 4,
-        "k": 8,
-        "avg": 0.26666666666666666
-       },
-       {
-        "id": 666182,
-        "name": "Bo Bichette",
-        "position": "3B",
-        "pa": 12,
-        "ab": 12,
-        "h": 2,
-        "hr": 0,
-        "rbi": 0,
-        "k": 3,
-        "avg": 0.16666666666666666
-       },
-       {
-        "id": 620443,
-        "name": "Luis Torrens",
-        "position": "C",
-        "pa": 11,
-        "ab": 10,
-        "h": 1,
-        "hr": 0,
-        "rbi": 1,
-        "k": 3,
-        "avg": 0.1
-       },
-       {
-        "id": 682626,
-        "name": "Francisco Alvarez",
-        "position": "C",
-        "pa": 9,
-        "ab": 9,
-        "h": 1,
-        "hr": 0,
-        "rbi": 0,
-        "k": 3,
-        "avg": 0.1111111111111111
-       },
-       {
-        "id": 666624,
-        "name": "Christopher Morel",
-        "position": "1B",
-        "pa": 7,
-        "ab": 6,
-        "h": 0,
-        "hr": 0,
-        "rbi": 0,
-        "k": 3,
-        "avg": 0.0
-       },
-       {
-        "id": 543760,
-        "name": "Marcus Semien",
-        "position": "2B",
-        "pa": 6,
-        "ab": 5,
-        "h": 1,
-        "hr": 0,
-        "rbi": 0,
-        "k": 0,
-        "avg": 0.2
-       },
-       {
-        "id": 683146,
-        "name": "Brett Baty",
-        "position": "3B",
-        "pa": 5,
-        "ab": 4,
-        "h": 0,
-        "hr": 0,
-        "rbi": 0,
-        "k": 3,
-        "avg": 0.0
-       }
-      ],
-      "away_bats": [
-       {
-        "id": 650333,
-        "name": "Luis Arraez",
-        "position": "2B",
-        "pa": 2,
-        "ab": 1,
-        "h": 1,
-        "hr": 0,
-        "rbi": 1,
-        "k": 0,
-        "avg": 1.0
-       },
-       {
-        "id": 664761,
-        "name": "Alec Bohm",
-        "position": "3B",
-        "pa": null,
-        "ab": null,
-        "h": null,
-        "hr": null,
-        "rbi": null,
-        "k": null,
-        "avg": null
-       },
-       {
-        "id": 669016,
-        "name": "Brandon Marsh",
-        "position": "LF",
-        "pa": null,
-        "ab": null,
-        "h": null,
-        "hr": null,
-        "rbi": null,
-        "k": null,
-        "avg": null
-       },
-       {
-        "id": 650559,
-        "name": "Bryan De La Cruz",
-        "position": "RF",
-        "pa": null,
-        "ab": null,
-        "h": null,
-        "hr": null,
-        "rbi": null,
-        "k": null,
-        "avg": null
-       },
-       {
-        "id": 547180,
-        "name": "Bryce Harper",
-        "position": "1B",
-        "pa": null,
-        "ab": null,
-        "h": null,
-        "hr": null,
-        "rbi": null,
-        "k": null,
-        "avg": null
-       },
-       {
-        "id": 681082,
-        "name": "Bryson Stott",
-        "position": "2B",
-        "pa": null,
-        "ab": null,
-        "h": null,
-        "hr": null,
-        "rbi": null,
-        "k": null,
-        "avg": null
-       },
-       {
-        "id": 656537,
-        "name": "Derek Hill",
-        "position": "CF",
-        "pa": null,
-        "ab": null,
-        "h": null,
-        "hr": null,
-        "rbi": null,
-        "k": null,
-        "avg": null
-       },
-       {
-        "id": 624641,
-        "name": "Edmundo Sosa",
-        "position": "LF",
-        "pa": null,
-        "ab": null,
-        "h": null,
-        "hr": null,
-        "rbi": null,
-        "k": null,
-        "avg": null
-       },
-       {
-        "id": 596117,
-        "name": "Garrett Stubbs",
-        "position": "C",
-        "pa": null,
-        "ab": null,
-        "h": null,
-        "hr": null,
-        "rbi": null,
-        "k": null,
-        "avg": null
-       }
-      ],
-      "venue": "Citi Field"
-     }
-    },
-    {
-     "event_id": "dcb006d706956d2de3545b8814e80ff9",
-     "league": "mlb",
-     "commence_time": "2026-09-20T17:36:00Z",
-     "home": "Pittsburgh Pirates",
-     "away": "Kansas City Royals",
-     "markets": {
-      "h2h": {
-       "point": null,
-       "side_a": "home",
-       "fair_home": 0.4771876025046229,
-       "fair_away": 0.5243352435955871,
-       "fair_price_home": 110,
-       "fair_price_away": -110,
-       "best_home": {
-        "book": "BetUS",
-        "price": 105
-       },
-       "best_away": {
-        "book": "Bovada",
-        "price": -115
-       },
-       "edge_home": -2.176541486552319,
-       "edge_away": -1.9721066321293668,
-       "books": 9,
-       "width": 18
-      },
-      "spreads": {
-       "point": 1.5,
-       "side_a": "home",
-       "fair_home": 0.6059992428986652,
-       "fair_away": 0.3968481637112905,
-       "fair_price_home": -154,
-       "fair_price_away": 152,
-       "best_home": {
-        "book": "MyBookie.ag",
-        "price": -160
-       },
-       "best_away": {
-        "book": "FanDuel",
-        "price": 146
-       },
-       "edge_home": -1.525123028966896,
-       "edge_away": -2.3753517270225344,
-       "books": 9,
-       "width": 25
-      },
-      "totals": {
-       "point": 8.5,
-       "side_a": "over",
-       "fair_home": 0.4902953522062939,
-       "fair_away": 0.511329491687944,
+       "fair_home": 0.49055543776797345,
+       "fair_away": 0.5109963069457474,
        "fair_price_home": 104,
-       "fair_price_away": -105,
+       "fair_price_away": -104,
        "best_home": {
-        "book": "LowVig.ag",
-        "price": -102
+        "book": "BetRivers",
+        "price": -103
        },
        "best_away": {
-        "book": "Bovada",
+        "book": "LowVig.ag",
         "price": -110
        },
-       "edge_home": -2.9022929944398426,
-       "edge_away": -2.3825515868470593,
+       "edge_home": -3.3177146923314416,
+       "edge_away": -2.4461595830845893,
        "books": 9,
        "width": 20,
        "model": null
       }
      },
      "model": {
-      "home_win_prob": 0.5706,
-      "away_win_prob": 0.4294,
-      "market_home_prob": 0.4771,
-      "disagreement": 9.3,
+      "home_win_prob": 0.5033,
+      "away_win_prob": 0.4967,
+      "market_home_prob": 0.5038,
+      "disagreement": -0.1,
       "suspect": false,
       "source": "slate",
-      "ev_home": 17.0,
-      "ev_away": -19.7
+      "ev_home": -2.2,
+      "ev_away": -1.6
      },
      "detail": {
       "home_record": {
-       "w": 78,
-       "l": 77,
-       "hw": 41,
-       "hl": 36,
+       "w": 75,
+       "l": 81,
+       "hw": 36,
+       "hl": 42,
+       "aw": 39,
+       "al": 39
+      },
+      "away_record": {
+       "w": 77,
+       "l": 79,
+       "hw": 40,
+       "hl": 38,
        "aw": 37,
        "al": 41
       },
-      "away_record": {
-       "w": 67,
-       "l": 88,
-       "hw": 39,
-       "hl": 36,
-       "aw": 28,
-       "al": 52
-      },
       "home_form": {
-       "w": 78,
-       "l": 77,
-       "streak": "W3",
-       "l10_w": 6,
-       "l10_l": 4,
-       "division": "NL Central",
-       "div_rank": 3
+       "w": 75,
+       "l": 81,
+       "streak": "L3",
+       "l10_w": 5,
+       "l10_l": 5,
+       "division": "AL East",
+       "div_rank": 5
       },
       "away_form": {
-       "w": 67,
-       "l": 88,
-       "streak": "L3",
-       "l10_w": 3,
-       "l10_l": 7,
-       "division": "AL Central",
-       "div_rank": 5
+       "w": 77,
+       "l": 79,
+       "streak": "W1",
+       "l10_w": 4,
+       "l10_l": 6,
+       "division": "AL East",
+       "div_rank": 4
       },
       "series": [
        {
-        "date": "2026-09-18",
-        "away": "Kansas City Royals",
-        "away_runs": 5,
-        "home": "Pittsburgh Pirates",
-        "home_runs": 8
+        "date": "2026-05-28",
+        "away": "Toronto Blue Jays",
+        "away_runs": 2,
+        "home": "Baltimore Orioles",
+        "home_runs": 1
        },
        {
-        "date": "2026-09-19",
-        "away": "Kansas City Royals",
+        "date": "2026-05-29",
+        "away": "Toronto Blue Jays",
+        "away_runs": 6,
+        "home": "Baltimore Orioles",
+        "home_runs": 5
+       },
+       {
+        "date": "2026-05-30",
+        "away": "Toronto Blue Jays",
         "away_runs": 5,
-        "home": "Pittsburgh Pirates",
+        "home": "Baltimore Orioles",
         "home_runs": 6
+       },
+       {
+        "date": "2026-05-31",
+        "away": "Toronto Blue Jays",
+        "away_runs": 5,
+        "home": "Baltimore Orioles",
+        "home_runs": 9
+       },
+       {
+        "date": "2026-06-05",
+        "away": "Baltimore Orioles",
+        "away_runs": 13,
+        "home": "Toronto Blue Jays",
+        "home_runs": 3
+       },
+       {
+        "date": "2026-06-06",
+        "away": "Baltimore Orioles",
+        "away_runs": 4,
+        "home": "Toronto Blue Jays",
+        "home_runs": 6
+       },
+       {
+        "date": "2026-06-07",
+        "away": "Baltimore Orioles",
+        "away_runs": 4,
+        "home": "Toronto Blue Jays",
+        "home_runs": 6
+       },
+       {
+        "date": "2026-09-11",
+        "away": "Baltimore Orioles",
+        "away_runs": 7,
+        "home": "Toronto Blue Jays",
+        "home_runs": 4
+       },
+       {
+        "date": "2026-09-12",
+        "away": "Baltimore Orioles",
+        "away_runs": 3,
+        "home": "Toronto Blue Jays",
+        "home_runs": 7
+       },
+       {
+        "date": "2026-09-13",
+        "away": "Baltimore Orioles",
+        "away_runs": 1,
+        "home": "Toronto Blue Jays",
+        "home_runs": 8
        }
       ],
-      "home_starter": "Lake Bachar",
-      "away_starter": "Michael Wacha",
-      "home_starter_era": 3.5,
-      "away_starter_era": 3.34,
+      "home_starter": "Shane Baz",
+      "away_starter": "Trey Yesavage",
+      "home_starter_era": 4.11,
+      "away_starter_era": 3.65,
       "home_starter_wl": [
-       1,
-       4
+       6,
+       15
       ],
       "away_starter_wl": [
-       9,
-       9
+       5,
+       5
       ],
       "home_hand": "R",
       "away_hand": "R",
       "home_vs_opp": {
-       "starts": 0,
-       "innings": 2.0,
-       "era": 4.5,
-       "strikeouts": 3,
-       "span": "2025\u20132026",
-       "source": "gameLog"
-      },
-      "home_sp": {
-       "w": 1,
-       "l": 4,
-       "era": 3.5,
-       "whip": 1.12,
-       "innings": 82.33333333333333,
-       "h": 57,
-       "k": 86,
-       "bb": 35,
-       "hr": 13
-      },
-      "away_sp": {
-       "w": 9,
-       "l": 9,
-       "era": 3.34,
-       "whip": 1.1,
-       "innings": 188.66666666666666,
-       "h": 158,
-       "k": 149,
-       "bb": 49,
-       "hr": 27
-      },
-      "home_bats": [
-       {
-        "id": 664040,
-        "name": "Brandon Lowe",
-        "position": "2B",
-        "pa": 14,
-        "ab": 13,
-        "h": 2,
-        "hr": 0,
-        "rbi": 1,
-        "k": 4,
-        "avg": 0.15384615384615385
-       },
-       {
-        "id": 656811,
-        "name": "Ryan O'Hearn",
-        "position": "RF",
-        "pa": 11,
-        "ab": 10,
-        "h": 3,
-        "hr": 2,
-        "rbi": 4,
-        "k": 2,
-        "avg": 0.3
-       },
-       {
-        "id": 668804,
-        "name": "Bryan Reynolds",
-        "position": "LF",
-        "pa": 4,
-        "ab": 3,
-        "h": 2,
-        "hr": 0,
-        "rbi": 1,
-        "k": 1,
-        "avg": 0.6666666666666666
-       },
-       {
-        "id": 694378,
-        "name": "Jacob Gonzalez",
-        "position": "SS",
-        "pa": 3,
-        "ab": 3,
-        "h": 0,
-        "hr": 0,
-        "rbi": 0,
-        "k": 1,
-        "avg": 0.0
-       },
-       {
-        "id": 665833,
-        "name": "Oneil Cruz",
-        "position": "CF",
-        "pa": 3,
-        "ab": 3,
-        "h": 1,
-        "hr": 0,
-        "rbi": 1,
-        "k": 2,
-        "avg": 0.3333333333333333
-       },
-       {
-        "id": 695257,
-        "name": "Billy Cook",
-        "position": "CF",
-        "pa": 2,
-        "ab": 2,
-        "h": 0,
-        "hr": 0,
-        "rbi": 0,
-        "k": 2,
-        "avg": 0.0
-       },
-       {
-        "id": 669707,
-        "name": "Jared Triolo",
-        "position": "SS",
-        "pa": 2,
-        "ab": 1,
-        "h": 1,
-        "hr": 0,
-        "rbi": 0,
-        "k": 0,
-        "avg": 1.0
-       },
-       {
-        "id": 693304,
-        "name": "Nick Gonzales",
-        "position": "3B",
-        "pa": 2,
-        "ab": 2,
-        "h": 0,
-        "hr": 0,
-        "rbi": 0,
-        "k": 1,
-        "avg": 0.0
-       },
-       {
-        "id": 680779,
-        "name": "Henry Davis",
-        "position": "C",
-        "pa": null,
-        "ab": null,
-        "h": null,
-        "hr": null,
-        "rbi": null,
-        "k": null,
-        "avg": null
-       }
-      ],
-      "away_bats": [
-       {
-        "id": 677951,
-        "name": "Bobby Witt Jr.",
-        "position": "SS",
-        "pa": 1,
-        "ab": 1,
-        "h": 1,
-        "hr": 0,
-        "rbi": 0,
-        "k": 0,
-        "avg": 1.0
-       },
-       {
-        "id": 695600,
-        "name": "Carter Jensen",
-        "position": "C",
-        "pa": 1,
-        "ab": 1,
-        "h": 0,
-        "hr": 0,
-        "rbi": 0,
-        "k": 1,
-        "avg": 0.0
-       },
-       {
-        "id": 686555,
-        "name": "Isaac Collins",
-        "position": "LF",
-        "pa": 1,
-        "ab": 1,
-        "h": 0,
-        "hr": 0,
-        "rbi": 0,
-        "k": 1,
-        "avg": 0.0
-       },
-       {
-        "id": 695506,
-        "name": "Jac Caglianone",
-        "position": "RF",
-        "pa": 1,
-        "ab": 1,
-        "h": 0,
-        "hr": 0,
-        "rbi": 0,
-        "k": 0,
-        "avg": 0.0
-       },
-       {
-        "id": 668942,
-        "name": "Josh Rojas",
-        "position": "3B",
-        "pa": 1,
-        "ab": null,
-        "h": 0,
-        "hr": 0,
-        "rbi": 0,
-        "k": 0,
-        "avg": null
-       },
-       {
-        "id": 672580,
-        "name": "Maikel Garcia",
-        "position": "3B",
-        "pa": 1,
-        "ab": 1,
-        "h": 0,
-        "hr": 0,
-        "rbi": 0,
-        "k": 1,
-        "avg": 0.0
-       },
-       {
-        "id": 686469,
-        "name": "Vinnie Pasquantino",
-        "position": "1B",
-        "pa": 1,
-        "ab": 1,
-        "h": 0,
-        "hr": 0,
-        "rbi": 0,
-        "k": 0,
-        "avg": 0.0
-       },
-       {
-        "id": 670231,
-        "name": "John Rave",
-        "position": "RF",
-        "pa": null,
-        "ab": null,
-        "h": null,
-        "hr": null,
-        "rbi": null,
-        "k": null,
-        "avg": null
-       },
-       {
-        "id": 664728,
-        "name": "Kyle Isbel",
-        "position": "CF",
-        "pa": null,
-        "ab": null,
-        "h": null,
-        "hr": null,
-        "rbi": null,
-        "k": null,
-        "avg": null
-       }
-      ],
-      "venue": "PNC Park"
-     }
-    },
-    {
-     "event_id": "07a49329fbb35ea5b26f59b425b089bc",
-     "league": "mlb",
-     "commence_time": "2026-09-20T17:40:00Z",
-     "home": "Tampa Bay Rays",
-     "away": "Boston Red Sox",
-     "markets": {
-      "h2h": {
-       "point": null,
-       "side_a": "home",
-       "fair_home": 0.5727122939362078,
-       "fair_away": 0.427637157720468,
-       "fair_price_home": -134,
-       "fair_price_away": 134,
-       "best_home": {
-        "book": "LowVig.ag",
-        "price": -139
-       },
-       "best_away": {
-        "book": "BetUS",
-        "price": 127
-       },
-       "edge_home": -1.5264473016160685,
-       "edge_away": -2.926365197453751,
-       "books": 9,
-       "width": 22
-      },
-      "spreads": {
-       "point": -1.5,
-       "side_a": "home",
-       "fair_home": 0.3832073007431823,
-       "fair_away": 0.6182752182544677,
-       "fair_price_home": 161,
-       "fair_price_away": -162,
-       "best_home": {
-        "book": "FanDuel",
-        "price": 152
-       },
-       "best_away": {
-        "book": "LowVig.ag",
-        "price": -170
-       },
-       "edge_home": -3.431760212718049,
-       "edge_away": -1.803347688996293,
-       "books": 9,
-       "width": 27
-      },
-      "totals": {
-       "point": 7.5,
-       "side_a": "over",
-       "fair_home": 0.5168048419742246,
-       "fair_away": 0.4831951580257754,
-       "fair_price_home": -107,
-       "fair_price_away": 107,
-       "best_home": {
-        "book": "LowVig.ag",
-        "price": -115
-       },
-       "best_away": {
-        "book": "LowVig.ag",
-        "price": 100
-       },
-       "edge_home": -3.379964326558016,
-       "edge_away": -3.360968394844921,
-       "books": 5,
-       "width": 20,
-       "model": null
-      }
-     },
-     "model": {
-      "home_win_prob": 0.6154,
-      "away_win_prob": 0.3846,
-      "market_home_prob": 0.5724,
-      "disagreement": 4.3,
-      "suspect": false,
-      "source": "slate",
-      "ev_home": 5.8,
-      "ev_away": -12.7
-     },
-     "detail": {
-      "home_record": {
-       "w": 94,
-       "l": 60,
-       "hw": 54,
-       "hl": 26,
-       "aw": 40,
-       "al": 34
-      },
-      "away_record": {
-       "w": 84,
-       "l": 71,
-       "hw": 38,
-       "hl": 37,
-       "aw": 46,
-       "al": 34
-      },
-      "home_form": {
-       "w": 94,
-       "l": 60,
-       "streak": "W1",
-       "l10_w": 8,
-       "l10_l": 2,
-       "division": "AL East",
-       "div_rank": 1
-      },
-      "away_form": {
-       "w": 84,
-       "l": 71,
-       "streak": "L1",
-       "l10_w": 4,
-       "l10_l": 6,
-       "division": "AL East",
-       "div_rank": 3
-      },
-      "series": [
-       {
-        "date": "2026-05-07",
-        "away": "Tampa Bay Rays",
-        "away_runs": 8,
-        "home": "Boston Red Sox",
-        "home_runs": 4
-       },
-       {
-        "date": "2026-05-08",
-        "away": "Tampa Bay Rays",
-        "away_runs": 0,
-        "home": "Boston Red Sox",
-        "home_runs": 2
-       },
-       {
-        "date": "2026-05-09",
-        "away": "Tampa Bay Rays",
-        "away_runs": 0,
-        "home": "Boston Red Sox",
-        "home_runs": 0
-       },
-       {
-        "date": "2026-05-10",
-        "away": "Tampa Bay Rays",
-        "away_runs": 4,
-        "home": "Boston Red Sox",
-        "home_runs": 1
-       },
-       {
-        "date": "2026-06-08",
-        "away": "Boston Red Sox",
-        "away_runs": 1,
-        "home": "Tampa Bay Rays",
-        "home_runs": 3
-       },
-       {
-        "date": "2026-06-09",
-        "away": "Boston Red Sox",
-        "away_runs": 3,
-        "home": "Tampa Bay Rays",
-        "home_runs": 4
-       },
-       {
-        "date": "2026-06-10",
-        "away": "Boston Red Sox",
-        "away_runs": 5,
-        "home": "Tampa Bay Rays",
-        "home_runs": 7
-       },
-       {
-        "date": "2026-07-17",
-        "away": "Tampa Bay Rays",
-        "away_runs": 0,
-        "home": "Boston Red Sox",
-        "home_runs": 10
-       },
-       {
-        "date": "2026-07-17",
-        "away": "Tampa Bay Rays",
-        "away_runs": 3,
-        "home": "Boston Red Sox",
-        "home_runs": 5
-       },
-       {
-        "date": "2026-07-18",
-        "away": "Tampa Bay Rays",
-        "away_runs": 6,
-        "home": "Boston Red Sox",
-        "home_runs": 7
-       },
-       {
-        "date": "2026-07-19",
-        "away": "Tampa Bay Rays",
-        "away_runs": 1,
-        "home": "Boston Red Sox",
-        "home_runs": 6
-       },
-       {
-        "date": "2026-09-18",
-        "away": "Boston Red Sox",
-        "away_runs": 4,
-        "home": "Tampa Bay Rays",
-        "home_runs": 2
-       },
-       {
-        "date": "2026-09-19",
-        "away": "Boston Red Sox",
-        "away_runs": 1,
-        "home": "Tampa Bay Rays",
-        "home_runs": 2
-       }
-      ],
-      "home_starter": "Griffin Jax",
-      "away_starter": "Patrick Sandoval",
-      "home_starter_era": 3.8,
-      "away_starter_era": 4.99,
-      "home_starter_wl": [
-       7,
-       10
-      ],
-      "away_starter_wl": [
-       1,
-       6
-      ],
-      "home_hand": "R",
-      "away_hand": "L",
-      "home_vs_opp": {
-       "starts": 2,
-       "innings": 12.7,
-       "era": 9.24,
-       "strikeouts": 14,
+       "starts": 4,
+       "innings": 21.0,
+       "era": 2.14,
+       "strikeouts": 17,
        "span": "2025\u20132026",
        "source": "gameLog"
       },
       "away_vs_opp": {
-       "starts": 1,
-       "innings": 5.0,
-       "era": 7.2,
-       "strikeouts": 5,
-       "span": "2026",
+       "starts": 2,
+       "innings": 10.7,
+       "era": 5.91,
+       "strikeouts": 9,
+       "span": "2025\u20132026",
        "source": "gameLog"
       },
       "home_sp": {
-       "w": 7,
-       "l": 10,
-       "era": 3.8,
-       "whip": 1.2,
-       "innings": 104.33333333333333,
-       "h": 92,
-       "k": 110,
-       "bb": 33,
+       "w": 6,
+       "l": 15,
+       "era": 4.11,
+       "whip": 1.35,
+       "innings": 173.0,
+       "h": 174,
+       "k": 152,
+       "bb": 60,
        "hr": 15
       },
       "away_sp": {
-       "w": 1,
-       "l": 6,
-       "era": 4.99,
-       "whip": 1.79,
-       "innings": 57.666666666666664,
-       "h": 74,
-       "k": 62,
-       "bb": 29,
-       "hr": 6
+       "w": 5,
+       "l": 5,
+       "era": 3.65,
+       "whip": 1.14,
+       "innings": 93.66666666666667,
+       "h": 61,
+       "k": 91,
+       "bb": 46,
+       "hr": 10
       },
       "home_bats": [
        {
-        "id": 650490,
-        "name": "Yandy D\u00edaz",
-        "position": "DH",
-        "pa": 22,
-        "ab": 19,
-        "h": 4,
+        "id": 683002,
+        "name": "Gunnar Henderson",
+        "position": "SS",
+        "pa": 6,
+        "ab": 5,
+        "h": 1,
         "hr": 0,
         "rbi": 1,
-        "k": 3,
-        "avg": 0.21052631578947367
+        "k": 1,
+        "avg": 0.2
        },
        {
-        "id": 663743,
-        "name": "Nick Fortes",
-        "position": "C",
-        "pa": 7,
-        "ab": 7,
-        "h": 3,
+        "id": 691723,
+        "name": "Coby Mayo",
+        "position": "3B",
+        "pa": 5,
+        "ab": 5,
+        "h": 2,
         "hr": 1,
         "rbi": 2,
-        "k": 2,
-        "avg": 0.42857142857142855
+        "k": 1,
+        "avg": 0.4
        },
        {
-        "id": 656775,
-        "name": "Cedric Mullins",
+        "id": 624413,
+        "name": "Pete Alonso",
+        "position": "1B",
+        "pa": 5,
+        "ab": 5,
+        "h": 0,
+        "hr": 0,
+        "rbi": 0,
+        "k": 2,
+        "avg": 0.0
+       },
+       {
+        "id": 665750,
+        "name": "Leody Taveras",
         "position": "CF",
         "pa": 4,
-        "ab": 4,
+        "ab": 3,
         "h": 0,
-        "hr": 0,
-        "rbi": 0,
-        "k": 1,
-        "avg": 0.0
-       },
-       {
-        "id": 622761,
-        "name": "Jorge Mateo",
-        "position": "SS",
-        "pa": 4,
-        "ab": 3,
-        "h": 1,
-        "hr": 0,
-        "rbi": 0,
-        "k": 1,
-        "avg": 0.3333333333333333
-       },
-       {
-        "id": 802415,
-        "name": "Chandler Simpson",
-        "position": "LF",
-        "pa": 3,
-        "ab": 3,
-        "h": 2,
-        "hr": 0,
-        "rbi": 0,
-        "k": 1,
-        "avg": 0.6666666666666666
-       },
-       {
-        "id": 641584,
-        "name": "Jake Fraley",
-        "position": "RF",
-        "pa": 3,
-        "ab": 2,
-        "h": 0,
-        "hr": 0,
-        "rbi": 1,
-        "k": 1,
-        "avg": 0.0
-       },
-       {
-        "id": 676356,
-        "name": "Jonny DeLuca",
-        "position": "RF",
-        "pa": 3,
-        "ab": 3,
-        "h": 1,
-        "hr": 0,
-        "rbi": 0,
-        "k": 1,
-        "avg": 0.3333333333333333
-       },
-       {
-        "id": 691406,
-        "name": "Junior Caminero",
-        "position": "3B",
-        "pa": 3,
-        "ab": 3,
-        "h": 1,
         "hr": 0,
         "rbi": 0,
         "k": 0,
-        "avg": 0.3333333333333333
+        "avg": 0.0
        },
        {
-        "id": 668723,
-        "name": "Ryan Vilade",
-        "position": "RF",
-        "pa": 3,
-        "ab": 3,
-        "h": 1,
+        "id": 694212,
+        "name": "Samuel Basallo",
+        "position": "C",
+        "pa": 4,
+        "ab": 2,
+        "h": 0,
         "hr": 0,
         "rbi": 0,
-        "k": 1,
-        "avg": 0.3333333333333333
+        "k": 0,
+        "avg": 0.0
+       },
+       {
+        "id": 669236,
+        "name": "Jeremiah Jackson",
+        "position": "2B",
+        "pa": 3,
+        "ab": 2,
+        "h": 1,
+        "hr": 0,
+        "rbi": 1,
+        "k": 0,
+        "avg": 0.5
+       },
+       {
+        "id": 665966,
+        "name": "Carlos Narv\u00e1ez",
+        "position": "C",
+        "pa": 2,
+        "ab": 2,
+        "h": 0,
+        "hr": 0,
+        "rbi": 0,
+        "k": 0,
+        "avg": 0.0
+       },
+       {
+        "id": 681297,
+        "name": "Colton Cowser",
+        "position": "CF",
+        "pa": 2,
+        "ab": 2,
+        "h": 0,
+        "hr": 0,
+        "rbi": 0,
+        "k": 0,
+        "avg": 0.0
+       },
+       {
+        "id": 687952,
+        "name": "Christian Encarnacion-Strand",
+        "position": "3B",
+        "pa": null,
+        "ab": null,
+        "h": null,
+        "hr": null,
+        "rbi": null,
+        "k": null,
+        "avg": null
        }
       ],
       "away_bats": [
        {
-        "id": 677800,
-        "name": "Wilyer Abreu",
-        "position": "RF",
-        "pa": 10,
-        "ab": 10,
-        "h": 3,
+        "id": 665489,
+        "name": "Vladimir Guerrero Jr.",
+        "position": "1B",
+        "pa": 18,
+        "ab": 18,
+        "h": 5,
         "hr": 1,
         "rbi": 2,
-        "k": 3,
-        "avg": 0.3
-       },
-       {
-        "id": 680776,
-        "name": "Jarren Duran",
-        "position": "LF",
-        "pa": 9,
-        "ab": 8,
-        "h": 2,
-        "hr": 0,
-        "rbi": 4,
         "k": 2,
-        "avg": 0.25
+        "avg": 0.2777777777777778
        },
        {
-        "id": 596115,
-        "name": "Trevor Story",
-        "position": "SS",
-        "pa": 6,
-        "ab": 6,
+        "id": 543807,
+        "name": "George Springer",
+        "position": "DH",
+        "pa": 15,
+        "ab": 15,
+        "h": 1,
+        "hr": 0,
+        "rbi": 0,
+        "k": 4,
+        "avg": 0.06666666666666667
+       },
+       {
+        "id": 676391,
+        "name": "Ernie Clement",
+        "position": "2B",
+        "pa": 12,
+        "ab": 11,
+        "h": 3,
+        "hr": 0,
+        "rbi": 0,
+        "k": 2,
+        "avg": 0.2727272727272727
+       },
+       {
+        "id": 664770,
+        "name": "Nathan Lukes",
+        "position": "RF",
+        "pa": 9,
+        "ab": 9,
         "h": 2,
         "hr": 0,
         "rbi": 0,
-        "k": 3,
+        "k": 1,
+        "avg": 0.2222222222222222
+       },
+       {
+        "id": 672386,
+        "name": "Alejandro Kirk",
+        "position": "C",
+        "pa": 5,
+        "ab": 4,
+        "h": 1,
+        "hr": 0,
+        "rbi": 0,
+        "k": 1,
+        "avg": 0.25
+       },
+       {
+        "id": 665926,
+        "name": "Andr\u00e9s Gim\u00e9nez",
+        "position": "SS",
+        "pa": 5,
+        "ab": 5,
+        "h": 2,
+        "hr": 0,
+        "rbi": 1,
+        "k": 1,
+        "avg": 0.4
+       },
+       {
+        "id": 678218,
+        "name": "Brandon Valenzuela",
+        "position": "C",
+        "pa": 3,
+        "ab": 2,
+        "h": 0,
+        "hr": 0,
+        "rbi": 1,
+        "k": 1,
+        "avg": 0.0
+       },
+       {
+        "id": 669701,
+        "name": "Josh Smith",
+        "position": "2B",
+        "pa": 3,
+        "ab": 3,
+        "h": 1,
+        "hr": 0,
+        "rbi": 0,
+        "k": 0,
         "avg": 0.3333333333333333
        },
        {
-        "id": 668939,
-        "name": "Adley Rutschman",
-        "position": "C",
-        "pa": 5,
-        "ab": 4,
-        "h": 1,
-        "hr": 0,
-        "rbi": 0,
-        "k": 0,
-        "avg": 0.25
-       },
-       {
-        "id": 575929,
-        "name": "Willson Contreras",
-        "position": "1B",
-        "pa": 5,
-        "ab": 4,
-        "h": 2,
-        "hr": 2,
-        "rbi": 4,
-        "k": 0,
-        "avg": 0.5
-       },
-       {
-        "id": 702332,
-        "name": "Caleb Durbin",
+        "id": 672960,
+        "name": "Kazuma Okamoto",
         "position": "3B",
-        "pa": 4,
-        "ab": 3,
-        "h": 2,
-        "hr": 0,
-        "rbi": 1,
-        "k": 0,
-        "avg": 0.6666666666666666
-       },
-       {
-        "id": 657136,
-        "name": "Connor Wong",
-        "position": "C",
-        "pa": 4,
-        "ab": 4,
-        "h": 0,
-        "hr": 0,
-        "rbi": 2,
-        "k": 1,
-        "avg": 0.0
-       },
-       {
-        "id": 681987,
-        "name": "Nate Eaton",
-        "position": "LF",
         "pa": 3,
         "ab": 3,
-        "h": 0,
-        "hr": 0,
-        "rbi": 0,
-        "k": 1,
-        "avg": 0.0
-       },
-       {
-        "id": 643396,
-        "name": "Isiah Kiner-Falefa",
-        "position": "2B",
-        "pa": 2,
-        "ab": 2,
         "h": 1,
         "hr": 0,
         "rbi": 1,
-        "k": 0,
-        "avg": 0.5
+        "k": 1,
+        "avg": 0.3333333333333333
        }
       ],
-      "venue": "Tropicana Field"
+      "venue": "Oriole Park at Camden Yards"
      }
     },
     {
-     "event_id": "f0f45d9e8f90c6f3545e1d95f7d1272e",
+     "event_id": "3e7090629723a062facffeca147d8c9d",
      "league": "mlb",
-     "commence_time": "2026-09-20T17:41:00Z",
-     "home": "Cincinnati Reds",
-     "away": "Chicago Cubs",
+     "commence_time": "2026-09-21T22:41:00Z",
+     "home": "Detroit Tigers",
+     "away": "Washington Nationals",
      "markets": {
       "h2h": {
        "point": null,
        "side_a": "home",
-       "fair_home": 0.40555128095923176,
-       "fair_away": 0.5956014424699564,
-       "fair_price_home": 147,
-       "fair_price_away": -147,
+       "fair_home": 0.5566556217695023,
+       "fair_away": 0.44518650450889746,
+       "fair_price_home": -126,
+       "fair_price_away": 125,
        "best_home": {
-        "book": "BetOnline.ag",
-        "price": 140
+        "book": "LowVig.ag",
+        "price": -128
        },
        "best_away": {
-        "book": "FanDuel",
-        "price": -154
+        "book": "BetRivers",
+        "price": 118
        },
-       "edge_home": -2.6676925697843856,
-       "edge_away": -1.764437410799402,
-       "books": 9,
-       "width": 25
-      },
-      "spreads": {
-       "point": 1.5,
-       "side_a": "home",
-       "fair_home": 0.5245476343143499,
-       "fair_away": 0.478177655012112,
-       "fair_price_home": -110,
-       "fair_price_away": 109,
-       "best_home": {
-        "book": "BetUS",
-        "price": -115
-       },
-       "best_away": {
-        "book": "FanDuel",
-        "price": 104
-       },
-       "edge_home": -1.932398802099805,
-       "edge_away": -2.451758377529151,
+       "edge_home": -0.8457173723073974,
+       "edge_away": -2.9493420170603746,
        "books": 9,
        "width": 20
       },
-      "totals": {
-       "point": 9.5,
-       "side_a": "over",
-       "fair_home": 0.5132127041202313,
-       "fair_away": 0.4883936606850811,
-       "fair_price_home": -105,
-       "fair_price_away": 105,
+      "spreads": {
+       "point": -1.5,
+       "side_a": "home",
+       "fair_home": 0.3735154853995928,
+       "fair_away": 0.6276383887497127,
+       "fair_price_home": 168,
+       "fair_price_away": -169,
        "best_home": {
-        "book": "MyBookie.ag",
-        "price": -114
+        "book": "LowVig.ag",
+        "price": 158
+       },
+       "best_away": {
+        "book": "Bovada",
+        "price": -175
+       },
+       "edge_home": -3.633004766905057,
+       "edge_away": -1.3711103393308666,
+       "books": 9,
+       "width": 29
+      },
+      "totals": {
+       "point": 8.5,
+       "side_a": "over",
+       "fair_home": 0.5092983204557693,
+       "fair_away": 0.49231351604587104,
+       "fair_price_home": -104,
+       "fair_price_away": 103,
+       "best_home": {
+        "book": "BetRivers",
+        "price": -108
        },
        "best_away": {
         "book": "LowVig.ag",
-        "price": 100
+        "price": -104
        },
-       "edge_home": -3.660071331816217,
-       "edge_away": -2.321267862983772,
-       "books": 7,
+       "edge_home": -1.9129160603703566,
+       "edge_away": -3.4308103140791357,
+       "books": 9,
        "width": 20,
        "model": null
       }
      },
      "model": {
-      "home_win_prob": 0.4814,
-      "away_win_prob": 0.5186,
-      "market_home_prob": 0.4053,
-      "disagreement": 7.6,
+      "home_win_prob": 0.5407,
+      "away_win_prob": 0.4593,
+      "market_home_prob": 0.5559,
+      "disagreement": -1.5,
       "suspect": false,
       "source": "slate",
-      "ev_home": 15.5,
-      "ev_away": -14.5
+      "ev_home": -3.7,
+      "ev_away": 0.1
      },
      "detail": {
       "home_record": {
-       "w": 72,
+       "w": 73,
        "l": 83,
-       "hw": 38,
-       "hl": 42,
+       "hw": 39,
+       "hl": 36,
        "aw": 34,
-       "al": 41
+       "al": 47
       },
       "away_record": {
-       "w": 86,
-       "l": 69,
-       "hw": 45,
-       "hl": 33,
-       "aw": 41,
-       "al": 36
+       "w": 73,
+       "l": 83,
+       "hw": 37,
+       "hl": 41,
+       "aw": 36,
+       "al": 42
       },
       "home_form": {
-       "w": 72,
+       "w": 73,
        "l": 83,
-       "streak": "L1",
-       "l10_w": 3,
-       "l10_l": 7,
-       "division": "NL Central",
-       "div_rank": 5
+       "streak": "L2",
+       "l10_w": 6,
+       "l10_l": 4,
+       "division": "AL Central",
+       "div_rank": 4
       },
       "away_form": {
-       "w": 86,
-       "l": 69,
-       "streak": "W1",
-       "l10_w": 5,
-       "l10_l": 5,
-       "division": "NL Central",
-       "div_rank": 2
+       "w": 73,
+       "l": 83,
+       "streak": "L1",
+       "l10_w": 6,
+       "l10_l": 4,
+       "division": "NL East",
+       "div_rank": 4
       },
-      "series": [
-       {
-        "date": "2026-05-04",
-        "away": "Cincinnati Reds",
-        "away_runs": 4,
-        "home": "Chicago Cubs",
-        "home_runs": 5
-       },
-       {
-        "date": "2026-05-05",
-        "away": "Cincinnati Reds",
-        "away_runs": 2,
-        "home": "Chicago Cubs",
-        "home_runs": 3
-       },
-       {
-        "date": "2026-05-06",
-        "away": "Cincinnati Reds",
-        "away_runs": 6,
-        "home": "Chicago Cubs",
-        "home_runs": 7
-       },
-       {
-        "date": "2026-05-07",
-        "away": "Cincinnati Reds",
-        "away_runs": 3,
-        "home": "Chicago Cubs",
-        "home_runs": 8
-       },
-       {
-        "date": "2026-07-10",
-        "away": "Chicago Cubs",
-        "away_runs": 0,
-        "home": "Cincinnati Reds",
-        "home_runs": 4
-       },
-       {
-        "date": "2026-07-11",
-        "away": "Chicago Cubs",
-        "away_runs": 5,
-        "home": "Cincinnati Reds",
-        "home_runs": 3
-       },
-       {
-        "date": "2026-07-12",
-        "away": "Chicago Cubs",
-        "away_runs": 8,
-        "home": "Cincinnati Reds",
-        "home_runs": 4
-       },
-       {
-        "date": "2026-08-28",
-        "away": "Cincinnati Reds",
-        "away_runs": 10,
-        "home": "Chicago Cubs",
-        "home_runs": 8
-       },
-       {
-        "date": "2026-08-29",
-        "away": "Cincinnati Reds",
-        "away_runs": 5,
-        "home": "Chicago Cubs",
-        "home_runs": 17
-       },
-       {
-        "date": "2026-08-30",
-        "away": "Cincinnati Reds",
-        "away_runs": 7,
-        "home": "Chicago Cubs",
-        "home_runs": 5
-       },
-       {
-        "date": "2026-09-18",
-        "away": "Chicago Cubs",
-        "away_runs": 4,
-        "home": "Cincinnati Reds",
-        "home_runs": 6
-       },
-       {
-        "date": "2026-09-19",
-        "away": "Chicago Cubs",
-        "away_runs": 5,
-        "home": "Cincinnati Reds",
-        "home_runs": 2
-       }
-      ],
-      "home_starter": "Rhett Lowder",
-      "home_starter_era": 5.79,
-      "home_starter_wl": [
-       6,
-       11
-      ],
+      "series": [],
+      "home_starter": "River Ryan",
+      "away_starter": "DJ Herz",
       "home_hand": "R",
-      "away_hand": "",
-      "home_vs_opp": {
-       "starts": 2,
-       "innings": 10.0,
-       "era": 5.4,
-       "strikeouts": 7,
-       "span": "2026",
-       "source": "gameLog"
-      },
+      "away_hand": "L",
       "home_sp": {
-       "w": 6,
-       "l": 11,
-       "era": 5.79,
-       "whip": 1.52,
-       "innings": 124.33333333333333,
-       "h": 138,
-       "k": 98,
-       "bb": 51,
-       "hr": 18
+       "w": null,
+       "l": null,
+       "era": null,
+       "whip": null,
+       "innings": 0.0,
+       "h": null,
+       "k": null,
+       "bb": null,
+       "hr": null
       },
       "away_sp": {
        "w": null,
        "l": null,
        "era": null,
        "whip": null,
-       "innings": null,
+       "innings": 0.0,
        "h": null,
        "k": null,
        "bb": null,
        "hr": null
       },
-      "away_bats": [
-       {
-        "id": 608324,
-        "name": "Alex Bregman",
-        "position": "3B",
-        "pa": 8,
-        "ab": 7,
-        "h": 1,
-        "hr": 0,
-        "rbi": 1,
-        "k": 1,
-        "avg": 0.14285714285714285
-       },
-       {
-        "id": 664023,
-        "name": "Ian Happ",
-        "position": "LF",
-        "pa": 8,
-        "ab": 7,
-        "h": 1,
-        "hr": 0,
-        "rbi": 0,
-        "k": 4,
-        "avg": 0.14285714285714285
-       },
-       {
-        "id": 663538,
-        "name": "Nico Hoerner",
-        "position": "2B",
-        "pa": 7,
-        "ab": 7,
-        "h": 2,
-        "hr": 0,
-        "rbi": 0,
-        "k": 0,
-        "avg": 0.2857142857142857
-       },
-       {
-        "id": 691718,
-        "name": "Pete Crow-Armstrong",
-        "position": "CF",
-        "pa": 7,
-        "ab": 5,
-        "h": 1,
-        "hr": 0,
-        "rbi": 0,
-        "k": 1,
-        "avg": 0.2
-       },
-       {
-        "id": 683737,
-        "name": "Michael Busch",
-        "position": "1B",
-        "pa": 6,
-        "ab": 6,
-        "h": 1,
-        "hr": 1,
-        "rbi": 2,
-        "k": 1,
-        "avg": 0.16666666666666666
-       },
-       {
-        "id": 673548,
-        "name": "Seiya Suzuki",
-        "position": "RF",
-        "pa": 6,
-        "ab": 5,
-        "h": 2,
-        "hr": 0,
-        "rbi": 0,
-        "k": 1,
-        "avg": 0.4
-       },
-       {
-        "id": 621020,
-        "name": "Dansby Swanson",
-        "position": "SS",
-        "pa": 5,
-        "ab": 4,
-        "h": 0,
-        "hr": 0,
-        "rbi": 0,
-        "k": 0,
-        "avg": 0.0
-       },
-       {
-        "id": 608348,
-        "name": "Carson Kelly",
-        "position": "C",
-        "pa": 3,
-        "ab": 3,
-        "h": 0,
-        "hr": 0,
-        "rbi": 0,
-        "k": 0,
-        "avg": 0.0
-       },
-       {
-        "id": 624424,
-        "name": "Michael Conforto",
-        "position": "DH",
-        "pa": 3,
-        "ab": 3,
-        "h": 1,
-        "hr": 1,
-        "rbi": 1,
-        "k": 1,
-        "avg": 0.3333333333333333
-       }
-      ],
-      "venue": "Great American Ball Park"
-     }
-    },
-    {
-     "event_id": "d99e3dbbb8b295eec806a390d5a0d113",
-     "league": "mlb",
-     "commence_time": "2026-09-20T17:41:00Z",
-     "home": "Cleveland Guardians",
-     "away": "Athletics",
-     "markets": {
-      "h2h": {
-       "point": null,
-       "side_a": "home",
-       "fair_home": 0.6891177472471379,
-       "fair_away": 0.3123720533077866,
-       "fair_price_home": -222,
-       "fair_price_away": 220,
-       "best_home": {
-        "book": "FanDuel",
-        "price": -230
-       },
-       "best_away": {
-        "book": "BetOnline.ag",
-        "price": 210
-       },
-       "edge_home": -1.126584090628041,
-       "edge_away": -3.164663474586149,
-       "books": 9,
-       "width": 40
-      },
-      "spreads": {
-       "point": -1.5,
-       "side_a": "home",
-       "fair_home": 0.4925920965132183,
-       "fair_away": 0.5118612016764245,
-       "fair_price_home": 103,
-       "fair_price_away": -105,
-       "best_home": {
-        "book": "FanDuel",
-        "price": 105
-       },
-       "best_away": {
-        "book": "LowVig.ag",
-        "price": -107
-       },
-       "edge_home": 0.981379785209735,
-       "edge_away": -0.976384348579562,
-       "books": 9,
-       "width": 20
-      },
-      "totals": {
-       "point": 7.0,
-       "side_a": "over",
-       "fair_home": 0.4932332573384578,
-       "fair_away": 0.5094203846215644,
-       "fair_price_home": 103,
-       "fair_price_away": -104,
-       "best_home": {
-        "book": "BetMGM",
-        "price": -102
-       },
-       "best_away": {
-        "book": "Bovada",
-        "price": -110
-       },
-       "edge_home": -2.3204725663054147,
-       "edge_away": -2.74701748133771,
-       "books": 8,
-       "width": 20.0,
-       "model": null
-      }
-     },
-     "model": {
-      "home_win_prob": 0.7008,
-      "away_win_prob": 0.2992,
-      "market_home_prob": 0.6881,
-      "disagreement": 1.3,
-      "suspect": false,
-      "source": "slate",
-      "ev_home": 0.5,
-      "ev_away": -7.2
-     },
-     "detail": {
-      "home_record": {
-       "w": 80,
-       "l": 75,
-       "hw": 40,
-       "hl": 40,
-       "aw": 40,
-       "al": 35
-      },
-      "away_record": {
-       "w": 61,
-       "l": 94,
-       "hw": 29,
-       "hl": 46,
-       "aw": 32,
-       "al": 48
-      },
-      "home_form": {
-       "w": 80,
-       "l": 75,
-       "streak": "W4",
-       "l10_w": 7,
-       "l10_l": 3,
-       "division": "AL Central",
-       "div_rank": 1
-      },
-      "away_form": {
-       "w": 61,
-       "l": 94,
-       "streak": "L5",
-       "l10_w": 3,
-       "l10_l": 7,
-       "division": "AL West",
-       "div_rank": 4
-      },
-      "series": [
-       {
-        "date": "2026-05-01",
-        "away": "Cleveland Guardians",
-        "away_runs": 8,
-        "home": "Athletics",
-        "home_runs": 5
-       },
-       {
-        "date": "2026-05-02",
-        "away": "Cleveland Guardians",
-        "away_runs": 14,
-        "home": "Athletics",
-        "home_runs": 6
-       },
-       {
-        "date": "2026-05-03",
-        "away": "Cleveland Guardians",
-        "away_runs": 1,
-        "home": "Athletics",
-        "home_runs": 7
-       },
-       {
-        "date": "2026-09-18",
-        "away": "Athletics",
-        "away_runs": 3,
-        "home": "Cleveland Guardians",
-        "home_runs": 5
-       },
-       {
-        "date": "2026-09-19",
-        "away": "Athletics",
-        "away_runs": 6,
-        "home": "Cleveland Guardians",
-        "home_runs": 12
-       }
-      ],
-      "home_starter": "Gavin Williams",
-      "away_starter": "Jack Perkins",
-      "home_starter_era": 3.78,
-      "away_starter_era": 6.14,
-      "home_starter_wl": [
-       13,
-       8
-      ],
-      "away_starter_wl": [
-       3,
-       11
-      ],
-      "home_hand": "R",
-      "away_hand": "R",
-      "home_vs_opp": {
-       "starts": 1,
-       "innings": 7.0,
-       "era": 1.29,
-       "strikeouts": 11,
-       "span": "2025\u20132026",
-       "source": "gameLog"
-      },
-      "away_vs_opp": {
-       "starts": 0,
-       "innings": 6.0,
-       "era": 0.0,
-       "strikeouts": 5,
-       "span": "2025\u20132026",
-       "source": "gameLog"
-      },
-      "home_sp": {
-       "w": 13,
-       "l": 8,
-       "era": 3.78,
-       "whip": 1.1,
-       "innings": 174.0,
-       "h": 136,
-       "k": 235,
-       "bb": 56,
-       "hr": 27
-      },
-      "away_sp": {
-       "w": 3,
-       "l": 11,
-       "era": 6.14,
-       "whip": 1.48,
-       "innings": 110.0,
-       "h": 115,
-       "k": 127,
-       "bb": 48,
-       "hr": 20
-      },
       "home_bats": [
-       {
-        "id": 666176,
-        "name": "Jo Adell",
-        "position": "RF",
-        "pa": 8,
-        "ab": 7,
-        "h": 1,
-        "hr": 0,
-        "rbi": 2,
-        "k": 2,
-        "avg": 0.14285714285714285
-       },
-       {
-        "id": 682657,
-        "name": "Angel Mart\u00ednez",
-        "position": "LF",
-        "pa": 2,
-        "ab": 2,
-        "h": 0,
-        "hr": 0,
-        "rbi": 0,
-        "k": 0,
-        "avg": 0.0
-       },
-       {
-        "id": 595978,
-        "name": "Austin Hedges",
-        "position": "C",
-        "pa": 2,
-        "ab": 2,
-        "h": 0,
-        "hr": 0,
-        "rbi": 0,
-        "k": 0,
-        "avg": 0.0
-       },
-       {
-        "id": 608070,
-        "name": "Jos\u00e9 Ram\u00edrez",
-        "position": "3B",
-        "pa": 2,
-        "ab": 2,
-        "h": 0,
-        "hr": 0,
-        "rbi": 0,
-        "k": 0,
-        "avg": 0.0
-       },
-       {
-        "id": 672275,
-        "name": "Patrick Bailey",
-        "position": "C",
-        "pa": 2,
-        "ab": 2,
-        "h": 0,
-        "hr": 0,
-        "rbi": 0,
-        "k": 2,
-        "avg": 0.0
-       },
-       {
-        "id": 677587,
-        "name": "Brayan Rocchio",
-        "position": "SS",
-        "pa": 1,
-        "ab": 1,
-        "h": 0,
-        "hr": 0,
-        "rbi": 0,
-        "k": 0,
-        "avg": 0.0
-       },
-       {
-        "id": 682177,
-        "name": "Daniel Schneemann",
-        "position": "CF",
-        "pa": 1,
-        "ab": 1,
-        "h": 0,
-        "hr": 0,
-        "rbi": 0,
-        "k": 1,
-        "avg": 0.0
-       },
-       {
-        "id": 681807,
-        "name": "David Fry",
-        "position": "RF",
-        "pa": 1,
-        "ab": 1,
-        "h": 0,
-        "hr": 0,
-        "rbi": 0,
-        "k": 1,
-        "avg": 0.0
-       },
-       {
-        "id": 680757,
-        "name": "Steven Kwan",
-        "position": "LF",
-        "pa": 1,
-        "ab": 1,
-        "h": 0,
-        "hr": 0,
-        "rbi": 0,
-        "k": 0,
-        "avg": 0.0
-       }
-      ],
-      "away_bats": [
-       {
-        "id": 669127,
-        "name": "Shea Langeliers",
-        "position": "C",
-        "pa": 5,
-        "ab": 5,
-        "h": 0,
-        "hr": 0,
-        "rbi": 0,
-        "k": 2,
-        "avg": 0.0
-       },
-       {
-        "id": 643446,
-        "name": "Jeff McNeil",
-        "position": "2B",
-        "pa": 3,
-        "ab": 3,
-        "h": 0,
-        "hr": 0,
-        "rbi": 0,
-        "k": 0,
-        "avg": 0.0
-       },
-       {
-        "id": 671732,
-        "name": "Lawrence Butler",
-        "position": "RF",
-        "pa": 3,
-        "ab": 3,
-        "h": 0,
-        "hr": 0,
-        "rbi": 0,
-        "k": 3,
-        "avg": 0.0
-       },
-       {
-        "id": 672016,
-        "name": "Denzel Clarke",
-        "position": "CF",
-        "pa": 2,
-        "ab": 2,
-        "h": 0,
-        "hr": 0,
-        "rbi": 0,
-        "k": 1,
-        "avg": 0.0
-       },
-       {
-        "id": 641680,
-        "name": "Jonah Heim",
-        "position": "C",
-        "pa": 2,
-        "ab": 1,
-        "h": 1,
-        "hr": 0,
-        "rbi": 0,
-        "k": 0,
-        "avg": 1.0
-       },
-       {
-        "id": 675961,
-        "name": "Alika Williams",
-        "position": "SS",
-        "pa": null,
-        "ab": null,
-        "h": null,
-        "hr": null,
-        "rbi": null,
-        "k": null,
-        "avg": null
-       },
-       {
-        "id": 661531,
-        "name": "Brian Serven",
-        "position": "C",
-        "pa": null,
-        "ab": null,
-        "h": null,
-        "hr": null,
-        "rbi": null,
-        "k": null,
-        "avg": null
-       },
-       {
-        "id": 666126,
-        "name": "Carlos Cortes",
-        "position": "RF",
-        "pa": null,
-        "ab": null,
-        "h": null,
-        "hr": null,
-        "rbi": null,
-        "k": null,
-        "avg": null
-       },
-       {
-        "id": 622268,
-        "name": "Donovan Walton",
-        "position": "2B",
-        "pa": null,
-        "ab": null,
-        "h": null,
-        "hr": null,
-        "rbi": null,
-        "k": null,
-        "avg": null
-       }
-      ],
-      "venue": "Progressive Field"
-     }
-    },
-    {
-     "event_id": "7b148d0f1eaf595528a0bf3c835fdfb3",
-     "league": "mlb",
-     "commence_time": "2026-09-20T18:11:00Z",
-     "home": "Chicago White Sox",
-     "away": "Detroit Tigers",
-     "markets": {
-      "h2h": {
-       "point": null,
-       "side_a": "home",
-       "fair_home": 0.5217974228659269,
-       "fair_away": 0.47835034512930535,
-       "fair_price_home": -109,
-       "fair_price_away": 109,
-       "best_home": {
-        "book": "BetOnline.ag",
-        "price": -115
-       },
-       "best_away": {
-        "book": "BetUS",
-        "price": 105
-       },
-       "edge_home": -2.4465687685441107,
-       "edge_away": -1.9381792484923999,
-       "books": 9,
-       "width": 18
-      },
-      "spreads": {
-       "point": -1.5,
-       "side_a": "home",
-       "fair_home": 0.3459374126657234,
-       "fair_away": 0.654205308576429,
-       "fair_price_home": 189,
-       "fair_price_away": -189,
-       "best_home": {
-        "book": "LowVig.ag",
-        "price": 175
-       },
-       "best_away": {
-        "book": "BetOnline.ag",
-        "price": -200
-       },
-       "edge_home": -4.867211516926062,
-       "edge_away": -1.8692037135356498,
-       "books": 5,
-       "width": 28
-      },
-      "totals": {
-       "point": 8.0,
-       "side_a": "over",
-       "fair_home": 0.5178758327022137,
-       "fair_away": 0.4843114759102365,
-       "fair_price_home": -107,
-       "fair_price_away": 106,
-       "best_home": {
-        "book": "BetMGM",
-        "price": -115
-       },
-       "best_away": {
-        "book": "LowVig.ag",
-        "price": 103
-       },
-       "edge_home": -3.1797356252383113,
-       "edge_away": -1.684770390221979,
-       "books": 7,
-       "width": 20,
-       "model": null
-      }
-     },
-     "model": {
-      "home_win_prob": 0.4888,
-      "away_win_prob": 0.5112,
-      "market_home_prob": 0.5219,
-      "disagreement": -3.3,
-      "suspect": false,
-      "source": "slate",
-      "ev_home": -8.6,
-      "ev_away": 4.8
-     },
-     "detail": {
-      "home_record": {
-       "w": 79,
-       "l": 76,
-       "hw": 45,
-       "hl": 32,
-       "aw": 34,
-       "al": 44
-      },
-      "away_record": {
-       "w": 73,
-       "l": 82,
-       "hw": 39,
-       "hl": 36,
-       "aw": 34,
-       "al": 46
-      },
-      "home_form": {
-       "w": 79,
-       "l": 76,
-       "streak": "W1",
-       "l10_w": 4,
-       "l10_l": 6,
-       "division": "AL Central",
-       "div_rank": 2
-      },
-      "away_form": {
-       "w": 73,
-       "l": 82,
-       "streak": "L1",
-       "l10_w": 7,
-       "l10_l": 3,
-       "division": "AL Central",
-       "div_rank": 3
-      },
-      "series": [
-       {
-        "date": "2026-05-29",
-        "away": "Detroit Tigers",
-        "away_runs": 3,
-        "home": "Chicago White Sox",
-        "home_runs": 4
-       },
-       {
-        "date": "2026-05-30",
-        "away": "Detroit Tigers",
-        "away_runs": 1,
-        "home": "Chicago White Sox",
-        "home_runs": 7
-       },
-       {
-        "date": "2026-05-31",
-        "away": "Detroit Tigers",
-        "away_runs": 1,
-        "home": "Chicago White Sox",
-        "home_runs": 2
-       },
-       {
-        "date": "2026-06-19",
-        "away": "Chicago White Sox",
-        "away_runs": 3,
-        "home": "Detroit Tigers",
-        "home_runs": 4
-       },
-       {
-        "date": "2026-06-20",
-        "away": "Chicago White Sox",
-        "away_runs": 1,
-        "home": "Detroit Tigers",
-        "home_runs": 4
-       },
-       {
-        "date": "2026-06-21",
-        "away": "Chicago White Sox",
-        "away_runs": 4,
-        "home": "Detroit Tigers",
-        "home_runs": 5
-       },
-       {
-        "date": "2026-08-14",
-        "away": "Chicago White Sox",
-        "away_runs": 9,
-        "home": "Detroit Tigers",
-        "home_runs": 5
-       },
-       {
-        "date": "2026-08-15",
-        "away": "Chicago White Sox",
-        "away_runs": 4,
-        "home": "Detroit Tigers",
-        "home_runs": 3
-       },
-       {
-        "date": "2026-08-16",
-        "away": "Chicago White Sox",
-        "away_runs": 7,
-        "home": "Detroit Tigers",
-        "home_runs": 5
-       },
-       {
-        "date": "2026-09-17",
-        "away": "Detroit Tigers",
-        "away_runs": 1,
-        "home": "Chicago White Sox",
-        "home_runs": 3
-       },
-       {
-        "date": "2026-09-18",
-        "away": "Detroit Tigers",
-        "away_runs": 11,
-        "home": "Chicago White Sox",
-        "home_runs": 8
-       },
-       {
-        "date": "2026-09-19",
-        "away": "Detroit Tigers",
-        "away_runs": 1,
-        "home": "Chicago White Sox",
-        "home_runs": 3
-       }
-      ],
-      "home_starter": "Davis Martin",
-      "away_starter": "Troy Melton",
-      "home_starter_era": 3.96,
-      "away_starter_era": 2.52,
-      "home_starter_wl": [
-       9,
-       7
-      ],
-      "away_starter_wl": [
-       8,
-       4
-      ],
-      "home_hand": "R",
-      "away_hand": "R",
-      "home_vs_opp": {
-       "starts": 3,
-       "innings": 16.3,
-       "era": 5.51,
-       "strikeouts": 9,
-       "span": "2025\u20132026",
-       "source": "gameLog"
-      },
-      "away_vs_opp": {
-       "starts": 4,
-       "innings": 24.3,
-       "era": 1.48,
-       "strikeouts": 17,
-       "span": "2025\u20132026",
-       "source": "gameLog"
-      },
-      "home_sp": {
-       "w": 9,
-       "l": 7,
-       "era": 3.96,
-       "whip": 1.3,
-       "innings": 141.0,
-       "h": 140,
-       "k": 115,
-       "bb": 43,
-       "hr": 14
-      },
-      "away_sp": {
-       "w": 8,
-       "l": 4,
-       "era": 2.52,
-       "whip": 1.1,
-       "innings": 110.66666666666667,
-       "h": 88,
-       "k": 90,
-       "bb": 34,
-       "hr": 13
-      },
-      "home_bats": [
-       {
-        "id": 643217,
-        "name": "Andrew Benintendi",
-        "position": "DH",
-        "pa": 13,
-        "ab": 10,
-        "h": 0,
-        "hr": 0,
-        "rbi": 0,
-        "k": 1,
-        "avg": 0.0
-       },
-       {
-        "id": 695657,
-        "name": "Colson Montgomery",
-        "position": "SS",
-        "pa": 12,
-        "ab": 10,
-        "h": 1,
-        "hr": 0,
-        "rbi": 2,
-        "k": 2,
-        "avg": 0.1
-       },
-       {
-        "id": 678246,
-        "name": "Miguel Vargas",
-        "position": "3B",
-        "pa": 11,
-        "ab": 11,
-        "h": 2,
-        "hr": 0,
-        "rbi": 1,
-        "k": 3,
-        "avg": 0.18181818181818182
-       },
-       {
-        "id": 803011,
-        "name": "Sam Antonacci",
-        "position": "LF",
-        "pa": 10,
-        "ab": 8,
-        "h": 4,
-        "hr": 1,
-        "rbi": 1,
-        "k": 1,
-        "avg": 0.5
-       },
-       {
-        "id": 671976,
-        "name": "Tristan Peters",
-        "position": "CF",
-        "pa": 7,
-        "ab": 6,
-        "h": 3,
-        "hr": 0,
-        "rbi": 0,
-        "k": 1,
-        "avg": 0.5
-       },
-       {
-        "id": 805367,
-        "name": "Chase Meidroth",
-        "position": "2B",
-        "pa": 6,
-        "ab": 6,
-        "h": 2,
-        "hr": 0,
-        "rbi": 0,
-        "k": 1,
-        "avg": 0.3333333333333333
-       },
-       {
-        "id": 808959,
-        "name": "Munetaka Murakami",
-        "position": "1B",
-        "pa": 5,
-        "ab": 4,
-        "h": 1,
-        "hr": 0,
-        "rbi": 0,
-        "k": 1,
-        "avg": 0.25
-       },
-       {
-        "id": 695731,
-        "name": "Braden Montgomery",
-        "position": "RF",
-        "pa": 4,
-        "ab": 3,
-        "h": 1,
-        "hr": 0,
-        "rbi": 1,
-        "k": 0,
-        "avg": 0.3333333333333333
-       },
-       {
-        "id": 545341,
-        "name": "Randal Grichuk",
-        "position": "DH",
-        "pa": 4,
-        "ab": 4,
-        "h": 1,
-        "hr": 0,
-        "rbi": 0,
-        "k": 1,
-        "avg": 0.25
-       }
-      ],
-      "away_bats": [
-       {
-        "id": 679529,
-        "name": "Spencer Torkelson",
-        "position": "1B",
-        "pa": 19,
-        "ab": 19,
-        "h": 4,
-        "hr": 1,
-        "rbi": 1,
-        "k": 3,
-        "avg": 0.21052631578947367
-       },
-       {
-        "id": 682985,
-        "name": "Riley Greene",
-        "position": "LF",
-        "pa": 15,
-        "ab": 12,
-        "h": 5,
-        "hr": 0,
-        "rbi": 1,
-        "k": 0,
-        "avg": 0.4166666666666667
-       },
-       {
-        "id": 690993,
-        "name": "Colt Keith",
-        "position": "3B",
-        "pa": 11,
-        "ab": 10,
-        "h": 2,
-        "hr": 0,
-        "rbi": 1,
-        "k": 0,
-        "avg": 0.2
-       },
-       {
-        "id": 650402,
-        "name": "Gleyber Torres",
-        "position": "2B",
-        "pa": 6,
-        "ab": 5,
-        "h": 0,
-        "hr": 0,
-        "rbi": 0,
-        "k": 1,
-        "avg": 0.0
-       },
-       {
-        "id": 656716,
-        "name": "Zach McKinstry",
-        "position": "RF",
-        "pa": 6,
-        "ab": 5,
-        "h": 3,
-        "hr": 0,
-        "rbi": 2,
-        "k": 1,
-        "avg": 0.6
-       },
-       {
-        "id": 693307,
-        "name": "Dillon Dingler",
-        "position": "C",
-        "pa": 5,
-        "ab": 5,
-        "h": 0,
-        "hr": 0,
-        "rbi": 0,
-        "k": 2,
-        "avg": 0.0
-       },
-       {
-        "id": 595879,
-        "name": "Javier B\u00e1ez",
-        "position": "SS",
-        "pa": 3,
-        "ab": 3,
-        "h": 1,
-        "hr": 0,
-        "rbi": 0,
-        "k": 0,
-        "avg": 0.3333333333333333
-       },
-       {
-        "id": 805808,
-        "name": "Kevin McGonigle",
-        "position": "SS",
-        "pa": 3,
-        "ab": 1,
-        "h": 0,
-        "hr": 0,
-        "rbi": 0,
-        "k": 0,
-        "avg": 0.0
-       },
        {
         "id": 701162,
         "name": "Ben Malgeri",
@@ -2598,704 +619,95 @@
         "rbi": null,
         "k": null,
         "avg": null
-       }
-      ],
-      "venue": "Rate Field"
-     }
-    },
-    {
-     "event_id": "1686c3eaa46bbe30e7c4e29863bb9ce4",
-     "league": "mlb",
-     "commence_time": "2026-09-20T18:11:00Z",
-     "home": "Houston Astros",
-     "away": "Atlanta Braves",
-     "markets": {
-      "h2h": {
-       "point": null,
-       "side_a": "home",
-       "fair_home": 0.574332909729427,
-       "fair_away": 0.42734749606482486,
-       "fair_price_home": -135,
-       "fair_price_away": 134,
-       "best_home": {
-        "book": "BetRivers",
-        "price": -139
-       },
-       "best_away": {
-        "book": "BetOnline.ag",
-        "price": 128
-       },
-       "edge_home": -1.247794658033785,
-       "edge_away": -2.5647708972199146,
-       "books": 9,
-       "width": 22
-      },
-      "spreads": {
-       "point": -1.5,
-       "side_a": "home",
-       "fair_home": 0.38349238744113084,
-       "fair_away": 0.619535696767072,
-       "fair_price_home": 161,
-       "fair_price_away": -163,
-       "best_home": {
-        "book": "FanDuel",
-        "price": 155
-       },
-       "best_away": {
-        "book": "MyBookie.ag",
-        "price": -170
-       },
-       "edge_home": -2.2094412025116306,
-       "edge_away": -1.603154042876792,
-       "books": 8,
-       "width": 25.5
-      },
-      "totals": {
-       "point": 8.0,
-       "side_a": "over",
-       "fair_home": 0.5085084096819162,
-       "fair_away": 0.4914915903180837,
-       "fair_price_home": -103,
-       "fair_price_away": 103,
-       "best_home": {
-        "book": "LowVig.ag",
-        "price": -113
-       },
-       "best_away": {
-        "book": "LowVig.ag",
-        "price": -102
-       },
-       "edge_home": -4.14841481216977,
-       "edge_away": -2.665390937006956,
-       "books": 8,
-       "width": 20.0,
-       "model": null
-      }
-     },
-     "model": {
-      "home_win_prob": 0.4711,
-      "away_win_prob": 0.5289,
-      "market_home_prob": 0.5728,
-      "disagreement": -10.2,
-      "suspect": false,
-      "source": "slate",
-      "ev_home": -19.0,
-      "ev_away": 20.6
-     },
-     "detail": {
-      "home_record": {
-       "w": 77,
-       "l": 78,
-       "hw": 39,
-       "hl": 41,
-       "aw": 38,
-       "al": 37
-      },
-      "away_record": {
-       "w": 91,
-       "l": 65,
-       "hw": 51,
-       "hl": 28,
-       "aw": 40,
-       "al": 37
-      },
-      "home_form": {
-       "w": 77,
-       "l": 78,
-       "streak": "L2",
-       "l10_w": 3,
-       "l10_l": 7,
-       "division": "AL West",
-       "div_rank": 2
-      },
-      "away_form": {
-       "w": 91,
-       "l": 64,
-       "streak": "W2",
-       "l10_w": 6,
-       "l10_l": 4,
-       "division": "NL East",
-       "div_rank": 1
-      },
-      "series": [
-       {
-        "date": "2026-09-18",
-        "away": "Atlanta Braves",
-        "away_runs": 6,
-        "home": "Houston Astros",
-        "home_runs": 2
        },
        {
-        "date": "2026-09-19",
-        "away": "Atlanta Braves",
-        "away_runs": 6,
-        "home": "Houston Astros",
-        "home_runs": 3
-       }
-      ],
-      "home_starter": "Hunter Brown",
-      "away_starter": "Mart\u00edn P\u00e9rez",
-      "home_starter_era": 3.43,
-      "away_starter_era": 3.07,
-      "home_starter_wl": [
-       6,
-       3
-      ],
-      "away_starter_wl": [
-       9,
-       9
-      ],
-      "home_hand": "R",
-      "away_hand": "L",
-      "home_vs_opp": {
-       "starts": 1,
-       "innings": 6.7,
-       "era": 2.7,
-       "strikeouts": 2,
-       "span": "2025\u20132026",
-       "source": "gameLog"
-      },
-      "home_sp": {
-       "w": 6,
-       "l": 3,
-       "era": 3.43,
-       "whip": 1.29,
-       "innings": 97.0,
-       "h": 76,
-       "k": 110,
-       "bb": 49,
-       "hr": 11
-      },
-      "away_sp": {
-       "w": 9,
-       "l": 9,
-       "era": 3.07,
-       "whip": 1.26,
-       "innings": 137.66666666666666,
-       "h": 113,
-       "k": 100,
-       "bb": 60,
-       "hr": 13
-      },
-      "home_bats": [
-       {
-        "id": 514888,
-        "name": "Jose Altuve",
-        "position": "2B",
-        "pa": 63,
-        "ab": 58,
-        "h": 17,
-        "hr": 1,
-        "rbi": 8,
-        "k": 10,
-        "avg": 0.29310344827586204
-       },
-       {
-        "id": 670541,
-        "name": "Yordan Alvarez",
-        "position": "DH",
-        "pa": 18,
-        "ab": 16,
-        "h": 3,
-        "hr": 1,
-        "rbi": 3,
-        "k": 5,
-        "avg": 0.1875
-       },
-       {
-        "id": 665161,
-        "name": "Jeremy Pe\u00f1a",
-        "position": "SS",
-        "pa": 15,
-        "ab": 13,
-        "h": 2,
-        "hr": 0,
-        "rbi": 0,
-        "k": 2,
-        "avg": 0.15384615384615385
-       },
-       {
-        "id": 669397,
-        "name": "Nick Allen",
-        "position": "SS",
-        "pa": 11,
-        "ab": 11,
-        "h": 3,
-        "hr": 0,
-        "rbi": 1,
-        "k": 0,
-        "avg": 0.2727272727272727
-       },
-       {
-        "id": 543877,
-        "name": "Christian V\u00e1zquez",
-        "position": "C",
-        "pa": 9,
-        "ab": 9,
-        "h": 2,
-        "hr": 0,
-        "rbi": 0,
-        "k": 1,
-        "avg": 0.2222222222222222
-       },
-       {
-        "id": 670623,
-        "name": "Isaac Paredes",
-        "position": "3B",
-        "pa": 8,
-        "ab": 6,
-        "h": 1,
-        "hr": 0,
-        "rbi": 1,
-        "k": 1,
-        "avg": 0.16666666666666666
-       },
-       {
-        "id": 662139,
-        "name": "Daulton Varsho",
-        "position": "CF",
-        "pa": 3,
-        "ab": 3,
-        "h": 0,
-        "hr": 0,
-        "rbi": 0,
-        "k": 0,
-        "avg": 0.0
-       },
-       {
-        "id": 676369,
-        "name": "Nelson Vel\u00e1zquez",
+        "id": 814430,
+        "name": "Brett Callahan",
         "position": "LF",
-        "pa": 3,
-        "ab": 2,
-        "h": 2,
-        "hr": 1,
-        "rbi": 1,
-        "k": 0,
-        "avg": 1.0
-       },
-       {
-        "id": 572233,
-        "name": "Christian Walker",
-        "position": "1B",
-        "pa": 2,
-        "ab": 2,
-        "h": 1,
-        "hr": 0,
-        "rbi": 0,
-        "k": 0,
-        "avg": 0.5
-       }
-      ],
-      "away_bats": [
-       {
-        "id": 621566,
-        "name": "Matt Olson",
-        "position": "1B",
-        "pa": 9,
-        "ab": 7,
-        "h": 2,
-        "hr": 1,
-        "rbi": 1,
-        "k": 2,
-        "avg": 0.2857142857142857
-       },
-       {
-        "id": 660670,
-        "name": "Ronald Acu\u00f1a Jr.",
-        "position": "RF",
-        "pa": 9,
-        "ab": 9,
-        "h": 4,
-        "hr": 0,
-        "rbi": 0,
-        "k": 0,
-        "avg": 0.4444444444444444
-       },
-       {
-        "id": 663586,
-        "name": "Austin Riley",
-        "position": "3B",
-        "pa": 6,
-        "ab": 6,
-        "h": 3,
-        "hr": 0,
-        "rbi": 1,
-        "k": 0,
-        "avg": 0.5
-       },
-       {
-        "id": 571657,
-        "name": "Kyle Farmer",
-        "position": "DH",
-        "pa": 6,
-        "ab": 5,
-        "h": 1,
-        "hr": 0,
-        "rbi": 0,
-        "k": 1,
-        "avg": 0.2
-       },
-       {
-        "id": 645277,
-        "name": "Ozzie Albies",
-        "position": "2B",
-        "pa": 6,
-        "ab": 4,
-        "h": 1,
-        "hr": 0,
-        "rbi": 2,
-        "k": 0,
-        "avg": 0.25
-       },
-       {
-        "id": 642086,
-        "name": "Dominic Smith",
-        "position": "DH",
-        "pa": 5,
-        "ab": 5,
-        "h": 2,
-        "hr": 0,
-        "rbi": 0,
-        "k": 0,
-        "avg": 0.4
-       },
-       {
-        "id": 673490,
-        "name": "Ha-Seong Kim",
-        "position": "SS",
-        "pa": 5,
-        "ab": 4,
-        "h": 1,
-        "hr": 0,
-        "rbi": 2,
-        "k": 0,
-        "avg": 0.25
-       },
-       {
-        "id": 671739,
-        "name": "Michael Harris II",
-        "position": "CF",
-        "pa": 5,
-        "ab": 5,
-        "h": 1,
-        "hr": 0,
-        "rbi": 0,
-        "k": 2,
-        "avg": 0.2
-       },
-       {
-        "id": 686948,
-        "name": "Drake Baldwin",
-        "position": "C",
-        "pa": 3,
-        "ab": 3,
-        "h": 0,
-        "hr": 0,
-        "rbi": 0,
-        "k": 0,
-        "avg": 0.0
-       }
-      ],
-      "venue": "Daikin Park"
-     }
-    },
-    {
-     "event_id": "440458d6d4f20aa4ec271bc5f4501fa5",
-     "league": "mlb",
-     "commence_time": "2026-09-20T18:16:00Z",
-     "home": "St. Louis Cardinals",
-     "away": "Washington Nationals",
-     "markets": {
-      "h2h": {
-       "point": null,
-       "side_a": "home",
-       "fair_home": 0.5731508668299867,
-       "fair_away": 0.4287859874216938,
-       "fair_price_home": -134,
-       "fair_price_away": 133,
-       "best_home": {
-        "book": "LowVig.ag",
-        "price": -138
-       },
-       "best_away": {
-        "book": "BetRivers",
-        "price": 128
-       },
-       "edge_home": -1.152241807581994,
-       "edge_away": -2.2367948678537974,
-       "books": 9,
-       "width": 22
-      },
-      "spreads": {
-       "point": -1.5,
-       "side_a": "home",
-       "fair_home": 0.3978320163930942,
-       "fair_away": 0.606298226288982,
-       "fair_price_home": 151,
-       "fair_price_away": -154,
-       "best_home": {
-        "book": "FanDuel",
-        "price": 146
-       },
-       "best_away": {
-        "book": "BetRivers",
-        "price": -155
-       },
-       "edge_home": -2.133323967298828,
-       "edge_away": -0.2541627718126438,
-       "books": 9,
-       "width": 26
-      },
-      "totals": {
-       "point": 8.5,
-       "side_a": "over",
-       "fair_home": 0.5134741691458506,
-       "fair_away": 0.4865258308541494,
-       "fair_price_home": -106,
-       "fair_price_away": 106,
-       "best_home": {
-        "book": "LowVig.ag",
-        "price": -113
-       },
-       "best_away": {
-        "book": "LowVig.ag",
-        "price": -102
-       },
-       "edge_home": -3.2123911256051407,
-       "edge_away": -3.6488060465311998,
-       "books": 9,
-       "width": 20,
-       "model": null
-      }
-     },
-     "model": {
-      "home_win_prob": 0.6217,
-      "away_win_prob": 0.3783,
-      "market_home_prob": 0.5726,
-      "disagreement": 4.9,
-      "suspect": false,
-      "source": "slate",
-      "ev_home": 7.2,
-      "ev_away": -13.7
-     },
-     "detail": {
-      "home_record": {
-       "w": 75,
-       "l": 80,
-       "hw": 37,
-       "hl": 43,
-       "aw": 38,
-       "al": 37
-      },
-      "away_record": {
-       "w": 73,
-       "l": 82,
-       "hw": 37,
-       "hl": 41,
-       "aw": 36,
-       "al": 41
-      },
-      "home_form": {
-       "w": 75,
-       "l": 80,
-       "streak": "L4",
-       "l10_w": 3,
-       "l10_l": 7,
-       "division": "NL Central",
-       "div_rank": 4
-      },
-      "away_form": {
-       "w": 73,
-       "l": 82,
-       "streak": "W2",
-       "l10_w": 6,
-       "l10_l": 4,
-       "division": "NL East",
-       "div_rank": 4
-      },
-      "series": [
-       {
-        "date": "2026-04-06",
-        "away": "St. Louis Cardinals",
-        "away_runs": 6,
-        "home": "Washington Nationals",
-        "home_runs": 9
-       },
-       {
-        "date": "2026-04-07",
-        "away": "St. Louis Cardinals",
-        "away_runs": 7,
-        "home": "Washington Nationals",
-        "home_runs": 6
-       },
-       {
-        "date": "2026-04-08",
-        "away": "St. Louis Cardinals",
-        "away_runs": 6,
-        "home": "Washington Nationals",
-        "home_runs": 1
-       },
-       {
-        "date": "2026-09-18",
-        "away": "Washington Nationals",
-        "away_runs": 9,
-        "home": "St. Louis Cardinals",
-        "home_runs": 1
-       },
-       {
-        "date": "2026-09-19",
-        "away": "Washington Nationals",
-        "away_runs": 8,
-        "home": "St. Louis Cardinals",
-        "home_runs": 5
-       }
-      ],
-      "home_starter": "Quinn Mathews",
-      "away_starter": "Jake Irvin",
-      "home_starter_era": 3.62,
-      "away_starter_era": 5.51,
-      "home_starter_wl": [
-       2,
-       3
-      ],
-      "away_starter_wl": [
-       2,
-       9
-      ],
-      "home_hand": "L",
-      "away_hand": "R",
-      "away_vs_opp": {
-       "starts": 1,
-       "innings": 6.0,
-       "era": 6.0,
-       "strikeouts": 3,
-       "span": "2025\u20132026",
-       "source": "gameLog"
-      },
-      "home_sp": {
-       "w": 2,
-       "l": 3,
-       "era": 3.62,
-       "whip": 1.39,
-       "innings": 37.333333333333336,
-       "h": 36,
-       "k": 36,
-       "bb": 16,
-       "hr": 3
-      },
-      "away_sp": {
-       "w": 2,
-       "l": 9,
-       "era": 5.51,
-       "whip": 1.41,
-       "innings": 96.33333333333333,
-       "h": 90,
-       "k": 96,
-       "bb": 46,
-       "hr": 17
-      },
-      "home_bats": [
-       {
-        "id": 676475,
-        "name": "Alec Burleson",
-        "position": "1B",
-        "pa": 8,
-        "ab": 7,
-        "h": 3,
-        "hr": 1,
-        "rbi": 2,
-        "k": 1,
-        "avg": 0.42857142857142855
-       },
-       {
-        "id": 669357,
-        "name": "Nolan Gorman",
-        "position": "3B",
-        "pa": 7,
-        "ab": 7,
-        "h": 1,
-        "hr": 0,
-        "rbi": 0,
-        "k": 4,
-        "avg": 0.14285714285714285
-       },
-       {
-        "id": 691026,
-        "name": "Masyn Winn",
-        "position": "SS",
-        "pa": 6,
-        "ab": 6,
-        "h": 1,
-        "hr": 0,
-        "rbi": 0,
-        "k": 0,
-        "avg": 0.16666666666666666
-       },
-       {
-        "id": 686780,
-        "name": "Pedro Pag\u00e9s",
-        "position": "C",
-        "pa": 3,
-        "ab": 3,
-        "h": 1,
-        "hr": 0,
-        "rbi": 0,
-        "k": 0,
-        "avg": 0.3333333333333333
-       },
-       {
-        "id": 695336,
-        "name": "Thomas Saggese",
-        "position": "LF",
-        "pa": 3,
-        "ab": 3,
-        "h": 0,
-        "hr": 0,
-        "rbi": 0,
-        "k": 1,
-        "avg": 0.0
-       },
-       {
-        "id": 691023,
-        "name": "Jordan Walker",
-        "position": "RF",
-        "pa": 2,
-        "ab": 2,
-        "h": 0,
-        "hr": 0,
-        "rbi": 0,
-        "k": 1,
-        "avg": 0.0
-       },
-       {
-        "id": 687363,
-        "name": "Victor Scott II",
-        "position": "CF",
-        "pa": 2,
-        "ab": 2,
-        "h": 1,
-        "hr": 0,
-        "rbi": 0,
-        "k": 1,
-        "avg": 0.5
-       },
-       {
-        "id": 671056,
-        "name": "Iv\u00e1n Herrera",
-        "position": "DH",
-        "pa": 1,
+        "pa": null,
         "ab": null,
-        "h": 0,
-        "hr": 0,
-        "rbi": 0,
-        "k": 0,
+        "h": null,
+        "hr": null,
+        "rbi": null,
+        "k": null,
         "avg": null
        },
        {
-        "id": 663494,
-        "name": "Bryan Torres",
-        "position": "LF",
+        "id": 690993,
+        "name": "Colt Keith",
+        "position": "3B",
+        "pa": null,
+        "ab": null,
+        "h": null,
+        "hr": null,
+        "rbi": null,
+        "k": null,
+        "avg": null
+       },
+       {
+        "id": 693307,
+        "name": "Dillon Dingler",
+        "position": "C",
+        "pa": null,
+        "ab": null,
+        "h": null,
+        "hr": null,
+        "rbi": null,
+        "k": null,
+        "avg": null
+       },
+       {
+        "id": 680664,
+        "name": "Eduardo Valencia",
+        "position": "DH",
+        "pa": null,
+        "ab": null,
+        "h": null,
+        "hr": null,
+        "rbi": null,
+        "k": null,
+        "avg": null
+       },
+       {
+        "id": 650402,
+        "name": "Gleyber Torres",
+        "position": "2B",
+        "pa": null,
+        "ab": null,
+        "h": null,
+        "hr": null,
+        "rbi": null,
+        "k": null,
+        "avg": null
+       },
+       {
+        "id": 701678,
+        "name": "Hao-Yu Lee",
+        "position": "2B",
+        "pa": null,
+        "ab": null,
+        "h": null,
+        "hr": null,
+        "rbi": null,
+        "k": null,
+        "avg": null
+       },
+       {
+        "id": 595879,
+        "name": "Javier B\u00e1ez",
+        "position": "SS",
+        "pa": null,
+        "ab": null,
+        "h": null,
+        "hr": null,
+        "rbi": null,
+        "k": null,
+        "avg": null
+       },
+       {
+        "id": 807726,
+        "name": "John Peck",
+        "position": "SS",
         "pa": null,
         "ab": null,
         "h": null,
@@ -3415,1118 +827,165 @@
         "avg": null
        }
       ],
-      "venue": "Busch Stadium"
+      "venue": "Comerica Park"
      }
     },
     {
-     "event_id": "6d1dfbda25b97d4a5286162ffb1fe571",
+     "event_id": "7294e99a67c70c66b6edecf9841d4f03",
      "league": "mlb",
-     "commence_time": "2026-09-20T18:36:00Z",
-     "home": "Texas Rangers",
-     "away": "Toronto Blue Jays",
-     "markets": {
-      "h2h": {
-       "point": null,
-       "side_a": "home",
-       "fair_home": 0.6003710296124328,
-       "fair_away": 0.3996289703875671,
-       "fair_price_home": -150,
-       "fair_price_away": 150,
-       "best_home": {
-        "book": "BetOnline.ag",
-        "price": -157
-       },
-       "best_away": {
-        "book": "BetOnline.ag",
-        "price": 142
-       },
-       "edge_home": -1.722704069811959,
-       "edge_away": -3.2897891662087675,
-       "books": 9,
-       "width": 26
-      },
-      "spreads": {
-       "point": -1.5,
-       "side_a": "home",
-       "fair_home": 0.40573914999138644,
-       "fair_away": 0.5958062430119215,
-       "fair_price_home": 146,
-       "fair_price_away": -147,
-       "best_home": {
-        "book": "Bovada",
-        "price": 140
-       },
-       "best_away": {
-        "book": "LowVig.ag",
-        "price": -154
-       },
-       "edge_home": -2.6226040020672525,
-       "edge_away": -1.7306586201116414,
-       "books": 9,
-       "width": 25
-      },
-      "totals": {
-       "point": 7.5,
-       "side_a": "over",
-       "fair_home": 0.47623763371992517,
-       "fair_away": 0.527908510463078,
-       "fair_price_home": 110,
-       "fair_price_away": -112,
-       "best_home": {
-        "book": "LowVig.ag",
-        "price": 107
-       },
-       "best_away": {
-        "book": "BetRivers",
-        "price": -113
-       },
-       "edge_home": -1.418809819975475,
-       "edge_away": -0.49158165607467996,
-       "books": 8,
-       "width": 20.0,
-       "model": null
-      }
-     },
-     "model": {
-      "home_win_prob": 0.4858,
-      "away_win_prob": 0.5142,
-      "market_home_prob": 0.6003,
-      "disagreement": -11.4,
-      "suspect": false,
-      "source": "slate",
-      "ev_home": -20.5,
-      "ev_away": 24.4
-     },
-     "detail": {
-      "home_record": {
-       "w": 78,
-       "l": 77,
-       "hw": 44,
-       "hl": 33,
-       "aw": 34,
-       "al": 44
-      },
-      "away_record": {
-       "w": 76,
-       "l": 79,
-       "hw": 40,
-       "hl": 38,
-       "aw": 36,
-       "al": 41
-      },
-      "home_form": {
-       "w": 78,
-       "l": 77,
-       "streak": "W2",
-       "l10_w": 6,
-       "l10_l": 4,
-       "division": "AL West",
-       "div_rank": 1
-      },
-      "away_form": {
-       "w": 76,
-       "l": 79,
-       "streak": "L2",
-       "l10_w": 4,
-       "l10_l": 6,
-       "division": "AL East",
-       "div_rank": 4
-      },
-      "series": [
-       {
-        "date": "2026-06-25",
-        "away": "Texas Rangers",
-        "away_runs": 6,
-        "home": "Toronto Blue Jays",
-        "home_runs": 5
-       },
-       {
-        "date": "2026-06-26",
-        "away": "Texas Rangers",
-        "away_runs": 5,
-        "home": "Toronto Blue Jays",
-        "home_runs": 4
-       },
-       {
-        "date": "2026-06-27",
-        "away": "Texas Rangers",
-        "away_runs": 7,
-        "home": "Toronto Blue Jays",
-        "home_runs": 4
-       },
-       {
-        "date": "2026-06-28",
-        "away": "Texas Rangers",
-        "away_runs": 3,
-        "home": "Toronto Blue Jays",
-        "home_runs": 2
-       },
-       {
-        "date": "2026-09-18",
-        "away": "Toronto Blue Jays",
-        "away_runs": 1,
-        "home": "Texas Rangers",
-        "home_runs": 7
-       },
-       {
-        "date": "2026-09-19",
-        "away": "Toronto Blue Jays",
-        "away_runs": 2,
-        "home": "Texas Rangers",
-        "home_runs": 6
-       }
-      ],
-      "home_starter": "Jacob deGrom",
-      "away_starter": "Spencer Miles",
-      "home_starter_era": 3.79,
-      "away_starter_era": 2.65,
-      "home_starter_wl": [
-       11,
-       9
-      ],
-      "away_starter_wl": [
-       6,
-       2
-      ],
-      "home_hand": "R",
-      "away_hand": "R",
-      "home_vs_opp": {
-       "starts": 2,
-       "innings": 10.3,
-       "era": 1.74,
-       "strikeouts": 5,
-       "span": "2025\u20132026",
-       "source": "gameLog"
-      },
-      "away_vs_opp": {
-       "starts": 0,
-       "innings": 2.7,
-       "era": 0.0,
-       "strikeouts": 3,
-       "span": "2026",
-       "source": "gameLog"
-      },
-      "home_sp": {
-       "w": 11,
-       "l": 9,
-       "era": 3.79,
-       "whip": 1.07,
-       "innings": 154.33333333333334,
-       "h": 126,
-       "k": 194,
-       "bb": 39,
-       "hr": 20
-      },
-      "away_sp": {
-       "w": 6,
-       "l": 2,
-       "era": 2.65,
-       "whip": 1.09,
-       "innings": 91.66666666666667,
-       "h": 76,
-       "k": 87,
-       "bb": 24,
-       "hr": 5
-      },
-      "home_bats": [
-       {
-        "id": 696030,
-        "name": "Alejandro Osuna",
-        "position": "LF",
-        "pa": 1,
-        "ab": 1,
-        "h": 0,
-        "hr": 0,
-        "rbi": 0,
-        "k": 1,
-        "avg": 0.0
-       },
-       {
-        "id": 607043,
-        "name": "Brandon Nimmo",
-        "position": "RF",
-        "pa": 1,
-        "ab": 1,
-        "h": 0,
-        "hr": 0,
-        "rbi": 0,
-        "k": 0,
-        "avg": 0.0
-       },
-       {
-        "id": 677649,
-        "name": "Ezequiel Duran",
-        "position": "SS",
-        "pa": 1,
-        "ab": 1,
-        "h": 1,
-        "hr": 0,
-        "rbi": 0,
-        "k": 0,
-        "avg": 1.0
-       },
-       {
-        "id": 669394,
-        "name": "Jake Burger",
-        "position": "1B",
-        "pa": 1,
-        "ab": 1,
-        "h": 0,
-        "hr": 0,
-        "rbi": 0,
-        "k": 0,
-        "avg": 0.0
-       },
-       {
-        "id": 673962,
-        "name": "Josh Jung",
-        "position": "3B",
-        "pa": 1,
-        "ab": 1,
-        "h": 0,
-        "hr": 0,
-        "rbi": 0,
-        "k": 1,
-        "avg": 0.0
-       },
-       {
-        "id": 679822,
-        "name": "Justin Foscue",
-        "position": "2B",
-        "pa": 1,
-        "ab": 1,
-        "h": 0,
-        "hr": 0,
-        "rbi": 0,
-        "k": 0,
-        "avg": 0.0
-       },
-       {
-        "id": 670032,
-        "name": "Nicky Lopez",
-        "position": "2B",
-        "pa": 1,
-        "ab": 1,
-        "h": 0,
-        "hr": 0,
-        "rbi": 0,
-        "k": 1,
-        "avg": 0.0
-       },
-       {
-        "id": 694671,
-        "name": "Wyatt Langford",
-        "position": "LF",
-        "pa": 1,
-        "ab": 1,
-        "h": 0,
-        "hr": 0,
-        "rbi": 0,
-        "k": 0,
-        "avg": 0.0
-       },
-       {
-        "id": 683227,
-        "name": "Cody Freeman",
-        "position": "3B",
-        "pa": null,
-        "ab": null,
-        "h": null,
-        "hr": null,
-        "rbi": null,
-        "k": null,
-        "avg": null
-       }
-      ],
-      "away_bats": [
-       {
-        "id": 665489,
-        "name": "Vladimir Guerrero Jr.",
-        "position": "1B",
-        "pa": 8,
-        "ab": 8,
-        "h": 3,
-        "hr": 0,
-        "rbi": 1,
-        "k": 2,
-        "avg": 0.375
-       },
-       {
-        "id": 672386,
-        "name": "Alejandro Kirk",
-        "position": "C",
-        "pa": 5,
-        "ab": 4,
-        "h": 1,
-        "hr": 0,
-        "rbi": 1,
-        "k": 0,
-        "avg": 0.25
-       },
-       {
-        "id": 676391,
-        "name": "Ernie Clement",
-        "position": "2B",
-        "pa": 4,
-        "ab": 4,
-        "h": 0,
-        "hr": 0,
-        "rbi": 0,
-        "k": 0,
-        "avg": 0.0
-       },
-       {
-        "id": 664770,
-        "name": "Nathan Lukes",
-        "position": "RF",
-        "pa": 4,
-        "ab": 3,
-        "h": 0,
-        "hr": 0,
-        "rbi": 0,
-        "k": 0,
-        "avg": 0.0
-       },
-       {
-        "id": 665926,
-        "name": "Andr\u00e9s Gim\u00e9nez",
-        "position": "SS",
-        "pa": 2,
-        "ab": 2,
-        "h": 0,
-        "hr": 0,
-        "rbi": 0,
-        "k": 1,
-        "avg": 0.0
-       },
-       {
-        "id": 678218,
-        "name": "Brandon Valenzuela",
-        "position": "C",
-        "pa": null,
-        "ab": null,
-        "h": null,
-        "hr": null,
-        "rbi": null,
-        "k": null,
-        "avg": null
-       },
-       {
-        "id": 703520,
-        "name": "Brett Bateman",
-        "position": "CF",
-        "pa": null,
-        "ab": null,
-        "h": null,
-        "hr": null,
-        "rbi": null,
-        "k": null,
-        "avg": null
-       },
-       {
-        "id": 807727,
-        "name": "Charles McAdoo",
-        "position": "2B",
-        "pa": null,
-        "ab": null,
-        "h": null,
-        "hr": null,
-        "rbi": null,
-        "k": null,
-        "avg": null
-       },
-       {
-        "id": 676914,
-        "name": "Davis Schneider",
-        "position": "LF",
-        "pa": null,
-        "ab": null,
-        "h": null,
-        "hr": null,
-        "rbi": null,
-        "k": null,
-        "avg": null
-       }
-      ],
-      "venue": "Globe Life Field"
-     }
-    },
-    {
-     "event_id": "6b61f53b1b22f98699658fa3a69ee9db",
-     "league": "mlb",
-     "commence_time": "2026-09-20T19:11:00Z",
-     "home": "Colorado Rockies",
-     "away": "Seattle Mariners",
-     "markets": {
-      "h2h": {
-       "point": null,
-       "side_a": "home",
-       "fair_home": 0.4019991687911888,
-       "fair_away": 0.6002998477250558,
-       "fair_price_home": 149,
-       "fair_price_away": -150,
-       "best_home": {
-        "book": "BetRivers",
-        "price": 143
-       },
-       "best_away": {
-        "book": "LowVig.ag",
-        "price": -155
-       },
-       "edge_home": -2.3142019837411376,
-       "edge_away": -1.240992793619855,
-       "books": 9,
-       "width": 25
-      },
-      "spreads": {
-       "point": 1.5,
-       "side_a": "home",
-       "fair_home": 0.5110747383585603,
-       "fair_away": 0.492141944972388,
-       "fair_price_home": -105,
-       "fair_price_away": 103,
-       "best_home": {
-        "book": "BetRivers",
-        "price": -108
-       },
-       "best_away": {
-        "book": "MyBookie.ag",
-        "price": 100
-       },
-       "edge_home": -1.5707911309439326,
-       "edge_away": -1.5716110055223942,
-       "books": 9,
-       "width": 20
-      },
-      "totals": {
-       "point": 10.5,
-       "side_a": "over",
-       "fair_home": 0.5194723501462605,
-       "fair_away": 0.48205661512545506,
-       "fair_price_home": -108,
-       "fair_price_away": 107,
-       "best_home": {
-        "book": "LowVig.ag",
-        "price": -115
-       },
-       "best_away": {
-        "book": "FanDuel",
-        "price": 100
-       },
-       "edge_home": -2.8812562770034855,
-       "edge_away": -3.5886769749089886,
-       "books": 6,
-       "width": 20.0,
-       "model": null
-      }
-     },
-     "model": {
-      "home_win_prob": 0.471,
-      "away_win_prob": 0.529,
-      "market_home_prob": 0.4001,
-      "disagreement": 7.1,
-      "suspect": false,
-      "source": "slate",
-      "ev_home": 14.5,
-      "ev_away": -13.0
-     },
-     "detail": {
-      "home_record": {
-       "w": 57,
-       "l": 98,
-       "hw": 32,
-       "hl": 45,
-       "aw": 25,
-       "al": 53
-      },
-      "away_record": {
-       "w": 72,
-       "l": 83,
-       "hw": 40,
-       "hl": 35,
-       "aw": 32,
-       "al": 48
-      },
-      "home_form": {
-       "w": 57,
-       "l": 98,
-       "streak": "W1",
-       "l10_w": 2,
-       "l10_l": 8,
-       "division": "NL West",
-       "div_rank": 5
-      },
-      "away_form": {
-       "w": 72,
-       "l": 83,
-       "streak": "L1",
-       "l10_w": 5,
-       "l10_l": 5,
-       "division": "AL West",
-       "div_rank": 3
-      },
-      "series": [
-       {
-        "date": "2026-09-18",
-        "away": "Seattle Mariners",
-        "away_runs": 5,
-        "home": "Colorado Rockies",
-        "home_runs": 4
-       },
-       {
-        "date": "2026-09-19",
-        "away": "Seattle Mariners",
-        "away_runs": 3,
-        "home": "Colorado Rockies",
-        "home_runs": 5
-       }
-      ],
-      "home_starter": "Tomoyuki Sugano",
-      "away_starter": "Kade Anderson",
-      "home_starter_era": 5.49,
-      "away_starter_era": 5.33,
-      "home_starter_wl": [
-       12,
-       10
-      ],
-      "away_starter_wl": [
-       1,
-       2
-      ],
-      "home_hand": "R",
-      "away_hand": "L",
-      "home_vs_opp": {
-       "starts": 2,
-       "innings": 12.3,
-       "era": 1.46,
-       "strikeouts": 7,
-       "span": "2025\u20132026",
-       "source": "gameLog"
-      },
-      "home_sp": {
-       "w": 12,
-       "l": 10,
-       "era": 5.49,
-       "whip": 1.36,
-       "innings": 142.66666666666666,
-       "h": 160,
-       "k": 86,
-       "bb": 34,
-       "hr": 31
-      },
-      "away_sp": {
-       "w": 1,
-       "l": 2,
-       "era": 5.33,
-       "whip": 1.42,
-       "innings": 25.333333333333332,
-       "h": 28,
-       "k": 21,
-       "bb": 8,
-       "hr": 4
-      },
-      "home_bats": [
-       {
-        "id": 691182,
-        "name": "Adael Amador",
-        "position": "2B",
-        "pa": null,
-        "ab": null,
-        "h": null,
-        "hr": null,
-        "rbi": null,
-        "k": null,
-        "avg": null
-       },
-       {
-        "id": 690924,
-        "name": "Braxton Fulford",
-        "position": "DH",
-        "pa": null,
-        "ab": null,
-        "h": null,
-        "hr": null,
-        "rbi": null,
-        "k": null,
-        "avg": null
-       },
-       {
-        "id": 664954,
-        "name": "Brett Sullivan",
-        "position": "C",
-        "pa": null,
-        "ab": null,
-        "h": null,
-        "hr": null,
-        "rbi": null,
-        "k": null,
-        "avg": null
-       },
-       {
-        "id": 694249,
-        "name": "Cole Carrigg",
-        "position": "CF",
-        "pa": null,
-        "ab": null,
-        "h": null,
-        "hr": null,
-        "rbi": null,
-        "k": null,
-        "avg": null
-       },
-       {
-        "id": 681393,
-        "name": "Connor Norby",
-        "position": "2B",
-        "pa": null,
-        "ab": null,
-        "h": null,
-        "hr": null,
-        "rbi": null,
-        "k": null,
-        "avg": null
-       },
-       {
-        "id": 678662,
-        "name": "Ezequiel Tovar",
-        "position": "SS",
-        "pa": null,
-        "ab": null,
-        "h": null,
-        "hr": null,
-        "rbi": null,
-        "k": null,
-        "avg": null
-       },
-       {
-        "id": 696100,
-        "name": "Hunter Goodman",
-        "position": "C",
-        "pa": null,
-        "ab": null,
-        "h": null,
-        "hr": null,
-        "rbi": null,
-        "k": null,
-        "avg": null
-       },
-       {
-        "id": 664983,
-        "name": "Jake McCarthy",
-        "position": "LF",
-        "pa": null,
-        "ab": null,
-        "h": null,
-        "hr": null,
-        "rbi": null,
-        "k": null,
-        "avg": null
-       },
-       {
-        "id": 687597,
-        "name": "Jordan Beck",
-        "position": "LF",
-        "pa": null,
-        "ab": null,
-        "h": null,
-        "hr": null,
-        "rbi": null,
-        "k": null,
-        "avg": null
-       }
-      ],
-      "away_bats": [
-       {
-        "id": 668227,
-        "name": "Randy Arozarena",
-        "position": "LF",
-        "pa": 6,
-        "ab": 6,
-        "h": 0,
-        "hr": 0,
-        "rbi": 0,
-        "k": 2,
-        "avg": 0.0
-       },
-       {
-        "id": 621493,
-        "name": "Taylor Ward",
-        "position": "DH",
-        "pa": 6,
-        "ab": 6,
-        "h": 3,
-        "hr": 0,
-        "rbi": 2,
-        "k": 0,
-        "avg": 0.5
-       },
-       {
-        "id": 641487,
-        "name": "J.P. Crawford",
-        "position": "SS",
-        "pa": 5,
-        "ab": 5,
-        "h": 2,
-        "hr": 0,
-        "rbi": 0,
-        "k": 0,
-        "avg": 0.4
-       },
-       {
-        "id": 677594,
-        "name": "Julio Rodr\u00edguez",
-        "position": "CF",
-        "pa": 5,
-        "ab": 4,
-        "h": 1,
-        "hr": 0,
-        "rbi": 0,
-        "k": 1,
-        "avg": 0.25
-       },
-       {
-        "id": 702284,
-        "name": "Cole Young",
-        "position": "2B",
-        "pa": 4,
-        "ab": 4,
-        "h": 0,
-        "hr": 0,
-        "rbi": 0,
-        "k": 0,
-        "avg": 0.0
-       },
-       {
-        "id": 663728,
-        "name": "Cal Raleigh",
-        "position": "C",
-        "pa": 3,
-        "ab": 3,
-        "h": 0,
-        "hr": 0,
-        "rbi": 0,
-        "k": 1,
-        "avg": 0.0
-       },
-       {
-        "id": 647304,
-        "name": "Josh Naylor",
-        "position": "1B",
-        "pa": 3,
-        "ab": 3,
-        "h": 2,
-        "hr": 0,
-        "rbi": 0,
-        "k": 0,
-        "avg": 0.6666666666666666
-       },
-       {
-        "id": 686527,
-        "name": "Dominic Canzone",
-        "position": "DH",
-        "pa": 2,
-        "ab": 1,
-        "h": 1,
-        "hr": 0,
-        "rbi": 0,
-        "k": 0,
-        "avg": 1.0
-       },
-       {
-        "id": 640902,
-        "name": "Jhonny Pereda",
-        "position": "C",
-        "pa": 2,
-        "ab": 2,
-        "h": 1,
-        "hr": 0,
-        "rbi": 1,
-        "k": 0,
-        "avg": 0.5
-       }
-      ],
-      "venue": "Coors Field"
-     }
-    },
-    {
-     "event_id": "e92bbb840d0b4b67982c31bc3cef37bf",
-     "league": "mlb",
-     "commence_time": "2026-09-20T20:08:00Z",
-     "home": "Los Angeles Angels",
+     "commence_time": "2026-09-22T01:46:00Z",
+     "home": "San Francisco Giants",
      "away": "Minnesota Twins",
      "markets": {
       "h2h": {
        "point": null,
        "side_a": "home",
-       "fair_home": 0.47974109000801224,
-       "fair_away": 0.521938510890138,
-       "fair_price_home": 108,
-       "fair_price_away": -109,
+       "fair_home": 0.47597324727780876,
+       "fair_away": 0.5254126297773729,
+       "fair_price_home": 110,
+       "fair_price_away": -111,
        "best_home": {
         "book": "FanDuel",
         "price": 104
        },
        "best_away": {
-        "book": "BetUS",
-        "price": -112
+        "book": "LowVig.ag",
+        "price": -113
        },
-       "edge_home": -2.132817638365503,
-       "edge_away": -1.2044961529381726,
+       "edge_home": -2.901457555327008,
+       "edge_away": -0.9620441216102393,
        "books": 9,
        "width": 18
       },
       "spreads": {
        "point": 1.5,
        "side_a": "home",
-       "fair_home": 0.6082446342969434,
-       "fair_away": 0.39184929713943345,
-       "fair_price_home": -155,
-       "fair_price_away": 155,
+       "fair_home": 0.6067972695802302,
+       "fair_away": 0.39518067074164376,
+       "fair_price_home": -154,
+       "fair_price_away": 153,
        "best_home": {
-        "book": "BetOnline.ag",
-        "price": -165
+        "book": "Bovada",
+        "price": -160
        },
        "best_away": {
         "book": "LowVig.ag",
-        "price": 146
+        "price": 148
        },
-       "edge_home": -2.3122254007939436,
-       "edge_away": -3.60507290369938,
+       "edge_home": -1.3954436932125946,
+       "edge_away": -1.995193656072347,
        "books": 9,
        "width": 26
       },
       "totals": {
-       "point": 8.0,
+       "point": 8.5,
        "side_a": "over",
-       "fair_home": 0.510720289920392,
-       "fair_away": 0.494467886738861,
-       "fair_price_home": -104,
-       "fair_price_away": 102,
+       "fair_home": 0.4857807481714542,
+       "fair_away": 0.5196962410458583,
+       "fair_price_home": 106,
+       "fair_price_away": -108,
        "best_home": {
-        "book": "BetMGM",
-        "price": -110
+        "book": "FanDuel",
+        "price": 100
        },
        "best_away": {
-        "book": "MyBookie.ag",
-        "price": -102
+        "book": "BetRivers",
+        "price": -112
        },
-       "edge_home": -2.498853742470619,
-       "edge_away": -2.075967528186351,
+       "edge_home": -2.843850365709155,
+       "edge_away": -1.6289258020339648,
        "books": 5,
        "width": 20,
        "model": null
       }
      },
      "model": {
-      "home_win_prob": 0.5135,
-      "away_win_prob": 0.4865,
-      "market_home_prob": 0.4786,
-      "disagreement": 3.5,
+      "home_win_prob": 0.5167,
+      "away_win_prob": 0.4833,
+      "market_home_prob": 0.4753,
+      "disagreement": 4.1,
       "suspect": false,
       "source": "slate",
-      "ev_home": 4.8,
-      "ev_away": -7.9
+      "ev_home": 5.4,
+      "ev_away": -8.9
      },
      "detail": {
       "home_record": {
-       "w": 60,
-       "l": 95,
-       "hw": 34,
-       "hl": 46,
-       "aw": 26,
-       "al": 49
+       "w": 65,
+       "l": 92,
+       "hw": 36,
+       "hl": 39,
+       "aw": 29,
+       "al": 53
       },
       "away_record": {
-       "w": 72,
+       "w": 73,
        "l": 83,
        "hw": 40,
        "hl": 38,
-       "aw": 32,
+       "aw": 33,
        "al": 45
       },
       "home_form": {
-       "w": 60,
-       "l": 95,
-       "streak": "W1",
-       "l10_w": 5,
-       "l10_l": 5,
-       "division": "AL West",
-       "div_rank": 5
-      },
-      "away_form": {
-       "w": 72,
-       "l": 83,
-       "streak": "L1",
+       "w": 64,
+       "l": 92,
+       "streak": "L3",
        "l10_w": 3,
        "l10_l": 7,
-       "division": "AL Central",
+       "division": "NL West",
        "div_rank": 4
       },
-      "series": [
-       {
-        "date": "2026-07-10",
-        "away": "Los Angeles Angels",
-        "away_runs": 4,
-        "home": "Minnesota Twins",
-        "home_runs": 3
-       },
-       {
-        "date": "2026-07-11",
-        "away": "Los Angeles Angels",
-        "away_runs": 3,
-        "home": "Minnesota Twins",
-        "home_runs": 5
-       },
-       {
-        "date": "2026-07-12",
-        "away": "Los Angeles Angels",
-        "away_runs": 2,
-        "home": "Minnesota Twins",
-        "home_runs": 4
-       },
-       {
-        "date": "2026-09-17",
-        "away": "Minnesota Twins",
-        "away_runs": 4,
-        "home": "Los Angeles Angels",
-        "home_runs": 5
-       },
-       {
-        "date": "2026-09-18",
-        "away": "Minnesota Twins",
-        "away_runs": 3,
-        "home": "Los Angeles Angels",
-        "home_runs": 0
-       },
-       {
-        "date": "2026-09-19",
-        "away": "Minnesota Twins",
-        "away_runs": 5,
-        "home": "Los Angeles Angels",
-        "home_runs": 6
-       }
-      ],
-      "home_starter": "Ryan Johnson",
-      "away_starter": "Dean Kremer",
-      "home_starter_era": 4.88,
-      "away_starter_era": 5.35,
+      "away_form": {
+       "w": 73,
+       "l": 83,
+       "streak": "W1",
+       "l10_w": 4,
+       "l10_l": 6,
+       "division": "AL Central",
+       "div_rank": 3
+      },
+      "series": [],
+      "home_starter": "Blade Tidwell",
+      "away_starter": "Zebby Matthews",
+      "home_starter_era": 4.56,
+      "away_starter_era": 4.74,
       "home_starter_wl": [
-       5,
-       8
+       1,
+       2
       ],
       "away_starter_wl": [
-       3,
-       5
+       9,
+       10
       ],
       "home_hand": "R",
       "away_hand": "R",
-      "home_vs_opp": {
-       "starts": 1,
-       "innings": 7.0,
-       "era": 3.86,
-       "strikeouts": 5,
-       "span": "2025\u20132026",
-       "source": "gameLog"
-      },
       "home_sp": {
-       "w": 5,
-       "l": 8,
-       "era": 4.88,
-       "whip": 1.34,
-       "innings": 90.33333333333333,
-       "h": 82,
-       "k": 70,
-       "bb": 39,
-       "hr": 18
+       "w": 1,
+       "l": 2,
+       "era": 4.56,
+       "whip": 1.2,
+       "innings": 53.333333333333336,
+       "h": 43,
+       "k": 42,
+       "bb": 21,
+       "hr": 7
       },
       "away_sp": {
-       "w": 3,
-       "l": 5,
-       "era": 5.35,
+       "w": 9,
+       "l": 10,
+       "era": 4.74,
        "whip": 1.24,
-       "innings": 77.33333333333333,
-       "h": 70,
-       "k": 74,
-       "bb": 26,
-       "hr": 17
+       "innings": 125.33333333333333,
+       "h": 117,
+       "k": 107,
+       "bb": 39,
+       "hr": 23
       },
       "home_bats": [
        {
-        "id": 666139,
-        "name": "Josh Lowe",
-        "position": "LF",
-        "pa": 20,
-        "ab": 17,
-        "h": 3,
-        "hr": 0,
-        "rbi": 1,
-        "k": 3,
-        "avg": 0.17647058823529413
-       },
-       {
-        "id": 545361,
-        "name": "Mike Trout",
-        "position": "CF",
-        "pa": 9,
-        "ab": 8,
-        "h": 1,
-        "hr": 1,
-        "rbi": 1,
-        "k": 2,
-        "avg": 0.125
-       },
-       {
-        "id": 624428,
-        "name": "Adam Frazier",
-        "position": "2B",
-        "pa": 4,
-        "ab": 4,
-        "h": 0,
-        "hr": 0,
-        "rbi": 0,
-        "k": 1,
-        "avg": 0.0
-       },
-       {
-        "id": 687263,
-        "name": "Zach Neto",
-        "position": "SS",
-        "pa": 4,
-        "ab": 4,
-        "h": 1,
-        "hr": 0,
-        "rbi": 1,
-        "k": 3,
-        "avg": 0.25
-       },
-       {
-        "id": 642350,
-        "name": "Jose Siri",
-        "position": "LF",
-        "pa": 2,
-        "ab": 2,
-        "h": 0,
-        "hr": 0,
-        "rbi": 0,
-        "k": 1,
-        "avg": 0.0
-       },
-       {
-        "id": 672724,
-        "name": "Oswald Peraza",
-        "position": "2B",
-        "pa": 2,
-        "ab": 2,
-        "h": 0,
-        "hr": 0,
-        "rbi": 0,
-        "k": 0,
-        "avg": 0.0
-       },
-       {
-        "id": 669326,
-        "name": "Bryce Teodosio",
-        "position": "LF",
+        "id": 668800,
+        "name": "Andrew Knizner",
+        "position": "C",
         "pa": null,
         "ab": null,
         "h": null,
@@ -4536,21 +995,93 @@
         "avg": null
        },
        {
-        "id": 695681,
-        "name": "Christian Moore",
-        "position": "2B",
-        "pa": null,
-        "ab": null,
-        "h": null,
-        "hr": null,
-        "rbi": null,
-        "k": null,
-        "avg": null
-       },
-       {
-        "id": 694203,
-        "name": "Denzer Guzman",
+        "id": 695391,
+        "name": "Brett Harris",
         "position": "3B",
+        "pa": null,
+        "ab": null,
+        "h": null,
+        "hr": null,
+        "rbi": null,
+        "k": null,
+        "avg": null
+       },
+       {
+        "id": 805811,
+        "name": "Bryce Eldridge",
+        "position": "DH",
+        "pa": null,
+        "ab": null,
+        "h": null,
+        "hr": null,
+        "rbi": null,
+        "k": null,
+        "avg": null
+       },
+       {
+        "id": 683766,
+        "name": "Christian Koss",
+        "position": "SS",
+        "pa": null,
+        "ab": null,
+        "h": null,
+        "hr": null,
+        "rbi": null,
+        "k": null,
+        "avg": null
+       },
+       {
+        "id": 701852,
+        "name": "Drew Cavanaugh",
+        "position": "C",
+        "pa": null,
+        "ab": null,
+        "h": null,
+        "hr": null,
+        "rbi": null,
+        "k": null,
+        "avg": null
+       },
+       {
+        "id": 687551,
+        "name": "Drew Gilbert",
+        "position": "CF",
+        "pa": null,
+        "ab": null,
+        "h": null,
+        "hr": null,
+        "rbi": null,
+        "k": null,
+        "avg": null
+       },
+       {
+        "id": 687529,
+        "name": "Grant McCray",
+        "position": "CF",
+        "pa": null,
+        "ab": null,
+        "h": null,
+        "hr": null,
+        "rbi": null,
+        "k": null,
+        "avg": null
+       },
+       {
+        "id": 813841,
+        "name": "Jonah Cox",
+        "position": "CF",
+        "pa": null,
+        "ab": null,
+        "h": null,
+        "hr": null,
+        "rbi": null,
+        "k": null,
+        "avg": null
+       },
+       {
+        "id": 808982,
+        "name": "Jung Hoo Lee",
+        "position": "RF",
         "pa": null,
         "ab": null,
         "h": null,
@@ -4562,93 +1093,21 @@
       ],
       "away_bats": [
        {
-        "id": 686797,
-        "name": "Brooks Lee",
-        "position": "3B",
-        "pa": 3,
-        "ab": 3,
-        "h": 0,
-        "hr": 0,
-        "rbi": 0,
-        "k": 0,
-        "avg": 0.0
+        "id": 693306,
+        "name": "Aaron Sabato",
+        "position": "1B",
+        "pa": null,
+        "ab": null,
+        "h": null,
+        "hr": null,
+        "rbi": null,
+        "k": null,
+        "avg": null
        },
        {
         "id": 702176,
         "name": "Alan Roden",
         "position": "RF",
-        "pa": 2,
-        "ab": 1,
-        "h": 0,
-        "hr": 0,
-        "rbi": 0,
-        "k": 0,
-        "avg": 0.0
-       },
-       {
-        "id": 605137,
-        "name": "Josh Bell",
-        "position": "DH",
-        "pa": 2,
-        "ab": 2,
-        "h": 0,
-        "hr": 0,
-        "rbi": 0,
-        "k": 0,
-        "avg": 0.0
-       },
-       {
-        "id": 665019,
-        "name": "Kody Clemens",
-        "position": "2B",
-        "pa": 2,
-        "ab": 1,
-        "h": 0,
-        "hr": 0,
-        "rbi": 0,
-        "k": 1,
-        "avg": 0.0
-       },
-       {
-        "id": 807712,
-        "name": "Luke Keaschall",
-        "position": "2B",
-        "pa": 2,
-        "ab": 1,
-        "h": 0,
-        "hr": 0,
-        "rbi": 1,
-        "k": 0,
-        "avg": 0.0
-       },
-       {
-        "id": 668904,
-        "name": "Royce Lewis",
-        "position": "1B",
-        "pa": 2,
-        "ab": 2,
-        "h": 1,
-        "hr": 1,
-        "rbi": 2,
-        "k": 0,
-        "avg": 0.5
-       },
-       {
-        "id": 605170,
-        "name": "Victor Caratini",
-        "position": "C",
-        "pa": 2,
-        "ab": 1,
-        "h": 0,
-        "hr": 0,
-        "rbi": 0,
-        "k": 0,
-        "avg": 0.0
-       },
-       {
-        "id": 656577,
-        "name": "Alex Jackson",
-        "position": "C",
         "pa": null,
         "ab": null,
         "h": null,
@@ -4668,630 +1127,11 @@
         "rbi": null,
         "k": null,
         "avg": null
-       }
-      ],
-      "venue": "Angel Stadium"
-     }
-    },
-    {
-     "event_id": "05846a699cfe1709affba4abc9b862ef",
-     "league": "mlb",
-     "commence_time": "2026-09-20T20:11:00Z",
-     "home": "Arizona Diamondbacks",
-     "away": "New York Yankees",
-     "markets": {
-      "h2h": {
-       "point": null,
-       "side_a": "home",
-       "fair_home": 0.4897285111704693,
-       "fair_away": 0.5102714888295307,
-       "fair_price_home": 104,
-       "fair_price_away": -104,
-       "best_home": {
-        "book": "BetOnline.ag",
-        "price": -101
-       },
-       "best_away": {
-        "book": "BetOnline.ag",
-        "price": -109
-       },
-       "edge_home": -2.5391774799363165,
-       "edge_away": -2.158953059291824,
-       "books": 9,
-       "width": 17
-      },
-      "spreads": {
-       "point": 1.5,
-       "side_a": "home",
-       "fair_home": 0.6187403756342719,
-       "fair_away": 0.3834326471018798,
-       "fair_price_home": -162,
-       "fair_price_away": 161,
-       "best_home": {
-        "book": "BetUS",
-        "price": -165
-       },
-       "best_away": {
-        "book": "FanDuel",
-        "price": 150
-       },
-       "edge_home": -0.6265457314654332,
-       "edge_away": -4.141838224530048,
-       "books": 9,
-       "width": 30
-      },
-      "totals": {
-       "point": 8.5,
-       "side_a": "over",
-       "fair_home": 0.4890576848721705,
-       "fair_away": 0.5109423151278295,
-       "fair_price_home": 104,
-       "fair_price_away": -104,
-       "best_home": {
-        "book": "LowVig.ag",
-        "price": -102
-       },
-       "best_away": {
-        "book": "LowVig.ag",
-        "price": -113
-       },
-       "edge_home": -3.1473996625701552,
-       "edge_away": -3.689634405108244,
-       "books": 8,
-       "width": 20.0,
-       "model": null
-      }
-     },
-     "model": {
-      "home_win_prob": 0.5025,
-      "away_win_prob": 0.4975,
-      "market_home_prob": 0.4898,
-      "disagreement": 1.3,
-      "suspect": false,
-      "source": "slate",
-      "ev_home": 0.0,
-      "ev_away": -4.6
-     },
-     "detail": {
-      "home_record": {
-       "w": 81,
-       "l": 74,
-       "hw": 44,
-       "hl": 36,
-       "aw": 37,
-       "al": 38
-      },
-      "away_record": {
-       "w": 89,
-       "l": 65,
-       "hw": 42,
-       "hl": 32,
-       "aw": 47,
-       "al": 33
-      },
-      "home_form": {
-       "w": 81,
-       "l": 74,
-       "streak": "W1",
-       "l10_w": 4,
-       "l10_l": 6,
-       "division": "NL West",
-       "div_rank": 3
-      },
-      "away_form": {
-       "w": 89,
-       "l": 65,
-       "streak": "L1",
-       "l10_w": 7,
-       "l10_l": 3,
-       "division": "AL East",
-       "div_rank": 2
-      },
-      "series": [
-       {
-        "date": "2026-09-18",
-        "away": "New York Yankees",
-        "away_runs": 9,
-        "home": "Arizona Diamondbacks",
-        "home_runs": 2
        },
        {
-        "date": "2026-09-19",
-        "away": "New York Yankees",
-        "away_runs": 3,
-        "home": "Arizona Diamondbacks",
-        "home_runs": 5
-       }
-      ],
-      "home_starter": "Corbin Burnes",
-      "away_starter": "Will Warren",
-      "home_starter_era": 5.87,
-      "away_starter_era": 3.89,
-      "home_starter_wl": [
-       0,
-       0
-      ],
-      "away_starter_wl": [
-       10,
-       6
-      ],
-      "home_hand": "R",
-      "away_hand": "R",
-      "home_vs_opp": {
-       "starts": 1,
-       "innings": 4.3,
-       "era": 4.15,
-       "strikeouts": 8,
-       "span": "2025\u20132026",
-       "source": "gameLog"
-      },
-      "away_vs_opp": {
-       "starts": 1,
-       "innings": 5.0,
-       "era": 3.6,
-       "strikeouts": 4,
-       "span": "2025\u20132026",
-       "source": "gameLog"
-      },
-      "home_sp": {
-       "w": 0,
-       "l": 0,
-       "era": 5.87,
-       "whip": 1.17,
-       "innings": 7.666666666666667,
-       "h": 7,
-       "k": 6,
-       "bb": 2,
-       "hr": 2
-      },
-      "away_sp": {
-       "w": 10,
-       "l": 6,
-       "era": 3.89,
-       "whip": 1.36,
-       "innings": 148.0,
-       "h": 150,
-       "k": 147,
-       "bb": 51,
-       "hr": 21
-      },
-      "home_bats": [
-       {
-        "id": 660821,
-        "name": "Jes\u00fas S\u00e1nchez",
-        "position": "RF",
-        "pa": 6,
-        "ab": 5,
-        "h": 1,
-        "hr": 0,
-        "rbi": 1,
-        "k": 0,
-        "avg": 0.2
-       },
-       {
-        "id": 663457,
-        "name": "Lars Nootbaar",
-        "position": "DH",
-        "pa": 5,
-        "ab": 5,
-        "h": 3,
-        "hr": 0,
-        "rbi": 0,
-        "k": 0,
-        "avg": 0.6
-       },
-       {
-        "id": 682998,
-        "name": "Corbin Carroll",
-        "position": "RF",
-        "pa": 3,
-        "ab": 3,
-        "h": 1,
-        "hr": 1,
-        "rbi": 2,
-        "k": 2,
-        "avg": 0.3333333333333333
-       },
-       {
-        "id": 672515,
-        "name": "Gabriel Moreno",
-        "position": "C",
-        "pa": 2,
-        "ab": 2,
-        "h": 0,
-        "hr": 0,
-        "rbi": 0,
-        "k": 1,
-        "avg": 0.0
-       },
-       {
-        "id": 672695,
-        "name": "Geraldo Perdomo",
+        "id": 805346,
+        "name": "Ben Ross",
         "position": "SS",
-        "pa": 2,
-        "ab": 1,
-        "h": 0,
-        "hr": 0,
-        "rbi": 0,
-        "k": 0,
-        "avg": 0.0
-       },
-       {
-        "id": 606466,
-        "name": "Ketel Marte",
-        "position": "2B",
-        "pa": 2,
-        "ab": 2,
-        "h": 0,
-        "hr": 0,
-        "rbi": 0,
-        "k": 0,
-        "avg": 0.0
-       },
-       {
-        "id": 571448,
-        "name": "Nolan Arenado",
-        "position": "3B",
-        "pa": 2,
-        "ab": 2,
-        "h": 1,
-        "hr": 0,
-        "rbi": 1,
-        "k": 0,
-        "avg": 0.5
-       },
-       {
-        "id": 656976,
-        "name": "Pavin Smith",
-        "position": "1B",
-        "pa": 2,
-        "ab": 1,
-        "h": 0,
-        "hr": 0,
-        "rbi": 0,
-        "k": 1,
-        "avg": 0.0
-       },
-       {
-        "id": 545121,
-        "name": "Ildemaro Vargas",
-        "position": "1B",
-        "pa": null,
-        "ab": null,
-        "h": null,
-        "hr": null,
-        "rbi": null,
-        "k": null,
-        "avg": null
-       }
-      ],
-      "away_bats": [
-       {
-        "id": 502671,
-        "name": "Paul Goldschmidt",
-        "position": "1B",
-        "pa": 37,
-        "ab": 34,
-        "h": 10,
-        "hr": 1,
-        "rbi": 2,
-        "k": 12,
-        "avg": 0.29411764705882354
-       },
-       {
-        "id": 641355,
-        "name": "Cody Bellinger",
-        "position": "LF",
-        "pa": 22,
-        "ab": 20,
-        "h": 4,
-        "hr": 1,
-        "rbi": 3,
-        "k": 6,
-        "avg": 0.2
-       },
-       {
-        "id": 671277,
-        "name": "Luis Garc\u00eda Jr.",
-        "position": "1B",
-        "pa": 14,
-        "ab": 10,
-        "h": 2,
-        "hr": 1,
-        "rbi": 2,
-        "k": 1,
-        "avg": 0.2
-       },
-       {
-        "id": 641857,
-        "name": "Ryan McMahon",
-        "position": "3B",
-        "pa": 13,
-        "ab": 11,
-        "h": 0,
-        "hr": 0,
-        "rbi": 0,
-        "k": 7,
-        "avg": 0.0
-       },
-       {
-        "id": 676609,
-        "name": "Jos\u00e9 Caballero",
-        "position": "SS",
-        "pa": 10,
-        "ab": 10,
-        "h": 4,
-        "hr": 0,
-        "rbi": 1,
-        "k": 1,
-        "avg": 0.4
-       },
-       {
-        "id": 683011,
-        "name": "Anthony Volpe",
-        "position": "SS",
-        "pa": 9,
-        "ab": 9,
-        "h": 1,
-        "hr": 1,
-        "rbi": 1,
-        "k": 4,
-        "avg": 0.1111111111111111
-       },
-       {
-        "id": 642708,
-        "name": "Amed Rosario",
-        "position": "3B",
-        "pa": 7,
-        "ab": 7,
-        "h": 2,
-        "hr": 0,
-        "rbi": 0,
-        "k": 2,
-        "avg": 0.2857142857142857
-       },
-       {
-        "id": 669224,
-        "name": "Austin Wells",
-        "position": "C",
-        "pa": 4,
-        "ab": 3,
-        "h": 0,
-        "hr": 0,
-        "rbi": 0,
-        "k": 0,
-        "avg": 0.0
-       },
-       {
-        "id": 700250,
-        "name": "Ben Rice",
-        "position": "DH",
-        "pa": 2,
-        "ab": 2,
-        "h": 1,
-        "hr": 0,
-        "rbi": 0,
-        "k": 1,
-        "avg": 0.5
-       }
-      ],
-      "venue": "Chase Field"
-     }
-    },
-    {
-     "event_id": "b21dc2fe18a360130eb1b24f4e618001",
-     "league": "mlb",
-     "commence_time": "2026-09-20T20:11:00Z",
-     "home": "Los Angeles Dodgers",
-     "away": "San Francisco Giants",
-     "markets": {
-      "h2h": {
-       "point": null,
-       "side_a": "home",
-       "fair_home": 0.7172404272997924,
-       "fair_away": 0.28444033037320915,
-       "fair_price_home": -254,
-       "fair_price_away": 252,
-       "best_home": {
-        "book": "BetRivers",
-        "price": -265
-       },
-       "best_away": {
-        "book": "BetUS",
-        "price": 230
-       },
-       "edge_home": -1.2102807681418026,
-       "edge_away": -6.134690976840984,
-       "books": 7,
-       "width": 55
-      },
-      "spreads": {
-       "point": -1.5,
-       "side_a": "home",
-       "fair_home": 0.5342795726677142,
-       "fair_away": 0.46924747508892123,
-       "fair_price_home": -115,
-       "fair_price_away": 113,
-       "best_home": {
-        "book": "FanDuel",
-        "price": -120
-       },
-       "best_away": {
-        "book": "MyBookie.ag",
-        "price": 110
-       },
-       "edge_home": -2.048745010919056,
-       "edge_away": -1.4580302313265348,
-       "books": 7,
-       "width": 20
-      },
-      "totals": {
-       "point": 8.0,
-       "side_a": "over",
-       "fair_home": 0.5099689445219444,
-       "fair_away": 0.4908052751492413,
-       "fair_price_home": -104,
-       "fair_price_away": 104,
-       "best_home": {
-        "book": "BetMGM",
-        "price": -115
-       },
-       "best_away": {
-        "book": "DraftKings",
-        "price": -104
-       },
-       "edge_home": -4.657979937201706,
-       "edge_away": -3.7266575668795765,
-       "books": 4,
-       "width": 20.5,
-       "model": null
-      }
-     },
-     "model": {
-      "home_win_prob": 0.6428,
-      "away_win_prob": 0.3572,
-      "market_home_prob": 0.7157,
-      "disagreement": -7.3,
-      "suspect": false,
-      "source": "slate",
-      "ev_home": -11.5,
-      "ev_away": 17.9
-     },
-     "detail": {
-      "home_record": {
-       "w": 95,
-       "l": 60,
-       "hw": 49,
-       "hl": 28,
-       "aw": 46,
-       "al": 32
-      },
-      "away_record": {
-       "w": 65,
-       "l": 91,
-       "hw": 36,
-       "hl": 39,
-       "aw": 29,
-       "al": 52
-      },
-      "home_form": {
-       "w": 95,
-       "l": 60,
-       "streak": "W3",
-       "l10_w": 7,
-       "l10_l": 3,
-       "division": "NL West",
-       "div_rank": 1
-      },
-      "away_form": {
-       "w": 64,
-       "l": 91,
-       "streak": "L2",
-       "l10_w": 4,
-       "l10_l": 6,
-       "division": "NL West",
-       "div_rank": 4
-      },
-      "series": [
-       {
-        "date": "2026-04-21",
-        "away": "Los Angeles Dodgers",
-        "away_runs": 1,
-        "home": "San Francisco Giants",
-        "home_runs": 3
-       },
-       {
-        "date": "2026-04-22",
-        "away": "Los Angeles Dodgers",
-        "away_runs": 0,
-        "home": "San Francisco Giants",
-        "home_runs": 3
-       },
-       {
-        "date": "2026-04-23",
-        "away": "Los Angeles Dodgers",
-        "away_runs": 3,
-        "home": "San Francisco Giants",
-        "home_runs": 0
-       },
-       {
-        "date": "2026-05-11",
-        "away": "San Francisco Giants",
-        "away_runs": 9,
-        "home": "Los Angeles Dodgers",
-        "home_runs": 3
-       },
-       {
-        "date": "2026-05-12",
-        "away": "San Francisco Giants",
-        "away_runs": 6,
-        "home": "Los Angeles Dodgers",
-        "home_runs": 2
-       },
-       {
-        "date": "2026-05-13",
-        "away": "San Francisco Giants",
-        "away_runs": 0,
-        "home": "Los Angeles Dodgers",
-        "home_runs": 4
-       },
-       {
-        "date": "2026-05-14",
-        "away": "San Francisco Giants",
-        "away_runs": 2,
-        "home": "Los Angeles Dodgers",
-        "home_runs": 5
-       },
-       {
-        "date": "2026-09-18",
-        "away": "San Francisco Giants",
-        "away_runs": 2,
-        "home": "Los Angeles Dodgers",
-        "home_runs": 8
-       },
-       {
-        "date": "2026-09-19",
-        "away": "San Francisco Giants",
-        "away_runs": 4,
-        "home": "Los Angeles Dodgers",
-        "home_runs": 10
-       }
-      ],
-      "away_starter": "Matt Wilkinson",
-      "away_starter_era": 4.58,
-      "away_starter_wl": [
-       1,
-       3
-      ],
-      "home_hand": "",
-      "away_hand": "L",
-      "home_sp": {
-       "w": null,
-       "l": null,
-       "era": null,
-       "whip": null,
-       "innings": null,
-       "h": null,
-       "k": null,
-       "bb": null,
-       "hr": null
-      },
-      "away_sp": {
-       "w": 1,
-       "l": 3,
-       "era": 4.58,
-       "whip": 1.12,
-       "innings": 19.666666666666668,
-       "h": 18,
-       "k": 12,
-       "bb": 4,
-       "hr": 4
-      },
-      "home_bats": [
-       {
-        "id": 669743,
-        "name": "Alex Call",
-        "position": "LF",
         "pa": null,
         "ab": null,
         "h": null,
@@ -5301,32 +1141,8 @@
         "avg": null
        },
        {
-        "id": 690976,
-        "name": "Alex Freeland",
-        "position": "2B",
-        "pa": null,
-        "ab": null,
-        "h": null,
-        "hr": null,
-        "rbi": null,
-        "k": null,
-        "avg": null
-       },
-       {
-        "id": 672613,
-        "name": "Eliezer Alfonzo",
-        "position": "C",
-        "pa": null,
-        "ab": null,
-        "h": null,
-        "hr": null,
-        "rbi": null,
-        "k": null,
-        "avg": null
-       },
-       {
-        "id": 571771,
-        "name": "Enrique Hern\u00e1ndez",
+        "id": 686797,
+        "name": "Brooks Lee",
         "position": "3B",
         "pa": null,
         "ab": null,
@@ -5337,701 +1153,8 @@
         "avg": null
        },
        {
-        "id": 518692,
-        "name": "Freddie Freeman",
-        "position": "1B",
-        "pa": null,
-        "ab": null,
-        "h": null,
-        "hr": null,
-        "rbi": null,
-        "k": null,
-        "avg": null
-       },
-       {
-        "id": 676439,
-        "name": "Hunter Feduccia",
-        "position": "C",
-        "pa": null,
-        "ab": null,
-        "h": null,
-        "hr": null,
-        "rbi": null,
-        "k": null,
-        "avg": null
-       },
-       {
-        "id": 800543,
-        "name": "Josue De Paula",
-        "position": "DH",
-        "pa": null,
-        "ab": null,
-        "h": null,
-        "hr": null,
-        "rbi": null,
-        "k": null,
-        "avg": null
-       },
-       {
-        "id": 663656,
-        "name": "Kyle Tucker",
-        "position": "RF",
-        "pa": null,
-        "ab": null,
-        "h": null,
-        "hr": null,
-        "rbi": null,
-        "k": null,
-        "avg": null
-       },
-       {
-        "id": 571970,
-        "name": "Max Muncy",
-        "position": "3B",
-        "pa": null,
-        "ab": null,
-        "h": null,
-        "hr": null,
-        "rbi": null,
-        "k": null,
-        "avg": null
-       }
-      ],
-      "venue": "UNIQLO Field at Dodger Stadium"
-     }
-    },
-    {
-     "event_id": "99e8d3217fe1ac7aeaf6b77ec6e6fb7c",
-     "league": "mlb",
-     "commence_time": "2026-09-20T20:11:00Z",
-     "home": "San Diego Padres",
-     "away": "Miami Marlins",
-     "markets": {
-      "h2h": {
-       "point": null,
-       "side_a": "home",
-       "fair_home": 0.5768120231555486,
-       "fair_away": 0.4264028127906822,
-       "fair_price_home": -136,
-       "fair_price_away": 135,
-       "best_home": {
-        "book": "FanDuel",
-        "price": -138
-       },
-       "best_away": {
-        "book": "BetOnline.ag",
-        "price": 135
-       },
-       "edge_home": -0.5208249920140795,
-       "edge_away": 0.20466100581032487,
-       "books": 9,
-       "width": 21
-      },
-      "spreads": {
-       "point": -1.5,
-       "side_a": "home",
-       "fair_home": 0.38196344436705104,
-       "fair_away": 0.6210846886979211,
-       "fair_price_home": 162,
-       "fair_price_away": -164,
-       "best_home": {
-        "book": "FanDuel",
-        "price": 155
-       },
-       "best_away": {
-        "book": "BetOnline.ag",
-        "price": -165
-       },
-       "edge_home": -2.599321686402001,
-       "edge_away": -0.2500348454854029,
-       "books": 9,
-       "width": 27
-      },
-      "totals": {
-       "point": 8.0,
-       "side_a": "over",
-       "fair_home": 0.507775842232015,
-       "fair_away": 0.49408112221854245,
-       "fair_price_home": -103,
-       "fair_price_away": 102,
-       "best_home": {
-        "book": "BetMGM",
-        "price": -110
-       },
-       "best_away": {
-        "book": "LowVig.ag",
-        "price": -102
-       },
-       "edge_home": -3.060975573888042,
-       "edge_away": -2.1525620704455184,
-       "books": 8,
-       "width": 20.0,
-       "model": null
-      }
-     },
-     "model": {
-      "home_win_prob": 0.548,
-      "away_win_prob": 0.452,
-      "market_home_prob": 0.5751,
-      "disagreement": -2.7,
-      "suspect": false,
-      "source": "slate",
-      "ev_home": -5.5,
-      "ev_away": 6.2
-     },
-     "detail": {
-      "home_record": {
-       "w": 86,
-       "l": 69,
-       "hw": 48,
-       "hl": 29,
-       "aw": 38,
-       "al": 40
-      },
-      "away_record": {
-       "w": 76,
-       "l": 79,
-       "hw": 45,
-       "hl": 33,
-       "aw": 31,
-       "al": 46
-      },
-      "home_form": {
-       "w": 86,
-       "l": 69,
-       "streak": "W4",
-       "l10_w": 9,
-       "l10_l": 1,
-       "division": "NL West",
-       "div_rank": 2
-      },
-      "away_form": {
-       "w": 76,
-       "l": 79,
-       "streak": "L2",
-       "l10_w": 4,
-       "l10_l": 6,
-       "division": "NL East",
-       "div_rank": 3
-      },
-      "series": [
-       {
-        "date": "2026-07-24",
-        "away": "San Diego Padres",
-        "away_runs": 4,
-        "home": "Miami Marlins",
-        "home_runs": 2
-       },
-       {
-        "date": "2026-07-25",
-        "away": "San Diego Padres",
-        "away_runs": 7,
-        "home": "Miami Marlins",
-        "home_runs": 2
-       },
-       {
-        "date": "2026-07-26",
-        "away": "San Diego Padres",
-        "away_runs": 5,
-        "home": "Miami Marlins",
-        "home_runs": 3
-       },
-       {
-        "date": "2026-09-18",
-        "away": "Miami Marlins",
-        "away_runs": 2,
-        "home": "San Diego Padres",
-        "home_runs": 8
-       },
-       {
-        "date": "2026-09-19",
-        "away": "Miami Marlins",
-        "away_runs": 6,
-        "home": "San Diego Padres",
-        "home_runs": 7
-       }
-      ],
-      "home_starter": "Walker Buehler",
-      "away_starter": "Sandy Alcantara",
-      "home_starter_era": 4.58,
-      "away_starter_era": 3.84,
-      "home_starter_wl": [
-       8,
-       6
-      ],
-      "away_starter_wl": [
-       13,
-       10
-      ],
-      "home_hand": "R",
-      "away_hand": "R",
-      "home_vs_opp": {
-       "starts": 2,
-       "innings": 10.3,
-       "era": 1.74,
-       "strikeouts": 9,
-       "span": "2025\u20132026",
-       "source": "gameLog"
-      },
-      "away_vs_opp": {
-       "starts": 2,
-       "innings": 11.0,
-       "era": 4.91,
-       "strikeouts": 4,
-       "span": "2025\u20132026",
-       "source": "gameLog"
-      },
-      "home_sp": {
-       "w": 8,
-       "l": 6,
-       "era": 4.58,
-       "whip": 1.37,
-       "innings": 143.33333333333334,
-       "h": 142,
-       "k": 122,
-       "bb": 54,
-       "hr": 20
-      },
-      "away_sp": {
-       "w": 13,
-       "l": 10,
-       "era": 3.84,
-       "whip": 1.23,
-       "innings": 206.0,
-       "h": 195,
-       "k": 149,
-       "bb": 58,
-       "hr": 23
-      },
-      "home_bats": [
-       {
-        "id": 592518,
-        "name": "Manny Machado",
-        "position": "3B",
-        "pa": 18,
-        "ab": 15,
-        "h": 9,
-        "hr": 0,
-        "rbi": 3,
-        "k": 2,
-        "avg": 0.6
-       },
-       {
-        "id": 630105,
-        "name": "Jake Cronenworth",
-        "position": "2B",
-        "pa": 17,
-        "ab": 16,
-        "h": 2,
-        "hr": 0,
-        "rbi": 2,
-        "k": 4,
-        "avg": 0.125
-       },
-       {
-        "id": 665487,
-        "name": "Fernando Tatis Jr.",
-        "position": "RF",
-        "pa": 14,
-        "ab": 13,
-        "h": 2,
-        "hr": 0,
-        "rbi": 2,
-        "k": 2,
-        "avg": 0.15384615384615385
-       },
-       {
-        "id": 593428,
-        "name": "Xander Bogaerts",
-        "position": "SS",
-        "pa": 14,
-        "ab": 14,
-        "h": 6,
-        "hr": 1,
-        "rbi": 2,
-        "k": 0,
-        "avg": 0.42857142857142855
-       },
-       {
-        "id": 669720,
-        "name": "Austin Hays",
-        "position": "DH",
-        "pa": 9,
-        "ab": 9,
-        "h": 2,
-        "hr": 1,
-        "rbi": 2,
-        "k": 3,
-        "avg": 0.2222222222222222
-       },
-       {
-        "id": 701538,
-        "name": "Jackson Merrill",
-        "position": "CF",
-        "pa": 4,
-        "ab": 4,
-        "h": 1,
-        "hr": 0,
-        "rbi": 0,
-        "k": 1,
-        "avg": 0.25
-       },
-       {
-        "id": 664034,
-        "name": "Ty France",
-        "position": "1B",
-        "pa": 3,
-        "ab": 2,
-        "h": 0,
-        "hr": 0,
-        "rbi": 0,
-        "k": 1,
-        "avg": 0.0
-       },
-       {
-        "id": 687957,
-        "name": "Dustin Harris",
-        "position": "LF",
-        "pa": null,
-        "ab": null,
-        "h": null,
-        "hr": null,
-        "rbi": null,
-        "k": null,
-        "avg": null
-       },
-       {
-        "id": 806956,
-        "name": "Ethan Salas",
-        "position": "C",
-        "pa": null,
-        "ab": null,
-        "h": null,
-        "hr": null,
-        "rbi": null,
-        "k": null,
-        "avg": null
-       }
-      ],
-      "away_bats": [
-       {
-        "id": 672640,
-        "name": "Otto Lopez",
-        "position": "SS",
-        "pa": 5,
-        "ab": 5,
-        "h": 1,
-        "hr": 0,
-        "rbi": 0,
-        "k": 2,
-        "avg": 0.2
-       },
-       {
-        "id": 669364,
-        "name": "Xavier Edwards",
-        "position": "2B",
-        "pa": 5,
-        "ab": 3,
-        "h": 1,
-        "hr": 0,
-        "rbi": 0,
-        "k": 1,
-        "avg": 0.3333333333333333
-       },
-       {
-        "id": 688363,
-        "name": "Graham Pauley",
-        "position": "3B",
-        "pa": 4,
-        "ab": 4,
-        "h": 1,
-        "hr": 0,
-        "rbi": 1,
-        "k": 1,
-        "avg": 0.25
-       },
-       {
-        "id": 665052,
-        "name": "Griffin Conine",
-        "position": "RF",
-        "pa": 4,
-        "ab": 3,
-        "h": 0,
-        "hr": 0,
-        "rbi": 0,
-        "k": 0,
-        "avg": 0.0
-       },
-       {
-        "id": 682663,
-        "name": "Agust\u00edn Ram\u00edrez",
-        "position": "DH",
-        "pa": 3,
-        "ab": 3,
-        "h": 1,
-        "hr": 0,
-        "rbi": 0,
-        "k": 1,
-        "avg": 0.3333333333333333
-       },
-       {
-        "id": 681715,
-        "name": "Heriberto Hern\u00e1ndez",
-        "position": "LF",
-        "pa": 3,
-        "ab": 3,
-        "h": 0,
-        "hr": 0,
-        "rbi": 0,
-        "k": 1,
-        "avg": 0.0
-       },
-       {
-        "id": 805300,
-        "name": "Jakob Marsee",
-        "position": "CF",
-        "pa": 3,
-        "ab": 2,
-        "h": 0,
-        "hr": 0,
-        "rbi": 0,
-        "k": 0,
-        "avg": 0.0
-       },
-       {
-        "id": 669065,
-        "name": "Kyle Stowers",
-        "position": "1B",
-        "pa": 3,
-        "ab": 3,
-        "h": 2,
-        "hr": 1,
-        "rbi": 1,
-        "k": 1,
-        "avg": 0.6666666666666666
-       },
-       {
-        "id": 665923,
-        "name": "Esteury Ruiz",
-        "position": "RF",
-        "pa": 2,
-        "ab": 1,
-        "h": 0,
-        "hr": 0,
-        "rbi": 0,
-        "k": 1,
-        "avg": 0.0
-       }
-      ],
-      "venue": "Petco Park"
-     }
-    },
-    {
-     "event_id": "b93df18188b2370baac5d9d231f2bd59",
-     "league": "mlb",
-     "commence_time": "2026-09-20T23:21:00Z",
-     "home": "Baltimore Orioles",
-     "away": "Milwaukee Brewers",
-     "markets": {
-      "h2h": {
-       "point": null,
-       "side_a": "home",
-       "fair_home": 0.3429767890435712,
-       "fair_away": 0.6581939923491581,
-       "fair_price_home": 192,
-       "fair_price_away": -193,
-       "best_home": {
-        "book": "FanDuel",
-        "price": 180
-       },
-       "best_away": {
-        "book": "BetOnline.ag",
-        "price": -200
-       },
-       "edge_home": -3.9664990678000667,
-       "edge_away": -1.2709011476262855,
-       "books": 9,
-       "width": 35
-      },
-      "spreads": {
-       "point": 1.5,
-       "side_a": "home",
-       "fair_home": 0.484314224515594,
-       "fair_away": 0.5182951588765805,
-       "fair_price_home": 106,
-       "fair_price_away": -108,
-       "best_home": {
-        "book": "FanDuel",
-        "price": 100
-       },
-       "best_away": {
-        "book": "MyBookie.ag",
-        "price": -109
-       },
-       "edge_home": -3.1371550968811945,
-       "edge_away": -0.6204695365088719,
-       "books": 9,
-       "width": 20
-      },
-      "totals": {
-       "point": 7.5,
-       "side_a": "over",
-       "fair_home": 0.5122100682019395,
-       "fair_away": 0.4914160982718872,
-       "fair_price_home": -105,
-       "fair_price_away": 103,
-       "best_home": {
-        "book": "BetRivers",
-        "price": -108
-       },
-       "best_away": {
-        "book": "Bovada",
-        "price": 100
-       },
-       "edge_home": -1.3521350129597987,
-       "edge_away": -1.716780345622565,
-       "books": 9,
-       "width": 20,
-       "model": null
-      }
-     },
-     "model": {
-      "home_win_prob": 0.3724,
-      "away_win_prob": 0.6276,
-      "market_home_prob": 0.342,
-      "disagreement": 3.0,
-      "suspect": false,
-      "source": "slate",
-      "ev_home": 4.3,
-      "ev_away": -5.9
-     },
-     "detail": {
-      "home_record": {
-       "w": 75,
-       "l": 80,
-       "hw": 36,
-       "hl": 41,
-       "aw": 39,
-       "al": 39
-      },
-      "away_record": {
-       "w": 97,
-       "l": 58,
-       "hw": 52,
-       "hl": 26,
-       "aw": 45,
-       "al": 32
-      },
-      "home_form": {
-       "w": 75,
-       "l": 80,
-       "streak": "L2",
-       "l10_w": 5,
-       "l10_l": 5,
-       "division": "AL East",
-       "div_rank": 5
-      },
-      "away_form": {
-       "w": 97,
-       "l": 58,
-       "streak": "W2",
-       "l10_w": 8,
-       "l10_l": 2,
-       "division": "NL Central",
-       "div_rank": 1
-      },
-      "series": [
-       {
-        "date": "2026-09-18",
-        "away": "Milwaukee Brewers",
-        "away_runs": 6,
-        "home": "Baltimore Orioles",
-        "home_runs": 5
-       },
-       {
-        "date": "2026-09-19",
-        "away": "Milwaukee Brewers",
-        "away_runs": 1,
-        "home": "Baltimore Orioles",
-        "home_runs": 0
-       }
-      ],
-      "home_starter": "Brandon Young",
-      "away_starter": "Jacob Misiorowski",
-      "home_starter_era": 3.65,
-      "away_starter_era": 1.89,
-      "home_starter_wl": [
-       9,
-       4
-      ],
-      "away_starter_wl": [
-       15,
-       5
-      ],
-      "home_hand": "R",
-      "away_hand": "R",
-      "home_sp": {
-       "w": 9,
-       "l": 4,
-       "era": 3.65,
-       "whip": 1.37,
-       "innings": 145.66666666666666,
-       "h": 145,
-       "k": 118,
-       "bb": 55,
-       "hr": 21
-      },
-      "away_sp": {
-       "w": 15,
-       "l": 5,
-       "era": 1.89,
-       "whip": 0.81,
-       "innings": 166.33333333333334,
-       "h": 93,
-       "k": 243,
-       "bb": 42,
-       "hr": 14
-      },
-      "home_bats": [
-       {
-        "id": 624413,
-        "name": "Pete Alonso",
-        "position": "1B",
-        "pa": 2,
-        "ab": 2,
-        "h": 0,
-        "hr": 0,
-        "rbi": 0,
-        "k": 1,
-        "avg": 0.0
-       },
-       {
-        "id": 665966,
-        "name": "Carlos Narv\u00e1ez",
-        "position": "C",
-        "pa": null,
-        "ab": null,
-        "h": null,
-        "hr": null,
-        "rbi": null,
-        "k": null,
-        "avg": null
-       },
-       {
-        "id": 687952,
-        "name": "Christian Encarnacion-Strand",
-        "position": "3B",
-        "pa": null,
-        "ab": null,
-        "h": null,
-        "hr": null,
-        "rbi": null,
-        "k": null,
-        "avg": null
-       },
-       {
-        "id": 681047,
-        "name": "Christian Franklin",
+        "id": 691181,
+        "name": "Emmanuel Rodriguez",
         "position": "CF",
         "pa": null,
         "ab": null,
@@ -6042,106 +1165,8 @@
         "avg": null
        },
        {
-        "id": 691723,
-        "name": "Coby Mayo",
-        "position": "3B",
-        "pa": null,
-        "ab": null,
-        "h": null,
-        "hr": null,
-        "rbi": null,
-        "k": null,
-        "avg": null
-       },
-       {
-        "id": 681297,
-        "name": "Colton Cowser",
-        "position": "CF",
-        "pa": null,
-        "ab": null,
-        "h": null,
-        "hr": null,
-        "rbi": null,
-        "k": null,
-        "avg": null
-       },
-       {
-        "id": 687637,
-        "name": "Dylan Beavers",
-        "position": "LF",
-        "pa": null,
-        "ab": null,
-        "h": null,
-        "hr": null,
-        "rbi": null,
-        "k": null,
-        "avg": null
-       },
-       {
-        "id": 683002,
-        "name": "Gunnar Henderson",
-        "position": "SS",
-        "pa": null,
-        "ab": null,
-        "h": null,
-        "hr": null,
-        "rbi": null,
-        "k": null,
-        "avg": null
-       },
-       {
-        "id": 669236,
-        "name": "Jeremiah Jackson",
-        "position": "2B",
-        "pa": null,
-        "ab": null,
-        "h": null,
-        "hr": null,
-        "rbi": null,
-        "k": null,
-        "avg": null
-       }
-      ],
-      "away_bats": [
-       {
-        "id": 666310,
-        "name": "Bo Naylor",
-        "position": "C",
-        "pa": 2,
-        "ab": 1,
-        "h": 0,
-        "hr": 0,
-        "rbi": 0,
-        "k": 0,
-        "avg": 0.0
-       },
-       {
-        "id": 683734,
-        "name": "Andrew Vaughn",
-        "position": "1B",
-        "pa": null,
-        "ab": null,
-        "h": null,
-        "hr": null,
-        "rbi": null,
-        "k": null,
-        "avg": null
-       },
-       {
-        "id": 668930,
-        "name": "Brice Turang",
-        "position": "2B",
-        "pa": null,
-        "ab": null,
-        "h": null,
-        "hr": null,
-        "rbi": null,
-        "k": null,
-        "avg": null
-       },
-       {
-        "id": 592885,
-        "name": "Christian Yelich",
+        "id": 605137,
+        "name": "Josh Bell",
         "position": "DH",
         "pa": null,
         "ab": null,
@@ -6152,9 +1177,9 @@
         "avg": null
        },
        {
-        "id": 806198,
-        "name": "Cooper Pratt",
-        "position": "SS",
+        "id": 665019,
+        "name": "Kody Clemens",
+        "position": "2B",
         "pa": null,
         "ab": null,
         "h": null,
@@ -6164,45 +1189,9 @@
         "avg": null
        },
        {
-        "id": 666152,
-        "name": "David Hamilton",
-        "position": "3B",
-        "pa": null,
-        "ab": null,
-        "h": null,
-        "hr": null,
-        "rbi": null,
-        "k": null,
-        "avg": null
-       },
-       {
-        "id": 669003,
-        "name": "Garrett Mitchell",
-        "position": "CF",
-        "pa": null,
-        "ab": null,
-        "h": null,
-        "hr": null,
-        "rbi": null,
-        "k": null,
-        "avg": null
-       },
-       {
-        "id": 596142,
-        "name": "Gary S\u00e1nchez",
-        "position": "C",
-        "pa": null,
-        "ab": null,
-        "h": null,
-        "hr": null,
-        "rbi": null,
-        "k": null,
-        "avg": null
-       },
-       {
-        "id": 694192,
-        "name": "Jackson Chourio",
-        "position": "LF",
+        "id": 807712,
+        "name": "Luke Keaschall",
+        "position": "2B",
         "pa": null,
         "ab": null,
         "h": null,
@@ -6212,7 +1201,7 @@
         "avg": null
        }
       ],
-      "venue": "Oriole Park at Camden Yards"
+      "venue": "Oracle Park"
      }
     }
    ]
@@ -6221,925 +1210,83 @@
    "label": "NFL",
    "games": [
     {
-     "event_id": "aee7eae1849ebb103b9bf233e9741392",
+     "event_id": "32367f882fac1a0c20a6335619922025",
      "league": "nfl",
-     "commence_time": "2026-09-20T17:00:00Z",
-     "home": "Atlanta Falcons",
-     "away": "Carolina Panthers",
+     "commence_time": "2026-09-22T00:15:00Z",
+     "home": "Los Angeles Rams",
+     "away": "New York Giants",
      "markets": {
       "h2h": {
        "point": null,
        "side_a": "home",
-       "fair_home": 0.42051764232799005,
-       "fair_away": 0.581150675806858,
-       "fair_price_home": 138,
-       "fair_price_away": -139,
+       "fair_home": 0.74062655085296,
+       "fair_away": 0.26147123152946805,
+       "fair_price_home": -286,
+       "fair_price_away": 282,
        "best_home": {
         "book": "DraftKings",
-        "price": 130
+        "price": -298
        },
        "best_away": {
-        "book": "Bovada",
-        "price": -145
+        "book": "BetOnline.ag",
+        "price": 260
        },
-       "edge_home": -3.280942264562292,
-       "edge_away": -1.8055754671170987,
-       "books": 9,
-       "width": 22
+       "edge_home": -1.0841049531952751,
+       "edge_away": -5.8703566493914945,
+       "books": 8,
+       "width": 59.0
       },
       "spreads": {
-       "point": 2.5,
+       "point": -7.0,
        "side_a": "home",
-       "fair_home": 0.4828355466577364,
-       "fair_away": 0.520280500526743,
+       "fair_home": 0.4834611246438232,
+       "fair_away": 0.520166906535002,
        "fair_price_home": 107,
        "fair_price_away": -108,
        "best_home": {
         "book": "LowVig.ag",
-        "price": 101
-       },
-       "best_away": {
-        "book": "MyBookie.ag",
-        "price": -110
-       },
-       "edge_home": -2.9500551217949864,
-       "edge_away": -0.6737226267126917,
-       "books": 6,
-       "width": 20.0
-      },
-      "totals": {
-       "point": 43.5,
-       "side_a": "over",
-       "fair_home": 0.4992743752862618,
-       "fair_away": 0.5007256247137382,
-       "fair_price_home": 100,
-       "fair_price_away": -100,
-       "best_home": {
-        "book": "LowVig.ag",
-        "price": -107
-       },
-       "best_away": {
-        "book": "LowVig.ag",
-        "price": -107
-       },
-       "edge_home": -3.4114059025642964,
-       "edge_away": -3.130650172202054,
-       "books": 9,
-       "width": 20,
-       "model": null
-      }
-     },
-     "model": {
-      "home_win_prob": 0.626,
-      "away_win_prob": 0.374,
-      "market_home_prob": 0.42051764232799005,
-      "disagreement": null,
-      "suspect": false,
-      "source": "elo",
-      "ev_home": 44.0,
-      "ev_away": -36.8
-     },
-     "detail": {
-      "home_form": {
-       "w": 0,
-       "l": 1,
-       "streak": "L1",
-       "l10_w": 0,
-       "l10_l": 1
-      },
-      "away_form": {
-       "w": 0,
-       "l": 1,
-       "streak": "L1",
-       "l10_w": 0,
-       "l10_l": 1
-      },
-      "series": [
-       {
-        "date": "2024-10-13",
-        "away": "Atlanta Falcons",
-        "away_runs": 38,
-        "home": "Carolina Panthers",
-        "home_runs": 20
-       },
-       {
-        "date": "2025-01-05",
-        "away": "Carolina Panthers",
-        "away_runs": 44,
-        "home": "Atlanta Falcons",
-        "home_runs": 38
-       },
-       {
-        "date": "2025-09-21",
-        "away": "Atlanta Falcons",
-        "away_runs": 0,
-        "home": "Carolina Panthers",
-        "home_runs": 30
-       },
-       {
-        "date": "2025-11-16",
-        "away": "Carolina Panthers",
-        "away_runs": 30,
-        "home": "Atlanta Falcons",
-        "home_runs": 27
-       }
-      ]
-     }
-    },
-    {
-     "event_id": "2143ade9684fd876b68a4e8cbf451f05",
-     "league": "nfl",
-     "commence_time": "2026-09-20T17:00:00Z",
-     "home": "Baltimore Ravens",
-     "away": "New Orleans Saints",
-     "markets": {
-      "h2h": {
-       "point": null,
-       "side_a": "home",
-       "fair_home": 0.7967153321271079,
-       "fair_away": 0.20659183722004312,
-       "fair_price_home": -392,
-       "fair_price_away": 384,
-       "best_home": {
-        "book": "DraftKings",
-        "price": -375
-       },
-       "best_away": {
-        "book": "MyBookie.ag",
-        "price": 340
-       },
-       "edge_home": 0.9172754027669927,
-       "edge_away": -9.099591623181013,
-       "books": 9,
-       "width": 93
-      },
-      "spreads": {
-       "point": -9.0,
-       "side_a": "home",
-       "fair_home": 0.4882448078949631,
-       "fair_away": 0.5202704357134712,
-       "fair_price_home": 105,
-       "fair_price_away": -108,
-       "best_home": {
-        "book": "BetOnline.ag",
-        "price": 101
-       },
-       "best_away": {
-        "book": "MyBookie.ag",
-        "price": -110
-       },
-       "edge_home": -1.862793613112429,
-       "edge_away": -0.6756440910645867,
-       "books": 4,
-       "width": 20.0
-      },
-      "totals": {
-       "point": 45.5,
-       "side_a": "over",
-       "fair_home": 0.4996661450334327,
-       "fair_away": 0.5003338549665673,
-       "fair_price_home": 100,
-       "fair_price_away": -100,
-       "best_home": {
-        "book": "LowVig.ag",
-        "price": -107
-       },
-       "best_away": {
-        "book": "LowVig.ag",
-        "price": -107
-       },
-       "edge_home": -3.335614932784503,
-       "edge_away": -3.2064411419818253,
-       "books": 8,
-       "width": 20.0,
-       "model": null
-      }
-     },
-     "model": {
-      "home_win_prob": 0.7418,
-      "away_win_prob": 0.2582,
-      "market_home_prob": 0.7967153321271079,
-      "disagreement": null,
-      "suspect": false,
-      "source": "elo",
-      "ev_home": -6.0,
-      "ev_away": 13.6
-     },
-     "detail": {
-      "home_form": {
-       "w": 1,
-       "l": 0,
-       "streak": "W1",
-       "l10_w": 1,
-       "l10_l": 0
-      },
-      "away_form": {
-       "w": 0,
-       "l": 1,
-       "streak": "L1",
-       "l10_w": 0,
-       "l10_l": 1
-      },
-      "series": []
-     }
-    },
-    {
-     "event_id": "0283a29e1b38ef78b29b904fd56a16dd",
-     "league": "nfl",
-     "commence_time": "2026-09-20T17:00:00Z",
-     "home": "Chicago Bears",
-     "away": "Minnesota Vikings",
-     "markets": {
-      "h2h": {
-       "point": null,
-       "side_a": "home",
-       "fair_home": 0.6667873641732549,
-       "fair_away": 0.3361946046795456,
-       "fair_price_home": -200,
-       "fair_price_away": 197,
-       "best_home": {
-        "book": "DraftKings",
-        "price": -198
-       },
-       "best_away": {
-        "book": "LowVig.ag",
-        "price": 185
-       },
-       "edge_home": 0.3548659210252436,
-       "edge_away": -4.184537666329502,
-       "books": 9,
-       "width": 35
-      },
-      "spreads": {
-       "point": -4.5,
-       "side_a": "home",
-       "fair_home": 0.5003839455204117,
-       "fair_away": 0.49961605447958846,
-       "fair_price_home": -100,
-       "fair_price_away": 100,
-       "best_home": {
-        "book": "LowVig.ag",
-        "price": -105
-       },
-       "best_away": {
-        "book": "LowVig.ag",
-        "price": -105
-       },
-       "edge_home": -2.305991588872014,
-       "edge_away": -2.455913173032731,
-       "books": 7,
-       "width": 20
-      },
-      "totals": {
-       "point": 47.5,
-       "side_a": "over",
-       "fair_home": 0.4953434732609089,
-       "fair_away": 0.5093023359694675,
-       "fair_price_home": 102,
-       "fair_price_away": -104,
-       "best_home": {
-        "book": "Bovada",
-        "price": 100
-       },
-       "best_away": {
-        "book": "DraftKings",
-        "price": -110
-       },
-       "edge_home": -0.9313053478182232,
-       "edge_away": -2.7695540421925626,
-       "books": 6,
-       "width": 20.0,
-       "model": null
-      }
-     },
-     "model": {
-      "home_win_prob": 0.4915,
-      "away_win_prob": 0.5085,
-      "market_home_prob": 0.6667873641732549,
-      "disagreement": null,
-      "suspect": false,
-      "source": "elo",
-      "ev_home": -26.0,
-      "ev_away": 44.9
-     },
-     "detail": {
-      "home_form": {
-       "w": 1,
-       "l": 0,
-       "streak": "W1",
-       "l10_w": 1,
-       "l10_l": 0
-      },
-      "away_form": {
-       "w": 1,
-       "l": 0,
-       "streak": "W1",
-       "l10_w": 1,
-       "l10_l": 0
-      },
-      "series": [
-       {
-        "date": "2024-11-24",
-        "away": "Minnesota Vikings",
-        "away_runs": 30,
-        "home": "Chicago Bears",
-        "home_runs": 27
-       },
-       {
-        "date": "2024-12-16",
-        "away": "Chicago Bears",
-        "away_runs": 12,
-        "home": "Minnesota Vikings",
-        "home_runs": 30
-       },
-       {
-        "date": "2025-09-08",
-        "away": "Minnesota Vikings",
-        "away_runs": 27,
-        "home": "Chicago Bears",
-        "home_runs": 24
-       },
-       {
-        "date": "2025-11-16",
-        "away": "Chicago Bears",
-        "away_runs": 19,
-        "home": "Minnesota Vikings",
-        "home_runs": 17
-       }
-      ]
-     }
-    },
-    {
-     "event_id": "36ad2fa722f4915ef23d2c81351261de",
-     "league": "nfl",
-     "commence_time": "2026-09-20T17:00:00Z",
-     "home": "Houston Texans",
-     "away": "Cincinnati Bengals",
-     "markets": {
-      "h2h": {
-       "point": null,
-       "side_a": "home",
-       "fair_home": 0.5826159785400694,
-       "fair_away": 0.4198869568171579,
-       "fair_price_home": -140,
-       "fair_price_away": 138,
-       "best_home": {
-        "book": "MyBookie.ag",
-        "price": -147
-       },
-       "best_away": {
-        "book": "Bovada",
-        "price": 135
-       },
-       "edge_home": -2.104662109253652,
-       "edge_away": -1.3265651479678953,
-       "books": 9,
-       "width": 24
-      },
-      "spreads": {
-       "point": -2.5,
-       "side_a": "home",
-       "fair_home": 0.5170806324063825,
-       "fair_away": 0.4874403834612243,
-       "fair_price_home": -107,
-       "fair_price_away": 105,
-       "best_home": {
-        "book": "MyBookie.ag",
-        "price": -110
-       },
-       "best_away": {
-        "book": "LowVig.ag",
         "price": 104
-       },
-       "edge_home": -1.2846065405997087,
-       "edge_away": -0.5621617739102414,
-       "books": 6,
-       "width": 20.0
-      },
-      "totals": {
-       "point": 45.5,
-       "side_a": "over",
-       "fair_home": 0.4965208881115674,
-       "fair_away": 0.5034791118884325,
-       "fair_price_home": 101,
-       "fair_price_away": -101,
-       "best_home": {
-        "book": "LowVig.ag",
-        "price": -105
-       },
-       "best_away": {
-        "book": "LowVig.ag",
-        "price": -109
-       },
-       "edge_home": -3.0602075591701694,
-       "edge_away": -3.4613446012088045,
-       "books": 8,
-       "width": 20.0,
-       "model": null
-      }
-     },
-     "model": {
-      "home_win_prob": 0.6958,
-      "away_win_prob": 0.3042,
-      "market_home_prob": 0.5826159785400694,
-      "disagreement": null,
-      "suspect": false,
-      "source": "elo",
-      "ev_home": 16.9,
-      "ev_away": -28.5
-     },
-     "detail": {
-      "home_form": {
-       "w": 0,
-       "l": 1,
-       "streak": "L1",
-       "l10_w": 0,
-       "l10_l": 1
-      },
-      "away_form": {
-       "w": 1,
-       "l": 0,
-       "streak": "W1",
-       "l10_w": 1,
-       "l10_l": 0
-      },
-      "series": []
-     }
-    },
-    {
-     "event_id": "9d14f87600f6edc74dbcb5c74edf6246",
-     "league": "nfl",
-     "commence_time": "2026-09-20T17:00:00Z",
-     "home": "New England Patriots",
-     "away": "Pittsburgh Steelers",
-     "markets": {
-      "h2h": {
-       "point": null,
-       "side_a": "home",
-       "fair_home": 0.6892851756801996,
-       "fair_away": 0.31290962817016454,
-       "fair_price_home": -222,
-       "fair_price_away": 220,
-       "best_home": {
-        "book": "DraftKings",
-        "price": -230
-       },
-       "best_away": {
-        "book": "FanDuel",
-        "price": 205
-       },
-       "edge_home": -1.1025617502322282,
-       "edge_away": -4.562563408099818,
-       "books": 9,
-       "width": 40
-      },
-      "spreads": {
-       "point": -5.5,
-       "side_a": "home",
-       "fair_home": 0.5003839455204117,
-       "fair_away": 0.49961605447958846,
-       "fair_price_home": -100,
-       "fair_price_away": 100,
-       "best_home": {
-        "book": "LowVig.ag",
-        "price": -104
-       },
-       "best_away": {
-        "book": "LowVig.ag",
-        "price": -106
-       },
-       "edge_home": -1.8477645325346292,
-       "edge_away": -2.9048045067969595,
-       "books": 7,
-       "width": 20
-      },
-      "totals": {
-       "point": 41.5,
-       "side_a": "over",
-       "fair_home": 0.4958539697386613,
-       "fair_away": 0.5064984251324581,
-       "fair_price_home": 102,
-       "fair_price_away": -103,
-       "best_home": {
-        "book": "LowVig.ag",
-        "price": -102
-       },
-       "best_away": {
-        "book": "BetRivers",
-        "price": -109
-       },
-       "edge_home": -1.801468738029821,
-       "edge_away": -2.8824120617580276,
-       "books": 8,
-       "width": 20.0,
-       "model": null
-      }
-     },
-     "model": {
-      "home_win_prob": 0.5549,
-      "away_win_prob": 0.4451,
-      "market_home_prob": 0.6892851756801996,
-      "disagreement": null,
-      "suspect": false,
-      "source": "elo",
-      "ev_home": -20.4,
-      "ev_away": 35.8
-     },
-     "detail": {
-      "home_form": {
-       "w": 0,
-       "l": 1,
-       "streak": "L1",
-       "l10_w": 0,
-       "l10_l": 1
-      },
-      "away_form": {
-       "w": 1,
-       "l": 0,
-       "streak": "W1",
-       "l10_w": 1,
-       "l10_l": 0
-      },
-      "series": [
-       {
-        "date": "2025-09-21",
-        "away": "Pittsburgh Steelers",
-        "away_runs": 21,
-        "home": "New England Patriots",
-        "home_runs": 14
-       }
-      ]
-     }
-    },
-    {
-     "event_id": "4aeee070bb6ec60bdfae4dede61b9014",
-     "league": "nfl",
-     "commence_time": "2026-09-20T17:00:00Z",
-     "home": "New York Jets",
-     "away": "Green Bay Packers",
-     "markets": {
-      "h2h": {
-       "point": null,
-       "side_a": "home",
-       "fair_home": 0.3771395378998133,
-       "fair_away": 0.6261763038650365,
-       "fair_price_home": 165,
-       "fair_price_away": -168,
-       "best_home": {
-        "book": "DraftKings",
-        "price": 160
-       },
-       "best_away": {
-        "book": "Bovada",
-        "price": -170
-       },
-       "edge_home": -1.9437201460485443,
-       "edge_away": -0.5484693861412482,
-       "books": 9,
-       "width": 28
-      },
-      "spreads": {
-       "point": 3.5,
-       "side_a": "home",
-       "fair_home": 0.5124700843331115,
-       "fair_away": 0.494497341676969,
-       "fair_price_home": -105,
-       "fair_price_away": 102,
-       "best_home": {
-        "book": "DraftKings",
-        "price": -108
-       },
-       "best_away": {
-        "book": "MyBookie.ag",
-        "price": 100
-       },
-       "edge_home": -1.30205783214149,
-       "edge_away": -1.100531664606197,
-       "books": 5,
-       "width": 20
-      },
-      "totals": {
-       "point": 44.0,
-       "side_a": "over",
-       "fair_home": 0.5065626743810847,
-       "fair_away": 0.4960370758496958,
-       "fair_price_home": -103,
-       "fair_price_away": 102,
-       "best_home": {
-        "book": "MyBookie.ag",
-        "price": -110
-       },
-       "best_away": {
-        "book": "LowVig.ag",
-        "price": -102
-       },
-       "edge_home": -3.29258034542928,
-       "edge_away": -1.7652065474131784,
-       "books": 6,
-       "width": 20.0,
-       "model": null
-      }
-     },
-     "model": {
-      "home_win_prob": 0.3668,
-      "away_win_prob": 0.6332,
-      "market_home_prob": 0.3771395378998133,
-      "disagreement": null,
-      "suspect": false,
-      "source": "elo",
-      "ev_home": -4.6,
-      "ev_away": 0.6
-     },
-     "detail": {
-      "home_form": {
-       "w": 1,
-       "l": 0,
-       "streak": "W1",
-       "l10_w": 1,
-       "l10_l": 0
-      },
-      "away_form": {
-       "w": 0,
-       "l": 1,
-       "streak": "L1",
-       "l10_w": 0,
-       "l10_l": 1
-      },
-      "series": []
-     }
-    },
-    {
-     "event_id": "0636ebff776d43f8c829a36713c80b22",
-     "league": "nfl",
-     "commence_time": "2026-09-20T17:00:00Z",
-     "home": "Tampa Bay Buccaneers",
-     "away": "Cleveland Browns",
-     "markets": {
-      "h2h": {
-       "point": null,
-       "side_a": "home",
-       "fair_home": 0.7942305114882331,
-       "fair_away": 0.2071977036444113,
-       "fair_price_home": -386,
-       "fair_price_away": 383,
-       "best_home": {
-        "book": "BetUS",
-        "price": -400
-       },
-       "best_away": {
-        "book": "FanDuel",
-        "price": 340
-       },
-       "edge_home": -0.7211860639708634,
-       "edge_away": -8.833010396459018,
-       "books": 9,
-       "width": 90
-      },
-      "spreads": {
-       "point": -8.5,
-       "side_a": "home",
-       "fair_home": 0.49074181259898075,
-       "fair_away": 0.5184902121556985,
-       "fair_price_home": 104,
-       "fair_price_away": -108,
-       "best_home": {
-        "book": "FanDuel",
-        "price": 100
        },
        "best_away": {
         "book": "BetRivers",
         "price": -114
        },
-       "edge_home": -1.8516374802038493,
-       "edge_away": -2.6693812269127424,
-       "books": 3,
-       "width": 22
+       "edge_home": -1.3739305726600648,
+       "edge_away": -2.354633334657519,
+       "books": 5,
+       "width": 20
       },
       "totals": {
-       "point": 41.5,
+       "point": 47.5,
        "side_a": "over",
-       "fair_home": 0.49690298380789605,
-       "fair_away": 0.5065558006316059,
-       "fair_price_home": 101,
-       "fair_price_away": -103,
-       "best_home": {
-        "book": "FanDuel",
-        "price": -102
-       },
-       "best_away": {
-        "book": "LowVig.ag",
-        "price": -107
-       },
-       "edge_home": -1.5937228145147087,
-       "edge_away": -2.00275632640895,
-       "books": 7,
-       "width": 20,
-       "model": null
-      }
-     },
-     "model": {
-      "home_win_prob": 0.7047,
-      "away_win_prob": 0.2953,
-      "market_home_prob": 0.7942305114882331,
-      "disagreement": null,
-      "suspect": false,
-      "source": "elo",
-      "ev_home": -11.9,
-      "ev_away": 29.9
-     },
-     "detail": {
-      "home_form": {
-       "w": 0,
-       "l": 1,
-       "streak": "L1",
-       "l10_w": 0,
-       "l10_l": 1
-      },
-      "away_form": {
-       "w": 0,
-       "l": 1,
-       "streak": "L1",
-       "l10_w": 0,
-       "l10_l": 1
-      },
-      "series": []
-     }
-    },
-    {
-     "event_id": "fafc649c455e32a0f2ba1bd06e2039bc",
-     "league": "nfl",
-     "commence_time": "2026-09-20T17:00:00Z",
-     "home": "Tennessee Titans",
-     "away": "Philadelphia Eagles",
-     "markets": {
-      "h2h": {
-       "point": null,
-       "side_a": "home",
-       "fair_home": 0.24181251080848232,
-       "fair_away": 0.7604884406445279,
-       "fair_price_home": 314,
-       "fair_price_away": -318,
-       "best_home": {
-        "book": "MyBookie.ag",
-        "price": 285
-       },
-       "best_away": {
-        "book": "DraftKings",
-        "price": -325
-       },
-       "edge_home": -6.902183338734302,
-       "edge_away": -0.5515116080232696,
-       "books": 9,
-       "width": 70
-      },
-      "spreads": {
-       "point": 7.0,
-       "side_a": "home",
-       "fair_home": 0.49634572648867853,
-       "fair_away": 0.5066517119468535,
-       "fair_price_home": 101,
-       "fair_price_away": -103,
-       "best_home": {
-        "book": "DraftKings",
-        "price": -102
-       },
-       "best_away": {
-        "book": "LowVig.ag",
-        "price": -104
-       },
-       "edge_home": -1.7040816169479667,
-       "edge_away": -0.6183180411941047,
-       "books": 8,
-       "width": 20.0
-      },
-      "totals": {
-       "point": 39.5,
-       "side_a": "over",
-       "fair_home": 0.5016597572204075,
-       "fair_away": 0.4983402427795925,
-       "fair_price_home": -101,
-       "fair_price_away": 101,
-       "best_home": {
-        "book": "LowVig.ag",
-        "price": -107
-       },
-       "best_away": {
-        "book": "LowVig.ag",
-        "price": -107
-       },
-       "edge_home": -2.949934818108085,
-       "edge_away": -3.592121256658276,
-       "books": 8,
-       "width": 20.0,
-       "model": null
-      }
-     },
-     "model": {
-      "home_win_prob": 0.2323,
-      "away_win_prob": 0.7677,
-      "market_home_prob": 0.24181251080848232,
-      "disagreement": null,
-      "suspect": false,
-      "source": "elo",
-      "ev_home": -10.6,
-      "ev_away": 0.4
-     },
-     "detail": {
-      "home_form": {
-       "w": 0,
-       "l": 1,
-       "streak": "L1",
-       "l10_w": 0,
-       "l10_l": 1
-      },
-      "away_form": {
-       "w": 1,
-       "l": 0,
-       "streak": "W1",
-       "l10_w": 1,
-       "l10_l": 0
-      },
-      "series": []
-     }
-    },
-    {
-     "event_id": "1fd6628c781f556a7a19638e97d7107f",
-     "league": "nfl",
-     "commence_time": "2026-09-20T20:05:00Z",
-     "home": "Denver Broncos",
-     "away": "Jacksonville Jaguars",
-     "markets": {
-      "h2h": {
-       "point": null,
-       "side_a": "home",
-       "fair_home": 0.58326093170277,
-       "fair_away": 0.41861623829221095,
-       "fair_price_home": -140,
-       "fair_price_away": 139,
-       "best_home": {
-        "book": "DraftKings",
-        "price": -148
-       },
-       "best_away": {
-        "book": "BetUS",
-        "price": 134
-       },
-       "edge_home": -2.2643844173736714,
-       "edge_away": -2.0438002396226396,
-       "books": 9,
-       "width": 22
-      },
-      "spreads": {
-       "point": -2.5,
-       "side_a": "home",
-       "fair_home": 0.5226026809273968,
-       "fair_away": 0.48005664105682416,
-       "fair_price_home": -109,
-       "fair_price_away": 108,
-       "best_home": {
-        "book": "MyBookie.ag",
-        "price": -115
-       },
-       "best_away": {
-        "book": "LowVig.ag",
-        "price": 105
-       },
-       "edge_home": -2.2960205222692984,
-       "edge_away": -1.5883885833510636,
-       "books": 6,
-       "width": 20.0
-      },
-      "totals": {
-       "point": 45.5,
-       "side_a": "over",
-       "fair_home": 0.5048386679120508,
-       "fair_away": 0.498676075752537,
-       "fair_price_home": -102,
-       "fair_price_away": 101,
+       "fair_home": 0.5003894974609951,
+       "fair_away": 0.5015445782887068,
+       "fair_price_home": -100,
+       "fair_price_away": -101,
        "best_home": {
         "book": "FanDuel",
         "price": -105
        },
        "best_away": {
         "book": "LowVig.ag",
-        "price": -102
+        "price": -107
        },
-       "edge_home": -1.4362600743138942,
-       "edge_away": -1.2425810764583545,
-       "books": 8,
-       "width": 20.0,
+       "edge_home": -2.3049076385676157,
+       "edge_away": -2.9722170974184,
+       "books": 7,
+       "width": 20,
        "model": null
       }
      },
      "model": {
-      "home_win_prob": 0.6549,
-      "away_win_prob": 0.3451,
-      "market_home_prob": 0.58326093170277,
+      "home_win_prob": 0.7599,
+      "away_win_prob": 0.2401,
+      "market_home_prob": 0.74062655085296,
       "disagreement": null,
       "suspect": false,
       "source": "elo",
-      "ev_home": 9.7,
-      "ev_away": -19.2
+      "ev_home": 1.5,
+      "ev_away": -13.6
      },
      "detail": {
       "home_form": {
@@ -7150,616 +1297,20 @@
        "l10_l": 2
       },
       "away_form": {
-       "w": 1,
-       "l": 0,
-       "streak": "W1",
-       "l10_w": 1,
-       "l10_l": 0
-      },
-      "series": [
-       {
-        "date": "2025-12-21",
-        "away": "Jacksonville Jaguars",
-        "away_runs": 34,
-        "home": "Denver Broncos",
-        "home_runs": 20
-       }
-      ]
-     }
-    },
-    {
-     "event_id": "71b3b83747589efdc5baef2c5cf811bf",
-     "league": "nfl",
-     "commence_time": "2026-09-20T20:05:00Z",
-     "home": "Los Angeles Chargers",
-     "away": "Las Vegas Raiders",
-     "markets": {
-      "h2h": {
-       "point": null,
-       "side_a": "home",
-       "fair_home": 0.7389380467671335,
-       "fair_away": 0.26181986806644586,
-       "fair_price_home": -283,
-       "fair_price_away": 282,
-       "best_home": {
-        "book": "MyBookie.ag",
-        "price": -300
-       },
-       "best_away": {
-        "book": "BetUS",
-        "price": 255
-       },
-       "edge_home": -1.474927097715542,
-       "edge_away": -7.053946836411729,
-       "books": 9,
-       "width": 55
-      },
-      "spreads": {
-       "point": -6.5,
-       "side_a": "home",
-       "fair_home": 0.5136203667306618,
-       "fair_away": 0.49101954073560433,
-       "fair_price_home": -106,
-       "fair_price_away": 104,
-       "best_home": {
-        "book": "MyBookie.ag",
-        "price": -110
-       },
-       "best_away": {
-        "book": "DraftKings",
-        "price": 102
-       },
-       "edge_home": -1.9452027150554718,
-       "edge_away": -0.8140527714079138,
-       "books": 7,
-       "width": 20
-      },
-      "totals": {
-       "point": 43.5,
-       "side_a": "over",
-       "fair_home": 0.5001455424776832,
-       "fair_away": 0.50073941171903,
-       "fair_price_home": -100,
-       "fair_price_away": -100,
-       "best_home": {
-        "book": "LowVig.ag",
-        "price": -105
-       },
-       "best_away": {
-        "book": "BetMGM",
-        "price": -108
-       },
-       "edge_home": -2.3525369448332887,
-       "edge_away": -3.561298483742359,
-       "books": 9,
-       "width": 20,
-       "model": null
-      }
-     },
-     "model": {
-      "home_win_prob": 0.792,
-      "away_win_prob": 0.208,
-      "market_home_prob": 0.7389380467671335,
-      "disagreement": null,
-      "suspect": false,
-      "source": "elo",
-      "ev_home": 5.6,
-      "ev_away": -26.2
-     },
-     "detail": {
-      "home_form": {
-       "w": 0,
-       "l": 1,
-       "streak": "L1",
-       "l10_w": 0,
-       "l10_l": 1
-      },
-      "away_form": {
-       "w": 1,
-       "l": 0,
-       "streak": "W1",
-       "l10_w": 1,
-       "l10_l": 0
-      },
-      "series": [
-       {
-        "date": "2024-09-08",
-        "away": "Las Vegas Raiders",
-        "away_runs": 10,
-        "home": "Los Angeles Chargers",
-        "home_runs": 22
-       },
-       {
-        "date": "2025-01-05",
-        "away": "Los Angeles Chargers",
-        "away_runs": 34,
-        "home": "Las Vegas Raiders",
-        "home_runs": 20
-       },
-       {
-        "date": "2025-09-15",
-        "away": "Los Angeles Chargers",
-        "away_runs": 20,
-        "home": "Las Vegas Raiders",
-        "home_runs": 9
-       },
-       {
-        "date": "2025-11-30",
-        "away": "Las Vegas Raiders",
-        "away_runs": 14,
-        "home": "Los Angeles Chargers",
-        "home_runs": 31
-       }
-      ]
-     }
-    },
-    {
-     "event_id": "4dd8020192a544385db42374e5555303",
-     "league": "nfl",
-     "commence_time": "2026-09-20T20:25:00Z",
-     "home": "Arizona Cardinals",
-     "away": "Seattle Seahawks",
-     "markets": {
-      "h2h": {
-       "point": null,
-       "side_a": "home",
-       "fair_home": 0.34542543946895055,
-       "fair_away": 0.6565924889857003,
-       "fair_price_home": 189,
-       "fair_price_away": -191,
-       "best_home": {
-        "book": "MyBookie.ag",
-        "price": 176
-       },
-       "best_away": {
-        "book": "Bovada",
-        "price": -195
-       },
-       "edge_home": -4.662578706569653,
-       "edge_away": -0.669341409855595,
-       "books": 9,
-       "width": 34
-      },
-      "spreads": {
-       "point": 4.0,
-       "side_a": "home",
-       "fair_home": 0.5091332765373654,
-       "fair_away": 0.4932740294952806,
-       "fair_price_home": -104,
-       "fair_price_away": 103,
-       "best_home": {
-        "book": "MyBookie.ag",
-        "price": -110
-       },
-       "best_away": {
-        "book": "LowVig.ag",
-        "price": 100
-       },
-       "edge_home": -2.801829024684782,
-       "edge_away": -1.345194100943875,
-       "books": 6,
-       "width": 20.0
-      },
-      "totals": {
-       "point": 41.0,
-       "side_a": "over",
-       "fair_home": 0.503868151499404,
-       "fair_away": 0.5007789949219904,
-       "fair_price_home": -102,
-       "fair_price_away": -100,
-       "best_home": {
-        "book": "BetMGM",
-        "price": -108
-       },
-       "best_away": {
-        "book": "BetUS",
-        "price": -105
-       },
-       "edge_home": -2.9587263778925568,
-       "edge_away": -2.228862896182826,
-       "books": 4,
-       "width": 20.0,
-       "model": null
-      }
-     },
-     "model": {
-      "home_win_prob": 0.2981,
-      "away_win_prob": 0.7019,
-      "market_home_prob": 0.34542543946895055,
-      "disagreement": null,
-      "suspect": false,
-      "source": "elo",
-      "ev_home": -17.7,
-      "ev_away": 6.2
-     },
-     "detail": {
-      "home_form": {
-       "w": 1,
-       "l": 0,
-       "streak": "W1",
-       "l10_w": 1,
-       "l10_l": 0
-      },
-      "away_form": {
-       "w": 1,
-       "l": 0,
-       "streak": "W1",
-       "l10_w": 1,
-       "l10_l": 0
-      },
-      "series": [
-       {
-        "date": "2024-11-24",
-        "away": "Arizona Cardinals",
-        "away_runs": 6,
-        "home": "Seattle Seahawks",
-        "home_runs": 16
-       },
-       {
-        "date": "2024-12-08",
-        "away": "Seattle Seahawks",
-        "away_runs": 30,
-        "home": "Arizona Cardinals",
-        "home_runs": 18
-       },
-       {
-        "date": "2025-09-25",
-        "away": "Seattle Seahawks",
-        "away_runs": 23,
-        "home": "Arizona Cardinals",
-        "home_runs": 20
-       },
-       {
-        "date": "2025-11-09",
-        "away": "Arizona Cardinals",
-        "away_runs": 22,
-        "home": "Seattle Seahawks",
-        "home_runs": 44
-       }
-      ]
-     }
-    },
-    {
-     "event_id": "85ef85098ddd22fe4ecf45e7e3c0a9c0",
-     "league": "nfl",
-     "commence_time": "2026-09-20T20:25:00Z",
-     "home": "Dallas Cowboys",
-     "away": "Washington Commanders",
-     "markets": {
-      "h2h": {
-       "point": null,
-       "side_a": "home",
-       "fair_home": 0.6572607000136627,
-       "fair_away": 0.3448452619881214,
-       "fair_price_home": -192,
-       "fair_price_away": 190,
-       "best_home": {
-        "book": "BetUS",
-        "price": -200
-       },
-       "best_away": {
-        "book": "DraftKings",
-        "price": 180
-       },
-       "edge_home": -1.4108949979506014,
-       "edge_away": -3.443326643326017,
-       "books": 9,
-       "width": 33
-      },
-      "spreads": {
-       "point": -4.0,
-       "side_a": "home",
-       "fair_home": 0.49464479824849084,
-       "fair_away": 0.5053552017515092,
-       "fair_price_home": 102,
-       "fair_price_away": -102,
-       "best_home": {
-        "book": "LowVig.ag",
-        "price": -102
-       },
-       "best_away": {
-        "book": "LowVig.ag",
-        "price": -108
-       },
-       "edge_home": -2.040932111573379,
-       "edge_away": -2.6723315145241564,
-       "books": 6,
-       "width": 20.0
-      },
-      "totals": {
-       "point": 51.0,
-       "side_a": "over",
-       "fair_home": 0.4986471215992161,
-       "fair_away": 0.5013528784007839,
-       "fair_price_home": 101,
-       "fair_price_away": -101,
-       "best_home": {
-        "book": "LowVig.ag",
-        "price": -107
-       },
-       "best_away": {
-        "book": "LowVig.ag",
-        "price": -107
-       },
-       "edge_home": -3.5327531111796873,
-       "edge_away": -3.0093029635866575,
-       "books": 7,
-       "width": 20,
-       "model": null
-      }
-     },
-     "model": {
-      "home_win_prob": 0.5359,
-      "away_win_prob": 0.4641,
-      "market_home_prob": 0.6572607000136627,
-      "disagreement": null,
-      "suspect": false,
-      "source": "elo",
-      "ev_home": -19.6,
-      "ev_away": 29.9
-     },
-     "detail": {
-      "home_form": {
-       "w": 0,
-       "l": 2,
-       "streak": "L2",
-       "l10_w": 0,
-       "l10_l": 2
-      },
-      "away_form": {
-       "w": 0,
-       "l": 1,
-       "streak": "L1",
-       "l10_w": 0,
-       "l10_l": 1
-      },
-      "series": [
-       {
-        "date": "2024-11-24",
-        "away": "Dallas Cowboys",
-        "away_runs": 34,
-        "home": "Washington Commanders",
-        "home_runs": 26
-       },
-       {
-        "date": "2025-01-05",
-        "away": "Washington Commanders",
-        "away_runs": 23,
-        "home": "Dallas Cowboys",
-        "home_runs": 19
-       },
-       {
-        "date": "2025-10-19",
-        "away": "Washington Commanders",
-        "away_runs": 22,
-        "home": "Dallas Cowboys",
-        "home_runs": 44
-       },
-       {
-        "date": "2025-12-25",
-        "away": "Dallas Cowboys",
-        "away_runs": 30,
-        "home": "Washington Commanders",
-        "home_runs": 23
-       }
-      ]
-     }
-    },
-    {
-     "event_id": "68bc55903f50af4af4766adcc89fcc61",
-     "league": "nfl",
-     "commence_time": "2026-09-20T20:25:00Z",
-     "home": "San Francisco 49ers",
-     "away": "Miami Dolphins",
-     "markets": {
-      "h2h": {
-       "point": null,
-       "side_a": "home",
-       "fair_home": 0.9021352585218035,
-       "fair_away": 0.09997079682310073,
-       "fair_price_home": -922,
-       "fair_price_away": 900,
-       "best_home": {
-        "book": "DraftKings",
-        "price": -950
-       },
-       "best_away": {
-        "book": "MyBookie.ag",
-        "price": 767
-       },
-       "edge_home": -0.29031353180067193,
-       "edge_away": -13.325319154371673,
-       "books": 9,
-       "width": 364
-      },
-      "spreads": {
-       "point": -13.5,
-       "side_a": "home",
-       "fair_home": 0.5001885046963273,
-       "fair_away": 0.5023235732106972,
-       "fair_price_home": -100,
-       "fair_price_away": -101,
-       "best_home": {
-        "book": "FanDuel",
-        "price": -105
-       },
-       "best_away": {
-        "book": "BetRivers",
-        "price": -109
-       },
-       "edge_home": -2.3441490830980127,
-       "edge_away": -3.6829111917103474,
-       "books": 7,
-       "width": 20
-      },
-      "totals": {
-       "point": 45.0,
-       "side_a": "over",
-       "fair_home": 0.4996105025390048,
-       "fair_away": 0.5003894974609951,
-       "fair_price_home": 100,
-       "fair_price_away": -100,
-       "best_home": {
-        "book": "LowVig.ag",
-        "price": -107
-       },
-       "best_away": {
-        "book": "LowVig.ag",
-        "price": -107
-       },
-       "edge_home": -3.346379415351408,
-       "edge_away": -3.1956766594149535,
-       "books": 7,
-       "width": 20,
-       "model": null
-      }
-     },
-     "model": {
-      "home_win_prob": 0.7018,
-      "away_win_prob": 0.2982,
-      "market_home_prob": 0.9021352585218035,
-      "disagreement": null,
-      "suspect": false,
-      "source": "elo",
-      "ev_home": -22.4,
-      "ev_away": 158.5
-     },
-     "detail": {
-      "home_form": {
        "w": 2,
        "l": 0,
        "streak": "W2",
        "l10_w": 2,
        "l10_l": 0
       },
-      "away_form": {
-       "w": 0,
-       "l": 1,
-       "streak": "L1",
-       "l10_w": 0,
-       "l10_l": 1
-      },
-      "series": [
-       {
-        "date": "2024-12-22",
-        "away": "San Francisco 49ers",
-        "away_runs": 17,
-        "home": "Miami Dolphins",
-        "home_runs": 29
-       }
-      ]
-     }
-    },
-    {
-     "event_id": "50bc247030707d823b9c3581d7eb5760",
-     "league": "nfl",
-     "commence_time": "2026-09-21T00:20:00Z",
-     "home": "Kansas City Chiefs",
-     "away": "Indianapolis Colts",
-     "markets": {
-      "h2h": {
-       "point": null,
-       "side_a": "home",
-       "fair_home": 0.7203372361827901,
-       "fair_away": 0.28343278058548366,
-       "fair_price_home": -258,
-       "fair_price_away": 253,
-       "best_home": {
-        "book": "DraftKings",
-        "price": -265
-       },
-       "best_away": {
-        "book": "BetRivers",
-        "price": 240
-       },
-       "edge_home": -0.7837391672760874,
-       "edge_away": -3.6328546009355533,
-       "books": 9,
-       "width": 50
-      },
-      "spreads": {
-       "point": -6.0,
-       "side_a": "home",
-       "fair_home": 0.4965130484783728,
-       "fair_away": 0.5070311679344753,
-       "fair_price_home": 101,
-       "fair_price_away": -103,
-       "best_home": {
-        "book": "LowVig.ag",
-        "price": -101
-       },
-       "best_away": {
-        "book": "BetRivers",
-        "price": -107
-       },
-       "edge_home": -1.188987382026796,
-       "edge_away": -1.9107927453865414,
-       "books": 6,
-       "width": 20.0
-      },
-      "totals": {
-       "point": 46.5,
-       "side_a": "over",
-       "fair_home": 0.4927584679699348,
-       "fair_away": 0.5109566307740964,
-       "fair_price_home": 103,
-       "fair_price_away": -104,
-       "best_home": {
-        "book": "DraftKings",
-        "price": -102
-       },
-       "best_away": {
-        "book": "FanDuel",
-        "price": -110
-       },
-       "edge_home": -2.4144994804638884,
-       "edge_away": -2.4537341249452336,
-       "books": 6,
-       "width": 20.0,
-       "model": null
-      }
-     },
-     "model": {
-      "home_win_prob": 0.6796,
-      "away_win_prob": 0.3204,
-      "market_home_prob": 0.7203372361827901,
-      "disagreement": null,
-      "suspect": false,
-      "source": "elo",
-      "ev_home": -6.4,
-      "ev_away": 8.9
-     },
-     "detail": {
-      "home_form": {
-       "w": 2,
-       "l": 0,
-       "streak": "W2",
-       "l10_w": 2,
-       "l10_l": 0
-      },
-      "away_form": {
-       "w": 0,
-       "l": 1,
-       "streak": "L1",
-       "l10_w": 0,
-       "l10_l": 1
-      },
-      "series": [
-       {
-        "date": "2025-11-23",
-        "away": "Indianapolis Colts",
-        "away_runs": 20,
-        "home": "Kansas City Chiefs",
-        "home_runs": 23
-       }
-      ]
+      "series": []
      }
     }
    ]
   }
  },
  "counts": {
-  "mlb": 15,
-  "nfl": 14
+  "mlb": 3,
+  "nfl": 1
  }
 }
