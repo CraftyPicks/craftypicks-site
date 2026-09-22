@@ -60043,7 +60043,9 @@
         "league_mean": 21.924374323362198
       },
       "matchup": "tough",
-      "actual": null
+      "actual": 1,
+      "actual_innings": 6.0,
+      "graded_at": "2026-09-22T00:58:21+00:00"
     },
     {
       "pitcher_id": 702056,
@@ -60166,7 +60168,9 @@
         "league_mean": 21.924374323362198
       },
       "matchup": "favourable",
-      "actual": null
+      "actual": 3,
+      "actual_innings": 2.0,
+      "graded_at": "2026-09-22T00:58:21+00:00"
     },
     {
       "pitcher_id": 694918,
@@ -60367,6 +60371,148 @@
       },
       "matchup": "tough",
       "actual": null
+    },
+    {
+      "pitcher_id": 689981,
+      "name": "River Ryan",
+      "team": "DET",
+      "opponent": "WSH",
+      "opponent_id": 120,
+      "event_id": null,
+      "commence_time": "2026-09-21T22:40:00Z",
+      "date": "09/21/2026",
+      "line": null,
+      "reference": 5.3,
+      "over_odds": null,
+      "under_odds": null,
+      "books": null,
+      "projection": 5.3,
+      "gap": null,
+      "suspect": false,
+      "k_pct": 0.25,
+      "k_per_9": 9.0,
+      "era": 0.0,
+      "w": 0,
+      "l": 0,
+      "innings": 3.0,
+      "opp_k_per_game": 8.343949044585987,
+      "opp_k_rank": 3,
+      "opp_teams_ranked": 6,
+      "recent": [
+        {
+          "date": "2026-09-21",
+          "opponent": "Washington Nationals",
+          "strikeouts": 3,
+          "innings": 3.0
+        }
+      ],
+      "recent_over": 0,
+      "recent_n": 1,
+      "last5_over": 0,
+      "last5_n": 1,
+      "vs_opp": {
+        "starts": 1,
+        "innings": 3.0,
+        "era": 0.0,
+        "strikeouts": 3,
+        "span": "2026",
+        "source": "gameLog"
+      },
+      "vs_roster": {
+        "pa": 5,
+        "k_pct": 0.4,
+        "bb_pct": 0.0,
+        "avg": 0.0,
+        "batters": 3,
+        "xwoba": null,
+        "xwoba_pa": 0,
+        "xwoba_span": "2024",
+        "thin": true
+      },
+      "hand": "R",
+      "opp_split": {
+        "k_pct": 20.81846300261718,
+        "pa": 4203,
+        "rank": 23,
+        "rank_all": 18,
+        "of": 30,
+        "league_mean": 21.924374323362198
+      },
+      "matchup": "tough",
+      "actual": 3,
+      "actual_innings": 3.0,
+      "graded_at": "2026-09-22T00:58:21+00:00"
+    },
+    {
+      "pitcher_id": 687792,
+      "name": "DJ Herz",
+      "team": "WSH",
+      "opponent": "DET",
+      "opponent_id": 116,
+      "event_id": null,
+      "commence_time": "2026-09-21T22:40:00Z",
+      "date": "09/21/2026",
+      "line": null,
+      "reference": 5.5,
+      "over_odds": null,
+      "under_odds": null,
+      "books": null,
+      "projection": 5.5,
+      "gap": null,
+      "suspect": false,
+      "k_pct": 0.21052631578947367,
+      "k_per_9": 9.0,
+      "era": 9.0,
+      "w": 0,
+      "l": 0,
+      "innings": 4.0,
+      "opp_k_per_game": 8.668789808917197,
+      "opp_k_rank": 2,
+      "opp_teams_ranked": 6,
+      "recent": [
+        {
+          "date": "2026-09-21",
+          "opponent": "Detroit Tigers",
+          "strikeouts": 4,
+          "innings": 4.0
+        }
+      ],
+      "recent_over": 0,
+      "recent_n": 1,
+      "last5_over": 0,
+      "last5_n": 1,
+      "vs_opp": {
+        "starts": 1,
+        "innings": 4.0,
+        "era": 9.0,
+        "strikeouts": 4,
+        "span": "2026",
+        "source": "gameLog"
+      },
+      "vs_roster": {
+        "pa": 4,
+        "k_pct": 0.25,
+        "bb_pct": 0.25,
+        "avg": 0.0,
+        "batters": 2,
+        "xwoba": null,
+        "xwoba_pa": 0,
+        "xwoba_span": "2024",
+        "thin": true
+      },
+      "hand": "L",
+      "opp_split": {
+        "k_pct": 23.329425556858148,
+        "pa": 1706,
+        "rank": 13,
+        "rank_all": 10,
+        "of": 30,
+        "league_mean": 22.498772355217717
+      },
+      "matchup": "neutral",
+      "actual": 4,
+      "actual_innings": 4.0,
+      "graded_at": "2026-09-22T00:58:21+00:00"
     }
   ]
 }
