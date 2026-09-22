@@ -1027,13 +1027,14 @@
       "pitcher_era": 2.91,
       "venue": "Yankee Stadium",
       "commence_time": "2026-09-22T17:05:00Z",
-      "actual": null,
+      "actual": 2,
       "probs": {
         "2.5": 0.4664,
         "3.5": 0.3133,
         "4.5": 0.2021
       },
-      "shape": 2.818
+      "shape": 2.818,
+      "miss": -0.81
     },
     {
       "projection": 3.19,
@@ -1054,13 +1055,14 @@
       "pitcher_era": 2.87,
       "venue": "Yankee Stadium",
       "commence_time": "2026-09-22T17:05:00Z",
-      "actual": null,
+      "actual": 0,
       "probs": {
         "2.5": 0.5248,
         "3.5": 0.3716,
         "4.5": 0.2533
       },
-      "shape": 2.818
+      "shape": 2.818,
+      "miss": -3.19
     },
     {
       "projection": 3.85,
@@ -1844,6 +1846,33 @@
         "4.5": 0.2479
       },
       "shape": 2.818
+    },
+    {
+      "projection": 3.29,
+      "sp_used": true,
+      "league_f7": 3.487,
+      "offence": 1.024,
+      "sp_index": 0.919,
+      "pen_index": 0.964,
+      "park": 0.989,
+      "sp_innings": 5.2,
+      "game_pk": 823897,
+      "team_id": 135,
+      "team": "SD",
+      "opponent": "LAD",
+      "is_home": false,
+      "pitcher": "Brock Stewart",
+      "pitcher_hand": "",
+      "pitcher_era": 2.55,
+      "venue": "UNIQLO Field at Dodger Stadium",
+      "commence_time": "2026-09-23T02:10:00Z",
+      "actual": null,
+      "probs": {
+        "2.5": 0.5388,
+        "3.5": 0.3862,
+        "4.5": 0.2667
+      },
+      "shape": 2.814
     }
   ]
 }
