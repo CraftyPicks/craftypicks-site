@@ -1083,13 +1083,14 @@
       "pitcher_era": 6.07,
       "venue": "Oriole Park at Camden Yards",
       "commence_time": "2026-09-22T22:35:00Z",
-      "actual": null,
+      "actual": 4,
       "probs": {
         "2.5": 0.6097,
         "3.5": 0.4629,
         "4.5": 0.3396
       },
-      "shape": 2.818
+      "shape": 2.818,
+      "miss": 0.15
     },
     {
       "projection": 3.14,
@@ -1110,13 +1111,14 @@
       "pitcher_era": 4.64,
       "venue": "Oriole Park at Camden Yards",
       "commence_time": "2026-09-22T22:35:00Z",
-      "actual": null,
+      "actual": 2,
       "probs": {
         "2.5": 0.5175,
         "3.5": 0.3641,
         "4.5": 0.2466
       },
-      "shape": 2.818
+      "shape": 2.818,
+      "miss": -1.14
     },
     {
       "projection": 3.79,
@@ -1921,13 +1923,14 @@
       "pitcher_era": 3.86,
       "venue": "Comerica Park",
       "commence_time": "2026-09-23T17:10:00Z",
-      "actual": null,
+      "actual": 1,
       "probs": {
         "2.5": 0.5842,
         "3.5": 0.4328,
         "4.5": 0.3089
       },
-      "shape": 2.932
+      "shape": 2.932,
+      "miss": -2.61
     },
     {
       "projection": 3.59,
@@ -1948,13 +1951,14 @@
       "pitcher_era": 4.06,
       "venue": "Comerica Park",
       "commence_time": "2026-09-23T17:10:00Z",
-      "actual": null,
+      "actual": 4,
       "probs": {
         "2.5": 0.5817,
         "3.5": 0.4301,
         "4.5": 0.3063
       },
-      "shape": 2.932
+      "shape": 2.932,
+      "miss": 0.41
     },
     {
       "projection": 3.55,
@@ -2657,6 +2661,60 @@
         "4.5": 0.2392
       },
       "shape": 2.932
+    },
+    {
+      "projection": 3.47,
+      "sp_used": true,
+      "league_f7": 3.485,
+      "offence": 1.072,
+      "sp_index": 1.019,
+      "pen_index": 0.869,
+      "park": 0.948,
+      "sp_innings": 5.2,
+      "game_pk": 824784,
+      "team_id": 110,
+      "team": "BAL",
+      "opponent": "TOR",
+      "is_home": true,
+      "pitcher": "CJ Van Eyk",
+      "pitcher_hand": "",
+      "pitcher_era": 4.05,
+      "venue": "Oriole Park at Camden Yards",
+      "commence_time": "2026-09-23T22:35:00Z",
+      "actual": null,
+      "probs": {
+        "2.5": 0.5658,
+        "3.5": 0.4131,
+        "4.5": 0.2905
+      },
+      "shape": 2.916
+    },
+    {
+      "projection": 3.54,
+      "sp_used": true,
+      "league_f7": 3.485,
+      "offence": 0.917,
+      "sp_index": 1.22,
+      "pen_index": 1.04,
+      "park": 0.948,
+      "sp_innings": 4.94,
+      "game_pk": 824784,
+      "team_id": 141,
+      "team": "TOR",
+      "opponent": "BAL",
+      "is_home": false,
+      "pitcher": "Trey Gibson",
+      "pitcher_hand": "",
+      "pitcher_era": 7.36,
+      "venue": "Oriole Park at Camden Yards",
+      "commence_time": "2026-09-23T22:35:00Z",
+      "actual": null,
+      "probs": {
+        "2.5": 0.5749,
+        "3.5": 0.4229,
+        "4.5": 0.2997
+      },
+      "shape": 2.916
     }
   ]
 }
