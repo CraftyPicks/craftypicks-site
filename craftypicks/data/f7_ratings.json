@@ -2763,13 +2763,14 @@
       "pitcher_era": 3.65,
       "venue": "PNC Park",
       "commence_time": "2026-09-24T16:35:00Z",
-      "actual": null,
+      "actual": 1,
       "probs": {
         "2.5": 0.563,
         "3.5": 0.4102,
         "4.5": 0.2878
       },
-      "shape": 2.91
+      "shape": 2.91,
+      "miss": -2.45
     },
     {
       "projection": 4.1,
@@ -2790,13 +2791,14 @@
       "pitcher_era": 3.91,
       "venue": "PNC Park",
       "commence_time": "2026-09-24T16:35:00Z",
-      "actual": null,
+      "actual": 1,
       "probs": {
         "2.5": 0.6401,
         "3.5": 0.4959,
         "4.5": 0.3712
       },
-      "shape": 2.91
+      "shape": 2.91,
+      "miss": -3.1
     },
     {
       "projection": 3.74,
@@ -3364,6 +3366,33 @@
         "4.5": 0.2421
       },
       "shape": 2.91
+    },
+    {
+      "projection": 3.35,
+      "sp_used": true,
+      "league_f7": 3.481,
+      "offence": 0.891,
+      "sp_index": 1.014,
+      "pen_index": 0.851,
+      "park": 1.084,
+      "sp_innings": 6.31,
+      "game_pk": 823411,
+      "team_id": 143,
+      "team": "PHI",
+      "opponent": "MIL",
+      "is_home": true,
+      "pitcher": "Shane Drohan",
+      "pitcher_hand": "",
+      "pitcher_era": 4.26,
+      "venue": "Citizens Bank Park",
+      "commence_time": "2026-09-24T22:05:00Z",
+      "actual": null,
+      "probs": {
+        "2.5": 0.5496,
+        "3.5": 0.3959,
+        "4.5": 0.2744
+      },
+      "shape": 2.915
     }
   ]
 }
