@@ -7,11 +7,11 @@
       "name": "Pete Crow-Armstrong",
       "team_id": 112,
       "team": "CHC",
-      "h": 173,
-      "pa": 718,
-      "hit_rate": 0.24094707520891365,
-      "pa_per_game": 4.432098765432099,
-      "chance": 0.7075228656014576,
+      "h": 174,
+      "pa": 720,
+      "hit_rate": 0.24166666666666667,
+      "pa_per_game": 4.444444444444445,
+      "chance": 0.7097569532375965,
       "vs": "Alec Gamboa",
       "vs_hand": "",
       "pitcher_id": 687941,
@@ -20,10 +20,10 @@
       "vs_h_per_bf": 0.20454545454545456,
       "park": 1.03885523924894,
       "park_raw": 1.0777104784978802,
-      "league_rate": 0.21664506695909347,
+      "league_rate": 0.21664571786111772,
       "commence_time": "2026-09-25T17:05:00Z",
-      "lineup": false,
-      "h_at_projection": 173,
+      "lineup": true,
+      "h_at_projection": 174,
       "got_hit": null,
       "bvp": null,
       "recent": [
@@ -65,7 +65,7 @@
         },
         {
           "date": "2026-09-25",
-          "value": 0.0
+          "value": 1.0
         }
       ]
     },
@@ -75,10 +75,10 @@
       "team_id": 112,
       "team": "CHC",
       "h": 163,
-      "pa": 681,
-      "hit_rate": 0.2393538913362702,
-      "pa_per_game": 4.203703703703703,
-      "chance": 0.6856158003353128,
+      "pa": 683,
+      "hit_rate": 0.23865300146412885,
+      "pa_per_game": 4.216049382716049,
+      "chance": 0.6854538947881095,
       "vs": "Alec Gamboa",
       "vs_hand": "",
       "pitcher_id": 687941,
@@ -87,12 +87,21 @@
       "vs_h_per_bf": 0.20454545454545456,
       "park": 1.03885523924894,
       "park_raw": 1.0777104784978802,
-      "league_rate": 0.21664506695909347,
+      "league_rate": 0.21664571786111772,
       "commence_time": "2026-09-25T17:05:00Z",
-      "lineup": false,
+      "lineup": true,
       "h_at_projection": 163,
       "got_hit": null,
-      "bvp": null,
+      "bvp": {
+        "pa": 1,
+        "ab": 1,
+        "h": 0,
+        "hr": 0,
+        "rbi": 0,
+        "k": 0,
+        "bb": 0,
+        "avg": 0.0
+      },
       "recent": [
         {
           "date": "2026-09-14",
@@ -142,10 +151,10 @@
       "team_id": 112,
       "team": "CHC",
       "h": 157,
-      "pa": 695,
-      "hit_rate": 0.22589928057553957,
-      "pa_per_game": 4.290123456790123,
-      "chance": 0.668845548532135,
+      "pa": 697,
+      "hit_rate": 0.22525107604017217,
+      "pa_per_game": 4.302469135802469,
+      "chance": 0.6686970384630609,
       "vs": "Alec Gamboa",
       "vs_hand": "",
       "pitcher_id": 687941,
@@ -154,9 +163,9 @@
       "vs_h_per_bf": 0.20454545454545456,
       "park": 1.03885523924894,
       "park_raw": 1.0777104784978802,
-      "league_rate": 0.21664506695909347,
+      "league_rate": 0.21664571786111772,
       "commence_time": "2026-09-25T17:05:00Z",
-      "lineup": false,
+      "lineup": true,
       "h_at_projection": 157,
       "got_hit": null,
       "bvp": null,
@@ -204,102 +213,26 @@
       ]
     },
     {
-      "batter_id": 678882,
-      "name": "Ceddanne Rafaela",
-      "team_id": 111,
-      "team": "BOS",
-      "h": 152,
-      "pa": 574,
-      "hit_rate": 0.26480836236933797,
-      "pa_per_game": 3.6794871794871793,
-      "chance": 0.6575141307922875,
-      "vs": "Clay Holmes",
-      "vs_hand": "",
-      "pitcher_id": 605280,
-      "vs_team": "CHC",
-      "is_home": true,
-      "vs_h_per_bf": 0.18581907090464547,
-      "park": 1.03885523924894,
-      "park_raw": 1.0777104784978802,
-      "league_rate": 0.21664506695909347,
-      "commence_time": "2026-09-25T17:05:00Z",
-      "lineup": false,
-      "h_at_projection": 152,
-      "got_hit": null,
-      "bvp": {
-        "pa": 4,
-        "ab": 3,
-        "h": 0,
-        "hr": 0,
-        "rbi": 0,
-        "k": 0,
-        "bb": 1,
-        "avg": 0.0
-      },
-      "recent": [
-        {
-          "date": "2026-08-26",
-          "value": 0.0
-        },
-        {
-          "date": "2026-08-28",
-          "value": 2.0
-        },
-        {
-          "date": "2026-08-29",
-          "value": 1.0
-        },
-        {
-          "date": "2026-08-29",
-          "value": 0.0
-        },
-        {
-          "date": "2026-08-30",
-          "value": 0.0
-        },
-        {
-          "date": "2026-08-31",
-          "value": 2.0
-        },
-        {
-          "date": "2026-09-01",
-          "value": 0.0
-        },
-        {
-          "date": "2026-09-02",
-          "value": 1.0
-        },
-        {
-          "date": "2026-09-23",
-          "value": 1.0
-        },
-        {
-          "date": "2026-09-24",
-          "value": 0.0
-        }
-      ]
-    },
-    {
       "batter_id": 677800,
       "name": "Wilyer Abreu",
       "team_id": 111,
       "team": "BOS",
       "h": 147,
-      "pa": 670,
-      "hit_rate": 0.21940298507462686,
-      "pa_per_game": 4.294871794871795,
-      "chance": 0.6352295454776407,
+      "pa": 673,
+      "hit_rate": 0.21842496285289748,
+      "pa_per_game": 4.314102564102564,
+      "chance": 0.6382465439474266,
       "vs": "Clay Holmes",
       "vs_hand": "",
       "pitcher_id": 605280,
       "vs_team": "CHC",
       "is_home": true,
-      "vs_h_per_bf": 0.18581907090464547,
+      "vs_h_per_bf": 0.18854415274463007,
       "park": 1.03885523924894,
       "park_raw": 1.0777104784978802,
-      "league_rate": 0.21664506695909347,
+      "league_rate": 0.21664571786111772,
       "commence_time": "2026-09-25T17:05:00Z",
-      "lineup": false,
+      "lineup": true,
       "h_at_projection": 147,
       "got_hit": null,
       "bvp": {
@@ -361,21 +294,21 @@
       "team_id": 111,
       "team": "BOS",
       "h": 125,
-      "pa": 579,
-      "hit_rate": 0.2158894645941278,
-      "pa_per_game": 3.7115384615384617,
-      "chance": 0.5750570513386075,
+      "pa": 581,
+      "hit_rate": 0.21514629948364888,
+      "pa_per_game": 3.7243589743589745,
+      "chance": 0.5780864565799486,
       "vs": "Clay Holmes",
       "vs_hand": "",
       "pitcher_id": 605280,
       "vs_team": "CHC",
       "is_home": true,
-      "vs_h_per_bf": 0.18581907090464547,
+      "vs_h_per_bf": 0.18854415274463007,
       "park": 1.03885523924894,
       "park_raw": 1.0777104784978802,
-      "league_rate": 0.21664506695909347,
+      "league_rate": 0.21664571786111772,
       "commence_time": "2026-09-25T17:05:00Z",
-      "lineup": false,
+      "lineup": true,
       "h_at_projection": 125,
       "got_hit": null,
       "bvp": null,
@@ -423,6 +356,82 @@
       ]
     },
     {
+      "batter_id": 680776,
+      "name": "Jarren Duran",
+      "team_id": 111,
+      "team": "BOS",
+      "h": 114,
+      "pa": 602,
+      "hit_rate": 0.1893687707641196,
+      "pa_per_game": 3.858974358974359,
+      "chance": 0.539458543707235,
+      "vs": "Clay Holmes",
+      "vs_hand": "",
+      "pitcher_id": 605280,
+      "vs_team": "CHC",
+      "is_home": true,
+      "vs_h_per_bf": 0.18854415274463007,
+      "park": 1.03885523924894,
+      "park_raw": 1.0777104784978802,
+      "league_rate": 0.21664571786111772,
+      "commence_time": "2026-09-25T17:05:00Z",
+      "lineup": true,
+      "h_at_projection": 114,
+      "got_hit": null,
+      "bvp": {
+        "pa": 7,
+        "ab": 6,
+        "h": 0,
+        "hr": 0,
+        "rbi": 0,
+        "k": 4,
+        "bb": 1,
+        "avg": 0.0
+      },
+      "recent": [
+        {
+          "date": "2026-09-13",
+          "value": 0.0
+        },
+        {
+          "date": "2026-09-15",
+          "value": 0.0
+        },
+        {
+          "date": "2026-09-16",
+          "value": 0.0
+        },
+        {
+          "date": "2026-09-17",
+          "value": 0.0
+        },
+        {
+          "date": "2026-09-19",
+          "value": 2.0
+        },
+        {
+          "date": "2026-09-20",
+          "value": 0.0
+        },
+        {
+          "date": "2026-09-22",
+          "value": 0.0
+        },
+        {
+          "date": "2026-09-23",
+          "value": 2.0
+        },
+        {
+          "date": "2026-09-24",
+          "value": 1.0
+        },
+        {
+          "date": "2026-09-25",
+          "value": 1.0
+        }
+      ]
+    },
+    {
       "batter_id": 700250,
       "name": "Ben Rice",
       "team_id": 147,
@@ -431,7 +440,7 @@
       "pa": 658,
       "hit_rate": 0.22492401215805471,
       "pa_per_game": 4.217948717948718,
-      "chance": 0.6778527060607442,
+      "chance": 0.6778519523411987,
       "vs": "Trevor Rogers",
       "vs_hand": "",
       "pitcher_id": 669432,
@@ -440,9 +449,9 @@
       "vs_h_per_bf": 0.23020527859237536,
       "park": 1.0102711585866886,
       "park_raw": 1.0205423171733772,
-      "league_rate": 0.21664506695909347,
+      "league_rate": 0.21664571786111772,
       "commence_time": "2026-09-25T20:05:00Z",
-      "lineup": false,
+      "lineup": true,
       "h_at_projection": 148,
       "got_hit": null,
       "bvp": {
@@ -499,82 +508,6 @@
       ]
     },
     {
-      "batter_id": 671277,
-      "name": "Luis García Jr.",
-      "team_id": 147,
-      "team": "NYY",
-      "h": 142,
-      "pa": 539,
-      "hit_rate": 0.2634508348794063,
-      "pa_per_game": 3.4551282051282053,
-      "chance": 0.6721636733346379,
-      "vs": "Trevor Rogers",
-      "vs_hand": "",
-      "pitcher_id": 669432,
-      "vs_team": "BAL",
-      "is_home": true,
-      "vs_h_per_bf": 0.23020527859237536,
-      "park": 1.0102711585866886,
-      "park_raw": 1.0205423171733772,
-      "league_rate": 0.21664506695909347,
-      "commence_time": "2026-09-25T20:05:00Z",
-      "lineup": false,
-      "h_at_projection": 142,
-      "got_hit": null,
-      "bvp": {
-        "pa": 11,
-        "ab": 9,
-        "h": 2,
-        "hr": 0,
-        "rbi": 1,
-        "k": 2,
-        "bb": 1,
-        "avg": 0.2222222222222222
-      },
-      "recent": [
-        {
-          "date": "2026-09-11",
-          "value": 3.0
-        },
-        {
-          "date": "2026-09-13",
-          "value": 0.0
-        },
-        {
-          "date": "2026-09-14",
-          "value": 0.0
-        },
-        {
-          "date": "2026-09-15",
-          "value": 1.0
-        },
-        {
-          "date": "2026-09-16",
-          "value": 0.0
-        },
-        {
-          "date": "2026-09-19",
-          "value": 0.0
-        },
-        {
-          "date": "2026-09-20",
-          "value": 1.0
-        },
-        {
-          "date": "2026-09-22",
-          "value": 0.0
-        },
-        {
-          "date": "2026-09-22",
-          "value": 0.0
-        },
-        {
-          "date": "2026-09-23",
-          "value": 1.0
-        }
-      ]
-    },
-    {
       "batter_id": 624413,
       "name": "Pete Alonso",
       "team_id": 110,
@@ -583,7 +516,7 @@
       "pa": 690,
       "hit_rate": 0.22753623188405797,
       "pa_per_game": 4.2592592592592595,
-      "chance": 0.6590966752873072,
+      "chance": 0.6590959680534364,
       "vs": "Brendan Beck",
       "vs_hand": "",
       "pitcher_id": 694341,
@@ -592,9 +525,9 @@
       "vs_h_per_bf": 0.20588235294117646,
       "park": 1.0102711585866886,
       "park_raw": 1.0205423171733772,
-      "league_rate": 0.21664506695909347,
+      "league_rate": 0.21664571786111772,
       "commence_time": "2026-09-25T20:05:00Z",
-      "lineup": false,
+      "lineup": true,
       "h_at_projection": 157,
       "got_hit": null,
       "bvp": null,
@@ -642,82 +575,6 @@
       ]
     },
     {
-      "batter_id": 641355,
-      "name": "Cody Bellinger",
-      "team_id": 147,
-      "team": "NYY",
-      "h": 131,
-      "pa": 558,
-      "hit_rate": 0.23476702508960573,
-      "pa_per_game": 3.576923076923077,
-      "chance": 0.6354737159891723,
-      "vs": "Trevor Rogers",
-      "vs_hand": "",
-      "pitcher_id": 669432,
-      "vs_team": "BAL",
-      "is_home": true,
-      "vs_h_per_bf": 0.23020527859237536,
-      "park": 1.0102711585866886,
-      "park_raw": 1.0205423171733772,
-      "league_rate": 0.21664506695909347,
-      "commence_time": "2026-09-25T20:05:00Z",
-      "lineup": false,
-      "h_at_projection": 131,
-      "got_hit": null,
-      "bvp": {
-        "pa": 7,
-        "ab": 5,
-        "h": 0,
-        "hr": 0,
-        "rbi": 1,
-        "k": 1,
-        "bb": 2,
-        "avg": 0.0
-      },
-      "recent": [
-        {
-          "date": "2026-09-13",
-          "value": 0.0
-        },
-        {
-          "date": "2026-09-14",
-          "value": 0.0
-        },
-        {
-          "date": "2026-09-15",
-          "value": 3.0
-        },
-        {
-          "date": "2026-09-16",
-          "value": 3.0
-        },
-        {
-          "date": "2026-09-18",
-          "value": 1.0
-        },
-        {
-          "date": "2026-09-19",
-          "value": 0.0
-        },
-        {
-          "date": "2026-09-20",
-          "value": 1.0
-        },
-        {
-          "date": "2026-09-22",
-          "value": 1.0
-        },
-        {
-          "date": "2026-09-22",
-          "value": 0.0
-        },
-        {
-          "date": "2026-09-24",
-          "value": 0.0
-        }
-      ]
-    },
-    {
       "batter_id": 683002,
       "name": "Gunnar Henderson",
       "team_id": 110,
@@ -726,7 +583,7 @@
       "pa": 697,
       "hit_rate": 0.1994261119081779,
       "pa_per_game": 4.302469135802469,
-      "chance": 0.6081675263962383,
+      "chance": 0.6081668307257009,
       "vs": "Brendan Beck",
       "vs_hand": "",
       "pitcher_id": 694341,
@@ -735,9 +592,9 @@
       "vs_h_per_bf": 0.20588235294117646,
       "park": 1.0102711585866886,
       "park_raw": 1.0205423171733772,
-      "league_rate": 0.21664506695909347,
+      "league_rate": 0.21664571786111772,
       "commence_time": "2026-09-25T20:05:00Z",
-      "lineup": false,
+      "lineup": true,
       "h_at_projection": 139,
       "got_hit": null,
       "bvp": null,
@@ -785,15 +642,167 @@
       ]
     },
     {
-      "batter_id": 665750,
-      "name": "Leody Taveras",
+      "batter_id": 671218,
+      "name": "Heliot Ramos",
+      "team_id": 147,
+      "team": "NYY",
+      "h": 96,
+      "pa": 434,
+      "hit_rate": 0.22119815668202766,
+      "pa_per_game": 2.782051282051282,
+      "chance": 0.5195179478874925,
+      "vs": "Trevor Rogers",
+      "vs_hand": "",
+      "pitcher_id": 669432,
+      "vs_team": "BAL",
+      "is_home": true,
+      "vs_h_per_bf": 0.23020527859237536,
+      "park": 1.0102711585866886,
+      "park_raw": 1.0205423171733772,
+      "league_rate": 0.21664571786111772,
+      "commence_time": "2026-09-25T20:05:00Z",
+      "lineup": true,
+      "h_at_projection": 96,
+      "got_hit": null,
+      "bvp": {
+        "pa": 6,
+        "ab": 6,
+        "h": 3,
+        "hr": 0,
+        "rbi": 0,
+        "k": 0,
+        "bb": 0,
+        "avg": 0.5
+      },
+      "recent": [
+        {
+          "date": "2026-09-12",
+          "value": 1.0
+        },
+        {
+          "date": "2026-09-15",
+          "value": 2.0
+        },
+        {
+          "date": "2026-09-16",
+          "value": 0.0
+        },
+        {
+          "date": "2026-09-18",
+          "value": 0.0
+        },
+        {
+          "date": "2026-09-19",
+          "value": 1.0
+        },
+        {
+          "date": "2026-09-20",
+          "value": 1.0
+        },
+        {
+          "date": "2026-09-22",
+          "value": 0.0
+        },
+        {
+          "date": "2026-09-22",
+          "value": 1.0
+        },
+        {
+          "date": "2026-09-23",
+          "value": 2.0
+        },
+        {
+          "date": "2026-09-24",
+          "value": 1.0
+        }
+      ]
+    },
+    {
+      "batter_id": 676609,
+      "name": "José Caballero",
+      "team_id": 147,
+      "team": "NYY",
+      "h": 95,
+      "pa": 452,
+      "hit_rate": 0.21017699115044247,
+      "pa_per_game": 2.8974358974358974,
+      "chance": 0.5133285355808319,
+      "vs": "Trevor Rogers",
+      "vs_hand": "",
+      "pitcher_id": 669432,
+      "vs_team": "BAL",
+      "is_home": true,
+      "vs_h_per_bf": 0.23020527859237536,
+      "park": 1.0102711585866886,
+      "park_raw": 1.0205423171733772,
+      "league_rate": 0.21664571786111772,
+      "commence_time": "2026-09-25T20:05:00Z",
+      "lineup": true,
+      "h_at_projection": 95,
+      "got_hit": null,
+      "bvp": {
+        "pa": 5,
+        "ab": 4,
+        "h": 1,
+        "hr": 0,
+        "rbi": 0,
+        "k": 2,
+        "bb": 1,
+        "avg": 0.25
+      },
+      "recent": [
+        {
+          "date": "2026-09-13",
+          "value": 0.0
+        },
+        {
+          "date": "2026-09-14",
+          "value": 2.0
+        },
+        {
+          "date": "2026-09-15",
+          "value": 1.0
+        },
+        {
+          "date": "2026-09-16",
+          "value": 0.0
+        },
+        {
+          "date": "2026-09-19",
+          "value": 2.0
+        },
+        {
+          "date": "2026-09-20",
+          "value": 0.0
+        },
+        {
+          "date": "2026-09-22",
+          "value": 1.0
+        },
+        {
+          "date": "2026-09-22",
+          "value": 0.0
+        },
+        {
+          "date": "2026-09-23",
+          "value": 0.0
+        },
+        {
+          "date": "2026-09-24",
+          "value": 0.0
+        }
+      ]
+    },
+    {
+      "batter_id": 691723,
+      "name": "Coby Mayo",
       "team_id": 110,
       "team": "BAL",
-      "h": 92,
-      "pa": 477,
-      "hit_rate": 0.1928721174004193,
-      "pa_per_game": 2.9444444444444446,
-      "chance": 0.46083915834977884,
+      "h": 91,
+      "pa": 444,
+      "hit_rate": 0.20495495495495494,
+      "pa_per_game": 2.740740740740741,
+      "chance": 0.45956613522620327,
       "vs": "Brendan Beck",
       "vs_hand": "",
       "pitcher_id": 694341,
@@ -802,32 +811,24 @@
       "vs_h_per_bf": 0.20588235294117646,
       "park": 1.0102711585866886,
       "park_raw": 1.0205423171733772,
-      "league_rate": 0.21664506695909347,
+      "league_rate": 0.21664571786111772,
       "commence_time": "2026-09-25T20:05:00Z",
-      "lineup": false,
-      "h_at_projection": 92,
+      "lineup": true,
+      "h_at_projection": 91,
       "got_hit": null,
       "bvp": null,
       "recent": [
-        {
-          "date": "2026-09-09",
-          "value": 2.0
-        },
-        {
-          "date": "2026-09-11",
-          "value": 0.0
-        },
-        {
-          "date": "2026-09-12",
-          "value": 0.0
-        },
         {
           "date": "2026-09-13",
           "value": 1.0
         },
         {
+          "date": "2026-09-14",
+          "value": 1.0
+        },
+        {
           "date": "2026-09-15",
-          "value": 0.0
+          "value": 2.0
         },
         {
           "date": "2026-09-16",
@@ -835,14 +836,22 @@
         },
         {
           "date": "2026-09-18",
-          "value": 1.0
+          "value": 3.0
         },
         {
           "date": "2026-09-19",
-          "value": 1.0
+          "value": 0.0
         },
         {
           "date": "2026-09-20",
+          "value": 1.0
+        },
+        {
+          "date": "2026-09-21",
+          "value": 0.0
+        },
+        {
+          "date": "2026-09-23",
           "value": 0.0
         },
         {
@@ -860,7 +869,7 @@
       "pa": 658,
       "hit_rate": 0.22492401215805471,
       "pa_per_game": 4.217948717948718,
-      "chance": 0.6751072991328966,
+      "chance": 0.6751065498913673,
       "vs": "Brandon Young",
       "vs_hand": "",
       "pitcher_id": 687064,
@@ -869,9 +878,9 @@
       "vs_h_per_bf": 0.2276923076923077,
       "park": 1.0102711585866886,
       "park_raw": 1.0205423171733772,
-      "league_rate": 0.21664506695909347,
+      "league_rate": 0.21664571786111772,
       "commence_time": "2026-09-25T20:10:00Z",
-      "lineup": false,
+      "lineup": true,
       "h_at_projection": 148,
       "got_hit": null,
       "bvp": {
@@ -928,15 +937,15 @@
       ]
     },
     {
-      "batter_id": 671277,
-      "name": "Luis García Jr.",
+      "batter_id": 671218,
+      "name": "Heliot Ramos",
       "team_id": 147,
       "team": "NYY",
-      "h": 142,
-      "pa": 539,
-      "hit_rate": 0.2634508348794063,
-      "pa_per_game": 3.4551282051282053,
-      "chance": 0.6693294614670785,
+      "h": 96,
+      "pa": 434,
+      "hit_rate": 0.22119815668202766,
+      "pa_per_game": 2.782051282051282,
+      "chance": 0.516879702759166,
       "vs": "Brandon Young",
       "vs_hand": "",
       "pitcher_id": 687064,
@@ -945,33 +954,87 @@
       "vs_h_per_bf": 0.2276923076923077,
       "park": 1.0102711585866886,
       "park_raw": 1.0205423171733772,
-      "league_rate": 0.21664506695909347,
+      "league_rate": 0.21664571786111772,
       "commence_time": "2026-09-25T20:10:00Z",
-      "lineup": false,
-      "h_at_projection": 142,
+      "lineup": true,
+      "h_at_projection": 96,
       "got_hit": null,
-      "bvp": {
-        "pa": 5,
-        "ab": 5,
-        "h": 3,
-        "hr": 1,
-        "rbi": 1,
-        "k": 0,
-        "bb": 0,
-        "avg": 0.6
-      },
+      "bvp": null,
       "recent": [
         {
-          "date": "2026-09-11",
-          "value": 3.0
+          "date": "2026-09-12",
+          "value": 1.0
         },
+        {
+          "date": "2026-09-15",
+          "value": 2.0
+        },
+        {
+          "date": "2026-09-16",
+          "value": 0.0
+        },
+        {
+          "date": "2026-09-18",
+          "value": 0.0
+        },
+        {
+          "date": "2026-09-19",
+          "value": 1.0
+        },
+        {
+          "date": "2026-09-20",
+          "value": 1.0
+        },
+        {
+          "date": "2026-09-22",
+          "value": 0.0
+        },
+        {
+          "date": "2026-09-22",
+          "value": 1.0
+        },
+        {
+          "date": "2026-09-23",
+          "value": 2.0
+        },
+        {
+          "date": "2026-09-24",
+          "value": 1.0
+        }
+      ]
+    },
+    {
+      "batter_id": 676609,
+      "name": "José Caballero",
+      "team_id": 147,
+      "team": "NYY",
+      "h": 95,
+      "pa": 452,
+      "hit_rate": 0.21017699115044247,
+      "pa_per_game": 2.8974358974358974,
+      "chance": 0.5107244409220385,
+      "vs": "Brandon Young",
+      "vs_hand": "",
+      "pitcher_id": 687064,
+      "vs_team": "BAL",
+      "is_home": true,
+      "vs_h_per_bf": 0.2276923076923077,
+      "park": 1.0102711585866886,
+      "park_raw": 1.0205423171733772,
+      "league_rate": 0.21664571786111772,
+      "commence_time": "2026-09-25T20:10:00Z",
+      "lineup": true,
+      "h_at_projection": 95,
+      "got_hit": null,
+      "bvp": null,
+      "recent": [
         {
           "date": "2026-09-13",
           "value": 0.0
         },
         {
           "date": "2026-09-14",
-          "value": 0.0
+          "value": 2.0
         },
         {
           "date": "2026-09-15",
@@ -983,15 +1046,15 @@
         },
         {
           "date": "2026-09-19",
-          "value": 0.0
+          "value": 2.0
         },
         {
           "date": "2026-09-20",
-          "value": 1.0
+          "value": 0.0
         },
         {
           "date": "2026-09-22",
-          "value": 0.0
+          "value": 1.0
         },
         {
           "date": "2026-09-22",
@@ -999,78 +1062,6 @@
         },
         {
           "date": "2026-09-23",
-          "value": 1.0
-        }
-      ]
-    },
-    {
-      "batter_id": 641355,
-      "name": "Cody Bellinger",
-      "team_id": 147,
-      "team": "NYY",
-      "h": 131,
-      "pa": 558,
-      "hit_rate": 0.23476702508960573,
-      "pa_per_game": 3.576923076923077,
-      "chance": 0.6326866331364281,
-      "vs": "Brandon Young",
-      "vs_hand": "",
-      "pitcher_id": 687064,
-      "vs_team": "BAL",
-      "is_home": true,
-      "vs_h_per_bf": 0.2276923076923077,
-      "park": 1.0102711585866886,
-      "park_raw": 1.0205423171733772,
-      "league_rate": 0.21664506695909347,
-      "commence_time": "2026-09-25T20:10:00Z",
-      "lineup": false,
-      "h_at_projection": 131,
-      "got_hit": null,
-      "bvp": {
-        "pa": 3,
-        "ab": 1,
-        "h": 0,
-        "hr": 0,
-        "rbi": 0,
-        "k": 0,
-        "bb": 2,
-        "avg": 0.0
-      },
-      "recent": [
-        {
-          "date": "2026-09-13",
-          "value": 0.0
-        },
-        {
-          "date": "2026-09-14",
-          "value": 0.0
-        },
-        {
-          "date": "2026-09-15",
-          "value": 3.0
-        },
-        {
-          "date": "2026-09-16",
-          "value": 3.0
-        },
-        {
-          "date": "2026-09-18",
-          "value": 1.0
-        },
-        {
-          "date": "2026-09-19",
-          "value": 0.0
-        },
-        {
-          "date": "2026-09-20",
-          "value": 1.0
-        },
-        {
-          "date": "2026-09-22",
-          "value": 1.0
-        },
-        {
-          "date": "2026-09-22",
           "value": 0.0
         },
         {
@@ -1084,11 +1075,11 @@
       "name": "Pete Crow-Armstrong",
       "team_id": 112,
       "team": "CHC",
-      "h": 173,
-      "pa": 718,
-      "hit_rate": 0.24094707520891365,
-      "pa_per_game": 4.432098765432099,
-      "chance": 0.750170220398078,
+      "h": 174,
+      "pa": 720,
+      "hit_rate": 0.24166666666666667,
+      "pa_per_game": 4.444444444444445,
+      "chance": 0.7523452788121578,
       "vs": "Brayan Bello",
       "vs_hand": "",
       "pitcher_id": 678394,
@@ -1097,10 +1088,10 @@
       "vs_h_per_bf": 0.24385245901639344,
       "park": 1.03885523924894,
       "park_raw": 1.0777104784978802,
-      "league_rate": 0.21664506695909347,
+      "league_rate": 0.21664571786111772,
       "commence_time": "2026-09-25T21:35:00Z",
-      "lineup": false,
-      "h_at_projection": 173,
+      "lineup": true,
+      "h_at_projection": 174,
       "got_hit": null,
       "bvp": {
         "pa": 3,
@@ -1151,7 +1142,7 @@
         },
         {
           "date": "2026-09-25",
-          "value": 0.0
+          "value": 1.0
         }
       ]
     },
@@ -1161,10 +1152,10 @@
       "team_id": 112,
       "team": "CHC",
       "h": 163,
-      "pa": 681,
-      "hit_rate": 0.2393538913362702,
-      "pa_per_game": 4.203703703703703,
-      "chance": 0.7289068134991278,
+      "pa": 683,
+      "hit_rate": 0.23865300146412885,
+      "pa_per_game": 4.216049382716049,
+      "chance": 0.7287262110167896,
       "vs": "Brayan Bello",
       "vs_hand": "",
       "pitcher_id": 678394,
@@ -1173,9 +1164,9 @@
       "vs_h_per_bf": 0.24385245901639344,
       "park": 1.03885523924894,
       "park_raw": 1.0777104784978802,
-      "league_rate": 0.21664506695909347,
+      "league_rate": 0.21664571786111772,
       "commence_time": "2026-09-25T21:35:00Z",
-      "lineup": false,
+      "lineup": true,
       "h_at_projection": 163,
       "got_hit": null,
       "bvp": {
@@ -1232,91 +1223,15 @@
       ]
     },
     {
-      "batter_id": 678882,
-      "name": "Ceddanne Rafaela",
-      "team_id": 111,
-      "team": "BOS",
-      "h": 152,
-      "pa": 574,
-      "hit_rate": 0.26480836236933797,
-      "pa_per_game": 3.6794871794871793,
-      "chance": 0.7190321710318739,
-      "vs": "David Peterson",
-      "vs_hand": "",
-      "pitcher_id": 656849,
-      "vs_team": "CHC",
-      "is_home": true,
-      "vs_h_per_bf": 0.2391304347826087,
-      "park": 1.03885523924894,
-      "park_raw": 1.0777104784978802,
-      "league_rate": 0.21664506695909347,
-      "commence_time": "2026-09-25T21:35:00Z",
-      "lineup": false,
-      "h_at_projection": 152,
-      "got_hit": null,
-      "bvp": {
-        "pa": 2,
-        "ab": 2,
-        "h": 0,
-        "hr": 0,
-        "rbi": 0,
-        "k": 2,
-        "bb": 0,
-        "avg": 0.0
-      },
-      "recent": [
-        {
-          "date": "2026-08-26",
-          "value": 0.0
-        },
-        {
-          "date": "2026-08-28",
-          "value": 2.0
-        },
-        {
-          "date": "2026-08-29",
-          "value": 1.0
-        },
-        {
-          "date": "2026-08-29",
-          "value": 0.0
-        },
-        {
-          "date": "2026-08-30",
-          "value": 0.0
-        },
-        {
-          "date": "2026-08-31",
-          "value": 2.0
-        },
-        {
-          "date": "2026-09-01",
-          "value": 0.0
-        },
-        {
-          "date": "2026-09-02",
-          "value": 1.0
-        },
-        {
-          "date": "2026-09-23",
-          "value": 1.0
-        },
-        {
-          "date": "2026-09-24",
-          "value": 0.0
-        }
-      ]
-    },
-    {
       "batter_id": 608324,
       "name": "Alex Bregman",
       "team_id": 112,
       "team": "CHC",
       "h": 157,
-      "pa": 695,
-      "hit_rate": 0.22589928057553957,
-      "pa_per_game": 4.290123456790123,
-      "chance": 0.7120987456682694,
+      "pa": 697,
+      "hit_rate": 0.22525107604017217,
+      "pa_per_game": 4.302469135802469,
+      "chance": 0.7119323189865245,
       "vs": "Brayan Bello",
       "vs_hand": "",
       "pitcher_id": 678394,
@@ -1325,9 +1240,9 @@
       "vs_h_per_bf": 0.24385245901639344,
       "park": 1.03885523924894,
       "park_raw": 1.0777104784978802,
-      "league_rate": 0.21664506695909347,
+      "league_rate": 0.21664571786111772,
       "commence_time": "2026-09-25T21:35:00Z",
-      "lineup": false,
+      "lineup": true,
       "h_at_projection": 157,
       "got_hit": null,
       "bvp": {
@@ -1389,10 +1304,10 @@
       "team_id": 111,
       "team": "BOS",
       "h": 147,
-      "pa": 670,
-      "hit_rate": 0.21940298507462686,
-      "pa_per_game": 4.294871794871795,
-      "chance": 0.695323706739184,
+      "pa": 673,
+      "hit_rate": 0.21842496285289748,
+      "pa_per_game": 4.314102564102564,
+      "chance": 0.6950767154351795,
       "vs": "David Peterson",
       "vs_hand": "",
       "pitcher_id": 656849,
@@ -1401,9 +1316,9 @@
       "vs_h_per_bf": 0.2391304347826087,
       "park": 1.03885523924894,
       "park_raw": 1.0777104784978802,
-      "league_rate": 0.21664506695909347,
+      "league_rate": 0.21664571786111772,
       "commence_time": "2026-09-25T21:35:00Z",
-      "lineup": false,
+      "lineup": true,
       "h_at_projection": 147,
       "got_hit": null,
       "bvp": null,
@@ -1456,10 +1371,10 @@
       "team_id": 111,
       "team": "BOS",
       "h": 125,
-      "pa": 579,
-      "hit_rate": 0.2158894645941278,
-      "pa_per_game": 3.7115384615384617,
-      "chance": 0.6351146247781497,
+      "pa": 581,
+      "hit_rate": 0.21514629948364888,
+      "pa_per_game": 3.7243589743589745,
+      "chance": 0.6349245657259471,
       "vs": "David Peterson",
       "vs_hand": "",
       "pitcher_id": 656849,
@@ -1468,9 +1383,9 @@
       "vs_h_per_bf": 0.2391304347826087,
       "park": 1.03885523924894,
       "park_raw": 1.0777104784978802,
-      "league_rate": 0.21664506695909347,
+      "league_rate": 0.21664571786111772,
       "commence_time": "2026-09-25T21:35:00Z",
-      "lineup": false,
+      "lineup": true,
       "h_at_projection": 125,
       "got_hit": null,
       "bvp": {
@@ -1527,37 +1442,37 @@
       ]
     },
     {
-      "batter_id": 650333,
-      "name": "Luis Arraez",
-      "team_id": 143,
-      "team": "PHI",
-      "h": 185,
-      "pa": 655,
-      "hit_rate": 0.2824427480916031,
-      "pa_per_game": 4.198717948717949,
-      "chance": 0.771353588258295,
-      "vs": "Freddy Peralta",
+      "batter_id": 680776,
+      "name": "Jarren Duran",
+      "team_id": 111,
+      "team": "BOS",
+      "h": 114,
+      "pa": 602,
+      "hit_rate": 0.1893687707641196,
+      "pa_per_game": 3.858974358974359,
+      "chance": 0.5946376212492883,
+      "vs": "David Peterson",
       "vs_hand": "",
-      "pitcher_id": 642547,
-      "vs_team": "TB",
+      "pitcher_id": 656849,
+      "vs_team": "CHC",
       "is_home": true,
-      "vs_h_per_bf": 0.22175141242937854,
-      "park": 1.034965034965035,
-      "park_raw": 1.06993006993007,
-      "league_rate": 0.21664506695909347,
-      "commence_time": "2026-09-25T22:40:00Z",
-      "lineup": false,
-      "h_at_projection": 185,
+      "vs_h_per_bf": 0.2391304347826087,
+      "park": 1.03885523924894,
+      "park_raw": 1.0777104784978802,
+      "league_rate": 0.21664571786111772,
+      "commence_time": "2026-09-25T21:35:00Z",
+      "lineup": true,
+      "h_at_projection": 114,
       "got_hit": null,
       "bvp": {
-        "pa": 13,
-        "ab": 12,
+        "pa": 4,
+        "ab": 4,
         "h": 2,
-        "hr": 1,
-        "rbi": 1,
+        "hr": 0,
+        "rbi": 0,
         "k": 1,
-        "bb": 1,
-        "avg": 0.16666666666666666
+        "bb": 0,
+        "avg": 0.5
       },
       "recent": [
         {
@@ -1566,18 +1481,14 @@
         },
         {
           "date": "2026-09-15",
-          "value": 2.0
-        },
-        {
-          "date": "2026-09-16",
-          "value": 1.0
-        },
-        {
-          "date": "2026-09-17",
           "value": 0.0
         },
         {
-          "date": "2026-09-18",
+          "date": "2026-09-16",
+          "value": 0.0
+        },
+        {
+          "date": "2026-09-17",
           "value": 0.0
         },
         {
@@ -1586,19 +1497,23 @@
         },
         {
           "date": "2026-09-20",
-          "value": 1.0
+          "value": 0.0
         },
         {
           "date": "2026-09-22",
-          "value": 2.0
+          "value": 0.0
         },
         {
           "date": "2026-09-23",
-          "value": 0.0
+          "value": 2.0
         },
         {
           "date": "2026-09-24",
-          "value": 0.0
+          "value": 1.0
+        },
+        {
+          "date": "2026-09-25",
+          "value": 1.0
         }
       ]
     },
@@ -1611,7 +1526,7 @@
       "pa": 609,
       "hit_rate": 0.28735632183908044,
       "pa_per_game": 3.759259259259259,
-      "chance": 0.7601346709350427,
+      "chance": 0.7601339000308531,
       "vs": "Cristopher Sánchez",
       "vs_hand": "",
       "pitcher_id": 650911,
@@ -1620,7 +1535,7 @@
       "vs_h_per_bf": 0.2397590361445783,
       "park": 1.034965034965035,
       "park_raw": 1.06993006993007,
-      "league_rate": 0.21664506695909347,
+      "league_rate": 0.21664571786111772,
       "commence_time": "2026-09-25T22:40:00Z",
       "lineup": false,
       "h_at_projection": 175,
@@ -1687,7 +1602,7 @@
       "pa": 678,
       "hit_rate": 0.2610619469026549,
       "pa_per_game": 4.185185185185185,
-      "chance": 0.7573261774645023,
+      "chance": 0.7573254225126305,
       "vs": "Cristopher Sánchez",
       "vs_hand": "",
       "pitcher_id": 650911,
@@ -1696,7 +1611,7 @@
       "vs_h_per_bf": 0.2397590361445783,
       "park": 1.034965034965035,
       "park_raw": 1.06993006993007,
-      "league_rate": 0.21664506695909347,
+      "league_rate": 0.21664571786111772,
       "commence_time": "2026-09-25T22:40:00Z",
       "lineup": false,
       "h_at_projection": 177,
@@ -1763,7 +1678,7 @@
       "pa": 692,
       "hit_rate": 0.24132947976878613,
       "pa_per_game": 4.271604938271605,
-      "chance": 0.7321001197683088,
+      "chance": 0.7320993579868599,
       "vs": "Cristopher Sánchez",
       "vs_hand": "",
       "pitcher_id": 650911,
@@ -1772,7 +1687,7 @@
       "vs_h_per_bf": 0.2397590361445783,
       "park": 1.034965034965035,
       "park_raw": 1.06993006993007,
-      "league_rate": 0.21664506695909347,
+      "league_rate": 0.21664571786111772,
       "commence_time": "2026-09-25T22:40:00Z",
       "lineup": false,
       "h_at_projection": 167,
@@ -1839,7 +1754,7 @@
       "pa": 679,
       "hit_rate": 0.22385861561119294,
       "pa_per_game": 4.352564102564102,
-      "chance": 0.6881253478931916,
+      "chance": 0.6881246125414568,
       "vs": "Freddy Peralta",
       "vs_hand": "",
       "pitcher_id": 642547,
@@ -1848,9 +1763,9 @@
       "vs_h_per_bf": 0.22175141242937854,
       "park": 1.034965034965035,
       "park_raw": 1.06993006993007,
-      "league_rate": 0.21664506695909347,
+      "league_rate": 0.21664571786111772,
       "commence_time": "2026-09-25T22:40:00Z",
-      "lineup": false,
+      "lineup": true,
       "h_at_projection": 152,
       "got_hit": null,
       "bvp": {
@@ -1915,7 +1830,7 @@
       "pa": 686,
       "hit_rate": 0.22011661807580174,
       "pa_per_game": 4.397435897435898,
-      "chance": 0.6848353791784421,
+      "chance": 0.6848346447746358,
       "vs": "Freddy Peralta",
       "vs_hand": "",
       "pitcher_id": 642547,
@@ -1924,9 +1839,9 @@
       "vs_h_per_bf": 0.22175141242937854,
       "park": 1.034965034965035,
       "park_raw": 1.06993006993007,
-      "league_rate": 0.21664506695909347,
+      "league_rate": 0.21664571786111772,
       "commence_time": "2026-09-25T22:40:00Z",
-      "lineup": false,
+      "lineup": true,
       "h_at_projection": 151,
       "got_hit": null,
       "bvp": {
@@ -1991,7 +1906,7 @@
       "pa": 694,
       "hit_rate": 0.2377521613832853,
       "pa_per_game": 4.448717948717949,
-      "chance": 0.6735756976256428,
+      "chance": 0.6735750030618055,
       "vs": "Bubba Chandler",
       "vs_hand": "",
       "pitcher_id": 696149,
@@ -2000,9 +1915,9 @@
       "vs_h_per_bf": 0.2009132420091324,
       "park": 0.9767554693013408,
       "park_raw": 0.9535109386026817,
-      "league_rate": 0.21664506695909347,
+      "league_rate": 0.21664571786111772,
       "commence_time": "2026-09-25T22:40:00Z",
-      "lineup": false,
+      "lineup": true,
       "h_at_projection": 165,
       "got_hit": null,
       "bvp": null,
@@ -2058,7 +1973,7 @@
       "pa": 600,
       "hit_rate": 0.2733333333333333,
       "pa_per_game": 3.7037037037037037,
-      "chance": 0.6682280454327862,
+      "chance": 0.6682273287588234,
       "vs": "Jackson Jobe",
       "vs_hand": "",
       "pitcher_id": 695549,
@@ -2067,7 +1982,7 @@
       "vs_h_per_bf": 0.20348837209302326,
       "park": 0.9767554693013408,
       "park_raw": 0.9535109386026817,
-      "league_rate": 0.21664506695909347,
+      "league_rate": 0.21664571786111772,
       "commence_time": "2026-09-25T22:40:00Z",
       "lineup": false,
       "h_at_projection": 164,
@@ -2126,6 +2041,82 @@
       ]
     },
     {
+      "batter_id": 664761,
+      "name": "Alec Bohm",
+      "team_id": 143,
+      "team": "PHI",
+      "h": 141,
+      "pa": 617,
+      "hit_rate": 0.22852512155591573,
+      "pa_per_game": 3.9551282051282053,
+      "chance": 0.6618107748014176,
+      "vs": "Freddy Peralta",
+      "vs_hand": "",
+      "pitcher_id": 642547,
+      "vs_team": "TB",
+      "is_home": true,
+      "vs_h_per_bf": 0.22175141242937854,
+      "park": 1.034965034965035,
+      "park_raw": 1.06993006993007,
+      "league_rate": 0.21664571786111772,
+      "commence_time": "2026-09-25T22:40:00Z",
+      "lineup": true,
+      "h_at_projection": 141,
+      "got_hit": null,
+      "bvp": {
+        "pa": 12,
+        "ab": 11,
+        "h": 2,
+        "hr": 1,
+        "rbi": 1,
+        "k": 4,
+        "bb": 1,
+        "avg": 0.18181818181818182
+      },
+      "recent": [
+        {
+          "date": "2026-09-13",
+          "value": 2.0
+        },
+        {
+          "date": "2026-09-15",
+          "value": 1.0
+        },
+        {
+          "date": "2026-09-16",
+          "value": 2.0
+        },
+        {
+          "date": "2026-09-17",
+          "value": 1.0
+        },
+        {
+          "date": "2026-09-18",
+          "value": 0.0
+        },
+        {
+          "date": "2026-09-19",
+          "value": 2.0
+        },
+        {
+          "date": "2026-09-20",
+          "value": 2.0
+        },
+        {
+          "date": "2026-09-22",
+          "value": 2.0
+        },
+        {
+          "date": "2026-09-23",
+          "value": 1.0
+        },
+        {
+          "date": "2026-09-24",
+          "value": 0.0
+        }
+      ]
+    },
+    {
       "batter_id": 668804,
       "name": "Bryan Reynolds",
       "team_id": 134,
@@ -2134,7 +2125,7 @@
       "pa": 689,
       "hit_rate": 0.2220609579100145,
       "pa_per_game": 4.253086419753086,
-      "chance": 0.6316443243181147,
+      "chance": 0.6316436258408805,
       "vs": "Jackson Jobe",
       "vs_hand": "",
       "pitcher_id": 695549,
@@ -2143,7 +2134,7 @@
       "vs_h_per_bf": 0.20348837209302326,
       "park": 0.9767554693013408,
       "park_raw": 0.9535109386026817,
-      "league_rate": 0.21664506695909347,
+      "league_rate": 0.21664571786111772,
       "commence_time": "2026-09-25T22:40:00Z",
       "lineup": false,
       "h_at_projection": 153,
@@ -2210,7 +2201,7 @@
       "pa": 647,
       "hit_rate": 0.23338485316846985,
       "pa_per_game": 3.993827160493827,
-      "chance": 0.6292062921231962,
+      "chance": 0.6292055890407124,
       "vs": "Jackson Jobe",
       "vs_hand": "",
       "pitcher_id": 695549,
@@ -2219,7 +2210,7 @@
       "vs_h_per_bf": 0.20348837209302326,
       "park": 0.9767554693013408,
       "park_raw": 0.9535109386026817,
-      "league_rate": 0.21664506695909347,
+      "league_rate": 0.21664571786111772,
       "commence_time": "2026-09-25T22:40:00Z",
       "lineup": false,
       "h_at_projection": 151,
@@ -2286,7 +2277,7 @@
       "pa": 579,
       "hit_rate": 0.24352331606217617,
       "pa_per_game": 3.7115384615384617,
-      "chance": 0.6170755076268603,
+      "chance": 0.6170748066864322,
       "vs": "Bubba Chandler",
       "vs_hand": "",
       "pitcher_id": 696149,
@@ -2295,9 +2286,9 @@
       "vs_h_per_bf": 0.2009132420091324,
       "park": 0.9767554693013408,
       "park_raw": 0.9535109386026817,
-      "league_rate": 0.21664506695909347,
+      "league_rate": 0.21664571786111772,
       "commence_time": "2026-09-25T22:40:00Z",
-      "lineup": false,
+      "lineup": true,
       "h_at_projection": 141,
       "got_hit": null,
       "bvp": null,
@@ -2353,7 +2344,7 @@
       "pa": 598,
       "hit_rate": 0.22073578595317725,
       "pa_per_game": 3.8333333333333335,
-      "chance": 0.5880922748208302,
+      "chance": 0.5880915871656924,
       "vs": "Bubba Chandler",
       "vs_hand": "",
       "pitcher_id": 696149,
@@ -2362,9 +2353,9 @@
       "vs_h_per_bf": 0.2009132420091324,
       "park": 0.9767554693013408,
       "park_raw": 0.9535109386026817,
-      "league_rate": 0.21664506695909347,
+      "league_rate": 0.21664571786111772,
       "commence_time": "2026-09-25T22:40:00Z",
-      "lineup": false,
+      "lineup": true,
       "h_at_projection": 132,
       "got_hit": null,
       "bvp": null,
@@ -2420,7 +2411,7 @@
       "pa": 681,
       "hit_rate": 0.23788546255506607,
       "pa_per_game": 4.203703703703703,
-      "chance": 0.6685845016771996,
+      "chance": 0.6685838131702966,
       "vs": "Andrew Alvarez",
       "vs_hand": "",
       "pitcher_id": 674841,
@@ -2429,7 +2420,7 @@
       "vs_h_per_bf": 0.19555555555555557,
       "park": 1.0289396467406937,
       "park_raw": 1.0578792934813874,
-      "league_rate": 0.21664506695909347,
+      "league_rate": 0.21664571786111772,
       "commence_time": "2026-09-25T22:45:00Z",
       "lineup": false,
       "h_at_projection": 162,
@@ -2496,7 +2487,7 @@
       "pa": 640,
       "hit_rate": 0.25,
       "pa_per_game": 3.950617283950617,
-      "chance": 0.6667431795992234,
+      "chance": 0.6667424857939259,
       "vs": "Andrew Alvarez",
       "vs_hand": "",
       "pitcher_id": 674841,
@@ -2505,7 +2496,7 @@
       "vs_h_per_bf": 0.19555555555555557,
       "park": 1.0289396467406937,
       "park_raw": 1.0578792934813874,
-      "league_rate": 0.21664506695909347,
+      "league_rate": 0.21664571786111772,
       "commence_time": "2026-09-25T22:45:00Z",
       "lineup": false,
       "h_at_projection": 160,
@@ -2572,7 +2563,7 @@
       "pa": 480,
       "hit_rate": 0.22708333333333333,
       "pa_per_game": 2.962962962962963,
-      "chance": 0.522049610052625,
+      "chance": 0.522048950465035,
       "vs": "Andrew Alvarez",
       "vs_hand": "",
       "pitcher_id": 674841,
@@ -2581,7 +2572,7 @@
       "vs_h_per_bf": 0.19555555555555557,
       "park": 1.0289396467406937,
       "park_raw": 1.0578792934813874,
-      "league_rate": 0.21664506695909347,
+      "league_rate": 0.21664571786111772,
       "commence_time": "2026-09-25T22:45:00Z",
       "lineup": false,
       "h_at_projection": 109,
@@ -2648,7 +2639,7 @@
       "pa": 611,
       "hit_rate": 0.25040916530278234,
       "pa_per_game": 3.9166666666666665,
-      "chance": 0.6954171988908919,
+      "chance": 0.6954164298900685,
       "vs": "Nick Lodolo",
       "vs_hand": "",
       "pitcher_id": 666157,
@@ -2657,9 +2648,9 @@
       "vs_h_per_bf": 0.23376623376623376,
       "park": 0.9993824982357092,
       "park_raw": 0.9987649964714185,
-      "league_rate": 0.21664506695909347,
+      "league_rate": 0.21664571786111772,
       "commence_time": "2026-09-25T23:07:00Z",
-      "lineup": false,
+      "lineup": true,
       "h_at_projection": 153,
       "got_hit": null,
       "bvp": {
@@ -2716,6 +2707,82 @@
       ]
     },
     {
+      "batter_id": 701398,
+      "name": "Sal Stewart",
+      "team_id": 113,
+      "team": "CIN",
+      "h": 162,
+      "pa": 686,
+      "hit_rate": 0.23615160349854228,
+      "pa_per_game": 4.234567901234568,
+      "chance": 0.6630933816368674,
+      "vs": "José Soriano",
+      "vs_hand": "",
+      "pitcher_id": 667755,
+      "vs_team": "TOR",
+      "is_home": false,
+      "vs_h_per_bf": 0.20164609053497942,
+      "park": 0.9993824982357092,
+      "park_raw": 0.9987649964714185,
+      "league_rate": 0.21664571786111772,
+      "commence_time": "2026-09-25T23:07:00Z",
+      "lineup": false,
+      "h_at_projection": 162,
+      "got_hit": null,
+      "bvp": {
+        "pa": 3,
+        "ab": 3,
+        "h": 0,
+        "hr": 0,
+        "rbi": 0,
+        "k": 0,
+        "bb": 0,
+        "avg": 0.0
+      },
+      "recent": [
+        {
+          "date": "2026-09-14",
+          "value": 0.0
+        },
+        {
+          "date": "2026-09-15",
+          "value": 0.0
+        },
+        {
+          "date": "2026-09-16",
+          "value": 3.0
+        },
+        {
+          "date": "2026-09-17",
+          "value": 2.0
+        },
+        {
+          "date": "2026-09-18",
+          "value": 1.0
+        },
+        {
+          "date": "2026-09-19",
+          "value": 0.0
+        },
+        {
+          "date": "2026-09-20",
+          "value": 0.0
+        },
+        {
+          "date": "2026-09-22",
+          "value": 1.0
+        },
+        {
+          "date": "2026-09-23",
+          "value": 0.0
+        },
+        {
+          "date": "2026-09-24",
+          "value": 1.0
+        }
+      ]
+    },
+    {
       "batter_id": 665489,
       "name": "Vladimir Guerrero Jr.",
       "team_id": 141,
@@ -2724,7 +2791,7 @@
       "pa": 600,
       "hit_rate": 0.23333333333333334,
       "pa_per_game": 3.8461538461538463,
-      "chance": 0.6588656593389536,
+      "chance": 0.6588648906264125,
       "vs": "Nick Lodolo",
       "vs_hand": "",
       "pitcher_id": 666157,
@@ -2733,9 +2800,9 @@
       "vs_h_per_bf": 0.23376623376623376,
       "park": 0.9993824982357092,
       "park_raw": 0.9987649964714185,
-      "league_rate": 0.21664506695909347,
+      "league_rate": 0.21664571786111772,
       "commence_time": "2026-09-25T23:07:00Z",
-      "lineup": false,
+      "lineup": true,
       "h_at_projection": 140,
       "got_hit": null,
       "bvp": null,
@@ -2783,6 +2850,82 @@
       ]
     },
     {
+      "batter_id": 682829,
+      "name": "Elly De La Cruz",
+      "team_id": 113,
+      "team": "CIN",
+      "h": 156,
+      "pa": 622,
+      "hit_rate": 0.2508038585209003,
+      "pa_per_game": 3.8395061728395063,
+      "chance": 0.6524674578628546,
+      "vs": "José Soriano",
+      "vs_hand": "",
+      "pitcher_id": 667755,
+      "vs_team": "TOR",
+      "is_home": false,
+      "vs_h_per_bf": 0.20164609053497942,
+      "park": 0.9993824982357092,
+      "park_raw": 0.9987649964714185,
+      "league_rate": 0.21664571786111772,
+      "commence_time": "2026-09-25T23:07:00Z",
+      "lineup": false,
+      "h_at_projection": 156,
+      "got_hit": null,
+      "bvp": {
+        "pa": 7,
+        "ab": 6,
+        "h": 1,
+        "hr": 0,
+        "rbi": 0,
+        "k": 2,
+        "bb": 1,
+        "avg": 0.16666666666666666
+      },
+      "recent": [
+        {
+          "date": "2026-09-14",
+          "value": 1.0
+        },
+        {
+          "date": "2026-09-15",
+          "value": 2.0
+        },
+        {
+          "date": "2026-09-16",
+          "value": 1.0
+        },
+        {
+          "date": "2026-09-17",
+          "value": 0.0
+        },
+        {
+          "date": "2026-09-18",
+          "value": 2.0
+        },
+        {
+          "date": "2026-09-19",
+          "value": 0.0
+        },
+        {
+          "date": "2026-09-20",
+          "value": 1.0
+        },
+        {
+          "date": "2026-09-22",
+          "value": 2.0
+        },
+        {
+          "date": "2026-09-23",
+          "value": 0.0
+        },
+        {
+          "date": "2026-09-24",
+          "value": 1.0
+        }
+      ]
+    },
+    {
       "batter_id": 672960,
       "name": "Kazuma Okamoto",
       "team_id": 141,
@@ -2791,7 +2934,7 @@
       "pa": 625,
       "hit_rate": 0.208,
       "pa_per_game": 4.006410256410256,
-      "chance": 0.6255580908874564,
+      "chance": 0.6255573349819125,
       "vs": "Nick Lodolo",
       "vs_hand": "",
       "pitcher_id": 666157,
@@ -2800,9 +2943,9 @@
       "vs_h_per_bf": 0.23376623376623376,
       "park": 0.9993824982357092,
       "park_raw": 0.9987649964714185,
-      "league_rate": 0.21664506695909347,
+      "league_rate": 0.21664571786111772,
       "commence_time": "2026-09-25T23:07:00Z",
-      "lineup": false,
+      "lineup": true,
       "h_at_projection": 130,
       "got_hit": null,
       "bvp": null,
@@ -2850,6 +2993,82 @@
       ]
     },
     {
+      "batter_id": 663886,
+      "name": "Tyler Stephenson",
+      "team_id": 113,
+      "team": "CIN",
+      "h": 99,
+      "pa": 464,
+      "hit_rate": 0.21336206896551724,
+      "pa_per_game": 2.8641975308641974,
+      "chance": 0.4810813033205863,
+      "vs": "José Soriano",
+      "vs_hand": "",
+      "pitcher_id": 667755,
+      "vs_team": "TOR",
+      "is_home": false,
+      "vs_h_per_bf": 0.20164609053497942,
+      "park": 0.9993824982357092,
+      "park_raw": 0.9987649964714185,
+      "league_rate": 0.21664571786111772,
+      "commence_time": "2026-09-25T23:07:00Z",
+      "lineup": false,
+      "h_at_projection": 99,
+      "got_hit": null,
+      "bvp": {
+        "pa": 3,
+        "ab": 2,
+        "h": 0,
+        "hr": 0,
+        "rbi": 0,
+        "k": 1,
+        "bb": 1,
+        "avg": 0.0
+      },
+      "recent": [
+        {
+          "date": "2026-09-14",
+          "value": 0.0
+        },
+        {
+          "date": "2026-09-15",
+          "value": 0.0
+        },
+        {
+          "date": "2026-09-16",
+          "value": 1.0
+        },
+        {
+          "date": "2026-09-17",
+          "value": 1.0
+        },
+        {
+          "date": "2026-09-18",
+          "value": 1.0
+        },
+        {
+          "date": "2026-09-19",
+          "value": 1.0
+        },
+        {
+          "date": "2026-09-20",
+          "value": 0.0
+        },
+        {
+          "date": "2026-09-22",
+          "value": 1.0
+        },
+        {
+          "date": "2026-09-23",
+          "value": 0.0
+        },
+        {
+          "date": "2026-09-24",
+          "value": 0.0
+        }
+      ]
+    },
+    {
       "batter_id": 671739,
       "name": "Michael Harris II",
       "team_id": 144,
@@ -2858,7 +3077,7 @@
       "pa": 613,
       "hit_rate": 0.27732463295269166,
       "pa_per_game": 3.7839506172839505,
-      "chance": 0.6709482558258382,
+      "chance": 0.6709475591650935,
       "vs": "Eury Pérez",
       "vs_hand": "",
       "pitcher_id": 691587,
@@ -2867,9 +3086,9 @@
       "vs_h_per_bf": 0.1949286846275753,
       "park": 0.9740298763736264,
       "park_raw": 0.9480597527472527,
-      "league_rate": 0.21664506695909347,
+      "league_rate": 0.21664571786111772,
       "commence_time": "2026-09-25T23:10:00Z",
-      "lineup": false,
+      "lineup": true,
       "h_at_projection": 170,
       "got_hit": null,
       "bvp": {
@@ -2926,6 +3145,73 @@
       ]
     },
     {
+      "batter_id": 672640,
+      "name": "Otto Lopez",
+      "team_id": 146,
+      "team": "MIA",
+      "h": 188,
+      "pa": 678,
+      "hit_rate": 0.27728613569321536,
+      "pa_per_game": 4.346153846153846,
+      "chance": 0.6358492102581086,
+      "vs": "Ray Kerr",
+      "vs_hand": "",
+      "pitcher_id": 678061,
+      "vs_team": "ATL",
+      "is_home": true,
+      "vs_h_per_bf": 0.12727272727272726,
+      "park": 0.9740298763736264,
+      "park_raw": 0.9480597527472527,
+      "league_rate": 0.21664571786111772,
+      "commence_time": "2026-09-25T23:10:00Z",
+      "lineup": false,
+      "h_at_projection": 188,
+      "got_hit": null,
+      "bvp": null,
+      "recent": [
+        {
+          "date": "2026-09-13",
+          "value": 1.0
+        },
+        {
+          "date": "2026-09-14",
+          "value": 0.0
+        },
+        {
+          "date": "2026-09-15",
+          "value": 0.0
+        },
+        {
+          "date": "2026-09-16",
+          "value": 2.0
+        },
+        {
+          "date": "2026-09-18",
+          "value": 2.0
+        },
+        {
+          "date": "2026-09-19",
+          "value": 1.0
+        },
+        {
+          "date": "2026-09-20",
+          "value": 0.0
+        },
+        {
+          "date": "2026-09-22",
+          "value": 1.0
+        },
+        {
+          "date": "2026-09-23",
+          "value": 1.0
+        },
+        {
+          "date": "2026-09-24",
+          "value": 1.0
+        }
+      ]
+    },
+    {
       "batter_id": 643289,
       "name": "Mauricio Dubón",
       "team_id": 144,
@@ -2934,7 +3220,7 @@
       "pa": 612,
       "hit_rate": 0.2549019607843137,
       "pa_per_game": 3.7777777777777777,
-      "chance": 0.6346093211580701,
+      "chance": 0.6346086292322766,
       "vs": "Eury Pérez",
       "vs_hand": "",
       "pitcher_id": 691587,
@@ -2943,9 +3229,9 @@
       "vs_h_per_bf": 0.1949286846275753,
       "park": 0.9740298763736264,
       "park_raw": 0.9480597527472527,
-      "league_rate": 0.21664506695909347,
+      "league_rate": 0.21664571786111772,
       "commence_time": "2026-09-25T23:10:00Z",
-      "lineup": false,
+      "lineup": true,
       "h_at_projection": 156,
       "got_hit": null,
       "bvp": {
@@ -3010,7 +3296,7 @@
       "pa": 688,
       "hit_rate": 0.22674418604651161,
       "pa_per_game": 4.246913580246914,
-      "chance": 0.6287359838379698,
+      "chance": 0.6287353024419811,
       "vs": "Eury Pérez",
       "vs_hand": "",
       "pitcher_id": 691587,
@@ -3019,9 +3305,9 @@
       "vs_h_per_bf": 0.1949286846275753,
       "park": 0.9740298763736264,
       "park_raw": 0.9480597527472527,
-      "league_rate": 0.21664506695909347,
+      "league_rate": 0.21664571786111772,
       "commence_time": "2026-09-25T23:10:00Z",
-      "lineup": false,
+      "lineup": true,
       "h_at_projection": 156,
       "got_hit": null,
       "bvp": {
@@ -3078,6 +3364,140 @@
       ]
     },
     {
+      "batter_id": 669364,
+      "name": "Xavier Edwards",
+      "team_id": 146,
+      "team": "MIA",
+      "h": 145,
+      "pa": 595,
+      "hit_rate": 0.24369747899159663,
+      "pa_per_game": 3.8141025641025643,
+      "chance": 0.5352774263081974,
+      "vs": "Ray Kerr",
+      "vs_hand": "",
+      "pitcher_id": 678061,
+      "vs_team": "ATL",
+      "is_home": true,
+      "vs_h_per_bf": 0.12727272727272726,
+      "park": 0.9740298763736264,
+      "park_raw": 0.9480597527472527,
+      "league_rate": 0.21664571786111772,
+      "commence_time": "2026-09-25T23:10:00Z",
+      "lineup": false,
+      "h_at_projection": 145,
+      "got_hit": null,
+      "bvp": null,
+      "recent": [
+        {
+          "date": "2026-08-25",
+          "value": 2.0
+        },
+        {
+          "date": "2026-08-26",
+          "value": 1.0
+        },
+        {
+          "date": "2026-08-28",
+          "value": 1.0
+        },
+        {
+          "date": "2026-08-29",
+          "value": 0.0
+        },
+        {
+          "date": "2026-08-30",
+          "value": 0.0
+        },
+        {
+          "date": "2026-09-13",
+          "value": 1.0
+        },
+        {
+          "date": "2026-09-14",
+          "value": 2.0
+        },
+        {
+          "date": "2026-09-16",
+          "value": 0.0
+        },
+        {
+          "date": "2026-09-18",
+          "value": 1.0
+        },
+        {
+          "date": "2026-09-19",
+          "value": 0.0
+        }
+      ]
+    },
+    {
+      "batter_id": 691594,
+      "name": "Javier Sanoja",
+      "team_id": 146,
+      "team": "MIA",
+      "h": 132,
+      "pa": 478,
+      "hit_rate": 0.27615062761506276,
+      "pa_per_game": 3.0641025641025643,
+      "chance": 0.5078030692335973,
+      "vs": "Ray Kerr",
+      "vs_hand": "",
+      "pitcher_id": 678061,
+      "vs_team": "ATL",
+      "is_home": true,
+      "vs_h_per_bf": 0.12727272727272726,
+      "park": 0.9740298763736264,
+      "park_raw": 0.9480597527472527,
+      "league_rate": 0.21664571786111772,
+      "commence_time": "2026-09-25T23:10:00Z",
+      "lineup": false,
+      "h_at_projection": 132,
+      "got_hit": null,
+      "bvp": null,
+      "recent": [
+        {
+          "date": "2026-09-13",
+          "value": 1.0
+        },
+        {
+          "date": "2026-09-14",
+          "value": 2.0
+        },
+        {
+          "date": "2026-09-15",
+          "value": 1.0
+        },
+        {
+          "date": "2026-09-16",
+          "value": 1.0
+        },
+        {
+          "date": "2026-09-18",
+          "value": 2.0
+        },
+        {
+          "date": "2026-09-19",
+          "value": 0.0
+        },
+        {
+          "date": "2026-09-20",
+          "value": 1.0
+        },
+        {
+          "date": "2026-09-22",
+          "value": 2.0
+        },
+        {
+          "date": "2026-09-23",
+          "value": 2.0
+        },
+        {
+          "date": "2026-09-24",
+          "value": 1.0
+        }
+      ]
+    },
+    {
       "batter_id": 805367,
       "name": "Chase Meidroth",
       "team_id": 145,
@@ -3086,7 +3506,7 @@
       "pa": 641,
       "hit_rate": 0.24180967238689546,
       "pa_per_game": 4.108974358974359,
-      "chance": 0.7157984967997848,
+      "chance": 0.7157977004151139,
       "vs": "Tomoyuki Sugano",
       "vs_hand": "",
       "pitcher_id": 608372,
@@ -3095,7 +3515,7 @@
       "vs_h_per_bf": 0.2551505546751189,
       "park": 0.9876665887304186,
       "park_raw": 0.975333177460837,
-      "league_rate": 0.21664506695909347,
+      "league_rate": 0.21664571786111772,
       "commence_time": "2026-09-25T23:40:00Z",
       "lineup": false,
       "h_at_projection": 155,
@@ -3153,7 +3573,7 @@
       "pa": 695,
       "hit_rate": 0.21151079136690648,
       "pa_per_game": 4.455128205128205,
-      "chance": 0.6890740467781583,
+      "chance": 0.6890732591007462,
       "vs": "Tomoyuki Sugano",
       "vs_hand": "",
       "pitcher_id": 608372,
@@ -3162,7 +3582,7 @@
       "vs_h_per_bf": 0.2551505546751189,
       "park": 0.9876665887304186,
       "park_raw": 0.975333177460837,
-      "league_rate": 0.21664506695909347,
+      "league_rate": 0.21664571786111772,
       "commence_time": "2026-09-25T23:40:00Z",
       "lineup": false,
       "h_at_projection": 147,
@@ -3220,7 +3640,7 @@
       "pa": 664,
       "hit_rate": 0.25150602409638556,
       "pa_per_game": 4.098765432098766,
-      "chance": 0.6878848821853523,
+      "chance": 0.6878841582785389,
       "vs": "Robert Gasser",
       "vs_hand": "",
       "pitcher_id": 688107,
@@ -3229,7 +3649,7 @@
       "vs_h_per_bf": 0.21218961625282168,
       "park": 0.9951080906907259,
       "park_raw": 0.9902161813814517,
-      "league_rate": 0.21664506695909347,
+      "league_rate": 0.21664571786111772,
       "commence_time": "2026-09-25T23:40:00Z",
       "lineup": false,
       "h_at_projection": 167,
@@ -3296,7 +3716,7 @@
       "pa": 631,
       "hit_rate": 0.2393026941362916,
       "pa_per_game": 4.044871794871795,
-      "chance": 0.6873303994017311,
+      "chance": 0.6873296324862674,
       "vs": "Michael McGreevy",
       "vs_hand": "",
       "pitcher_id": 700241,
@@ -3305,7 +3725,7 @@
       "vs_h_per_bf": 0.23485967503692762,
       "park": 0.9951080906907259,
       "park_raw": 0.9902161813814517,
-      "league_rate": 0.21664506695909347,
+      "league_rate": 0.21664571786111772,
       "commence_time": "2026-09-25T23:40:00Z",
       "lineup": false,
       "h_at_projection": 151,
@@ -3372,7 +3792,7 @@
       "pa": 667,
       "hit_rate": 0.22638680659670166,
       "pa_per_game": 4.2756410256410255,
-      "chance": 0.6842331163500155,
+      "chance": 0.6842323561161789,
       "vs": "Michael McGreevy",
       "vs_hand": "",
       "pitcher_id": 700241,
@@ -3381,7 +3801,7 @@
       "vs_h_per_bf": 0.23485967503692762,
       "park": 0.9951080906907259,
       "park_raw": 0.9902161813814517,
-      "league_rate": 0.21664506695909347,
+      "league_rate": 0.21664571786111772,
       "commence_time": "2026-09-25T23:40:00Z",
       "lineup": false,
       "h_at_projection": 151,
@@ -3448,7 +3868,7 @@
       "pa": 563,
       "hit_rate": 0.25932504440497334,
       "pa_per_game": 3.608974358974359,
-      "chance": 0.6799691002314736,
+      "chance": 0.6799683184916168,
       "vs": "Michael McGreevy",
       "vs_hand": "",
       "pitcher_id": 700241,
@@ -3457,7 +3877,7 @@
       "vs_h_per_bf": 0.23485967503692762,
       "park": 0.9951080906907259,
       "park_raw": 0.9902161813814517,
-      "league_rate": 0.21664506695909347,
+      "league_rate": 0.21664571786111772,
       "commence_time": "2026-09-25T23:40:00Z",
       "lineup": false,
       "h_at_projection": 146,
@@ -3524,7 +3944,7 @@
       "pa": 655,
       "hit_rate": 0.24732824427480915,
       "pa_per_game": 4.04320987654321,
-      "chance": 0.6758649135631606,
+      "chance": 0.6758641881989795,
       "vs": "Robert Gasser",
       "vs_hand": "",
       "pitcher_id": 688107,
@@ -3533,7 +3953,7 @@
       "vs_h_per_bf": 0.21218961625282168,
       "park": 0.9951080906907259,
       "park_raw": 0.9902161813814517,
-      "league_rate": 0.21664506695909347,
+      "league_rate": 0.21664571786111772,
       "commence_time": "2026-09-25T23:40:00Z",
       "lineup": false,
       "h_at_projection": 162,
@@ -3600,7 +4020,7 @@
       "pa": 619,
       "hit_rate": 0.24878836833602586,
       "pa_per_game": 3.967948717948718,
-      "chance": 0.6643499097222907,
+      "chance": 0.6643492262151939,
       "vs": "Gavin Williams",
       "vs_hand": "",
       "pitcher_id": 668909,
@@ -3609,9 +4029,9 @@
       "vs_h_per_bf": 0.19093406593406592,
       "park": 1.037593332175725,
       "park_raw": 1.0751866643514498,
-      "league_rate": 0.21664506695909347,
+      "league_rate": 0.21664571786111772,
       "commence_time": "2026-09-25T23:40:00Z",
-      "lineup": false,
+      "lineup": true,
       "h_at_projection": 154,
       "got_hit": null,
       "bvp": {
@@ -3676,7 +4096,7 @@
       "pa": 626,
       "hit_rate": 0.2380191693290735,
       "pa_per_game": 3.8641975308641974,
-      "chance": 0.6617745608297386,
+      "chance": 0.6617738300727953,
       "vs": "Noah Cameron",
       "vs_hand": "",
       "pitcher_id": 702070,
@@ -3685,7 +4105,7 @@
       "vs_h_per_bf": 0.21309192200557103,
       "park": 1.037593332175725,
       "park_raw": 1.0751866643514498,
-      "league_rate": 0.21664506695909347,
+      "league_rate": 0.21664571786111772,
       "commence_time": "2026-09-25T23:40:00Z",
       "lineup": false,
       "h_at_projection": 149,
@@ -3752,7 +4172,7 @@
       "pa": 626,
       "hit_rate": 0.2571884984025559,
       "pa_per_game": 3.8641975308641974,
-      "chance": 0.6602256910302681,
+      "chance": 0.6602249835521609,
       "vs": "Sean Burke",
       "vs_hand": "",
       "pitcher_id": 680732,
@@ -3761,7 +4181,7 @@
       "vs_h_per_bf": 0.2014388489208633,
       "park": 0.9876665887304186,
       "park_raw": 0.975333177460837,
-      "league_rate": 0.21664506695909347,
+      "league_rate": 0.21664571786111772,
       "commence_time": "2026-09-25T23:40:00Z",
       "lineup": false,
       "h_at_projection": 161,
@@ -3819,7 +4239,7 @@
       "pa": 583,
       "hit_rate": 0.27101200686106347,
       "pa_per_game": 3.5987654320987654,
-      "chance": 0.6563826461247133,
+      "chance": 0.656381932109497,
       "vs": "Sean Burke",
       "vs_hand": "",
       "pitcher_id": 680732,
@@ -3828,7 +4248,7 @@
       "vs_h_per_bf": 0.2014388489208633,
       "park": 0.9876665887304186,
       "park_raw": 0.975333177460837,
-      "league_rate": 0.21664506695909347,
+      "league_rate": 0.21664571786111772,
       "commence_time": "2026-09-25T23:40:00Z",
       "lineup": false,
       "h_at_projection": 158,
@@ -3895,7 +4315,7 @@
       "pa": 548,
       "hit_rate": 0.25547445255474455,
       "pa_per_game": 3.382716049382716,
-      "chance": 0.6430917216726106,
+      "chance": 0.6430909796685429,
       "vs": "Noah Cameron",
       "vs_hand": "",
       "pitcher_id": 702070,
@@ -3904,7 +4324,7 @@
       "vs_h_per_bf": 0.21309192200557103,
       "park": 1.037593332175725,
       "park_raw": 1.0751866643514498,
-      "league_rate": 0.21664506695909347,
+      "league_rate": 0.21664571786111772,
       "commence_time": "2026-09-25T23:40:00Z",
       "lineup": false,
       "h_at_projection": 140,
@@ -3962,7 +4382,7 @@
       "pa": 545,
       "hit_rate": 0.23302752293577983,
       "pa_per_game": 3.4935897435897436,
-      "chance": 0.6409996676767088,
+      "chance": 0.6409988549697683,
       "vs": "Tomoyuki Sugano",
       "vs_hand": "",
       "pitcher_id": 608372,
@@ -3971,7 +4391,7 @@
       "vs_h_per_bf": 0.2551505546751189,
       "park": 0.9876665887304186,
       "park_raw": 0.975333177460837,
-      "league_rate": 0.21664506695909347,
+      "league_rate": 0.21664571786111772,
       "commence_time": "2026-09-25T23:40:00Z",
       "lineup": false,
       "h_at_projection": 127,
@@ -4029,7 +4449,7 @@
       "pa": 646,
       "hit_rate": 0.21826625386996903,
       "pa_per_game": 3.9876543209876543,
-      "chance": 0.6368437835532657,
+      "chance": 0.6368430603172645,
       "vs": "Noah Cameron",
       "vs_hand": "",
       "pitcher_id": 702070,
@@ -4038,7 +4458,7 @@
       "vs_h_per_bf": 0.21309192200557103,
       "park": 1.037593332175725,
       "park_raw": 1.0751866643514498,
-      "league_rate": 0.21664506695909347,
+      "league_rate": 0.21664571786111772,
       "commence_time": "2026-09-25T23:40:00Z",
       "lineup": false,
       "h_at_projection": 141,
@@ -4105,7 +4525,7 @@
       "pa": 540,
       "hit_rate": 0.2611111111111111,
       "pa_per_game": 3.4615384615384617,
-      "chance": 0.6347369290910072,
+      "chance": 0.6347362379889248,
       "vs": "Gavin Williams",
       "vs_hand": "",
       "pitcher_id": 668909,
@@ -4114,9 +4534,9 @@
       "vs_h_per_bf": 0.19093406593406592,
       "park": 1.037593332175725,
       "park_raw": 1.0751866643514498,
-      "league_rate": 0.21664506695909347,
+      "league_rate": 0.21664571786111772,
       "commence_time": "2026-09-25T23:40:00Z",
-      "lineup": false,
+      "lineup": true,
       "h_at_projection": 141,
       "got_hit": null,
       "bvp": {
@@ -4181,7 +4601,7 @@
       "pa": 705,
       "hit_rate": 0.20567375886524822,
       "pa_per_game": 4.351851851851852,
-      "chance": 0.6258992512580001,
+      "chance": 0.6258985399791623,
       "vs": "Robert Gasser",
       "vs_hand": "",
       "pitcher_id": 688107,
@@ -4190,7 +4610,7 @@
       "vs_h_per_bf": 0.21218961625282168,
       "park": 0.9951080906907259,
       "park_raw": 0.9902161813814517,
-      "league_rate": 0.21664506695909347,
+      "league_rate": 0.21664571786111772,
       "commence_time": "2026-09-25T23:40:00Z",
       "lineup": false,
       "h_at_projection": 145,
@@ -4257,7 +4677,7 @@
       "pa": 615,
       "hit_rate": 0.21138211382113822,
       "pa_per_game": 3.9423076923076925,
-      "chance": 0.5938871467349314,
+      "chance": 0.5938864782240361,
       "vs": "Gavin Williams",
       "vs_hand": "",
       "pitcher_id": 668909,
@@ -4266,9 +4686,9 @@
       "vs_h_per_bf": 0.19093406593406592,
       "park": 1.037593332175725,
       "park_raw": 1.0751866643514498,
-      "league_rate": 0.21664506695909347,
+      "league_rate": 0.21664571786111772,
       "commence_time": "2026-09-25T23:40:00Z",
-      "lineup": false,
+      "lineup": true,
       "h_at_projection": 130,
       "got_hit": null,
       "bvp": {
@@ -4333,7 +4753,7 @@
       "pa": 561,
       "hit_rate": 0.22103386809269163,
       "pa_per_game": 3.462962962962963,
-      "chance": 0.5568810631830188,
+      "chance": 0.5568803821645906,
       "vs": "Sean Burke",
       "vs_hand": "",
       "pitcher_id": 680732,
@@ -4342,7 +4762,7 @@
       "vs_h_per_bf": 0.2014388489208633,
       "park": 0.9876665887304186,
       "park_raw": 0.975333177460837,
-      "league_rate": 0.21664506695909347,
+      "league_rate": 0.21664571786111772,
       "commence_time": "2026-09-25T23:40:00Z",
       "lineup": false,
       "h_at_projection": 124,
@@ -4400,7 +4820,7 @@
       "pa": 642,
       "hit_rate": 0.235202492211838,
       "pa_per_game": 3.962962962962963,
-      "chance": 0.6659267319771238,
+      "chance": 0.6659259791539377,
       "vs": "Joe Ryan",
       "vs_hand": "",
       "pitcher_id": 657746,
@@ -4409,7 +4829,7 @@
       "vs_h_per_bf": 0.2261904761904762,
       "park": 1.0018973978543713,
       "park_raw": 1.0037947957087423,
-      "league_rate": 0.21664506695909347,
+      "league_rate": 0.21664571786111772,
       "commence_time": "2026-09-26T00:10:00Z",
       "lineup": false,
       "h_at_projection": 151,
@@ -4476,7 +4896,7 @@
       "pa": 618,
       "hit_rate": 0.23624595469255663,
       "pa_per_game": 3.9615384615384617,
-      "chance": 0.6415192180964366,
+      "chance": 0.6415185123697723,
       "vs": "Jacob deGrom",
       "vs_hand": "",
       "pitcher_id": 594798,
@@ -4485,7 +4905,7 @@
       "vs_h_per_bf": 0.20310077519379846,
       "park": 1.0018973978543713,
       "park_raw": 1.0037947957087423,
-      "league_rate": 0.21664506695909347,
+      "league_rate": 0.21664571786111772,
       "commence_time": "2026-09-26T00:10:00Z",
       "lineup": false,
       "h_at_projection": 146,
@@ -4552,7 +4972,7 @@
       "pa": 606,
       "hit_rate": 0.23597359735973597,
       "pa_per_game": 3.8846153846153846,
-      "chance": 0.6338222669080933,
+      "chance": 0.6338215610734097,
       "vs": "Jacob deGrom",
       "vs_hand": "",
       "pitcher_id": 594798,
@@ -4561,7 +4981,7 @@
       "vs_h_per_bf": 0.20310077519379846,
       "park": 1.0018973978543713,
       "park_raw": 1.0037947957087423,
-      "league_rate": 0.21664506695909347,
+      "league_rate": 0.21664571786111772,
       "commence_time": "2026-09-26T00:10:00Z",
       "lineup": false,
       "h_at_projection": 143,
@@ -4619,7 +5039,7 @@
       "pa": 619,
       "hit_rate": 0.2310177705977383,
       "pa_per_game": 3.967948717948718,
-      "chance": 0.6327322905311983,
+      "chance": 0.6327315868039909,
       "vs": "Jacob deGrom",
       "vs_hand": "",
       "pitcher_id": 594798,
@@ -4628,7 +5048,7 @@
       "vs_h_per_bf": 0.20310077519379846,
       "park": 1.0018973978543713,
       "park_raw": 1.0037947957087423,
-      "league_rate": 0.21664506695909347,
+      "league_rate": 0.21664571786111772,
       "commence_time": "2026-09-26T00:10:00Z",
       "lineup": false,
       "h_at_projection": 143,
@@ -4695,7 +5115,7 @@
       "pa": 585,
       "hit_rate": 0.2341880341880342,
       "pa_per_game": 3.611111111111111,
-      "chance": 0.6299400709609821,
+      "chance": 0.6299393154233794,
       "vs": "Joe Ryan",
       "vs_hand": "",
       "pitcher_id": 657746,
@@ -4704,7 +5124,7 @@
       "vs_h_per_bf": 0.2261904761904762,
       "park": 1.0018973978543713,
       "park_raw": 1.0037947957087423,
-      "league_rate": 0.21664506695909347,
+      "league_rate": 0.21664571786111772,
       "commence_time": "2026-09-26T00:10:00Z",
       "lineup": false,
       "h_at_projection": 137,
@@ -4771,7 +5191,7 @@
       "pa": 607,
       "hit_rate": 0.20593080724876442,
       "pa_per_game": 3.746913580246914,
-      "chance": 0.5896972461663879,
+      "chance": 0.5896965106365486,
       "vs": "Joe Ryan",
       "vs_hand": "",
       "pitcher_id": 657746,
@@ -4780,7 +5200,7 @@
       "vs_h_per_bf": 0.2261904761904762,
       "park": 1.0018973978543713,
       "park_raw": 1.0037947957087423,
-      "league_rate": 0.21664506695909347,
+      "league_rate": 0.21664571786111772,
       "commence_time": "2026-09-26T00:10:00Z",
       "lineup": false,
       "h_at_projection": 125,
@@ -4847,7 +5267,7 @@
       "pa": 678,
       "hit_rate": 0.2581120943952802,
       "pa_per_game": 4.185185185185185,
-      "chance": 0.7821732783265589,
+      "chance": 0.7821725473025757,
       "vs": "Jacob Lopez",
       "vs_hand": "",
       "pitcher_id": 682052,
@@ -4856,7 +5276,7 @@
       "vs_h_per_bf": 0.23440453686200377,
       "park": 1.1284567081270378,
       "park_raw": 1.2569134162540756,
-      "league_rate": 0.21664506695909347,
+      "league_rate": 0.21664571786111772,
       "commence_time": "2026-09-26T01:40:00Z",
       "lineup": false,
       "h_at_projection": 175,
@@ -4923,7 +5343,7 @@
       "pa": 696,
       "hit_rate": 0.257183908045977,
       "pa_per_game": 4.461538461538462,
-      "chance": 0.7186044497686245,
+      "chance": 0.7186037137306058,
       "vs": "Brandon Pfaadt",
       "vs_hand": "",
       "pitcher_id": 694297,
@@ -4932,7 +5352,7 @@
       "vs_h_per_bf": 0.22598870056497175,
       "park": 0.9383700293938217,
       "park_raw": 0.8767400587876436,
-      "league_rate": 0.21664506695909347,
+      "league_rate": 0.21664571786111772,
       "commence_time": "2026-09-26T01:40:00Z",
       "lineup": false,
       "h_at_projection": 179,
@@ -4999,7 +5419,7 @@
       "pa": 646,
       "hit_rate": 0.22291021671826625,
       "pa_per_game": 3.9876543209876543,
-      "chance": 0.7047731957993864,
+      "chance": 0.7047724286742849,
       "vs": "Jacob Lopez",
       "vs_hand": "",
       "pitcher_id": 682052,
@@ -5008,7 +5428,7 @@
       "vs_h_per_bf": 0.23440453686200377,
       "park": 1.1284567081270378,
       "park_raw": 1.2569134162540756,
-      "league_rate": 0.21664506695909347,
+      "league_rate": 0.21664571786111772,
       "commence_time": "2026-09-26T01:40:00Z",
       "lineup": false,
       "h_at_projection": 144,
@@ -5075,7 +5495,7 @@
       "pa": 559,
       "hit_rate": 0.22898032200357782,
       "pa_per_game": 3.450617283950617,
-      "chance": 0.6636203752000125,
+      "chance": 0.663619590267198,
       "vs": "Jacob Lopez",
       "vs_hand": "",
       "pitcher_id": 682052,
@@ -5084,7 +5504,7 @@
       "vs_h_per_bf": 0.23440453686200377,
       "park": 1.1284567081270378,
       "park_raw": 1.2569134162540756,
-      "league_rate": 0.21664506695909347,
+      "league_rate": 0.21664571786111772,
       "commence_time": "2026-09-26T01:40:00Z",
       "lineup": false,
       "h_at_projection": 128,
@@ -5151,7 +5571,7 @@
       "pa": 657,
       "hit_rate": 0.2328767123287671,
       "pa_per_game": 4.211538461538462,
-      "chance": 0.6563335367645482,
+      "chance": 0.6563327920943858,
       "vs": "Brandon Pfaadt",
       "vs_hand": "",
       "pitcher_id": 694297,
@@ -5160,7 +5580,7 @@
       "vs_h_per_bf": 0.22598870056497175,
       "park": 0.9383700293938217,
       "park_raw": 0.8767400587876436,
-      "league_rate": 0.21664506695909347,
+      "league_rate": 0.21664571786111772,
       "commence_time": "2026-09-26T01:40:00Z",
       "lineup": false,
       "h_at_projection": 153,
@@ -5227,7 +5647,7 @@
       "pa": 509,
       "hit_rate": 0.2455795677799607,
       "pa_per_game": 3.2628205128205128,
-      "chance": 0.6154866419344242,
+      "chance": 0.615485964123351,
       "vs": "Hunter Brown",
       "vs_hand": "",
       "pitcher_id": 686613,
@@ -5236,7 +5656,7 @@
       "vs_h_per_bf": 0.18501170960187355,
       "park": 1.1284567081270378,
       "park_raw": 1.2569134162540756,
-      "league_rate": 0.21664506695909347,
+      "league_rate": 0.21664571786111772,
       "commence_time": "2026-09-26T01:40:00Z",
       "lineup": false,
       "h_at_projection": 125,
@@ -5303,7 +5723,7 @@
       "pa": 486,
       "hit_rate": 0.2613168724279835,
       "pa_per_game": 3.1153846153846154,
-      "chance": 0.5942066585215289,
+      "chance": 0.594205901352436,
       "vs": "Brandon Pfaadt",
       "vs_hand": "",
       "pitcher_id": 694297,
@@ -5312,7 +5732,7 @@
       "vs_h_per_bf": 0.22598870056497175,
       "park": 0.9383700293938217,
       "park_raw": 0.8767400587876436,
-      "league_rate": 0.21664506695909347,
+      "league_rate": 0.21664571786111772,
       "commence_time": "2026-09-26T01:40:00Z",
       "lineup": false,
       "h_at_projection": 127,
@@ -5379,7 +5799,7 @@
       "pa": 460,
       "hit_rate": 0.24130434782608695,
       "pa_per_game": 2.948717948717949,
-      "chance": 0.5710105412119137,
+      "chance": 0.5710098733002011,
       "vs": "Hunter Brown",
       "vs_hand": "",
       "pitcher_id": 686613,
@@ -5388,7 +5808,7 @@
       "vs_h_per_bf": 0.18501170960187355,
       "park": 1.1284567081270378,
       "park_raw": 1.2569134162540756,
-      "league_rate": 0.21664506695909347,
+      "league_rate": 0.21664571786111772,
       "commence_time": "2026-09-26T01:40:00Z",
       "lineup": false,
       "h_at_projection": 111,
@@ -5402,49 +5822,7 @@
         "k": 1,
         "bb": 1,
         "avg": 0.0
-      },
-      "recent": [
-        {
-          "date": "2026-09-13",
-          "value": 0.0
-        },
-        {
-          "date": "2026-09-15",
-          "value": 1.0
-        },
-        {
-          "date": "2026-09-16",
-          "value": 1.0
-        },
-        {
-          "date": "2026-09-17",
-          "value": 1.0
-        },
-        {
-          "date": "2026-09-18",
-          "value": 0.0
-        },
-        {
-          "date": "2026-09-19",
-          "value": 1.0
-        },
-        {
-          "date": "2026-09-20",
-          "value": 1.0
-        },
-        {
-          "date": "2026-09-22",
-          "value": 1.0
-        },
-        {
-          "date": "2026-09-23",
-          "value": 4.0
-        },
-        {
-          "date": "2026-09-24",
-          "value": 0.0
-        }
-      ]
+      }
     },
     {
       "batter_id": 669127,
@@ -5455,7 +5833,7 @@
       "pa": 456,
       "hit_rate": 0.2412280701754386,
       "pa_per_game": 2.923076923076923,
-      "chance": 0.567708874249834,
+      "chance": 0.5677082073250341,
       "vs": "Hunter Brown",
       "vs_hand": "",
       "pitcher_id": 686613,
@@ -5464,7 +5842,7 @@
       "vs_h_per_bf": 0.18501170960187355,
       "park": 1.1284567081270378,
       "park_raw": 1.2569134162540756,
-      "league_rate": 0.21664506695909347,
+      "league_rate": 0.21664571786111772,
       "commence_time": "2026-09-26T01:40:00Z",
       "lineup": false,
       "h_at_projection": 110,
@@ -5478,49 +5856,7 @@
         "k": 5,
         "bb": 0,
         "avg": 0.25
-      },
-      "recent": [
-        {
-          "date": "2026-09-12",
-          "value": 1.0
-        },
-        {
-          "date": "2026-09-13",
-          "value": 1.0
-        },
-        {
-          "date": "2026-09-15",
-          "value": 1.0
-        },
-        {
-          "date": "2026-09-16",
-          "value": 1.0
-        },
-        {
-          "date": "2026-09-18",
-          "value": 0.0
-        },
-        {
-          "date": "2026-09-19",
-          "value": 2.0
-        },
-        {
-          "date": "2026-09-20",
-          "value": 0.0
-        },
-        {
-          "date": "2026-09-22",
-          "value": 3.0
-        },
-        {
-          "date": "2026-09-23",
-          "value": 1.0
-        },
-        {
-          "date": "2026-09-24",
-          "value": 1.0
-        }
-      ]
+      }
     },
     {
       "batter_id": 668227,
@@ -5531,7 +5867,7 @@
       "pa": 656,
       "hit_rate": 0.23780487804878048,
       "pa_per_game": 4.205128205128205,
-      "chance": 0.6296720255490267,
+      "chance": 0.6296713376224012,
       "vs": "Reid Detmers",
       "vs_hand": "",
       "pitcher_id": 672282,
@@ -5540,7 +5876,7 @@
       "vs_h_per_bf": 0.1977715877437326,
       "park": 0.9315828402366864,
       "park_raw": 0.8631656804733728,
-      "league_rate": 0.21664506695909347,
+      "league_rate": 0.21664571786111772,
       "commence_time": "2026-09-26T02:10:00Z",
       "lineup": false,
       "h_at_projection": 156,
@@ -5554,49 +5890,7 @@
         "k": 4,
         "bb": 2,
         "avg": 0.3125
-      },
-      "recent": [
-        {
-          "date": "2026-09-13",
-          "value": 3.0
-        },
-        {
-          "date": "2026-09-14",
-          "value": 2.0
-        },
-        {
-          "date": "2026-09-15",
-          "value": 1.0
-        },
-        {
-          "date": "2026-09-16",
-          "value": 1.0
-        },
-        {
-          "date": "2026-09-18",
-          "value": 3.0
-        },
-        {
-          "date": "2026-09-19",
-          "value": 1.0
-        },
-        {
-          "date": "2026-09-20",
-          "value": 0.0
-        },
-        {
-          "date": "2026-09-22",
-          "value": 0.0
-        },
-        {
-          "date": "2026-09-23",
-          "value": 1.0
-        },
-        {
-          "date": "2026-09-24",
-          "value": 1.0
-        }
-      ]
+      }
     },
     {
       "batter_id": 647304,
@@ -5607,7 +5901,7 @@
       "pa": 637,
       "hit_rate": 0.24332810047095763,
       "pa_per_game": 4.083333333333333,
-      "chance": 0.628406060877751,
+      "chance": 0.628405370962223,
       "vs": "Reid Detmers",
       "vs_hand": "",
       "pitcher_id": 672282,
@@ -5616,7 +5910,7 @@
       "vs_h_per_bf": 0.1977715877437326,
       "park": 0.9315828402366864,
       "park_raw": 0.8631656804733728,
-      "league_rate": 0.21664506695909347,
+      "league_rate": 0.21664571786111772,
       "commence_time": "2026-09-26T02:10:00Z",
       "lineup": false,
       "h_at_projection": 155,
@@ -5630,49 +5924,7 @@
         "k": 3,
         "bb": 0,
         "avg": 0.1875
-      },
-      "recent": [
-        {
-          "date": "2026-09-13",
-          "value": 2.0
-        },
-        {
-          "date": "2026-09-14",
-          "value": 0.0
-        },
-        {
-          "date": "2026-09-15",
-          "value": 2.0
-        },
-        {
-          "date": "2026-09-16",
-          "value": 2.0
-        },
-        {
-          "date": "2026-09-18",
-          "value": 1.0
-        },
-        {
-          "date": "2026-09-19",
-          "value": 0.0
-        },
-        {
-          "date": "2026-09-20",
-          "value": 0.0
-        },
-        {
-          "date": "2026-09-22",
-          "value": 0.0
-        },
-        {
-          "date": "2026-09-23",
-          "value": 1.0
-        },
-        {
-          "date": "2026-09-24",
-          "value": 0.0
-        }
-      ]
+      }
     },
     {
       "batter_id": 677594,
@@ -5683,7 +5935,7 @@
       "pa": 644,
       "hit_rate": 0.22826086956521738,
       "pa_per_game": 4.128205128205129,
-      "chance": 0.6059459921012682,
+      "chance": 0.6059453092786955,
       "vs": "Reid Detmers",
       "vs_hand": "",
       "pitcher_id": 672282,
@@ -5692,7 +5944,7 @@
       "vs_h_per_bf": 0.1977715877437326,
       "park": 0.9315828402366864,
       "park_raw": 0.8631656804733728,
-      "league_rate": 0.21664506695909347,
+      "league_rate": 0.21664571786111772,
       "commence_time": "2026-09-26T02:10:00Z",
       "lineup": false,
       "h_at_projection": 147,
@@ -5706,49 +5958,7 @@
         "k": 4,
         "bb": 4,
         "avg": 0.4
-      },
-      "recent": [
-        {
-          "date": "2026-09-13",
-          "value": 1.0
-        },
-        {
-          "date": "2026-09-14",
-          "value": 0.0
-        },
-        {
-          "date": "2026-09-15",
-          "value": 1.0
-        },
-        {
-          "date": "2026-09-16",
-          "value": 2.0
-        },
-        {
-          "date": "2026-09-18",
-          "value": 0.0
-        },
-        {
-          "date": "2026-09-19",
-          "value": 2.0
-        },
-        {
-          "date": "2026-09-20",
-          "value": 1.0
-        },
-        {
-          "date": "2026-09-22",
-          "value": 2.0
-        },
-        {
-          "date": "2026-09-23",
-          "value": 3.0
-        },
-        {
-          "date": "2026-09-24",
-          "value": 2.0
-        }
-      ]
+      }
     },
     {
       "batter_id": 687263,
@@ -5759,7 +5969,7 @@
       "pa": 689,
       "hit_rate": 0.2104499274310595,
       "pa_per_game": 4.253086419753086,
-      "chance": 0.5915628846243512,
+      "chance": 0.5915621960101713,
       "vs": "Bryce Miller",
       "vs_hand": "",
       "pitcher_id": 682243,
@@ -5768,7 +5978,7 @@
       "vs_h_per_bf": 0.2047930283224401,
       "park": 0.9315828402366864,
       "park_raw": 0.8631656804733728,
-      "league_rate": 0.21664506695909347,
+      "league_rate": 0.21664571786111772,
       "commence_time": "2026-09-26T02:10:00Z",
       "lineup": false,
       "h_at_projection": 145,
@@ -5782,49 +5992,7 @@
         "k": 7,
         "bb": 2,
         "avg": 0.11764705882352941
-      },
-      "recent": [
-        {
-          "date": "2026-09-14",
-          "value": 2.0
-        },
-        {
-          "date": "2026-09-15",
-          "value": 0.0
-        },
-        {
-          "date": "2026-09-16",
-          "value": 2.0
-        },
-        {
-          "date": "2026-09-17",
-          "value": 0.0
-        },
-        {
-          "date": "2026-09-18",
-          "value": 0.0
-        },
-        {
-          "date": "2026-09-19",
-          "value": 0.0
-        },
-        {
-          "date": "2026-09-20",
-          "value": 0.0
-        },
-        {
-          "date": "2026-09-22",
-          "value": 1.0
-        },
-        {
-          "date": "2026-09-23",
-          "value": 1.0
-        },
-        {
-          "date": "2026-09-24",
-          "value": 1.0
-        }
-      ]
+      }
     },
     {
       "batter_id": 545361,
@@ -5835,7 +6003,7 @@
       "pa": 624,
       "hit_rate": 0.1987179487179487,
       "pa_per_game": 3.8518518518518516,
-      "chance": 0.5327755965865275,
+      "chance": 0.5327749313792676,
       "vs": "Bryce Miller",
       "vs_hand": "",
       "pitcher_id": 682243,
@@ -5844,7 +6012,7 @@
       "vs_h_per_bf": 0.2047930283224401,
       "park": 0.9315828402366864,
       "park_raw": 0.8631656804733728,
-      "league_rate": 0.21664506695909347,
+      "league_rate": 0.21664571786111772,
       "commence_time": "2026-09-26T02:10:00Z",
       "lineup": false,
       "h_at_projection": 124,
@@ -5869,7 +6037,7 @@
       "pa": 446,
       "hit_rate": 0.242152466367713,
       "pa_per_game": 2.753086419753086,
-      "chance": 0.492659901076939,
+      "chance": 0.4926592413726607,
       "vs": "Bryce Miller",
       "vs_hand": "",
       "pitcher_id": 682243,
@@ -5878,7 +6046,7 @@
       "vs_h_per_bf": 0.2047930283224401,
       "park": 0.9315828402366864,
       "park_raw": 0.8631656804733728,
-      "league_rate": 0.21664506695909347,
+      "league_rate": 0.21664571786111772,
       "commence_time": "2026-09-26T02:10:00Z",
       "lineup": false,
       "h_at_projection": 108,
@@ -5903,7 +6071,7 @@
       "pa": 650,
       "hit_rate": 0.2569230769230769,
       "pa_per_game": 4.012345679012346,
-      "chance": 0.6763659950088056,
+      "chance": 0.6763652599129877,
       "vs": "Yunior Marte",
       "vs_hand": "",
       "pitcher_id": 805074,
@@ -5912,7 +6080,7 @@
       "vs_h_per_bf": 0.21686746987951808,
       "park": 0.9534076051427327,
       "park_raw": 0.9068152102854653,
-      "league_rate": 0.21664506695909347,
+      "league_rate": 0.21664571786111772,
       "commence_time": "2026-09-26T02:15:00Z",
       "lineup": false,
       "h_at_projection": 167,
@@ -5937,7 +6105,7 @@
       "pa": 579,
       "hit_rate": 0.25734024179620035,
       "pa_per_game": 3.7115384615384617,
-      "chance": 0.6360656298448908,
+      "chance": 0.6360649134872469,
       "vs": "Tarik Skubal",
       "vs_hand": "",
       "pitcher_id": 669373,
@@ -5946,7 +6114,7 @@
       "vs_h_per_bf": 0.20603015075376885,
       "park": 0.9534076051427327,
       "park_raw": 0.9068152102854653,
-      "league_rate": 0.21664506695909347,
+      "league_rate": 0.21664571786111772,
       "commence_time": "2026-09-26T02:15:00Z",
       "lineup": false,
       "h_at_projection": 149,
@@ -5971,7 +6139,7 @@
       "pa": 633,
       "hit_rate": 0.22748815165876776,
       "pa_per_game": 4.0576923076923075,
-      "chance": 0.6172241758790469,
+      "chance": 0.6172234725483337,
       "vs": "Tarik Skubal",
       "vs_hand": "",
       "pitcher_id": 669373,
@@ -5980,7 +6148,7 @@
       "vs_h_per_bf": 0.20603015075376885,
       "park": 0.9534076051427327,
       "park_raw": 0.9068152102854653,
-      "league_rate": 0.21664506695909347,
+      "league_rate": 0.21664571786111772,
       "commence_time": "2026-09-26T02:15:00Z",
       "lineup": false,
       "h_at_projection": 144,
@@ -6005,7 +6173,7 @@
       "pa": 606,
       "hit_rate": 0.23432343234323433,
       "pa_per_game": 3.740740740740741,
-      "chance": 0.6118795124748094,
+      "chance": 0.6118787837023636,
       "vs": "Yunior Marte",
       "vs_hand": "",
       "pitcher_id": 805074,
@@ -6014,7 +6182,7 @@
       "vs_h_per_bf": 0.21686746987951808,
       "park": 0.9534076051427327,
       "park_raw": 0.9068152102854653,
-      "league_rate": 0.21664506695909347,
+      "league_rate": 0.21664571786111772,
       "commence_time": "2026-09-26T02:15:00Z",
       "lineup": false,
       "h_at_projection": 142,
@@ -6030,7 +6198,7 @@
       "pa": 562,
       "hit_rate": 0.24377224199288255,
       "pa_per_game": 3.4691358024691357,
-      "chance": 0.6007748893746794,
+      "chance": 0.6007741576470171,
       "vs": "Yunior Marte",
       "vs_hand": "",
       "pitcher_id": 805074,
@@ -6039,7 +6207,7 @@
       "vs_h_per_bf": 0.21686746987951808,
       "park": 0.9534076051427327,
       "park_raw": 0.9068152102854653,
-      "league_rate": 0.21664506695909347,
+      "league_rate": 0.21664571786111772,
       "commence_time": "2026-09-26T02:15:00Z",
       "lineup": false,
       "h_at_projection": 137,
@@ -6055,7 +6223,7 @@
       "pa": 409,
       "hit_rate": 0.2567237163814181,
       "pa_per_game": 2.621794871794872,
-      "chance": 0.5093580991518059,
+      "chance": 0.509357419075215,
       "vs": "Tarik Skubal",
       "vs_hand": "",
       "pitcher_id": 669373,
@@ -6064,7 +6232,7 @@
       "vs_h_per_bf": 0.20603015075376885,
       "park": 0.9534076051427327,
       "park_raw": 0.9068152102854653,
-      "league_rate": 0.21664506695909347,
+      "league_rate": 0.21664571786111772,
       "commence_time": "2026-09-26T02:15:00Z",
       "lineup": false,
       "h_at_projection": 105,

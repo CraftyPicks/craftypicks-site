@@ -1440,6 +1440,129 @@
       "actual": null
     },
     {
+      "pitcher_id": 667755,
+      "name": "José Soriano",
+      "team": "TOR",
+      "opponent": "CIN",
+      "opponent_id": 113,
+      "event_id": null,
+      "commence_time": "2026-09-25T23:07:00Z",
+      "date": "09/25/2026",
+      "line": null,
+      "reference": 5.7,
+      "over_odds": null,
+      "under_odds": null,
+      "books": null,
+      "projection": 5.7,
+      "gap": null,
+      "suspect": false,
+      "k_pct": 0.22908093278463648,
+      "k_per_9": 8.621414913957935,
+      "era": 3.72,
+      "w": 12,
+      "l": 8,
+      "innings": 174.33333333333334,
+      "opp_k_per_game": 9.522012578616351,
+      "opp_k_rank": 2,
+      "opp_teams_ranked": 28,
+      "recent": [
+        {
+          "date": "2026-07-26",
+          "opponent": "San Francisco Giants",
+          "strikeouts": 5,
+          "innings": 5.0
+        },
+        {
+          "date": "2026-08-07",
+          "opponent": "Philadelphia Phillies",
+          "strikeouts": 3,
+          "innings": 4.7
+        },
+        {
+          "date": "2026-08-12",
+          "opponent": "Boston Red Sox",
+          "strikeouts": 4,
+          "innings": 6.0
+        },
+        {
+          "date": "2026-08-18",
+          "opponent": "Tampa Bay Rays",
+          "strikeouts": 2,
+          "innings": 5.7
+        },
+        {
+          "date": "2026-08-23",
+          "opponent": "New York Yankees",
+          "strikeouts": 7,
+          "innings": 5.0
+        },
+        {
+          "date": "2026-08-29",
+          "opponent": "Seattle Mariners",
+          "strikeouts": 6,
+          "innings": 7.0
+        },
+        {
+          "date": "2026-09-03",
+          "opponent": "Cleveland Guardians",
+          "strikeouts": 2,
+          "innings": 4.7
+        },
+        {
+          "date": "2026-09-08",
+          "opponent": "Athletics",
+          "strikeouts": 3,
+          "innings": 7.0
+        },
+        {
+          "date": "2026-09-14",
+          "opponent": "Detroit Tigers",
+          "strikeouts": 5,
+          "innings": 6.3
+        },
+        {
+          "date": "2026-09-19",
+          "opponent": "Texas Rangers",
+          "strikeouts": 8,
+          "innings": 5.0
+        }
+      ],
+      "recent_over": 3,
+      "recent_n": 10,
+      "last5_over": 2,
+      "last5_n": 5,
+      "vs_opp": {
+        "starts": 1,
+        "innings": 7.0,
+        "era": 0.0,
+        "strikeouts": 10,
+        "span": "2025–2026",
+        "source": "gameLog"
+      },
+      "vs_roster": {
+        "pa": 44,
+        "k_pct": 0.13636363636363635,
+        "bb_pct": 0.18181818181818182,
+        "avg": 0.19444444444444445,
+        "batters": 8,
+        "xwoba": 0.306,
+        "xwoba_pa": 37,
+        "xwoba_span": "2024–2026",
+        "thin": true
+      },
+      "hand": "R",
+      "opp_split": {
+        "k_pct": 25.557071396089132,
+        "pa": 4398,
+        "rank": 2,
+        "rank_all": 1,
+        "of": 30,
+        "league_mean": 21.972067884098493
+      },
+      "matchup": "favourable",
+      "actual": null
+    },
+    {
       "pitcher_id": 691587,
       "name": "Eury Pérez",
       "team": "MIA",
@@ -1558,6 +1681,51 @@
         "rank_all": 21,
         "of": 30,
         "league_mean": 21.97309230439305
+      },
+      "matchup": "neutral",
+      "actual": null
+    },
+    {
+      "pitcher_id": 678061,
+      "name": "Ray Kerr",
+      "team": "ATL",
+      "opponent": "MIA",
+      "opponent_id": 146,
+      "event_id": null,
+      "commence_time": "2026-09-25T23:10:00Z",
+      "date": "09/25/2026",
+      "line": null,
+      "reference": 3.8,
+      "over_odds": null,
+      "under_odds": null,
+      "books": null,
+      "projection": 3.8,
+      "gap": null,
+      "suspect": false,
+      "k_pct": 0.2,
+      "k_per_9": 6.456521739130435,
+      "era": 1.76,
+      "w": 0,
+      "l": 0,
+      "innings": 15.333333333333334,
+      "opp_k_per_game": 8.320754716981131,
+      "opp_k_rank": 14,
+      "opp_teams_ranked": 28,
+      "recent": [],
+      "recent_over": 0,
+      "recent_n": 0,
+      "last5_over": 0,
+      "last5_n": 0,
+      "vs_opp": null,
+      "vs_roster": null,
+      "hand": "L",
+      "opp_split": {
+        "k_pct": 23.13749242883101,
+        "pa": 1651,
+        "rank": 14,
+        "rank_all": 14,
+        "of": 30,
+        "league_mean": 22.4727648355554
       },
       "matchup": "neutral",
       "actual": null
@@ -3347,7 +3515,7 @@
     }
   ],
   "summary": {
-    "rated": 678,
+    "rated": 680,
     "graded": 642,
     "priced": 294,
     "mae": 2.15,
