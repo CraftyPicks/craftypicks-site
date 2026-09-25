@@ -3435,13 +3435,14 @@
       "pitcher_era": 3.18,
       "venue": "Fenway Park",
       "commence_time": "2026-09-25T17:05:00Z",
-      "actual": null,
+      "actual": 4,
       "probs": {
         "2.5": 0.4618,
         "3.5": 0.3085,
         "4.5": 0.1979
       },
-      "shape": 2.839
+      "shape": 2.839,
+      "miss": 1.22
     },
     {
       "projection": 3.32,
@@ -3462,13 +3463,14 @@
       "pitcher_era": 1.91,
       "venue": "Fenway Park",
       "commence_time": "2026-09-25T17:05:00Z",
-      "actual": null,
+      "actual": 3,
       "probs": {
         "2.5": 0.5436,
         "3.5": 0.3908,
         "4.5": 0.2706
       },
-      "shape": 2.839
+      "shape": 2.839,
+      "miss": -0.32
     },
     {
       "projection": 4.13,
@@ -4252,6 +4254,33 @@
         "4.5": 0.1925
       },
       "shape": 2.838
+    },
+    {
+      "projection": 4.23,
+      "sp_used": true,
+      "league_f7": 3.482,
+      "offence": 1.083,
+      "sp_index": 1.015,
+      "pen_index": 1.113,
+      "park": 1.077,
+      "sp_innings": 5.2,
+      "game_pk": 822681,
+      "team_id": 120,
+      "team": "WSH",
+      "opponent": "NYM",
+      "is_home": true,
+      "pitcher": "Jefry Yan",
+      "pitcher_hand": "",
+      "pitcher_era": 4.34,
+      "venue": "Nationals Park",
+      "commence_time": "2026-09-25T22:45:00Z",
+      "actual": null,
+      "probs": {
+        "2.5": 0.6517,
+        "3.5": 0.5102,
+        "4.5": 0.3866
+      },
+      "shape": 2.856
     }
   ]
 }
