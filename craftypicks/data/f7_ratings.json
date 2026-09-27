@@ -4555,13 +4555,14 @@
       "pitcher_era": 3.65,
       "venue": "Oracle Park",
       "commence_time": "2026-09-26T20:05:00Z",
-      "actual": null,
+      "actual": 3,
       "probs": {
         "2.5": 0.6371,
         "3.5": 0.4934,
         "4.5": 0.3696
       },
-      "shape": 2.851
+      "shape": 2.851,
+      "miss": -1.09
     },
     {
       "projection": 2.8,
@@ -4582,13 +4583,14 @@
       "pitcher_era": 1.86,
       "venue": "Oracle Park",
       "commence_time": "2026-09-26T20:05:00Z",
-      "actual": null,
+      "actual": 2,
       "probs": {
         "2.5": 0.4653,
         "3.5": 0.3117,
         "4.5": 0.2005
       },
-      "shape": 2.851
+      "shape": 2.851,
+      "miss": -0.8
     },
     {
       "projection": 3.22,
@@ -4609,13 +4611,14 @@
       "pitcher_era": 4.5,
       "venue": "loanDepot park",
       "commence_time": "2026-09-26T20:10:00Z",
-      "actual": null,
+      "actual": 6,
       "probs": {
         "2.5": 0.5298,
         "3.5": 0.3763,
         "4.5": 0.2572
       },
-      "shape": 2.851
+      "shape": 2.851,
+      "miss": 2.78
     },
     {
       "projection": 3.04,
@@ -4636,13 +4639,14 @@
       "pitcher_era": 3.48,
       "venue": "loanDepot park",
       "commence_time": "2026-09-26T20:10:00Z",
-      "actual": null,
+      "actual": 3,
       "probs": {
         "2.5": 0.5033,
         "3.5": 0.3492,
         "4.5": 0.2329
       },
-      "shape": 2.851
+      "shape": 2.851,
+      "miss": -0.04
     },
     {
       "projection": 3.52,
@@ -5048,6 +5052,33 @@
         "4.5": 0.3308
       },
       "shape": 2.842
+    },
+    {
+      "projection": 2.8,
+      "sp_used": true,
+      "league_f7": 3.482,
+      "offence": 1.015,
+      "sp_index": 0.858,
+      "pen_index": 0.881,
+      "park": 0.925,
+      "sp_innings": 7.0,
+      "game_pk": 823245,
+      "team_id": 135,
+      "team": "SD",
+      "opponent": "AZ",
+      "is_home": true,
+      "pitcher": "Taylor Clarke",
+      "pitcher_hand": "",
+      "pitcher_era": 2.86,
+      "venue": "Petco Park",
+      "commence_time": "2026-09-27T00:40:00Z",
+      "actual": null,
+      "probs": {
+        "2.5": 0.4653,
+        "3.5": 0.3117,
+        "4.5": 0.2005
+      },
+      "shape": 2.849
     }
   ]
 }
