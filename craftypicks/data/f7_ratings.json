@@ -6065,13 +6065,14 @@
       "pitcher_era": 1.95,
       "venue": "Yankee Stadium",
       "commence_time": "2026-09-30T00:00:00Z",
-      "actual": null,
+      "actual": 0,
       "probs": {
         "2.5": 0.3718,
         "3.5": 0.2272,
         "4.5": 0.1329
       },
-      "shape": 2.761
+      "shape": 2.761,
+      "miss": -2.28
     },
     {
       "projection": 2.97,
@@ -6092,13 +6093,14 @@
       "pitcher_era": 3.03,
       "venue": "Yankee Stadium",
       "commence_time": "2026-09-30T00:00:00Z",
-      "actual": null,
+      "actual": 4,
       "probs": {
         "2.5": 0.4907,
         "3.5": 0.338,
         "4.5": 0.224
       },
-      "shape": 2.761
+      "shape": 2.761,
+      "miss": 1.03
     },
     {
       "projection": 2.93,
@@ -6119,13 +6121,14 @@
       "pitcher_era": 3.21,
       "venue": "Petco Park",
       "commence_time": "2026-09-30T02:00:00Z",
-      "actual": null,
+      "actual": 0,
       "probs": {
         "2.5": 0.4845,
         "3.5": 0.3319,
         "4.5": 0.2187
       },
-      "shape": 2.761
+      "shape": 2.761,
+      "miss": -2.93
     },
     {
       "projection": 3.13,
@@ -6146,13 +6149,230 @@
       "pitcher_era": 3.91,
       "venue": "Petco Park",
       "commence_time": "2026-09-30T02:00:00Z",
-      "actual": null,
+      "actual": 8,
       "probs": {
         "2.5": 0.5147,
         "3.5": 0.3622,
         "4.5": 0.2455
       },
-      "shape": 2.761
+      "shape": 2.761,
+      "miss": 4.87
+    },
+    {
+      "projection": 2.76,
+      "sp_used": true,
+      "league_f7": 3.485,
+      "offence": 0.956,
+      "sp_index": 0.766,
+      "pen_index": 1.069,
+      "park": 1.029,
+      "sp_innings": 6.11,
+      "game_pk": 849841,
+      "team_id": 144,
+      "team": "ATL",
+      "opponent": "PHI",
+      "is_home": true,
+      "pitcher": "Cristopher Sánchez",
+      "pitcher_hand": "",
+      "pitcher_era": 2.91,
+      "venue": "Truist Park",
+      "commence_time": "2026-09-30T18:00:00Z",
+      "actual": null,
+      "probs": {
+        "2.5": 0.4564,
+        "3.5": 0.3052,
+        "4.5": 0.1963
+      },
+      "shape": 2.714
+    },
+    {
+      "projection": 2.93,
+      "sp_used": true,
+      "league_f7": 3.485,
+      "offence": 0.889,
+      "sp_index": 0.94,
+      "pen_index": 0.845,
+      "park": 1.029,
+      "sp_innings": 5.46,
+      "game_pk": 849841,
+      "team_id": 143,
+      "team": "PHI",
+      "opponent": "ATL",
+      "is_home": false,
+      "pitcher": "Tyler Mahle",
+      "pitcher_hand": "",
+      "pitcher_era": 3.99,
+      "venue": "Truist Park",
+      "commence_time": "2026-09-30T18:00:00Z",
+      "actual": null,
+      "probs": {
+        "2.5": 0.4836,
+        "3.5": 0.3317,
+        "4.5": 0.219
+      },
+      "shape": 2.714
+    },
+    {
+      "projection": 3.35,
+      "sp_used": true,
+      "league_f7": 3.485,
+      "offence": 1.128,
+      "sp_index": 0.855,
+      "pen_index": 0.988,
+      "park": 0.96,
+      "sp_innings": 5.33,
+      "game_pk": 849846,
+      "team_id": 145,
+      "team": "CWS",
+      "opponent": "HOU",
+      "is_home": false,
+      "pitcher": "Hunter Brown",
+      "pitcher_hand": "",
+      "pitcher_era": 3.19,
+      "venue": "Daikin Park",
+      "commence_time": "2026-09-30T21:00:00Z",
+      "actual": null,
+      "probs": {
+        "2.5": 0.5445,
+        "3.5": 0.3938,
+        "4.5": 0.2749
+      },
+      "shape": 2.714
+    },
+    {
+      "projection": 2.91,
+      "sp_used": true,
+      "league_f7": 3.485,
+      "offence": 1.039,
+      "sp_index": 0.829,
+      "pen_index": 0.898,
+      "park": 0.96,
+      "sp_innings": 6.17,
+      "game_pk": 849846,
+      "team_id": 117,
+      "team": "HOU",
+      "opponent": "CWS",
+      "is_home": true,
+      "pitcher": "Sean Burke",
+      "pitcher_hand": "",
+      "pitcher_era": 3.34,
+      "venue": "Daikin Park",
+      "commence_time": "2026-09-30T21:00:00Z",
+      "actual": null,
+      "probs": {
+        "2.5": 0.4804,
+        "3.5": 0.3286,
+        "4.5": 0.2163
+      },
+      "shape": 2.714
+    },
+    {
+      "projection": 2.56,
+      "sp_used": true,
+      "league_f7": 3.485,
+      "offence": 0.897,
+      "sp_index": 0.749,
+      "pen_index": 0.866,
+      "park": 1.06,
+      "sp_innings": 5.53,
+      "game_pk": 849848,
+      "team_id": 111,
+      "team": "BOS",
+      "opponent": "NYY",
+      "is_home": false,
+      "pitcher": "Max Fried",
+      "pitcher_hand": "",
+      "pitcher_era": 2.8,
+      "venue": "Yankee Stadium",
+      "commence_time": "2026-10-01T00:00:00Z",
+      "actual": null,
+      "probs": {
+        "2.5": 0.4224,
+        "3.5": 0.2732,
+        "4.5": 0.1697
+      },
+      "shape": 2.714
+    },
+    {
+      "projection": 2.7,
+      "sp_used": true,
+      "league_f7": 3.485,
+      "offence": 0.983,
+      "sp_index": 0.711,
+      "pen_index": 0.888,
+      "park": 1.06,
+      "sp_innings": 5.72,
+      "game_pk": 849848,
+      "team_id": 147,
+      "team": "NYY",
+      "opponent": "BOS",
+      "is_home": true,
+      "pitcher": "Sonny Gray",
+      "pitcher_hand": "",
+      "pitcher_era": 2.72,
+      "venue": "Yankee Stadium",
+      "commence_time": "2026-10-01T00:00:00Z",
+      "actual": null,
+      "probs": {
+        "2.5": 0.4464,
+        "3.5": 0.2957,
+        "4.5": 0.1883
+      },
+      "shape": 2.714
+    },
+    {
+      "projection": 3.11,
+      "sp_used": true,
+      "league_f7": 3.485,
+      "offence": 1.107,
+      "sp_index": 0.864,
+      "pen_index": 0.859,
+      "park": 0.934,
+      "sp_innings": 4.7,
+      "game_pk": 849842,
+      "team_id": 112,
+      "team": "CHC",
+      "opponent": "SD",
+      "is_home": false,
+      "pitcher": "Nick Pivetta",
+      "pitcher_hand": "",
+      "pitcher_era": 2.86,
+      "venue": "Petco Park",
+      "commence_time": "2026-10-01T02:00:00Z",
+      "actual": null,
+      "probs": {
+        "2.5": 0.5107,
+        "3.5": 0.3589,
+        "4.5": 0.2431
+      },
+      "shape": 2.714
+    },
+    {
+      "projection": 3.4,
+      "sp_used": true,
+      "league_f7": 3.485,
+      "offence": 1.015,
+      "sp_index": 1.052,
+      "pen_index": 0.947,
+      "park": 0.934,
+      "sp_innings": 5.5,
+      "game_pk": 849842,
+      "team_id": 135,
+      "team": "SD",
+      "opponent": "CHC",
+      "is_home": true,
+      "pitcher": "Kevin Gausman",
+      "pitcher_hand": "",
+      "pitcher_era": 4.51,
+      "venue": "Petco Park",
+      "commence_time": "2026-10-01T02:00:00Z",
+      "actual": null,
+      "probs": {
+        "2.5": 0.5512,
+        "3.5": 0.4009,
+        "4.5": 0.2815
+      },
+      "shape": 2.714
     }
   ]
 }
