@@ -30,10 +30,10 @@
       "shape": 2.714
     },
     {
-      "projection": 2.93,
+      "projection": 2.91,
       "sp_used": true,
       "league_f7": 3.485,
-      "offence": 0.889,
+      "offence": 0.884,
       "sp_index": 0.94,
       "pen_index": 0.845,
       "park": 1.029,
@@ -50,9 +50,9 @@
       "commence_time": "2026-09-30T18:00:00Z",
       "actual": null,
       "probs": {
-        "2.5": 0.4836,
-        "3.5": 0.3317,
-        "4.5": 0.219
+        "2.5": 0.4804,
+        "3.5": 0.3286,
+        "4.5": 0.2163
       },
       "shape": 2.714
     },
@@ -221,16 +221,16 @@
   ],
   "summary": {
     "published": 228,
-    "graded": 218,
-    "mae": 2.119,
-    "baseline_mae": 2.154,
+    "graded": 220,
+    "mae": 2.11,
+    "baseline_mae": 2.147,
     "bands": [
       {
         "lo": 0.0,
         "hi": 3.0,
-        "n": 47,
-        "projected": 2.74,
-        "actual": 2.64
+        "n": 49,
+        "projected": 2.75,
+        "actual": 2.61
       },
       {
         "lo": 3.0,
@@ -257,24 +257,24 @@
     "over_rate": [
       {
         "line": 2.5,
-        "n": 218,
-        "said": 0.553,
-        "were": 0.537
+        "n": 220,
+        "said": 0.552,
+        "were": 0.536
       },
       {
         "line": 3.5,
-        "n": 218,
+        "n": 220,
         "said": 0.403,
-        "were": 0.422
+        "were": 0.418
       },
       {
         "line": 4.5,
-        "n": 218,
-        "said": 0.285,
-        "were": 0.271
+        "n": 220,
+        "said": 0.284,
+        "were": 0.268
       }
     ],
     "baseline_in_sample": false,
-    "baseline": 3.49
+    "baseline": 3.48
   }
 }
