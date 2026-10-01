@@ -315,11 +315,11 @@
       "scored": null
     },
     {
-      "player_id": "00-0036139",
-      "name": "Rico Dowdle",
+      "player_id": "00-0036252",
+      "name": "Michael Pittman",
       "team": "PIT",
       "opponent": "CLE",
-      "position": "RB",
+      "position": "WR",
       "per_game": 0.275,
       "chance": 0.2160058283772095,
       "weight": 0.333,
@@ -332,49 +332,49 @@
         {
           "season": 2025,
           "week": 10,
-          "opponent": "NO",
-          "value": 1.0
-        },
-        {
-          "season": 2025,
-          "week": 11,
           "opponent": "ATL",
           "value": 0.0
         },
         {
           "season": 2025,
           "week": 12,
-          "opponent": "SF",
-          "value": 0.0
+          "opponent": "KC",
+          "value": 1.0
         },
         {
           "season": 2025,
           "week": 13,
-          "opponent": "LA",
+          "opponent": "HOU",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 14,
+          "opponent": "JAX",
           "value": 0.0
         },
         {
           "season": 2025,
           "week": 15,
-          "opponent": "NO",
-          "value": 1.0
-        },
-        {
-          "season": 2025,
-          "week": 16,
-          "opponent": "TB",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 17,
           "opponent": "SEA",
           "value": 0.0
         },
         {
           "season": 2025,
+          "week": 16,
+          "opponent": "SF",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 17,
+          "opponent": "JAX",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
           "week": 18,
-          "opponent": "TB",
+          "opponent": "HOU",
           "value": 0.0
         },
         {
@@ -385,8 +385,8 @@
         },
         {
           "season": 2026,
-          "week": 2,
-          "opponent": "NE",
+          "week": 3,
+          "opponent": "CIN",
           "value": 0.0
         }
       ],
@@ -5829,11 +5829,11 @@
       "scored": null
     },
     {
-      "player_id": "00-0034796",
-      "name": "Lamar Jackson",
+      "player_id": "00-0036550",
+      "name": "Rashod Bateman",
       "team": "BAL",
       "opponent": "TEN",
-      "position": "QB",
+      "position": "WR",
       "per_game": 0.231,
       "chance": 0.2047975788925207,
       "weight": 0.429,
@@ -5845,14 +5845,20 @@
       "recent": [
         {
           "season": 2025,
-          "week": 11,
-          "opponent": "CLE",
+          "week": 8,
+          "opponent": "CHI",
           "value": 0.0
         },
         {
           "season": 2025,
-          "week": 12,
-          "opponent": "NYJ",
+          "week": 9,
+          "opponent": "MIA",
+          "value": 1.0
+        },
+        {
+          "season": 2025,
+          "week": 10,
+          "opponent": "MIN",
           "value": 0.0
         },
         {
@@ -5865,12 +5871,6 @@
           "season": 2025,
           "week": 14,
           "opponent": "PIT",
-          "value": 1.0
-        },
-        {
-          "season": 2025,
-          "week": 15,
-          "opponent": "CIN",
           "value": 0.0
         },
         {
@@ -5881,21 +5881,21 @@
         },
         {
           "season": 2025,
-          "week": 18,
-          "opponent": "PIT",
+          "week": 17,
+          "opponent": "GB",
           "value": 0.0
         },
         {
           "season": 2026,
           "week": 1,
           "opponent": "IND",
-          "value": 1.0
+          "value": 0.0
         },
         {
           "season": 2026,
           "week": 2,
           "opponent": "NO",
-          "value": 0.0
+          "value": 1.0
         },
         {
           "season": 2026,
@@ -6429,6 +6429,66 @@
       "scored": null
     },
     {
+      "player_id": "00-0038128",
+      "name": "Malik Willis",
+      "team": "MIA",
+      "opponent": "MIN",
+      "position": "QB",
+      "per_game": 0.429,
+      "chance": 0.21339820216351613,
+      "weight": 0.429,
+      "opp_allowed": 1.37,
+      "league_allowed": 2.45,
+      "week": 4,
+      "game_id": "2026_04_MIA_MIN",
+      "commence_time": "2026-10-04T16:05:00-04:00",
+      "recent": [
+        {
+          "season": 2025,
+          "week": 11,
+          "opponent": "NYG",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 12,
+          "opponent": "MIN",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 16,
+          "opponent": "CHI",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 17,
+          "opponent": "BAL",
+          "value": 2.0
+        },
+        {
+          "season": 2026,
+          "week": 1,
+          "opponent": "LV",
+          "value": 1.0
+        },
+        {
+          "season": 2026,
+          "week": 2,
+          "opponent": "SF",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 3,
+          "opponent": "KC",
+          "value": 0.0
+        }
+      ],
+      "scored": null
+    },
+    {
       "player_id": "00-0039040",
       "name": "De'Von Achane",
       "team": "MIA",
@@ -6490,66 +6550,6 @@
           "week": 1,
           "opponent": "LV",
           "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 2,
-          "opponent": "SF",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 3,
-          "opponent": "KC",
-          "value": 0.0
-        }
-      ],
-      "scored": null
-    },
-    {
-      "player_id": "00-0038128",
-      "name": "Malik Willis",
-      "team": "MIA",
-      "opponent": "MIN",
-      "position": "QB",
-      "per_game": 0.429,
-      "chance": 0.21339820216351613,
-      "weight": 0.429,
-      "opp_allowed": 1.37,
-      "league_allowed": 2.45,
-      "week": 4,
-      "game_id": "2026_04_MIA_MIN",
-      "commence_time": "2026-10-04T16:05:00-04:00",
-      "recent": [
-        {
-          "season": 2025,
-          "week": 11,
-          "opponent": "NYG",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 12,
-          "opponent": "MIN",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 16,
-          "opponent": "CHI",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 17,
-          "opponent": "BAL",
-          "value": 2.0
-        },
-        {
-          "season": 2026,
-          "week": 1,
-          "opponent": "LV",
-          "value": 1.0
         },
         {
           "season": 2026,
