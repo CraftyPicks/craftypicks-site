@@ -6289,13 +6289,14 @@
       "pitcher_era": 2.8,
       "venue": "Yankee Stadium",
       "commence_time": "2026-10-01T00:00:00Z",
-      "actual": null,
+      "actual": 2,
       "probs": {
         "2.5": 0.4224,
         "3.5": 0.2732,
         "4.5": 0.1697
       },
-      "shape": 2.714
+      "shape": 2.714,
+      "miss": -0.56
     },
     {
       "projection": 2.7,
@@ -6316,13 +6317,14 @@
       "pitcher_era": 2.72,
       "venue": "Yankee Stadium",
       "commence_time": "2026-10-01T00:00:00Z",
-      "actual": null,
+      "actual": 9,
       "probs": {
         "2.5": 0.4464,
         "3.5": 0.2957,
         "4.5": 0.1883
       },
-      "shape": 2.714
+      "shape": 2.714,
+      "miss": 6.3
     },
     {
       "projection": 3.11,
@@ -6343,13 +6345,14 @@
       "pitcher_era": 2.86,
       "venue": "Petco Park",
       "commence_time": "2026-10-01T02:00:00Z",
-      "actual": null,
+      "actual": 1,
       "probs": {
         "2.5": 0.5107,
         "3.5": 0.3589,
         "4.5": 0.2431
       },
-      "shape": 2.714
+      "shape": 2.714,
+      "miss": -2.11
     },
     {
       "projection": 3.4,
@@ -6370,13 +6373,68 @@
       "pitcher_era": 4.51,
       "venue": "Petco Park",
       "commence_time": "2026-10-01T02:00:00Z",
-      "actual": null,
+      "actual": 4,
       "probs": {
         "2.5": 0.5512,
         "3.5": 0.4009,
         "4.5": 0.2815
       },
-      "shape": 2.714
+      "shape": 2.714,
+      "miss": 0.6
+    },
+    {
+      "projection": 3.58,
+      "sp_used": true,
+      "league_f7": 3.486,
+      "offence": 0.956,
+      "sp_index": 1.037,
+      "pen_index": 1.069,
+      "park": 1.029,
+      "sp_innings": 5.3,
+      "game_pk": 849844,
+      "team_id": 144,
+      "team": "ATL",
+      "opponent": "PHI",
+      "is_home": true,
+      "pitcher": "Aaron Nola",
+      "pitcher_hand": "",
+      "pitcher_era": 4.67,
+      "venue": "Truist Park",
+      "commence_time": "2026-10-02T00:00:00Z",
+      "actual": null,
+      "probs": {
+        "2.5": 0.5767,
+        "3.5": 0.4268,
+        "4.5": 0.305
+      },
+      "shape": 2.795
+    },
+    {
+      "projection": 2.67,
+      "sp_used": true,
+      "league_f7": 3.486,
+      "offence": 0.884,
+      "sp_index": 0.842,
+      "pen_index": 0.845,
+      "park": 1.029,
+      "sp_innings": 7.0,
+      "game_pk": 849844,
+      "team_id": 143,
+      "team": "PHI",
+      "opponent": "ATL",
+      "is_home": false,
+      "pitcher": "Ray Kerr",
+      "pitcher_hand": "",
+      "pitcher_era": 1.47,
+      "venue": "Truist Park",
+      "commence_time": "2026-10-02T00:00:00Z",
+      "actual": null,
+      "probs": {
+        "2.5": 0.4426,
+        "3.5": 0.2909,
+        "4.5": 0.1835
+      },
+      "shape": 2.795
     }
   ]
 }
