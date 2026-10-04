@@ -6625,13 +6625,14 @@
       "pitcher_era": 3.59,
       "venue": "American Family Field",
       "commence_time": "2026-10-04T00:30:00Z",
-      "actual": null,
+      "actual": 3,
       "probs": {
         "2.5": 0.5367,
         "3.5": 0.3854,
         "4.5": 0.267
       },
-      "shape": 2.729
+      "shape": 2.729,
+      "miss": -0.29
     },
     {
       "projection": 2.35,
@@ -6652,13 +6653,95 @@
       "pitcher_era": 1.8,
       "venue": "American Family Field",
       "commence_time": "2026-10-04T00:30:00Z",
-      "actual": null,
+      "actual": 2,
       "probs": {
         "2.5": 0.3847,
         "3.5": 0.2389,
         "4.5": 0.1422
       },
-      "shape": 2.729
+      "shape": 2.729,
+      "miss": -0.35
+    },
+    {
+      "projection": 2.94,
+      "sp_used": true,
+      "league_f7": 3.483,
+      "offence": 1.043,
+      "sp_index": 0.794,
+      "pen_index": 0.859,
+      "park": 1.004,
+      "sp_innings": 5.69,
+      "game_pk": 849825,
+      "team_id": 158,
+      "team": "MIL",
+      "opponent": "SD",
+      "is_home": true,
+      "pitcher": "Michael King",
+      "pitcher_hand": "",
+      "pitcher_era": 3.21,
+      "venue": "American Family Field",
+      "commence_time": "2026-10-04T20:00:00Z",
+      "actual": null,
+      "probs": {
+        "2.5": 0.4843,
+        "3.5": 0.333,
+        "4.5": 0.2206
+      },
+      "shape": 2.674
+    },
+    {
+      "projection": 2.68,
+      "sp_used": true,
+      "league_f7": 3.483,
+      "offence": 1.012,
+      "sp_index": 0.729,
+      "pen_index": 0.851,
+      "park": 1.004,
+      "sp_innings": 5.4,
+      "game_pk": 849825,
+      "team_id": 135,
+      "team": "SD",
+      "opponent": "MIL",
+      "is_home": false,
+      "pitcher": "Logan Henderson",
+      "pitcher_hand": "",
+      "pitcher_era": 2.47,
+      "venue": "American Family Field",
+      "commence_time": "2026-10-04T20:00:00Z",
+      "actual": null,
+      "probs": {
+        "2.5": 0.4424,
+        "3.5": 0.2924,
+        "4.5": 0.186
+      },
+      "shape": 2.674
+    },
+    {
+      "projection": 2.72,
+      "sp_used": true,
+      "league_f7": 3.483,
+      "offence": 0.951,
+      "sp_index": 0.777,
+      "pen_index": 0.943,
+      "park": 0.992,
+      "sp_innings": 4.92,
+      "game_pk": 849823,
+      "team_id": 144,
+      "team": "ATL",
+      "opponent": "LAD",
+      "is_home": false,
+      "pitcher": "Blake Snell",
+      "pitcher_hand": "",
+      "pitcher_era": 1.9,
+      "venue": "UNIQLO Field at Dodger Stadium",
+      "commence_time": "2026-10-05T00:00:00Z",
+      "actual": null,
+      "probs": {
+        "2.5": 0.4491,
+        "3.5": 0.2988,
+        "4.5": 0.1913
+      },
+      "shape": 2.674
     }
   ]
 }

@@ -74544,7 +74544,7 @@
         "span": "2025–2026",
         "source": "gameLog"
       },
-      "result": null,
+      "result": "home",
       "home_elo": 1548.2,
       "away_elo": 1528.7,
       "elo_prob": 0.5623,
@@ -74556,7 +74556,9 @@
       "best_home_price": -210.0,
       "best_away_price": 192.0,
       "disagreement": -11.4,
-      "suspect": false
+      "suspect": false,
+      "final": "3–5",
+      "graded_at": "2026-10-04T17:28:15+00:00"
     },
     {
       "event_id": "cb4d07dc15440acf3d9ebe1ad41756c1",
@@ -74959,7 +74961,7 @@
         "span": "2026",
         "source": "gameLog"
       },
-      "result": null,
+      "result": "home",
       "home_elo": 1543.8,
       "away_elo": 1533.1,
       "elo_prob": 0.5497,
@@ -74971,7 +74973,9 @@
       "best_home_price": -127.0,
       "best_away_price": 117.0,
       "disagreement": 4.1,
-      "suspect": false
+      "suspect": false,
+      "final": "0–1",
+      "graded_at": "2026-10-04T17:28:15+00:00"
     },
     {
       "event_id": "347a2e725dd11a54a1d964eae3d04dd2",
@@ -75318,7 +75322,7 @@
         "span": "2025–2026",
         "source": "gameLog"
       },
-      "result": null,
+      "result": "home",
       "home_elo": 1561.7,
       "away_elo": 1533.7,
       "elo_prob": 0.5743,
@@ -75330,6 +75334,607 @@
       "best_home_price": -200.0,
       "best_away_price": 185.0,
       "disagreement": -0.7,
+      "suspect": false,
+      "final": "2–3",
+      "graded_at": "2026-10-04T17:28:15+00:00"
+    },
+    {
+      "event_id": "6da40e91a31110e51e84ba5671996deb",
+      "date": "10/04/2026",
+      "commence_time": "2026-10-04T20:00:00Z",
+      "home": "Milwaukee Brewers",
+      "away": "San Diego Padres",
+      "home_id": 158,
+      "away_id": 135,
+      "home_starter": "Logan Henderson",
+      "away_starter": "Michael King",
+      "home_starter_era": 2.47,
+      "away_starter_era": 3.21,
+      "home_starter_wl": [
+        11,
+        3
+      ],
+      "away_starter_wl": [
+        12,
+        10
+      ],
+      "home_sp_innings": 98.33333333333333,
+      "away_sp_innings": 185.0,
+      "home_sp": {
+        "w": 11,
+        "l": 3,
+        "era": 2.47,
+        "whip": 0.84,
+        "innings": 98.33333333333333,
+        "h": 64,
+        "k": 110,
+        "bb": 19,
+        "hr": 14
+      },
+      "away_sp": {
+        "w": 12,
+        "l": 10,
+        "era": 3.21,
+        "whip": 1.18,
+        "innings": 185.0,
+        "h": 148,
+        "k": 159,
+        "bb": 70,
+        "hr": 20
+      },
+      "home_bats": [
+        {
+          "id": 668930,
+          "name": "Brice Turang",
+          "position": "2B",
+          "pa": 11,
+          "ab": 11,
+          "h": 3,
+          "hr": 0,
+          "rbi": 2,
+          "k": 1,
+          "avg": 0.2727272727272727
+        },
+        {
+          "id": 686217,
+          "name": "Sal Frelick",
+          "position": "RF",
+          "pa": 11,
+          "ab": 10,
+          "h": 5,
+          "hr": 0,
+          "rbi": 1,
+          "k": 2,
+          "avg": 0.5
+        },
+        {
+          "id": 641343,
+          "name": "Jake Bauers",
+          "position": "1B",
+          "pa": 9,
+          "ab": 9,
+          "h": 1,
+          "hr": 0,
+          "rbi": 0,
+          "k": 4,
+          "avg": 0.1111111111111111
+        },
+        {
+          "id": 661388,
+          "name": "William Contreras",
+          "position": "C",
+          "pa": 9,
+          "ab": 9,
+          "h": 0,
+          "hr": 0,
+          "rbi": 0,
+          "k": 3,
+          "avg": 0.0
+        },
+        {
+          "id": 683734,
+          "name": "Andrew Vaughn",
+          "position": "1B",
+          "pa": 6,
+          "ab": 6,
+          "h": 1,
+          "hr": 0,
+          "rbi": 0,
+          "k": 2,
+          "avg": 0.16666666666666666
+        },
+        {
+          "id": 694192,
+          "name": "Jackson Chourio",
+          "position": "LF",
+          "pa": 6,
+          "ab": 5,
+          "h": 0,
+          "hr": 0,
+          "rbi": 0,
+          "k": 2,
+          "avg": 0.0
+        },
+        {
+          "id": 687401,
+          "name": "Joey Ortiz",
+          "position": "SS",
+          "pa": 5,
+          "ab": 5,
+          "h": 2,
+          "hr": 0,
+          "rbi": 0,
+          "k": 1,
+          "avg": 0.4
+        },
+        {
+          "id": 592885,
+          "name": "Christian Yelich",
+          "position": "DH",
+          "pa": 3,
+          "ab": 3,
+          "h": 0,
+          "hr": 0,
+          "rbi": 0,
+          "k": 2,
+          "avg": 0.0
+        },
+        {
+          "id": 669003,
+          "name": "Garrett Mitchell",
+          "position": "CF",
+          "pa": 3,
+          "ab": 2,
+          "h": 0,
+          "hr": 0,
+          "rbi": 0,
+          "k": 2,
+          "avg": 0.0
+        }
+      ],
+      "away_bats": [
+        {
+          "id": 665487,
+          "name": "Fernando Tatis Jr.",
+          "position": "RF",
+          "pa": 3,
+          "ab": 3,
+          "h": 0,
+          "hr": 0,
+          "rbi": 0,
+          "k": 0,
+          "avg": 0.0
+        },
+        {
+          "id": 701538,
+          "name": "Jackson Merrill",
+          "position": "CF",
+          "pa": 3,
+          "ab": 3,
+          "h": 1,
+          "hr": 1,
+          "rbi": 2,
+          "k": 0,
+          "avg": 0.3333333333333333
+        },
+        {
+          "id": 630105,
+          "name": "Jake Cronenworth",
+          "position": "2B",
+          "pa": 3,
+          "ab": 3,
+          "h": 1,
+          "hr": 0,
+          "rbi": 0,
+          "k": 2,
+          "avg": 0.3333333333333333
+        },
+        {
+          "id": 592518,
+          "name": "Manny Machado",
+          "position": "3B",
+          "pa": 3,
+          "ab": 3,
+          "h": 0,
+          "hr": 0,
+          "rbi": 0,
+          "k": 1,
+          "avg": 0.0
+        },
+        {
+          "id": 664034,
+          "name": "Ty France",
+          "position": "1B",
+          "pa": 3,
+          "ab": 3,
+          "h": 2,
+          "hr": 1,
+          "rbi": 1,
+          "k": 0,
+          "avg": 0.6666666666666666
+        },
+        {
+          "id": 666023,
+          "name": "Freddy Fermin",
+          "position": "C",
+          "pa": 2,
+          "ab": 2,
+          "h": 1,
+          "hr": 0,
+          "rbi": 0,
+          "k": 1,
+          "avg": 0.5
+        },
+        {
+          "id": 657757,
+          "name": "Gavin Sheets",
+          "position": "1B",
+          "pa": 2,
+          "ab": 2,
+          "h": 0,
+          "hr": 0,
+          "rbi": 0,
+          "k": 2,
+          "avg": 0.0
+        },
+        {
+          "id": 669720,
+          "name": "Austin Hays",
+          "position": "DH",
+          "pa": null,
+          "ab": null,
+          "h": null,
+          "hr": null,
+          "rbi": null,
+          "k": null,
+          "avg": null
+        },
+        {
+          "id": 687957,
+          "name": "Dustin Harris",
+          "position": "LF",
+          "pa": null,
+          "ab": null,
+          "h": null,
+          "hr": null,
+          "rbi": null,
+          "k": null,
+          "avg": null
+        }
+      ],
+      "home_hand": "R",
+      "away_hand": "R",
+      "venue": "American Family Field",
+      "home_record": {
+        "w": 103,
+        "l": 59,
+        "hw": 55,
+        "hl": 26,
+        "aw": 48,
+        "al": 33
+      },
+      "away_record": {
+        "w": 91,
+        "l": 71,
+        "hw": 51,
+        "hl": 30,
+        "aw": 40,
+        "al": 41
+      },
+      "home_form": null,
+      "away_form": null,
+      "series": [
+        {
+          "date": "2026-05-12",
+          "away": "San Diego Padres",
+          "away_runs": 4,
+          "home": "Milwaukee Brewers",
+          "home_runs": 6
+        },
+        {
+          "date": "2026-05-13",
+          "away": "San Diego Padres",
+          "away_runs": 3,
+          "home": "Milwaukee Brewers",
+          "home_runs": 1
+        },
+        {
+          "date": "2026-05-14",
+          "away": "San Diego Padres",
+          "away_runs": 1,
+          "home": "Milwaukee Brewers",
+          "home_runs": 7
+        },
+        {
+          "date": "2026-08-10",
+          "away": "Milwaukee Brewers",
+          "away_runs": 2,
+          "home": "San Diego Padres",
+          "home_runs": 3
+        },
+        {
+          "date": "2026-08-11",
+          "away": "Milwaukee Brewers",
+          "away_runs": 2,
+          "home": "San Diego Padres",
+          "home_runs": 11
+        },
+        {
+          "date": "2026-08-12",
+          "away": "Milwaukee Brewers",
+          "away_runs": 3,
+          "home": "San Diego Padres",
+          "home_runs": 4
+        }
+      ],
+      "home_vs_opp": {
+        "starts": 1,
+        "innings": 6.3,
+        "era": 4.26,
+        "strikeouts": 7,
+        "span": "2025–2026",
+        "source": "gameLog"
+      },
+      "away_vs_opp": {
+        "starts": 1,
+        "innings": 5.7,
+        "era": 1.59,
+        "strikeouts": 5,
+        "span": "2025–2026",
+        "source": "gameLog"
+      },
+      "result": null,
+      "home_elo": 1561.7,
+      "away_elo": 1533.7,
+      "elo_prob": 0.5743,
+      "starter_adj": 0.0333,
+      "home_win_prob": 0.6076,
+      "away_win_prob": 0.3924,
+      "market_home_prob": 0.5563,
+      "books": 9,
+      "best_home_price": -128.0,
+      "best_away_price": 123.0,
+      "disagreement": 5.1,
+      "suspect": false
+    },
+    {
+      "event_id": "583202487b52f61769b2404a64e01c77",
+      "date": "10/04/2026",
+      "commence_time": "2026-10-05T00:00:00Z",
+      "home": "Los Angeles Dodgers",
+      "away": "Atlanta Braves",
+      "home_id": 119,
+      "away_id": 144,
+      "home_starter": "Blake Snell",
+      "away_starter": null,
+      "home_starter_era": 1.9,
+      "away_starter_era": null,
+      "home_starter_wl": [
+        4,
+        1
+      ],
+      "away_starter_wl": null,
+      "home_sp_innings": 42.666666666666664,
+      "away_sp_innings": null,
+      "home_sp": {
+        "w": 4,
+        "l": 1,
+        "era": 1.9,
+        "whip": 1.1,
+        "innings": 42.666666666666664,
+        "h": 31,
+        "k": 55,
+        "bb": 16,
+        "hr": 0
+      },
+      "away_sp": {
+        "w": null,
+        "l": null,
+        "era": null,
+        "whip": null,
+        "innings": null,
+        "h": null,
+        "k": null,
+        "bb": null,
+        "hr": null
+      },
+      "home_bats": null,
+      "away_bats": [
+        {
+          "id": 621566,
+          "name": "Matt Olson",
+          "position": "1B",
+          "pa": 22,
+          "ab": 18,
+          "h": 4,
+          "hr": 0,
+          "rbi": 5,
+          "k": 6,
+          "avg": 0.2222222222222222
+        },
+        {
+          "id": 663586,
+          "name": "Austin Riley",
+          "position": "3B",
+          "pa": 12,
+          "ab": 10,
+          "h": 1,
+          "hr": 0,
+          "rbi": 2,
+          "k": 4,
+          "avg": 0.1
+        },
+        {
+          "id": 645277,
+          "name": "Ozzie Albies",
+          "position": "2B",
+          "pa": 12,
+          "ab": 12,
+          "h": 4,
+          "hr": 0,
+          "rbi": 3,
+          "k": 3,
+          "avg": 0.3333333333333333
+        },
+        {
+          "id": 642133,
+          "name": "Rowdy Tellez",
+          "position": "1B",
+          "pa": 12,
+          "ab": 10,
+          "h": 1,
+          "hr": 0,
+          "rbi": 1,
+          "k": 4,
+          "avg": 0.1
+        },
+        {
+          "id": 657041,
+          "name": "Lane Thomas",
+          "position": "LF",
+          "pa": 10,
+          "ab": 9,
+          "h": 2,
+          "hr": 0,
+          "rbi": 0,
+          "k": 4,
+          "avg": 0.2222222222222222
+        },
+        {
+          "id": 669221,
+          "name": "Sean Murphy",
+          "position": "C",
+          "pa": 10,
+          "ab": 8,
+          "h": 3,
+          "hr": 1,
+          "rbi": 1,
+          "k": 3,
+          "avg": 0.375
+        },
+        {
+          "id": 660670,
+          "name": "Ronald Acuña Jr.",
+          "position": "RF",
+          "pa": 9,
+          "ab": 8,
+          "h": 2,
+          "hr": 1,
+          "rbi": 1,
+          "k": 2,
+          "avg": 0.25
+        },
+        {
+          "id": 643289,
+          "name": "Mauricio Dubón",
+          "position": "LF",
+          "pa": 8,
+          "ab": 7,
+          "h": 2,
+          "hr": 1,
+          "rbi": 1,
+          "k": 2,
+          "avg": 0.2857142857142857
+        },
+        {
+          "id": 573262,
+          "name": "Mike Yastrzemski",
+          "position": "LF",
+          "pa": 8,
+          "ab": 8,
+          "h": 0,
+          "hr": 0,
+          "rbi": 0,
+          "k": 4,
+          "avg": 0.0
+        }
+      ],
+      "home_hand": "L",
+      "away_hand": "",
+      "venue": "UNIQLO Field at Dodger Stadium",
+      "home_record": {
+        "w": 100,
+        "l": 62,
+        "hw": 51,
+        "hl": 30,
+        "aw": 49,
+        "al": 32
+      },
+      "away_record": {
+        "w": 94,
+        "l": 69,
+        "hw": 52,
+        "hl": 30,
+        "aw": 42,
+        "al": 39
+      },
+      "home_form": null,
+      "away_form": null,
+      "series": [
+        {
+          "date": "2026-05-08",
+          "away": "Atlanta Braves",
+          "away_runs": 1,
+          "home": "Los Angeles Dodgers",
+          "home_runs": 3
+        },
+        {
+          "date": "2026-05-09",
+          "away": "Atlanta Braves",
+          "away_runs": 7,
+          "home": "Los Angeles Dodgers",
+          "home_runs": 2
+        },
+        {
+          "date": "2026-05-10",
+          "away": "Atlanta Braves",
+          "away_runs": 7,
+          "home": "Los Angeles Dodgers",
+          "home_runs": 2
+        },
+        {
+          "date": "2026-08-25",
+          "away": "Los Angeles Dodgers",
+          "away_runs": 3,
+          "home": "Atlanta Braves",
+          "home_runs": 4
+        },
+        {
+          "date": "2026-08-26",
+          "away": "Los Angeles Dodgers",
+          "away_runs": 5,
+          "home": "Atlanta Braves",
+          "home_runs": 6
+        },
+        {
+          "date": "2026-08-27",
+          "away": "Los Angeles Dodgers",
+          "away_runs": 0,
+          "home": "Atlanta Braves",
+          "home_runs": 1
+        }
+      ],
+      "home_vs_opp": {
+        "starts": 2,
+        "innings": 7.0,
+        "era": 5.14,
+        "strikeouts": 7,
+        "span": "2025–2026",
+        "source": "gameLog"
+      },
+      "away_vs_opp": null,
+      "result": null,
+      "home_elo": 1548.2,
+      "away_elo": 1528.7,
+      "elo_prob": 0.5623,
+      "starter_adj": 0.0,
+      "home_win_prob": 0.5623,
+      "away_win_prob": 0.4377,
+      "market_home_prob": 0.5914,
+      "books": 9,
+      "best_home_price": -150.0,
+      "best_away_price": 140.0,
+      "disagreement": -2.9,
       "suspect": false
     }
   ]
