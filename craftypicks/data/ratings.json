@@ -75683,7 +75683,7 @@
         "span": "2025–2026",
         "source": "gameLog"
       },
-      "result": null,
+      "result": "home",
       "home_elo": 1561.7,
       "away_elo": 1533.7,
       "elo_prob": 0.5743,
@@ -75695,7 +75695,9 @@
       "best_home_price": -128.0,
       "best_away_price": 123.0,
       "disagreement": 5.1,
-      "suspect": false
+      "suspect": false,
+      "final": "3–4",
+      "graded_at": "2026-10-05T21:16:12+00:00"
     },
     {
       "event_id": "583202487b52f61769b2404a64e01c77",
@@ -75923,7 +75925,7 @@
         "source": "gameLog"
       },
       "away_vs_opp": null,
-      "result": null,
+      "result": "away",
       "home_elo": 1548.2,
       "away_elo": 1528.7,
       "elo_prob": 0.5623,
@@ -75935,6 +75937,423 @@
       "best_home_price": -150.0,
       "best_away_price": 140.0,
       "disagreement": -2.9,
+      "suspect": false,
+      "final": "3–2",
+      "graded_at": "2026-10-05T21:16:12+00:00"
+    },
+    {
+      "event_id": "4be245ad03895bcafcdc42d7d926b675",
+      "date": "10/05/2026",
+      "commence_time": "2026-10-06T00:00:00Z",
+      "home": "Tampa Bay Rays",
+      "away": "New York Yankees",
+      "home_id": 139,
+      "away_id": 147,
+      "home_starter": "Freddy Peralta",
+      "away_starter": "Cam Schlittler",
+      "home_starter_era": 4.42,
+      "away_starter_era": 1.95,
+      "home_starter_wl": [
+        10,
+        11
+      ],
+      "away_starter_wl": [
+        14,
+        6
+      ],
+      "home_sp_innings": 169.0,
+      "away_sp_innings": 193.66666666666666,
+      "home_sp": {
+        "w": 10,
+        "l": 11,
+        "era": 4.42,
+        "whip": 1.33,
+        "innings": 169.0,
+        "h": 161,
+        "k": 156,
+        "bb": 63,
+        "hr": 23
+      },
+      "away_sp": {
+        "w": 14,
+        "l": 6,
+        "era": 1.95,
+        "whip": 0.92,
+        "innings": 193.66666666666666,
+        "h": 129,
+        "k": 239,
+        "bb": 49,
+        "hr": 16
+      },
+      "home_bats": [
+        {
+          "id": 650490,
+          "name": "Yandy Díaz",
+          "position": "DH",
+          "pa": 15,
+          "ab": 13,
+          "h": 2,
+          "hr": 0,
+          "rbi": 1,
+          "k": 5,
+          "avg": 0.15384615384615385
+        },
+        {
+          "id": 802415,
+          "name": "Chandler Simpson",
+          "position": "LF",
+          "pa": 14,
+          "ab": 14,
+          "h": 4,
+          "hr": 0,
+          "rbi": 1,
+          "k": 1,
+          "avg": 0.2857142857142857
+        },
+        {
+          "id": 691406,
+          "name": "Junior Caminero",
+          "position": "3B",
+          "pa": 14,
+          "ab": 14,
+          "h": 4,
+          "hr": 1,
+          "rbi": 3,
+          "k": 2,
+          "avg": 0.2857142857142857
+        },
+        {
+          "id": 666018,
+          "name": "Jonathan Aranda",
+          "position": "1B",
+          "pa": 9,
+          "ab": 8,
+          "h": 1,
+          "hr": 0,
+          "rbi": 0,
+          "k": 6,
+          "avg": 0.125
+        },
+        {
+          "id": 670764,
+          "name": "Taylor Walls",
+          "position": "SS",
+          "pa": 8,
+          "ab": 7,
+          "h": 3,
+          "hr": 0,
+          "rbi": 0,
+          "k": 3,
+          "avg": 0.42857142857142855
+        },
+        {
+          "id": 680700,
+          "name": "Richie Palacios",
+          "position": "2B",
+          "pa": 6,
+          "ab": 6,
+          "h": 3,
+          "hr": 0,
+          "rbi": 2,
+          "k": 0,
+          "avg": 0.5
+        },
+        {
+          "id": 656775,
+          "name": "Cedric Mullins",
+          "position": "CF",
+          "pa": 5,
+          "ab": 5,
+          "h": 1,
+          "hr": 0,
+          "rbi": 0,
+          "k": 2,
+          "avg": 0.2
+        },
+        {
+          "id": 676356,
+          "name": "Jonny DeLuca",
+          "position": "RF",
+          "pa": 4,
+          "ab": 3,
+          "h": 1,
+          "hr": 0,
+          "rbi": 0,
+          "k": 0,
+          "avg": 0.3333333333333333
+        },
+        {
+          "id": 689414,
+          "name": "Liam Hicks",
+          "position": "C",
+          "pa": 4,
+          "ab": 4,
+          "h": 1,
+          "hr": 0,
+          "rbi": 0,
+          "k": 3,
+          "avg": 0.25
+        }
+      ],
+      "away_bats": [
+        {
+          "id": 502671,
+          "name": "Paul Goldschmidt",
+          "position": "1B",
+          "pa": 38,
+          "ab": 35,
+          "h": 9,
+          "hr": 2,
+          "rbi": 7,
+          "k": 10,
+          "avg": 0.2571428571428571
+        },
+        {
+          "id": 641355,
+          "name": "Cody Bellinger",
+          "position": "LF",
+          "pa": 18,
+          "ab": 14,
+          "h": 6,
+          "hr": 1,
+          "rbi": 3,
+          "k": 5,
+          "avg": 0.42857142857142855
+        },
+        {
+          "id": 641857,
+          "name": "Ryan McMahon",
+          "position": "3B",
+          "pa": 17,
+          "ab": 14,
+          "h": 1,
+          "hr": 0,
+          "rbi": 0,
+          "k": 4,
+          "avg": 0.07142857142857142
+        },
+        {
+          "id": 665862,
+          "name": "Jazz Chisholm Jr.",
+          "position": "2B",
+          "pa": 15,
+          "ab": 11,
+          "h": 2,
+          "hr": 1,
+          "rbi": 1,
+          "k": 5,
+          "avg": 0.18181818181818182
+        },
+        {
+          "id": 671277,
+          "name": "Luis García Jr.",
+          "position": "1B",
+          "pa": 12,
+          "ab": 12,
+          "h": 3,
+          "hr": 0,
+          "rbi": 0,
+          "k": 3,
+          "avg": 0.25
+        },
+        {
+          "id": 663757,
+          "name": "Trent Grisham",
+          "position": "CF",
+          "pa": 8,
+          "ab": 8,
+          "h": 1,
+          "hr": 0,
+          "rbi": 0,
+          "k": 3,
+          "avg": 0.125
+        },
+        {
+          "id": 700250,
+          "name": "Ben Rice",
+          "position": "DH",
+          "pa": 5,
+          "ab": 5,
+          "h": 2,
+          "hr": 1,
+          "rbi": 1,
+          "k": 1,
+          "avg": 0.4
+        },
+        {
+          "id": 671218,
+          "name": "Heliot Ramos",
+          "position": "LF",
+          "pa": 5,
+          "ab": 4,
+          "h": 1,
+          "hr": 0,
+          "rbi": 0,
+          "k": 1,
+          "avg": 0.25
+        },
+        {
+          "id": 683011,
+          "name": "Anthony Volpe",
+          "position": "SS",
+          "pa": 4,
+          "ab": 4,
+          "h": 2,
+          "hr": 1,
+          "rbi": 1,
+          "k": 2,
+          "avg": 0.5
+        }
+      ],
+      "home_hand": "R",
+      "away_hand": "R",
+      "venue": "Tropicana Field",
+      "home_record": {
+        "w": 98,
+        "l": 64,
+        "hw": 55,
+        "hl": 26,
+        "aw": 43,
+        "al": 38
+      },
+      "away_record": {
+        "w": 93,
+        "l": 68,
+        "hw": 46,
+        "hl": 34,
+        "aw": 47,
+        "al": 34
+      },
+      "home_form": null,
+      "away_form": null,
+      "series": [
+        {
+          "date": "2026-04-10",
+          "away": "New York Yankees",
+          "away_runs": 3,
+          "home": "Tampa Bay Rays",
+          "home_runs": 5
+        },
+        {
+          "date": "2026-04-11",
+          "away": "New York Yankees",
+          "away_runs": 4,
+          "home": "Tampa Bay Rays",
+          "home_runs": 5
+        },
+        {
+          "date": "2026-04-12",
+          "away": "New York Yankees",
+          "away_runs": 4,
+          "home": "Tampa Bay Rays",
+          "home_runs": 5
+        },
+        {
+          "date": "2026-05-22",
+          "away": "Tampa Bay Rays",
+          "away_runs": 4,
+          "home": "New York Yankees",
+          "home_runs": 2
+        },
+        {
+          "date": "2026-05-23",
+          "away": "Tampa Bay Rays",
+          "away_runs": 0,
+          "home": "New York Yankees",
+          "home_runs": 0
+        },
+        {
+          "date": "2026-05-24",
+          "away": "Tampa Bay Rays",
+          "away_runs": 0,
+          "home": "New York Yankees",
+          "home_runs": 2
+        },
+        {
+          "date": "2026-07-06",
+          "away": "New York Yankees",
+          "away_runs": 5,
+          "home": "Tampa Bay Rays",
+          "home_runs": 1
+        },
+        {
+          "date": "2026-07-07",
+          "away": "New York Yankees",
+          "away_runs": 4,
+          "home": "Tampa Bay Rays",
+          "home_runs": 6
+        },
+        {
+          "date": "2026-07-08",
+          "away": "New York Yankees",
+          "away_runs": 0,
+          "home": "Tampa Bay Rays",
+          "home_runs": 3
+        },
+        {
+          "date": "2026-07-09",
+          "away": "New York Yankees",
+          "away_runs": 12,
+          "home": "Tampa Bay Rays",
+          "home_runs": 4
+        },
+        {
+          "date": "2026-09-22",
+          "away": "Tampa Bay Rays",
+          "away_runs": 0,
+          "home": "New York Yankees",
+          "home_runs": 2
+        },
+        {
+          "date": "2026-09-22",
+          "away": "Tampa Bay Rays",
+          "away_runs": 6,
+          "home": "New York Yankees",
+          "home_runs": 1
+        },
+        {
+          "date": "2026-09-23",
+          "away": "Tampa Bay Rays",
+          "away_runs": 2,
+          "home": "New York Yankees",
+          "home_runs": 9
+        },
+        {
+          "date": "2026-09-24",
+          "away": "Tampa Bay Rays",
+          "away_runs": 4,
+          "home": "New York Yankees",
+          "home_runs": 6
+        }
+      ],
+      "home_vs_opp": {
+        "starts": 2,
+        "innings": 10.0,
+        "era": 4.5,
+        "strikeouts": 12,
+        "span": "2025–2026",
+        "source": "gameLog"
+      },
+      "away_vs_opp": {
+        "starts": 5,
+        "innings": 27.0,
+        "era": 2.67,
+        "strikeouts": 34,
+        "span": "2025–2026",
+        "source": "gameLog"
+      },
+      "result": null,
+      "home_elo": 1543.8,
+      "away_elo": 1533.1,
+      "elo_prob": 0.5497,
+      "starter_adj": -0.09,
+      "home_win_prob": 0.4597,
+      "away_win_prob": 0.5403,
+      "market_home_prob": 0.4691,
+      "books": 9,
+      "best_home_price": 108.0,
+      "best_away_price": -118.0,
+      "disagreement": -0.9,
       "suspect": false
     }
   ]
