@@ -6849,13 +6849,14 @@
       "pitcher_era": 4.42,
       "venue": "Tropicana Field",
       "commence_time": "2026-10-06T00:00:00Z",
-      "actual": null,
+      "actual": 1,
       "probs": {
         "2.5": 0.5672,
         "3.5": 0.4162,
         "4.5": 0.2945
       },
-      "shape": 2.822
+      "shape": 2.822,
+      "miss": -2.5
     },
     {
       "projection": 2.39,
@@ -6876,13 +6877,122 @@
       "pitcher_era": 1.95,
       "venue": "Tropicana Field",
       "commence_time": "2026-10-06T00:00:00Z",
-      "actual": null,
+      "actual": 5,
       "probs": {
         "2.5": 0.3931,
         "3.5": 0.2451,
         "4.5": 0.1463
       },
-      "shape": 2.822
+      "shape": 2.822,
+      "miss": 2.61
+    },
+    {
+      "projection": 2.43,
+      "sp_used": true,
+      "league_f7": 3.482,
+      "offence": 0.951,
+      "sp_index": 0.689,
+      "pen_index": 0.943,
+      "park": 1.029,
+      "sp_innings": 6.36,
+      "game_pk": 849819,
+      "team_id": 144,
+      "team": "ATL",
+      "opponent": "LAD",
+      "is_home": true,
+      "pitcher": "Yoshinobu Yamamoto",
+      "pitcher_hand": "",
+      "pitcher_era": 2.53,
+      "venue": "Truist Park",
+      "commence_time": "2026-10-06T22:00:00Z",
+      "actual": null,
+      "probs": {
+        "2.5": 0.3993,
+        "3.5": 0.252,
+        "4.5": 0.1526
+      },
+      "shape": 2.719
+    },
+    {
+      "projection": 2.85,
+      "sp_used": true,
+      "league_f7": 3.482,
+      "offence": 1.153,
+      "sp_index": 0.661,
+      "pen_index": 0.845,
+      "park": 1.029,
+      "sp_innings": 5.87,
+      "game_pk": 849819,
+      "team_id": 119,
+      "team": "LAD",
+      "opponent": "ATL",
+      "is_home": false,
+      "pitcher": "Chris Sale",
+      "pitcher_hand": "",
+      "pitcher_era": 2.16,
+      "venue": "Truist Park",
+      "commence_time": "2026-10-06T22:00:00Z",
+      "actual": null,
+      "probs": {
+        "2.5": 0.471,
+        "3.5": 0.3193,
+        "4.5": 0.2083
+      },
+      "shape": 2.719
+    },
+    {
+      "projection": 2.92,
+      "sp_used": true,
+      "league_f7": 3.482,
+      "offence": 1.043,
+      "sp_index": 0.864,
+      "pen_index": 0.859,
+      "park": 0.934,
+      "sp_innings": 4.7,
+      "game_pk": 849826,
+      "team_id": 158,
+      "team": "MIL",
+      "opponent": "SD",
+      "is_home": false,
+      "pitcher": "Nick Pivetta",
+      "pitcher_hand": "",
+      "pitcher_era": 2.86,
+      "venue": "Petco Park",
+      "commence_time": "2026-10-07T01:30:00Z",
+      "actual": null,
+      "probs": {
+        "2.5": 0.4821,
+        "3.5": 0.3301,
+        "4.5": 0.2176
+      },
+      "shape": 2.719
+    },
+    {
+      "projection": 3.25,
+      "sp_used": true,
+      "league_f7": 3.482,
+      "offence": 1.012,
+      "sp_index": 1.052,
+      "pen_index": 0.851,
+      "park": 0.934,
+      "sp_innings": 4.78,
+      "game_pk": 849826,
+      "team_id": 135,
+      "team": "SD",
+      "opponent": "MIL",
+      "is_home": true,
+      "pitcher": "Dustin May",
+      "pitcher_hand": "",
+      "pitcher_era": 4.7,
+      "venue": "Petco Park",
+      "commence_time": "2026-10-07T01:30:00Z",
+      "actual": null,
+      "probs": {
+        "2.5": 0.5309,
+        "3.5": 0.3795,
+        "4.5": 0.2617
+      },
+      "shape": 2.719
     }
   ]
 }
