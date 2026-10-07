@@ -3,10 +3,10 @@
   "date_label": "Wednesday, October 7, 2026",
   "rows": [
     {
-      "projection": 2.83,
+      "projection": 2.84,
       "sp_used": true,
       "league_f7": 3.481,
-      "offence": 0.971,
+      "offence": 0.975,
       "sp_index": 0.86,
       "pen_index": 0.898,
       "park": 0.973,
@@ -23,11 +23,11 @@
       "commence_time": "2026-10-07T20:00:00Z",
       "actual": null,
       "probs": {
-        "2.5": 0.4685,
-        "3.5": 0.3163,
-        "4.5": 0.2053
+        "2.5": 0.47,
+        "3.5": 0.3178,
+        "4.5": 0.2067
       },
-      "shape": 2.757
+      "shape": 2.751
     },
     {
       "projection": 3.7,
@@ -50,11 +50,11 @@
       "commence_time": "2026-10-07T20:00:00Z",
       "actual": null,
       "probs": {
-        "2.5": 0.5903,
-        "3.5": 0.4424,
-        "4.5": 0.3204
+        "2.5": 0.5901,
+        "3.5": 0.4422,
+        "4.5": 0.3203
       },
-      "shape": 2.757
+      "shape": 2.751
     },
     {
       "projection": 3.03,
@@ -77,11 +77,11 @@
       "commence_time": "2026-10-07T22:00:00Z",
       "actual": null,
       "probs": {
-        "2.5": 0.4998,
-        "3.5": 0.3472,
-        "4.5": 0.2321
+        "2.5": 0.4996,
+        "3.5": 0.3471,
+        "4.5": 0.2322
       },
-      "shape": 2.757
+      "shape": 2.751
     },
     {
       "projection": 3.79,
@@ -104,11 +104,11 @@
       "commence_time": "2026-10-07T22:00:00Z",
       "actual": null,
       "probs": {
-        "2.5": 0.6009,
-        "3.5": 0.4541,
+        "2.5": 0.6007,
+        "3.5": 0.454,
         "4.5": 0.3318
       },
-      "shape": 2.757
+      "shape": 2.751
     },
     {
       "projection": 2.86,
@@ -131,11 +131,11 @@
       "commence_time": "2026-10-08T00:00:00Z",
       "actual": null,
       "probs": {
-        "2.5": 0.4734,
-        "3.5": 0.321,
+        "2.5": 0.4732,
+        "3.5": 0.3209,
         "4.5": 0.2093
       },
-      "shape": 2.757
+      "shape": 2.751
     },
     {
       "projection": 2.86,
@@ -158,11 +158,11 @@
       "commence_time": "2026-10-08T00:00:00Z",
       "actual": null,
       "probs": {
-        "2.5": 0.4734,
-        "3.5": 0.321,
+        "2.5": 0.4732,
+        "3.5": 0.3209,
         "4.5": 0.2093
       },
-      "shape": 2.757
+      "shape": 2.751
     },
     {
       "projection": 3.31,
@@ -185,31 +185,58 @@
       "commence_time": "2026-10-08T02:00:00Z",
       "actual": null,
       "probs": {
-        "2.5": 0.5402,
-        "3.5": 0.3886,
-        "4.5": 0.2695
+        "2.5": 0.54,
+        "3.5": 0.3885,
+        "4.5": 0.2696
       },
-      "shape": 2.757
+      "shape": 2.751
+    },
+    {
+      "projection": 2.99,
+      "sp_used": true,
+      "league_f7": 3.481,
+      "offence": 1.011,
+      "sp_index": 0.927,
+      "pen_index": 0.851,
+      "park": 0.934,
+      "sp_innings": 5.41,
+      "game_pk": 849827,
+      "team_id": 135,
+      "team": "SD",
+      "opponent": "MIL",
+      "is_home": true,
+      "pitcher": "Robert Gasser",
+      "pitcher_hand": "",
+      "pitcher_era": 3.87,
+      "venue": "Petco Park",
+      "commence_time": "2026-10-08T02:00:00Z",
+      "actual": null,
+      "probs": {
+        "2.5": 0.4936,
+        "3.5": 0.341,
+        "4.5": 0.2268
+      },
+      "shape": 2.751
     }
   ],
   "summary": {
-    "published": 257,
-    "graded": 248,
-    "mae": 2.041,
-    "baseline_mae": 2.105,
+    "published": 258,
+    "graded": 250,
+    "mae": 2.036,
+    "baseline_mae": 2.096,
     "bands": [
       {
         "lo": 0.0,
         "hi": 3.0,
-        "n": 65,
+        "n": 66,
         "projected": 2.73,
-        "actual": 2.6
+        "actual": 2.64
       },
       {
         "lo": 3.0,
         "hi": 3.75,
-        "n": 133,
-        "projected": 3.36,
+        "n": 134,
+        "projected": 3.37,
         "actual": 3.48
       },
       {
@@ -230,21 +257,21 @@
     "over_rate": [
       {
         "line": 2.5,
-        "n": 248,
+        "n": 250,
         "said": 0.545,
-        "were": 0.536
+        "were": 0.54
       },
       {
         "line": 3.5,
-        "n": 248,
+        "n": 250,
         "said": 0.395,
-        "were": 0.403
+        "were": 0.404
       },
       {
         "line": 4.5,
-        "n": 248,
+        "n": 250,
         "said": 0.277,
-        "were": 0.258
+        "were": 0.26
       }
     ],
     "baseline_in_sample": false,
