@@ -1,105 +1,105 @@
 {
- "generated_at": "2026-10-08T15:14:45-04:00",
- "date": "2026-10-08",
+ "generated_at": "2026-10-10T13:47:26-04:00",
+ "date": "2026-10-10",
  "leagues": {
   "mlb": {
    "label": "MLB",
    "games": [
     {
-     "event_id": "b57e790481f2b8e5eaf9e0f3eab816bc",
+     "event_id": "62bf363a77455f7a8b48838e7792f60b",
      "league": "mlb",
-     "commence_time": "2026-10-09T00:00:00Z",
-     "home": "Chicago White Sox",
-     "away": "Cleveland Guardians",
+     "commence_time": "2026-10-11T00:01:00Z",
+     "home": "Cleveland Guardians",
+     "away": "Chicago White Sox",
      "markets": {
       "h2h": {
        "point": null,
        "side_a": "home",
-       "fair_home": 0.48677094325816433,
-       "fair_away": 0.5132290567418356,
-       "fair_price_home": 105,
-       "fair_price_away": -105,
+       "fair_home": 0.5639174707328944,
+       "fair_away": 0.4363234215259421,
+       "fair_price_home": -129,
+       "fair_price_away": 129,
        "best_home": {
-        "book": "BetUS",
-        "price": 102
+        "book": "BetOnline.ag",
+        "price": -135
        },
        "best_away": {
         "book": "BetUS",
-        "price": -112
+        "price": 123
        },
-       "edge_home": -1.6722694618508005,
-       "edge_away": -2.853071402438262,
+       "edge_home": -1.8365884279776368,
+       "edge_away": -2.699876999714901,
        "books": 9,
-       "width": 18
+       "width": 21
       },
       "spreads": {
-       "point": 1.5,
+       "point": -1.5,
        "side_a": "home",
-       "fair_home": 0.6283675321713098,
-       "fair_away": 0.37350816504755174,
-       "fair_price_home": -169,
-       "fair_price_away": 168,
+       "fair_home": 0.3643663310599765,
+       "fair_away": 0.6366385093275309,
+       "fair_price_home": 174,
+       "fair_price_away": -175,
        "best_home": {
         "book": "MyBookie.ag",
-        "price": -172
+        "price": 163
        },
        "best_away": {
-        "book": "Bovada",
-        "price": 160
+        "book": "FanDuel",
+        "price": -184
        },
-       "edge_home": -0.6302507263975077,
-       "edge_away": -2.8878770876365367,
+       "edge_home": -4.171654931226176,
+       "edge_away": -1.7362300820550236,
        "books": 9,
        "width": 25
       },
       "totals": {
        "point": 7.0,
        "side_a": "over",
-       "fair_home": 0.5163687995079688,
-       "fair_away": 0.4847547229723051,
-       "fair_price_home": -107,
-       "fair_price_away": 106,
+       "fair_home": 0.5262689962620318,
+       "fair_away": 0.475139278203678,
+       "fair_price_home": -111,
+       "fair_price_away": 110,
        "best_home": {
         "book": "LowVig.ag",
-        "price": -114
+        "price": -118
        },
        "best_away": {
         "book": "BetMGM",
-        "price": 100
+        "price": 105
        },
-       "edge_home": -3.0676113204339273,
-       "edge_away": -3.0490554055389865,
+       "edge_home": -2.7740328939636125,
+       "edge_away": -2.5964479682460073,
        "books": 8,
        "width": 20.0,
        "model": null
       }
      },
      "model": {
-      "home_win_prob": 0.5861,
-      "away_win_prob": 0.4139,
-      "market_home_prob": 0.4864,
-      "disagreement": 10.0,
+      "home_win_prob": 0.5211,
+      "away_win_prob": 0.4789,
+      "market_home_prob": 0.5638,
+      "disagreement": -4.3,
       "suspect": false,
       "source": "slate",
-      "ev_home": 18.4,
-      "ev_away": -21.7
+      "ev_home": -9.3,
+      "ev_away": 6.8
      },
      "detail": {
       "home_record": {
-       "w": 84,
-       "l": 78,
-       "hw": 48,
-       "hl": 33,
-       "aw": 36,
-       "al": 45
-      },
-      "away_record": {
        "w": 85,
        "l": 77,
        "hw": 41,
        "hl": 40,
        "aw": 44,
        "al": 37
+      },
+      "away_record": {
+       "w": 84,
+       "l": 78,
+       "hw": 48,
+       "hl": 33,
+       "aw": 36,
+       "al": 45
       },
       "series": [
        {
@@ -194,118 +194,240 @@
         "home_runs": 6
        }
       ],
-      "home_starter": "Hagen Smith",
-      "away_starter": "Parker Messick",
-      "home_starter_era": 1.29,
-      "away_starter_era": 2.56,
+      "home_starter": "Gavin Williams",
+      "away_starter": "Sean Burke",
+      "home_starter_era": 3.76,
+      "away_starter_era": 3.34,
       "home_starter_wl": [
-       3,
-       3
+       14,
+       8
       ],
       "away_starter_wl": [
-       12,
-       9
+       11,
+       7
       ],
-      "home_hand": "L",
-      "away_hand": "L",
+      "home_hand": "R",
+      "away_hand": "R",
       "home_vs_opp": {
-       "starts": 0,
-       "innings": 5.7,
-       "era": 3.18,
-       "strikeouts": 8,
-       "span": "2026",
+       "starts": 6,
+       "innings": 30.3,
+       "era": 3.86,
+       "strikeouts": 40,
+       "span": "2025\u20132026",
        "source": "gameLog"
       },
       "away_vs_opp": {
        "starts": 5,
-       "innings": 31.7,
-       "era": 2.56,
-       "strikeouts": 33,
+       "innings": 28.7,
+       "era": 2.83,
+       "strikeouts": 37,
        "span": "2025\u20132026",
        "source": "gameLog"
       },
       "home_sp": {
-       "w": 3,
-       "l": 3,
-       "era": 1.29,
-       "whip": 0.96,
-       "innings": 28.0,
-       "h": 11,
-       "k": 41,
-       "bb": 16,
-       "hr": 1
+       "w": 14,
+       "l": 8,
+       "era": 3.76,
+       "whip": 1.11,
+       "innings": 184.33333333333334,
+       "h": 144,
+       "k": 248,
+       "bb": 61,
+       "hr": 28
       },
       "away_sp": {
-       "w": 12,
-       "l": 9,
-       "era": 2.56,
-       "whip": 1.06,
-       "innings": 186.33333333333334,
-       "h": 149,
-       "k": 193,
-       "bb": 49,
-       "hr": 17
+       "w": 11,
+       "l": 7,
+       "era": 3.34,
+       "whip": 1.2,
+       "innings": 172.33333333333334,
+       "h": 144,
+       "k": 185,
+       "bb": 62,
+       "hr": 19
       },
       "home_bats": [
        {
-        "id": 805367,
-        "name": "Chase Meidroth",
-        "position": "2B",
-        "pa": 15,
-        "ab": 15,
+        "id": 680757,
+        "name": "Steven Kwan",
+        "position": "LF",
+        "pa": 16,
+        "ab": 13,
         "h": 4,
         "hr": 0,
         "rbi": 0,
-        "k": 3,
-        "avg": 0.26666666666666666
+        "k": 1,
+        "avg": 0.3076923076923077
        },
+       {
+        "id": 677587,
+        "name": "Brayan Rocchio",
+        "position": "SS",
+        "pa": 14,
+        "ab": 14,
+        "h": 4,
+        "hr": 0,
+        "rbi": 1,
+        "k": 3,
+        "avg": 0.2857142857142857
+       },
+       {
+        "id": 682177,
+        "name": "Daniel Schneemann",
+        "position": "CF",
+        "pa": 10,
+        "ab": 10,
+        "h": 2,
+        "hr": 0,
+        "rbi": 0,
+        "k": 5,
+        "avg": 0.2
+       },
+       {
+        "id": 608070,
+        "name": "Jos\u00e9 Ram\u00edrez",
+        "position": "3B",
+        "pa": 10,
+        "ab": 8,
+        "h": 0,
+        "hr": 0,
+        "rbi": 0,
+        "k": 3,
+        "avg": 0.0
+       },
+       {
+        "id": 683953,
+        "name": "Travis Bazzana",
+        "position": "2B",
+        "pa": 9,
+        "ab": 9,
+        "h": 1,
+        "hr": 0,
+        "rbi": 0,
+        "k": 4,
+        "avg": 0.1111111111111111
+       },
+       {
+        "id": 595978,
+        "name": "Austin Hedges",
+        "position": "C",
+        "pa": 8,
+        "ab": 7,
+        "h": 4,
+        "hr": 1,
+        "rbi": 1,
+        "k": 1,
+        "avg": 0.5714285714285714
+       },
+       {
+        "id": 666176,
+        "name": "Jo Adell",
+        "position": "RF",
+        "pa": 7,
+        "ab": 7,
+        "h": 2,
+        "hr": 0,
+        "rbi": 0,
+        "k": 3,
+        "avg": 0.2857142857142857
+       },
+       {
+        "id": 800050,
+        "name": "Chase DeLauter",
+        "position": "RF",
+        "pa": 5,
+        "ab": 4,
+        "h": 1,
+        "hr": 0,
+        "rbi": 0,
+        "k": 2,
+        "avg": 0.25
+       },
+       {
+        "id": 682657,
+        "name": "Angel Mart\u00ednez",
+        "position": "LF",
+        "pa": 4,
+        "ab": 3,
+        "h": 0,
+        "hr": 0,
+        "rbi": 1,
+        "k": 0,
+        "avg": 0.0
+       }
+      ],
+      "away_bats": [
        {
         "id": 678246,
         "name": "Miguel Vargas",
         "position": "3B",
-        "pa": 15,
+        "pa": 17,
         "ab": 14,
-        "h": 2,
+        "h": 6,
         "hr": 1,
-        "rbi": 1,
+        "rbi": 4,
         "k": 3,
-        "avg": 0.14285714285714285
+        "avg": 0.42857142857142855
        },
        {
-        "id": 545341,
-        "name": "Randal Grichuk",
+        "id": 643217,
+        "name": "Andrew Benintendi",
         "position": "DH",
-        "pa": 12,
-        "ab": 12,
+        "pa": 15,
+        "ab": 13,
         "h": 5,
         "hr": 0,
+        "rbi": 3,
+        "k": 2,
+        "avg": 0.38461538461538464
+       },
+       {
+        "id": 803011,
+        "name": "Sam Antonacci",
+        "position": "LF",
+        "pa": 12,
+        "ab": 11,
+        "h": 1,
+        "hr": 0,
         "rbi": 0,
-        "k": 1,
-        "avg": 0.4166666666666667
+        "k": 2,
+        "avg": 0.09090909090909091
        },
        {
         "id": 695657,
         "name": "Colson Montgomery",
         "position": "SS",
         "pa": 11,
-        "ab": 10,
-        "h": 2,
+        "ab": 9,
+        "h": 0,
         "hr": 0,
-        "rbi": 2,
-        "k": 5,
-        "avg": 0.2
+        "rbi": 0,
+        "k": 8,
+        "avg": 0.0
        },
        {
-        "id": 682668,
-        "name": "Luisangel Acu\u00f1a",
-        "position": "SS",
+        "id": 691019,
+        "name": "Kyle Teel",
+        "position": "C",
         "pa": 10,
-        "ab": 10,
+        "ab": 9,
+        "h": 0,
+        "hr": 0,
+        "rbi": 0,
+        "k": 6,
+        "avg": 0.0
+       },
+       {
+        "id": 671976,
+        "name": "Tristan Peters",
+        "position": "CF",
+        "pa": 9,
+        "ab": 7,
         "h": 1,
         "hr": 0,
         "rbi": 0,
-        "k": 4,
-        "avg": 0.1
+        "k": 2,
+        "avg": 0.14285714285714285
        },
        {
         "id": 695731,
@@ -314,276 +436,43 @@
         "pa": 8,
         "ab": 6,
         "h": 2,
-        "hr": 1,
+        "hr": 0,
         "rbi": 1,
-        "k": 4,
+        "k": 2,
         "avg": 0.3333333333333333
        },
        {
-        "id": 686668,
-        "name": "Brenton Doyle",
-        "position": "CF",
-        "pa": 6,
-        "ab": 6,
-        "h": 1,
+        "id": 805367,
+        "name": "Chase Meidroth",
+        "position": "2B",
+        "pa": 8,
+        "ab": 8,
+        "h": 2,
         "hr": 0,
         "rbi": 0,
-        "k": 3,
-        "avg": 0.16666666666666666
-       },
-       {
-        "id": 808959,
-        "name": "Munetaka Murakami",
-        "position": "1B",
-        "pa": 4,
-        "ab": 4,
-        "h": 1,
-        "hr": 1,
-        "rbi": 1,
         "k": 1,
         "avg": 0.25
        },
        {
-        "id": 671976,
-        "name": "Tristan Peters",
-        "position": "CF",
-        "pa": 4,
-        "ab": 3,
-        "h": 0,
-        "hr": 0,
-        "rbi": 0,
-        "k": 0,
-        "avg": 0.0
-       }
-      ],
-      "away_bats": [
-       {
-        "id": 677587,
-        "name": "Brayan Rocchio",
-        "position": "SS",
-        "pa": 4,
-        "ab": 4,
-        "h": 0,
-        "hr": 0,
-        "rbi": 0,
-        "k": 1,
-        "avg": 0.0
-       },
-       {
-        "id": 608070,
-        "name": "Jos\u00e9 Ram\u00edrez",
-        "position": "3B",
-        "pa": 3,
-        "ab": 2,
-        "h": 1,
-        "hr": 0,
-        "rbi": 0,
-        "k": 0,
-        "avg": 0.5
-       },
-       {
-        "id": 680757,
-        "name": "Steven Kwan",
-        "position": "LF",
-        "pa": 3,
-        "ab": 3,
-        "h": 1,
-        "hr": 0,
-        "rbi": 0,
-        "k": 1,
-        "avg": 0.3333333333333333
-       },
-       {
-        "id": 694197,
-        "name": "Angel Genao",
-        "position": "2B",
-        "pa": 2,
-        "ab": 2,
-        "h": 0,
-        "hr": 0,
-        "rbi": 0,
-        "k": 2,
-        "avg": 0.0
-       },
-       {
-        "id": 800050,
-        "name": "Chase DeLauter",
-        "position": "RF",
-        "pa": 2,
-        "ab": 2,
-        "h": 0,
-        "hr": 0,
-        "rbi": 0,
-        "k": 0,
-        "avg": 0.0
-       },
-       {
-        "id": 681807,
-        "name": "David Fry",
-        "position": "RF",
-        "pa": 2,
-        "ab": 1,
-        "h": 0,
-        "hr": 0,
-        "rbi": 0,
-        "k": 1,
-        "avg": 0.0
-       },
-       {
-        "id": 666176,
-        "name": "Jo Adell",
-        "position": "RF",
-        "pa": 2,
-        "ab": 1,
-        "h": 0,
-        "hr": 0,
-        "rbi": 0,
-        "k": 1,
-        "avg": 0.0
-       },
-       {
-        "id": 672275,
-        "name": "Patrick Bailey",
+        "id": 668670,
+        "name": "Jake Rogers",
         "position": "C",
-        "pa": 2,
-        "ab": 1,
-        "h": 0,
+        "pa": 8,
+        "ab": 8,
+        "h": 1,
         "hr": 0,
         "rbi": 0,
-        "k": 1,
-        "avg": 0.0
-       },
-       {
-        "id": 683953,
-        "name": "Travis Bazzana",
-        "position": "2B",
-        "pa": 2,
-        "ab": 1,
-        "h": 0,
-        "hr": 0,
-        "rbi": 0,
-        "k": 0,
-        "avg": 0.0
+        "k": 4,
+        "avg": 0.125
        }
       ],
-      "venue": "Rate Field"
-     }
-    }
-   ]
-  },
-  "nfl": {
-   "label": "NFL",
-   "games": [
-    {
-     "event_id": "259b5df9aa0d10257f56de78523495e0",
-     "league": "nfl",
-     "commence_time": "2026-10-09T00:15:00Z",
-     "home": "Dallas Cowboys",
-     "away": "Tampa Bay Buccaneers",
-     "markets": {
-      "h2h": {
-       "point": null,
-       "side_a": "home",
-       "fair_home": 0.822880323108754,
-       "fair_away": 0.17804468329655743,
-       "fair_price_home": -465,
-       "fair_price_away": 462,
-       "best_home": {
-        "book": "DraftKings",
-        "price": -500
-       },
-       "best_away": {
-        "book": "BetMGM",
-        "price": 400
-       },
-       "edge_home": -1.2543612269495212,
-       "edge_away": -10.977658351721287,
-       "books": 9,
-       "width": 124
-      },
-      "spreads": {
-       "point": -9.0,
-       "side_a": "home",
-       "fair_home": 0.49791411981000805,
-       "fair_away": 0.5044067710896343,
-       "fair_price_home": 101,
-       "fair_price_away": -102,
-       "best_home": {
-        "book": "BetUS",
-        "price": -105
-       },
-       "best_away": {
-        "book": "BetMGM",
-        "price": -105
-       },
-       "edge_home": -2.7881956561412844,
-       "edge_away": -1.5205827872618816,
-       "books": 6,
-       "width": 20.0
-      },
-      "totals": {
-       "point": 48.5,
-       "side_a": "over",
-       "fair_home": 0.5052594160267618,
-       "fair_away": 0.4965191855668358,
-       "fair_price_home": -102,
-       "fair_price_away": 101,
-       "best_home": {
-        "book": "BetUS",
-        "price": -110
-       },
-       "best_away": {
-        "book": "LowVig.ag",
-        "price": -104
-       },
-       "edge_home": -3.5413842130727344,
-       "edge_away": -2.6058520618898964,
-       "books": 5,
-       "width": 20,
-       "model": null
-      }
-     },
-     "model": {
-      "home_win_prob": 0.5912,
-      "away_win_prob": 0.4088,
-      "market_home_prob": 0.822880323108754,
-      "disagreement": null,
-      "suspect": false,
-      "source": "elo",
-      "ev_home": -29.1,
-      "ev_away": 104.4
-     },
-     "detail": {
-      "home_form": {
-       "w": 2,
-       "l": 3,
-       "streak": "W1",
-       "l10_w": 2,
-       "l10_l": 3
-      },
-      "away_form": {
-       "w": 0,
-       "l": 4,
-       "streak": "L4",
-       "l10_w": 0,
-       "l10_l": 4
-      },
-      "series": [
-       {
-        "date": "2024-12-22",
-        "away": "Tampa Bay Buccaneers",
-        "away_runs": 24,
-        "home": "Dallas Cowboys",
-        "home_runs": 26
-       }
-      ]
+      "venue": "Progressive Field"
      }
     }
    ]
   }
  },
  "counts": {
-  "mlb": 1,
-  "nfl": 1
+  "mlb": 1
  }
 }

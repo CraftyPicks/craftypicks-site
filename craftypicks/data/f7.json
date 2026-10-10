@@ -1,74 +1,74 @@
 {
-  "date": "2026-10-08",
-  "date_label": "Thursday, October 8, 2026",
+  "date": "2026-10-10",
+  "date_label": "Saturday, October 10, 2026",
   "rows": [
     {
-      "projection": 2.62,
+      "projection": 2.94,
       "sp_used": true,
-      "league_f7": 3.48,
-      "offence": 0.975,
-      "sp_index": 0.794,
+      "league_f7": 3.481,
+      "offence": 0.99,
+      "sp_index": 0.829,
       "pen_index": 0.898,
-      "park": 0.973,
-      "sp_innings": 7.0,
-      "game_pk": 849832,
+      "park": 1.02,
+      "sp_innings": 6.17,
+      "game_pk": 849831,
       "team_id": 114,
       "team": "CLE",
       "opponent": "CWS",
-      "is_home": false,
-      "pitcher": "Hagen Smith",
+      "is_home": true,
+      "pitcher": "Sean Burke",
       "pitcher_hand": "",
-      "pitcher_era": 1.29,
-      "venue": "Rate Field",
-      "commence_time": "2026-10-09T00:00:00Z",
+      "pitcher_era": 3.34,
+      "venue": "Progressive Field",
+      "commence_time": "2026-10-11T00:00:00Z",
       "actual": null,
       "probs": {
-        "2.5": 0.4323,
-        "3.5": 0.2829,
-        "4.5": 0.178
+        "2.5": 0.4858,
+        "3.5": 0.3333,
+        "4.5": 0.2201
       },
-      "shape": 2.681
+      "shape": 2.749
     },
     {
-      "projection": 2.84,
+      "projection": 3.64,
       "sp_used": true,
-      "league_f7": 3.48,
+      "league_f7": 3.481,
       "offence": 1.136,
-      "sp_index": 0.701,
+      "sp_index": 0.902,
       "pen_index": 0.906,
-      "park": 0.973,
-      "sp_innings": 5.72,
-      "game_pk": 849832,
+      "park": 1.02,
+      "sp_innings": 5.67,
+      "game_pk": 849831,
       "team_id": 145,
       "team": "CWS",
       "opponent": "CLE",
-      "is_home": true,
-      "pitcher": "Parker Messick",
+      "is_home": false,
+      "pitcher": "Gavin Williams",
       "pitcher_hand": "",
-      "pitcher_era": 2.56,
-      "venue": "Rate Field",
-      "commence_time": "2026-10-09T00:00:00Z",
+      "pitcher_era": 3.76,
+      "venue": "Progressive Field",
+      "commence_time": "2026-10-11T00:00:00Z",
       "actual": null,
       "probs": {
-        "2.5": 0.4687,
-        "3.5": 0.3176,
-        "4.5": 0.2072
+        "2.5": 0.5827,
+        "3.5": 0.4343,
+        "4.5": 0.3127
       },
-      "shape": 2.681
+      "shape": 2.749
     }
   ],
   "summary": {
-    "published": 260,
-    "graded": 256,
-    "mae": 2.013,
-    "baseline_mae": 2.074,
+    "published": 262,
+    "graded": 258,
+    "mae": 2.027,
+    "baseline_mae": 2.082,
     "bands": [
       {
         "lo": 0.0,
         "hi": 3.0,
-        "n": 69,
+        "n": 71,
         "projected": 2.74,
-        "actual": 2.64
+        "actual": 2.75
       },
       {
         "lo": 3.0,
@@ -95,21 +95,21 @@
     "over_rate": [
       {
         "line": 2.5,
-        "n": 256,
-        "said": 0.544,
-        "were": 0.543
+        "n": 258,
+        "said": 0.543,
+        "were": 0.547
       },
       {
         "line": 3.5,
-        "n": 256,
+        "n": 258,
         "said": 0.394,
-        "were": 0.398
+        "were": 0.403
       },
       {
         "line": 4.5,
-        "n": 256,
-        "said": 0.277,
-        "were": 0.254
+        "n": 258,
+        "said": 0.276,
+        "were": 0.256
       }
     ],
     "baseline_in_sample": false,
