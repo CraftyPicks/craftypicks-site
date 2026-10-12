@@ -1,74 +1,128 @@
 {
-  "date": "2026-10-11",
-  "date_label": "Sunday, October 11, 2026",
+  "date": "2026-10-12",
+  "date_label": "Monday, October 12, 2026",
   "rows": [
     {
-      "projection": 2.65,
+      "projection": 3.02,
       "sp_used": true,
-      "league_f7": 3.48,
-      "offence": 1.148,
-      "sp_index": 0.618,
+      "league_f7": 3.479,
+      "offence": 1.141,
+      "sp_index": 0.729,
       "pen_index": 0.851,
       "park": 1.004,
-      "sp_innings": 5.72,
-      "game_pk": 849809,
+      "sp_innings": 5.4,
+      "game_pk": 849812,
       "team_id": 119,
       "team": "LAD",
       "opponent": "MIL",
       "is_home": false,
-      "pitcher": "Jacob Misiorowski",
+      "pitcher": "Logan Henderson",
       "pitcher_hand": "",
-      "pitcher_era": 1.8,
+      "pitcher_era": 2.47,
       "venue": "American Family Field",
-      "commence_time": "2026-10-12T00:00:00Z",
+      "commence_time": "2026-10-12T21:00:00Z",
       "actual": null,
       "probs": {
-        "2.5": 0.4374,
-        "3.5": 0.2877,
-        "4.5": 0.182
+        "2.5": 0.4972,
+        "3.5": 0.3454,
+        "4.5": 0.2311
       },
-      "shape": 2.677
+      "shape": 2.709
     },
     {
-      "projection": 2.82,
+      "projection": 2.59,
       "sp_used": true,
-      "league_f7": 3.48,
+      "league_f7": 3.479,
       "offence": 1.04,
-      "sp_index": 0.745,
+      "sp_index": 0.689,
       "pen_index": 0.943,
       "park": 1.004,
-      "sp_innings": 5.93,
-      "game_pk": 849809,
+      "sp_innings": 6.36,
+      "game_pk": 849812,
       "team_id": 158,
       "team": "MIL",
       "opponent": "LAD",
       "is_home": true,
-      "pitcher": "Tarik Skubal",
+      "pitcher": "Yoshinobu Yamamoto",
       "pitcher_hand": "",
-      "pitcher_era": 2.72,
+      "pitcher_era": 2.53,
       "venue": "American Family Field",
-      "commence_time": "2026-10-12T00:00:00Z",
+      "commence_time": "2026-10-12T21:00:00Z",
       "actual": null,
       "probs": {
-        "2.5": 0.4654,
-        "3.5": 0.3145,
-        "4.5": 0.2046
+        "2.5": 0.4276,
+        "3.5": 0.278,
+        "4.5": 0.1737
       },
-      "shape": 2.677
+      "shape": 2.709
+    },
+    {
+      "projection": 2.63,
+      "sp_used": true,
+      "league_f7": 3.479,
+      "offence": 0.99,
+      "sp_index": 0.711,
+      "pen_index": 0.963,
+      "park": 1.003,
+      "sp_innings": 5.64,
+      "game_pk": 849820,
+      "team_id": 114,
+      "team": "CLE",
+      "opponent": "TB",
+      "is_home": false,
+      "pitcher": "Drew Rasmussen",
+      "pitcher_hand": "",
+      "pitcher_era": 2.67,
+      "venue": "Tropicana Field",
+      "commence_time": "2026-10-13T00:00:00Z",
+      "actual": null,
+      "probs": {
+        "2.5": 0.4345,
+        "3.5": 0.2845,
+        "4.5": 0.179
+      },
+      "shape": 2.709
+    },
+    {
+      "projection": 3.17,
+      "sp_used": true,
+      "league_f7": 3.479,
+      "offence": 1.005,
+      "sp_index": 0.904,
+      "pen_index": 0.906,
+      "park": 1.003,
+      "sp_innings": 5.51,
+      "game_pk": 849820,
+      "team_id": 139,
+      "team": "TB",
+      "opponent": "CLE",
+      "is_home": true,
+      "pitcher": "Foster Griffin",
+      "pitcher_hand": "",
+      "pitcher_era": 3.6,
+      "venue": "Tropicana Field",
+      "commence_time": "2026-10-13T00:00:00Z",
+      "actual": null,
+      "probs": {
+        "2.5": 0.5193,
+        "3.5": 0.3678,
+        "4.5": 0.2511
+      },
+      "shape": 2.709
     }
   ],
   "summary": {
-    "published": 264,
-    "graded": 260,
-    "mae": 2.029,
-    "baseline_mae": 2.085,
+    "published": 268,
+    "graded": 262,
+    "mae": 2.023,
+    "baseline_mae": 2.084,
     "bands": [
       {
         "lo": 0.0,
         "hi": 3.0,
-        "n": 72,
+        "n": 74,
         "projected": 2.74,
-        "actual": 2.74
+        "actual": 2.7
       },
       {
         "lo": 3.0,
@@ -95,21 +149,21 @@
     "over_rate": [
       {
         "line": 2.5,
-        "n": 260,
+        "n": 262,
         "said": 0.543,
-        "were": 0.542
+        "were": 0.538
       },
       {
         "line": 3.5,
-        "n": 260,
-        "said": 0.394,
-        "were": 0.4
+        "n": 262,
+        "said": 0.393,
+        "were": 0.397
       },
       {
         "line": 4.5,
-        "n": 260,
-        "said": 0.276,
-        "were": 0.254
+        "n": 262,
+        "said": 0.275,
+        "were": 0.252
       }
     ],
     "baseline_in_sample": false,

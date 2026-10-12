@@ -7353,13 +7353,14 @@
       "pitcher_era": 1.8,
       "venue": "American Family Field",
       "commence_time": "2026-10-12T00:00:00Z",
-      "actual": null,
+      "actual": 1,
       "probs": {
         "2.5": 0.4374,
         "3.5": 0.2877,
         "4.5": 0.182
       },
-      "shape": 2.677
+      "shape": 2.677,
+      "miss": -1.65
     },
     {
       "projection": 2.82,
@@ -7380,13 +7381,122 @@
       "pitcher_era": 2.72,
       "venue": "American Family Field",
       "commence_time": "2026-10-12T00:00:00Z",
-      "actual": null,
+      "actual": 2,
       "probs": {
         "2.5": 0.4654,
         "3.5": 0.3145,
         "4.5": 0.2046
       },
-      "shape": 2.677
+      "shape": 2.677,
+      "miss": -0.82
+    },
+    {
+      "projection": 3.02,
+      "sp_used": true,
+      "league_f7": 3.479,
+      "offence": 1.141,
+      "sp_index": 0.729,
+      "pen_index": 0.851,
+      "park": 1.004,
+      "sp_innings": 5.4,
+      "game_pk": 849812,
+      "team_id": 119,
+      "team": "LAD",
+      "opponent": "MIL",
+      "is_home": false,
+      "pitcher": "Logan Henderson",
+      "pitcher_hand": "",
+      "pitcher_era": 2.47,
+      "venue": "American Family Field",
+      "commence_time": "2026-10-12T21:00:00Z",
+      "actual": null,
+      "probs": {
+        "2.5": 0.4972,
+        "3.5": 0.3454,
+        "4.5": 0.2311
+      },
+      "shape": 2.709
+    },
+    {
+      "projection": 2.59,
+      "sp_used": true,
+      "league_f7": 3.479,
+      "offence": 1.04,
+      "sp_index": 0.689,
+      "pen_index": 0.943,
+      "park": 1.004,
+      "sp_innings": 6.36,
+      "game_pk": 849812,
+      "team_id": 158,
+      "team": "MIL",
+      "opponent": "LAD",
+      "is_home": true,
+      "pitcher": "Yoshinobu Yamamoto",
+      "pitcher_hand": "",
+      "pitcher_era": 2.53,
+      "venue": "American Family Field",
+      "commence_time": "2026-10-12T21:00:00Z",
+      "actual": null,
+      "probs": {
+        "2.5": 0.4276,
+        "3.5": 0.278,
+        "4.5": 0.1737
+      },
+      "shape": 2.709
+    },
+    {
+      "projection": 2.63,
+      "sp_used": true,
+      "league_f7": 3.479,
+      "offence": 0.99,
+      "sp_index": 0.711,
+      "pen_index": 0.963,
+      "park": 1.003,
+      "sp_innings": 5.64,
+      "game_pk": 849820,
+      "team_id": 114,
+      "team": "CLE",
+      "opponent": "TB",
+      "is_home": false,
+      "pitcher": "Drew Rasmussen",
+      "pitcher_hand": "",
+      "pitcher_era": 2.67,
+      "venue": "Tropicana Field",
+      "commence_time": "2026-10-13T00:00:00Z",
+      "actual": null,
+      "probs": {
+        "2.5": 0.4345,
+        "3.5": 0.2845,
+        "4.5": 0.179
+      },
+      "shape": 2.709
+    },
+    {
+      "projection": 3.17,
+      "sp_used": true,
+      "league_f7": 3.479,
+      "offence": 1.005,
+      "sp_index": 0.904,
+      "pen_index": 0.906,
+      "park": 1.003,
+      "sp_innings": 5.51,
+      "game_pk": 849820,
+      "team_id": 139,
+      "team": "TB",
+      "opponent": "CLE",
+      "is_home": true,
+      "pitcher": "Foster Griffin",
+      "pitcher_hand": "",
+      "pitcher_era": 3.6,
+      "venue": "Tropicana Field",
+      "commence_time": "2026-10-13T00:00:00Z",
+      "actual": null,
+      "probs": {
+        "2.5": 0.5193,
+        "3.5": 0.3678,
+        "4.5": 0.2511
+      },
+      "shape": 2.709
     }
   ]
 }
