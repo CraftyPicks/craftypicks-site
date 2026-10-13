@@ -7465,13 +7465,14 @@
       "pitcher_era": 2.67,
       "venue": "Tropicana Field",
       "commence_time": "2026-10-13T00:00:00Z",
-      "actual": null,
+      "actual": 2,
       "probs": {
         "2.5": 0.4345,
         "3.5": 0.2845,
         "4.5": 0.179
       },
-      "shape": 2.709
+      "shape": 2.709,
+      "miss": -0.63
     },
     {
       "projection": 3.17,
@@ -7492,13 +7493,68 @@
       "pitcher_era": 3.6,
       "venue": "Tropicana Field",
       "commence_time": "2026-10-13T00:00:00Z",
-      "actual": null,
+      "actual": 2,
       "probs": {
         "2.5": 0.5193,
         "3.5": 0.3678,
         "4.5": 0.2511
       },
-      "shape": 2.709
+      "shape": 2.709,
+      "miss": -1.17
+    },
+    {
+      "projection": 3.54,
+      "sp_used": true,
+      "league_f7": 3.479,
+      "offence": 0.987,
+      "sp_index": 1.048,
+      "pen_index": 0.963,
+      "park": 1.003,
+      "sp_innings": 5.27,
+      "game_pk": 849813,
+      "team_id": 114,
+      "team": "CLE",
+      "opponent": "TB",
+      "is_home": false,
+      "pitcher": "Freddy Peralta",
+      "pitcher_hand": "",
+      "pitcher_era": 4.42,
+      "venue": "Tropicana Field",
+      "commence_time": "2026-10-14T00:00:00Z",
+      "actual": null,
+      "probs": {
+        "2.5": 0.5721,
+        "3.5": 0.4216,
+        "4.5": 0.2997
+      },
+      "shape": 2.815
+    },
+    {
+      "projection": 2.59,
+      "sp_used": true,
+      "league_f7": 3.479,
+      "offence": 1.005,
+      "sp_index": 0.701,
+      "pen_index": 0.906,
+      "park": 1.003,
+      "sp_innings": 5.72,
+      "game_pk": 849813,
+      "team_id": 139,
+      "team": "TB",
+      "opponent": "CLE",
+      "is_home": true,
+      "pitcher": "Parker Messick",
+      "pitcher_hand": "",
+      "pitcher_era": 2.56,
+      "venue": "Tropicana Field",
+      "commence_time": "2026-10-14T00:00:00Z",
+      "actual": null,
+      "probs": {
+        "2.5": 0.4291,
+        "3.5": 0.2779,
+        "4.5": 0.1727
+      },
+      "shape": 2.815
     }
   ]
 }
