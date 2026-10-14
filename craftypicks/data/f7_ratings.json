@@ -7521,13 +7521,14 @@
       "pitcher_era": 4.42,
       "venue": "Tropicana Field",
       "commence_time": "2026-10-14T00:00:00Z",
-      "actual": null,
+      "actual": 1,
       "probs": {
         "2.5": 0.5721,
         "3.5": 0.4216,
         "4.5": 0.2997
       },
-      "shape": 2.815
+      "shape": 2.815,
+      "miss": -2.54
     },
     {
       "projection": 2.59,
@@ -7548,13 +7549,68 @@
       "pitcher_era": 2.56,
       "venue": "Tropicana Field",
       "commence_time": "2026-10-14T00:00:00Z",
-      "actual": null,
+      "actual": 3,
       "probs": {
         "2.5": 0.4291,
         "3.5": 0.2779,
         "4.5": 0.1727
       },
-      "shape": 2.815
+      "shape": 2.815,
+      "miss": 0.41
+    },
+    {
+      "projection": 3.59,
+      "sp_used": true,
+      "league_f7": 3.479,
+      "offence": 1.142,
+      "sp_index": 0.927,
+      "pen_index": 0.851,
+      "park": 0.992,
+      "sp_innings": 5.41,
+      "game_pk": 849811,
+      "team_id": 119,
+      "team": "LAD",
+      "opponent": "MIL",
+      "is_home": true,
+      "pitcher": "Robert Gasser",
+      "pitcher_hand": "",
+      "pitcher_era": 3.87,
+      "venue": "UNIQLO Field at Dodger Stadium",
+      "commence_time": "2026-10-15T00:00:00Z",
+      "actual": null,
+      "probs": {
+        "2.5": 0.5761,
+        "3.5": 0.4273,
+        "4.5": 0.3062
+      },
+      "shape": 2.732
+    },
+    {
+      "projection": 2.97,
+      "sp_used": true,
+      "league_f7": 3.479,
+      "offence": 1.041,
+      "sp_index": 0.777,
+      "pen_index": 0.943,
+      "park": 0.992,
+      "sp_innings": 4.92,
+      "game_pk": 849811,
+      "team_id": 158,
+      "team": "MIL",
+      "opponent": "LAD",
+      "is_home": false,
+      "pitcher": "Blake Snell",
+      "pitcher_hand": "",
+      "pitcher_era": 1.9,
+      "venue": "UNIQLO Field at Dodger Stadium",
+      "commence_time": "2026-10-15T00:00:00Z",
+      "actual": null,
+      "probs": {
+        "2.5": 0.4901,
+        "3.5": 0.3379,
+        "4.5": 0.2242
+      },
+      "shape": 2.732
     }
   ]
 }
