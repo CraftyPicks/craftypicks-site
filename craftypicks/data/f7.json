@@ -1,81 +1,108 @@
 {
-  "date": "2026-10-14",
-  "date_label": "Wednesday, October 14, 2026",
+  "date": "2026-10-15",
+  "date_label": "Thursday, October 15, 2026",
   "rows": [
     {
-      "projection": 3.59,
+      "projection": 3.42,
       "sp_used": true,
-      "league_f7": 3.479,
-      "offence": 1.142,
-      "sp_index": 0.927,
-      "pen_index": 0.851,
-      "park": 0.992,
-      "sp_innings": 5.41,
-      "game_pk": 849811,
-      "team_id": 119,
-      "team": "LAD",
-      "opponent": "MIL",
+      "league_f7": 3.478,
+      "offence": 0.981,
+      "sp_index": 0.991,
+      "pen_index": 0.963,
+      "park": 1.02,
+      "sp_innings": 4.95,
+      "game_pk": 849818,
+      "team_id": 114,
+      "team": "CLE",
+      "opponent": "TB",
       "is_home": true,
-      "pitcher": "Robert Gasser",
+      "pitcher": "Griffin Jax",
       "pitcher_hand": "",
-      "pitcher_era": 3.87,
-      "venue": "UNIQLO Field at Dodger Stadium",
-      "commence_time": "2026-10-15T00:00:00Z",
+      "pitcher_era": 3.53,
+      "venue": "Progressive Field",
+      "commence_time": "2026-10-15T17:00:00Z",
       "actual": null,
       "probs": {
-        "2.5": 0.5761,
-        "3.5": 0.4273,
-        "4.5": 0.3062
+        "2.5": 0.5529,
+        "3.5": 0.4033,
+        "4.5": 0.2842
       },
-      "shape": 2.732
+      "shape": 2.681
     },
     {
-      "projection": 2.97,
+      "projection": 3.22,
       "sp_used": true,
-      "league_f7": 3.479,
-      "offence": 1.041,
-      "sp_index": 0.777,
+      "league_f7": 3.478,
+      "offence": 1.005,
+      "sp_index": 0.902,
+      "pen_index": 0.906,
+      "park": 1.02,
+      "sp_innings": 5.67,
+      "game_pk": 849818,
+      "team_id": 139,
+      "team": "TB",
+      "opponent": "CLE",
+      "is_home": false,
+      "pitcher": "Gavin Williams",
+      "pitcher_hand": "",
+      "pitcher_era": 3.76,
+      "venue": "Progressive Field",
+      "commence_time": "2026-10-15T17:00:00Z",
+      "actual": null,
+      "probs": {
+        "2.5": 0.5257,
+        "3.5": 0.3748,
+        "4.5": 0.2579
+      },
+      "shape": 2.681
+    },
+    {
+      "projection": 3.2,
+      "sp_used": true,
+      "league_f7": 3.478,
+      "offence": 1.042,
+      "sp_index": 0.876,
       "pen_index": 0.943,
       "park": 0.992,
-      "sp_innings": 4.92,
-      "game_pk": 849811,
+      "sp_innings": 5.54,
+      "game_pk": 849810,
       "team_id": 158,
       "team": "MIL",
       "opponent": "LAD",
       "is_home": false,
-      "pitcher": "Blake Snell",
+      "pitcher": "Tyler Glasnow",
       "pitcher_hand": "",
-      "pitcher_era": 1.9,
+      "pitcher_era": 3.53,
       "venue": "UNIQLO Field at Dodger Stadium",
-      "commence_time": "2026-10-15T00:00:00Z",
+      "commence_time": "2026-10-16T00:00:00Z",
       "actual": null,
       "probs": {
-        "2.5": 0.4901,
-        "3.5": 0.3379,
-        "4.5": 0.2242
+        "2.5": 0.5229,
+        "3.5": 0.3719,
+        "4.5": 0.2552
       },
-      "shape": 2.732
+      "shape": 2.681
     }
   ],
   "summary": {
-    "published": 272,
-    "graded": 268,
-    "mae": 2.008,
-    "baseline_mae": 2.066,
+    "published": 275,
+    "graded": 270,
+    "mae": 2.003,
+    "baseline_mae": 2.058,
     "bands": [
       {
         "lo": 0.0,
         "hi": 3.0,
-        "n": 77,
+        "n": 78,
         "projected": 2.74,
-        "actual": 2.73
+        "actual": 2.74
       },
       {
         "lo": 3.0,
         "hi": 3.75,
-        "n": 140,
+        "n": 141,
         "projected": 3.36,
-        "actual": 3.41
+        "actual": 3.4
       },
       {
         "lo": 3.75,
@@ -95,21 +122,21 @@
     "over_rate": [
       {
         "line": 2.5,
-        "n": 268,
+        "n": 270,
         "said": 0.541,
         "were": 0.537
       },
       {
         "line": 3.5,
-        "n": 268,
+        "n": 270,
         "said": 0.391,
         "were": 0.396
       },
       {
         "line": 4.5,
-        "n": 268,
+        "n": 270,
         "said": 0.274,
-        "were": 0.25
+        "were": 0.248
       }
     ],
     "baseline_in_sample": false,
