@@ -9,7 +9,7 @@
       "opponent": "DEN",
       "position": "WR",
       "per_game": 0.935,
-      "chance": 0.5268961781760537,
+      "chance": 0.5265169047104264,
       "weight": 0.6,
       "opp_allowed": 1.98,
       "league_allowed": 2.48,
@@ -87,7 +87,7 @@
       "opponent": "DEN",
       "position": "RB",
       "per_game": 0.75,
-      "chance": 0.4512786284379746,
+      "chance": 0.4509259113814844,
       "weight": 0.0,
       "opp_allowed": 1.98,
       "league_allowed": 2.48,
@@ -165,7 +165,7 @@
       "opponent": "DEN",
       "position": "WR",
       "per_game": 0.5,
-      "chance": 0.32975345554485336,
+      "chance": 0.3294662641690115,
       "weight": 0.429,
       "opp_allowed": 1.98,
       "league_allowed": 2.48,
@@ -243,7 +243,7 @@
       "opponent": "SEA",
       "position": "RB",
       "per_game": 0.425,
-      "chance": 0.2758907591084191,
+      "chance": 0.27564043946761774,
       "weight": 0.556,
       "opp_allowed": 1.88,
       "league_allowed": 2.48,
@@ -321,7 +321,7 @@
       "opponent": "DEN",
       "position": "RB",
       "per_game": 0.371,
-      "chance": 0.2566229280829867,
+      "chance": 0.25638685660565963,
       "weight": 0.6,
       "opp_allowed": 1.98,
       "league_allowed": 2.48,
@@ -399,7 +399,7 @@
       "opponent": "SEA",
       "position": "TE",
       "per_game": 0.381,
-      "chance": 0.2513378705517052,
+      "chance": 0.2511058012392843,
       "weight": 0.429,
       "opp_allowed": 1.88,
       "league_allowed": 2.48,
@@ -471,7 +471,7 @@
       "opponent": "SEA",
       "position": "RB",
       "per_game": 0.36,
-      "chance": 0.2393232494418588,
+      "chance": 0.2391004263994665,
       "weight": 0.6,
       "opp_allowed": 1.88,
       "league_allowed": 2.48,
@@ -549,7 +549,7 @@
       "opponent": "SEA",
       "position": "WR",
       "per_game": 0.265,
-      "chance": 0.18219989178359097,
+      "chance": 0.18202375446660102,
       "weight": 0.6,
       "opp_allowed": 1.88,
       "league_allowed": 2.48,
@@ -621,15 +621,15 @@
       "scored": null
     },
     {
-      "player_id": "00-0036554",
-      "name": "Nico Collins",
-      "team": "HOU",
-      "opponent": "JAX",
-      "position": "WR",
-      "per_game": 0.695,
-      "chance": 0.3917048602792753,
-      "weight": 0.429,
-      "opp_allowed": 1.77,
+      "player_id": "00-0040719",
+      "name": "Bhayshul Tuten",
+      "team": "JAX",
+      "opponent": "HOU",
+      "position": "RB",
+      "per_game": 0.587,
+      "chance": 0.41639908067594333,
+      "weight": 0.6,
+      "opp_allowed": 2.28,
       "league_allowed": 2.48,
       "week": 6,
       "game_id": "2026_06_HOU_JAX",
@@ -637,10 +637,82 @@
       "recent": [
         {
           "season": 2025,
-          "week": 11,
+          "week": 13,
           "opponent": "TEN",
           "value": 1.0
         },
+        {
+          "season": 2025,
+          "week": 14,
+          "opponent": "IND",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 15,
+          "opponent": "NYJ",
+          "value": 1.0
+        },
+        {
+          "season": 2025,
+          "week": 18,
+          "opponent": "TEN",
+          "value": 1.0
+        },
+        {
+          "season": 2026,
+          "week": 1,
+          "opponent": "CLE",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 2,
+          "opponent": "DEN",
+          "value": 1.0
+        },
+        {
+          "season": 2026,
+          "week": 3,
+          "opponent": "NE",
+          "value": 1.0
+        },
+        {
+          "season": 2026,
+          "week": 4,
+          "opponent": "CIN",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 5,
+          "opponent": "PHI",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 6,
+          "opponent": "HOU",
+          "value": 2.0
+        }
+      ],
+      "scored": null
+    },
+    {
+      "player_id": "00-0036554",
+      "name": "Nico Collins",
+      "team": "HOU",
+      "opponent": "JAX",
+      "position": "WR",
+      "per_game": 0.608,
+      "chance": 0.38686172535663377,
+      "weight": 0.5,
+      "opp_allowed": 1.99,
+      "league_allowed": 2.48,
+      "week": 6,
+      "game_id": "2026_06_HOU_JAX",
+      "commence_time": "2026-10-18T09:30:00-04:00",
+      "recent": [
         {
           "season": 2025,
           "week": 12,
@@ -694,6 +766,12 @@
           "week": 5,
           "opponent": "TEN",
           "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 6,
+          "opponent": "JAX",
+          "value": 0.0
         }
       ],
       "scored": null
@@ -704,21 +782,15 @@
       "team": "JAX",
       "opponent": "HOU",
       "position": "WR",
-      "per_game": 0.583,
-      "chance": 0.38796005161829394,
-      "weight": 0.556,
-      "opp_allowed": 2.08,
+      "per_game": 0.525,
+      "chance": 0.38240983901197245,
+      "weight": 0.6,
+      "opp_allowed": 2.28,
       "league_allowed": 2.48,
       "week": 6,
       "game_id": "2026_06_HOU_JAX",
       "commence_time": "2026-10-18T09:30:00-04:00",
       "recent": [
-        {
-          "season": 2025,
-          "week": 13,
-          "opponent": "TEN",
-          "value": 0.0
-        },
         {
           "season": 2025,
           "week": 15,
@@ -772,6 +844,12 @@
           "week": 5,
           "opponent": "PHI",
           "value": 2.0
+        },
+        {
+          "season": 2026,
+          "week": 6,
+          "opponent": "HOU",
+          "value": 0.0
         }
       ],
       "scored": null
@@ -783,9 +861,9 @@
       "opponent": "JAX",
       "position": "RB",
       "per_game": 0.542,
-      "chance": 0.3215033245583456,
+      "chance": 0.35352105353701413,
       "weight": 0.556,
-      "opp_allowed": 1.77,
+      "opp_allowed": 1.99,
       "league_allowed": 2.48,
       "week": 6,
       "game_id": "2026_06_HOU_JAX",
@@ -860,21 +938,15 @@
       "team": "JAX",
       "opponent": "HOU",
       "position": "RB",
-      "per_game": 0.444,
-      "chance": 0.3120664482027502,
-      "weight": 0.556,
-      "opp_allowed": 2.08,
+      "per_game": 0.4,
+      "chance": 0.30731845955042925,
+      "weight": 0.6,
+      "opp_allowed": 2.28,
       "league_allowed": 2.48,
       "week": 6,
       "game_id": "2026_06_HOU_JAX",
       "commence_time": "2026-10-18T09:30:00-04:00",
       "recent": [
-        {
-          "season": 2025,
-          "week": 11,
-          "opponent": "MIA",
-          "value": 0.0
-        },
         {
           "season": 2025,
           "week": 13,
@@ -928,83 +1000,11 @@
           "week": 5,
           "opponent": "PHI",
           "value": 0.0
-        }
-      ],
-      "scored": null
-    },
-    {
-      "player_id": "00-0040719",
-      "name": "Bhayshul Tuten",
-      "team": "JAX",
-      "opponent": "HOU",
-      "position": "RB",
-      "per_game": 0.43,
-      "chance": 0.3034350651065634,
-      "weight": 0.556,
-      "opp_allowed": 2.08,
-      "league_allowed": 2.48,
-      "week": 6,
-      "game_id": "2026_06_HOU_JAX",
-      "commence_time": "2026-10-18T09:30:00-04:00",
-      "recent": [
-        {
-          "season": 2025,
-          "week": 12,
-          "opponent": "ARI",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 13,
-          "opponent": "TEN",
-          "value": 1.0
-        },
-        {
-          "season": 2025,
-          "week": 14,
-          "opponent": "IND",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 15,
-          "opponent": "NYJ",
-          "value": 1.0
-        },
-        {
-          "season": 2025,
-          "week": 18,
-          "opponent": "TEN",
-          "value": 1.0
         },
         {
           "season": 2026,
-          "week": 1,
-          "opponent": "CLE",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 2,
-          "opponent": "DEN",
-          "value": 1.0
-        },
-        {
-          "season": 2026,
-          "week": 3,
-          "opponent": "NE",
-          "value": 1.0
-        },
-        {
-          "season": 2026,
-          "week": 4,
-          "opponent": "CIN",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 5,
-          "opponent": "PHI",
+          "week": 6,
+          "opponent": "HOU",
           "value": 0.0
         }
       ],
@@ -1016,10 +1016,10 @@
       "team": "JAX",
       "opponent": "HOU",
       "position": "WR",
-      "per_game": 0.4,
-      "chance": 0.28584605073196356,
+      "per_game": 0.333,
+      "chance": 0.2636041284032764,
       "weight": 1.0,
-      "opp_allowed": 2.08,
+      "opp_allowed": 2.28,
       "league_allowed": 2.48,
       "week": 6,
       "game_id": "2026_06_HOU_JAX",
@@ -1054,83 +1054,11 @@
           "week": 5,
           "opponent": "PHI",
           "value": 0.0
-        }
-      ],
-      "scored": null
-    },
-    {
-      "player_id": "00-0040583",
-      "name": "Woody Marks",
-      "team": "HOU",
-      "opponent": "JAX",
-      "position": "RB",
-      "per_game": 0.361,
-      "chance": 0.22755491976887032,
-      "weight": 0.556,
-      "opp_allowed": 1.77,
-      "league_allowed": 2.48,
-      "week": 6,
-      "game_id": "2026_06_HOU_JAX",
-      "commence_time": "2026-10-18T09:30:00-04:00",
-      "recent": [
-        {
-          "season": 2025,
-          "week": 13,
-          "opponent": "IND",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 14,
-          "opponent": "KC",
-          "value": 1.0
-        },
-        {
-          "season": 2025,
-          "week": 15,
-          "opponent": "ARI",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 17,
-          "opponent": "LAC",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 18,
-          "opponent": "IND",
-          "value": 0.0
         },
         {
           "season": 2026,
-          "week": 1,
-          "opponent": "BUF",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 2,
-          "opponent": "CIN",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 3,
-          "opponent": "IND",
-          "value": 1.0
-        },
-        {
-          "season": 2026,
-          "week": 4,
-          "opponent": "DAL",
-          "value": 1.0
-        },
-        {
-          "season": 2026,
-          "week": 5,
-          "opponent": "TEN",
+          "week": 6,
+          "opponent": "HOU",
           "value": 0.0
         }
       ],
@@ -1143,9 +1071,9 @@
       "opponent": "JAX",
       "position": "WR",
       "per_game": 0.353,
-      "chance": 0.2230294758490169,
+      "chance": 0.24708451881859905,
       "weight": 0.0,
-      "opp_allowed": 1.77,
+      "opp_allowed": 1.99,
       "league_allowed": 2.48,
       "week": 6,
       "game_id": "2026_06_HOU_JAX",
@@ -1215,26 +1143,176 @@
       "scored": null
     },
     {
+      "player_id": "00-0040583",
+      "name": "Woody Marks",
+      "team": "HOU",
+      "opponent": "JAX",
+      "position": "RB",
+      "per_game": 0.325,
+      "chance": 0.22997678725313186,
+      "weight": 0.6,
+      "opp_allowed": 1.99,
+      "league_allowed": 2.48,
+      "week": 6,
+      "game_id": "2026_06_HOU_JAX",
+      "commence_time": "2026-10-18T09:30:00-04:00",
+      "recent": [
+        {
+          "season": 2025,
+          "week": 14,
+          "opponent": "KC",
+          "value": 1.0
+        },
+        {
+          "season": 2025,
+          "week": 15,
+          "opponent": "ARI",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 17,
+          "opponent": "LAC",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 18,
+          "opponent": "IND",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 1,
+          "opponent": "BUF",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 2,
+          "opponent": "CIN",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 3,
+          "opponent": "IND",
+          "value": 1.0
+        },
+        {
+          "season": 2026,
+          "week": 4,
+          "opponent": "DAL",
+          "value": 1.0
+        },
+        {
+          "season": 2026,
+          "week": 5,
+          "opponent": "TEN",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 6,
+          "opponent": "JAX",
+          "value": 0.0
+        }
+      ],
+      "scored": null
+    },
+    {
+      "player_id": "00-0036223",
+      "name": "Jonathan Taylor",
+      "team": "IND",
+      "opponent": "TEN",
+      "position": "RB",
+      "per_game": 1.171,
+      "chance": 0.6778909452020523,
+      "weight": 0.6,
+      "opp_allowed": 2.4,
+      "league_allowed": 2.48,
+      "week": 6,
+      "game_id": "2026_06_TEN_IND",
+      "commence_time": "2026-10-18T13:00:00-04:00",
+      "recent": [
+        {
+          "season": 2025,
+          "week": 15,
+          "opponent": "SEA",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 16,
+          "opponent": "SF",
+          "value": 1.0
+        },
+        {
+          "season": 2025,
+          "week": 17,
+          "opponent": "JAX",
+          "value": 1.0
+        },
+        {
+          "season": 2025,
+          "week": 18,
+          "opponent": "HOU",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 1,
+          "opponent": "BAL",
+          "value": 2.0
+        },
+        {
+          "season": 2026,
+          "week": 2,
+          "opponent": "KC",
+          "value": 2.0
+        },
+        {
+          "season": 2026,
+          "week": 3,
+          "opponent": "HOU",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 4,
+          "opponent": "WAS",
+          "value": 2.0
+        },
+        {
+          "season": 2026,
+          "week": 5,
+          "opponent": "PIT",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 6,
+          "opponent": "TEN",
+          "value": 1.0
+        }
+      ],
+      "scored": null
+    },
+    {
       "player_id": "00-0032764",
       "name": "Derrick Henry",
       "team": "BAL",
       "opponent": "CLE",
       "position": "RB",
-      "per_game": 1.307,
-      "chance": 0.6936288311825443,
-      "weight": 0.556,
-      "opp_allowed": 2.24,
+      "per_game": 1.176,
+      "chance": 0.6338125478897149,
+      "weight": 0.6,
+      "opp_allowed": 2.12,
       "league_allowed": 2.48,
       "week": 6,
       "game_id": "2026_06_BAL_CLE",
       "commence_time": "2026-10-18T13:00:00-04:00",
       "recent": [
-        {
-          "season": 2025,
-          "week": 14,
-          "opponent": "PIT",
-          "value": 0.0
-        },
         {
           "season": 2025,
           "week": 15,
@@ -1288,84 +1366,90 @@
           "week": 5,
           "opponent": "ATL",
           "value": 1.0
+        },
+        {
+          "season": 2026,
+          "week": 6,
+          "opponent": "CLE",
+          "value": 0.0
         }
       ],
       "scored": null
     },
     {
-      "player_id": "00-0036223",
-      "name": "Jonathan Taylor",
-      "team": "IND",
-      "opponent": "TEN",
+      "player_id": "00-0036275",
+      "name": "D'Andre Swift",
+      "team": "CHI",
+      "opponent": "ATL",
       "position": "RB",
-      "per_game": 1.19,
-      "chance": 0.6908052626233308,
-      "weight": 0.556,
-      "opp_allowed": 2.44,
+      "per_game": 0.85,
+      "chance": 0.5780768155855776,
+      "weight": 0.6,
+      "opp_allowed": 2.52,
       "league_allowed": 2.48,
       "week": 6,
-      "game_id": "2026_06_TEN_IND",
+      "game_id": "2026_06_CHI_ATL",
       "commence_time": "2026-10-18T13:00:00-04:00",
       "recent": [
         {
           "season": 2025,
-          "week": 14,
-          "opponent": "JAX",
-          "value": 1.0
-        },
-        {
-          "season": 2025,
           "week": 15,
-          "opponent": "SEA",
-          "value": 0.0
+          "opponent": "CLE",
+          "value": 2.0
         },
         {
           "season": 2025,
           "week": 16,
-          "opponent": "SF",
-          "value": 1.0
+          "opponent": "GB",
+          "value": 0.0
         },
         {
           "season": 2025,
           "week": 17,
-          "opponent": "JAX",
-          "value": 1.0
+          "opponent": "SF",
+          "value": 2.0
         },
         {
           "season": 2025,
           "week": 18,
-          "opponent": "HOU",
+          "opponent": "DET",
           "value": 0.0
         },
         {
           "season": 2026,
           "week": 1,
-          "opponent": "BAL",
-          "value": 2.0
+          "opponent": "CAR",
+          "value": 3.0
         },
         {
           "season": 2026,
           "week": 2,
-          "opponent": "KC",
-          "value": 2.0
+          "opponent": "MIN",
+          "value": 0.0
         },
         {
           "season": 2026,
           "week": 3,
-          "opponent": "HOU",
+          "opponent": "PHI",
           "value": 0.0
         },
         {
           "season": 2026,
           "week": 4,
-          "opponent": "WAS",
-          "value": 2.0
+          "opponent": "NYJ",
+          "value": 0.0
         },
         {
           "season": 2026,
           "week": 5,
-          "opponent": "PIT",
-          "value": 0.0
+          "opponent": "GB",
+          "value": 1.0
+        },
+        {
+          "season": 2026,
+          "week": 6,
+          "opponent": "ATL",
+          "value": 2.0
         }
       ],
       "scored": null
@@ -1376,21 +1460,15 @@
       "team": "ATL",
       "opponent": "CHI",
       "position": "RB",
-      "per_game": 0.843,
-      "chance": 0.5657749281579554,
-      "weight": 0.556,
-      "opp_allowed": 2.45,
+      "per_game": 0.759,
+      "chance": 0.5354882921086171,
+      "weight": 0.6,
+      "opp_allowed": 2.51,
       "league_allowed": 2.48,
       "week": 6,
       "game_id": "2026_06_CHI_ATL",
       "commence_time": "2026-10-18T13:00:00-04:00",
       "recent": [
-        {
-          "season": 2025,
-          "week": 14,
-          "opponent": "SEA",
-          "value": 0.0
-        },
         {
           "season": 2025,
           "week": 15,
@@ -1444,83 +1522,11 @@
           "week": 5,
           "opponent": "BAL",
           "value": 0.0
-        }
-      ],
-      "scored": null
-    },
-    {
-      "player_id": "00-0034351",
-      "name": "Dallas Goedert",
-      "team": "PHI",
-      "opponent": "CAR",
-      "position": "TE",
-      "per_game": 0.705,
-      "chance": 0.5330042835639294,
-      "weight": 0.429,
-      "opp_allowed": 2.68,
-      "league_allowed": 2.48,
-      "week": 6,
-      "game_id": "2026_06_CAR_PHI",
-      "commence_time": "2026-10-18T13:00:00-04:00",
-      "recent": [
-        {
-          "season": 2025,
-          "week": 11,
-          "opponent": "DET",
-          "value": 0.0
         },
         {
-          "season": 2025,
-          "week": 12,
-          "opponent": "DAL",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 13,
+          "season": 2026,
+          "week": 6,
           "opponent": "CHI",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 14,
-          "opponent": "LAC",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 15,
-          "opponent": "LV",
-          "value": 2.0
-        },
-        {
-          "season": 2025,
-          "week": 16,
-          "opponent": "WAS",
-          "value": 1.0
-        },
-        {
-          "season": 2025,
-          "week": 17,
-          "opponent": "BUF",
-          "value": 1.0
-        },
-        {
-          "season": 2026,
-          "week": 1,
-          "opponent": "WAS",
-          "value": 2.0
-        },
-        {
-          "season": 2026,
-          "week": 2,
-          "opponent": "TEN",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 5,
-          "opponent": "JAX",
           "value": 0.0
         }
       ],
@@ -1532,21 +1538,15 @@
       "team": "CAR",
       "opponent": "PHI",
       "position": "RB",
-      "per_game": 0.758,
-      "chance": 0.5104527185139203,
-      "weight": 0.5,
-      "opp_allowed": 2.33,
+      "per_game": 0.785,
+      "chance": 0.5322783742189947,
+      "weight": 0.556,
+      "opp_allowed": 2.4,
       "league_allowed": 2.48,
       "week": 6,
       "game_id": "2026_06_CAR_PHI",
       "commence_time": "2026-10-18T13:00:00-04:00",
       "recent": [
-        {
-          "season": 2025,
-          "week": 12,
-          "opponent": "SF",
-          "value": 0.0
-        },
         {
           "season": 2025,
           "week": 13,
@@ -1600,83 +1600,167 @@
           "week": 4,
           "opponent": "DET",
           "value": 2.0
+        },
+        {
+          "season": 2026,
+          "week": 6,
+          "opponent": "PHI",
+          "value": 1.0
         }
       ],
       "scored": null
     },
     {
-      "player_id": "00-0036275",
-      "name": "D'Andre Swift",
-      "team": "CHI",
-      "opponent": "ATL",
-      "position": "RB",
-      "per_game": 0.722,
-      "chance": 0.4964023544868348,
-      "weight": 0.556,
-      "opp_allowed": 2.35,
+      "player_id": "00-0034351",
+      "name": "Dallas Goedert",
+      "team": "PHI",
+      "opponent": "CAR",
+      "position": "TE",
+      "per_game": 0.617,
+      "chance": 0.4763082298049657,
+      "weight": 0.5,
+      "opp_allowed": 2.6,
       "league_allowed": 2.48,
       "week": 6,
-      "game_id": "2026_06_CHI_ATL",
+      "game_id": "2026_06_CAR_PHI",
       "commence_time": "2026-10-18T13:00:00-04:00",
       "recent": [
         {
           "season": 2025,
+          "week": 12,
+          "opponent": "DAL",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 13,
+          "opponent": "CHI",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
           "week": 14,
-          "opponent": "GB",
+          "opponent": "LAC",
           "value": 0.0
         },
         {
           "season": 2025,
           "week": 15,
-          "opponent": "CLE",
+          "opponent": "LV",
           "value": 2.0
         },
         {
           "season": 2025,
           "week": 16,
-          "opponent": "GB",
-          "value": 0.0
+          "opponent": "WAS",
+          "value": 1.0
         },
         {
           "season": 2025,
           "week": 17,
-          "opponent": "SF",
-          "value": 2.0
-        },
-        {
-          "season": 2025,
-          "week": 18,
-          "opponent": "DET",
-          "value": 0.0
+          "opponent": "BUF",
+          "value": 1.0
         },
         {
           "season": 2026,
           "week": 1,
-          "opponent": "CAR",
-          "value": 3.0
+          "opponent": "WAS",
+          "value": 2.0
         },
         {
           "season": 2026,
           "week": 2,
-          "opponent": "MIN",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 3,
-          "opponent": "PHI",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 4,
-          "opponent": "NYJ",
+          "opponent": "TEN",
           "value": 0.0
         },
         {
           "season": 2026,
           "week": 5,
+          "opponent": "JAX",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 6,
+          "opponent": "CAR",
+          "value": 0.0
+        }
+      ],
+      "scored": null
+    },
+    {
+      "player_id": "00-0037838",
+      "name": "Isaiah Likely",
+      "team": "NYG",
+      "opponent": "NO",
+      "position": "TE",
+      "per_game": 0.533,
+      "chance": 0.472104794165748,
+      "weight": 0.6,
+      "opp_allowed": 2.97,
+      "league_allowed": 2.48,
+      "week": 6,
+      "game_id": "2026_06_NO_NYG",
+      "commence_time": "2026-10-18T13:00:00-04:00",
+      "recent": [
+        {
+          "season": 2025,
+          "week": 14,
+          "opponent": "PIT",
+          "value": 1.0
+        },
+        {
+          "season": 2025,
+          "week": 16,
+          "opponent": "NE",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 17,
           "opponent": "GB",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 18,
+          "opponent": "PIT",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 1,
+          "opponent": "DAL",
+          "value": 2.0
+        },
+        {
+          "season": 2026,
+          "week": 2,
+          "opponent": "LA",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 3,
+          "opponent": "TEN",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 4,
+          "opponent": "ARI",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 5,
+          "opponent": "WAS",
+          "value": 2.0
+        },
+        {
+          "season": 2026,
+          "week": 6,
+          "opponent": "NO",
           "value": 1.0
         }
       ],
@@ -1689,7 +1773,7 @@
       "opponent": "NO",
       "position": "RB",
       "per_game": 0.5,
-      "chance": 0.4505905241439718,
+      "chance": 0.4506002144878525,
       "weight": 0.556,
       "opp_allowed": 2.97,
       "league_allowed": 2.48,
@@ -1761,433 +1845,79 @@
       "scored": null
     },
     {
-      "player_id": "00-0037838",
-      "name": "Isaiah Likely",
-      "team": "NYG",
-      "opponent": "NO",
-      "position": "TE",
-      "per_game": 0.481,
-      "chance": 0.4382674091886649,
-      "weight": 0.556,
-      "opp_allowed": 2.97,
+      "player_id": "00-0040236",
+      "name": "Kyle Monangai",
+      "team": "CHI",
+      "opponent": "ATL",
+      "position": "RB",
+      "per_game": 0.522,
+      "chance": 0.4113959093424623,
+      "weight": 0.5,
+      "opp_allowed": 2.52,
       "league_allowed": 2.48,
       "week": 6,
-      "game_id": "2026_06_NO_NYG",
+      "game_id": "2026_06_CHI_ATL",
       "commence_time": "2026-10-18T13:00:00-04:00",
       "recent": [
         {
           "season": 2025,
           "week": 13,
-          "opponent": "CIN",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 14,
-          "opponent": "PIT",
+          "opponent": "PHI",
           "value": 1.0
         },
         {
           "season": 2025,
-          "week": 16,
-          "opponent": "NE",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 17,
+          "week": 14,
           "opponent": "GB",
           "value": 0.0
         },
         {
           "season": 2025,
-          "week": 18,
-          "opponent": "PIT",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 1,
-          "opponent": "DAL",
-          "value": 2.0
-        },
-        {
-          "season": 2026,
-          "week": 2,
-          "opponent": "LA",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 3,
-          "opponent": "TEN",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 4,
-          "opponent": "ARI",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 5,
-          "opponent": "WAS",
-          "value": 2.0
-        }
-      ],
-      "scored": null
-    },
-    {
-      "player_id": "00-0041037",
-      "name": "Denzel Boston",
-      "team": "CLE",
-      "opponent": "BAL",
-      "position": "WR",
-      "per_game": 0.6,
-      "chance": 0.426296116528067,
-      "weight": 1.0,
-      "opp_allowed": 2.29,
-      "league_allowed": 2.48,
-      "week": 6,
-      "game_id": "2026_06_BAL_CLE",
-      "commence_time": "2026-10-18T13:00:00-04:00",
-      "recent": [
-        {
-          "season": 2026,
-          "week": 1,
-          "opponent": "JAX",
-          "value": 1.0
-        },
-        {
-          "season": 2026,
-          "week": 2,
-          "opponent": "TB",
-          "value": 1.0
-        },
-        {
-          "season": 2026,
-          "week": 3,
-          "opponent": "CAR",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 4,
-          "opponent": "PIT",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 5,
-          "opponent": "NYJ",
-          "value": 1.0
-        }
-      ],
-      "scored": null
-    },
-    {
-      "player_id": "00-0031610",
-      "name": "Darren Waller",
-      "team": "CAR",
-      "opponent": "PHI",
-      "position": "TE",
-      "per_game": 0.583,
-      "chance": 0.42272799761392743,
-      "weight": 0.5,
-      "opp_allowed": 2.33,
-      "league_allowed": 2.48,
-      "week": 6,
-      "game_id": "2026_06_CAR_PHI",
-      "commence_time": "2026-10-18T13:00:00-04:00",
-      "recent": [
-        {
-          "season": 2025,
-          "week": 7,
+          "week": 15,
           "opponent": "CLE",
           "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 13,
-          "opponent": "NO",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 14,
-          "opponent": "NYJ",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 15,
-          "opponent": "PIT",
-          "value": 2.0
         },
         {
           "season": 2025,
           "week": 16,
-          "opponent": "CIN",
+          "opponent": "GB",
           "value": 0.0
         },
         {
           "season": 2025,
           "week": 17,
-          "opponent": "TB",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 1,
-          "opponent": "CHI",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 2,
-          "opponent": "ATL",
-          "value": 2.0
-        },
-        {
-          "season": 2026,
-          "week": 3,
-          "opponent": "CLE",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 4,
-          "opponent": "DET",
-          "value": 0.0
-        }
-      ],
-      "scored": null
-    },
-    {
-      "player_id": "00-0035644",
-      "name": "Noah Fant",
-      "team": "NO",
-      "opponent": "NYG",
-      "position": "TE",
-      "per_game": 0.49,
-      "chance": 0.42073286349058836,
-      "weight": 0.5,
-      "opp_allowed": 2.76,
-      "league_allowed": 2.48,
-      "week": 6,
-      "game_id": "2026_06_NO_NYG",
-      "commence_time": "2026-10-18T13:00:00-04:00",
-      "recent": [
-        {
-          "season": 2025,
-          "week": 11,
-          "opponent": "PIT",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 12,
-          "opponent": "NE",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 13,
-          "opponent": "BAL",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 14,
-          "opponent": "BUF",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 17,
-          "opponent": "ARI",
+          "opponent": "SF",
           "value": 0.0
         },
         {
           "season": 2025,
           "week": 18,
-          "opponent": "CLE",
+          "opponent": "DET",
           "value": 0.0
         },
         {
           "season": 2026,
           "week": 1,
-          "opponent": "DET",
+          "opponent": "CAR",
           "value": 1.0
         },
         {
           "season": 2026,
           "week": 2,
-          "opponent": "BAL",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 3,
-          "opponent": "LV",
-          "value": 2.0
-        },
-        {
-          "season": 2026,
-          "week": 5,
           "opponent": "MIN",
           "value": 0.0
-        }
-      ],
-      "scored": null
-    },
-    {
-      "player_id": "00-0039337",
-      "name": "Malik Nabers",
-      "team": "NYG",
-      "opponent": "NO",
-      "position": "WR",
-      "per_game": 0.444,
-      "chance": 0.41278576658642363,
-      "weight": 0.556,
-      "opp_allowed": 2.97,
-      "league_allowed": 2.48,
-      "week": 6,
-      "game_id": "2026_06_NO_NYG",
-      "commence_time": "2026-10-18T13:00:00-04:00",
-      "recent": [
-        {
-          "season": 2025,
-          "week": 1,
-          "opponent": "WAS",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 2,
-          "opponent": "DAL",
-          "value": 2.0
-        },
-        {
-          "season": 2025,
-          "week": 3,
-          "opponent": "KC",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 4,
-          "opponent": "LAC",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 1,
-          "opponent": "DAL",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 2,
-          "opponent": "LA",
-          "value": 0.0
         },
         {
           "season": 2026,
           "week": 3,
-          "opponent": "TEN",
+          "opponent": "PHI",
           "value": 0.0
         },
         {
           "season": 2026,
           "week": 4,
-          "opponent": "ARI",
-          "value": 1.0
-        },
-        {
-          "season": 2026,
-          "week": 5,
-          "opponent": "WAS",
-          "value": 1.0
-        }
-      ],
-      "scored": null
-    },
-    {
-      "player_id": "00-0036875",
-      "name": "Rhamondre Stevenson",
-      "team": "NE",
-      "opponent": "NYJ",
-      "position": "RB",
-      "per_game": 0.508,
-      "chance": 0.4102226279776705,
-      "weight": 0.556,
-      "opp_allowed": 2.58,
-      "league_allowed": 2.48,
-      "week": 6,
-      "game_id": "2026_06_NYJ_NE",
-      "commence_time": "2026-10-18T13:00:00-04:00",
-      "recent": [
-        {
-          "season": 2025,
-          "week": 13,
-          "opponent": "NYG",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 15,
-          "opponent": "BUF",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 16,
-          "opponent": "BAL",
-          "value": 1.0
-        },
-        {
-          "season": 2025,
-          "week": 17,
           "opponent": "NYJ",
           "value": 2.0
-        },
-        {
-          "season": 2025,
-          "week": 18,
-          "opponent": "MIA",
-          "value": 3.0
-        },
-        {
-          "season": 2026,
-          "week": 1,
-          "opponent": "SEA",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 2,
-          "opponent": "PIT",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 3,
-          "opponent": "JAX",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 4,
-          "opponent": "BUF",
-          "value": 1.0
-        },
-        {
-          "season": 2026,
-          "week": 5,
-          "opponent": "LV",
-          "value": 1.0
         }
       ],
       "scored": null
@@ -2199,7 +1929,7 @@
       "opponent": "NO",
       "position": "QB",
       "per_game": 0.429,
-      "chance": 0.4015142158358759,
+      "chance": 0.4015232637952125,
       "weight": 0.333,
       "opp_allowed": 2.97,
       "league_allowed": 2.48,
@@ -2265,396 +1995,6 @@
           "season": 2026,
           "week": 2,
           "opponent": "LA",
-          "value": 0.0
-        }
-      ],
-      "scored": null
-    },
-    {
-      "player_id": "00-0037740",
-      "name": "Garrett Wilson",
-      "team": "NYJ",
-      "opponent": "NE",
-      "position": "WR",
-      "per_game": 0.587,
-      "chance": 0.40123844862222857,
-      "weight": 0.556,
-      "opp_allowed": 2.16,
-      "league_allowed": 2.48,
-      "week": 6,
-      "game_id": "2026_06_NYJ_NE",
-      "commence_time": "2026-10-18T13:00:00-04:00",
-      "recent": [
-        {
-          "season": 2025,
-          "week": 3,
-          "opponent": "TB",
-          "value": 1.0
-        },
-        {
-          "season": 2025,
-          "week": 4,
-          "opponent": "MIA",
-          "value": 1.0
-        },
-        {
-          "season": 2025,
-          "week": 5,
-          "opponent": "DAL",
-          "value": 1.0
-        },
-        {
-          "season": 2025,
-          "week": 6,
-          "opponent": "DEN",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 10,
-          "opponent": "CLE",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 1,
-          "opponent": "TEN",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 2,
-          "opponent": "GB",
-          "value": 1.0
-        },
-        {
-          "season": 2026,
-          "week": 3,
-          "opponent": "DET",
-          "value": 1.0
-        },
-        {
-          "season": 2026,
-          "week": 4,
-          "opponent": "CHI",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 5,
-          "opponent": "CLE",
-          "value": 1.0
-        }
-      ],
-      "scored": null
-    },
-    {
-      "player_id": "00-0036894",
-      "name": "Pat Freiermuth",
-      "team": "PIT",
-      "opponent": "TB",
-      "position": "TE",
-      "per_game": 0.563,
-      "chance": 0.39380205680172464,
-      "weight": 0.556,
-      "opp_allowed": 2.2,
-      "league_allowed": 2.48,
-      "week": 6,
-      "game_id": "2026_06_PIT_TB",
-      "commence_time": "2026-10-18T13:00:00-04:00",
-      "recent": [
-        {
-          "season": 2025,
-          "week": 14,
-          "opponent": "BAL",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 15,
-          "opponent": "MIA",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 16,
-          "opponent": "DET",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 17,
-          "opponent": "CLE",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 18,
-          "opponent": "BAL",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 1,
-          "opponent": "ATL",
-          "value": 1.0
-        },
-        {
-          "season": 2026,
-          "week": 2,
-          "opponent": "NE",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 3,
-          "opponent": "CIN",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 4,
-          "opponent": "CLE",
-          "value": 1.0
-        },
-        {
-          "season": 2026,
-          "week": 5,
-          "opponent": "IND",
-          "value": 2.0
-        }
-      ],
-      "scored": null
-    },
-    {
-      "player_id": "00-0040236",
-      "name": "Kyle Monangai",
-      "team": "CHI",
-      "opponent": "ATL",
-      "position": "RB",
-      "per_game": 0.522,
-      "chance": 0.39095273986909196,
-      "weight": 0.5,
-      "opp_allowed": 2.35,
-      "league_allowed": 2.48,
-      "week": 6,
-      "game_id": "2026_06_CHI_ATL",
-      "commence_time": "2026-10-18T13:00:00-04:00",
-      "recent": [
-        {
-          "season": 2025,
-          "week": 13,
-          "opponent": "PHI",
-          "value": 1.0
-        },
-        {
-          "season": 2025,
-          "week": 14,
-          "opponent": "GB",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 15,
-          "opponent": "CLE",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 16,
-          "opponent": "GB",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 17,
-          "opponent": "SF",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 18,
-          "opponent": "DET",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 1,
-          "opponent": "CAR",
-          "value": 1.0
-        },
-        {
-          "season": 2026,
-          "week": 2,
-          "opponent": "MIN",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 3,
-          "opponent": "PHI",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 4,
-          "opponent": "NYJ",
-          "value": 2.0
-        }
-      ],
-      "scored": null
-    },
-    {
-      "player_id": "00-0037746",
-      "name": "Brian Robinson",
-      "team": "ATL",
-      "opponent": "CHI",
-      "position": "RB",
-      "per_game": 0.497,
-      "chance": 0.388268683868655,
-      "weight": 0.556,
-      "opp_allowed": 2.45,
-      "league_allowed": 2.48,
-      "week": 6,
-      "game_id": "2026_06_CHI_ATL",
-      "commence_time": "2026-10-18T13:00:00-04:00",
-      "recent": [
-        {
-          "season": 2025,
-          "week": 13,
-          "opponent": "CLE",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 15,
-          "opponent": "TEN",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 16,
-          "opponent": "IND",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 17,
-          "opponent": "CHI",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 18,
-          "opponent": "SEA",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 1,
-          "opponent": "PIT",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 2,
-          "opponent": "CAR",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 3,
-          "opponent": "GB",
-          "value": 1.0
-        },
-        {
-          "season": 2026,
-          "week": 4,
-          "opponent": "NO",
-          "value": 3.0
-        },
-        {
-          "season": 2026,
-          "week": 5,
-          "opponent": "BAL",
-          "value": 0.0
-        }
-      ],
-      "scored": null
-    },
-    {
-      "player_id": "00-0040663",
-      "name": "Harold Fannin Jr.",
-      "team": "CLE",
-      "opponent": "BAL",
-      "position": "TE",
-      "per_game": 0.528,
-      "chance": 0.38661291183823143,
-      "weight": 0.556,
-      "opp_allowed": 2.29,
-      "league_allowed": 2.48,
-      "week": 6,
-      "game_id": "2026_06_BAL_CLE",
-      "commence_time": "2026-10-18T13:00:00-04:00",
-      "recent": [
-        {
-          "season": 2025,
-          "week": 13,
-          "opponent": "SF",
-          "value": 1.0
-        },
-        {
-          "season": 2025,
-          "week": 14,
-          "opponent": "TEN",
-          "value": 1.0
-        },
-        {
-          "season": 2025,
-          "week": 15,
-          "opponent": "CHI",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 16,
-          "opponent": "BUF",
-          "value": 2.0
-        },
-        {
-          "season": 2025,
-          "week": 17,
-          "opponent": "PIT",
-          "value": 1.0
-        },
-        {
-          "season": 2026,
-          "week": 1,
-          "opponent": "JAX",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 2,
-          "opponent": "TB",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 3,
-          "opponent": "CAR",
-          "value": 2.0
-        },
-        {
-          "season": 2026,
-          "week": 4,
-          "opponent": "PIT",
-          "value": 1.0
-        },
-        {
-          "season": 2026,
-          "week": 5,
-          "opponent": "NYJ",
           "value": 0.0
         }
       ],
@@ -2667,9 +2007,9 @@
       "opponent": "NYG",
       "position": "RB",
       "per_game": 0.437,
-      "chance": 0.3852412265339099,
+      "chance": 0.3982337044432378,
       "weight": 0.429,
-      "opp_allowed": 2.76,
+      "opp_allowed": 2.88,
       "league_allowed": 2.48,
       "week": 6,
       "game_id": "2026_06_NO_NYG",
@@ -2739,171 +2079,15 @@
       "scored": null
     },
     {
-      "player_id": "00-0040024",
-      "name": "Darius Cooper",
-      "team": "PHI",
-      "opponent": "CAR",
-      "position": "WR",
-      "per_game": 0.444,
-      "chance": 0.3813306744157774,
-      "weight": 0.556,
-      "opp_allowed": 2.68,
-      "league_allowed": 2.48,
-      "week": 6,
-      "game_id": "2026_06_CAR_PHI",
-      "commence_time": "2026-10-18T13:00:00-04:00",
-      "recent": [
-        {
-          "season": 2025,
-          "week": 12,
-          "opponent": "DAL",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 14,
-          "opponent": "LAC",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 15,
-          "opponent": "LV",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 17,
-          "opponent": "BUF",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 18,
-          "opponent": "WAS",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 1,
-          "opponent": "WAS",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 2,
-          "opponent": "TEN",
-          "value": 1.0
-        },
-        {
-          "season": 2026,
-          "week": 3,
-          "opponent": "CHI",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 4,
-          "opponent": "LA",
-          "value": 2.0
-        },
-        {
-          "season": 2026,
-          "week": 5,
-          "opponent": "JAX",
-          "value": 1.0
-        }
-      ],
-      "scored": null
-    },
-    {
-      "player_id": "00-0039918",
-      "name": "Caleb Williams",
-      "team": "CHI",
-      "opponent": "ATL",
-      "position": "QB",
-      "per_game": 0.49,
-      "chance": 0.37223895812529295,
-      "weight": 0.333,
-      "opp_allowed": 2.35,
-      "league_allowed": 2.48,
-      "week": 6,
-      "game_id": "2026_06_CHI_ATL",
-      "commence_time": "2026-10-18T13:00:00-04:00",
-      "recent": [
-        {
-          "season": 2025,
-          "week": 11,
-          "opponent": "MIN",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 12,
-          "opponent": "PIT",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 13,
-          "opponent": "PHI",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 14,
-          "opponent": "GB",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 15,
-          "opponent": "CLE",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 16,
-          "opponent": "GB",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 17,
-          "opponent": "SF",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 18,
-          "opponent": "DET",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 1,
-          "opponent": "CAR",
-          "value": 2.0
-        },
-        {
-          "season": 2026,
-          "week": 2,
-          "opponent": "MIN",
-          "value": 0.0
-        }
-      ],
-      "scored": null
-    },
-    {
-      "player_id": "00-0036040",
-      "name": "Juwan Johnson",
+      "player_id": "00-0035644",
+      "name": "Noah Fant",
       "team": "NO",
       "opponent": "NYG",
       "position": "TE",
-      "per_game": 0.412,
-      "chance": 0.3677412522078738,
+      "per_game": 0.436,
+      "chance": 0.39747970991126946,
       "weight": 0.556,
-      "opp_allowed": 2.76,
+      "opp_allowed": 2.88,
       "league_allowed": 2.48,
       "week": 6,
       "game_id": "2026_06_NO_NYG",
@@ -2911,32 +2095,32 @@
       "recent": [
         {
           "season": 2025,
+          "week": 12,
+          "opponent": "NE",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 13,
+          "opponent": "BAL",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
           "week": 14,
-          "opponent": "TB",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 15,
-          "opponent": "CAR",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 16,
-          "opponent": "NYJ",
+          "opponent": "BUF",
           "value": 0.0
         },
         {
           "season": 2025,
           "week": 17,
-          "opponent": "TEN",
+          "opponent": "ARI",
           "value": 0.0
         },
         {
           "season": 2025,
           "week": 18,
-          "opponent": "ATL",
+          "opponent": "CLE",
           "value": 0.0
         },
         {
@@ -2959,6 +2143,156 @@
         },
         {
           "season": 2026,
+          "week": 5,
+          "opponent": "MIN",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 6,
+          "opponent": "NYG",
+          "value": 0.0
+        }
+      ],
+      "scored": null
+    },
+    {
+      "player_id": "00-0031610",
+      "name": "Darren Waller",
+      "team": "CAR",
+      "opponent": "PHI",
+      "position": "TE",
+      "per_game": 0.519,
+      "chance": 0.3945654731583269,
+      "weight": 0.556,
+      "opp_allowed": 2.4,
+      "league_allowed": 2.48,
+      "week": 6,
+      "game_id": "2026_06_CAR_PHI",
+      "commence_time": "2026-10-18T13:00:00-04:00",
+      "recent": [
+        {
+          "season": 2025,
+          "week": 13,
+          "opponent": "NO",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 14,
+          "opponent": "NYJ",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 15,
+          "opponent": "PIT",
+          "value": 2.0
+        },
+        {
+          "season": 2025,
+          "week": 16,
+          "opponent": "CIN",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 17,
+          "opponent": "TB",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 1,
+          "opponent": "CHI",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 2,
+          "opponent": "ATL",
+          "value": 2.0
+        },
+        {
+          "season": 2026,
+          "week": 3,
+          "opponent": "CLE",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 4,
+          "opponent": "DET",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 6,
+          "opponent": "PHI",
+          "value": 0.0
+        }
+      ],
+      "scored": null
+    },
+    {
+      "player_id": "00-0037239",
+      "name": "Chris Olave",
+      "team": "NO",
+      "opponent": "NYG",
+      "position": "WR",
+      "per_game": 0.425,
+      "chance": 0.3897997452699845,
+      "weight": 0.6,
+      "opp_allowed": 2.88,
+      "league_allowed": 2.48,
+      "week": 6,
+      "game_id": "2026_06_NO_NYG",
+      "commence_time": "2026-10-18T13:00:00-04:00",
+      "recent": [
+        {
+          "season": 2025,
+          "week": 14,
+          "opponent": "TB",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 15,
+          "opponent": "CAR",
+          "value": 1.0
+        },
+        {
+          "season": 2025,
+          "week": 16,
+          "opponent": "NYJ",
+          "value": 2.0
+        },
+        {
+          "season": 2025,
+          "week": 17,
+          "opponent": "TEN",
+          "value": 1.0
+        },
+        {
+          "season": 2026,
+          "week": 1,
+          "opponent": "DET",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 2,
+          "opponent": "BAL",
+          "value": 1.0
+        },
+        {
+          "season": 2026,
+          "week": 3,
+          "opponent": "LV",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
           "week": 4,
           "opponent": "ATL",
           "value": 0.0
@@ -2967,6 +2301,324 @@
           "season": 2026,
           "week": 5,
           "opponent": "MIN",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 6,
+          "opponent": "NYG",
+          "value": 1.0
+        }
+      ],
+      "scored": null
+    },
+    {
+      "player_id": "00-0036875",
+      "name": "Rhamondre Stevenson",
+      "team": "NE",
+      "opponent": "NYJ",
+      "position": "RB",
+      "per_game": 0.457,
+      "chance": 0.3827811894741545,
+      "weight": 0.6,
+      "opp_allowed": 2.62,
+      "league_allowed": 2.48,
+      "week": 6,
+      "game_id": "2026_06_NYJ_NE",
+      "commence_time": "2026-10-18T13:00:00-04:00",
+      "recent": [
+        {
+          "season": 2025,
+          "week": 15,
+          "opponent": "BUF",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 16,
+          "opponent": "BAL",
+          "value": 1.0
+        },
+        {
+          "season": 2025,
+          "week": 17,
+          "opponent": "NYJ",
+          "value": 2.0
+        },
+        {
+          "season": 2025,
+          "week": 18,
+          "opponent": "MIA",
+          "value": 3.0
+        },
+        {
+          "season": 2026,
+          "week": 1,
+          "opponent": "SEA",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 2,
+          "opponent": "PIT",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 3,
+          "opponent": "JAX",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 4,
+          "opponent": "BUF",
+          "value": 1.0
+        },
+        {
+          "season": 2026,
+          "week": 5,
+          "opponent": "LV",
+          "value": 1.0
+        },
+        {
+          "season": 2026,
+          "week": 6,
+          "opponent": "NYJ",
+          "value": 0.0
+        }
+      ],
+      "scored": null
+    },
+    {
+      "player_id": "00-0039337",
+      "name": "Malik Nabers",
+      "team": "NYG",
+      "opponent": "NO",
+      "position": "WR",
+      "per_game": 0.4,
+      "chance": 0.3806861557292701,
+      "weight": 0.6,
+      "opp_allowed": 2.97,
+      "league_allowed": 2.48,
+      "week": 6,
+      "game_id": "2026_06_NO_NYG",
+      "commence_time": "2026-10-18T13:00:00-04:00",
+      "recent": [
+        {
+          "season": 2025,
+          "week": 1,
+          "opponent": "WAS",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 2,
+          "opponent": "DAL",
+          "value": 2.0
+        },
+        {
+          "season": 2025,
+          "week": 3,
+          "opponent": "KC",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 4,
+          "opponent": "LAC",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 1,
+          "opponent": "DAL",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 2,
+          "opponent": "LA",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 3,
+          "opponent": "TEN",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 4,
+          "opponent": "ARI",
+          "value": 1.0
+        },
+        {
+          "season": 2026,
+          "week": 5,
+          "opponent": "WAS",
+          "value": 1.0
+        },
+        {
+          "season": 2026,
+          "week": 6,
+          "opponent": "NO",
+          "value": 0.0
+        }
+      ],
+      "scored": null
+    },
+    {
+      "player_id": "00-0037816",
+      "name": "Romeo Doubs",
+      "team": "NE",
+      "opponent": "NYJ",
+      "position": "WR",
+      "per_game": 0.45,
+      "chance": 0.3781100456940558,
+      "weight": 0.6,
+      "opp_allowed": 2.62,
+      "league_allowed": 2.48,
+      "week": 6,
+      "game_id": "2026_06_NYJ_NE",
+      "commence_time": "2026-10-18T13:00:00-04:00",
+      "recent": [
+        {
+          "season": 2025,
+          "week": 14,
+          "opponent": "CHI",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 15,
+          "opponent": "DEN",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 16,
+          "opponent": "CHI",
+          "value": 1.0
+        },
+        {
+          "season": 2025,
+          "week": 17,
+          "opponent": "BAL",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 1,
+          "opponent": "SEA",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 2,
+          "opponent": "PIT",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 3,
+          "opponent": "JAX",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 4,
+          "opponent": "BUF",
+          "value": 2.0
+        },
+        {
+          "season": 2026,
+          "week": 5,
+          "opponent": "LV",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 6,
+          "opponent": "NYJ",
+          "value": 1.0
+        }
+      ],
+      "scored": null
+    },
+    {
+      "player_id": "00-0037746",
+      "name": "Brian Robinson",
+      "team": "ATL",
+      "opponent": "CHI",
+      "position": "RB",
+      "per_game": 0.447,
+      "chance": 0.36348009611094034,
+      "weight": 0.6,
+      "opp_allowed": 2.51,
+      "league_allowed": 2.48,
+      "week": 6,
+      "game_id": "2026_06_CHI_ATL",
+      "commence_time": "2026-10-18T13:00:00-04:00",
+      "recent": [
+        {
+          "season": 2025,
+          "week": 15,
+          "opponent": "TEN",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 16,
+          "opponent": "IND",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 17,
+          "opponent": "CHI",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 18,
+          "opponent": "SEA",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 1,
+          "opponent": "PIT",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 2,
+          "opponent": "CAR",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 3,
+          "opponent": "GB",
+          "value": 1.0
+        },
+        {
+          "season": 2026,
+          "week": 4,
+          "opponent": "NO",
+          "value": 3.0
+        },
+        {
+          "season": 2026,
+          "week": 5,
+          "opponent": "BAL",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 6,
+          "opponent": "CHI",
           "value": 0.0
         }
       ],
@@ -2979,9 +2631,9 @@
       "opponent": "TEN",
       "position": "TE",
       "per_game": 0.464,
-      "chance": 0.36739226472942343,
+      "chance": 0.3617963453401286,
       "weight": 0.556,
-      "opp_allowed": 2.44,
+      "opp_allowed": 2.4,
       "league_allowed": 2.48,
       "week": 6,
       "game_id": "2026_06_TEN_IND",
@@ -3051,15 +2703,147 @@
       "scored": null
     },
     {
-      "player_id": "00-0040734",
-      "name": "TreVeyon Henderson",
-      "team": "NE",
-      "opponent": "NYJ",
-      "position": "RB",
-      "per_game": 0.419,
-      "chance": 0.3531760789766839,
-      "weight": 0.5,
-      "opp_allowed": 2.58,
+      "player_id": "00-0036894",
+      "name": "Pat Freiermuth",
+      "team": "PIT",
+      "opponent": "TB",
+      "position": "TE",
+      "per_game": 0.507,
+      "chance": 0.3597342308886756,
+      "weight": 0.6,
+      "opp_allowed": 2.18,
+      "league_allowed": 2.48,
+      "week": 6,
+      "game_id": "2026_06_PIT_TB",
+      "commence_time": "2026-10-18T13:00:00-04:00",
+      "recent": [
+        {
+          "season": 2025,
+          "week": 15,
+          "opponent": "MIA",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 16,
+          "opponent": "DET",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 17,
+          "opponent": "CLE",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 18,
+          "opponent": "BAL",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 1,
+          "opponent": "ATL",
+          "value": 1.0
+        },
+        {
+          "season": 2026,
+          "week": 2,
+          "opponent": "NE",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 3,
+          "opponent": "CIN",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 4,
+          "opponent": "CLE",
+          "value": 1.0
+        },
+        {
+          "season": 2026,
+          "week": 5,
+          "opponent": "IND",
+          "value": 2.0
+        },
+        {
+          "season": 2026,
+          "week": 6,
+          "opponent": "TB",
+          "value": 0.0
+        }
+      ],
+      "scored": null
+    },
+    {
+      "player_id": "00-0041037",
+      "name": "Denzel Boston",
+      "team": "CLE",
+      "opponent": "BAL",
+      "position": "WR",
+      "per_game": 0.5,
+      "chance": 0.3536713738259628,
+      "weight": 1.0,
+      "opp_allowed": 2.16,
+      "league_allowed": 2.48,
+      "week": 6,
+      "game_id": "2026_06_BAL_CLE",
+      "commence_time": "2026-10-18T13:00:00-04:00",
+      "recent": [
+        {
+          "season": 2026,
+          "week": 1,
+          "opponent": "JAX",
+          "value": 1.0
+        },
+        {
+          "season": 2026,
+          "week": 2,
+          "opponent": "TB",
+          "value": 1.0
+        },
+        {
+          "season": 2026,
+          "week": 3,
+          "opponent": "CAR",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 4,
+          "opponent": "PIT",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 5,
+          "opponent": "NYJ",
+          "value": 1.0
+        },
+        {
+          "season": 2026,
+          "week": 6,
+          "opponent": "BAL",
+          "value": 0.0
+        }
+      ],
+      "scored": null
+    },
+    {
+      "player_id": "00-0037740",
+      "name": "Garrett Wilson",
+      "team": "NYJ",
+      "opponent": "NE",
+      "position": "WR",
+      "per_game": 0.529,
+      "chance": 0.353583762821462,
+      "weight": 0.6,
+      "opp_allowed": 2.05,
       "league_allowed": 2.48,
       "week": 6,
       "game_id": "2026_06_NYJ_NE",
@@ -3067,10 +2851,550 @@
       "recent": [
         {
           "season": 2025,
-          "week": 12,
-          "opponent": "CIN",
+          "week": 4,
+          "opponent": "MIA",
+          "value": 1.0
+        },
+        {
+          "season": 2025,
+          "week": 5,
+          "opponent": "DAL",
+          "value": 1.0
+        },
+        {
+          "season": 2025,
+          "week": 6,
+          "opponent": "DEN",
           "value": 0.0
         },
+        {
+          "season": 2025,
+          "week": 10,
+          "opponent": "CLE",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 1,
+          "opponent": "TEN",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 2,
+          "opponent": "GB",
+          "value": 1.0
+        },
+        {
+          "season": 2026,
+          "week": 3,
+          "opponent": "DET",
+          "value": 1.0
+        },
+        {
+          "season": 2026,
+          "week": 4,
+          "opponent": "CHI",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 5,
+          "opponent": "CLE",
+          "value": 1.0
+        },
+        {
+          "season": 2026,
+          "week": 6,
+          "opponent": "NE",
+          "value": 0.0
+        }
+      ],
+      "scored": null
+    },
+    {
+      "player_id": "00-0033906",
+      "name": "Alvin Kamara",
+      "team": "NO",
+      "opponent": "NYG",
+      "position": "RB",
+      "per_game": 0.374,
+      "chance": 0.3523382268084283,
+      "weight": 0.556,
+      "opp_allowed": 2.88,
+      "league_allowed": 2.48,
+      "week": 6,
+      "game_id": "2026_06_NO_NYG",
+      "commence_time": "2026-10-18T13:00:00-04:00",
+      "recent": [
+        {
+          "season": 2025,
+          "week": 7,
+          "opponent": "CHI",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 8,
+          "opponent": "TB",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 9,
+          "opponent": "LA",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 10,
+          "opponent": "CAR",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 12,
+          "opponent": "ATL",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 2,
+          "opponent": "BAL",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 3,
+          "opponent": "LV",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 4,
+          "opponent": "ATL",
+          "value": 2.0
+        },
+        {
+          "season": 2026,
+          "week": 5,
+          "opponent": "MIN",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 6,
+          "opponent": "NYG",
+          "value": 1.0
+        }
+      ],
+      "scored": null
+    },
+    {
+      "player_id": "00-0039918",
+      "name": "Caleb Williams",
+      "team": "CHI",
+      "opponent": "ATL",
+      "position": "QB",
+      "per_game": 0.42,
+      "chance": 0.3472496649197664,
+      "weight": 0.429,
+      "opp_allowed": 2.52,
+      "league_allowed": 2.48,
+      "week": 6,
+      "game_id": "2026_06_CHI_ATL",
+      "commence_time": "2026-10-18T13:00:00-04:00",
+      "recent": [
+        {
+          "season": 2025,
+          "week": 12,
+          "opponent": "PIT",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 13,
+          "opponent": "PHI",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 14,
+          "opponent": "GB",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 15,
+          "opponent": "CLE",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 16,
+          "opponent": "GB",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 17,
+          "opponent": "SF",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 18,
+          "opponent": "DET",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 1,
+          "opponent": "CAR",
+          "value": 2.0
+        },
+        {
+          "season": 2026,
+          "week": 2,
+          "opponent": "MIN",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 6,
+          "opponent": "ATL",
+          "value": 0.0
+        }
+      ],
+      "scored": null
+    },
+    {
+      "player_id": "00-0036970",
+      "name": "Kyle Pitts",
+      "team": "ATL",
+      "opponent": "CHI",
+      "position": "TE",
+      "per_game": 0.418,
+      "chance": 0.344278996944672,
+      "weight": 0.6,
+      "opp_allowed": 2.51,
+      "league_allowed": 2.48,
+      "week": 6,
+      "game_id": "2026_06_CHI_ATL",
+      "commence_time": "2026-10-18T13:00:00-04:00",
+      "recent": [
+        {
+          "season": 2025,
+          "week": 15,
+          "opponent": "TB",
+          "value": 3.0
+        },
+        {
+          "season": 2025,
+          "week": 16,
+          "opponent": "ARI",
+          "value": 1.0
+        },
+        {
+          "season": 2025,
+          "week": 17,
+          "opponent": "LA",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 18,
+          "opponent": "NO",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 1,
+          "opponent": "PIT",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 2,
+          "opponent": "CAR",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 3,
+          "opponent": "GB",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 4,
+          "opponent": "NO",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 5,
+          "opponent": "BAL",
+          "value": 1.0
+        },
+        {
+          "season": 2026,
+          "week": 6,
+          "opponent": "CHI",
+          "value": 2.0
+        }
+      ],
+      "scored": null
+    },
+    {
+      "player_id": "00-0040024",
+      "name": "Darius Cooper",
+      "team": "PHI",
+      "opponent": "CAR",
+      "position": "WR",
+      "per_game": 0.4,
+      "chance": 0.342676946199466,
+      "weight": 0.6,
+      "opp_allowed": 2.6,
+      "league_allowed": 2.48,
+      "week": 6,
+      "game_id": "2026_06_CAR_PHI",
+      "commence_time": "2026-10-18T13:00:00-04:00",
+      "recent": [
+        {
+          "season": 2025,
+          "week": 14,
+          "opponent": "LAC",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 15,
+          "opponent": "LV",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 17,
+          "opponent": "BUF",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 18,
+          "opponent": "WAS",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 1,
+          "opponent": "WAS",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 2,
+          "opponent": "TEN",
+          "value": 1.0
+        },
+        {
+          "season": 2026,
+          "week": 3,
+          "opponent": "CHI",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 4,
+          "opponent": "LA",
+          "value": 2.0
+        },
+        {
+          "season": 2026,
+          "week": 5,
+          "opponent": "JAX",
+          "value": 1.0
+        },
+        {
+          "season": 2026,
+          "week": 6,
+          "opponent": "CAR",
+          "value": 0.0
+        }
+      ],
+      "scored": null
+    },
+    {
+      "player_id": "00-0040663",
+      "name": "Harold Fannin Jr.",
+      "team": "CLE",
+      "opponent": "BAL",
+      "position": "TE",
+      "per_game": 0.475,
+      "chance": 0.339411936610469,
+      "weight": 0.6,
+      "opp_allowed": 2.16,
+      "league_allowed": 2.48,
+      "week": 6,
+      "game_id": "2026_06_BAL_CLE",
+      "commence_time": "2026-10-18T13:00:00-04:00",
+      "recent": [
+        {
+          "season": 2025,
+          "week": 14,
+          "opponent": "TEN",
+          "value": 1.0
+        },
+        {
+          "season": 2025,
+          "week": 15,
+          "opponent": "CHI",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 16,
+          "opponent": "BUF",
+          "value": 2.0
+        },
+        {
+          "season": 2025,
+          "week": 17,
+          "opponent": "PIT",
+          "value": 1.0
+        },
+        {
+          "season": 2026,
+          "week": 1,
+          "opponent": "JAX",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 2,
+          "opponent": "TB",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 3,
+          "opponent": "CAR",
+          "value": 2.0
+        },
+        {
+          "season": 2026,
+          "week": 4,
+          "opponent": "PIT",
+          "value": 1.0
+        },
+        {
+          "season": 2026,
+          "week": 5,
+          "opponent": "NYJ",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 6,
+          "opponent": "BAL",
+          "value": 0.0
+        }
+      ],
+      "scored": null
+    },
+    {
+      "player_id": "00-0038621",
+      "name": "DeMario Douglas",
+      "team": "NE",
+      "opponent": "NYJ",
+      "position": "WR",
+      "per_game": 0.375,
+      "chance": 0.3268767091449378,
+      "weight": 0.6,
+      "opp_allowed": 2.62,
+      "league_allowed": 2.48,
+      "week": 6,
+      "game_id": "2026_06_NYJ_NE",
+      "commence_time": "2026-10-18T13:00:00-04:00",
+      "recent": [
+        {
+          "season": 2025,
+          "week": 15,
+          "opponent": "BUF",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 16,
+          "opponent": "BAL",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 17,
+          "opponent": "NYJ",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 18,
+          "opponent": "MIA",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 1,
+          "opponent": "SEA",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 2,
+          "opponent": "PIT",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 3,
+          "opponent": "JAX",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 4,
+          "opponent": "BUF",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 5,
+          "opponent": "LV",
+          "value": 2.0
+        },
+        {
+          "season": 2026,
+          "week": 6,
+          "opponent": "NYJ",
+          "value": 1.0
+        }
+      ],
+      "scored": null
+    },
+    {
+      "player_id": "00-0040734",
+      "name": "TreVeyon Henderson",
+      "team": "NE",
+      "opponent": "NYJ",
+      "position": "RB",
+      "per_game": 0.373,
+      "chance": 0.3251330152251578,
+      "weight": 0.556,
+      "opp_allowed": 2.62,
+      "league_allowed": 2.48,
+      "week": 6,
+      "game_id": "2026_06_NYJ_NE",
+      "commence_time": "2026-10-18T13:00:00-04:00",
+      "recent": [
         {
           "season": 2025,
           "week": 13,
@@ -3124,6 +3448,12 @@
           "week": 5,
           "opponent": "LV",
           "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 6,
+          "opponent": "NYJ",
+          "value": 0.0
         }
       ],
       "scored": null
@@ -3134,21 +3464,15 @@
       "team": "CAR",
       "opponent": "PHI",
       "position": "WR",
-      "per_game": 0.456,
-      "chance": 0.3490976359766528,
-      "weight": 0.5,
-      "opp_allowed": 2.33,
+      "per_game": 0.405,
+      "chance": 0.32441070787439286,
+      "weight": 0.556,
+      "opp_allowed": 2.4,
       "league_allowed": 2.48,
       "week": 6,
       "game_id": "2026_06_CAR_PHI",
       "commence_time": "2026-10-18T13:00:00-04:00",
       "recent": [
-        {
-          "season": 2025,
-          "week": 12,
-          "opponent": "SF",
-          "value": 1.0
-        },
         {
           "season": 2025,
           "week": 13,
@@ -3202,318 +3526,138 @@
           "week": 4,
           "opponent": "DET",
           "value": 2.0
+        },
+        {
+          "season": 2026,
+          "week": 6,
+          "opponent": "PHI",
+          "value": 0.0
         }
       ],
       "scored": null
     },
     {
-      "player_id": "00-0039361",
-      "name": "Bucky Irving",
-      "team": "TB",
-      "opponent": "PIT",
-      "position": "RB",
-      "per_game": 0.511,
-      "chance": 0.3443193765273267,
-      "weight": 0.556,
-      "opp_allowed": 2.05,
+      "player_id": "00-0040206",
+      "name": "Riley Leonard",
+      "team": "IND",
+      "opponent": "TEN",
+      "position": "QB",
+      "per_game": 0.4,
+      "chance": 0.3209833879552406,
+      "weight": 0.0,
+      "opp_allowed": 2.4,
       "league_allowed": 2.48,
       "week": 6,
-      "game_id": "2026_06_PIT_TB",
+      "game_id": "2026_06_TEN_IND",
       "commence_time": "2026-10-18T13:00:00-04:00",
       "recent": [
         {
           "season": 2025,
-          "week": 14,
-          "opponent": "NO",
-          "value": 1.0
+          "week": 8,
+          "opponent": "TEN",
+          "value": 0.0
         },
         {
           "season": 2025,
-          "week": 15,
-          "opponent": "ATL",
-          "value": 0.0
+          "week": 14,
+          "opponent": "JAX",
+          "value": 1.0
         },
         {
           "season": 2025,
           "week": 16,
-          "opponent": "CAR",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 17,
-          "opponent": "MIA",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 18,
-          "opponent": "CAR",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 1,
-          "opponent": "CIN",
-          "value": 1.0
-        },
-        {
-          "season": 2026,
-          "week": 2,
-          "opponent": "CLE",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 3,
-          "opponent": "MIN",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 4,
-          "opponent": "GB",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 5,
-          "opponent": "DAL",
-          "value": 2.0
-        }
-      ],
-      "scored": null
-    },
-    {
-      "player_id": "00-0039491",
-      "name": "Jalen Coker",
-      "team": "CAR",
-      "opponent": "PHI",
-      "position": "WR",
-      "per_game": 0.442,
-      "chance": 0.3402563530640058,
-      "weight": 0.429,
-      "opp_allowed": 2.33,
-      "league_allowed": 2.48,
-      "week": 6,
-      "game_id": "2026_06_CAR_PHI",
-      "commence_time": "2026-10-18T13:00:00-04:00",
-      "recent": [
-        {
-          "season": 2025,
-          "week": 11,
-          "opponent": "ATL",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 12,
           "opponent": "SF",
           "value": 0.0
         },
         {
           "season": 2025,
-          "week": 13,
-          "opponent": "LA",
-          "value": 1.0
-        },
-        {
-          "season": 2025,
-          "week": 15,
-          "opponent": "NO",
-          "value": 1.0
-        },
-        {
-          "season": 2025,
-          "week": 16,
-          "opponent": "TB",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
           "week": 17,
-          "opponent": "SEA",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 18,
-          "opponent": "TB",
-          "value": 1.0
-        },
-        {
-          "season": 2026,
-          "week": 1,
-          "opponent": "CHI",
-          "value": 2.0
-        },
-        {
-          "season": 2026,
-          "week": 2,
-          "opponent": "ATL",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 3,
-          "opponent": "CLE",
-          "value": 0.0
-        }
-      ],
-      "scored": null
-    },
-    {
-      "player_id": "00-0037816",
-      "name": "Romeo Doubs",
-      "team": "NE",
-      "opponent": "NYJ",
-      "position": "WR",
-      "per_game": 0.389,
-      "chance": 0.33252795531786805,
-      "weight": 0.556,
-      "opp_allowed": 2.58,
-      "league_allowed": 2.48,
-      "week": 6,
-      "game_id": "2026_06_NYJ_NE",
-      "commence_time": "2026-10-18T13:00:00-04:00",
-      "recent": [
-        {
-          "season": 2025,
-          "week": 13,
-          "opponent": "DET",
-          "value": 1.0
-        },
-        {
-          "season": 2025,
-          "week": 14,
-          "opponent": "CHI",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 15,
-          "opponent": "DEN",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 16,
-          "opponent": "CHI",
-          "value": 1.0
-        },
-        {
-          "season": 2025,
-          "week": 17,
-          "opponent": "BAL",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 1,
-          "opponent": "SEA",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 2,
-          "opponent": "PIT",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 3,
           "opponent": "JAX",
           "value": 0.0
         },
         {
-          "season": 2026,
-          "week": 4,
-          "opponent": "BUF",
-          "value": 2.0
-        },
-        {
-          "season": 2026,
-          "week": 5,
-          "opponent": "LV",
-          "value": 0.0
+          "season": 2025,
+          "week": 18,
+          "opponent": "HOU",
+          "value": 1.0
         }
       ],
       "scored": null
     },
     {
-      "player_id": "00-0037239",
-      "name": "Chris Olave",
-      "team": "NO",
-      "opponent": "NYG",
+      "player_id": "00-0036912",
+      "name": "DeVonta Smith",
+      "team": "PHI",
+      "opponent": "CAR",
       "position": "WR",
-      "per_game": 0.361,
-      "chance": 0.3310588058843247,
-      "weight": 0.556,
-      "opp_allowed": 2.76,
+      "per_game": 0.368,
+      "chance": 0.3199868071976405,
+      "weight": 0.5,
+      "opp_allowed": 2.6,
       "league_allowed": 2.48,
       "week": 6,
-      "game_id": "2026_06_NO_NYG",
+      "game_id": "2026_06_CAR_PHI",
       "commence_time": "2026-10-18T13:00:00-04:00",
       "recent": [
         {
           "season": 2025,
           "week": 13,
-          "opponent": "MIA",
-          "value": 1.0
+          "opponent": "CHI",
+          "value": 0.0
         },
         {
           "season": 2025,
           "week": 14,
-          "opponent": "TB",
+          "opponent": "LAC",
           "value": 0.0
         },
         {
           "season": 2025,
           "week": 15,
-          "opponent": "CAR",
-          "value": 1.0
+          "opponent": "LV",
+          "value": 0.0
         },
         {
           "season": 2025,
           "week": 16,
-          "opponent": "NYJ",
-          "value": 2.0
+          "opponent": "WAS",
+          "value": 1.0
         },
         {
           "season": 2025,
           "week": 17,
+          "opponent": "BUF",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 18,
+          "opponent": "WAS",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 1,
+          "opponent": "WAS",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 2,
           "opponent": "TEN",
           "value": 1.0
         },
         {
           "season": 2026,
-          "week": 1,
-          "opponent": "DET",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 2,
-          "opponent": "BAL",
-          "value": 1.0
-        },
-        {
-          "season": 2026,
           "week": 3,
-          "opponent": "LV",
+          "opponent": "CHI",
           "value": 0.0
         },
         {
           "season": 2026,
-          "week": 4,
-          "opponent": "ATL",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 5,
-          "opponent": "MIN",
-          "value": 0.0
+          "week": 6,
+          "opponent": "CAR",
+          "value": 1.0
         }
       ],
       "scored": null
@@ -3525,9 +3669,9 @@
       "opponent": "PIT",
       "position": "RB",
       "per_game": 0.48,
-      "chance": 0.3274732528478349,
+      "chance": 0.3134190003210344,
       "weight": 0.333,
-      "opp_allowed": 2.05,
+      "opp_allowed": 1.94,
       "league_allowed": 2.48,
       "week": 6,
       "game_id": "2026_06_PIT_TB",
@@ -3597,127 +3741,79 @@
       "scored": null
     },
     {
-      "player_id": "00-0037228",
-      "name": "Jaylen Warren",
-      "team": "PIT",
-      "opponent": "TB",
-      "position": "RB",
-      "per_game": 0.444,
-      "chance": 0.32643449823449333,
-      "weight": 0.556,
-      "opp_allowed": 2.2,
+      "player_id": "00-0039491",
+      "name": "Jalen Coker",
+      "team": "CAR",
+      "opponent": "PHI",
+      "position": "WR",
+      "per_game": 0.386,
+      "chance": 0.31196306998624324,
+      "weight": 0.5,
+      "opp_allowed": 2.4,
       "league_allowed": 2.48,
       "week": 6,
-      "game_id": "2026_06_PIT_TB",
+      "game_id": "2026_06_CAR_PHI",
       "commence_time": "2026-10-18T13:00:00-04:00",
       "recent": [
         {
           "season": 2025,
-          "week": 14,
-          "opponent": "BAL",
-          "value": 1.0
-        },
-        {
-          "season": 2025,
-          "week": 15,
-          "opponent": "MIA",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 16,
-          "opponent": "DET",
-          "value": 2.0
-        },
-        {
-          "season": 2025,
-          "week": 17,
-          "opponent": "CLE",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 18,
-          "opponent": "BAL",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 1,
-          "opponent": "ATL",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 2,
-          "opponent": "NE",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 3,
-          "opponent": "CIN",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 4,
-          "opponent": "CLE",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 5,
-          "opponent": "IND",
-          "value": 2.0
-        }
-      ],
-      "scored": null
-    },
-    {
-      "player_id": "00-0040206",
-      "name": "Riley Leonard",
-      "team": "IND",
-      "opponent": "TEN",
-      "position": "QB",
-      "per_game": 0.4,
-      "chance": 0.32611849190312425,
-      "weight": 0.0,
-      "opp_allowed": 2.44,
-      "league_allowed": 2.48,
-      "week": 6,
-      "game_id": "2026_06_TEN_IND",
-      "commence_time": "2026-10-18T13:00:00-04:00",
-      "recent": [
-        {
-          "season": 2025,
-          "week": 8,
-          "opponent": "TEN",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 14,
-          "opponent": "JAX",
-          "value": 1.0
-        },
-        {
-          "season": 2025,
-          "week": 16,
+          "week": 12,
           "opponent": "SF",
           "value": 0.0
         },
         {
           "season": 2025,
+          "week": 13,
+          "opponent": "LA",
+          "value": 1.0
+        },
+        {
+          "season": 2025,
+          "week": 15,
+          "opponent": "NO",
+          "value": 1.0
+        },
+        {
+          "season": 2025,
+          "week": 16,
+          "opponent": "TB",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
           "week": 17,
-          "opponent": "JAX",
+          "opponent": "SEA",
           "value": 0.0
         },
         {
           "season": 2025,
           "week": 18,
-          "opponent": "HOU",
+          "opponent": "TB",
           "value": 1.0
+        },
+        {
+          "season": 2026,
+          "week": 1,
+          "opponent": "CHI",
+          "value": 2.0
+        },
+        {
+          "season": 2026,
+          "week": 2,
+          "opponent": "ATL",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 3,
+          "opponent": "CLE",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 6,
+          "opponent": "PHI",
+          "value": 0.0
         }
       ],
       "scored": null
@@ -3729,9 +3825,9 @@
       "opponent": "NE",
       "position": "QB",
       "per_game": 0.444,
-      "chance": 0.3216788047114656,
+      "chance": 0.30709935322635995,
       "weight": 0.0,
-      "opp_allowed": 2.16,
+      "opp_allowed": 2.05,
       "league_allowed": 2.48,
       "week": 6,
       "game_id": "2026_06_NYJ_NE",
@@ -3795,49 +3891,181 @@
       "scored": null
     },
     {
-      "player_id": "00-0035676",
-      "name": "A.J. Brown",
-      "team": "NE",
-      "opponent": "NYJ",
-      "position": "WR",
-      "per_game": 0.373,
-      "chance": 0.32164698767941513,
-      "weight": 0.2,
-      "opp_allowed": 2.58,
+      "player_id": "00-0039361",
+      "name": "Bucky Irving",
+      "team": "TB",
+      "opponent": "PIT",
+      "position": "RB",
+      "per_game": 0.46,
+      "chance": 0.30237176737221994,
+      "weight": 0.6,
+      "opp_allowed": 1.94,
       "league_allowed": 2.48,
       "week": 6,
-      "game_id": "2026_06_NYJ_NE",
+      "game_id": "2026_06_PIT_TB",
       "commence_time": "2026-10-18T13:00:00-04:00",
       "recent": [
         {
           "season": 2025,
-          "week": 7,
-          "opponent": "MIN",
-          "value": 2.0
+          "week": 15,
+          "opponent": "ATL",
+          "value": 0.0
         },
         {
           "season": 2025,
-          "week": 10,
+          "week": 16,
+          "opponent": "CAR",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 17,
+          "opponent": "MIA",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 18,
+          "opponent": "CAR",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 1,
+          "opponent": "CIN",
+          "value": 1.0
+        },
+        {
+          "season": 2026,
+          "week": 2,
+          "opponent": "CLE",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 3,
+          "opponent": "MIN",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 4,
           "opponent": "GB",
           "value": 0.0
         },
         {
+          "season": 2026,
+          "week": 5,
+          "opponent": "DAL",
+          "value": 2.0
+        },
+        {
+          "season": 2026,
+          "week": 6,
+          "opponent": "PIT",
+          "value": 0.0
+        }
+      ],
+      "scored": null
+    },
+    {
+      "player_id": "00-0037228",
+      "name": "Jaylen Warren",
+      "team": "PIT",
+      "opponent": "TB",
+      "position": "RB",
+      "per_game": 0.4,
+      "chance": 0.296722797328004,
+      "weight": 0.6,
+      "opp_allowed": 2.18,
+      "league_allowed": 2.48,
+      "week": 6,
+      "game_id": "2026_06_PIT_TB",
+      "commence_time": "2026-10-18T13:00:00-04:00",
+      "recent": [
+        {
           "season": 2025,
-          "week": 11,
-          "opponent": "DET",
+          "week": 15,
+          "opponent": "MIA",
           "value": 0.0
         },
         {
           "season": 2025,
-          "week": 12,
-          "opponent": "DAL",
-          "value": 1.0
+          "week": 16,
+          "opponent": "DET",
+          "value": 2.0
         },
+        {
+          "season": 2025,
+          "week": 17,
+          "opponent": "CLE",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 18,
+          "opponent": "BAL",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 1,
+          "opponent": "ATL",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 2,
+          "opponent": "NE",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 3,
+          "opponent": "CIN",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 4,
+          "opponent": "CLE",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 5,
+          "opponent": "IND",
+          "value": 2.0
+        },
+        {
+          "season": 2026,
+          "week": 6,
+          "opponent": "TB",
+          "value": 0.0
+        }
+      ],
+      "scored": null
+    },
+    {
+      "player_id": "00-0036389",
+      "name": "Jalen Hurts",
+      "team": "PHI",
+      "opponent": "CAR",
+      "position": "QB",
+      "per_game": 0.333,
+      "chance": 0.29506503292166875,
+      "weight": 0.556,
+      "opp_allowed": 2.6,
+      "league_allowed": 2.48,
+      "week": 6,
+      "game_id": "2026_06_CAR_PHI",
+      "commence_time": "2026-10-18T13:00:00-04:00",
+      "recent": [
         {
           "season": 2025,
           "week": 13,
           "opponent": "CHI",
-          "value": 2.0
+          "value": 0.0
         },
         {
           "season": 2025,
@@ -3849,7 +4077,7 @@
           "season": 2025,
           "week": 15,
           "opponent": "LV",
-          "value": 1.0
+          "value": 0.0
         },
         {
           "season": 2025,
@@ -3866,86 +4094,110 @@
         {
           "season": 2026,
           "week": 1,
-          "opponent": "SEA",
+          "opponent": "WAS",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 2,
+          "opponent": "TEN",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 3,
+          "opponent": "CHI",
+          "value": 1.0
+        },
+        {
+          "season": 2026,
+          "week": 4,
+          "opponent": "LA",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 5,
+          "opponent": "JAX",
           "value": 0.0
         }
       ],
       "scored": null
     },
     {
-      "player_id": "00-0039064",
-      "name": "Zay Flowers",
-      "team": "BAL",
-      "opponent": "CLE",
+      "player_id": "00-0040129",
+      "name": "Emeka Egbuka",
+      "team": "TB",
+      "opponent": "PIT",
       "position": "WR",
-      "per_game": 0.426,
-      "chance": 0.32018870631220153,
-      "weight": 0.5,
-      "opp_allowed": 2.24,
+      "per_game": 0.441,
+      "chance": 0.2920166180648349,
+      "weight": 0.6,
+      "opp_allowed": 1.94,
       "league_allowed": 2.48,
       "week": 6,
-      "game_id": "2026_06_BAL_CLE",
+      "game_id": "2026_06_PIT_TB",
       "commence_time": "2026-10-18T13:00:00-04:00",
       "recent": [
         {
           "season": 2025,
-          "week": 13,
-          "opponent": "CIN",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 14,
-          "opponent": "PIT",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
           "week": 15,
-          "opponent": "CIN",
-          "value": 1.0
+          "opponent": "ATL",
+          "value": 0.0
         },
         {
           "season": 2025,
           "week": 16,
-          "opponent": "NE",
-          "value": 1.0
+          "opponent": "CAR",
+          "value": 0.0
         },
         {
           "season": 2025,
           "week": 17,
-          "opponent": "GB",
-          "value": 1.0
+          "opponent": "MIA",
+          "value": 0.0
         },
         {
           "season": 2025,
           "week": 18,
-          "opponent": "PIT",
-          "value": 2.0
+          "opponent": "CAR",
+          "value": 0.0
         },
         {
           "season": 2026,
           "week": 1,
-          "opponent": "IND",
+          "opponent": "CIN",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 2,
+          "opponent": "CLE",
           "value": 1.0
         },
         {
           "season": 2026,
           "week": 3,
-          "opponent": "DAL",
+          "opponent": "MIN",
           "value": 0.0
         },
         {
           "season": 2026,
           "week": 4,
-          "opponent": "TEN",
-          "value": 1.0
+          "opponent": "GB",
+          "value": 0.0
         },
         {
           "season": 2026,
           "week": 5,
-          "opponent": "ATL",
-          "value": 0.0
+          "opponent": "DAL",
+          "value": 1.0
+        },
+        {
+          "season": 2026,
+          "week": 6,
+          "opponent": "PIT",
+          "value": 1.0
         }
       ],
       "scored": null
@@ -3956,10 +4208,10 @@
       "team": "CHI",
       "opponent": "ATL",
       "position": "WR",
-      "per_game": 0.389,
-      "chance": 0.3088321541706561,
-      "weight": 0.333,
-      "opp_allowed": 2.35,
+      "per_game": 0.333,
+      "chance": 0.2870932905393745,
+      "weight": 0.429,
+      "opp_allowed": 2.52,
       "league_allowed": 2.48,
       "week": 6,
       "game_id": "2026_06_CHI_ATL",
@@ -4012,6 +4264,144 @@
           "week": 5,
           "opponent": "GB",
           "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 6,
+          "opponent": "ATL",
+          "value": 0.0
+        }
+      ],
+      "scored": null
+    },
+    {
+      "player_id": "00-0039064",
+      "name": "Zay Flowers",
+      "team": "BAL",
+      "opponent": "CLE",
+      "position": "WR",
+      "per_game": 0.379,
+      "chance": 0.2765382761511409,
+      "weight": 0.556,
+      "opp_allowed": 2.12,
+      "league_allowed": 2.48,
+      "week": 6,
+      "game_id": "2026_06_BAL_CLE",
+      "commence_time": "2026-10-18T13:00:00-04:00",
+      "recent": [
+        {
+          "season": 2025,
+          "week": 14,
+          "opponent": "PIT",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 15,
+          "opponent": "CIN",
+          "value": 1.0
+        },
+        {
+          "season": 2025,
+          "week": 16,
+          "opponent": "NE",
+          "value": 1.0
+        },
+        {
+          "season": 2025,
+          "week": 17,
+          "opponent": "GB",
+          "value": 1.0
+        },
+        {
+          "season": 2025,
+          "week": 18,
+          "opponent": "PIT",
+          "value": 2.0
+        },
+        {
+          "season": 2026,
+          "week": 1,
+          "opponent": "IND",
+          "value": 1.0
+        },
+        {
+          "season": 2026,
+          "week": 3,
+          "opponent": "DAL",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 4,
+          "opponent": "TEN",
+          "value": 1.0
+        },
+        {
+          "season": 2026,
+          "week": 5,
+          "opponent": "ATL",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 6,
+          "opponent": "CLE",
+          "value": 0.0
+        }
+      ],
+      "scored": null
+    },
+    {
+      "player_id": "00-0039373",
+      "name": "Audric Estimé",
+      "team": "CLE",
+      "opponent": "BAL",
+      "position": "RB",
+      "per_game": 0.36,
+      "chance": 0.2696577218993568,
+      "weight": 0.2,
+      "opp_allowed": 2.16,
+      "league_allowed": 2.48,
+      "week": 6,
+      "game_id": "2026_06_BAL_CLE",
+      "commence_time": "2026-10-18T13:00:00-04:00",
+      "recent": [
+        {
+          "season": 2025,
+          "week": 14,
+          "opponent": "TB",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 15,
+          "opponent": "CAR",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 16,
+          "opponent": "NYJ",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 17,
+          "opponent": "TEN",
+          "value": 1.0
+        },
+        {
+          "season": 2025,
+          "week": 18,
+          "opponent": "ATL",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 6,
+          "opponent": "BAL",
+          "value": 1.0
         }
       ],
       "scored": null
@@ -4022,21 +4412,15 @@
       "team": "TEN",
       "opponent": "IND",
       "position": "WR",
-      "per_game": 0.333,
-      "chance": 0.3057861948086379,
-      "weight": 0.556,
-      "opp_allowed": 2.71,
+      "per_game": 0.3,
+      "chance": 0.26465141964756667,
+      "weight": 0.6,
+      "opp_allowed": 2.54,
       "league_allowed": 2.48,
       "week": 6,
       "game_id": "2026_06_TEN_IND",
       "commence_time": "2026-10-18T13:00:00-04:00",
       "recent": [
-        {
-          "season": 2025,
-          "week": 12,
-          "opponent": "DET",
-          "value": 1.0
-        },
         {
           "season": 2025,
           "week": 13,
@@ -4090,210 +4474,12 @@
           "week": 5,
           "opponent": "HOU",
           "value": 0.0
-        }
-      ],
-      "scored": null
-    },
-    {
-      "player_id": "00-0036389",
-      "name": "Jalen Hurts",
-      "team": "PHI",
-      "opponent": "CAR",
-      "position": "QB",
-      "per_game": 0.333,
-      "chance": 0.3024201331313069,
-      "weight": 0.556,
-      "opp_allowed": 2.68,
-      "league_allowed": 2.48,
-      "week": 6,
-      "game_id": "2026_06_CAR_PHI",
-      "commence_time": "2026-10-18T13:00:00-04:00",
-      "recent": [
-        {
-          "season": 2025,
-          "week": 13,
-          "opponent": "CHI",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 14,
-          "opponent": "LAC",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 15,
-          "opponent": "LV",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 16,
-          "opponent": "WAS",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 17,
-          "opponent": "BUF",
-          "value": 0.0
         },
         {
           "season": 2026,
-          "week": 1,
-          "opponent": "WAS",
+          "week": 6,
+          "opponent": "IND",
           "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 2,
-          "opponent": "TEN",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 3,
-          "opponent": "CHI",
-          "value": 1.0
-        },
-        {
-          "season": 2026,
-          "week": 4,
-          "opponent": "LA",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 5,
-          "opponent": "JAX",
-          "value": 0.0
-        }
-      ],
-      "scored": null
-    },
-    {
-      "player_id": "00-0041032",
-      "name": "Kenyon Sadiq",
-      "team": "NYJ",
-      "opponent": "NE",
-      "position": "TE",
-      "per_game": 0.4,
-      "chance": 0.29483321344183344,
-      "weight": 1.0,
-      "opp_allowed": 2.16,
-      "league_allowed": 2.48,
-      "week": 6,
-      "game_id": "2026_06_NYJ_NE",
-      "commence_time": "2026-10-18T13:00:00-04:00",
-      "recent": [
-        {
-          "season": 2026,
-          "week": 1,
-          "opponent": "TEN",
-          "value": 1.0
-        },
-        {
-          "season": 2026,
-          "week": 2,
-          "opponent": "GB",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 3,
-          "opponent": "DET",
-          "value": 1.0
-        },
-        {
-          "season": 2026,
-          "week": 4,
-          "opponent": "CHI",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 5,
-          "opponent": "CLE",
-          "value": 0.0
-        }
-      ],
-      "scored": null
-    },
-    {
-      "player_id": "00-0040129",
-      "name": "Emeka Egbuka",
-      "team": "TB",
-      "opponent": "PIT",
-      "position": "WR",
-      "per_game": 0.379,
-      "chance": 0.26878865804244545,
-      "weight": 0.556,
-      "opp_allowed": 2.05,
-      "league_allowed": 2.48,
-      "week": 6,
-      "game_id": "2026_06_PIT_TB",
-      "commence_time": "2026-10-18T13:00:00-04:00",
-      "recent": [
-        {
-          "season": 2025,
-          "week": 14,
-          "opponent": "NO",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 15,
-          "opponent": "ATL",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 16,
-          "opponent": "CAR",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 17,
-          "opponent": "MIA",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 18,
-          "opponent": "CAR",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 1,
-          "opponent": "CIN",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 2,
-          "opponent": "CLE",
-          "value": 1.0
-        },
-        {
-          "season": 2026,
-          "week": 3,
-          "opponent": "MIN",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 4,
-          "opponent": "GB",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 5,
-          "opponent": "DAL",
-          "value": 1.0
         }
       ],
       "scored": null
@@ -4305,9 +4491,9 @@
       "opponent": "BAL",
       "position": "RB",
       "per_game": 0.333,
-      "chance": 0.2655915571308646,
+      "chance": 0.25245800662487916,
       "weight": 0.556,
-      "opp_allowed": 2.29,
+      "opp_allowed": 2.16,
       "league_allowed": 2.48,
       "week": 6,
       "game_id": "2026_06_BAL_CLE",
@@ -4377,243 +4563,15 @@
       "scored": null
     },
     {
-      "player_id": "00-0034844",
-      "name": "Saquon Barkley",
-      "team": "PHI",
-      "opponent": "CAR",
-      "position": "RB",
-      "per_game": 0.281,
-      "chance": 0.26204074290491297,
-      "weight": 0.5,
-      "opp_allowed": 2.68,
-      "league_allowed": 2.48,
-      "week": 6,
-      "game_id": "2026_06_CAR_PHI",
-      "commence_time": "2026-10-18T13:00:00-04:00",
-      "recent": [
-        {
-          "season": 2025,
-          "week": 12,
-          "opponent": "DAL",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 13,
-          "opponent": "CHI",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 14,
-          "opponent": "LAC",
-          "value": 1.0
-        },
-        {
-          "season": 2025,
-          "week": 15,
-          "opponent": "LV",
-          "value": 1.0
-        },
-        {
-          "season": 2025,
-          "week": 16,
-          "opponent": "WAS",
-          "value": 1.0
-        },
-        {
-          "season": 2025,
-          "week": 17,
-          "opponent": "BUF",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 1,
-          "opponent": "WAS",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 2,
-          "opponent": "TEN",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 3,
-          "opponent": "CHI",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 4,
-          "opponent": "LA",
-          "value": 0.0
-        }
-      ],
-      "scored": null
-    },
-    {
-      "player_id": "00-0040676",
-      "name": "Cam Ward",
-      "team": "TEN",
-      "opponent": "IND",
-      "position": "QB",
-      "per_game": 0.275,
-      "chance": 0.25960235965385603,
-      "weight": 0.556,
-      "opp_allowed": 2.71,
-      "league_allowed": 2.48,
-      "week": 6,
-      "game_id": "2026_06_TEN_IND",
-      "commence_time": "2026-10-18T13:00:00-04:00",
-      "recent": [
-        {
-          "season": 2025,
-          "week": 14,
-          "opponent": "CLE",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 15,
-          "opponent": "SF",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 16,
-          "opponent": "KC",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 17,
-          "opponent": "NO",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 18,
-          "opponent": "JAX",
-          "value": 1.0
-        },
-        {
-          "season": 2026,
-          "week": 1,
-          "opponent": "NYJ",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 2,
-          "opponent": "PHI",
-          "value": 2.0
-        },
-        {
-          "season": 2026,
-          "week": 3,
-          "opponent": "NYG",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 4,
-          "opponent": "BAL",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 5,
-          "opponent": "HOU",
-          "value": 0.0
-        }
-      ],
-      "scored": null
-    },
-    {
-      "player_id": "00-0039794",
-      "name": "Braelon Allen",
-      "team": "NYJ",
-      "opponent": "NE",
-      "position": "RB",
-      "per_game": 0.333,
-      "chance": 0.2525596475038141,
-      "weight": 0.556,
-      "opp_allowed": 2.16,
-      "league_allowed": 2.48,
-      "week": 6,
-      "game_id": "2026_06_NYJ_NE",
-      "commence_time": "2026-10-18T13:00:00-04:00",
-      "recent": [
-        {
-          "season": 2025,
-          "week": 1,
-          "opponent": "PIT",
-          "value": 1.0
-        },
-        {
-          "season": 2025,
-          "week": 2,
-          "opponent": "BUF",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 3,
-          "opponent": "TB",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 4,
-          "opponent": "MIA",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 1,
-          "opponent": "TEN",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 2,
-          "opponent": "GB",
-          "value": 1.0
-        },
-        {
-          "season": 2026,
-          "week": 3,
-          "opponent": "DET",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 4,
-          "opponent": "CHI",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 5,
-          "opponent": "CLE",
-          "value": 1.0
-        }
-      ],
-      "scored": null
-    },
-    {
       "player_id": "00-0039739",
       "name": "Roman Wilson",
       "team": "PIT",
       "opponent": "TB",
       "position": "WR",
       "per_game": 0.321,
-      "chance": 0.24828692626636495,
+      "chance": 0.24608260060235998,
       "weight": 0.556,
-      "opp_allowed": 2.2,
+      "opp_allowed": 2.18,
       "league_allowed": 2.48,
       "week": 6,
       "game_id": "2026_06_PIT_TB",
@@ -4676,6 +4634,294 @@
         {
           "season": 2026,
           "week": 5,
+          "opponent": "IND",
+          "value": 0.0
+        }
+      ],
+      "scored": null
+    },
+    {
+      "player_id": "00-0041032",
+      "name": "Kenyon Sadiq",
+      "team": "NYJ",
+      "opponent": "NE",
+      "position": "TE",
+      "per_game": 0.333,
+      "chance": 0.24054293768313573,
+      "weight": 1.0,
+      "opp_allowed": 2.05,
+      "league_allowed": 2.48,
+      "week": 6,
+      "game_id": "2026_06_NYJ_NE",
+      "commence_time": "2026-10-18T13:00:00-04:00",
+      "recent": [
+        {
+          "season": 2026,
+          "week": 1,
+          "opponent": "TEN",
+          "value": 1.0
+        },
+        {
+          "season": 2026,
+          "week": 2,
+          "opponent": "GB",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 3,
+          "opponent": "DET",
+          "value": 1.0
+        },
+        {
+          "season": 2026,
+          "week": 4,
+          "opponent": "CHI",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 5,
+          "opponent": "CLE",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 6,
+          "opponent": "NE",
+          "value": 0.0
+        }
+      ],
+      "scored": null
+    },
+    {
+      "player_id": "00-0038120",
+      "name": "Breece Hall",
+      "team": "NYJ",
+      "opponent": "NE",
+      "position": "RB",
+      "per_game": 0.321,
+      "chance": 0.2330430858200907,
+      "weight": 0.429,
+      "opp_allowed": 2.05,
+      "league_allowed": 2.48,
+      "week": 6,
+      "game_id": "2026_06_NYJ_NE",
+      "commence_time": "2026-10-18T13:00:00-04:00",
+      "recent": [
+        {
+          "season": 2025,
+          "week": 11,
+          "opponent": "NE",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 12,
+          "opponent": "BAL",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 13,
+          "opponent": "ATL",
+          "value": 1.0
+        },
+        {
+          "season": 2025,
+          "week": 14,
+          "opponent": "MIA",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 15,
+          "opponent": "JAX",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 16,
+          "opponent": "NO",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 17,
+          "opponent": "NE",
+          "value": 1.0
+        },
+        {
+          "season": 2026,
+          "week": 1,
+          "opponent": "TEN",
+          "value": 1.0
+        },
+        {
+          "season": 2026,
+          "week": 2,
+          "opponent": "GB",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 3,
+          "opponent": "DET",
+          "value": 0.0
+        }
+      ],
+      "scored": null
+    },
+    {
+      "player_id": "00-0037664",
+      "name": "Alec Pierce",
+      "team": "IND",
+      "opponent": "TEN",
+      "position": "WR",
+      "per_game": 0.267,
+      "chance": 0.22746126121855803,
+      "weight": 0.333,
+      "opp_allowed": 2.4,
+      "league_allowed": 2.48,
+      "week": 6,
+      "game_id": "2026_06_TEN_IND",
+      "commence_time": "2026-10-18T13:00:00-04:00",
+      "recent": [
+        {
+          "season": 2025,
+          "week": 10,
+          "opponent": "ATL",
+          "value": 1.0
+        },
+        {
+          "season": 2025,
+          "week": 12,
+          "opponent": "KC",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 13,
+          "opponent": "HOU",
+          "value": 1.0
+        },
+        {
+          "season": 2025,
+          "week": 14,
+          "opponent": "JAX",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 15,
+          "opponent": "SEA",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 16,
+          "opponent": "SF",
+          "value": 2.0
+        },
+        {
+          "season": 2025,
+          "week": 17,
+          "opponent": "JAX",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 18,
+          "opponent": "HOU",
+          "value": 2.0
+        },
+        {
+          "season": 2026,
+          "week": 1,
+          "opponent": "BAL",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 2,
+          "opponent": "KC",
+          "value": 0.0
+        }
+      ],
+      "scored": null
+    },
+    {
+      "player_id": "00-0040676",
+      "name": "Cam Ward",
+      "team": "TEN",
+      "opponent": "IND",
+      "position": "QB",
+      "per_game": 0.247,
+      "chance": 0.2236576612821498,
+      "weight": 0.6,
+      "opp_allowed": 2.54,
+      "league_allowed": 2.48,
+      "week": 6,
+      "game_id": "2026_06_TEN_IND",
+      "commence_time": "2026-10-18T13:00:00-04:00",
+      "recent": [
+        {
+          "season": 2025,
+          "week": 15,
+          "opponent": "SF",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 16,
+          "opponent": "KC",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 17,
+          "opponent": "NO",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 18,
+          "opponent": "JAX",
+          "value": 1.0
+        },
+        {
+          "season": 2026,
+          "week": 1,
+          "opponent": "NYJ",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 2,
+          "opponent": "PHI",
+          "value": 2.0
+        },
+        {
+          "season": 2026,
+          "week": 3,
+          "opponent": "NYG",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 4,
+          "opponent": "BAL",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 5,
+          "opponent": "HOU",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 6,
           "opponent": "IND",
           "value": 0.0
         }
@@ -4688,21 +4934,15 @@
       "team": "PIT",
       "opponent": "TB",
       "position": "WR",
-      "per_game": 0.319,
-      "chance": 0.24663481074805782,
-      "weight": 0.556,
-      "opp_allowed": 2.2,
+      "per_game": 0.287,
+      "chance": 0.2229648111498358,
+      "weight": 0.6,
+      "opp_allowed": 2.18,
       "league_allowed": 2.48,
       "week": 6,
       "game_id": "2026_06_PIT_TB",
       "commence_time": "2026-10-18T13:00:00-04:00",
       "recent": [
-        {
-          "season": 2025,
-          "week": 12,
-          "opponent": "CHI",
-          "value": 1.0
-        },
         {
           "season": 2025,
           "week": 13,
@@ -4756,6 +4996,12 @@
           "week": 5,
           "opponent": "IND",
           "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 6,
+          "opponent": "TB",
+          "value": 0.0
         }
       ],
       "scored": null
@@ -4766,21 +5012,15 @@
       "team": "BAL",
       "opponent": "CLE",
       "position": "WR",
-      "per_game": 0.312,
-      "chance": 0.24633015862568552,
-      "weight": 0.5,
-      "opp_allowed": 2.24,
+      "per_game": 0.278,
+      "chance": 0.21116614947530743,
+      "weight": 0.556,
+      "opp_allowed": 2.12,
       "league_allowed": 2.48,
       "week": 6,
       "game_id": "2026_06_BAL_CLE",
       "commence_time": "2026-10-18T13:00:00-04:00",
       "recent": [
-        {
-          "season": 2025,
-          "week": 4,
-          "opponent": "KC",
-          "value": 0.0
-        },
         {
           "season": 2025,
           "week": 5,
@@ -4834,161 +5074,89 @@
           "week": 5,
           "opponent": "ATL",
           "value": 1.0
-        }
-      ],
-      "scored": null
-    },
-    {
-      "player_id": "00-0035710",
-      "name": "Daniel Jones",
-      "team": "IND",
-      "opponent": "TEN",
-      "position": "QB",
-      "per_game": 0.282,
-      "chance": 0.242941537175133,
-      "weight": 0.556,
-      "opp_allowed": 2.44,
-      "league_allowed": 2.48,
-      "week": 6,
-      "game_id": "2026_06_TEN_IND",
-      "commence_time": "2026-10-18T13:00:00-04:00",
-      "recent": [
-        {
-          "season": 2025,
-          "week": 9,
-          "opponent": "PIT",
-          "value": 1.0
-        },
-        {
-          "season": 2025,
-          "week": 10,
-          "opponent": "ATL",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 12,
-          "opponent": "KC",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 13,
-          "opponent": "HOU",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 14,
-          "opponent": "JAX",
-          "value": 0.0
         },
         {
           "season": 2026,
-          "week": 1,
-          "opponent": "BAL",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 2,
-          "opponent": "KC",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 3,
-          "opponent": "HOU",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 4,
-          "opponent": "WAS",
-          "value": 1.0
-        },
-        {
-          "season": 2026,
-          "week": 5,
-          "opponent": "PIT",
-          "value": 0.0
-        }
-      ],
-      "scored": null
-    },
-    {
-      "player_id": "00-0035261",
-      "name": "Tony Pollard",
-      "team": "TEN",
-      "opponent": "IND",
-      "position": "RB",
-      "per_game": 0.242,
-      "chance": 0.23262984591682656,
-      "weight": 0.556,
-      "opp_allowed": 2.71,
-      "league_allowed": 2.48,
-      "week": 6,
-      "game_id": "2026_06_TEN_IND",
-      "commence_time": "2026-10-18T13:00:00-04:00",
-      "recent": [
-        {
-          "season": 2025,
-          "week": 14,
+          "week": 6,
           "opponent": "CLE",
-          "value": 2.0
-        },
+          "value": 0.0
+        }
+      ],
+      "scored": null
+    },
+    {
+      "player_id": "00-0037238",
+      "name": "Drake London",
+      "team": "ATL",
+      "opponent": "CHI",
+      "position": "WR",
+      "per_game": 0.233,
+      "chance": 0.21004268394218795,
+      "weight": 0.6,
+      "opp_allowed": 2.51,
+      "league_allowed": 2.48,
+      "week": 6,
+      "game_id": "2026_06_CHI_ATL",
+      "commence_time": "2026-10-18T13:00:00-04:00",
+      "recent": [
         {
           "season": 2025,
-          "week": 15,
-          "opponent": "SF",
-          "value": 1.0
+          "week": 11,
+          "opponent": "CAR",
+          "value": 0.0
         },
         {
           "season": 2025,
           "week": 16,
-          "opponent": "KC",
+          "opponent": "ARI",
           "value": 0.0
         },
         {
           "season": 2025,
           "week": 17,
-          "opponent": "NO",
+          "opponent": "LA",
           "value": 0.0
         },
         {
           "season": 2025,
           "week": 18,
-          "opponent": "JAX",
-          "value": 0.0
+          "opponent": "NO",
+          "value": 1.0
         },
         {
           "season": 2026,
           "week": 1,
-          "opponent": "NYJ",
+          "opponent": "PIT",
           "value": 0.0
         },
         {
           "season": 2026,
           "week": 2,
-          "opponent": "PHI",
+          "opponent": "CAR",
           "value": 0.0
         },
         {
           "season": 2026,
           "week": 3,
-          "opponent": "NYG",
+          "opponent": "GB",
           "value": 0.0
         },
         {
           "season": 2026,
           "week": 4,
-          "opponent": "BAL",
-          "value": 1.0
+          "opponent": "NO",
+          "value": 0.0
         },
         {
           "season": 2026,
           "week": 5,
-          "opponent": "HOU",
+          "opponent": "BAL",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 6,
+          "opponent": "CHI",
           "value": 0.0
         }
       ],
@@ -5000,21 +5168,15 @@
       "team": "TB",
       "opponent": "PIT",
       "position": "RB",
-      "per_game": 0.32,
-      "chance": 0.23239161945465292,
-      "weight": 0.556,
-      "opp_allowed": 2.05,
+      "per_game": 0.288,
+      "chance": 0.20197762480916504,
+      "weight": 0.6,
+      "opp_allowed": 1.94,
       "league_allowed": 2.48,
       "week": 6,
       "game_id": "2026_06_PIT_TB",
       "commence_time": "2026-10-18T13:00:00-04:00",
       "recent": [
-        {
-          "season": 2025,
-          "week": 14,
-          "opponent": "BAL",
-          "value": 1.0
-        },
         {
           "season": 2025,
           "week": 15,
@@ -5068,84 +5230,132 @@
           "week": 5,
           "opponent": "DAL",
           "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 6,
+          "opponent": "PIT",
+          "value": 0.0
         }
       ],
       "scored": null
     },
     {
-      "player_id": "00-0037238",
-      "name": "Drake London",
-      "team": "ATL",
-      "opponent": "CHI",
-      "position": "WR",
-      "per_game": 0.259,
-      "chance": 0.2262517660514488,
-      "weight": 0.556,
-      "opp_allowed": 2.45,
+      "player_id": "00-0035261",
+      "name": "Tony Pollard",
+      "team": "TEN",
+      "opponent": "IND",
+      "position": "RB",
+      "per_game": 0.218,
+      "chance": 0.1999038736261688,
+      "weight": 0.6,
+      "opp_allowed": 2.54,
       "league_allowed": 2.48,
       "week": 6,
-      "game_id": "2026_06_CHI_ATL",
+      "game_id": "2026_06_TEN_IND",
       "commence_time": "2026-10-18T13:00:00-04:00",
       "recent": [
         {
           "season": 2025,
-          "week": 10,
-          "opponent": "IND",
+          "week": 15,
+          "opponent": "SF",
           "value": 1.0
         },
         {
           "season": 2025,
-          "week": 11,
-          "opponent": "CAR",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
           "week": 16,
-          "opponent": "ARI",
+          "opponent": "KC",
           "value": 0.0
         },
         {
           "season": 2025,
           "week": 17,
-          "opponent": "LA",
+          "opponent": "NO",
           "value": 0.0
         },
         {
           "season": 2025,
           "week": 18,
-          "opponent": "NO",
-          "value": 1.0
+          "opponent": "JAX",
+          "value": 0.0
         },
         {
           "season": 2026,
           "week": 1,
-          "opponent": "PIT",
+          "opponent": "NYJ",
           "value": 0.0
         },
         {
           "season": 2026,
           "week": 2,
-          "opponent": "CAR",
+          "opponent": "PHI",
           "value": 0.0
         },
         {
           "season": 2026,
           "week": 3,
-          "opponent": "GB",
+          "opponent": "NYG",
           "value": 0.0
         },
         {
           "season": 2026,
           "week": 4,
-          "opponent": "NO",
+          "opponent": "BAL",
+          "value": 1.0
+        },
+        {
+          "season": 2026,
+          "week": 5,
+          "opponent": "HOU",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 6,
+          "opponent": "IND",
+          "value": 0.0
+        }
+      ],
+      "scored": null
+    },
+    {
+      "player_id": "00-0040887",
+      "name": "Josh Cuevas",
+      "team": "BAL",
+      "opponent": "CLE",
+      "position": "TE",
+      "per_game": 0.25,
+      "chance": 0.1922313667045682,
+      "weight": 1.0,
+      "opp_allowed": 2.12,
+      "league_allowed": 2.48,
+      "week": 6,
+      "game_id": "2026_06_BAL_CLE",
+      "commence_time": "2026-10-18T13:00:00-04:00",
+      "recent": [
+        {
+          "season": 2026,
+          "week": 3,
+          "opponent": "DAL",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 4,
+          "opponent": "TEN",
           "value": 0.0
         },
         {
           "season": 2026,
           "week": 5,
-          "opponent": "BAL",
+          "opponent": "ATL",
           "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 6,
+          "opponent": "CLE",
+          "value": 1.0
         }
       ],
       "scored": null
@@ -5156,21 +5366,15 @@
       "team": "TEN",
       "opponent": "IND",
       "position": "WR",
-      "per_game": 0.222,
-      "chance": 0.21597695075580658,
-      "weight": 0.556,
-      "opp_allowed": 2.71,
+      "per_game": 0.2,
+      "chance": 0.18530414719987964,
+      "weight": 0.6,
+      "opp_allowed": 2.54,
       "league_allowed": 2.48,
       "week": 6,
       "game_id": "2026_06_TEN_IND",
       "commence_time": "2026-10-18T13:00:00-04:00",
       "recent": [
-        {
-          "season": 2025,
-          "week": 14,
-          "opponent": "CLE",
-          "value": 1.0
-        },
         {
           "season": 2025,
           "week": 15,
@@ -5224,239 +5428,11 @@
           "week": 5,
           "opponent": "HOU",
           "value": 0.0
-        }
-      ],
-      "scored": null
-    },
-    {
-      "player_id": "00-0034753",
-      "name": "Mark Andrews",
-      "team": "BAL",
-      "opponent": "CLE",
-      "position": "TE",
-      "per_game": 0.268,
-      "chance": 0.2153412570917841,
-      "weight": 0.556,
-      "opp_allowed": 2.24,
-      "league_allowed": 2.48,
-      "week": 6,
-      "game_id": "2026_06_BAL_CLE",
-      "commence_time": "2026-10-18T13:00:00-04:00",
-      "recent": [
-        {
-          "season": 2025,
-          "week": 14,
-          "opponent": "PIT",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 15,
-          "opponent": "CIN",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 16,
-          "opponent": "NE",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 17,
-          "opponent": "GB",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 18,
-          "opponent": "PIT",
-          "value": 0.0
         },
         {
           "season": 2026,
-          "week": 1,
+          "week": 6,
           "opponent": "IND",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 2,
-          "opponent": "NO",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 3,
-          "opponent": "DAL",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 4,
-          "opponent": "TEN",
-          "value": 1.0
-        },
-        {
-          "season": 2026,
-          "week": 5,
-          "opponent": "ATL",
-          "value": 0.0
-        }
-      ],
-      "scored": null
-    },
-    {
-      "player_id": "00-0036970",
-      "name": "Kyle Pitts",
-      "team": "ATL",
-      "opponent": "CHI",
-      "position": "TE",
-      "per_game": 0.242,
-      "chance": 0.21279332398759465,
-      "weight": 0.556,
-      "opp_allowed": 2.45,
-      "league_allowed": 2.48,
-      "week": 6,
-      "game_id": "2026_06_CHI_ATL",
-      "commence_time": "2026-10-18T13:00:00-04:00",
-      "recent": [
-        {
-          "season": 2025,
-          "week": 14,
-          "opponent": "SEA",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 15,
-          "opponent": "TB",
-          "value": 3.0
-        },
-        {
-          "season": 2025,
-          "week": 16,
-          "opponent": "ARI",
-          "value": 1.0
-        },
-        {
-          "season": 2025,
-          "week": 17,
-          "opponent": "LA",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 18,
-          "opponent": "NO",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 1,
-          "opponent": "PIT",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 2,
-          "opponent": "CAR",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 3,
-          "opponent": "GB",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 4,
-          "opponent": "NO",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 5,
-          "opponent": "BAL",
-          "value": 1.0
-        }
-      ],
-      "scored": null
-    },
-    {
-      "player_id": "00-0038794",
-      "name": "Jaleel McLaughlin",
-      "team": "CLE",
-      "opponent": "BAL",
-      "position": "RB",
-      "per_game": 0.214,
-      "chance": 0.17999392899098,
-      "weight": 0.429,
-      "opp_allowed": 2.29,
-      "league_allowed": 2.48,
-      "week": 6,
-      "game_id": "2026_06_BAL_CLE",
-      "commence_time": "2026-10-18T13:00:00-04:00",
-      "recent": [
-        {
-          "season": 2025,
-          "week": 11,
-          "opponent": "KC",
-          "value": 1.0
-        },
-        {
-          "season": 2025,
-          "week": 13,
-          "opponent": "WAS",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 14,
-          "opponent": "LV",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 15,
-          "opponent": "GB",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 16,
-          "opponent": "JAX",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 17,
-          "opponent": "KC",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 18,
-          "opponent": "LAC",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 2,
-          "opponent": "TB",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 4,
-          "opponent": "PIT",
-          "value": 1.0
-        },
-        {
-          "season": 2026,
-          "week": 5,
-          "opponent": "NYJ",
           "value": 0.0
         }
       ],
@@ -5469,7 +5445,7 @@
       "opponent": "ARI",
       "position": "RB",
       "per_game": 0.895,
-      "chance": 0.7207735547661807,
+      "chance": 0.7203918940592041,
       "weight": 0.556,
       "opp_allowed": 3.53,
       "league_allowed": 2.48,
@@ -5547,7 +5523,7 @@
       "opponent": "ARI",
       "position": "WR",
       "per_game": 0.889,
-      "chance": 0.7181612783991506,
+      "chance": 0.7177788609159501,
       "weight": 0.556,
       "opp_allowed": 3.53,
       "league_allowed": 2.48,
@@ -5625,7 +5601,7 @@
       "opponent": "ARI",
       "position": "WR",
       "per_game": 0.679,
-      "chance": 0.6196929006850047,
+      "chance": 0.6192990333877912,
       "weight": 0.429,
       "opp_allowed": 3.53,
       "league_allowed": 2.48,
@@ -5703,7 +5679,7 @@
       "opponent": "LA",
       "position": "TE",
       "per_game": 0.621,
-      "chance": 0.4270692365855815,
+      "chance": 0.4267274585830576,
       "weight": 0.556,
       "opp_allowed": 2.22,
       "league_allowed": 2.48,
@@ -5781,7 +5757,7 @@
       "opponent": "ARI",
       "position": "TE",
       "per_game": 0.299,
-      "chance": 0.346600506779989,
+      "chance": 0.34630271686961234,
       "weight": 0.429,
       "opp_allowed": 3.53,
       "league_allowed": 2.48,
@@ -5859,7 +5835,7 @@
       "opponent": "LA",
       "position": "RB",
       "per_game": 0.4,
-      "chance": 0.3014992870356722,
+      "chance": 0.30123088206311976,
       "weight": 1.0,
       "opp_allowed": 2.22,
       "league_allowed": 2.48,
@@ -5907,7 +5883,7 @@
       "opponent": "LA",
       "position": "RB",
       "per_game": 0.32,
-      "chance": 0.24970572739779218,
+      "chance": 0.24947490212287848,
       "weight": 0.556,
       "opp_allowed": 2.22,
       "league_allowed": 2.48,
@@ -5985,7 +5961,7 @@
       "opponent": "LA",
       "position": "WR",
       "per_game": 0.294,
-      "chance": 0.23190169944678507,
+      "chance": 0.23168468956252986,
       "weight": 0.556,
       "opp_allowed": 2.22,
       "league_allowed": 2.48,
@@ -6063,7 +6039,7 @@
       "opponent": "LV",
       "position": "QB",
       "per_game": 1.278,
-      "chance": 0.7942554354679241,
+      "chance": 0.7939068369220745,
       "weight": 0.556,
       "opp_allowed": 3.07,
       "league_allowed": 2.48,
@@ -6141,7 +6117,7 @@
       "opponent": "LV",
       "position": "RB",
       "per_game": 0.922,
-      "chance": 0.6802920365770799,
+      "chance": 0.6799014471331404,
       "weight": 0.556,
       "opp_allowed": 3.07,
       "league_allowed": 2.48,
@@ -6219,7 +6195,7 @@
       "opponent": "BUF",
       "position": "TE",
       "per_game": 0.762,
-      "chance": 0.617440568271953,
+      "chance": 0.617046789513023,
       "weight": 0.429,
       "opp_allowed": 3.12,
       "league_allowed": 2.48,
@@ -6297,7 +6273,7 @@
       "opponent": "LAC",
       "position": "RB",
       "per_game": 0.897,
-      "chance": 0.5794705574327094,
+      "chance": 0.5790803449142711,
       "weight": 0.5,
       "opp_allowed": 2.39,
       "league_allowed": 2.48,
@@ -6375,7 +6351,7 @@
       "opponent": "BUF",
       "position": "RB",
       "per_game": 0.484,
-      "chance": 0.45663002877842873,
+      "chance": 0.4562750462236306,
       "weight": 0.556,
       "opp_allowed": 3.12,
       "league_allowed": 2.48,
@@ -6453,7 +6429,7 @@
       "opponent": "LAC",
       "position": "WR",
       "per_game": 0.571,
-      "chance": 0.42408627246569186,
+      "chance": 0.4237459190344316,
       "weight": 0.429,
       "opp_allowed": 2.39,
       "league_allowed": 2.48,
@@ -6531,7 +6507,7 @@
       "opponent": "LAC",
       "position": "RB",
       "per_game": 0.529,
-      "chance": 0.40023901967524855,
+      "chance": 0.39991064238626883,
       "weight": 0.0,
       "opp_allowed": 2.39,
       "league_allowed": 2.48,
@@ -6609,7 +6585,7 @@
       "opponent": "BUF",
       "position": "WR",
       "per_game": 0.389,
-      "chance": 0.3876459838752132,
+      "chance": 0.387324342876192,
       "weight": 0.556,
       "opp_allowed": 3.12,
       "league_allowed": 2.48,
@@ -6687,7 +6663,7 @@
       "opponent": "LV",
       "position": "WR",
       "per_game": 0.37,
-      "chance": 0.36763948408552727,
+      "chance": 0.367329112647248,
       "weight": 0.556,
       "opp_allowed": 3.07,
       "league_allowed": 2.48,
@@ -6765,7 +6741,7 @@
       "opponent": "KC",
       "position": "RB",
       "per_game": 0.58,
-      "chance": 0.34649259781540986,
+      "chance": 0.3461948743245188,
       "weight": 0.556,
       "opp_allowed": 1.82,
       "league_allowed": 2.48,
@@ -6843,7 +6819,7 @@
       "opponent": "LV",
       "position": "WR",
       "per_game": 0.331,
-      "chance": 0.3359734937209019,
+      "chance": 0.33568233592195207,
       "weight": 0.5,
       "opp_allowed": 3.07,
       "league_allowed": 2.48,
@@ -6921,7 +6897,7 @@
       "opponent": "LAC",
       "position": "TE",
       "per_game": 0.397,
-      "chance": 0.3184720743517775,
+      "chance": 0.31819223414853814,
       "weight": 0.5,
       "opp_allowed": 2.39,
       "league_allowed": 2.48,
@@ -6999,7 +6975,7 @@
       "opponent": "BUF",
       "position": "WR",
       "per_game": 0.242,
-      "chance": 0.26286366849708775,
+      "chance": 0.26262292293808764,
       "weight": 0.556,
       "opp_allowed": 3.12,
       "league_allowed": 2.48,
@@ -7077,7 +7053,7 @@
       "opponent": "KC",
       "position": "RB",
       "per_game": 0.404,
-      "chance": 0.2562685102730029,
+      "chance": 0.2560327059279026,
       "weight": 0.5,
       "opp_allowed": 1.82,
       "league_allowed": 2.48,
@@ -7155,7 +7131,7 @@
       "opponent": "KC",
       "position": "WR",
       "per_game": 0.312,
-      "chance": 0.20475562164942596,
+      "chance": 0.20456052278535253,
       "weight": 0.5,
       "opp_allowed": 1.82,
       "league_allowed": 2.48,
@@ -7233,7 +7209,7 @@
       "opponent": "KC",
       "position": "WR",
       "per_game": 0.308,
-      "chance": 0.2019476742197125,
+      "chance": 0.20175489895928345,
       "weight": 0.5,
       "opp_allowed": 1.82,
       "league_allowed": 2.48,
@@ -7311,7 +7287,7 @@
       "opponent": "DAL",
       "position": "RB",
       "per_game": 0.933,
-      "chance": 0.713764909415325,
+      "chance": 0.71338127672704,
       "weight": 0.0,
       "opp_allowed": 3.32,
       "league_allowed": 2.48,
@@ -7389,7 +7365,7 @@
       "opponent": "DAL",
       "position": "WR",
       "per_game": 0.933,
-      "chance": 0.713764909415325,
+      "chance": 0.71338127672704,
       "weight": 0.556,
       "opp_allowed": 3.32,
       "league_allowed": 2.48,
@@ -7467,7 +7443,7 @@
       "opponent": "GB",
       "position": "RB",
       "per_game": 1.139,
-      "chance": 0.6939166276920892,
+      "chance": 0.693528393334802,
       "weight": 0.556,
       "opp_allowed": 2.58,
       "league_allowed": 2.48,
@@ -7545,7 +7521,7 @@
       "opponent": "DAL",
       "position": "RB",
       "per_game": 0.6,
-      "chance": 0.5525439141889004,
+      "chance": 0.5521584768956915,
       "weight": 1.0,
       "opp_allowed": 3.32,
       "league_allowed": 2.48,
@@ -7593,7 +7569,7 @@
       "opponent": "DAL",
       "position": "TE",
       "per_game": 0.444,
-      "chance": 0.44881599408802086,
+      "chance": 0.44846433837915056,
       "weight": 0.556,
       "opp_allowed": 3.32,
       "league_allowed": 2.48,
@@ -7671,7 +7647,7 @@
       "opponent": "GB",
       "position": "WR",
       "per_game": 0.547,
-      "chance": 0.4336971731820467,
+      "chance": 0.43335228950301896,
       "weight": 0.556,
       "opp_allowed": 2.58,
       "league_allowed": 2.48,
@@ -7749,7 +7725,7 @@
       "opponent": "GB",
       "position": "TE",
       "per_game": 0.542,
-      "chance": 0.4310271742036651,
+      "chance": 0.4306835316847869,
       "weight": 0.556,
       "opp_allowed": 2.58,
       "league_allowed": 2.48,
@@ -7827,7 +7803,7 @@
       "opponent": "GB",
       "position": "WR",
       "per_game": 0.346,
-      "chance": 0.30239005931819984,
+      "chance": 0.30212104313096044,
       "weight": 0.556,
       "opp_allowed": 2.58,
       "league_allowed": 2.48,
@@ -7905,7 +7881,7 @@
       "opponent": "WAS",
       "position": "RB",
       "per_game": 1.0,
-      "chance": 0.7276641314166641,
+      "chance": 0.7272845931396994,
       "weight": 0.556,
       "opp_allowed": 3.22,
       "league_allowed": 2.48,
@@ -7983,7 +7959,7 @@
       "opponent": "WAS",
       "position": "TE",
       "per_game": 0.727,
-      "chance": 0.6117002062603395,
+      "chance": 0.6113067171614237,
       "weight": 0.556,
       "opp_allowed": 3.22,
       "league_allowed": 2.48,
@@ -8055,91 +8031,13 @@
       "scored": null
     },
     {
-      "player_id": "00-0031408",
-      "name": "Mike Evans",
-      "team": "SF",
-      "opponent": "WAS",
-      "position": "WR",
-      "per_game": 0.5,
-      "chance": 0.47814190761919195,
-      "weight": 0.556,
-      "opp_allowed": 3.22,
-      "league_allowed": 2.48,
-      "week": 6,
-      "game_id": "2026_06_WAS_SF",
-      "commence_time": "2026-10-19T20:15:00-04:00",
-      "recent": [
-        {
-          "season": 2025,
-          "week": 7,
-          "opponent": "DET",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 15,
-          "opponent": "ATL",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 16,
-          "opponent": "CAR",
-          "value": 1.0
-        },
-        {
-          "season": 2025,
-          "week": 17,
-          "opponent": "MIA",
-          "value": 1.0
-        },
-        {
-          "season": 2025,
-          "week": 18,
-          "opponent": "CAR",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 1,
-          "opponent": "LA",
-          "value": 1.0
-        },
-        {
-          "season": 2026,
-          "week": 2,
-          "opponent": "MIA",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 3,
-          "opponent": "ARI",
-          "value": 1.0
-        },
-        {
-          "season": 2026,
-          "week": 4,
-          "opponent": "DEN",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 5,
-          "opponent": "SEA",
-          "value": 1.0
-        }
-      ],
-      "scored": null
-    },
-    {
       "player_id": "00-0035719",
       "name": "Deebo Samuel Sr.",
       "team": "SF",
       "opponent": "WAS",
       "position": "WR",
       "per_game": 0.5,
-      "chance": 0.47814190761919195,
+      "chance": 0.47777839295917623,
       "weight": 0.556,
       "opp_allowed": 3.22,
       "league_allowed": 2.48,
@@ -8211,13 +8109,91 @@
       "scored": null
     },
     {
+      "player_id": "00-0037112",
+      "name": "Jake Tonges",
+      "team": "SF",
+      "opponent": "WAS",
+      "position": "TE",
+      "per_game": 0.5,
+      "chance": 0.47777839295917623,
+      "weight": 0.0,
+      "opp_allowed": 3.22,
+      "league_allowed": 2.48,
+      "week": 6,
+      "game_id": "2026_06_WAS_SF",
+      "commence_time": "2026-10-19T20:15:00-04:00",
+      "recent": [
+        {
+          "season": 2025,
+          "week": 1,
+          "opponent": "SEA",
+          "value": 1.0
+        },
+        {
+          "season": 2025,
+          "week": 2,
+          "opponent": "NO",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 3,
+          "opponent": "ARI",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 4,
+          "opponent": "JAX",
+          "value": 1.0
+        },
+        {
+          "season": 2025,
+          "week": 5,
+          "opponent": "LA",
+          "value": 1.0
+        },
+        {
+          "season": 2025,
+          "week": 6,
+          "opponent": "TB",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 8,
+          "opponent": "HOU",
+          "value": 1.0
+        },
+        {
+          "season": 2025,
+          "week": 11,
+          "opponent": "ARI",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 16,
+          "opponent": "IND",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 17,
+          "opponent": "CHI",
+          "value": 1.0
+        }
+      ],
+      "scored": null
+    },
+    {
       "player_id": "00-0031588",
       "name": "Stefon Diggs",
       "team": "WAS",
       "opponent": "SF",
       "position": "WR",
       "per_game": 0.493,
-      "chance": 0.32641126752311644,
+      "chance": 0.3261262329562533,
       "weight": 0.5,
       "opp_allowed": 1.99,
       "league_allowed": 2.48,
@@ -8295,7 +8271,7 @@
       "opponent": "SF",
       "position": "QB",
       "per_game": 0.449,
-      "chance": 0.302401352493914,
+      "chance": 0.3021323285655281,
       "weight": 0.429,
       "opp_allowed": 1.99,
       "league_allowed": 2.48,
@@ -8373,7 +8349,7 @@
       "opponent": "SF",
       "position": "RB",
       "per_game": 0.431,
-      "chance": 0.2924799648514669,
+      "chance": 0.29221781679451186,
       "weight": 0.556,
       "opp_allowed": 1.99,
       "league_allowed": 2.48,
@@ -8451,7 +8427,7 @@
       "opponent": "SF",
       "position": "WR",
       "per_game": 0.312,
-      "chance": 0.22170191116835947,
+      "chance": 0.22149301560649814,
       "weight": 0.5,
       "opp_allowed": 1.99,
       "league_allowed": 2.48,
@@ -8524,9 +8500,9 @@
     }
   ],
   "summary": {
-    "graded": 586,
-    "expected": 37.2,
-    "actual": 39.9,
+    "graded": 592,
+    "expected": 37.1,
+    "actual": 39.7,
     "buckets": [
       {
         "label": "0-10%",
@@ -8542,15 +8518,15 @@
       },
       {
         "label": "20-30%",
-        "n": 162,
+        "n": 164,
         "expected": 24.7,
-        "actual": 35.8
+        "actual": 35.4
       },
       {
         "label": "30-45%",
-        "n": 245,
+        "n": 249,
         "expected": 36.5,
-        "actual": 36.3
+        "actual": 36.1
       },
       {
         "label": "45-100%",
