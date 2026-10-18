@@ -1,81 +1,81 @@
 {
-  "date": "2026-10-17",
-  "date_label": "Saturday, October 17, 2026",
+  "date": "2026-10-18",
+  "date_label": "Sunday, October 18, 2026",
   "rows": [
     {
-      "projection": 2.78,
+      "projection": 2.65,
       "sp_used": true,
-      "league_f7": 3.478,
+      "league_f7": 3.479,
       "offence": 0.981,
-      "sp_index": 0.761,
+      "sp_index": 0.711,
       "pen_index": 0.963,
       "park": 1.02,
-      "sp_innings": 5.71,
-      "game_pk": 849816,
+      "sp_innings": 5.64,
+      "game_pk": 849817,
       "team_id": 114,
       "team": "CLE",
       "opponent": "TB",
       "is_home": true,
-      "pitcher": "Nick Martinez",
+      "pitcher": "Drew Rasmussen",
       "pitcher_hand": "",
-      "pitcher_era": 3.1,
+      "pitcher_era": 2.67,
       "venue": "Progressive Field",
-      "commence_time": "2026-10-18T00:08:00Z",
+      "commence_time": "2026-10-18T21:08:00Z",
       "actual": null,
       "probs": {
-        "2.5": 0.4605,
-        "3.5": 0.3084,
-        "4.5": 0.1985
+        "2.5": 0.4374,
+        "3.5": 0.2877,
+        "4.5": 0.1819
       },
-      "shape": 2.765
+      "shape": 2.681
     },
     {
-      "projection": 3.53,
+      "projection": 2.64,
       "sp_used": true,
-      "league_f7": 3.478,
-      "offence": 1.001,
-      "sp_index": 1.024,
+      "league_f7": 3.479,
+      "offence": 1.005,
+      "sp_index": 0.701,
       "pen_index": 0.906,
       "park": 1.02,
-      "sp_innings": 5.2,
-      "game_pk": 849816,
+      "sp_innings": 5.72,
+      "game_pk": 849817,
       "team_id": 139,
       "team": "TB",
       "opponent": "CLE",
       "is_home": false,
-      "pitcher": "Shawn Armstrong",
+      "pitcher": "Parker Messick",
       "pitcher_hand": "",
-      "pitcher_era": 4.58,
+      "pitcher_era": 2.56,
       "venue": "Progressive Field",
-      "commence_time": "2026-10-18T00:08:00Z",
+      "commence_time": "2026-10-18T21:08:00Z",
       "actual": null,
       "probs": {
-        "2.5": 0.5695,
-        "3.5": 0.4196,
-        "4.5": 0.2984
+        "2.5": 0.4358,
+        "3.5": 0.2861,
+        "4.5": 0.1806
       },
-      "shape": 2.765
+      "shape": 2.681
     }
   ],
   "summary": {
     "published": 280,
-    "graded": 274,
-    "mae": 1.986,
-    "baseline_mae": 2.043,
+    "graded": 276,
+    "mae": 1.978,
+    "baseline_mae": 2.036,
     "bands": [
       {
         "lo": 0.0,
         "hi": 3.0,
-        "n": 78,
+        "n": 79,
         "projected": 2.74,
-        "actual": 2.74
+        "actual": 2.75
       },
       {
         "lo": 3.0,
         "hi": 3.75,
-        "n": 144,
+        "n": 145,
         "projected": 3.36,
-        "actual": 3.4
+        "actual": 3.41
       },
       {
         "lo": 3.75,
@@ -95,21 +95,21 @@
     "over_rate": [
       {
         "line": 2.5,
-        "n": 274,
+        "n": 276,
         "said": 0.541,
-        "were": 0.54
+        "were": 0.543
       },
       {
         "line": 3.5,
-        "n": 274,
+        "n": 276,
         "said": 0.391,
-        "were": 0.398
+        "were": 0.399
       },
       {
         "line": 4.5,
-        "n": 274,
+        "n": 276,
         "said": 0.274,
-        "were": 0.248
+        "were": 0.25
       }
     ],
     "baseline_in_sample": false,
