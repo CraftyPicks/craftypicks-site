@@ -132,6 +132,37 @@ def _position_context(position: str, opponent: str, by_pos: dict,
     }
 
 
+def current_clubs(rates: dict[str, dict], roster: dict[str, dict]) -> dict:
+    """Re-stamp every rated player with the club he plays for TONIGHT.
+
+    The rate stays exactly as it was. A trade moves the man, not his
+    scoring, and his twenty points a game last season is still the best
+    estimate of his twenty points a game this one.
+
+    What changes is the club, and it has to: the board buckets players by
+    team to decide who is in which game, so a stale club does not merely
+    mislabel a card, it files the man into a fixture he is not playing in.
+    On 2026-10-21 that was 109 of 429 rated players, 15 of them on the
+    points board, including Giannis Antetokounmpo listed for Milwaukee
+    against Washington.
+
+    A player with no roster entry is DROPPED. He has either left the league
+    or is not on an active NBA roster, and either way he is not playing
+    tonight -- but his old club might be, and keeping him would put a
+    retired man on a live card.
+    """
+    out = {}
+    for pid, row in rates.items():
+        entry = roster.get(pid)
+        if not entry:
+            continue
+        out[pid] = {**row, "team": entry["team"],
+                    # The roster's position is current too, and it is the
+                    # one the position-context rows are looked up by.
+                    "position": entry.get("position") or row.get("position", "")}
+    return out
+
+
 def build(season: int, field: str, date_str: str, verbose: bool = True,
           top_n: int = TOP_N) -> list[dict]:
     """One row per player worth showing in tonight's games."""
@@ -165,6 +196,28 @@ def build(season: int, field: str, date_str: str, verbose: bool = True,
     src = current or prior
     by_pos = nba_data.defence_by_position(src, field)
     pos_league = nba_data.league_by_position(by_pos)
+
+    # Tonight's clubs, from the roster rather than from last season's box
+    # scores. Without this the board is built on where everybody USED to
+    # play, which on opening night is where everybody played last season.
+    roster = nba_data.rosters(season)
+    if not roster:
+        # Refusing, not falling back. The fallback is last season's clubs,
+        # which is the bug this exists to stop, and it is invisible: every
+        # card still renders, with plausible names, in the wrong games.
+        print(f"   !! nba {field}: no roster for {season}; refusing to "
+              f"publish rather than use last season's clubs", file=sys.stderr)
+        return []
+    before = len(rates)
+    # Counted BEFORE the re-stamp, because afterwards there is nothing left
+    # to compare against -- the old club is gone.
+    moved = sum(1 for pid, r in rates.items()
+                if pid in roster and roster[pid]["team"] != r["team"])
+    rates = current_clubs(rates, roster)
+    if verbose:
+        print(f"   nba {field}: {len(rates)} rated of {before} "
+              f"({before - len(rates)} not on an active roster, "
+              f"{moved} at a new club since last season)")
 
     by_team: dict[str, list] = {}
     for pid, row in rates.items():
@@ -365,6 +418,32 @@ def _self_test() -> None:
                "projection": 20.0, "actual": None}]
     assert grade(absent, box, "points") == 0
     assert absent[0]["actual"] is None
+
+    # ---- a traded player is listed for his CURRENT club, or not at all.
+    # The rate is still last season's -- that is his production and it moved
+    # with him -- but the club on the card has to be tonight's, or he is
+    # slotted into the wrong game entirely.
+    traded = {
+        "1": {"name": "Moved Man", "team": "MIL", "position": "F",
+              "per_game": 30.0, "weight": 0.0, "games": 0, "prior_games": 70},
+        "2": {"name": "Stayed Put", "team": "WSH", "position": "G",
+              "per_game": 20.0, "weight": 0.0, "games": 0, "prior_games": 70},
+        "3": {"name": "Retired Man", "team": "MIL", "position": "C",
+              "per_game": 25.0, "weight": 0.0, "games": 0, "prior_games": 70},
+    }
+    roster = {"1": {"team": "MIA", "position": "F", "name": "Moved Man"},
+              "2": {"team": "WSH", "position": "G", "name": "Stayed Put"}}
+    fixed = current_clubs(traded, roster)
+    assert fixed["1"]["team"] == "MIA", fixed["1"]
+    assert fixed["2"]["team"] == "WSH", fixed["2"]
+    # His rate is untouched -- the trade moved the man, not his scoring.
+    assert fixed["1"]["per_game"] == 30.0 and fixed["1"]["prior_games"] == 70
+    # On no roster is not on the board. A man who left the league would
+    # otherwise keep appearing for whichever club he last played for.
+    assert "3" not in fixed, fixed
+    # An empty roster drops everybody rather than silently keeping last
+    # season's clubs, which is what build() checks before publishing.
+    assert current_clubs(traded, {}) == {}
 
     print("nba_stats self-test: all invariants hold")
 

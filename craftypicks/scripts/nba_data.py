@@ -47,6 +47,10 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 RELEASE = ("https://github.com/sportsdataverse/sportsdataverse-data/"
            "releases/download")
 PLAYER_BOX = RELEASE + "/espn_nba_player_boxscores/player_box_{season}.csv"
+# Who is on which club RIGHT NOW. A box score can only say who a man played
+# for on the night he played, which is a different question and the wrong
+# one for a board about tonight.
+ROSTERS = RELEASE + "/espn_nba_rosters/rosters_{season}.csv"
 
 # The three stats the board projects, and the column each lives in.
 FIELDS = {"points": "points", "assists": "assists", "rebounds": "rebounds"}
@@ -177,6 +181,53 @@ def vs_opponent(rows, player_id: str, opponent: str, field: str) -> dict | None:
     return {"games": len(got),
             "per_game": round(sum(got) / len(got), 1),
             "best": max(got), "worst": min(got)}
+
+
+def parse_rosters(text) -> dict[str, dict]:
+    """{player id: current club, position and name}, from the roster file.
+
+    Pure, so the fetch next door can be tested without it.
+
+    Three kinds of row are refused rather than guessed at: one with no club,
+    one with no athlete id, and one whose status is not Active. None of the
+    three can answer "where does this man play tonight", and a board would
+    rather be short a name than carry a confident wrong one.
+    """
+    if not text:
+        return {}
+    out: dict[str, dict] = {}
+    for r in csv.DictReader(io.StringIO(text)):
+        pid = (r.get("athlete_id") or "").strip()
+        team = (r.get("team_abbreviation") or "").strip()
+        status = (r.get("status_name") or "").strip()
+        if not pid or not team or status != "Active":
+            continue
+        out[pid] = {"team": team,
+                    "position": (r.get("position_abbreviation") or "").strip(),
+                    "name": (r.get("full_name") or "").strip()}
+    return out
+
+
+def rosters(season: int, timeout: int = 120) -> dict[str, dict]:
+    """Every club's current roster, in one request. Cached for the run."""
+    key = ("roster", season)
+    if key in _cache:
+        return _cache[key]
+    url = ROSTERS.format(season=season)
+    req = urllib.request.Request(url, headers={"User-Agent": "craftypicks/1.0"})
+    try:
+        with urllib.request.urlopen(req, timeout=timeout) as resp:
+            text = resp.read().decode("utf-8", "replace")
+    except (urllib.error.HTTPError, urllib.error.URLError, TimeoutError) as e:
+        # Said out loud. A missing roster is not a quiet degradation here --
+        # see nba_stats.build, which refuses to publish rather than fall back
+        # to last season's clubs.
+        print(f"!! nba: {url} failed ({type(e).__name__}: {e})",
+              file=sys.stderr)
+        _cache[key] = {}
+        return {}
+    _cache[key] = parse_rosters(text)
+    return _cache[key]
 
 
 def player_rates(rows, field: str, min_games: int = 5) -> dict[str, dict]:
@@ -401,6 +452,31 @@ def _self_test() -> None:
     assert parse([dict(raw[0], athlete_id="")]) == []
     assert parse([dict(raw[0], points="")]) == []
     assert parse([]) == [] and parse(None) == []
+
+    # ---- the roster. A box score says which club a man played for THEN.
+    # On opening night every rate on the board is last season's, so every
+    # club on it is last season's too: on 2026-10-21 that put 109 of 429
+    # rated players at the wrong club, 15 of them on the points board alone
+    # -- Giannis listed for Milwaukee against Washington while his actual
+    # club played somewhere else entirely.
+    csv_text = (
+        "season,team_abbreviation,athlete_id,full_name,position_abbreviation,"
+        "status_name\n"
+        "2027,MIA,1,Giannis Antetokounmpo,F,Active\n"
+        "2027,LAL,2,A Guard,G,Active\n"
+        "2027,,3,No Club,G,Active\n"
+        "2027,PHI,,Missing Id,C,Active\n"
+        "2027,BOS,5,Two Way,G,Inactive\n"
+    )
+    roster = parse_rosters(csv_text)
+    assert roster["1"] == {"team": "MIA", "position": "F",
+                           "name": "Giannis Antetokounmpo"}, roster
+    assert roster["2"]["team"] == "LAL"
+    # A row with no club, no id, or a status that is not Active cannot say
+    # where a man plays tonight, so it is not allowed to.
+    assert "3" not in roster and "5" not in roster, roster
+    assert len(roster) == 2, roster
+    assert parse_rosters("") == {} and parse_rosters(None) == {}
 
     print("nba_data self-test: all invariants hold")
 
