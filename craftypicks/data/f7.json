@@ -1,66 +1,66 @@
 {
-  "date": "2026-10-19",
-  "date_label": "Monday, October 19, 2026",
+  "date": "2026-10-23",
+  "date_label": "Friday, October 23, 2026",
   "rows": [
     {
-      "projection": 3.52,
+      "projection": 2.92,
       "sp_used": true,
       "league_f7": 3.478,
-      "offence": 0.981,
-      "sp_index": 1.048,
+      "offence": 1.046,
+      "sp_index": 0.761,
       "pen_index": 0.963,
-      "park": 1.003,
-      "sp_innings": 5.27,
-      "game_pk": 849815,
-      "team_id": 114,
-      "team": "CLE",
+      "park": 1.004,
+      "sp_innings": 5.71,
+      "game_pk": 849805,
+      "team_id": 158,
+      "team": "MIL",
       "opponent": "TB",
-      "is_home": false,
-      "pitcher": "Freddy Peralta",
+      "is_home": true,
+      "pitcher": "Nick Martinez",
       "pitcher_hand": "",
-      "pitcher_era": 4.42,
-      "venue": "Tropicana Field",
-      "commence_time": "2026-10-20T00:08:00Z",
+      "pitcher_era": 3.1,
+      "venue": "American Family Field",
+      "commence_time": "2026-10-24T00:00:00Z",
       "actual": null,
       "probs": {
-        "2.5": 0.5658,
-        "3.5": 0.4171,
-        "4.5": 0.2972
+        "2.5": 0.4824,
+        "3.5": 0.3302,
+        "4.5": 0.2175
       },
-      "shape": 2.681
+      "shape": 2.736
     },
     {
-      "projection": 3.48,
+      "projection": 2.32,
       "sp_used": true,
       "league_f7": 3.478,
-      "offence": 1.004,
-      "sp_index": 1.024,
-      "pen_index": 0.906,
-      "park": 1.003,
-      "sp_innings": 5.2,
-      "game_pk": 849815,
+      "offence": 1.005,
+      "sp_index": 0.618,
+      "pen_index": 0.851,
+      "park": 1.004,
+      "sp_innings": 5.72,
+      "game_pk": 849805,
       "team_id": 139,
       "team": "TB",
-      "opponent": "CLE",
-      "is_home": true,
-      "pitcher": "Shawn Armstrong",
+      "opponent": "MIL",
+      "is_home": false,
+      "pitcher": "Jacob Misiorowski",
       "pitcher_hand": "",
-      "pitcher_era": 4.58,
-      "venue": "Tropicana Field",
-      "commence_time": "2026-10-20T00:08:00Z",
+      "pitcher_era": 1.8,
+      "venue": "American Family Field",
+      "commence_time": "2026-10-24T00:00:00Z",
       "actual": null,
       "probs": {
-        "2.5": 0.5607,
-        "3.5": 0.4116,
-        "4.5": 0.292
+        "2.5": 0.3792,
+        "3.5": 0.2339,
+        "4.5": 0.1383
       },
-      "shape": 2.681
+      "shape": 2.736
     }
   ],
   "summary": {
-    "published": 282,
-    "graded": 278,
-    "mae": 1.972,
+    "published": 284,
+    "graded": 280,
+    "mae": 1.973,
     "baseline_mae": 2.031,
     "bands": [
       {
@@ -73,8 +73,8 @@
       {
         "lo": 3.0,
         "hi": 3.75,
-        "n": 146,
-        "projected": 3.36,
+        "n": 148,
+        "projected": 3.37,
         "actual": 3.4
       },
       {
@@ -95,21 +95,21 @@
     "over_rate": [
       {
         "line": 2.5,
-        "n": 278,
+        "n": 280,
         "said": 0.541,
         "were": 0.543
       },
       {
         "line": 3.5,
-        "n": 278,
+        "n": 280,
         "said": 0.391,
         "were": 0.396
       },
       {
         "line": 4.5,
-        "n": 278,
+        "n": 280,
         "said": 0.274,
-        "were": 0.248
+        "were": 0.25
       }
     ],
     "baseline_in_sample": false,
