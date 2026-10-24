@@ -1,74 +1,74 @@
 {
-  "date": "2026-10-23",
-  "date_label": "Friday, October 23, 2026",
+  "date": "2026-10-24",
+  "date_label": "Saturday, October 24, 2026",
   "rows": [
     {
-      "projection": 2.92,
+      "projection": 2.77,
       "sp_used": true,
-      "league_f7": 3.478,
+      "league_f7": 3.477,
       "offence": 1.046,
-      "sp_index": 0.761,
+      "sp_index": 0.711,
       "pen_index": 0.963,
       "park": 1.004,
-      "sp_innings": 5.71,
-      "game_pk": 849805,
+      "sp_innings": 5.64,
+      "game_pk": 849802,
       "team_id": 158,
       "team": "MIL",
       "opponent": "TB",
       "is_home": true,
-      "pitcher": "Nick Martinez",
+      "pitcher": "Drew Rasmussen",
       "pitcher_hand": "",
-      "pitcher_era": 3.1,
+      "pitcher_era": 2.67,
       "venue": "American Family Field",
-      "commence_time": "2026-10-24T00:00:00Z",
+      "commence_time": "2026-10-25T00:00:00Z",
       "actual": null,
       "probs": {
-        "2.5": 0.4824,
-        "3.5": 0.3302,
-        "4.5": 0.2175
+        "2.5": 0.4575,
+        "3.5": 0.3067,
+        "4.5": 0.1979
       },
-      "shape": 2.736
+      "shape": 2.684
     },
     {
-      "projection": 2.32,
+      "projection": 2.64,
       "sp_used": true,
-      "league_f7": 3.478,
-      "offence": 1.005,
-      "sp_index": 0.618,
+      "league_f7": 3.477,
+      "offence": 0.999,
+      "sp_index": 0.729,
       "pen_index": 0.851,
       "park": 1.004,
-      "sp_innings": 5.72,
-      "game_pk": 849805,
+      "sp_innings": 5.4,
+      "game_pk": 849802,
       "team_id": 139,
       "team": "TB",
       "opponent": "MIL",
       "is_home": false,
-      "pitcher": "Jacob Misiorowski",
+      "pitcher": "Logan Henderson",
       "pitcher_hand": "",
-      "pitcher_era": 1.8,
+      "pitcher_era": 2.47,
       "venue": "American Family Field",
-      "commence_time": "2026-10-24T00:00:00Z",
+      "commence_time": "2026-10-25T00:00:00Z",
       "actual": null,
       "probs": {
-        "2.5": 0.3792,
-        "3.5": 0.2339,
-        "4.5": 0.1383
+        "2.5": 0.4358,
+        "3.5": 0.2861,
+        "4.5": 0.1806
       },
-      "shape": 2.736
+      "shape": 2.684
     }
   ],
   "summary": {
-    "published": 284,
-    "graded": 280,
-    "mae": 1.973,
-    "baseline_mae": 2.031,
+    "published": 286,
+    "graded": 282,
+    "mae": 1.964,
+    "baseline_mae": 2.027,
     "bands": [
       {
         "lo": 0.0,
         "hi": 3.0,
-        "n": 80,
+        "n": 82,
         "projected": 2.74,
-        "actual": 2.73
+        "actual": 2.71
       },
       {
         "lo": 3.0,
@@ -95,21 +95,21 @@
     "over_rate": [
       {
         "line": 2.5,
-        "n": 280,
-        "said": 0.541,
+        "n": 282,
+        "said": 0.54,
         "were": 0.543
       },
       {
         "line": 3.5,
-        "n": 280,
-        "said": 0.391,
-        "were": 0.396
+        "n": 282,
+        "said": 0.39,
+        "were": 0.394
       },
       {
         "line": 4.5,
-        "n": 280,
-        "said": 0.274,
-        "were": 0.25
+        "n": 282,
+        "said": 0.273,
+        "were": 0.248
       }
     ],
     "baseline_in_sample": false,
