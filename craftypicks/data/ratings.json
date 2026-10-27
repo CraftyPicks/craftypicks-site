@@ -83455,7 +83455,7 @@
         "source": "gameLog"
       },
       "away_vs_opp": null,
-      "result": null,
+      "result": "away",
       "home_elo": 1543.8,
       "away_elo": 1561.7,
       "elo_prob": 0.5087,
@@ -83467,6 +83467,227 @@
       "best_home_price": -110.0,
       "best_away_price": 103.0,
       "disagreement": -3.4,
+      "suspect": false,
+      "final": "10–1",
+      "graded_at": "2026-10-27T18:39:18+00:00"
+    },
+    {
+      "event_id": "e03ea0f98bdd5fa277a34fbfe1a47efa",
+      "date": "10/27/2026",
+      "commence_time": "2026-10-28T00:00:00Z",
+      "home": "Tampa Bay Rays",
+      "away": "Milwaukee Brewers",
+      "home_id": 139,
+      "away_id": 158,
+      "home_starter": "Griffin Jax",
+      "away_starter": null,
+      "home_starter_era": 3.53,
+      "away_starter_era": null,
+      "home_starter_wl": [
+        8,
+        10
+      ],
+      "away_starter_wl": null,
+      "home_sp_innings": 112.33333333333333,
+      "away_sp_innings": null,
+      "home_sp": {
+        "w": 8,
+        "l": 10,
+        "era": 3.53,
+        "whip": 1.18,
+        "innings": 112.33333333333333,
+        "h": 97,
+        "k": 116,
+        "bb": 35,
+        "hr": 15
+      },
+      "away_sp": {
+        "w": null,
+        "l": null,
+        "era": null,
+        "whip": null,
+        "innings": null,
+        "h": null,
+        "k": null,
+        "bb": null,
+        "hr": null
+      },
+      "home_bats": null,
+      "away_bats": [
+        {
+          "id": 683734,
+          "name": "Andrew Vaughn",
+          "position": "1B",
+          "pa": 19,
+          "ab": 14,
+          "h": 2,
+          "hr": 0,
+          "rbi": 1,
+          "k": 2,
+          "avg": 0.14285714285714285
+        },
+        {
+          "id": 592885,
+          "name": "Christian Yelich",
+          "position": "DH",
+          "pa": 7,
+          "ab": 6,
+          "h": 2,
+          "hr": 0,
+          "rbi": 2,
+          "k": 1,
+          "avg": 0.3333333333333333
+        },
+        {
+          "id": 668930,
+          "name": "Brice Turang",
+          "position": "2B",
+          "pa": 4,
+          "ab": 3,
+          "h": 1,
+          "hr": 0,
+          "rbi": 0,
+          "k": 0,
+          "avg": 0.3333333333333333
+        },
+        {
+          "id": 641343,
+          "name": "Jake Bauers",
+          "position": "1B",
+          "pa": 4,
+          "ab": 3,
+          "h": 1,
+          "hr": 0,
+          "rbi": 0,
+          "k": 0,
+          "avg": 0.3333333333333333
+        },
+        {
+          "id": 661388,
+          "name": "William Contreras",
+          "position": "C",
+          "pa": 4,
+          "ab": 4,
+          "h": 2,
+          "hr": 0,
+          "rbi": 0,
+          "k": 2,
+          "avg": 0.5
+        },
+        {
+          "id": 666152,
+          "name": "David Hamilton",
+          "position": "3B",
+          "pa": 2,
+          "ab": 2,
+          "h": 1,
+          "hr": 0,
+          "rbi": 0,
+          "k": 0,
+          "avg": 0.5
+        },
+        {
+          "id": 669003,
+          "name": "Garrett Mitchell",
+          "position": "CF",
+          "pa": 2,
+          "ab": 2,
+          "h": 0,
+          "hr": 0,
+          "rbi": 0,
+          "k": 2,
+          "avg": 0.0
+        },
+        {
+          "id": 687401,
+          "name": "Joey Ortiz",
+          "position": "SS",
+          "pa": 2,
+          "ab": 2,
+          "h": 1,
+          "hr": 0,
+          "rbi": 0,
+          "k": 0,
+          "avg": 0.5
+        },
+        {
+          "id": 686217,
+          "name": "Sal Frelick",
+          "position": "RF",
+          "pa": 2,
+          "ab": 1,
+          "h": 1,
+          "hr": 0,
+          "rbi": 0,
+          "k": 0,
+          "avg": 1.0
+        }
+      ],
+      "home_hand": "R",
+      "away_hand": "",
+      "venue": "Tropicana Field",
+      "home_record": {
+        "w": 98,
+        "l": 64,
+        "hw": 55,
+        "hl": 26,
+        "aw": 43,
+        "al": 38
+      },
+      "away_record": {
+        "w": 103,
+        "l": 59,
+        "hw": 55,
+        "hl": 26,
+        "aw": 48,
+        "al": 33
+      },
+      "home_form": null,
+      "away_form": null,
+      "series": [
+        {
+          "date": "2026-03-30",
+          "away": "Tampa Bay Rays",
+          "away_runs": 3,
+          "home": "Milwaukee Brewers",
+          "home_runs": 2
+        },
+        {
+          "date": "2026-03-31",
+          "away": "Tampa Bay Rays",
+          "away_runs": 2,
+          "home": "Milwaukee Brewers",
+          "home_runs": 6
+        },
+        {
+          "date": "2026-04-01",
+          "away": "Tampa Bay Rays",
+          "away_runs": 2,
+          "home": "Milwaukee Brewers",
+          "home_runs": 8
+        }
+      ],
+      "home_vs_opp": {
+        "starts": 0,
+        "innings": 2.3,
+        "era": 11.57,
+        "strikeouts": 3,
+        "span": "2025–2026",
+        "source": "gameLog"
+      },
+      "away_vs_opp": null,
+      "result": null,
+      "home_elo": 1543.8,
+      "away_elo": 1561.7,
+      "elo_prob": 0.5087,
+      "starter_adj": 0.0,
+      "home_win_prob": 0.5087,
+      "away_win_prob": 0.4913,
+      "market_home_prob": 0.469,
+      "books": 9,
+      "best_home_price": 106.0,
+      "best_away_price": -115.0,
+      "disagreement": 4.0,
       "suspect": false
     }
   ]

@@ -8025,13 +8025,14 @@
       "pitcher_era": 4.42,
       "venue": "Tropicana Field",
       "commence_time": "2026-10-27T00:00:00Z",
-      "actual": null,
+      "actual": 10,
       "probs": {
         "2.5": 0.5955,
         "3.5": 0.4485,
         "4.5": 0.3267
       },
-      "shape": 2.735
+      "shape": 2.735,
+      "miss": 6.25
     },
     {
       "projection": 3.17,
@@ -8052,13 +8053,41 @@
       "pitcher_era": 3.87,
       "venue": "Tropicana Field",
       "commence_time": "2026-10-27T00:00:00Z",
-      "actual": null,
+      "actual": 0,
       "probs": {
         "2.5": 0.5199,
         "3.5": 0.368,
         "4.5": 0.251
       },
-      "shape": 2.735
+      "shape": 2.735,
+      "miss": -3.17
+    },
+    {
+      "projection": 3.64,
+      "sp_used": true,
+      "league_f7": 3.478,
+      "offence": 1.062,
+      "sp_index": 0.991,
+      "pen_index": 0.963,
+      "park": 1.003,
+      "sp_innings": 4.95,
+      "game_pk": 849803,
+      "team_id": 158,
+      "team": "MIL",
+      "opponent": "TB",
+      "is_home": false,
+      "pitcher": "Griffin Jax",
+      "pitcher_hand": "",
+      "pitcher_era": 3.53,
+      "venue": "Tropicana Field",
+      "commence_time": "2026-10-28T00:00:00Z",
+      "actual": null,
+      "probs": {
+        "2.5": 0.5807,
+        "3.5": 0.4332,
+        "4.5": 0.3126
+      },
+      "shape": 2.68
     }
   ]
 }
