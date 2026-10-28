@@ -8081,13 +8081,14 @@
       "pitcher_era": 3.53,
       "venue": "Tropicana Field",
       "commence_time": "2026-10-28T00:00:00Z",
-      "actual": null,
+      "actual": 2,
       "probs": {
         "2.5": 0.5807,
         "3.5": 0.4332,
         "4.5": 0.3126
       },
-      "shape": 2.68
+      "shape": 2.68,
+      "miss": -1.64
     },
     {
       "projection": 3.45,
@@ -8108,13 +8109,41 @@
       "pitcher_era": 4.7,
       "venue": "Tropicana Field",
       "commence_time": "2026-10-28T00:00:00Z",
-      "actual": null,
+      "actual": 2,
       "probs": {
         "2.5": 0.5569,
         "3.5": 0.4075,
         "4.5": 0.2881
       },
-      "shape": 2.686
+      "shape": 2.686,
+      "miss": -1.45
+    },
+    {
+      "projection": 2.3,
+      "sp_used": true,
+      "league_f7": 3.478,
+      "offence": 1.0,
+      "sp_index": 0.618,
+      "pen_index": 0.851,
+      "park": 1.003,
+      "sp_innings": 5.72,
+      "game_pk": 849799,
+      "team_id": 139,
+      "team": "TB",
+      "opponent": "MIL",
+      "is_home": true,
+      "pitcher": "Jacob Misiorowski",
+      "pitcher_hand": "",
+      "pitcher_era": 1.8,
+      "venue": "Tropicana Field",
+      "commence_time": "2026-10-29T00:00:00Z",
+      "actual": null,
+      "probs": {
+        "2.5": 0.3749,
+        "3.5": 0.2309,
+        "4.5": 0.1364
+      },
+      "shape": 2.68
     }
   ]
 }

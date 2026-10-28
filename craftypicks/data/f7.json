@@ -1,67 +1,40 @@
 {
-  "date": "2026-10-27",
-  "date_label": "Tuesday, October 27, 2026",
+  "date": "2026-10-28",
+  "date_label": "Wednesday, October 28, 2026",
   "rows": [
     {
-      "projection": 3.64,
-      "sp_used": true,
-      "league_f7": 3.478,
-      "offence": 1.062,
-      "sp_index": 0.991,
-      "pen_index": 0.963,
-      "park": 1.003,
-      "sp_innings": 4.95,
-      "game_pk": 849803,
-      "team_id": 158,
-      "team": "MIL",
-      "opponent": "TB",
-      "is_home": false,
-      "pitcher": "Griffin Jax",
-      "pitcher_hand": "",
-      "pitcher_era": 3.53,
-      "venue": "Tropicana Field",
-      "commence_time": "2026-10-28T00:00:00Z",
-      "actual": null,
-      "probs": {
-        "2.5": 0.5808,
-        "3.5": 0.4333,
-        "4.5": 0.3126
-      },
-      "shape": 2.686
-    },
-    {
-      "projection": 3.45,
+      "projection": 2.3,
       "sp_used": true,
       "league_f7": 3.478,
       "offence": 1.0,
-      "sp_index": 1.052,
+      "sp_index": 0.618,
       "pen_index": 0.851,
       "park": 1.003,
-      "sp_innings": 4.78,
-      "game_pk": 849803,
+      "sp_innings": 5.72,
+      "game_pk": 849799,
       "team_id": 139,
       "team": "TB",
       "opponent": "MIL",
       "is_home": true,
-      "pitcher": "Dustin May",
+      "pitcher": "Jacob Misiorowski",
       "pitcher_hand": "",
-      "pitcher_era": 4.7,
+      "pitcher_era": 1.8,
       "venue": "Tropicana Field",
-      "commence_time": "2026-10-28T00:00:00Z",
+      "commence_time": "2026-10-29T00:00:00Z",
       "actual": null,
       "probs": {
-        "2.5": 0.5569,
-        "3.5": 0.4075,
-        "4.5": 0.2881
+        "2.5": 0.3749,
+        "3.5": 0.2309,
+        "4.5": 0.1364
       },
-      "shape": 2.686
+      "shape": 2.68
     }
   ],
   "summary": {
-    "published": 290,
-    "graded": 286,
-    "mae": 1.982,
-    "baseline_mae": 2.041,
+    "published": 291,
+    "graded": 288,
+    "mae": 1.979,
+    "baseline_mae": 2.037,
     "bands": [
       {
         "lo": 0.0,
@@ -73,9 +46,9 @@
       {
         "lo": 3.0,
         "hi": 3.75,
-        "n": 149,
+        "n": 151,
         "projected": 3.37,
-        "actual": 3.38
+        "actual": 3.36
       },
       {
         "lo": 3.75,
@@ -95,21 +68,21 @@
     "over_rate": [
       {
         "line": 2.5,
-        "n": 286,
+        "n": 288,
         "said": 0.54,
-        "were": 0.545
+        "were": 0.542
       },
       {
         "line": 3.5,
-        "n": 286,
+        "n": 288,
         "said": 0.39,
-        "were": 0.399
+        "were": 0.396
       },
       {
         "line": 4.5,
-        "n": 286,
+        "n": 288,
         "said": 0.273,
-        "were": 0.252
+        "were": 0.25
       }
     ],
     "baseline_in_sample": false,
