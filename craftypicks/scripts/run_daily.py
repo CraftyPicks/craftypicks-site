@@ -105,6 +105,15 @@ except Exception as _rs_err:                                 # noqa: BLE001
     print(f"!! results store unavailable ({_rs_err})", file=sys.stderr)
 
 
+# The NCAAB System tabs. ESPN only, so free; imported on its own so a failure
+# costs these two tabs and nothing else.
+try:
+    import ncaab_system as ncaab_sys  # noqa: E402
+except Exception as _ns_err:                                 # noqa: BLE001
+    ncaab_sys = None
+    print(f"!! ncaab system unavailable ({_ns_err})", file=sys.stderr)
+
+
 def load_json(path: Path, default):
     if not path.exists():
         return default
@@ -255,6 +264,23 @@ def main() -> int:
                           f"{scored['graded']} graded{market}")
         except Exception as e:                               # noqa: BLE001
             print(f"!! rating grades failed ({type(e).__name__}: {e})",
+                  file=sys.stderr)
+
+    # ------------------------------------------- 0b. NCAAB System tabs
+    # The owner's checklist over tonight's college slate, plus grading of
+    # last night's plays. ESPN only, idempotent (a published play is never
+    # rewritten, a graded one never regraded), so it runs every invocation.
+    # Off outside November-April, without a network call.
+    if ncaab_sys is not None:
+        try:
+            ns = ncaab_sys.daily(now.date(), DATA)
+            if ns:
+                print(f"-- ncaab system: {ns['slate']} game(s) tonight, "
+                      f"{ns['plays']} play(s) ({ns['new']} new), "
+                      f"{ns['graded']} graded, {ns['boxes']} box score(s) "
+                      f"fetched, {ns['games']} in the season store")
+        except Exception as e:                               # noqa: BLE001
+            print(f"!! ncaab system failed ({type(e).__name__}: {e})",
                   file=sys.stderr)
 
     # Already bought odds today? Then this is a retry of a scheduled run that

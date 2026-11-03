@@ -165,6 +165,15 @@ def _nickname(team: str | None) -> str:
     return parts[-1]
 
 
+def _name(team: str | None, row: dict | None) -> str:
+    """How a club is named on a card. College basketball in full -- "Flames"
+    is Liberty and UIC, "Panthers" is Pitt, Georgia State, Northern Iowa and
+    FIU -- and every other league by nickname, which is unambiguous there."""
+    if (row or {}).get("league") == "ncaab":
+        return str(team or "")
+    return _nickname(team)
+
+
 def _record_line(rec: dict | None, at_home: bool) -> str:
     """'78–52 · 44–21 at home'. The venue split is the half that's relevant."""
     if not rec or (rec.get("w", 0) + rec.get("l", 0)) == 0:
@@ -1264,7 +1273,7 @@ def board_card(row: dict) -> str:
                 if mkt is not None else "")
         body = f"""
           <div class="cv-row">
-            <span class="cv-lab">{_("cv_winprob", who=esc(_abbr(who)))}</span>
+            <span class="cv-lab">{_("cv_winprob", who=esc(_name(who, row) if row.get("league") == "ncaab" else _abbr(who)))}</span>
             <span class="cv-pct">{ours * 100:.0f}%</span>
           </div>
           <div class="cv-bar"><i class="cv-fill" style="width:{fill:.1f}%"></i>{tick}</div>
@@ -1276,7 +1285,7 @@ def board_card(row: dict) -> str:
       <article class="gcard"{style} id="g-{esc(row.get('event_id',''))}">
         <div class="gcard-body">
           <div class="cv-head">
-            <h3 class="cv-tm">{esc(_nickname(away))} <span>@</span> {esc(_nickname(home))}</h3>
+            <h3 class="cv-tm">{esc(_name(away, row))} <span>@</span> {esc(_name(home, row))}</h3>
             <span class="cv-time">{esc(tip)}</span>
           </div>
           {body}
@@ -1294,6 +1303,22 @@ SERIES_SHOWN = 6
 # ESPN publishes three positions for basketball, not five. POSITIONS in
 # nba_data says why.
 POS_LABEL = {"G": "nba_pos_g", "F": "nba_pos_f", "C": "nba_pos_c"}
+# The same three, singular, for the chip on a card's face. ESPN gives the
+# NBA one letter, and a lone "F" sitting after "ATL vs ORL" reads as part of
+# the fixture -- so the word is spelled out and lifted up beside the name.
+# Football positions (QB, WR, RB, TE) are already unambiguous two-letter
+# abbreviations a reader knows, so they pass through untouched.
+POS_ONE = {"G": "pos_one_g", "F": "pos_one_f", "C": "pos_one_c"}
+
+
+def _pos_badge(pos: str) -> str:
+    """The player's position, as its own chip. Empty string when unknown --
+    an empty chip is worse than none."""
+    pos = (pos or "").strip()
+    if not pos:
+        return ""
+    key = POS_ONE.get(pos.upper())
+    return f'<span class="cv-pos">{esc(_(key) if key else pos)}</span>'
 
 MX_LABEL = {"favourable": "mx_favourable", "tough": "mx_tough",
             "neutral": "mx_neutral"}
@@ -1473,7 +1498,7 @@ def _h2h_block(row: dict, detail: dict) -> str:
     """
     games = detail.get("series") or []
     home, away = row.get("home"), row.get("away")
-    home_nick, away_nick = _nickname(home), _nickname(away)
+    home_nick, away_nick = _name(home, row), _name(away, row)
     year = (games[-1]["date"][:4] if games and games[-1].get("date") else "")
     head = (f'<section class="pk h2"><h4>{_("pnl_h2h")}'
             + (f' <span class="h2yr">{esc(year)}</span>' if year else "")
@@ -2185,11 +2210,13 @@ def _nfl_card(r: dict, *, big: str, label: str, ref: float, ref_label: str,
         <div class="pb-card">
           <div class="pb-body">
             <div class="cv-head">
-              <h3 class="cv-tm">{esc(r.get('name', ''))}</h3>
+              <div class="cv-id">
+                <h3 class="cv-tm">{esc(r.get('name', ''))}</h3>
+                {_pos_badge(r.get('position', ''))}
+              </div>
               <span class="cv-time">{esc(game_time(r.get('commence_time')))}</span>
             </div>
-            <div class="cv-sub">{esc(r.get('team', ''))} vs {esc(r.get('opponent', ''))}
-              &middot; {esc(r.get('position', ''))}</div>
+            <div class="cv-sub">{esc(r.get('team', ''))} vs {esc(r.get('opponent', ''))}</div>
             {extra}
             <div class="cv-row">
               <span class="cv-lab">{label}</span>
@@ -2559,7 +2586,210 @@ def yard_accuracy(summary: dict) -> str:
 # itself. MLB could take it from StatsAPI instead, but one code path that
 # works for four leagues beats two that each work for some of them.
 
+def _test_position_badge() -> None:
+    """The position is its own chip beside the name, not a letter trailing
+    the matchup. A bare "F" after "ATL vs ORL" reads as part of the
+    fixture; that is what confused the reader."""
+    row = {"name": "Giannis Antetokounmpo", "team": "MIL", "opponent": "ORL",
+           "position": "F", "commence_time": "2026-10-22T23:30:00Z",
+           "line": 30.5, "over": 0.54, "under": 0.46, "proj": 31.2}
+    html = nba_cards([row])
+    assert 'class="cv-pos"' in html, "no position chip on the card"
+    assert "Forward" in html, "the position is still a bare letter"
+    sub = re.search(r'class="cv-sub">(.*?)</div>', html, re.S)
+    assert sub and "Forward" not in sub.group(1) and "&middot;" not in sub.group(1), \
+        f"position still trailing the matchup: {sub and sub.group(1)!r}"
+    # NFL abbreviations are already unambiguous and must pass through intact.
+    nfl = yard_cards([{**row, "position": "WR", "name": "A.J. Brown"}])
+    assert ">WR<" in nfl, "NFL position was mangled"
+
+
+def _test_ncaab_system() -> None:
+    """The System tabs: full names, the play, the count, every check marked;
+    and the NCAAB board naming clubs in full while MLB keeps nicknames."""
+    def ck(key, mark, *v):
+        return {"key": key, "mark": mark, "v": list(v)}
+    row = {"tab": "system", "event_id": "e1", "date": "2026-11-12",
+           "commence_time": "2026-11-13T00:00Z",
+           "home": {"id": "221", "name": "Pittsburgh Panthers", "abbr": "PITT"},
+           "away": {"id": "2335", "name": "Liberty Flames", "abbr": "LIB"},
+           "side": "away", "line": 11.5, "est": False, "ml": 480,
+           "checks": [ck("reb", "y", 40.0, 33.0), ck("ats", "y", 5, 1, "away"),
+                      ck("bpi", "y", 55, 48, 11.5), ck("h2h", "na", 0, 1),
+                      ck("depth", "y", 3, 1), ck("form", "n", 2, 5, "away"),
+                      ck("def", "y", 6.0, 0.0)],
+           "passed": 5, "applicable": 6, "postseason": False,
+           "under_note": False, "total": 140.5}
+    html = system_cards([row])
+    assert "Liberty Flames +11.5" in html, "the play names the club in full"
+    assert "Liberty Flames @ Pittsburgh Panthers" in html
+    assert "+480" in html
+    assert ">5<" in html and "of 6" in html
+    assert html.count('class="ck-m"') == 7, "every check is listed"
+    assert 'role="img" aria-label="Passed"' in html
+    assert 'aria-label="Failed"' in html and 'aria-label="Not enough data"' in html
+    assert "40.0 vs 33.0" in html and "5-1" in html and "#55" in html
+    assert "est." not in html
+    h1 = dict(row, tab="1h", side="home", line=-6.0, est=True, ml=None,
+              checks=[c for c in row["checks"] if c["key"] != "bpi"])
+    html = system_cards([h1])
+    assert "Pittsburgh Panthers 1H -6" in html and "est." in html
+    assert "ML" not in html
+    assert system_cards([dict(row, line=0.0)]).count("Liberty Flames PK") == 1
+    post = system_cards([dict(row, postseason=True, under_note=True,
+                              checks=row["checks"] + [ck("scorer", "y", 81.2)])])
+    assert "under" in post.lower() and "81.2" in post
+    assert "No games pass" in system_cards([])
+
+    rec = system_record({"w": 7, "l": 3, "p": 1, "pending": 2, "units": 3.36,
+                         "checks": {"reb": [5, 1], "depth": [2, 2]}})
+    assert "7-3-1" in rec and "+3.36" in rec and "5-1" in rec
+    assert "Rebounding" in rec
+    assert "No graded plays yet" in system_record({"w": 0, "l": 0, "p": 0,
+                                                    "pending": 0, "units": 0.0,
+                                                    "checks": {}})
+
+    # The board: Flames vs Panthers was the confusion.
+    game = {"event_id": "g", "league": "ncaab", "commence_time": "2026-11-13T00:00Z",
+            "home": "Pittsburgh Panthers", "away": "Liberty Flames",
+            "model": {"home_win_prob": 0.8, "away_win_prob": 0.2}}
+    card = board_card(game)
+    assert "Liberty Flames <span>@</span> Pittsburgh Panthers" in card, card[:400]
+    mlb = board_card(dict(game, league="mlb", home="San Diego Padres",
+                          away="Chicago Cubs"))
+    assert "Cubs <span>@</span> Padres" in mlb
+
+
+# ------------------------------------------------------- NCAAB System tabs
+CK_LABEL = {"reb": "ck_reb", "bpi": "ck_bpi", "h2h": "ck_h2h",
+            "depth": "ck_depth", "def": "ck_def", "scorer": "ck_scorer"}
+CK_MARK = {"y": ("&#10003;", "ck_pass"), "n": ("&#10007;", "ck_fail"),
+           "na": ("&ndash;", "ck_na")}
+
+
+def _spread(v) -> str:
+    """+11.5, -6, PK. Whole numbers lose the .0 -- a book prints -6, not -6.0."""
+    if v is None:
+        return ""
+    if v == 0:
+        return "PK"
+    txt = f"{v:+.1f}"
+    return txt[:-2] if txt.endswith(".0") else txt
+
+
+def _ck_label(c: dict) -> str:
+    key = c["key"]
+    if key in ("ats", "form"):
+        role = (c.get("v") or [None, None, "away"])[-1]
+        return _(f"ck_{key}_{'home' if role == 'home' else 'away'}")
+    return _(CK_LABEL.get(key, key))
+
+
+def _ck_detail(c: dict) -> str:
+    v = c.get("v") or []
+    if c["mark"] == "na" and c["key"] in ("reb", "depth", "def"):
+        return _("ck_thin")
+    try:
+        if c["key"] == "reb":
+            return _("ck_reb_d", a=f"{v[0]:.1f}", b=f"{v[1]:.1f}")
+        if c["key"] in ("ats", "form"):
+            if c["key"] == "form":
+                return _("ck_form_d", w=v[0], l=v[1] - v[0], n=v[1])
+            return _("ck_ats_d", w=v[0], l=v[1])
+        if c["key"] == "bpi":
+            if v[0] is None or v[1] is None:
+                return _("ck_bpi_none")
+            if v[2] < 10:
+                return _("ck_bpi_small")
+            return _("ck_bpi_d", a=v[0], b=v[1], g=_spread(v[2]))
+        if c["key"] == "h2h":
+            return _("ck_h2h_d", w=v[0], n=v[1]) if c["mark"] != "na" \
+                else _("ck_h2h_few", n=v[1])
+        if c["key"] == "depth":
+            return _("ck_depth_d", a=v[0], b=v[1])
+        if c["key"] == "def":
+            return _("ck_def_d", a=f"{v[0]:+.1f}", b=f"{v[1]:+.1f}")
+        if c["key"] == "scorer":
+            return _("ck_scorer_d", v=f"{v[0]:.1f}") if v and v[0] is not None else ""
+    except (IndexError, TypeError, ValueError):
+        return ""
+    return ""
+
+
+def _system_card(r: dict) -> str:
+    home, away = r["home"]["name"], r["away"]["name"]
+    club = r[r["side"]]["name"]
+    half = f" {_('sys_1h')}" if r.get("tab") == "1h" else ""
+    est = (f' <span class="cv-u">{_("sys_est")}</span>' if r.get("est") else "")
+    ml = r.get("ml")
+    sub = esc(f"{away} @ {home}")
+    if ml is not None:
+        sub += f" &middot; ML {esc(f'{ml:+d}')}"
+    items = []
+    for c in r.get("checks", []):
+        glyph, label = CK_MARK.get(c["mark"], CK_MARK["na"])
+        detail = _ck_detail(c)
+        items.append(
+            f'<li class="ck-is-{c["mark"]}">'
+            f'<span class="ck-m" role="img" aria-label="{_(label)}">{glyph}</span>'
+            f'<span class="ck-n">{_ck_label(c)}</span>'
+            f'<span class="ck-d">{esc(detail)}</span></li>')
+    note = (f'<p class="ck-note">{_("sys_unders")}</p>'
+            if r.get("under_note") else "")
+    return f"""
+        <div class="pb-card">
+          <div class="pb-body">
+            <div class="cv-head">
+              <h3 class="cv-tm">{esc(club)}{half} {esc(_spread(r.get("line")))}{est}</h3>
+              <span class="cv-time">{esc(game_time(r.get("commence_time")))}</span>
+            </div>
+            <div class="cv-sub">{sub}</div>
+            <div class="cv-row">
+              <span class="cv-lab">{_("sys_checks")}</span>
+              <span class="cv-pct">{r.get("passed", 0)}<span class="cv-u">{_("sys_of", n=r.get("applicable", 0))}</span></span>
+            </div>
+            <ul class="ck">{"".join(items)}</ul>
+            {note}
+          </div>
+        </div>"""
+
+
+def system_cards(rows: list[dict]) -> str:
+    """Tonight's qualifying plays for one tab. Strongest first, as stored."""
+    if not rows:
+        return f'<div class="empty-board">{_("sys_none")}</div>'
+    return ('<div class="pb-grid">'
+            + "".join(_system_card(r) for r in rows) + "</div>")
+
+
+def system_record(summary: dict) -> str:
+    """The tab's record and how each check has done when it passed."""
+    s = summary or {}
+    if not (s.get("w") or s.get("l") or s.get("p")):
+        return f'<p class="pnl-note">{_("sys_no_record")}</p>'
+    units = s.get("units", 0.0)
+    head = (f'<p class="sys-rec"><b>{s["w"]}-{s["l"]}-{s["p"]}</b> &middot; '
+            f'{units:+.2f} {_("sys_units")}'
+            + (f' &middot; {_("sys_pending", n=s["pending"])}' if s.get("pending") else "")
+            + "</p>")
+    order = ("reb", "ats", "bpi", "h2h", "depth", "form", "def", "scorer")
+    lines = []
+    for key in order:
+        wl = (s.get("checks") or {}).get(key)
+        if not wl:
+            continue
+        label = _ck_label({"key": key, "v": [None, None, "away"]}) \
+            if key not in ("ats", "form") else _(f"ck_{key}_any")
+        lines.append(f'<li><span class="ck-n">{label}</span>'
+                     f'<span class="ck-d">{wl[0]}-{wl[1]}</span></li>')
+    tail = (f'<p class="ck-cap">{_("sys_by_check")}</p><ul class="ck ck-rec">'
+            + "".join(lines) + "</ul>") if lines else ""
+    return head + tail
+
+
 def _self_test() -> None:
+    _test_ncaab_system()
+    _test_position_badge()
     row = {
         "event_id": "evt1", "league": "mlb",
         "commence_time": "2026-08-31T23:05:00Z",

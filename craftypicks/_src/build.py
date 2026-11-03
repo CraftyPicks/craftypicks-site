@@ -62,6 +62,8 @@ PAGES: dict[str, Page] = {
     "nfl/rushing.html":   Page("nfl/rushing.html",   "nfl_rushing",   "nfl_rushing",   "nfl"),
     "nfl/receiving.html": Page("nfl/receiving.html", "nfl_receiving", "nfl_receiving", "nfl"),
     "nfl/td.html":        Page("nfl/td.html",        "nfl_td",        "nfl_td",        "nfl"),
+    "ncaab/system.html":     Page("ncaab/system.html",     "ncaab_system", "ncaab_system", "ncaab"),
+    "ncaab/first-half.html": Page("ncaab/first-half.html", "ncaab_1h",     "ncaab_1h",     "ncaab"),
     "about.html":    Page("about.html",    "about",    "about",    None),
     "pitchers.html": Page("pitchers.html", "pitchers", "pitchers", "mlb"),
     "slate.html":    Page("slate.html",    "slate",    "slate",    None),
@@ -107,6 +109,8 @@ _EXTRA_VIEWS: dict[str, list[tuple[str, str]]] = {
             ("nfl/rushing.html", "nav_rush"),
             ("nfl/receiving.html", "nav_recv"),
             ("nfl/td.html", "nav_nfltd")],
+    "ncaab": [("ncaab/system.html", "nav_ncaab_sys"),
+              ("ncaab/first-half.html", "nav_ncaab_1h")],
 }
 
 # The views each league actually has. A league is not listed with a props tab
@@ -206,6 +210,10 @@ TITLES = {
                   "es": f"Hits — {config.SITE_NAME}"},
     "f7.html": {"en": f"First 7 innings — {config.SITE_NAME}",
                 "es": f"Primeras 7 entradas — {config.SITE_NAME}"},
+    "ncaab/system.html": {"en": f"NCAAB System — {config.SITE_NAME}",
+                          "es": f"Sistema NCAAB — {config.SITE_NAME}"},
+    "ncaab/first-half.html": {"en": f"NCAAB 1st Half — {config.SITE_NAME}",
+                              "es": f"NCAAB 1.ª mitad — {config.SITE_NAME}"},
     "nba/points.html": {"en": f"Points — {config.SITE_NAME}",
                         "es": f"Puntos — {config.SITE_NAME}"},
     "nba/assists.html": {"en": f"Assists — {config.SITE_NAME}",
@@ -375,6 +383,10 @@ def build() -> None:
     hit_doc = load("hits.json",
                    {"date_label": "", "batters": [], "summary": {}})
     f7_doc = load("f7.json", {"date_label": "", "rows": [], "summary": {}})
+    sys_doc = load("ncaab_system.json",
+                   {"date_label": "", "rows": [], "summary": {}})
+    sys_rows = {tab: [r for r in sys_doc.get("rows", []) if r.get("tab") == tab]
+                for tab in ("system", "1h")}
 
     # The four NFL boards: three yardage categories and one touchdown board,
     # each a sibling of hits.json above with its own rows and its own error
@@ -435,6 +447,17 @@ def build() -> None:
             "{{F7_COUNT}}": L("f7_count", n=len(f7_doc.get("rows", [])),
                               s=pl(len(f7_doc.get("rows", [])))),
             "{{F7_CARDS}}": R.f7_cards(f7_doc.get("rows", [])),
+            "{{SYS_DATE}}": doc_date_label(sys_doc, lang) or L("not_rated"),
+            "{{SYS_COUNT}}": L("sys_count", n=len(sys_rows["system"]),
+                               s=pl(len(sys_rows["system"]))),
+            "{{SYS_CARDS}}": R.system_cards(sys_rows["system"]),
+            "{{SYS_RECORD}}": R.system_record(
+                (sys_doc.get("summary") or {}).get("system", {})),
+            "{{SYS1H_COUNT}}": L("sys_count", n=len(sys_rows["1h"]),
+                                 s=pl(len(sys_rows["1h"]))),
+            "{{SYS1H_CARDS}}": R.system_cards(sys_rows["1h"]),
+            "{{SYS1H_RECORD}}": R.system_record(
+                (sys_doc.get("summary") or {}).get("1h", {})),
             "{{F7_ACCURACY}}": R.f7_accuracy(f7_doc.get("summary", {})),
             "{{HIT_CARDS}}": R.hit_cards(hit_doc.get("batters", [])),
             "{{HIT_CALIBRATION}}": R.hit_calibration(
@@ -643,6 +666,11 @@ def _self_test() -> None:
     # used; a nav entry pointing at a page nothing builds is a 404 in the
     # middle of the MLB tab row, and a page built with no nav entry is one
     # nobody can reach -- so both halves are pinned.
+    # The NCAAB System tabs are reachable from the NCAAB view row.
+    for out in ("ncaab/system.html", "ncaab/first-half.html"):
+        assert out in PAGES and PAGES[out].league == "ncaab", out
+        assert out in [o for o, _k in _EXTRA_VIEWS["ncaab"]], out
+        assert out in TITLES, out
     for gone in ("homers.html",):
         assert gone not in PAGES, f"{gone} is retired but still built"
         assert all(gone != out for views in _EXTRA_VIEWS.values()

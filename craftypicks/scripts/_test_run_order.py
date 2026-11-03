@@ -38,6 +38,9 @@ def _self_test() -> None:
         ("loading the stored win probabilities",
          r'load_json\(DATA / "board_ratings\.json"'),
         ("grading stored win probabilities", r"board_ratings\.grade\("),
+        # ESPN only. Above the guard so a retry still grades last night's
+        # plays and picks up a line that was not posted at the first run.
+        ("the NCAAB System tabs", r"ncaab_sys\.daily\("),
     ):
         at = line_of(pattern)
         assert at < guard, (
