@@ -1647,50 +1647,6 @@
       "actual": null
     },
     {
-      "player_id": "00-0041523",
-      "name": "Caleb Douglas",
-      "team": "MIA",
-      "opponent": "DET",
-      "position": "WR",
-      "per_game": 56.5,
-      "baseline": 56.5,
-      "projection": 67.8,
-      "weight": 1.0,
-      "opp_allowed": 276.2,
-      "league_allowed": 230.4,
-      "def_factor": 1.199,
-      "week": 9,
-      "game_id": "2026_09_DET_MIA",
-      "commence_time": "2026-11-08T13:00:00-05:00",
-      "recent": [
-        {
-          "season": 2026,
-          "week": 1,
-          "opponent": "LV",
-          "value": 94.0
-        },
-        {
-          "season": 2026,
-          "week": 2,
-          "opponent": "SF",
-          "value": 19.0
-        },
-        {
-          "season": 2026,
-          "week": 7,
-          "opponent": "NYJ",
-          "value": 70.0
-        },
-        {
-          "season": 2026,
-          "week": 8,
-          "opponent": "NE",
-          "value": 43.0
-        }
-      ],
-      "actual": null
-    },
-    {
       "player_id": "00-0037240",
       "name": "Jameson Williams",
       "team": "DET",
@@ -3822,6 +3778,86 @@
           "week": 8,
           "opponent": "PHI",
           "value": 32.0
+        }
+      ],
+      "actual": null
+    },
+    {
+      "player_id": "00-0039040",
+      "name": "De'Von Achane",
+      "team": "MIA",
+      "opponent": "DET",
+      "position": "RB",
+      "per_game": 24.4,
+      "baseline": 24.4,
+      "projection": 29.3,
+      "weight": 0.429,
+      "opp_allowed": 276.2,
+      "league_allowed": 230.4,
+      "def_factor": 1.199,
+      "week": 9,
+      "game_id": "2026_09_DET_MIA",
+      "commence_time": "2026-11-08T13:00:00-05:00",
+      "recent": [
+        {
+          "season": 2025,
+          "week": 10,
+          "opponent": "BUF",
+          "value": 51.0
+        },
+        {
+          "season": 2025,
+          "week": 11,
+          "opponent": "WAS",
+          "value": 45.0
+        },
+        {
+          "season": 2025,
+          "week": 13,
+          "opponent": "NO",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 14,
+          "opponent": "NYJ",
+          "value": 13.0
+        },
+        {
+          "season": 2025,
+          "week": 15,
+          "opponent": "PIT",
+          "value": 67.0
+        },
+        {
+          "season": 2025,
+          "week": 16,
+          "opponent": "CIN",
+          "value": 9.0
+        },
+        {
+          "season": 2025,
+          "week": 17,
+          "opponent": "TB",
+          "value": 29.0
+        },
+        {
+          "season": 2026,
+          "week": 1,
+          "opponent": "LV",
+          "value": 30.0
+        },
+        {
+          "season": 2026,
+          "week": 2,
+          "opponent": "SF",
+          "value": 19.0
+        },
+        {
+          "season": 2026,
+          "week": 3,
+          "opponent": "KC",
+          "value": 0.0
         }
       ],
       "actual": null
@@ -7072,11 +7108,11 @@
     }
   ],
   "summary": {
-    "graded": 665,
+    "graded": 666,
     "mae": 26.8,
-    "bias": 0.33,
-    "baseline_n": 665,
-    "baseline_mae": 26.72,
+    "bias": 0.29,
+    "baseline_n": 666,
+    "baseline_mae": 26.71,
     "mae_on_baseline_rows": 26.8
   }
 }
