@@ -369,6 +369,20 @@ section{border-bottom:1px solid var(--line)}
    hits card. It is a sentence, not a label, and the design doc's rule is
    that mono in caps belongs to labels under 12px only -- so it is now
    sentence-case sans at 12.5px, the size the doc sets its meta line at. */
+/* Name and position travel together on the left of the head; the tip-off
+   time stays pinned right. min-width:0 lets a long name wrap instead of
+   shoving the chip off a 390px card, and wrap puts the chip on its own
+   line rather than squeezing it. */
+.cv-id{display:flex;align-items:baseline;flex-wrap:wrap;gap:4px 8px;
+  min-width:0}
+/* A bordered chip, not muted body text: the position has to read as a
+   label about the player, which is exactly what it failed to do when it
+   trailed the matchup. --txt, not --muted, because 10px needs the
+   contrast floor. */
+.cv-pos{font-family:var(--mono);font-size:10px;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--txt);background:var(--bg-2);
+  border:1px solid var(--line-2);padding:2px 6px;white-space:nowrap;
+  align-self:center}
 .cv-sub{font-family:var(--sans);font-size:12.5px;letter-spacing:0;
   color:var(--muted);margin:-12px 0 16px;line-height:1.6}
 /* The unit after a projection. --dim is allowed here for the same reason it
@@ -1416,3 +1430,70 @@ footer{background:var(--bg-2);padding:56px 0 40px}
   .hr{font-size:11.5px;padding:4px 1px 5px}
   .hr u{font-size:10px}
 }
+/* ---------------------------------------------------- NCAAB System tabs
+   The checklist on each play: one row per rule, mark / rule / the numbers
+   behind it. The mark is a text glyph exposed as an image with its own
+   label, so a screen reader hears "Passed, Rebounding, 40.0 vs 33.0" rather
+   than "check mark". Colour repeats the glyph, never replaces it. */
+.ck{list-style:none;margin:4px 0 0;padding:12px 0 0;border-top:1px solid var(--line);
+  display:grid;gap:7px}
+.ck li{display:grid;grid-template-columns:18px minmax(0,1fr) auto;gap:8px;
+  align-items:baseline;font-size:13px;line-height:1.4}
+.ck-m{font-weight:700;text-align:center}
+.ck-is-y .ck-m{color:var(--green)}
+.ck-is-n .ck-m{color:var(--red)}
+.ck-is-na .ck-m{color:var(--muted)}
+.ck-n{color:var(--txt);min-width:0}
+.ck-is-na .ck-n{color:var(--muted)}
+.ck-d{color:var(--muted);font-size:12px;text-align:right;white-space:nowrap}
+.ck-note{font-size:12.5px;color:var(--muted);margin:12px 0 0;line-height:1.5}
+.ck-rec li{grid-template-columns:minmax(0,1fr) auto}
+.ck-cap{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--muted);margin:18px 0 0}
+.sys-rec{font-size:15px;color:var(--txt);margin:0}
+
+/* ------------------------------------------------- NCAAB Team Stats panel
+   The owner's reference is ESPN's Team Stats comparison. A real table --
+   caption, column headers for the two teams, a row header per stat -- so a
+   screen reader reads "Rebounds, 43.0, 39.5" instead of loose numbers. The
+   bars under each row are decorative (aria-hidden): the figures beside them
+   already say it. Away is striped on the left, home is its own colour on
+   the right (--ts-c, set inline from the school colour after _legible). */
+.ts{--ts-c:var(--green)}
+.ts-t{width:100%;border-collapse:collapse;table-layout:fixed}
+.ts-cap{text-align:left;font-weight:700;font-size:15px;letter-spacing:.02em;
+  text-transform:uppercase;color:var(--txt);padding:2px 0 12px;
+  border-bottom:1px solid var(--line-2);margin-bottom:6px}
+.ts-t thead th{padding:14px 0 10px;font-weight:500;font-size:13px;
+  color:var(--muted);vertical-align:middle}
+.ts-t thead th:nth-child(2){width:34%}
+.ts-a{text-align:left}
+.ts-h{text-align:right}
+.ts-a,.ts-h{line-height:1.3}
+.ts-sw{display:inline-block;width:12px;height:12px;vertical-align:-1px;
+  margin:0 6px 0 0}
+.ts-h .ts-sw{margin:0 0 0 6px;float:right;margin-top:2px}
+.ts-sw-a{background:repeating-linear-gradient(-60deg,var(--txt) 0 2px,
+  transparent 2px 4px)}
+.ts-sw-h{background:var(--ts-c)}
+.ts-nm{color:var(--txt);font-weight:600}
+.ts-rk{font-size:11px;color:var(--muted);margin-right:3px;font-weight:500}
+.ts-rec{display:block;font-size:12px;color:var(--muted)}
+.ts-vh{position:absolute;width:1px;height:1px;overflow:hidden;
+  clip-path:inset(50%);white-space:nowrap}
+.ts-v td,.ts-v th{padding:14px 0 6px;vertical-align:baseline}
+.ts-v td{font-size:22px;font-weight:700;letter-spacing:-.02em;color:var(--txt);
+  font-variant-numeric:tabular-nums}
+.ts-v td:last-child{text-align:right}
+.ts-v th{font-size:13.5px;font-weight:700;color:var(--txt);text-align:center}
+.ts-b td{padding:0 0 4px}
+.ts-bar{display:flex;gap:4px;height:9px}
+.ts-bar .ts-l{display:block;height:100%;background:repeating-linear-gradient(
+  -60deg,var(--txt) 0 2px,transparent 2px 5px)}
+.ts-bar .ts-r{display:block;height:100%;background:var(--ts-c);
+  border-radius:0 5px 5px 0}
+.ts-pct{gap:16px}
+.ts-trk{flex:1;display:flex;background:var(--bg-2);border-radius:5px;
+  overflow:hidden}
+.ts-trk-r{justify-content:flex-end}
+.ts-pct .ts-r{border-radius:0 5px 5px 0}
