@@ -55,7 +55,7 @@ jobs:
           set -euo pipefail
           git config user.name  "craftypicks-bot"
           git config user.email "bot@users.noreply.github.com"
-          git add -- data '*.html' ':(exclude)_src/**'
+          git add -- data style.css '*.html' ':(exclude)_src/**'
           # Git expands these, not the shell, so '*.html' reaches every
           # directory depth. A bare shell glob would match only the root
           # pages and silently drop mlb/form.html and its siblings.
