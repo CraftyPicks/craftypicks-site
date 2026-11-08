@@ -94,7 +94,7 @@ jobs:
           set -euo pipefail
           git config user.name  "craftypicks-bot"
           git config user.email "bot@users.noreply.github.com"
-          git add -- data '*.html' ':(exclude)_src/**'
+          git add -- data style.css '*.html' ':(exclude)_src/**'
           # Git does this globbing, not the shell, so it reaches every
           # directory depth -- root pages, league boards, and any page type
           # added later. The plain shell globs this replaced matched only
