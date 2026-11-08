@@ -166,6 +166,22 @@ def view_row(page: Page, lang: str) -> str:
     return "".join(out)
 
 
+def attach_team_stats(board_doc: dict, teams: dict) -> None:
+    """Give each NCAAB board row both teams' season sheets, for the Team
+    Stats panel behind the card. Matched by name, punctuation-blind, because
+    the board's names come from the Odds API and the sheets from ESPN. A team
+    with no sheet leaves the row without one, and the card keeps its old
+    detail rather than a half-empty table."""
+    if not teams:
+        return
+    import ncaab_system  # noqa: PLC0415
+    key = ncaab_system.name_key
+    for g in ((board_doc.get("leagues") or {}).get("ncaab") or {}).get("games") or []:
+        away, home = teams.get(key(g.get("away"))), teams.get(key(g.get("home")))
+        if away and home:
+            g["team_stats"] = {"away": away, "home": home}
+
+
 def tonight_rows(doc: dict) -> list[dict]:
     """Every league's games merged into one list, earliest first.
 
@@ -364,6 +380,8 @@ def build() -> None:
     slate_doc = load("slate.json", {"date_label": "", "games": [], "summary": {}})
     pitch_doc = load("pitchers.json", {"date_label": "", "pitchers": [], "summary": {}})
     board_doc = load("board.json", {})
+    attach_team_stats(board_doc,
+                      load("ncaab_teams.json", {}).get("teams") or {})
     batter_doc = load("batters.json",
                       {"date_label": "", "batters": [], "summary": {}})
     # Every win probability the non-MLB boards have published, with whatever
@@ -666,6 +684,19 @@ def _self_test() -> None:
     # used; a nav entry pointing at a page nothing builds is a 404 in the
     # middle of the MLB tab row, and a page built with no nav entry is one
     # nobody can reach -- so both halves are pinned.
+    # NCAAB board rows pick up both teams' season sheets by name, whichever
+    # punctuation each feed used; other leagues are left alone.
+    doc = {"leagues": {
+        "ncaab": {"games": [{"league": "ncaab", "home": "St. John's Red Storm",
+                             "away": "Texas A&M Aggies"}]},
+        "nba": {"games": [{"league": "nba", "home": "X", "away": "Y"}]}}}
+    sheet = {"st johns red storm": {"name": "St John's Red Storm"},
+             "texas a and m aggies": {"name": "Texas A and M Aggies"}}
+    attach_team_stats(doc, sheet)
+    ts = doc["leagues"]["ncaab"]["games"][0]["team_stats"]
+    assert ts["home"]["name"] == "St John's Red Storm" and ts["away"]
+    assert "team_stats" not in doc["leagues"]["nba"]["games"][0]
+
     # The NCAAB System tabs are reachable from the NCAAB view row.
     for out in ("ncaab/system.html", "ncaab/first-half.html"):
         assert out in PAGES and PAGES[out].league == "ncaab", out

@@ -1084,6 +1084,16 @@ T = {
     "nba_pos_f":     {"en": "forwards", "es": "aleros"},
     "nba_pos_c":     {"en": "centres", "es": "pivots"},
     "nba_pos_any":   {"en": "his position", "es": "su posición"},
+    # NCAAB Team Stats panel.
+    "ts_title": {"en": "Team stats", "es": "Estadísticas de equipo"},
+    "ts_stat":  {"en": "Stat", "es": "Estadística"},
+    "ts_pts":   {"en": "Points", "es": "Puntos"},
+    "ts_opp":   {"en": "Points Against", "es": "Puntos en contra"},
+    "ts_fg":    {"en": "Field Goal %", "es": "% de tiros de campo"},
+    "ts_reb":   {"en": "Rebounds", "es": "Rebotes"},
+    "ts_ast":   {"en": "Assists", "es": "Asistencias"},
+    "ts_blk":   {"en": "Blocks", "es": "Tapones"},
+    "ts_stl":   {"en": "Steals", "es": "Robos"},
     # NCAAB System tabs.
     "nav_ncaab_sys": {"en": "System", "es": "Sistema"},
     "nav_ncaab_1h":  {"en": "1st Half", "es": "1.ª mitad"},

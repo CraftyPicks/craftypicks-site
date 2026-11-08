@@ -83,6 +83,7 @@ def attach_box(store: dict, event_id: str, box: dict) -> None:
     if g is None or not box:
         return
     g["box"] = {k: v for k, v in box.items() if not k.startswith("_")}
+    g["box_v"] = BOX_VERSION
     halves = box.get("_1h") or {}
     if g.get("home_1h") is None and g["home"]["id"] in halves:
         g["home_1h"] = halves[g["home"]["id"]]
@@ -111,7 +112,8 @@ def profiles(store: dict) -> dict:
     def team(tid):
         return acc.setdefault(tid, {
             "box": 0, "_reb": [], "_stl": [], "_tov": [], "_forced": [],
-            "_players": {}, "_pts": [],
+            "_players": {}, "_pts": [], "_opp": [], "_ast": [], "_blk": [],
+            "_fgm": 0, "_fga": 0, "w": 0, "l": 0,
             "ats": {"home": [0, 0], "away": [0, 0]},
             "form": {"home": [], "away": []}})
 
@@ -121,6 +123,8 @@ def profiles(store: dict) -> dict:
             t = team(tid)
             mine, theirs = g[f"{role}_score"], g[f"{other}_score"]
             t["_pts"].append(mine)
+            t["_opp"].append(theirs)
+            t["w" if mine > theirs else "l"] += 1
             if not g.get("neutral"):
                 t["form"][role].insert(0, "W" if mine > theirs else "L")
                 sp = g.get("spread_home")
@@ -139,6 +143,11 @@ def profiles(store: dict) -> dict:
                 t["_stl"].append(b.get("stl"))
                 t["_tov"].append(b.get("tov"))
                 t["_forced"].append(ob.get("tov"))
+                t["_ast"].append(b.get("ast"))
+                t["_blk"].append(b.get("blk"))
+                if b.get("fgm") is not None and b.get("fga"):
+                    t["_fgm"] += b["fgm"]
+                    t["_fga"] += b["fga"]
                 for pid, pts in (b.get("players") or {}).items():
                     tot = t["_players"].setdefault(pid, [0, 0])
                     tot[0] += pts
@@ -151,6 +160,10 @@ def profiles(store: dict) -> dict:
             "box": t["box"], "reb": _mean(t["_reb"]), "stl": _mean(t["_stl"]),
             "tov": _mean(t["_tov"]), "forced": _mean(t["_forced"]),
             "scorers14": scorers, "ppg": _mean(t["_pts"]),
+            "opp": _mean(t["_opp"]), "ast": _mean(t["_ast"]),
+            "blk": _mean(t["_blk"]),
+            "fg": round(100 * t["_fgm"] / t["_fga"], 1) if t["_fga"] else None,
+            "w": t["w"], "l": t["l"],
             "ats": t["ats"], "form": t["form"]}
     return out
 
@@ -370,6 +383,50 @@ def summary(history: list[dict], tab: str) -> dict:
 
 
 
+def name_key(name: str) -> str:
+    """A name both feeds agree on. The board's names come from the Odds API
+    and these from ESPN; they mostly match, and where they differ it is
+    punctuation: "St." / "St", "A&M" / "A and M"."""
+    import re  # noqa: PLC0415
+    n = str(name or "").lower().replace("&", " and ")
+    n = re.sub(r"[^a-z0-9 ]+", "", n)
+    return " ".join(n.split())
+
+
+def team_sheet(store: dict) -> dict:
+    """Season averages for the board's Team Stats panel, keyed by name_key.
+
+    Points and points against come from every final; the box-score rows
+    (FG%, rebounds, assists, blocks, steals) from the finals that have a box
+    score, and are None until one does. Name, colour and rank are taken from
+    the team's most recent game; the record is counted from our own finals,
+    so it can never disagree with the averages beside it.
+    """
+    prof = profiles(store)
+    latest: dict[str, dict] = {}
+    for g in sorted(store.get("games", {}).values(),
+                    key=lambda g: (g.get("date") or "", g.get("commence_time") or "")):
+        for role in ("home", "away"):
+            latest[g[role]["id"]] = g[role]
+    out = {}
+    for tid, p in prof.items():
+        club = latest.get(tid) or {}
+        if not club.get("name"):
+            continue
+        boxed = p.get("box", 0) > 0
+        out[name_key(club["name"])] = {
+            "id": tid, "name": club["name"], "color": club.get("color", ""),
+            "rank": club.get("rank"), "record": f"{p['w']}-{p['l']}",
+            "games": p["w"] + p["l"],
+            "stats": {"pts": p["ppg"], "opp": p["opp"],
+                      "fg": p["fg"] if boxed else None,
+                      "reb": p["reb"] if boxed else None,
+                      "ast": p["ast"] if boxed else None,
+                      "blk": p["blk"] if boxed else None,
+                      "stl": p["stl"] if boxed else None}}
+    return out
+
+
 # ---------------------------------------------------------------- daily run
 SEASON_MONTHS = (11, 12, 1, 2, 3, 4)
 SCOREBOARD_DAYS = 14     # days walked per run when catching up
@@ -377,6 +434,9 @@ SUMMARY_CAP = 400        # box scores fetched per run
 SCHEDULE_CAP = 300       # past-season schedules fetched per run
 H2H_SEASONS = 4          # past seasons searched for head-to-head
 BOX_TRIES = 3
+# Bumped whenever parse_box starts capturing a new stat: every stored box
+# below this version is fetched once more. 2 added FG, assists and blocks.
+BOX_VERSION = 2
 
 
 def season_for(day) -> int:
@@ -454,7 +514,8 @@ def daily(day, data, fetch=None) -> dict | None:
     for g in _finals(store):
         if boxes >= SUMMARY_CAP:
             break
-        if g.get("box") or g.get("box_tries", 0) >= BOX_TRIES:
+        current = g.get("box") and g.get("box_v", 1) >= BOX_VERSION
+        if current or g.get("box_tries", 0) >= BOX_TRIES:
             continue
         box = fetch.summary(g["event_id"])
         boxes += 1
@@ -513,6 +574,8 @@ def daily(day, data, fetch=None) -> dict | None:
     _save(data / "ncaab_h2h.json", h2h, compact=True)
     _save(data / "ncaab_bpi.json", {"season": season, "ranks": ranks},
           compact=True)
+    _save(data / "ncaab_teams.json", {"season": season,
+                                      "teams": team_sheet(store)}, compact=True)
     _save(data / "ncaab_system.json", {
         "date": day.isoformat(),
         "date_label": f"{day:%A, %B %-d, %Y}",
@@ -621,7 +684,7 @@ def _test_daily() -> None:
     f = Fake()
     # Yesterday's finals are the fixture season; tonight is A at H.
     finals = list(store["games"].values())
-    f.days = {"20261111": [{k: v for k, v in g.items() if k != "box"}
+    f.days = {"20261111": [{k: v for k, v in g.items() if k not in ("box", "box_v")}
                            for g in finals],
               "20261112": [tonight]}
     f.box_for = {g["event_id"]: dict(g["box"]) for g in finals}
@@ -646,6 +709,21 @@ def _test_daily() -> None:
         assert games["season"] == 2027 and games["last_day"] == "2026-11-11"
         cache = json.loads((data / "ncaab_h2h.json").read_text())
         assert "2026" in cache["H"]["seasons"]
+        sheet = json.loads((data / "ncaab_teams.json").read_text())
+        assert sheet["teams"][name_key("Team A")]["stats"]["reb"] == 40.0
+
+        # A box stored before assists/blocks/FG were captured is fetched once
+        # more, then left alone.
+        games = json.loads((data / "ncaab_games.json").read_text())
+        del games["games"]["a0"]["box_v"]
+        (data / "ncaab_games.json").write_text(json.dumps(games))
+        f.box_for["a0"] = {k: dict(v, ast=12, blk=2, fgm=20, fga=50)
+                           for k, v in f.box_for["a0"].items()}
+        before = f.calls["summary"]
+        daily(day, data, fetch=f)
+        assert f.calls["summary"] - before == 1, ("only the old-format box", f.calls["summary"] - before)
+        games = json.loads((data / "ncaab_games.json").read_text())
+        assert games["games"]["a0"]["box"]["A"]["ast"] == 12
 
         # Second run the same day: two scoreboards (yesterday, today), no
         # boxes refetched, no duplicate play.
@@ -673,7 +751,7 @@ def _test_daily() -> None:
     finals = list(store["games"].values())
     f.box_for = {g["event_id"]: dict(g["box"]) for g in finals}
     f.sched = {("H", 2026): h2h["A"]["seasons"]["2026"]}
-    f.days = {"20261108": [{k: v for k, v in g.items() if k != "box"}
+    f.days = {"20261108": [{k: v for k, v in g.items() if k not in ("box", "box_v")}
                            for g in finals],
               "20261111": [], "20261112": [tonight]}
     real = f.scoreboard
@@ -700,7 +778,47 @@ def _test_daily() -> None:
         assert doc["rows"] and doc["rows"][0]["event_id"] == "t1"
 
 
+def _test_team_sheet() -> None:
+    store = {"season": 2027, "games": {}}
+    g1 = _game("s1", "UVA", "ARK", 66, 106, date="2026-11-05")
+    g1["home"].update(name="Virginia Cavaliers", color="f84c1e", rank=9, record="1-0")
+    g1["away"].update(name="Arkansas Razorbacks", color="9d2235", rank=12, record="1-0")
+    g2 = _game("s2", "UVA", "X", 80, 60, date="2026-11-07")
+    g2["home"].update(name="Virginia Cavaliers", color="f84c1e", rank=8, record="2-0")
+    for g in (g1, g2):
+        merge_games(store, [g])
+    box = lambda reb, ast, blk, stl, fgm, fga: {"reb": reb, "ast": ast, "blk": blk,
+                                                 "stl": stl, "tov": 10, "fgm": fgm,
+                                                 "fga": fga, "players": {}}
+    attach_box(store, "s1", {"UVA": box(38, 20, 3, 14, 25, 50),
+                             "ARK": box(43, 19, 7, 16, 40, 72)})
+    attach_box(store, "s2", {"UVA": box(41, 23, 4, 16, 30, 58),
+                             "X": box(30, 10, 1, 5, 20, 60)})
+    sheet = team_sheet(store)
+    uva = sheet[name_key("Virginia Cavaliers")]
+    assert uva["name"] == "Virginia Cavaliers" and uva["games"] == 2
+    assert uva["rank"] == 8, "latest rank wins"
+    assert uva["record"] == "1-1", "record is counted from the finals we hold"
+    assert uva["color"] == "f84c1e"
+    st = uva["stats"]
+    assert st["pts"] == 73.0 and st["opp"] == 83.0
+    assert st["reb"] == 39.5 and st["ast"] == 21.5 and st["blk"] == 3.5
+    assert st["stl"] == 15.0
+    assert st["fg"] == round(100 * 55 / 108, 1), "FG% from totals, not a mean of games"
+    ark = sheet[name_key("Arkansas Razorbacks")]
+    assert ark["stats"]["pts"] == 106.0 and ark["stats"]["opp"] == 66.0
+    # A team with a final but no box score still gets points, not box stats.
+    merge_games(store, [_game("s3", "Y", "Z", 70, 65, date="2026-11-07")])
+    y = team_sheet(store)[name_key("Team Y")]
+    assert y["stats"]["pts"] == 70.0 and y["stats"]["reb"] is None
+    # Odds API and ESPN spell some names differently.
+    assert name_key("St. John's Red Storm") == name_key("St John's Red Storm")
+    assert name_key("Texas A&M Aggies") == name_key("Texas A and M Aggies")
+    assert name_key("  Virginia  Cavaliers ") == name_key("virginia cavaliers")
+
+
 def _self_test() -> None:
+    _test_team_sheet()
     _test_daily()
     store, h2h, bpi, tonight = _season()
 

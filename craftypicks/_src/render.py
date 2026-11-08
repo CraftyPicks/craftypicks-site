@@ -1755,6 +1755,76 @@ def _sv_sheet(row: dict, detail: dict, props=None) -> str:
             + "</p></section>")
 
 
+# ---------------------------------------------- NCAAB detail: Team Stats
+# The owner's reference is ESPN's Team Stats comparison: value / label /
+# value, a split bar under each, away striped on the left, home in its own
+# colour on the right. Season averages from our own ESPN box-score store.
+TS_ROWS = (("pts", "ts_pts"), ("opp", "ts_opp"), ("fg", "ts_fg"),
+           ("reb", "ts_reb"), ("ast", "ts_ast"), ("blk", "ts_blk"),
+           ("stl", "ts_stl"))
+
+
+def _ts_val(key: str, v) -> str:
+    if v is None:
+        return "&ndash;"
+    return f"{v:.0f}%" if key == "fg" else f"{v:.1f}"
+
+
+def _ts_bar(key: str, a, b) -> str:
+    """Decorative: the numbers either side already say it."""
+    if key == "fg":
+        # Two separate 0-100 tracks, as in the reference: a percentage is not
+        # a share of the two teams' total.
+        aw = max(0.0, min(100.0, a or 0.0))
+        bw = max(0.0, min(100.0, b or 0.0))
+        return (f'<div class="ts-bar ts-pct" aria-hidden="true">'
+                f'<span class="ts-trk"><i class="ts-l" style="width:{aw:.1f}%"></i></span>'
+                f'<span class="ts-trk ts-trk-r"><i class="ts-r" style="width:{bw:.1f}%"></i></span>'
+                f'</div>')
+    if a is None or b is None or (a + b) <= 0:
+        return '<div class="ts-bar" aria-hidden="true"></div>'
+    left = round(100 * a / (a + b), 1)
+    return (f'<div class="ts-bar" aria-hidden="true">'
+            f'<i class="ts-l" style="width:{left:.1f}%"></i>'
+            f'<i class="ts-r" style="width:{100 - left:.1f}%"></i></div>')
+
+
+def _ts_side(t: dict, cls: str) -> str:
+    rank = (f'<span class="ts-rk">{int(t["rank"])}</span>'
+            if t.get("rank") else "")
+    rec = f'<span class="ts-rec">{esc(t.get("record", ""))}</span>' \
+        if t.get("record") else ""
+    return (f'<span class="ts-sw {cls}" aria-hidden="true"></span>'
+            f'<span class="ts-nm">{rank}{esc(t.get("name", ""))}</span>{rec}')
+
+
+def _team_stats(ts: dict) -> str:
+    """The Team Stats table for one NCAAB game, or "" without both teams."""
+    away, home = (ts or {}).get("away"), (ts or {}).get("home")
+    if not away or not home:
+        return ""
+    colour = home.get("color") or ""
+    style = ""
+    if len(colour.lstrip("#")) == 6:
+        style = f' style="--ts-c:{_legible("#" + colour.lstrip("#"))}"'
+    rows = []
+    for key, label in TS_ROWS:
+        a = (away.get("stats") or {}).get(key)
+        b = (home.get("stats") or {}).get(key)
+        rows.append(
+            f'<tr class="ts-v"><td>{_ts_val(key, a)}</td>'
+            f'<th scope="row">{_(label)}</th>'
+            f'<td>{_ts_val(key, b)}</td></tr>'
+            f'<tr class="ts-b"><td colspan="3">{_ts_bar(key, a, b)}</td></tr>')
+    return (f'<section class="ts"{style}><table class="ts-t">'
+            f'<caption class="ts-cap">{_("ts_title")}</caption>'
+            f'<thead><tr>'
+            f'<th scope="col" class="ts-a">{_ts_side(away, "ts-sw-a")}</th>'
+            f'<th scope="col"><span class="ts-vh">{_("ts_stat")}</span></th>'
+            f'<th scope="col" class="ts-h">{_ts_side(home, "ts-sw-h")}</th>'
+            f'</tr></thead><tbody>{"".join(rows)}</tbody></table></section>')
+
+
 def _detail_panel(row: dict) -> str:
     """Everything behind the card's disclosure: the three blocks of 5a.
 
@@ -1770,6 +1840,10 @@ def _detail_panel(row: dict) -> str:
     the board page that is about it -- the strikeout numbers on the pitcher
     board, the prices on the face of the card.
     """
+    if row.get("league") == "ncaab":
+        ts = _team_stats(row.get("team_stats") or {})
+        if ts:
+            return f'<div class="pnl">{ts}</div>'
     detail = row.get("detail") or {}
     head = _scorecard(row, detail)
     sheet = _sv_sheet(row, detail, _PROPS.get(row.get("event_id") or ""))
@@ -2787,7 +2861,47 @@ def system_record(summary: dict) -> str:
     return head + tail
 
 
+def _test_team_stats() -> None:
+    """NCAAB detail: the Team Stats comparison from the owner's screenshot."""
+    ark = {"name": "Arkansas Razorbacks", "color": "9d2235", "rank": 12,
+           "record": "1-0", "games": 1,
+           "stats": {"pts": 106.0, "opp": 61.0, "fg": 55.2, "reb": 43.0,
+                     "ast": 19.0, "blk": 7.0, "stl": 16.0}}
+    uva = {"name": "Virginia Cavaliers", "color": "f84c1e", "rank": 9,
+           "record": "2-0", "games": 2,
+           "stats": {"pts": 93.0, "opp": 66.0, "fg": 51.0, "reb": 39.5,
+                     "ast": 21.5, "blk": 3.5, "stl": 15.0}}
+    row = {"event_id": "g", "league": "ncaab", "home": "Virginia Cavaliers",
+           "away": "Arkansas Razorbacks", "commence_time": "2026-11-09T18:00Z",
+           "model": {"home_win_prob": 0.6, "away_win_prob": 0.4},
+           "team_stats": {"away": ark, "home": uva}}
+    html = _detail_panel(row)
+    assert "<table" in html and "<caption" in html, "a real table"
+    labels = ["Points", "Points Against", "Field Goal %", "Rebounds",
+              "Assists", "Blocks", "Steals"]
+    pos = [html.index(f'<th scope="row">{l}</th>') for l in labels]
+    assert pos == sorted(pos), "rows in the example's order"
+    assert "106.0" in html and "93.0" in html and "55%" in html and "51%" in html
+    assert "Arkansas Razorbacks" in html and "Virginia Cavaliers" in html
+    assert ">12<" in html and ">9<" in html and "1-0" in html and "2-0" in html
+    assert html.index("Arkansas") < html.index("Virginia"), "away left, home right"
+    # Bars split by share: 106 / (106 + 93) = 53.3%.
+    assert "width:53.3%" in html and "width:46.7%" in html
+    assert html.count('aria-hidden="true"') >= 7, "bars are decorative"
+    # Home colour drives the right-hand bar.
+    assert "--ts-c:" in html
+    # A missing stat shows a dash and an empty bar, not a crash.
+    thin = dict(uva, stats=dict(uva["stats"], reb=None))
+    html2 = _detail_panel(dict(row, team_stats={"away": ark, "home": thin}))
+    assert "&ndash;" in html2
+    # No team sheet: the old panel, unchanged.
+    assert "<caption" not in _detail_panel(dict(row, team_stats=None))
+    # MLB never gets it.
+    assert "<caption" not in _detail_panel(dict(row, league="mlb"))
+
+
 def _self_test() -> None:
+    _test_team_stats()
     _test_ncaab_system()
     _test_position_badge()
     row = {

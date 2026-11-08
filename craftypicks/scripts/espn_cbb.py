@@ -108,8 +108,16 @@ def parse_event(ev) -> dict | None:
 
     def club(c):
         t = c.get("team") or {}
+        # curatedRank 99 is ESPN's "unranked".
+        rank = _int((c.get("curatedRank") or {}).get("current"))
+        records = c.get("records") or []
+        total = next((r for r in records if isinstance(r, dict)
+                      and r.get("type") in ("total", None)), None)
         return {"id": str(t.get("id", "")), "name": t.get("displayName", ""),
-                "abbr": t.get("abbreviation", "")}
+                "abbr": t.get("abbreviation", ""),
+                "color": str(t.get("color") or ""),
+                "rank": rank if rank and 0 < rank <= 25 else None,
+                "record": str((total or {}).get("summary") or "")}
 
     def first_half(c):
         ls = c.get("linescores") or []
@@ -153,8 +161,12 @@ def parse_box(summary) -> dict:
         st = {s.get("name"): s.get("displayValue")
               for s in t.get("statistics") or [] if isinstance(s, dict)}
         tov = st.get("totalTurnovers", st.get("turnovers"))
+        fg = str(st.get("fieldGoalsMade-fieldGoalsAttempted") or "").split("-")
         out[tid] = {"reb": _int(st.get("totalRebounds")),
                     "stl": _int(st.get("steals")), "tov": _int(tov),
+                    "ast": _int(st.get("assists")), "blk": _int(st.get("blocks")),
+                    "fgm": _int(fg[0]) if len(fg) == 2 else None,
+                    "fga": _int(fg[1]) if len(fg) == 2 else None,
                     "players": {}}
     for t in box.get("players") or []:
         tid = str((t.get("team") or {}).get("id", ""))
@@ -285,7 +297,8 @@ def bpi(season: int) -> dict[str, int]:
 # ------------------------------------------------------------------ fixtures
 def _team(tid, name, abbr):
     return {"id": tid, "displayName": name, "abbreviation": abbr,
-            "shortDisplayName": name.split()[0], "name": name.split()[-1]}
+            "shortDisplayName": name.split()[0], "name": name.split()[-1],
+            "color": "ceb888", "alternateColor": "000000"}
 
 
 def _fx_event(completed=True, odds=None, neutral=False, notes=None,
@@ -296,10 +309,14 @@ def _fx_event(completed=True, odds=None, neutral=False, notes=None,
         "status": {"type": {"completed": completed}},
         "competitors": [
             {"homeAway": "home", "team": _team("2509", "Purdue Boilermakers", "PUR"),
+             "curatedRank": {"current": 9},
+             "records": [{"type": "total", "summary": "2-0"},
+                         {"type": "home", "summary": "1-0"}],
              "score": "75" if completed else "0",
              "linescores": [{"value": 36.0, "period": 1}, {"value": 39.0, "period": 2}]
              if completed else []},
             {"homeAway": "away", "team": _team("2335", "Liberty Flames", "LIB"),
+             "curatedRank": {"current": 99},
              "score": "60" if completed else "0",
              "linescores": [{"value": 30.0, "period": 1}, {"value": 30.0, "period": 2}]
              if completed else []},
@@ -323,8 +340,11 @@ def _fx_summary():
                 "stats": [] if dnp else ["30", str(pts)] + ["0"] * 11}
 
     def team_stats(reb, stl, tov):
-        return [{"name": "totalRebounds", "displayValue": str(reb)},
+        return [{"name": "fieldGoalsMade-fieldGoalsAttempted", "displayValue": "24-54"},
+                {"name": "totalRebounds", "displayValue": str(reb)},
+                {"name": "assists", "displayValue": "8"},
                 {"name": "steals", "displayValue": str(stl)},
+                {"name": "blocks", "displayValue": "3"},
                 {"name": "turnovers", "displayValue": str(tov - 1)},
                 {"name": "totalTurnovers", "displayValue": str(tov)}]
 
@@ -379,7 +399,8 @@ def _self_test() -> None:
 
     # --- event
     g = parse_event(_fx_event(odds=fav_home))
-    assert g["home"] == {"id": "2509", "name": "Purdue Boilermakers", "abbr": "PUR"}
+    assert {k: g["home"][k] for k in ("id", "name", "abbr")} == {
+        "id": "2509", "name": "Purdue Boilermakers", "abbr": "PUR"}
     assert g["away"]["name"] == "Liberty Flames"
     assert (g["home_score"], g["away_score"]) == (75, 60)
     assert (g["home_1h"], g["away_1h"]) == (36, 30)
@@ -393,8 +414,15 @@ def _self_test() -> None:
     assert parse_event(conf)["postseason"] is True
     assert parse_event({}) is None and parse_event({"competitions": []}) is None
 
+    # --- team colour, AP rank (99 means unranked), record
+    assert g["home"]["color"] == "ceb888" and g["home"]["rank"] == 9
+    assert g["home"]["record"] == "2-0"
+    assert g["away"]["rank"] is None and g["away"]["record"] == ""
+
     # --- box
     b = parse_box(_fx_summary())
+    assert (b["2509"]["fgm"], b["2509"]["fga"]) == (24, 54)
+    assert b["2509"]["ast"] == 8 and b["2509"]["blk"] == 3
     assert b["2509"]["reb"] == 38 and b["2509"]["stl"] == 7
     assert b["2509"]["tov"] == 9, "totalTurnovers, not turnovers"
     assert b["2509"]["players"] == {"1": 22, "2": 15}, "DNP must be dropped"
