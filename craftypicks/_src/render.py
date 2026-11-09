@@ -1860,10 +1860,38 @@ def ncaaf_record(s: dict) -> str:
             f'<p class="pnl-note">{brier}</p></section>')
 
 
+def _ncaab_notes(row: dict) -> list[str]:
+    """The market spread and total, then BPI's line and projected score --
+    the same two lines a football card carries, from the board row itself."""
+    home, away = row.get("home", ""), row.get("away", "")
+    m = row.get("markets") or {}
+    notes = []
+    sp = (m.get("spreads") or {})
+    if sp.get("point") is not None:
+        home_pt = sp["point"] if sp.get("side_a", "home") == "home" else -sp["point"]
+        fav, pt = (home, home_pt) if home_pt <= 0 else (away, -home_pt)
+        text = "Spread: Pick'em" if pt == 0 else f"Spread: {fav} {pt:g}"
+        tot = (m.get("totals") or {}).get("point")
+        if tot is not None:
+            text += f" \u00b7 Total {tot:g}"
+        notes.append(text)
+    proj = (row.get("model") or {}).get("proj")
+    if proj:
+        margin = proj[0] - proj[1]
+        fav = home if margin > 0 else away
+        line = ("BPI line: Pick'em" if round(margin, 1) == 0
+                else f"BPI line: {fav} -{abs(margin):.1f}")
+        hi, lo = max(proj), min(proj)   # the favourite's score first
+        notes.append(f"{line} \u00b7 Projected {hi:.0f}-{lo:.0f} "
+                     f"(total {proj[0] + proj[1]:.0f})")
+    return notes
+
+
 def _line_note(row: dict) -> str:
     """The lines a football card carries on its face: the spread and total,
     and FPI's own line beside them."""
-    notes = row.get("line_note") or []
+    notes = row.get("line_note") or (_ncaab_notes(row)
+                                     if row.get("league") == "ncaab" else [])
     if not notes:
         return ""
     return ('<div class="cv-lines">'
@@ -3043,7 +3071,35 @@ def _test_ncaaf_card() -> None:
     assert '<th scope="row">Rebounds</th>' in nb and "Yards per Play" not in nb
 
 
+def _test_ncaab_lines() -> None:
+    """NCAAB cards print the market spread/total and our BPI line, like the
+    football cards, built from data already on the board row."""
+    row = {"event_id": "o1", "league": "ncaab", "commence_time": "2026-11-10T00:00Z",
+           "home": "Ohio State Buckeyes", "away": "Marshall Thundering Herd",
+           "markets": {"spreads": {"point": -25.5, "side_a": "home"},
+                       "totals": {"point": 162.5}},
+           "model": {"home_win_prob": 0.97, "away_win_prob": 0.03,
+                     "market_home_prob": 0.96, "disagreement": 1.0,
+                     "source": "bpi", "proj": [84.2, 63.1]}}
+    card = board_card(row)
+    assert "Spread: Ohio State Buckeyes -25.5 \u00b7 Total 162.5" in card, card
+    assert "BPI line: Ohio State Buckeyes -21.1 \u00b7 Projected 84-63 (total 147)" in card
+    # Away favourite; spread quoted on the away side.
+    away_fav = dict(row, markets={"spreads": {"point": -4.0, "side_a": "away"}},
+                    model=dict(row["model"], proj=[70.0, 74.5]))
+    c2 = board_card(away_fav)
+    assert "Spread: Marshall Thundering Herd -4" in c2
+    assert "BPI line: Marshall Thundering Herd -4.5 \u00b7 Projected 74-70" in c2, \
+        "the favourite's score first, after its name"
+    # No projection (Elo-rated): the spread line only.
+    c3 = board_card(dict(row, model=dict(row["model"], source="elo", proj=None)))
+    assert "Spread: Ohio State" in c3 and "BPI line" not in c3
+    # Other leagues untouched.
+    assert "Spread:" not in board_card(dict(row, league="nba"))
+
+
 def _self_test() -> None:
+    _test_ncaab_lines()
     _test_ncaaf_card()
     _test_team_stats()
     _test_ncaab_system()

@@ -391,6 +391,7 @@ def merge_model(rows: list[dict], rated: list[dict], source: str) -> int:
                              if market is not None and hp is not None else None),
             "suspect": bool(rating.get("suspect")),
             "source": source,
+            **({"proj": rating["proj"]} if rating.get("proj") else {}),
             "ev_home": model_ev(hp, h2h.get("best_home")),
             "ev_away": model_ev(ap, h2h.get("best_away")),
         }
@@ -470,6 +471,9 @@ MIN_CLUB_GAMES = 10
 # starting values; the league's own Brier record grades them.
 BPI_HOME_EDGE = 3.5
 BPI_SD = 11.0
+# Not Elo's 15-85%: a 20-point college favourite really does win ~96% of
+# the time, and capping it at 85 printed a fake "fade" on every big spread.
+BPI_FLOOR, BPI_CEIL = 0.01, 0.99
 
 
 def bpi_model(rows: list[dict], doc: dict) -> list[dict]:
@@ -492,9 +496,18 @@ def bpi_model(rows: list[dict], doc: dict) -> list[dict]:
         edge = 0.0 if f"{a}@{h}" in neutral else BPI_HOME_EDGE
         margin = values[h] - values[a] + edge
         hp = 0.5 * (1 + math.erf(margin / BPI_SD / math.sqrt(2)))
-        hp = round(max(rate_mlb.PROB_FLOOR, min(rate_mlb.PROB_CEIL, hp)), 4)
-        out.append({"event_id": row.get("event_id"), "home_win_prob": hp,
-                    "away_win_prob": round(1.0 - hp, 4)})
+        hp = round(max(BPI_FLOOR, min(BPI_CEIL, hp)), 4)
+        rated = {"event_id": row.get("event_id"), "home_win_prob": hp,
+                 "away_win_prob": round(1.0 - hp, 4)}
+        # Projected score: each offence against the other defence, around
+        # the league's points per team per game, home edge split evenly.
+        # Its margin equals the BPI margin above by construction.
+        od, avg = (doc or {}).get("offdef") or {}, (doc or {}).get("avg_pts")
+        if h in od and a in od and avg:
+            (oh, dh), (oa, da) = od[h], od[a]
+            rated["proj"] = [round(avg + oh - da + edge / 2, 1),
+                             round(avg + oa - dh - edge / 2, 1)]
+        out.append(rated)
     return out
 
 
@@ -575,6 +588,19 @@ def _test_bpi_model() -> None:
     want_b = round(0.5 * (1 + math.erf(3.0 / BPI_SD / math.sqrt(2))), 4)
     assert rated[1]["home_win_prob"] == want_b
     assert bpi_model(rows, {}) == []
+    # A 25-point favourite is not capped at Elo's 85%: that cap turned every
+    # big college favourite into a fake "fade". BPI is capped at 99%.
+    big = bpi_model([{"event_id": "z", "home": "Duke Blue Devils",
+                      "away": "Texas Longhorns"}],
+                    {"values": {"duke blue devils": 25.0, "texas longhorns": 3.5}})
+    assert 0.97 < big[0]["home_win_prob"] <= BPI_CEIL == 0.99, big
+    # Projected score from offence vs defence around the league average.
+    doc_p = dict(doc, offdef={"duke blue devils": [5.0, 3.0],
+                              "texas longhorns": [1.0, 1.0]}, avg_pts=72.0)
+    pr = bpi_model(rows[:1], doc_p)[0]["proj"]
+    # Duke 72 + 5 - 1 + 1.75 = 77.75; Texas 72 + 1 - 3 - 1.75 = 68.25.
+    assert pr == [77.8, 68.2], pr
+    assert "proj" not in bpi_model(rows[:1], doc)[0], "no off/def, no projection"
     # merge_model computes the edge from the market when a rating has none,
     # so a BPI or Elo card says "+9.9 EDGE" rather than always "NO EDGE".
     board_rows = [{"event_id": "a", "home": "H", "away": "A",
@@ -583,6 +609,9 @@ def _test_bpi_model() -> None:
                               "away_win_prob": 0.20}], "bpi")
     assert board_rows[0]["model"]["disagreement"] == 10.0
     assert board_rows[0]["model"]["source"] == "bpi"
+    merge_model(board_rows, [{"event_id": "a", "home_win_prob": 0.8,
+                              "away_win_prob": 0.2, "proj": [77.8, 68.2]}], "bpi")
+    assert board_rows[0]["model"]["proj"] == [77.8, 68.2], "projection reaches the card"
 
 
 def _self_test() -> None:

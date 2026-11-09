@@ -265,6 +265,8 @@ def parse_bpi_values(payload) -> dict[str, dict]:
     if "bpi" not in names:
         return {}
     vi = names.index("bpi")
+    oi = names.index("bpioffense") if "bpioffense" in names else None
+    di = names.index("bpidefense") if "bpidefense" in names else None
     out = {}
     for t in payload.get("teams") or []:
         team = t.get("team") or {}
@@ -273,8 +275,11 @@ def parse_bpi_values(payload) -> dict[str, dict]:
                    None)
         vals = (cat or {}).get("values") or []
         v = _num(vals[vi]) if vi < len(vals) else None
+        def at(i):
+            return _num(vals[i]) if i is not None and i < len(vals) else None
         if tid and v is not None:
-            out[tid] = {"bpi": v, "name": team.get("displayName", "")}
+            out[tid] = {"bpi": v, "name": team.get("displayName", ""),
+                        "off": at(oi), "def": at(di)}
     return out
 
 
@@ -501,8 +506,14 @@ def _self_test() -> None:
     bpi["categories"][0]["names"] = ["bpi", "bpirank"]
     bpi["teams"][0]["team"]["displayName"] = "Duke Blue Devils"
     bpi["teams"][1]["team"]["displayName"] = "Texas Longhorns"
-    assert parse_bpi_values(bpi) == {"150": {"bpi": 20.1, "name": "Duke Blue Devils"},
-                                     "251": {"bpi": 8.0, "name": "Texas Longhorns"}}
+    assert parse_bpi_values(bpi) == {
+        "150": {"bpi": 20.1, "name": "Duke Blue Devils", "off": None, "def": None},
+        "251": {"bpi": 8.0, "name": "Texas Longhorns", "off": None, "def": None}}
+    # Offence and defence components when ESPN sends them (off + def = bpi).
+    bpi["categories"][0]["names"] = ["bpi", "bpirank", "bpioffense", "bpidefense"]
+    bpi["teams"][0]["categories"][0]["values"] = [20.1, 1.0, 12.4, 7.7]
+    v = parse_bpi_values(bpi)["150"]
+    assert (v["off"], v["def"]) == (12.4, 7.7)
     assert parse_bpi_values({}) == {}
 
     # A failed call is None; a day with no games is [].

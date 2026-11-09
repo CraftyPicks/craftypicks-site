@@ -595,8 +595,16 @@ def daily(day, data, fetch=None) -> dict | None:
     _save(data / "ncaab_h2h.json", h2h, compact=True)
     neutral = sorted(f'{name_key(g["away"]["name"])}@{name_key(g["home"]["name"])}'
                      for g in slate or [] if g.get("neutral"))
+    # Offence/defence (for a projected score) and the league's points per
+    # team per game, which the projection is built around.
+    offdef = ({name_key(v["name"]): [v["off"], v["def"]] for v in raw_values.values()
+               if v.get("name") and v.get("off") is not None
+               and v.get("def") is not None} or stale.get("offdef") or {})
+    pts = [s for g in _finals(store) for s in (g["home_score"], g["away_score"])]
+    avg_pts = round(sum(pts) / len(pts), 1) if pts else stale.get("avg_pts")
     _save(data / "ncaab_bpi.json", {"season": season, "ranks": ranks,
-                                    "values": values, "neutral": neutral},
+                                    "values": values, "neutral": neutral,
+                                    "offdef": offdef, "avg_pts": avg_pts},
           compact=True)
     _save(data / "ncaab_teams.json", {"season": season,
                                       "teams": team_sheet(store, ranks)},
@@ -706,8 +714,9 @@ def _test_daily() -> None:
             return {"A": 55, "H": 48}
 
         def bpi_full(self, season):
-            return self.bpi(season), {"A": {"bpi": 2.5, "name": "Team A"},
-                                      "H": {"bpi": 4.0, "name": "Team H"}}
+            return self.bpi(season), {
+                "A": {"bpi": 2.5, "name": "Team A", "off": 1.5, "def": 1.0},
+                "H": {"bpi": 4.0, "name": "Team H", "off": None, "def": None}}
 
     store, h2h, bpi, tonight = _season()
     f = Fake()
@@ -742,6 +751,9 @@ def _test_daily() -> None:
         bdoc = json.loads((data / "ncaab_bpi.json").read_text())
         assert bdoc["values"] == {"team a": 2.5, "team h": 4.0}
         assert bdoc["neutral"] == [], "t1 is a true home game"
+        assert bdoc["offdef"] == {"team a": [1.5, 1.0]}, "only teams with both"
+        # League average points per team per game, from this season's finals.
+        assert bdoc["avg_pts"] == 65.0, bdoc["avg_pts"]
         sheet = json.loads((data / "ncaab_teams.json").read_text())
         assert sheet["teams"][name_key("Team A")]["stats"]["reb"] == 40.0
 

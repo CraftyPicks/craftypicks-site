@@ -2,6 +2,19 @@
 
 Saved ideas, newest first. Read this at the start of any session on the site.
 
+## Our own NCAAB offence/defence ratings (saved 2026-11-10, start mid-December)
+
+- **What:** tempo-free, opponent-adjusted offence and defence ratings (points
+  per 100 possessions, KenPom/Torvik style) built from the box scores already
+  stored in `data/ncaab_games.json`. Possessions = FGA - OREB + TO + 0.475*FTA
+  (needs FGA, OREB and FTA added to `espn_cbb.parse_box`: bump BOX_VERSION).
+  Solve adjusted ratings iteratively against opponents' ratings.
+- **Why:** an independent number to set against ESPN BPI; then blend the two
+  (average), which usually beats either alone. Projected score and line on
+  the card would use the blend.
+- **When:** ~mid-December, once most teams have 8-10 games. Grade it against
+  BPI on the same games before switching the card over.
+
 ## Per-team home-court edge (saved 2026-11-09)
 
 - **Why:** the average college home edge is ~4 points but varies a lot by
