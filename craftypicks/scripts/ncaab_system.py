@@ -393,7 +393,7 @@ def name_key(name: str) -> str:
     return " ".join(n.split())
 
 
-def team_sheet(store: dict) -> dict:
+def team_sheet(store: dict, bpi: dict | None = None) -> dict:
     """Season averages for the board's Team Stats panel, keyed by name_key.
 
     Points and points against come from every final; the box-score rows
@@ -417,6 +417,7 @@ def team_sheet(store: dict) -> dict:
         out[name_key(club["name"])] = {
             "id": tid, "name": club["name"], "color": club.get("color", ""),
             "rank": club.get("rank"), "record": f"{p['w']}-{p['l']}",
+            "bpi": (bpi or {}).get(tid),
             "games": p["w"] + p["l"],
             "stats": {"pts": p["ppg"], "opp": p["opp"],
                       "fg": p["fg"] if boxed else None,
@@ -575,7 +576,8 @@ def daily(day, data, fetch=None) -> dict | None:
     _save(data / "ncaab_bpi.json", {"season": season, "ranks": ranks},
           compact=True)
     _save(data / "ncaab_teams.json", {"season": season,
-                                      "teams": team_sheet(store)}, compact=True)
+                                      "teams": team_sheet(store, ranks)},
+          compact=True)
     _save(data / "ncaab_system.json", {
         "date": day.isoformat(),
         "date_label": f"{day:%A, %B %-d, %Y}",
@@ -794,8 +796,10 @@ def _test_team_sheet() -> None:
                              "ARK": box(43, 19, 7, 16, 40, 72)})
     attach_box(store, "s2", {"UVA": box(41, 23, 4, 16, 30, 58),
                              "X": box(30, 10, 1, 5, 20, 60)})
-    sheet = team_sheet(store)
+    sheet = team_sheet(store, {"UVA": 14})
     uva = sheet[name_key("Virginia Cavaliers")]
+    assert uva["bpi"] == 14
+    assert sheet[name_key("Arkansas Razorbacks")]["bpi"] is None, "no rank, no guess"
     assert uva["name"] == "Virginia Cavaliers" and uva["games"] == 2
     assert uva["rank"] == 8, "latest rank wins"
     assert uva["record"] == "1-1", "record is counted from the finals we hold"

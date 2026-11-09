@@ -1792,8 +1792,14 @@ def _ts_bar(key: str, a, b) -> str:
 def _ts_side(t: dict, cls: str) -> str:
     rank = (f'<span class="ts-rk">{int(t["rank"])}</span>'
             if t.get("rank") else "")
-    rec = f'<span class="ts-rec">{esc(t.get("record", ""))}</span>' \
-        if t.get("record") else ""
+    # Record and ESPN BPI rank on one muted line. The AP number (top 25)
+    # sits before the name as in the reference; BPI ranks all 365 teams, so
+    # every game shows a ranking whether or not either side is in the poll.
+    bits = [esc(t.get("record", ""))] if t.get("record") else []
+    if t.get("bpi"):
+        bits.append(f'BPI #{int(t["bpi"])}')
+    rec = (f'<span class="ts-rec">{" &middot; ".join(bits)}</span>'
+           if bits else "")
     return (f'<span class="ts-sw {cls}" aria-hidden="true"></span>'
             f'<span class="ts-nm">{rank}{esc(t.get("name", ""))}</span>{rec}')
 
@@ -2884,6 +2890,13 @@ def _test_team_stats() -> None:
     assert "106.0" in html and "93.0" in html and "55%" in html and "51%" in html
     assert "Arkansas Razorbacks" in html and "Virginia Cavaliers" in html
     assert ">12<" in html and ">9<" in html and "1-0" in html and "2-0" in html
+    # BPI under every team, ranked in the AP or not.
+    unranked = dict(ark, rank=None, bpi=88)
+    html_b = _detail_panel(dict(row, team_stats={"away": unranked,
+                                                 "home": dict(uva, bpi=112)}))
+    assert "BPI #88" in html_b and "BPI #112" in html_b
+    assert ">12<" not in html_b, "no AP number for an unranked team"
+    assert "BPI #" not in _detail_panel(row), "no BPI on file, nothing shown"
     assert html.index("Arkansas") < html.index("Virginia"), "away left, home right"
     # Bars split by share: 106 / (106 + 93) = 53.3%.
     assert "width:53.3%" in html and "width:46.7%" in html
