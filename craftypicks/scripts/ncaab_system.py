@@ -114,6 +114,7 @@ def profiles(store: dict) -> dict:
             "box": 0, "_reb": [], "_stl": [], "_tov": [], "_forced": [],
             "_players": {}, "_pts": [], "_opp": [], "_ast": [], "_blk": [],
             "_fgm": 0, "_fga": 0, "w": 0, "l": 0, "_ats": [0, 0, 0],
+            "_h1f": [], "_h1a": [],
             "ats": {"home": [0, 0], "away": [0, 0]},
             "form": {"home": [], "away": []}})
 
@@ -125,6 +126,9 @@ def profiles(store: dict) -> dict:
             t["_pts"].append(mine)
             t["_opp"].append(theirs)
             t["w" if mine > theirs else "l"] += 1
+            if g.get(f"{role}_1h") is not None and g.get(f"{other}_1h") is not None:
+                t["_h1f"].append(g[f"{role}_1h"])
+                t["_h1a"].append(g[f"{other}_1h"])
             # Overall ATS for display: every game with a line, neutral too.
             # (The venue splits below, used by the checks, skip neutral.)
             if g.get("spread_home") is not None:
@@ -170,6 +174,7 @@ def profiles(store: dict) -> dict:
             "blk": _mean(t["_blk"]),
             "fg": round(100 * t["_fgm"] / t["_fga"], 1) if t["_fga"] else None,
             "w": t["w"], "l": t["l"], "ats_all": t["_ats"],
+            "h1": [_mean(t["_h1f"]), _mean(t["_h1a"])] if t["_h1f"] else None,
             "ats": t["ats"], "form": t["form"]}
     return out
 
@@ -425,7 +430,7 @@ def team_sheet(store: dict, bpi: dict | None = None) -> dict:
             "rank": club.get("rank"), "record": f"{p['w']}-{p['l']}",
             "bpi": (bpi or {}).get(tid),
             "games": p["w"] + p["l"],
-            "stats": {"ats": p["ats_all"],
+            "stats": {"ats": p["ats_all"], "h1": p["h1"],
                       "pts": p["ppg"], "opp": p["opp"],
                       "fg": p["fg"] if boxed else None,
                       "reb": p["reb"] if boxed else None,
@@ -816,6 +821,12 @@ def _test_team_sheet() -> None:
     assert st["reb"] == 39.5 and st["ast"] == 21.5 and st["blk"] == 3.5
     assert st["stl"] == 15.0
     assert st["fg"] == round(100 * 55 / 108, 1), "FG% from totals, not a mean of games"
+    # First half: average points scored and allowed before halftime.
+    store["games"]["s1"].update(home_1h=30, away_1h=50)
+    store["games"]["s2"].update(home_1h=41, away_1h=25)
+    h1 = team_sheet(store)[name_key("Virginia Cavaliers")]["stats"]["h1"]
+    assert h1 == [35.5, 37.5], h1
+    assert team_sheet(store)[name_key("Arkansas Razorbacks")]["stats"]["h1"] == [50.0, 30.0]
     # ATS over every game with a line, neutral sites included; W-L-P.
     store["games"]["s1"]["spread_home"] = -3.0    # UVA lost by 40 laying 3
     store["games"]["s2"]["spread_home"] = -20.0   # UVA won by 20 laying 20: push

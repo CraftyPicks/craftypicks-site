@@ -1088,6 +1088,7 @@ T = {
     "ts_title": {"en": "Team stats", "es": "Estadísticas de equipo"},
     "ts_stat":  {"en": "Stat", "es": "Estadística"},
     "ts_ats":   {"en": "ATS", "es": "ATS"},
+    "ts_h1":    {"en": "1st Half", "es": "1.ª mitad"},
     "ts_pts":   {"en": "Points", "es": "Puntos"},
     "ts_opp":   {"en": "Points Against", "es": "Puntos en contra"},
     "ts_fg":    {"en": "Field Goal %", "es": "% de tiros de campo"},
