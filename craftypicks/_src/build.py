@@ -67,7 +67,13 @@ PAGES: dict[str, Page] = {
     "about.html":    Page("about.html",    "about",    "about",    None),
     "pitchers.html": Page("pitchers.html", "pitchers", "pitchers", "mlb"),
     "slate.html":    Page("slate.html",    "slate",    "slate",    None),
+    # NCAAF rides the shared league template but is not a leagues.py league:
+    # that list decides what the Odds API buys, and this board buys nothing.
+    "ncaaf/index.html": Page("ncaaf/index.html", "league", "ncaaf", "ncaaf"),
 }
+
+# Free (ESPN-only) leagues, shown after the Odds-API leagues in the nav.
+FREE_LEAGUES = (("ncaaf", "NCAAF"),)
 
 
 def page_url(page: Page) -> str:
@@ -121,6 +127,8 @@ VIEWS: dict[str, list[tuple[str, str]]] = {
             + _EXTRA_VIEWS.get(short, []))
     for short in leagues.ORDER
 }
+VIEWS.update({short: [(f"{short}/index.html", "nav_board")]
+              for short, _label in FREE_LEAGUES})
 
 
 def sport_row(page: Page, lang: str) -> str:
@@ -138,6 +146,8 @@ def sport_row(page: Page, lang: str) -> str:
     for short in leagues.ORDER:
         items.append((f"{short}/index.html", leagues.LEAGUES[short].label,
                       short))
+    for short, label in FREE_LEAGUES:
+        items.append((f"{short}/index.html", label, short))
     out = []
     for href, label, key in items:
         active = " on" if (page.key == key or page.league == key) else ""
@@ -182,6 +192,16 @@ def attach_team_stats(board_doc: dict, teams: dict) -> None:
             g["team_stats"] = {"away": away, "home": home}
 
 
+def add_ncaaf(board_doc: dict, ncaaf_doc: dict) -> None:
+    """Put the ESPN-only NCAAF week beside the priced leagues so it renders
+    on the shared league template. Nothing here touches the Odds API."""
+    games = (ncaaf_doc or {}).get("games") or []
+    board_doc.setdefault("leagues", {})["ncaaf"] = {
+        "label": "NCAAF", "games": games,
+        "summary": (ncaaf_doc or {}).get("summary") or {}}
+    board_doc.setdefault("counts", {})["ncaaf"] = len(games)
+
+
 def tonight_rows(doc: dict) -> list[dict]:
     """Every league's games merged into one list, earliest first.
 
@@ -191,7 +211,10 @@ def tonight_rows(doc: dict) -> list[dict]:
     """
     rows = []
     for entry in (doc.get("leagues") or {}).values():
-        rows.extend(entry.get("games") or [])
+        rows.extend(g for g in entry.get("games") or []
+                    # NCAAF lists a whole week; Tonight wants tonight.
+                    if g.get("league") != "ncaaf"
+                    or g.get("date") == doc.get("date"))
     rows.sort(key=lambda r: (r.get("commence_time") or "",
                              r.get("home") or ""))
     return rows
@@ -226,6 +249,8 @@ TITLES = {
                   "es": f"Hits — {config.SITE_NAME}"},
     "f7.html": {"en": f"First 7 innings — {config.SITE_NAME}",
                 "es": f"Primeras 7 entradas — {config.SITE_NAME}"},
+    "ncaaf/index.html": {"en": f"NCAAF board — {config.SITE_NAME}",
+                         "es": f"Tablero NCAAF — {config.SITE_NAME}"},
     "ncaab/system.html": {"en": f"NCAAB System — {config.SITE_NAME}",
                           "es": f"Sistema NCAAB — {config.SITE_NAME}"},
     "ncaab/first-half.html": {"en": f"NCAAB 1st Half — {config.SITE_NAME}",
@@ -304,8 +329,9 @@ def footer_html(lang: str, year: int, up: str = "",
     # The league boards are what the site is now, so the footer lists them
     # rather than a card that no longer exists.
     board_links = "\n        ".join(
-        f'<a href="{up}{short}/index.html">{leagues.LEAGUES[short].label}</a>'
-        for short in leagues.ORDER)
+        f'<a href="{up}{short}/index.html">{label}</a>'
+        for short, label in ([(s, leagues.LEAGUES[s].label) for s in leagues.ORDER]
+                             + list(FREE_LEAGUES)))
     return f"""
 <footer>
   <div class="wrap">
@@ -380,6 +406,7 @@ def build() -> None:
     slate_doc = load("slate.json", {"date_label": "", "games": [], "summary": {}})
     pitch_doc = load("pitchers.json", {"date_label": "", "pitchers": [], "summary": {}})
     board_doc = load("board.json", {})
+    add_ncaaf(board_doc, load("ncaaf.json", {}))
     attach_team_stats(board_doc,
                       load("ncaab_teams.json", {}).get("teams") or {})
     batter_doc = load("batters.json",
@@ -562,8 +589,8 @@ def build() -> None:
                     d=_board_day(board_doc.get("date", ""), lang))
             if page.league:
                 entry = (board_doc.get("leagues") or {}).get(page.league, {})
-                page_tokens["{{LEAGUE_NAME}}"] = entry.get(
-                    "label", leagues.LEAGUES[page.league].label)
+                page_tokens["{{LEAGUE_NAME}}"] = entry.get("label") or (
+                    leagues.LEAGUES[page.league].label)
                 page_tokens["{{LEAGUE_BOARD}}"] = R.board_cards(
                     entry.get("games") or [])
                 page_tokens["{{BOARD_EYEBROW}}"] = i18n.t(
@@ -575,8 +602,9 @@ def build() -> None:
                 # such page and, until now, nothing scoring it at all.
                 scored = (rating_summaries.get(page.league) or {}
                           if page.league != "mlb" else {})
-                page_tokens["{{LEAGUE_CALIBRATION}}"] = \
-                    R.calibration_section(scored)
+                page_tokens["{{LEAGUE_CALIBRATION}}"] = (
+                    R.ncaaf_record(entry.get("summary") or {})
+                    if page.league == "ncaaf" else R.calibration_section(scored))
             if page.body == "hits":
                 # {{DATE_LABEL}} has no site-wide value any more; each body
                 # that shows a date supplies its own here.
@@ -696,6 +724,18 @@ def _self_test() -> None:
     ts = doc["leagues"]["ncaab"]["games"][0]["team_stats"]
     assert ts["home"]["name"] == "St John's Red Storm" and ts["away"]
     assert "team_stats" not in doc["leagues"]["nba"]["games"][0]
+
+    # NCAAF: its own page and tab, but never in leagues.LEAGUES (that list
+    # buys odds).
+    assert "ncaaf/index.html" in PAGES and PAGES["ncaaf/index.html"].league == "ncaaf"
+    assert "ncaaf/index.html" in TITLES and "ncaaf" in VIEWS
+    assert "ncaaf" not in leagues.LEAGUES
+    assert 'href="ncaaf/index.html"' in sport_row(PAGES["index.html"], "en")
+    nf = {"leagues": {}}
+    add_ncaaf(nf, {"date": "2026-11-09", "games": [{"event_id": "x"}],
+                   "summary": {"graded": 0}})
+    assert nf["leagues"]["ncaaf"]["games"] == [{"event_id": "x"}]
+    assert nf["counts"]["ncaaf"] == 1
 
     # The NCAAB System tabs are reachable from the NCAAB view row.
     for out in ("ncaab/system.html", "ncaab/first-half.html"):

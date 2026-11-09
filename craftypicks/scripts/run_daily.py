@@ -114,6 +114,16 @@ except Exception as _ns_err:                                 # noqa: BLE001
     print(f"!! ncaab system unavailable ({_ns_err})", file=sys.stderr)
 
 
+# The NCAAF board. ESPN only; imported on its own so a failure costs this
+# board alone. Not a league in leagues.py on purpose: that list decides what
+# the Odds API buys, and this board buys nothing.
+try:
+    import ncaaf as ncaaf_mod  # noqa: E402
+except Exception as _nf_err:                                 # noqa: BLE001
+    ncaaf_mod = None
+    print(f"!! ncaaf board unavailable ({_nf_err})", file=sys.stderr)
+
+
 def load_json(path: Path, default):
     if not path.exists():
         return default
@@ -281,6 +291,20 @@ def main() -> int:
                       f"fetched, {ns['games']} in the season store")
         except Exception as e:                               # noqa: BLE001
             print(f"!! ncaab system failed ({type(e).__name__}: {e})",
+                  file=sys.stderr)
+
+    # ------------------------------------------------ 0c. NCAAF board
+    # Next week's FBS games, FPI against the market, graded daily. ESPN only,
+    # idempotent, off February-July without a network call.
+    if ncaaf_mod is not None:
+        try:
+            nf = ncaaf_mod.daily(now.date(), DATA)
+            if nf:
+                print(f"-- ncaaf: {nf['games']} game(s) on the board, "
+                      f"{nf['graded']} graded, {nf['boxes']} box score(s) "
+                      f"fetched, {nf['stored']} in the season store")
+        except Exception as e:                               # noqa: BLE001
+            print(f"!! ncaaf board failed ({type(e).__name__}: {e})",
                   file=sys.stderr)
 
     # Already bought odds today? Then this is a retry of a scheduled run that

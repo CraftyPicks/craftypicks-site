@@ -165,11 +165,16 @@ def _nickname(team: str | None) -> str:
     return parts[-1]
 
 
+# College leagues name clubs in full; "Tigers" alone is LSU, Auburn,
+# Clemson, Memphis, Mizzou...
+COLLEGE = ("ncaab", "ncaaf")
+
+
 def _name(team: str | None, row: dict | None) -> str:
     """How a club is named on a card. College basketball in full -- "Flames"
     is Liberty and UIC, "Panthers" is Pitt, Georgia State, Northern Iowa and
     FIU -- and every other league by nickname, which is unambiguous there."""
-    if (row or {}).get("league") == "ncaab":
+    if (row or {}).get("league") in COLLEGE:
         return str(team or "")
     return _nickname(team)
 
@@ -1273,7 +1278,7 @@ def board_card(row: dict) -> str:
                 if mkt is not None else "")
         body = f"""
           <div class="cv-row">
-            <span class="cv-lab">{_("cv_winprob", who=esc(_name(who, row) if row.get("league") == "ncaab" else _abbr(who)))}</span>
+            <span class="cv-lab">{_("cv_winprob", who=esc(_name(who, row) if row.get("league") in COLLEGE else _abbr(who)))}</span>
             <span class="cv-pct">{ours * 100:.0f}%</span>
           </div>
           <div class="cv-bar"><i class="cv-fill" style="width:{fill:.1f}%"></i>{tick}</div>
@@ -1289,6 +1294,7 @@ def board_card(row: dict) -> str:
             <span class="cv-time">{esc(tip)}</span>
           </div>
           {body}
+          {_line_note(row)}
           {_disclosure(row)}
         </div>
       </article>"""
@@ -1821,15 +1827,50 @@ def _ts_side(t: dict, cls: str) -> str:
     # sits before the name as in the reference; BPI ranks all 365 teams, so
     # every game shows a ranking whether or not either side is in the poll.
     bits = [esc(t.get("record", ""))] if t.get("record") else []
-    if t.get("bpi"):
-        bits.append(f'BPI #{int(t["bpi"])}')
+    power = t.get("power_rank") or t.get("bpi")
+    if power:
+        bits.append(f'{esc(t.get("rank_label") or "BPI")} #{int(power)}')
     rec = (f'<span class="ts-rec">{" &middot; ".join(bits)}</span>'
            if bits else "")
     return (f'<span class="ts-sw {cls}" aria-hidden="true"></span>'
             f'<span class="ts-nm">{rank}{esc(t.get("name", ""))}</span>{rec}')
 
 
-def _team_stats(ts: dict) -> str:
+# Football's panel is narrower on purpose: the owner bets on ATS, scoring
+# and turnovers; yards per play is the one efficiency number added.
+TS_ROWS_CFB = (("ats", "ts_ats"), ("pts", "ts_pts"), ("opp", "ts_opp"),
+               ("giv", "ts_giv"), ("tak", "ts_tak"), ("ypp", "ts_ypp"))
+
+
+def ncaaf_record(s: dict) -> str:
+    """How the NCAAF board's FPI number has done: the side it liked against
+    the spread, and its Brier score beside the market's (lower is better)."""
+    s = s or {}
+    if not s.get("graded"):
+        return (f'<section class="wrap board-page"><p class="pnl-note">'
+                f'{_("cf_none")}</p></section>')
+    w, l, p = (s.get("fpi_ats") or [0, 0, 0])
+    ats = f"{w}-{l}" + (f"-{p}" if p else "")
+    brier = (_("cf_brier", m=f'{s["brier"]:.3f}',
+                k=f'{s["market_brier"]:.3f}' if s.get("market_brier") is not None
+                else "&ndash;") if s.get("brier") is not None else "")
+    return (f'<section class="wrap board-page"><h2>{_("cf_graded")}</h2>'
+            f'<p class="sys-rec"><b>{_("cf_ats", r=ats)}</b> &middot; '
+            f'{_("cf_n", n=s["graded"])}</p>'
+            f'<p class="pnl-note">{brier}</p></section>')
+
+
+def _line_note(row: dict) -> str:
+    """The lines a football card carries on its face: the spread and total,
+    and FPI's own line beside them."""
+    notes = row.get("line_note") or []
+    if not notes:
+        return ""
+    return ('<div class="cv-lines">'
+            + "".join(f"<p>{esc(n)}</p>" for n in notes) + "</div>")
+
+
+def _team_stats(ts: dict, spec=None) -> str:
     """The Team Stats table for one NCAAB game, or "" without both teams."""
     away, home = (ts or {}).get("away"), (ts or {}).get("home")
     if not away or not home:
@@ -1839,7 +1880,7 @@ def _team_stats(ts: dict) -> str:
     if len(colour.lstrip("#")) == 6:
         style = f' style="--ts-c:{_legible("#" + colour.lstrip("#"))}"'
     rows = []
-    for key, label in TS_ROWS:
+    for key, label in (spec or TS_ROWS):
         a = (away.get("stats") or {}).get(key)
         b = (home.get("stats") or {}).get(key)
         if key in ("ats", "h1") and a is None and b is None:
@@ -1873,8 +1914,9 @@ def _detail_panel(row: dict) -> str:
     the board page that is about it -- the strikeout numbers on the pitcher
     board, the prices on the face of the card.
     """
-    if row.get("league") == "ncaab":
-        ts = _team_stats(row.get("team_stats") or {})
+    if row.get("league") in COLLEGE:
+        ts = _team_stats(row.get("team_stats") or {},
+                         TS_ROWS_CFB if row.get("league") == "ncaaf" else None)
         if ts:
             return f'<div class="pnl">{ts}</div>'
     detail = row.get("detail") or {}
@@ -2961,7 +3003,48 @@ def _test_team_stats() -> None:
     assert "<caption" not in _detail_panel(dict(row, league="mlb"))
 
 
+def _test_ncaaf_card() -> None:
+    """NCAAF: full names, the spread and FPI lines on the face, and a
+    football Team Stats panel behind Game Detail."""
+    def side(name, rank, ats, pts, opp, giv, tak, ypp):
+        return {"name": name, "color": "9e1b32", "rank": rank, "record": "8-2",
+                "power_rank": 3, "rank_label": "FPI",
+                "stats": {"ats": ats, "pts": pts, "opp": opp, "giv": giv,
+                          "tak": tak, "ypp": ypp}}
+    row = {"event_id": "f1", "league": "ncaaf", "commence_time": "2026-11-15T00:30Z",
+           "home": "Alabama Crimson Tide", "away": "LSU Tigers",
+           "model": {"home_win_prob": 0.81, "away_win_prob": 0.19,
+                     "market_home_prob": 0.72},
+           "line_note": ["Spread: Alabama Crimson Tide -6.5 \u00b7 Total 52.5",
+                         "FPI line: Alabama Crimson Tide -12.5"],
+           "team_stats": {
+               "away": side("LSU Tigers", 14, [5, 4, 0], 30.2, 22.1, 1.4, 1.1, 6.1),
+               "home": side("Alabama Crimson Tide", 3, [6, 3, 1], 35.0, 18.4, 0.9, 1.8, 6.8)}}
+    card = board_card(row)
+    assert "LSU Tigers <span>@</span> Alabama Crimson Tide" in card
+    assert "Spread: Alabama Crimson Tide -6.5 \u00b7 Total 52.5" in card
+    assert "FPI line: Alabama Crimson Tide -12.5" in card
+    labels = ["ATS", "Points", "Points Against", "Turnovers", "Takeaways",
+              "Yards per Play"]
+    pos = [card.index(f'<th scope="row">{l}</th>') for l in labels]
+    assert pos == sorted(pos), "football rows, in order"
+    assert '<th scope="row">Rebounds</th>' not in card
+    assert "FPI #3" in card and "BPI #" not in card
+    assert ">6.8<" in card and ">0.9<" in card
+    # The board's record: FPI's side against the spread, and Brier vs market.
+    rec = ncaaf_record({"graded": 10, "pending": 2, "brier": 0.1812,
+                        "market_brier": 0.1904, "fpi_ats": [6, 4, 0]})
+    assert "6-4" in rec and "0.181" in rec and "0.190" in rec and "10" in rec
+    assert "No graded games yet" in ncaaf_record({"graded": 0})
+    # NCAAB keeps its own rows.
+    nb = board_card(dict(row, league="ncaab", line_note=[], team_stats={
+        "away": {"name": "A", "stats": {"reb": 30.0}},
+        "home": {"name": "B", "stats": {"reb": 33.0}}}))
+    assert '<th scope="row">Rebounds</th>' in nb and "Yards per Play" not in nb
+
+
 def _self_test() -> None:
+    _test_ncaaf_card()
     _test_team_stats()
     _test_ncaab_system()
     _test_position_badge()

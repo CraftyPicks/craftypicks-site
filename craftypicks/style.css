@@ -1497,3 +1497,9 @@ footer{background:var(--bg-2);padding:56px 0 40px}
   overflow:hidden}
 .ts-trk-r{justify-content:flex-end}
 .ts-pct .ts-r{border-radius:0 5px 5px 0}
+
+/* NCAAF card: ESPN's spread and total, then FPI's own line, under the win
+   probability. Small and muted -- reference lines, not the headline. */
+.cv-lines{margin:4px 0 14px;font-size:12.5px;line-height:1.5;color:var(--muted)}
+.cv-lines p{margin:0}
+.cv-lines p+p{color:var(--txt)}

@@ -41,6 +41,7 @@ def _self_test() -> None:
         # ESPN only. Above the guard so a retry still grades last night's
         # plays and picks up a line that was not posted at the first run.
         ("the NCAAB System tabs", r"ncaab_sys\.daily\("),
+        ("the NCAAF board (ESPN only, never the Odds API)", r"ncaaf_mod\.daily\("),
     ):
         at = line_of(pattern)
         assert at < guard, (
