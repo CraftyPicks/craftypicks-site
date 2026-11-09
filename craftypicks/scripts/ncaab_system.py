@@ -113,7 +113,7 @@ def profiles(store: dict) -> dict:
         return acc.setdefault(tid, {
             "box": 0, "_reb": [], "_stl": [], "_tov": [], "_forced": [],
             "_players": {}, "_pts": [], "_opp": [], "_ast": [], "_blk": [],
-            "_fgm": 0, "_fga": 0, "w": 0, "l": 0,
+            "_fgm": 0, "_fga": 0, "w": 0, "l": 0, "_ats": [0, 0, 0],
             "ats": {"home": [0, 0], "away": [0, 0]},
             "form": {"home": [], "away": []}})
 
@@ -125,6 +125,12 @@ def profiles(store: dict) -> dict:
             t["_pts"].append(mine)
             t["_opp"].append(theirs)
             t["w" if mine > theirs else "l"] += 1
+            # Overall ATS for display: every game with a line, neutral too.
+            # (The venue splits below, used by the checks, skip neutral.)
+            if g.get("spread_home") is not None:
+                line_all = g["spread_home"] if role == "home" else -g["spread_home"]
+                edge_all = mine - theirs + line_all
+                t["_ats"][0 if edge_all > 0 else 1 if edge_all < 0 else 2] += 1
             if not g.get("neutral"):
                 t["form"][role].insert(0, "W" if mine > theirs else "L")
                 sp = g.get("spread_home")
@@ -163,7 +169,7 @@ def profiles(store: dict) -> dict:
             "opp": _mean(t["_opp"]), "ast": _mean(t["_ast"]),
             "blk": _mean(t["_blk"]),
             "fg": round(100 * t["_fgm"] / t["_fga"], 1) if t["_fga"] else None,
-            "w": t["w"], "l": t["l"],
+            "w": t["w"], "l": t["l"], "ats_all": t["_ats"],
             "ats": t["ats"], "form": t["form"]}
     return out
 
@@ -419,7 +425,8 @@ def team_sheet(store: dict, bpi: dict | None = None) -> dict:
             "rank": club.get("rank"), "record": f"{p['w']}-{p['l']}",
             "bpi": (bpi or {}).get(tid),
             "games": p["w"] + p["l"],
-            "stats": {"pts": p["ppg"], "opp": p["opp"],
+            "stats": {"ats": p["ats_all"],
+                      "pts": p["ppg"], "opp": p["opp"],
                       "fg": p["fg"] if boxed else None,
                       "reb": p["reb"] if boxed else None,
                       "ast": p["ast"] if boxed else None,
@@ -809,6 +816,12 @@ def _test_team_sheet() -> None:
     assert st["reb"] == 39.5 and st["ast"] == 21.5 and st["blk"] == 3.5
     assert st["stl"] == 15.0
     assert st["fg"] == round(100 * 55 / 108, 1), "FG% from totals, not a mean of games"
+    # ATS over every game with a line, neutral sites included; W-L-P.
+    store["games"]["s1"]["spread_home"] = -3.0    # UVA lost by 40 laying 3
+    store["games"]["s2"]["spread_home"] = -20.0   # UVA won by 20 laying 20: push
+    sheet2 = team_sheet(store)
+    assert sheet2[name_key("Virginia Cavaliers")]["stats"]["ats"] == [0, 1, 1]
+    assert sheet2[name_key("Arkansas Razorbacks")]["stats"]["ats"] == [1, 0, 0]
     ark = sheet[name_key("Arkansas Razorbacks")]
     assert ark["stats"]["pts"] == 106.0 and ark["stats"]["opp"] == 66.0
     # A team with a final but no box score still gets points, not box stats.

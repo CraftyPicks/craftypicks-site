@@ -1759,12 +1759,24 @@ def _sv_sheet(row: dict, detail: dict, props=None) -> str:
 # The owner's reference is ESPN's Team Stats comparison: value / label /
 # value, a split bar under each, away striped on the left, home in its own
 # colour on the right. Season averages from our own ESPN box-score store.
-TS_ROWS = (("pts", "ts_pts"), ("opp", "ts_opp"), ("fg", "ts_fg"),
+TS_ROWS = (("ats", "ts_ats"),
+           ("pts", "ts_pts"), ("opp", "ts_opp"), ("fg", "ts_fg"),
            ("reb", "ts_reb"), ("ast", "ts_ast"), ("blk", "ts_blk"),
            ("stl", "ts_stl"))
 
 
+def _ats_rate(v):
+    """Cover rate in percent, pushes left out; None with no decided games."""
+    if not v or (v[0] + v[1]) == 0:
+        return None
+    return 100 * v[0] / (v[0] + v[1])
+
+
 def _ts_val(key: str, v) -> str:
+    if key == "ats":
+        if not v or sum(v) == 0:
+            return "&ndash;"
+        return f"{v[0]}-{v[1]}" + (f"-{v[2]}" if v[2] else "")
     if v is None:
         return "&ndash;"
     return f"{v:.0f}%" if key == "fg" else f"{v:.1f}"
@@ -1772,6 +1784,9 @@ def _ts_val(key: str, v) -> str:
 
 def _ts_bar(key: str, a, b) -> str:
     """Decorative: the numbers either side already say it."""
+    if key == "ats":
+        # Cover rate on the same two 0-100 tracks as FG%.
+        a, b, key = _ats_rate(a), _ats_rate(b), "fg"
     if key == "fg":
         # Two separate 0-100 tracks, as in the reference: a percentage is not
         # a share of the two teams' total.
@@ -1817,6 +1832,8 @@ def _team_stats(ts: dict) -> str:
     for key, label in TS_ROWS:
         a = (away.get("stats") or {}).get(key)
         b = (home.get("stats") or {}).get(key)
+        if key == "ats" and a is None and b is None:
+            continue    # a sheet written before ATS was tracked
         rows.append(
             f'<tr class="ts-v"><td>{_ts_val(key, a)}</td>'
             f'<th scope="row">{_(label)}</th>'
@@ -2903,6 +2920,16 @@ def _test_team_stats() -> None:
     assert html.count('aria-hidden="true"') >= 7, "bars are decorative"
     # Home colour drives the right-hand bar.
     assert "--ts-c:" in html
+    # ATS row, first: W-L (push only when there is one), cover-rate bars.
+    at = _detail_panel(dict(row, team_stats={
+        "away": dict(ark, stats=dict(ark["stats"], ats=[3, 1, 0])),
+        "home": dict(uva, stats=dict(uva["stats"], ats=[1, 2, 1]))}))
+    assert at.index('<th scope="row">ATS</th>') < at.index('<th scope="row">Points</th>')
+    assert ">3-1<" in at and ">1-2-1<" in at
+    assert "width:75.0%" in at and "width:33.3%" in at, "cover rate, pushes left out"
+    no_ats = _detail_panel(dict(row, team_stats={
+        "away": dict(ark, stats=dict(ark["stats"], ats=[0, 0, 0])), "home": uva}))
+    assert '<th scope="row">ATS</th>' in no_ats and "&ndash;" in no_ats
     # A missing stat shows a dash and an empty bar, not a crash.
     thin = dict(uva, stats=dict(uva["stats"], reb=None))
     html2 = _detail_panel(dict(row, team_stats={"away": ark, "home": thin}))
