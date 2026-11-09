@@ -733,6 +733,17 @@ def main() -> int:
                           f"{len(stored)} stored result(s)"
                           + (f", {skipped} skipped for unknown or thin clubs"
                              if skipped else ""))
+                # College basketball until Elo has 10 games a club: ESPN BPI
+                # rates whatever Elo skipped (free; saved by the System run
+                # above). Elo takes each game over as soon as it can.
+                if short == "ncaab":
+                    unrated = [r for r in rows if not r.get("model")]
+                    by_bpi = board_mod.bpi_model(
+                        unrated, load_json(DATA / "ncaab_bpi.json", {}))
+                    nb = (board_mod.merge_model(rows, by_bpi, "bpi")
+                          if by_bpi else 0)
+                    print(f"-- ratings: {nb} ncaab game(s) rated from ESPN BPI"
+                          f" ({len(unrated) - nb} unmatched)")
                 # MLB fills these from StatsAPI in slate.py. Every other
                 # league has no free source, so it uses the same stored
                 # finals the Elo model just read.

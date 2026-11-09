@@ -72,6 +72,11 @@ def _self_test() -> None:
         "the early return after the guard does not rebuild the pages, so "
         "anything graded on a retry would not reach the site until tomorrow")
 
+    # NCAAB: Elo first, BPI only for what Elo left unrated -- never the
+    # other way round, or BPI would overwrite a game Elo can rate.
+    assert line_of(r"board_mod\.elo_model\(") < line_of(r"board_mod\.bpi_model\("), \
+        "BPI must fill in after Elo, not before"
+
     # Every MLB board run_boards builds must ALSO be built here. The two jobs
     # are each other's backup: run_boards runs on three :30 crons that
     # GitHub drops on busy days, and this one runs on its own schedule.

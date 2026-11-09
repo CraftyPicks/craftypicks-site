@@ -539,8 +539,16 @@ def daily(day, data, fetch=None) -> dict | None:
 
     # 3. BPI. Yesterday's table beats none.
     bpi_doc = _load(data / "ncaab_bpi.json", {})
-    ranks = fetch.bpi(season) or (bpi_doc.get("ranks") if
-                                  bpi_doc.get("season") == season else {}) or {}
+    stale = bpi_doc if bpi_doc.get("season") == season else {}
+    if hasattr(fetch, "bpi_full"):
+        ranks, raw_values = fetch.bpi_full(season)
+    else:
+        ranks, raw_values = fetch.bpi(season), {}
+    ranks = ranks or stale.get("ranks") or {}
+    # BPI by team name, for the board: its rows come from the Odds API, which
+    # has names, not ESPN ids. Yesterday's values beat none.
+    values = ({name_key(v["name"]): v["bpi"] for v in raw_values.values()
+               if v.get("name")} or stale.get("values") or {})
 
     # 4. Head to head: past seasons, through the home team's schedule.
     #    Past seasons never change, so each is fetched once, ever.
@@ -585,7 +593,10 @@ def daily(day, data, fetch=None) -> dict | None:
 
     _save(data / "ncaab_games.json", store, compact=True)
     _save(data / "ncaab_h2h.json", h2h, compact=True)
-    _save(data / "ncaab_bpi.json", {"season": season, "ranks": ranks},
+    neutral = sorted(f'{name_key(g["away"]["name"])}@{name_key(g["home"]["name"])}'
+                     for g in slate or [] if g.get("neutral"))
+    _save(data / "ncaab_bpi.json", {"season": season, "ranks": ranks,
+                                    "values": values, "neutral": neutral},
           compact=True)
     _save(data / "ncaab_teams.json", {"season": season,
                                       "teams": team_sheet(store, ranks)},
@@ -694,6 +705,10 @@ def _test_daily() -> None:
             self.calls["bpi"] += 1
             return {"A": 55, "H": 48}
 
+        def bpi_full(self, season):
+            return self.bpi(season), {"A": {"bpi": 2.5, "name": "Team A"},
+                                      "H": {"bpi": 4.0, "name": "Team H"}}
+
     store, h2h, bpi, tonight = _season()
     f = Fake()
     # Yesterday's finals are the fixture season; tonight is A at H.
@@ -723,6 +738,10 @@ def _test_daily() -> None:
         assert games["season"] == 2027 and games["last_day"] == "2026-11-11"
         cache = json.loads((data / "ncaab_h2h.json").read_text())
         assert "2026" in cache["H"]["seasons"]
+        # BPI values by name for the board, and tonight's neutral sites.
+        bdoc = json.loads((data / "ncaab_bpi.json").read_text())
+        assert bdoc["values"] == {"team a": 2.5, "team h": 4.0}
+        assert bdoc["neutral"] == [], "t1 is a true home game"
         sheet = json.loads((data / "ncaab_teams.json").read_text())
         assert sheet["teams"][name_key("Team A")]["stats"]["reb"] == 40.0
 

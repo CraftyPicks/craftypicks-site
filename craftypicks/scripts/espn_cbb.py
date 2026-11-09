@@ -254,6 +254,30 @@ def parse_bpi(payload) -> dict[str, int]:
     return {tid: i + 1 for i, tid in enumerate(order)}
 
 
+def parse_bpi_values(payload) -> dict[str, dict]:
+    """Team id -> {"bpi": points better than an average D-I team on a
+    neutral court, "name": ESPN's full display name}. The name is what the
+    Odds API board is matched on."""
+    if not isinstance(payload, dict):
+        return {}
+    names = next((c.get("names") or [] for c in payload.get("categories") or []
+                  if c.get("name") == "bpi"), [])
+    if "bpi" not in names:
+        return {}
+    vi = names.index("bpi")
+    out = {}
+    for t in payload.get("teams") or []:
+        team = t.get("team") or {}
+        tid = str(team.get("id", ""))
+        cat = next((c for c in t.get("categories") or [] if c.get("name") == "bpi"),
+                   None)
+        vals = (cat or {}).get("values") or []
+        v = _num(vals[vi]) if vi < len(vals) else None
+        if tid and v is not None:
+            out[tid] = {"bpi": v, "name": team.get("displayName", "")}
+    return out
+
+
 # ------------------------------------------------------------------ fetchers
 def _get(url: str) -> dict:
     import results  # noqa: PLC0415 -- headers + never-raise policy live there
@@ -279,6 +303,20 @@ def summary(event_id: str) -> dict:
 
 def schedule(team_id: str, season: int) -> list[dict]:
     return parse_schedule(_get(f"{SITE}/teams/{team_id}/schedule?season={season}"))
+
+
+def bpi_full(season: int) -> tuple[dict[str, int], dict[str, dict]]:
+    """Ranks and values from one pass over the pages."""
+    ranks: dict[str, int] = {}
+    values: dict[str, dict] = {}
+    page, pages = 1, 1
+    while page <= pages and page <= 5:
+        data = _get(f"{BPI}?season={season}&limit=400&page={page}")
+        ranks.update(parse_bpi(data))
+        values.update(parse_bpi_values(data))
+        pages = int(((data or {}).get("pagination") or {}).get("pages") or 1)
+        page += 1
+    return ranks, values
 
 
 def bpi(season: int) -> dict[str, int]:
@@ -459,6 +497,13 @@ def _self_test() -> None:
     bpi["categories"][0]["names"] = ["bpi", "bpioffense", "bpidefense"]
     assert parse_bpi(bpi) == {"150": 1, "251": 2}
     assert parse_bpi({}) == {}
+    # The BPI value itself, by id, with the display name the board matches on.
+    bpi["categories"][0]["names"] = ["bpi", "bpirank"]
+    bpi["teams"][0]["team"]["displayName"] = "Duke Blue Devils"
+    bpi["teams"][1]["team"]["displayName"] = "Texas Longhorns"
+    assert parse_bpi_values(bpi) == {"150": {"bpi": 20.1, "name": "Duke Blue Devils"},
+                                     "251": {"bpi": 8.0, "name": "Texas Longhorns"}}
+    assert parse_bpi_values({}) == {}
 
     # A failed call is None; a day with no games is [].
     import unittest.mock as um

@@ -383,7 +383,12 @@ def merge_model(rows: list[dict], rated: list[dict], source: str) -> int:
             "home_win_prob": hp,
             "away_win_prob": ap,
             "market_home_prob": market,
-            "disagreement": rating.get("disagreement"),
+            # The slate supplies its own; Elo and BPI do not, so it is
+            # worked out here from the market, in points, home side.
+            "disagreement": (rating.get("disagreement")
+                             if rating.get("disagreement") is not None
+                             else round((hp - market) * 100, 1)
+                             if market is not None and hp is not None else None),
             "suspect": bool(rating.get("suspect")),
             "source": source,
             "ev_home": model_ev(hp, h2h.get("best_home")),
@@ -458,6 +463,41 @@ def merge_form(rows: list[dict], games: list[dict]) -> int:
 MIN_CLUB_GAMES = 10
 
 
+# College basketball before Elo is ready (both clubs under MIN_CLUB_GAMES).
+# ESPN BPI is points better than an average D-I team on a neutral court, so:
+# expected margin = BPI(home) - BPI(away) + BPI_HOME_EDGE (0 at a neutral
+# site), win probability = normal CDF of margin / BPI_SD. Both constants are
+# starting values; the league's own Brier record grades them.
+BPI_HOME_EDGE = 3.5
+BPI_SD = 11.0
+
+
+def bpi_model(rows: list[dict], doc: dict) -> list[dict]:
+    """Rate board rows from data/ncaab_bpi.json, by team name.
+
+    A row is rated only when BOTH clubs are found: the board's names come
+    from the Odds API and BPI's from ESPN, and a half-matched game must not
+    be guessed. Probabilities clamped and rounded exactly as elo_model does.
+    """
+    import math              # noqa: PLC0415
+    import ncaab_system      # noqa: PLC0415  -- name_key
+    values = (doc or {}).get("values") or {}
+    neutral = set((doc or {}).get("neutral") or [])
+    key = ncaab_system.name_key
+    out = []
+    for row in rows:
+        h, a = key(row.get("home")), key(row.get("away"))
+        if h not in values or a not in values:
+            continue
+        edge = 0.0 if f"{a}@{h}" in neutral else BPI_HOME_EDGE
+        margin = values[h] - values[a] + edge
+        hp = 0.5 * (1 + math.erf(margin / BPI_SD / math.sqrt(2)))
+        hp = round(max(rate_mlb.PROB_FLOOR, min(rate_mlb.PROB_CEIL, hp)), 4)
+        out.append({"event_id": row.get("event_id"), "home_win_prob": hp,
+                    "away_win_prob": round(1.0 - hp, 4)})
+    return out
+
+
 def elo_model(rows: list[dict], history: list[dict], short: str,
               min_games: int = 100) -> tuple[list[dict], int]:
     """Rate a league's upcoming games from its stored results.
@@ -517,7 +557,36 @@ def elo_model(rows: list[dict], history: list[dict], short: str,
     return out, skipped
 
 
+def _test_bpi_model() -> None:
+    import math  # noqa: PLC0415
+    doc = {"values": {"duke blue devils": 8.0, "texas longhorns": 2.0,
+                      "st johns red storm": 5.0},
+           "neutral": ["texas longhorns@st johns red storm"]}
+    rows = [{"event_id": "a", "home": "Duke Blue Devils", "away": "Texas Longhorns"},
+            {"event_id": "b", "home": "St. John's Red Storm", "away": "Texas Longhorns"},
+            {"event_id": "c", "home": "Nowhere State", "away": "Texas Longhorns"}]
+    rated = bpi_model(rows, doc)
+    assert [r["event_id"] for r in rated] == ["a", "b"], "unknown team: unrated"
+    # Home by 6 + 3.5 = 9.5 over an 11-point spread of outcomes.
+    want = round(0.5 * (1 + math.erf(9.5 / BPI_SD / math.sqrt(2))), 4)
+    assert rated[0]["home_win_prob"] == want == 0.8061, rated[0]
+    assert rated[0]["away_win_prob"] == round(1 - want, 4)
+    # Neutral site: no home edge; matched despite "St." vs "St".
+    want_b = round(0.5 * (1 + math.erf(3.0 / BPI_SD / math.sqrt(2))), 4)
+    assert rated[1]["home_win_prob"] == want_b
+    assert bpi_model(rows, {}) == []
+    # merge_model computes the edge from the market when a rating has none,
+    # so a BPI or Elo card says "+9.9 EDGE" rather than always "NO EDGE".
+    board_rows = [{"event_id": "a", "home": "H", "away": "A",
+                   "markets": {"h2h": {"fair_home": 0.70}}}]
+    merge_model(board_rows, [{"event_id": "a", "home_win_prob": 0.80,
+                              "away_win_prob": 0.20}], "bpi")
+    assert board_rows[0]["model"]["disagreement"] == 10.0
+    assert board_rows[0]["model"]["source"] == "bpi"
+
+
 def _self_test() -> None:
+    _test_bpi_model()
     import io                        # noqa: PLC0415
     import contextlib                # noqa: PLC0415
 
