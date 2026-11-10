@@ -501,13 +501,15 @@ def espn_fill(rows: list[dict], espn_games: list[dict], day) -> list[dict]:
     """
     import ncaab_system  # noqa: PLC0415 -- name_key
     key = ncaab_system.name_key
-    by_pair = {(key(r.get("away")), key(r.get("home"))): r for r in rows}
+    # Unordered: the two feeds sometimes disagree on who is home (a neutral
+    # site), and that is still one game.
+    by_pair = {frozenset((key(r.get("away")), key(r.get("home")))): r for r in rows}
     added = []
     for g in espn_games:
         if _et_day(g.get("commence_time")) != day:
             continue
         home, away = g["home"]["name"], g["away"]["name"]
-        priced = by_pair.get((key(away), key(home)))
+        priced = by_pair.get(frozenset((key(away), key(home))))
         if priced is not None:
             priced["espn_id"] = str(g["event_id"])
             continue
@@ -559,7 +561,9 @@ def bpi_model(rows: list[dict], doc: dict) -> list[dict]:
         h, a = key(row.get("home")), key(row.get("away"))
         if h not in values or a not in values:
             continue
-        edge = 0.0 if f"{a}@{h}" in neutral else BPI_HOME_EDGE
+        # Either order: ESPN flags the site, the Odds API may list the
+        # clubs the other way round.
+        edge = 0.0 if (f"{a}@{h}" in neutral or f"{h}@{a}" in neutral) else BPI_HOME_EDGE
         margin = values[h] - values[a] + edge
         hp = 0.5 * (1 + math.erf(margin / BPI_SD / math.sqrt(2)))
         hp = round(max(BPI_FLOOR, min(BPI_CEIL, hp)), 4)
@@ -654,6 +658,10 @@ def _test_bpi_model() -> None:
     want_b = round(0.5 * (1 + math.erf(3.0 / BPI_SD / math.sqrt(2))), 4)
     assert rated[1]["home_win_prob"] == want_b
     assert bpi_model(rows, {}) == []
+    # A neutral site flagged in ESPN's order still drops the home edge when
+    # the Odds API lists the two clubs the other way round.
+    flip_doc = dict(doc, neutral=["st johns red storm@texas longhorns"])
+    assert bpi_model(rows[1:2], flip_doc)[0]["home_win_prob"] == want_b
     # A 25-point favourite is not capped at Elo's 85%: that cap turned every
     # big college favourite into a fake "fade". BPI is capped at 99%.
     big = bpi_model([{"event_id": "z", "home": "Duke Blue Devils",
@@ -724,6 +732,14 @@ def _test_espn_fill() -> None:
     assert r["markets"]["spreads"] == {"point": -30.5, "side_a": "home"}
     assert r["markets"]["totals"] == {"point": 145.5}
     assert r["line_source"] == "espn"
+    # The feeds can disagree on who is home (Seton Hall / Charlotte, a
+    # neutral-site game, 2026-11-09): still one game, not two.
+    flipped = [{"event_id": "o2", "league": "ncaab", "home": "Seton Hall Pirates",
+                "away": "Charlotte 49ers", "commence_time": "2026-11-10T02:00:00Z",
+                "markets": {"spreads": {"point": -4.5, "side_a": "home"}}}]
+    extra = espn_fill(flipped, [eg("401920887", "Charlotte 49ers", "Seton Hall Pirates",
+                                   "2026-11-10T02:00Z", 4.5)], _d(2026, 11, 9))
+    assert extra == [] and flipped[0]["espn_id"] == "401920887"
 
 
 def _self_test() -> None:

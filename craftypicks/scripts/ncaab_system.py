@@ -394,14 +394,30 @@ def summary(history: list[dict], tab: str) -> dict:
 
 
 
+# Word-level spellings the Odds API and ESPN disagree on. Applied to both
+# feeds alike, so a rule only has to map both spellings to one form -- and
+# must never map two different schools to one (the self-test checks every
+# ESPN name for collisions).
+_WORDS = {"univ": "university", "miss": "mississippi"}
+_PHRASES = (("appalachian state", "app state"),)
+
+
 def name_key(name: str) -> str:
     """A name both feeds agree on. The board's names come from the Odds API
     and these from ESPN; they mostly match, and where they differ it is
-    punctuation: "St." / "St", "A&M" / "A and M"."""
+    punctuation or abbreviation: "St." / "St" / "State", "A&M" / "A and M",
+    "SIU-Edwardsville" / "SIU Edwardsville", "Univ." / "University".
+    A leading "St" is Saint (St. John's); anywhere else it is State."""
     import re  # noqa: PLC0415
-    n = str(name or "").lower().replace("&", " and ")
+    n = str(name or "").lower().replace("&", " and ").replace("-", " ")
     n = re.sub(r"[^a-z0-9 ]+", "", n)
-    return " ".join(n.split())
+    words = n.split()
+    words = [("state" if w == "st" and i > 0 else _WORDS.get(w, w))
+             for i, w in enumerate(words)]
+    n = " ".join(words)
+    for a, b in _PHRASES:
+        n = n.replace(a, b)
+    return n
 
 
 def team_sheet(store: dict, bpi: dict | None = None) -> dict:
@@ -874,6 +890,20 @@ def _test_team_sheet() -> None:
     assert name_key("St. John's Red Storm") == name_key("St John's Red Storm")
     assert name_key("Texas A&M Aggies") == name_key("Texas A and M Aggies")
     assert name_key("  Virginia  Cavaliers ") == name_key("virginia cavaliers")
+    # The six that went unrated on 2026-11-09: Odds API spelling vs ESPN's.
+    for odds, espn in (("SIU-Edwardsville Cougars", "SIU Edwardsville Cougars"),
+                       ("Boston Univ. Terriers", "Boston University Terriers"),
+                       ("Illinois St Redbirds", "Illinois State Redbirds"),
+                       ("Oregon St Beavers", "Oregon State Beavers"),
+                       ("Appalachian St Mountaineers", "App State Mountaineers"),
+                       ("Miss Valley St Delta Devils", "Mississippi Valley State Delta Devils")):
+        assert name_key(odds) == name_key(espn), (odds, name_key(odds), name_key(espn))
+    # "St." at the front is Saint, not State.
+    assert name_key("St. John's Red Storm") == "st johns red storm"
+    # Distinct schools must stay distinct.
+    assert name_key("Mississippi State Bulldogs") != name_key("Mississippi Valley State Delta Devils")
+    assert name_key("Boston College Eagles") != name_key("Boston University Terriers")
+    assert name_key("Illinois Fighting Illini") != name_key("Illinois State Redbirds")
 
 
 def _self_test() -> None:

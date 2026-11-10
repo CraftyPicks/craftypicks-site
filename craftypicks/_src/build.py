@@ -213,22 +213,28 @@ def attach_finals(board_doc: dict, ncaab_store: dict, ncaaf_store: dict) -> None
         # Keyed by names AND Eastern date: the same two clubs can meet twice
         # in a season, and the earlier final must not land on today's game.
         import board as board_mod  # noqa: PLC0415 -- _et_day
-        by_pair = {(key(g["away"]["name"]), key(g["home"]["name"]),
+        by_pair = {(frozenset((key(g["away"]["name"]), key(g["home"]["name"]))),
                     board_mod._et_day(g.get("commence_time"))): g
                    for g in games.values()}
         for row in ((board_doc.get("leagues") or {}).get(league) or {}).get("games") or []:
             eid = row.get("espn_id") or (row.get("event_id") if league == "ncaaf" else None)
             g = games.get(str(eid)) if eid else None
             if g is None:
-                g = by_pair.get((key(row.get("away")), key(row.get("home")),
+                g = by_pair.get((frozenset((key(row.get("away")), key(row.get("home")))),
                                  board_mod._et_day(row.get("commence_time"))))
             if not g:
                 continue
             row.setdefault("espn_id", str(g["event_id"]))
             if g.get("completed") and g.get("home_score") is not None:
-                row["final"] = {"away": g["away_score"], "home": g["home_score"],
-                                "away_short": g["away"].get("short") or g["away"]["name"],
-                                "home_short": g["home"].get("short") or g["home"]["name"]}
+                # The score follows the names: the feeds can disagree on who is
+                # home at a neutral site, and the card is drawn in the row's order.
+                h, a = g["home"], g["away"]
+                hs, as_ = g["home_score"], g["away_score"]
+                if key(row.get("home")) == key(a["name"]):
+                    h, a, hs, as_ = a, h, as_, hs
+                row["final"] = {"away": as_, "home": hs,
+                                "away_short": a.get("short") or a["name"],
+                                "home_short": h.get("short") or h["name"]}
 
 
 def tonight_rows(doc: dict) -> list[dict]:
@@ -795,6 +801,19 @@ def _self_test() -> None:
                                 "home": {"name": "Q"}, "away": {"name": "R"}}}}
     attach_finals(redoc, old_meet, {})
     assert "final" not in redoc["leagues"]["ncaab"]["games"][0], "wrong day"
+    # Flipped home/away between the feeds: the score follows the names.
+    fdoc = {"leagues": {"ncaab": {"games": [
+        {"league": "ncaab", "espn_id": "887", "home": "Seton Hall Pirates",
+         "away": "Charlotte 49ers", "commence_time": "2026-11-10T02:00:00Z"}]}}}
+    fstore = {"games": {"887": {"event_id": "887", "completed": True,
+                                "commence_time": "2026-11-10T02:00Z",
+                                "home": {"name": "Charlotte 49ers", "short": "Charlotte"},
+                                "away": {"name": "Seton Hall Pirates", "short": "Seton Hall"},
+                                "home_score": 61, "away_score": 74}}}
+    attach_finals(fdoc, fstore, {})
+    fin = fdoc["leagues"]["ncaab"]["games"][0]["final"]
+    assert (fin["home"], fin["home_short"], fin["away"], fin["away_short"]) == \
+        (74, "Seton Hall", 61, "Charlotte"), fin
 
     # NCAAF: its own page and tab, but never in leagues.LEAGUES (that list
     # buys odds).

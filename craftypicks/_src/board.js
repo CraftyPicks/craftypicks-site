@@ -151,9 +151,19 @@
   var EVERY = 60000;
   var timer = null;
 
+  /* The same rules as ncaab_system.name_key, so a team the build matched
+     is matched here too: "SIU-Edwardsville" / "SIU Edwardsville", "Illinois
+     St" / "Illinois State" (a leading St is Saint), "Univ." / "University",
+     "Miss" / "Mississippi", "Appalachian State" / "App State". */
+  var WORDS = { univ: "university", miss: "mississippi" };
   function norm(s) {
-    return String(s || "").toLowerCase().replace(/&/g, " and ")
-      .replace(/[^a-z0-9 ]+/g, "").replace(/\s+/g, " ").trim();
+    var w = String(s || "").toLowerCase().replace(/&/g, " and ").replace(/-/g, " ")
+      .replace(/[^a-z0-9 ]+/g, "").split(/\s+/).filter(Boolean);
+    w = w.map(function (x, i) {
+      if (x === "st" && i > 0) { return "state"; }
+      return WORDS[x] || x;
+    });
+    return w.join(" ").replace("appalachian state", "app state");
   }
 
   function etDate(iso) {
@@ -205,6 +215,10 @@
     var L = (strip.getAttribute("data-l") || "").split("|");
     var away = parseFloat(sides.away.score), home = parseFloat(sides.home.score);
     if (isNaN(away) || isNaN(home)) { return true; }
+    // The pick is in the card's order; if ESPN has the clubs the other way
+    // round, judge it with the scores swapped.
+    var flipped = norm((sides.home.team || {}).displayName) === norm(card.getAttribute("data-away"));
+    var cardAway = flipped ? home : away, cardHome = flipped ? away : home;
     var done = st.state === "post" || st.completed === true;
     var label = done ? L[0] : L[1] + " · " + (st.shortDetail || "");
     var an = (sides.away.team || {}).shortDisplayName || card.getAttribute("data-away");
@@ -212,7 +226,7 @@
     strip.innerHTML =
       '<span><span class="st' + (done ? "" : " live") + '">' + esc(label) + "</span>" +
       esc(an) + " " + away + " – " + esc(hn) + " " + home + "</span>" +
-      verdict(card, away, home, done, L);
+      verdict(card, cardAway, cardHome, done, L);
     strip.hidden = false;
     if (done) { strip.removeAttribute("data-l"); }
     return !done;
@@ -244,7 +258,9 @@
             if (c.homeAway === "home") { h = norm((c.team || {}).displayName); }
             if (c.homeAway === "away") { a = norm((c.team || {}).displayName); }
           });
+          // Both orders: the feeds can disagree on who is home.
           byPair[a + "@" + h] = ev;
+          byPair[h + "@" + a] = ev;
         });
         var live = false;
         groups[k].forEach(function (c) {
