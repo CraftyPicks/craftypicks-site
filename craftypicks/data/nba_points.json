@@ -1,2661 +1,951 @@
 {
-  "date": "2026-11-09",
-  "date_label": "Monday, November 9, 2026",
+  "date": "2026-11-10",
+  "date_label": "Tuesday, November 10, 2026",
   "rows": [
     {
-      "player_id": "3945274",
-      "name": "Luka Doncic",
-      "team": "LAL",
-      "opponent": "ATL",
-      "is_home": false,
+      "player_id": "3934672",
+      "name": "Jalen Brunson",
+      "team": "NY",
+      "opponent": "MIL",
+      "is_home": true,
       "position": "G",
-      "game_id": "401909952",
-      "commence_time": "2026-11-10T00:00Z",
-      "date": "2026-11-09",
+      "game_id": "401909960",
+      "commence_time": "2026-11-11T00:30Z",
+      "date": "2026-11-10",
       "stat": "points",
-      "per_game": 36.6,
-      "projection": 37.3,
-      "opp_allowed": 115.5,
-      "league_allowed": 113.4,
+      "per_game": 26.1,
+      "projection": 28.0,
+      "opp_allowed": 121.6,
+      "league_allowed": 113.5,
       "pos_slot": "G",
-      "pos_allowed": 43.3,
-      "pos_league": 56.4,
-      "pos_rank": 30,
+      "pos_allowed": 57.3,
+      "pos_league": 56.2,
+      "pos_rank": 10,
       "pos_of": 30,
       "weight": 0.474,
       "recent": [
         {
-          "date": "2026-10-21",
-          "opponent": "GS",
-          "value": 28.0
+          "date": "2026-10-20",
+          "opponent": "PHI",
+          "value": 21.0
         },
         {
           "date": "2026-10-23",
-          "opponent": "LAC",
-          "value": 23.0
+          "opponent": "BOS",
+          "value": 19.0
         },
         {
           "date": "2026-10-25",
-          "opponent": "UTAH",
-          "value": 52.0
+          "opponent": "ORL",
+          "value": 28.0
         },
         {
           "date": "2026-10-27",
-          "opponent": "POR",
-          "value": 41.0
+          "opponent": "DET",
+          "value": 23.0
+        },
+        {
+          "date": "2026-10-28",
+          "opponent": "CHI",
+          "value": 38.0
         },
         {
           "date": "2026-10-30",
-          "opponent": "GS",
-          "value": 37.0
-        },
-        {
-          "date": "2026-11-01",
-          "opponent": "TOR",
-          "value": 45.0
+          "opponent": "PHI",
+          "value": 24.0
         },
         {
           "date": "2026-11-02",
-          "opponent": "MIA",
-          "value": 42.0
+          "opponent": "BKN",
+          "value": 19.0
         },
         {
           "date": "2026-11-04",
-          "opponent": "SAC",
-          "value": 40.0
+          "opponent": "CHI",
+          "value": 33.0
         },
         {
-          "date": "2026-11-06",
-          "opponent": "POR",
-          "value": 53.0
+          "date": "2026-11-07",
+          "opponent": "CLE",
+          "value": 31.0
         }
       ],
       "vs_opp": {
-        "games": 2,
-        "per_game": 24.5,
-        "best": 27.0,
-        "worst": 22.0
+        "games": 3,
+        "per_game": 33.3,
+        "best": 37.0,
+        "worst": 27.0
       },
       "actual": null
     },
     {
-      "player_id": "3908809",
-      "name": "Donovan Mitchell",
-      "team": "CLE",
-      "opponent": "CHA",
+      "player_id": "3136195",
+      "name": "Karl-Anthony Towns",
+      "team": "NY",
+      "opponent": "MIL",
+      "is_home": true,
+      "position": "C",
+      "game_id": "401909960",
+      "commence_time": "2026-11-11T00:30Z",
+      "date": "2026-11-10",
+      "stat": "points",
+      "per_game": 20.4,
+      "projection": 21.9,
+      "opp_allowed": 121.6,
+      "league_allowed": 113.5,
+      "pos_slot": "C",
+      "pos_allowed": 23.6,
+      "pos_league": 15.8,
+      "pos_rank": 1,
+      "pos_of": 30,
+      "weight": 0.474,
+      "recent": [
+        {
+          "date": "2026-10-20",
+          "opponent": "PHI",
+          "value": 19.0
+        },
+        {
+          "date": "2026-10-23",
+          "opponent": "BOS",
+          "value": 22.0
+        },
+        {
+          "date": "2026-10-25",
+          "opponent": "ORL",
+          "value": 22.0
+        },
+        {
+          "date": "2026-10-27",
+          "opponent": "DET",
+          "value": 27.0
+        },
+        {
+          "date": "2026-10-28",
+          "opponent": "CHI",
+          "value": 19.0
+        },
+        {
+          "date": "2026-10-30",
+          "opponent": "PHI",
+          "value": 22.0
+        },
+        {
+          "date": "2026-11-02",
+          "opponent": "BKN",
+          "value": 11.0
+        },
+        {
+          "date": "2026-11-04",
+          "opponent": "CHI",
+          "value": 17.0
+        },
+        {
+          "date": "2026-11-07",
+          "opponent": "CLE",
+          "value": 29.0
+        }
+      ],
+      "vs_opp": {
+        "games": 3,
+        "per_game": 11.3,
+        "best": 17.0,
+        "worst": 8.0
+      },
+      "actual": null
+    },
+    {
+      "player_id": "4395725",
+      "name": "Tyler Herro",
+      "team": "MIL",
+      "opponent": "NY",
       "is_home": false,
       "position": "G",
-      "game_id": "401909953",
-      "commence_time": "2026-11-10T00:00Z",
-      "date": "2026-11-09",
+      "game_id": "401909960",
+      "commence_time": "2026-11-11T00:30Z",
+      "date": "2026-11-10",
       "stat": "points",
-      "per_game": 25.9,
-      "projection": 25.2,
-      "opp_allowed": 110.2,
-      "league_allowed": 113.4,
+      "per_game": 21.0,
+      "projection": 19.2,
+      "opp_allowed": 104.2,
+      "league_allowed": 113.5,
       "pos_slot": "G",
-      "pos_allowed": 53.6,
-      "pos_league": 56.4,
-      "pos_rank": 22,
+      "pos_allowed": 55.0,
+      "pos_league": 56.2,
+      "pos_rank": 17,
       "pos_of": 30,
       "weight": 0.5,
       "recent": [
         {
-          "date": "2026-10-22",
+          "date": "2026-10-21",
+          "opponent": "WSH",
+          "value": 24.0
+        },
+        {
+          "date": "2026-10-23",
+          "opponent": "CHI",
+          "value": 34.0
+        },
+        {
+          "date": "2026-10-24",
           "opponent": "PHI",
+          "value": 13.0
+        },
+        {
+          "date": "2026-10-26",
+          "opponent": "IND",
+          "value": 23.0
+        },
+        {
+          "date": "2026-10-28",
+          "opponent": "HOU",
+          "value": 23.0
+        },
+        {
+          "date": "2026-10-31",
+          "opponent": "CLE",
+          "value": 15.0
+        },
+        {
+          "date": "2026-11-02",
+          "opponent": "MIN",
+          "value": 21.0
+        },
+        {
+          "date": "2026-11-04",
+          "opponent": "BOS",
+          "value": 25.0
+        },
+        {
+          "date": "2026-11-06",
+          "opponent": "TOR",
+          "value": 23.0
+        },
+        {
+          "date": "2026-11-08",
+          "opponent": "BOS",
+          "value": 13.0
+        }
+      ],
+      "vs_opp": null,
+      "actual": null
+    },
+    {
+      "player_id": "3934719",
+      "name": "OG Anunoby",
+      "team": "NY",
+      "opponent": "MIL",
+      "is_home": true,
+      "position": "F",
+      "game_id": "401909960",
+      "commence_time": "2026-11-11T00:30Z",
+      "date": "2026-11-10",
+      "stat": "points",
+      "per_game": 16.7,
+      "projection": 17.9,
+      "opp_allowed": 121.6,
+      "league_allowed": 113.5,
+      "pos_slot": "F",
+      "pos_allowed": 43.1,
+      "pos_league": 43.1,
+      "pos_rank": 14,
+      "pos_of": 30,
+      "weight": 0.474,
+      "recent": [
+        {
+          "date": "2026-10-20",
+          "opponent": "PHI",
+          "value": 10.0
+        },
+        {
+          "date": "2026-10-23",
+          "opponent": "BOS",
+          "value": 20.0
+        },
+        {
+          "date": "2026-10-25",
+          "opponent": "ORL",
+          "value": 22.0
+        },
+        {
+          "date": "2026-10-27",
+          "opponent": "DET",
+          "value": 13.0
+        },
+        {
+          "date": "2026-10-28",
+          "opponent": "CHI",
+          "value": 23.0
+        },
+        {
+          "date": "2026-10-30",
+          "opponent": "PHI",
+          "value": 9.0
+        },
+        {
+          "date": "2026-11-02",
+          "opponent": "BKN",
+          "value": 18.0
+        },
+        {
+          "date": "2026-11-04",
+          "opponent": "CHI",
+          "value": 18.0
+        },
+        {
+          "date": "2026-11-07",
+          "opponent": "CLE",
+          "value": 15.0
+        }
+      ],
+      "vs_opp": {
+        "games": 2,
+        "per_game": 16.5,
+        "best": 24.0,
+        "worst": 9.0
+      },
+      "actual": null
+    },
+    {
+      "player_id": "4432848",
+      "name": "Jaime Jaquez Jr.",
+      "team": "MIL",
+      "opponent": "NY",
+      "is_home": false,
+      "position": "F",
+      "game_id": "401909960",
+      "commence_time": "2026-11-11T00:30Z",
+      "date": "2026-11-10",
+      "stat": "points",
+      "per_game": 15.3,
+      "projection": 14.0,
+      "opp_allowed": 104.2,
+      "league_allowed": 113.5,
+      "pos_slot": "F",
+      "pos_allowed": 39.1,
+      "pos_league": 43.1,
+      "pos_rank": 24,
+      "pos_of": 30,
+      "weight": 0.5,
+      "recent": [
+        {
+          "date": "2026-10-21",
+          "opponent": "WSH",
+          "value": 22.0
+        },
+        {
+          "date": "2026-10-23",
+          "opponent": "CHI",
+          "value": 19.0
+        },
+        {
+          "date": "2026-10-24",
+          "opponent": "PHI",
+          "value": 21.0
+        },
+        {
+          "date": "2026-10-26",
+          "opponent": "IND",
+          "value": 8.0
+        },
+        {
+          "date": "2026-10-28",
+          "opponent": "HOU",
+          "value": 19.0
+        },
+        {
+          "date": "2026-10-31",
+          "opponent": "CLE",
+          "value": 8.0
+        },
+        {
+          "date": "2026-11-02",
+          "opponent": "MIN",
+          "value": 19.0
+        },
+        {
+          "date": "2026-11-04",
+          "opponent": "BOS",
+          "value": 18.0
+        },
+        {
+          "date": "2026-11-06",
+          "opponent": "TOR",
+          "value": 14.0
+        },
+        {
+          "date": "2026-11-08",
+          "opponent": "BOS",
+          "value": 4.0
+        }
+      ],
+      "vs_opp": {
+        "games": 4,
+        "per_game": 19.0,
+        "best": 23.0,
+        "worst": 13.0
+      },
+      "actual": null
+    },
+    {
+      "player_id": "4397114",
+      "name": "Cormac Ryan",
+      "team": "MIL",
+      "opponent": "NY",
+      "is_home": false,
+      "position": "G",
+      "game_id": "401909960",
+      "commence_time": "2026-11-11T00:30Z",
+      "date": "2026-11-10",
+      "stat": "points",
+      "per_game": 14.3,
+      "projection": 13.1,
+      "opp_allowed": 104.2,
+      "league_allowed": 113.5,
+      "pos_slot": "G",
+      "pos_allowed": 55.0,
+      "pos_league": 56.2,
+      "pos_rank": 17,
+      "pos_of": 30,
+      "weight": 0.0,
+      "recent": [],
+      "vs_opp": null,
+      "actual": null
+    },
+    {
+      "player_id": "4431678",
+      "name": "Tyrese Maxey",
+      "team": "PHI",
+      "opponent": "BOS",
+      "is_home": true,
+      "position": "G",
+      "game_id": "401909961",
+      "commence_time": "2026-11-11T01:00Z",
+      "date": "2026-11-10",
+      "stat": "points",
+      "per_game": 27.6,
+      "projection": 25.3,
+      "opp_allowed": 104.3,
+      "league_allowed": 113.5,
+      "pos_slot": "G",
+      "pos_allowed": 46.8,
+      "pos_league": 56.2,
+      "pos_rank": 29,
+      "pos_of": 30,
+      "weight": 0.524,
+      "recent": [
+        {
+          "date": "2026-10-22",
+          "opponent": "CLE",
           "value": 32.0
         },
         {
           "date": "2026-10-24",
-          "opponent": "BKN",
-          "value": 22.0
-        },
-        {
-          "date": "2026-10-26",
-          "opponent": "MIN",
-          "value": 26.0
-        },
-        {
-          "date": "2026-10-28",
-          "opponent": "WSH",
-          "value": 19.0
-        },
-        {
-          "date": "2026-10-29",
-          "opponent": "ATL",
-          "value": 22.0
-        },
-        {
-          "date": "2026-10-31",
           "opponent": "MIL",
-          "value": 15.0
-        },
-        {
-          "date": "2026-11-02",
-          "opponent": "OKC",
-          "value": 17.0
-        },
-        {
-          "date": "2026-11-04",
-          "opponent": "OKC",
-          "value": 27.0
-        },
-        {
-          "date": "2026-11-06",
-          "opponent": "PHI",
-          "value": 23.0
-        },
-        {
-          "date": "2026-11-07",
-          "opponent": "NY",
-          "value": 37.0
-        }
-      ],
-      "vs_opp": {
-        "games": 4,
-        "per_game": 25.8,
-        "best": 32.0,
-        "worst": 17.0
-      },
-      "actual": null
-    },
-    {
-      "player_id": "4066457",
-      "name": "Austin Reaves",
-      "team": "LAL",
-      "opponent": "ATL",
-      "is_home": false,
-      "position": "G",
-      "game_id": "401909952",
-      "commence_time": "2026-11-10T00:00Z",
-      "date": "2026-11-09",
-      "stat": "points",
-      "per_game": 24.3,
-      "projection": 24.8,
-      "opp_allowed": 115.5,
-      "league_allowed": 113.4,
-      "pos_slot": "G",
-      "pos_allowed": 43.3,
-      "pos_league": 56.4,
-      "pos_rank": 30,
-      "pos_of": 30,
-      "weight": 0.524,
-      "recent": [
-        {
-          "date": "2026-10-23",
-          "opponent": "LAC",
-          "value": 28.0
+          "value": 26.0
         },
         {
           "date": "2026-10-25",
-          "opponent": "UTAH",
-          "value": 29.0
-        },
-        {
-          "date": "2026-10-27",
-          "opponent": "POR",
-          "value": 26.0
-        },
-        {
-          "date": "2026-10-28",
-          "opponent": "LAC",
-          "value": 16.0
-        },
-        {
-          "date": "2026-10-30",
-          "opponent": "GS",
-          "value": 21.0
-        },
-        {
-          "date": "2026-11-01",
-          "opponent": "TOR",
-          "value": 19.0
-        },
-        {
-          "date": "2026-11-02",
-          "opponent": "MIA",
-          "value": 27.0
-        },
-        {
-          "date": "2026-11-04",
-          "opponent": "SAC",
-          "value": 21.0
-        },
-        {
-          "date": "2026-11-06",
-          "opponent": "POR",
-          "value": 25.0
-        },
-        {
-          "date": "2026-11-08",
           "opponent": "DET",
-          "value": 43.0
-        }
-      ],
-      "vs_opp": null,
-      "actual": null
-    },
-    {
-      "player_id": "4432166",
-      "name": "Cade Cunningham",
-      "team": "DET",
-      "opponent": "WSH",
-      "is_home": true,
-      "position": "G",
-      "game_id": "401909954",
-      "commence_time": "2026-11-10T00:00Z",
-      "date": "2026-11-09",
-      "stat": "points",
-      "per_game": 23.4,
-      "projection": 23.2,
-      "opp_allowed": 112.5,
-      "league_allowed": 113.4,
-      "pos_slot": "G",
-      "pos_allowed": 58.7,
-      "pos_league": 56.4,
-      "pos_rank": 9,
-      "pos_of": 30,
-      "weight": 0.474,
-      "recent": [
-        {
-          "date": "2026-10-20",
-          "opponent": "BOS",
-          "value": 22.0
-        },
-        {
-          "date": "2026-10-23",
-          "opponent": "MIA",
-          "value": 16.0
-        },
-        {
-          "date": "2026-10-25",
-          "opponent": "PHI",
-          "value": 26.0
-        },
-        {
-          "date": "2026-10-27",
-          "opponent": "NY",
-          "value": 19.0
-        },
-        {
-          "date": "2026-10-28",
-          "opponent": "CHA",
-          "value": 30.0
-        },
-        {
-          "date": "2026-10-30",
-          "opponent": "BKN",
-          "value": 20.0
-        },
-        {
-          "date": "2026-11-02",
-          "opponent": "CHA",
-          "value": 33.0
-        },
-        {
-          "date": "2026-11-04",
-          "opponent": "PHI",
-          "value": 26.0
-        },
-        {
-          "date": "2026-11-08",
-          "opponent": "LAL",
-          "value": 14.0
-        }
-      ],
-      "vs_opp": {
-        "games": 3,
-        "per_game": 27.3,
-        "best": 46.0,
-        "worst": 6.0
-      },
-      "actual": null
-    },
-    {
-      "player_id": "4278039",
-      "name": "Nickeil Alexander-Walker",
-      "team": "ATL",
-      "opponent": "LAL",
-      "is_home": true,
-      "position": "G",
-      "game_id": "401909952",
-      "commence_time": "2026-11-10T00:00Z",
-      "date": "2026-11-09",
-      "stat": "points",
-      "per_game": 21.5,
-      "projection": 21.7,
-      "opp_allowed": 114.5,
-      "league_allowed": 113.4,
-      "pos_slot": "G",
-      "pos_allowed": 62.9,
-      "pos_league": 56.4,
-      "pos_rank": 5,
-      "pos_of": 30,
-      "weight": 0.524,
-      "recent": [
-        {
-          "date": "2026-10-23",
-          "opponent": "CHA",
-          "value": 14.0
-        },
-        {
-          "date": "2026-10-24",
-          "opponent": "HOU",
-          "value": 18.0
-        },
-        {
-          "date": "2026-10-26",
-          "opponent": "HOU",
-          "value": 12.0
-        },
-        {
-          "date": "2026-10-28",
-          "opponent": "MIA",
-          "value": 23.0
-        },
-        {
-          "date": "2026-10-29",
-          "opponent": "CLE",
-          "value": 25.0
-        },
-        {
-          "date": "2026-10-31",
-          "opponent": "NO",
-          "value": 12.0
-        },
-        {
-          "date": "2026-11-02",
-          "opponent": "IND",
-          "value": 34.0
-        },
-        {
-          "date": "2026-11-04",
-          "opponent": "WSH",
-          "value": 26.0
-        },
-        {
-          "date": "2026-11-06",
-          "opponent": "WSH",
-          "value": 28.0
-        },
-        {
-          "date": "2026-11-07",
-          "opponent": "BKN",
-          "value": 20.0
-        }
-      ],
-      "vs_opp": {
-        "games": 1,
-        "per_game": 26.0,
-        "best": 26.0,
-        "worst": 26.0
-      },
-      "actual": null
-    },
-    {
-      "player_id": "4701230",
-      "name": "Jalen Johnson",
-      "team": "ATL",
-      "opponent": "LAL",
-      "is_home": true,
-      "position": "F",
-      "game_id": "401909952",
-      "commence_time": "2026-11-10T00:00Z",
-      "date": "2026-11-09",
-      "stat": "points",
-      "per_game": 21.3,
-      "projection": 21.5,
-      "opp_allowed": 114.5,
-      "league_allowed": 113.4,
-      "pos_slot": "F",
-      "pos_allowed": 41.3,
-      "pos_league": 42.8,
-      "pos_rank": 16,
-      "pos_of": 30,
-      "weight": 0.444,
-      "recent": [
-        {
-          "date": "2026-10-21",
-          "opponent": "ORL",
-          "value": 20.0
-        },
-        {
-          "date": "2026-10-23",
-          "opponent": "CHA",
-          "value": 19.0
-        },
-        {
-          "date": "2026-10-24",
-          "opponent": "HOU",
-          "value": 26.0
-        },
-        {
-          "date": "2026-10-26",
-          "opponent": "HOU",
-          "value": 21.0
-        },
-        {
-          "date": "2026-10-28",
-          "opponent": "MIA",
-          "value": 12.0
-        },
-        {
-          "date": "2026-10-29",
-          "opponent": "CLE",
-          "value": 17.0
-        },
-        {
-          "date": "2026-10-31",
-          "opponent": "NO",
-          "value": 13.0
-        },
-        {
-          "date": "2026-11-07",
-          "opponent": "BKN",
-          "value": 30.0
-        }
-      ],
-      "vs_opp": {
-        "games": 1,
-        "per_game": 13.0,
-        "best": 13.0,
-        "worst": 13.0
-      },
-      "actual": null
-    },
-    {
-      "player_id": "4433287",
-      "name": "Brandon Miller",
-      "team": "CHA",
-      "opponent": "CLE",
-      "is_home": true,
-      "position": "F",
-      "game_id": "401909953",
-      "commence_time": "2026-11-10T00:00Z",
-      "date": "2026-11-09",
-      "stat": "points",
-      "per_game": 20.4,
-      "projection": 20.5,
-      "opp_allowed": 114.1,
-      "league_allowed": 113.4,
-      "pos_slot": "F",
-      "pos_allowed": 33.0,
-      "pos_league": 42.8,
-      "pos_rank": 30,
-      "pos_of": 30,
-      "weight": 0.5,
-      "recent": [
-        {
-          "date": "2026-10-21",
-          "opponent": "BKN",
-          "value": 18.0
-        },
-        {
-          "date": "2026-10-23",
-          "opponent": "ATL",
-          "value": 6.0
-        },
-        {
-          "date": "2026-10-24",
-          "opponent": "MIA",
-          "value": 34.0
-        },
-        {
-          "date": "2026-10-26",
-          "opponent": "WSH",
-          "value": 39.0
-        },
-        {
-          "date": "2026-10-28",
-          "opponent": "DET",
-          "value": 31.0
-        },
-        {
-          "date": "2026-10-30",
-          "opponent": "WSH",
-          "value": 19.0
-        },
-        {
-          "date": "2026-10-31",
-          "opponent": "PHI",
-          "value": 24.0
-        },
-        {
-          "date": "2026-11-02",
-          "opponent": "DET",
-          "value": 17.0
-        },
-        {
-          "date": "2026-11-04",
-          "opponent": "BKN",
-          "value": 10.0
-        },
-        {
-          "date": "2026-11-06",
-          "opponent": "BOS",
-          "value": 8.0
-        }
-      ],
-      "vs_opp": {
-        "games": 4,
-        "per_game": 21.8,
-        "best": 25.0,
-        "worst": 18.0
-      },
-      "actual": null
-    },
-    {
-      "player_id": "6583",
-      "name": "Anthony Davis",
-      "team": "WSH",
-      "opponent": "DET",
-      "is_home": false,
-      "position": "F",
-      "game_id": "401909954",
-      "commence_time": "2026-11-10T00:00Z",
-      "date": "2026-11-09",
-      "stat": "points",
-      "per_game": 21.7,
-      "projection": 19.9,
-      "opp_allowed": 103.9,
-      "league_allowed": 113.4,
-      "pos_slot": "F",
-      "pos_allowed": 37.4,
-      "pos_league": 42.8,
-      "pos_rank": 28,
-      "pos_of": 30,
-      "weight": 0.444,
-      "recent": [
-        {
-          "date": "2026-10-21",
-          "opponent": "MIL",
-          "value": 34.0
-        },
-        {
-          "date": "2026-10-23",
-          "opponent": "TOR",
-          "value": 9.0
-        },
-        {
-          "date": "2026-10-24",
-          "opponent": "CHI",
-          "value": 19.0
-        },
-        {
-          "date": "2026-10-26",
-          "opponent": "CHA",
           "value": 29.0
         },
         {
           "date": "2026-10-28",
-          "opponent": "CLE",
-          "value": 18.0
-        },
-        {
-          "date": "2026-10-30",
-          "opponent": "CHA",
-          "value": 25.0
-        },
-        {
-          "date": "2026-11-02",
-          "opponent": "ORL",
-          "value": 27.0
-        },
-        {
-          "date": "2026-11-04",
-          "opponent": "ATL",
-          "value": 26.0
-        }
-      ],
-      "vs_opp": {
-        "games": 1,
-        "per_game": 15.0,
-        "best": 15.0,
-        "worst": 15.0
-      },
-      "actual": null
-    },
-    {
-      "player_id": "4433621",
-      "name": "Jalen Duren",
-      "team": "DET",
-      "opponent": "WSH",
-      "is_home": true,
-      "position": "C",
-      "game_id": "401909954",
-      "commence_time": "2026-11-10T00:00Z",
-      "date": "2026-11-09",
-      "stat": "points",
-      "per_game": 19.5,
-      "projection": 19.3,
-      "opp_allowed": 112.5,
-      "league_allowed": 113.4,
-      "pos_slot": "C",
-      "pos_allowed": 18.1,
-      "pos_league": 15.8,
-      "pos_rank": 8,
-      "pos_of": 30,
-      "weight": 0.0,
-      "recent": [
-        {
-          "date": "2026-10-20",
-          "opponent": "BOS",
-          "value": 22.0
-        },
-        {
-          "date": "2026-10-23",
-          "opponent": "MIA",
-          "value": 4.0
-        }
-      ],
-      "vs_opp": {
-        "games": 4,
-        "per_game": 20.8,
-        "best": 36.0,
-        "worst": 4.0
-      },
-      "actual": null
-    },
-    {
-      "player_id": "3992",
-      "name": "James Harden",
-      "team": "CLE",
-      "opponent": "CHA",
-      "is_home": false,
-      "position": "G",
-      "game_id": "401909953",
-      "commence_time": "2026-11-10T00:00Z",
-      "date": "2026-11-09",
-      "stat": "points",
-      "per_game": 19.6,
-      "projection": 19.1,
-      "opp_allowed": 110.2,
-      "league_allowed": 113.4,
-      "pos_slot": "G",
-      "pos_allowed": 53.6,
-      "pos_league": 56.4,
-      "pos_rank": 22,
-      "pos_of": 30,
-      "weight": 0.5,
-      "recent": [
-        {
-          "date": "2026-10-22",
-          "opponent": "PHI",
-          "value": 16.0
-        },
-        {
-          "date": "2026-10-24",
-          "opponent": "BKN",
-          "value": 12.0
-        },
-        {
-          "date": "2026-10-26",
-          "opponent": "MIN",
-          "value": 19.0
-        },
-        {
-          "date": "2026-10-28",
-          "opponent": "WSH",
-          "value": 16.0
-        },
-        {
-          "date": "2026-10-29",
-          "opponent": "ATL",
-          "value": 24.0
-        },
-        {
-          "date": "2026-10-31",
-          "opponent": "MIL",
-          "value": 13.0
-        },
-        {
-          "date": "2026-11-02",
-          "opponent": "OKC",
-          "value": 14.0
-        },
-        {
-          "date": "2026-11-04",
-          "opponent": "OKC",
-          "value": 19.0
-        },
-        {
-          "date": "2026-11-06",
-          "opponent": "PHI",
-          "value": 17.0
-        },
-        {
-          "date": "2026-11-07",
-          "opponent": "NY",
-          "value": 7.0
-        }
-      ],
-      "vs_opp": {
-        "games": 3,
-        "per_game": 35.0,
-        "best": 55.0,
-        "worst": 18.0
-      },
-      "actual": null
-    },
-    {
-      "player_id": "5061575",
-      "name": "Kon Knueppel",
-      "team": "CHA",
-      "opponent": "CLE",
-      "is_home": true,
-      "position": "G",
-      "game_id": "401909953",
-      "commence_time": "2026-11-10T00:00Z",
-      "date": "2026-11-09",
-      "stat": "points",
-      "per_game": 18.5,
-      "projection": 18.6,
-      "opp_allowed": 114.1,
-      "league_allowed": 113.4,
-      "pos_slot": "G",
-      "pos_allowed": 67.5,
-      "pos_league": 56.4,
-      "pos_rank": 2,
-      "pos_of": 30,
-      "weight": 0.0,
-      "recent": [
-        {
-          "date": "2026-11-04",
-          "opponent": "BKN",
-          "value": 3.0
-        }
-      ],
-      "vs_opp": {
-        "games": 4,
-        "per_game": 25.8,
-        "best": 33.0,
-        "worst": 20.0
-      },
-      "actual": null
-    },
-    {
-      "player_id": "4432158",
-      "name": "Evan Mobley",
-      "team": "CLE",
-      "opponent": "CHA",
-      "is_home": false,
-      "position": "C",
-      "game_id": "401909953",
-      "commence_time": "2026-11-10T00:00Z",
-      "date": "2026-11-09",
-      "stat": "points",
-      "per_game": 18.3,
-      "projection": 17.8,
-      "opp_allowed": 110.2,
-      "league_allowed": 113.4,
-      "pos_slot": "C",
-      "pos_allowed": 10.2,
-      "pos_league": 15.8,
-      "pos_rank": 29,
-      "pos_of": 30,
-      "weight": 0.5,
-      "recent": [
-        {
-          "date": "2026-10-22",
-          "opponent": "PHI",
-          "value": 18.0
-        },
-        {
-          "date": "2026-10-24",
-          "opponent": "BKN",
-          "value": 20.0
-        },
-        {
-          "date": "2026-10-26",
-          "opponent": "MIN",
-          "value": 18.0
-        },
-        {
-          "date": "2026-10-28",
-          "opponent": "WSH",
-          "value": 24.0
-        },
-        {
-          "date": "2026-10-29",
-          "opponent": "ATL",
-          "value": 11.0
-        },
-        {
-          "date": "2026-10-31",
-          "opponent": "MIL",
-          "value": 27.0
-        },
-        {
-          "date": "2026-11-02",
-          "opponent": "OKC",
-          "value": 16.0
-        },
-        {
-          "date": "2026-11-04",
-          "opponent": "OKC",
-          "value": 16.0
-        },
-        {
-          "date": "2026-11-06",
-          "opponent": "PHI",
-          "value": 22.0
-        },
-        {
-          "date": "2026-11-07",
-          "opponent": "NY",
-          "value": 12.0
-        }
-      ],
-      "vs_opp": {
-        "games": 1,
-        "per_game": 14.0,
-        "best": 14.0,
-        "worst": 14.0
-      },
-      "actual": null
-    },
-    {
-      "player_id": "4395651",
-      "name": "Coby White",
-      "team": "CHA",
-      "opponent": "CLE",
-      "is_home": true,
-      "position": "G",
-      "game_id": "401909953",
-      "commence_time": "2026-11-10T00:00Z",
-      "date": "2026-11-09",
-      "stat": "points",
-      "per_game": 17.4,
-      "projection": 17.5,
-      "opp_allowed": 114.1,
-      "league_allowed": 113.4,
-      "pos_slot": "G",
-      "pos_allowed": 67.5,
-      "pos_league": 56.4,
-      "pos_rank": 2,
-      "pos_of": 30,
-      "weight": 0.0,
-      "recent": [
-        {
-          "date": "2026-11-02",
-          "opponent": "DET",
-          "value": 7.0
-        },
-        {
-          "date": "2026-11-04",
-          "opponent": "BKN",
-          "value": 4.0
-        },
-        {
-          "date": "2026-11-06",
-          "opponent": "BOS",
-          "value": 7.0
-        }
-      ],
-      "vs_opp": {
-        "games": 2,
-        "per_game": 19.0,
-        "best": 25.0,
-        "worst": 13.0
-      },
-      "actual": null
-    },
-    {
-      "player_id": "4277905",
-      "name": "Trae Young",
-      "team": "WSH",
-      "opponent": "DET",
-      "is_home": false,
-      "position": "G",
-      "game_id": "401909954",
-      "commence_time": "2026-11-10T00:00Z",
-      "date": "2026-11-09",
-      "stat": "points",
-      "per_game": 18.2,
-      "projection": 16.6,
-      "opp_allowed": 103.9,
-      "league_allowed": 113.4,
-      "pos_slot": "G",
-      "pos_allowed": 50.2,
-      "pos_league": 56.4,
-      "pos_rank": 25,
-      "pos_of": 30,
-      "weight": 0.5,
-      "recent": [
-        {
-          "date": "2026-10-21",
-          "opponent": "MIL",
-          "value": 20.0
-        },
-        {
-          "date": "2026-10-23",
-          "opponent": "TOR",
-          "value": 22.0
-        },
-        {
-          "date": "2026-10-24",
-          "opponent": "CHI",
-          "value": 25.0
-        },
-        {
-          "date": "2026-10-26",
-          "opponent": "CHA",
-          "value": 22.0
-        },
-        {
-          "date": "2026-10-28",
-          "opponent": "CLE",
-          "value": 14.0
-        },
-        {
-          "date": "2026-10-30",
-          "opponent": "CHA",
-          "value": 21.0
-        },
-        {
-          "date": "2026-11-02",
-          "opponent": "ORL",
-          "value": 15.0
-        },
-        {
-          "date": "2026-11-04",
-          "opponent": "ATL",
-          "value": 18.0
-        },
-        {
-          "date": "2026-11-06",
-          "opponent": "ATL",
-          "value": 23.0
-        },
-        {
-          "date": "2026-11-07",
-          "opponent": "OKC",
-          "value": 4.0
-        }
-      ],
-      "vs_opp": null,
-      "actual": null
-    },
-    {
-      "player_id": "2490149",
-      "name": "CJ McCollum",
-      "team": "ATL",
-      "opponent": "LAL",
-      "is_home": true,
-      "position": "G",
-      "game_id": "401909952",
-      "commence_time": "2026-11-10T00:00Z",
-      "date": "2026-11-09",
-      "stat": "points",
-      "per_game": 15.7,
-      "projection": 15.8,
-      "opp_allowed": 114.5,
-      "league_allowed": 113.4,
-      "pos_slot": "G",
-      "pos_allowed": 62.9,
-      "pos_league": 56.4,
-      "pos_rank": 5,
-      "pos_of": 30,
-      "weight": 0.524,
-      "recent": [
-        {
-          "date": "2026-10-23",
-          "opponent": "CHA",
-          "value": 13.0
-        },
-        {
-          "date": "2026-10-24",
-          "opponent": "HOU",
-          "value": 17.0
-        },
-        {
-          "date": "2026-10-26",
-          "opponent": "HOU",
-          "value": 20.0
-        },
-        {
-          "date": "2026-10-28",
-          "opponent": "MIA",
-          "value": 13.0
-        },
-        {
-          "date": "2026-10-29",
-          "opponent": "CLE",
-          "value": 5.0
-        },
-        {
-          "date": "2026-10-31",
-          "opponent": "NO",
-          "value": 14.0
-        },
-        {
-          "date": "2026-11-02",
           "opponent": "IND",
-          "value": 13.0
-        },
-        {
-          "date": "2026-11-04",
-          "opponent": "WSH",
-          "value": 15.0
-        },
-        {
-          "date": "2026-11-06",
-          "opponent": "WSH",
-          "value": 4.0
-        },
-        {
-          "date": "2026-11-07",
-          "opponent": "BKN",
-          "value": 9.0
-        }
-      ],
-      "vs_opp": {
-        "games": 1,
-        "per_game": 25.0,
-        "best": 25.0,
-        "worst": 25.0
-      },
-      "actual": null
-    },
-    {
-      "player_id": "5174563",
-      "name": "Kyshawn George",
-      "team": "WSH",
-      "opponent": "DET",
-      "is_home": false,
-      "position": "F",
-      "game_id": "401909954",
-      "commence_time": "2026-11-10T00:00Z",
-      "date": "2026-11-09",
-      "stat": "points",
-      "per_game": 16.6,
-      "projection": 15.3,
-      "opp_allowed": 103.9,
-      "league_allowed": 113.4,
-      "pos_slot": "F",
-      "pos_allowed": 37.4,
-      "pos_league": 42.8,
-      "pos_rank": 28,
-      "pos_of": 30,
-      "weight": 0.5,
-      "recent": [
-        {
-          "date": "2026-10-21",
-          "opponent": "MIL",
-          "value": 18.0
-        },
-        {
-          "date": "2026-10-23",
-          "opponent": "TOR",
-          "value": 11.0
-        },
-        {
-          "date": "2026-10-24",
-          "opponent": "CHI",
-          "value": 22.0
-        },
-        {
-          "date": "2026-10-26",
-          "opponent": "CHA",
-          "value": 20.0
-        },
-        {
-          "date": "2026-10-28",
-          "opponent": "CLE",
-          "value": 8.0
-        },
-        {
-          "date": "2026-10-30",
-          "opponent": "CHA",
-          "value": 12.0
-        },
-        {
-          "date": "2026-11-02",
-          "opponent": "ORL",
-          "value": 22.0
-        },
-        {
-          "date": "2026-11-04",
-          "opponent": "ATL",
-          "value": 25.0
-        },
-        {
-          "date": "2026-11-06",
-          "opponent": "ATL",
-          "value": 33.0
-        },
-        {
-          "date": "2026-11-07",
-          "opponent": "OKC",
-          "value": 14.0
-        }
-      ],
-      "vs_opp": {
-        "games": 2,
-        "per_game": 11.0,
-        "best": 14.0,
-        "worst": 8.0
-      },
-      "actual": null
-    },
-    {
-      "player_id": "3157465",
-      "name": "Duncan Robinson",
-      "team": "DET",
-      "opponent": "WSH",
-      "is_home": true,
-      "position": "F",
-      "game_id": "401909954",
-      "commence_time": "2026-11-10T00:00Z",
-      "date": "2026-11-09",
-      "stat": "points",
-      "per_game": 15.0,
-      "projection": 14.9,
-      "opp_allowed": 112.5,
-      "league_allowed": 113.4,
-      "pos_slot": "F",
-      "pos_allowed": 41.1,
-      "pos_league": 42.8,
-      "pos_rank": 17,
-      "pos_of": 30,
-      "weight": 0.474,
-      "recent": [
-        {
-          "date": "2026-10-20",
-          "opponent": "BOS",
-          "value": 21.0
-        },
-        {
-          "date": "2026-10-23",
-          "opponent": "MIA",
-          "value": 17.0
-        },
-        {
-          "date": "2026-10-25",
-          "opponent": "PHI",
-          "value": 21.0
-        },
-        {
-          "date": "2026-10-27",
-          "opponent": "NY",
-          "value": 12.0
-        },
-        {
-          "date": "2026-10-28",
-          "opponent": "CHA",
-          "value": 13.0
-        },
-        {
-          "date": "2026-10-30",
-          "opponent": "BKN",
-          "value": 17.0
-        },
-        {
-          "date": "2026-11-02",
-          "opponent": "CHA",
-          "value": 24.0
-        },
-        {
-          "date": "2026-11-04",
-          "opponent": "PHI",
           "value": 27.0
         },
         {
-          "date": "2026-11-08",
-          "opponent": "LAL",
-          "value": 12.0
-        }
-      ],
-      "vs_opp": {
-        "games": 4,
-        "per_game": 14.0,
-        "best": 21.0,
-        "worst": 8.0
-      },
-      "actual": null
-    },
-    {
-      "player_id": "4433136",
-      "name": "Walker Kessler",
-      "team": "LAL",
-      "opponent": "ATL",
-      "is_home": false,
-      "position": "C",
-      "game_id": "401909952",
-      "commence_time": "2026-11-10T00:00Z",
-      "date": "2026-11-09",
-      "stat": "points",
-      "per_game": 14.4,
-      "projection": 14.6,
-      "opp_allowed": 115.5,
-      "league_allowed": 113.4,
-      "pos_slot": "C",
-      "pos_allowed": 21.6,
-      "pos_league": 15.8,
-      "pos_rank": 3,
-      "pos_of": 30,
-      "weight": 0.524,
-      "recent": [
-        {
-          "date": "2026-10-23",
-          "opponent": "LAC",
-          "value": 22.0
-        },
-        {
-          "date": "2026-10-25",
-          "opponent": "UTAH",
-          "value": 2.0
-        },
-        {
-          "date": "2026-10-27",
-          "opponent": "POR",
-          "value": 13.0
-        },
-        {
-          "date": "2026-10-28",
-          "opponent": "LAC",
-          "value": 11.0
-        },
-        {
           "date": "2026-10-30",
-          "opponent": "GS",
-          "value": 10.0
+          "opponent": "NY",
+          "value": 27.0
         },
         {
-          "date": "2026-11-01",
-          "opponent": "TOR",
-          "value": 16.0
+          "date": "2026-10-31",
+          "opponent": "CHA",
+          "value": 38.0
         },
         {
           "date": "2026-11-02",
-          "opponent": "MIA",
-          "value": 15.0
+          "opponent": "CHI",
+          "value": 26.0
         },
         {
           "date": "2026-11-04",
-          "opponent": "SAC",
-          "value": 15.0
+          "opponent": "DET",
+          "value": 19.0
         },
         {
           "date": "2026-11-06",
-          "opponent": "POR",
-          "value": 16.0
+          "opponent": "CLE",
+          "value": 17.0
         },
         {
           "date": "2026-11-08",
-          "opponent": "DET",
-          "value": 12.0
-        }
-      ],
-      "vs_opp": null,
-      "actual": null
-    },
-    {
-      "player_id": "6450",
-      "name": "Kawhi Leonard",
-      "team": "TOR",
-      "opponent": "MEM",
-      "is_home": true,
-      "position": "F",
-      "game_id": "401909955",
-      "commence_time": "2026-11-10T00:30Z",
-      "date": "2026-11-09",
-      "stat": "points",
-      "per_game": 27.9,
-      "projection": 27.5,
-      "opp_allowed": 111.8,
-      "league_allowed": 113.4,
-      "pos_slot": "F",
-      "pos_allowed": 40.2,
-      "pos_league": 42.8,
-      "pos_rank": 21,
-      "pos_of": 30,
-      "weight": 0.0,
-      "recent": [
-        {
-          "date": "2026-10-21",
           "opponent": "CHI",
-          "value": 23.0
-        },
-        {
-          "date": "2026-10-23",
-          "opponent": "WSH",
-          "value": 16.0
+          "value": 27.0
         }
       ],
       "vs_opp": {
         "games": 4,
-        "per_game": 28.0,
-        "best": 39.0,
+        "per_game": 30.0,
+        "best": 40.0,
         "worst": 21.0
       },
       "actual": null
     },
     {
-      "player_id": "4065733",
-      "name": "Ty Jerome",
-      "team": "MEM",
-      "opponent": "TOR",
-      "is_home": false,
-      "position": "G",
-      "game_id": "401909955",
-      "commence_time": "2026-11-10T00:30Z",
-      "date": "2026-11-09",
-      "stat": "points",
-      "per_game": 22.8,
-      "projection": 22.6,
-      "opp_allowed": 112.8,
-      "league_allowed": 113.4,
-      "pos_slot": "G",
-      "pos_allowed": 58.3,
-      "pos_league": 56.4,
-      "pos_rank": 10,
-      "pos_of": 30,
-      "weight": 0.444,
-      "recent": [
-        {
-          "date": "2026-10-21",
-          "opponent": "UTAH",
-          "value": 45.0
-        },
-        {
-          "date": "2026-10-23",
-          "opponent": "GS",
-          "value": 28.0
-        },
-        {
-          "date": "2026-10-25",
-          "opponent": "SAC",
-          "value": 31.0
-        },
-        {
-          "date": "2026-10-26",
-          "opponent": "UTAH",
-          "value": 15.0
-        },
-        {
-          "date": "2026-10-29",
-          "opponent": "POR",
-          "value": 10.0
-        },
-        {
-          "date": "2026-11-02",
-          "opponent": "NO",
-          "value": 40.0
-        },
-        {
-          "date": "2026-11-04",
-          "opponent": "IND",
-          "value": 23.0
-        },
-        {
-          "date": "2026-11-06",
-          "opponent": "OKC",
-          "value": 21.0
-        }
-      ],
-      "vs_opp": null,
-      "actual": null
-    },
-    {
-      "player_id": "4433134",
-      "name": "Scottie Barnes",
-      "team": "TOR",
-      "opponent": "MEM",
-      "is_home": true,
-      "position": "F",
-      "game_id": "401909955",
-      "commence_time": "2026-11-10T00:30Z",
-      "date": "2026-11-09",
-      "stat": "points",
-      "per_game": 20.5,
-      "projection": 20.2,
-      "opp_allowed": 111.8,
-      "league_allowed": 113.4,
-      "pos_slot": "F",
-      "pos_allowed": 40.2,
-      "pos_league": 42.8,
-      "pos_rank": 21,
-      "pos_of": 30,
-      "weight": 0.444,
-      "recent": [
-        {
-          "date": "2026-10-21",
-          "opponent": "CHI",
-          "value": 23.0
-        },
-        {
-          "date": "2026-10-23",
-          "opponent": "WSH",
-          "value": 28.0
-        },
-        {
-          "date": "2026-10-25",
-          "opponent": "MIN",
-          "value": 0.0
-        },
-        {
-          "date": "2026-10-28",
-          "opponent": "ORL",
-          "value": 28.0
-        },
-        {
-          "date": "2026-10-30",
-          "opponent": "ORL",
-          "value": 41.0
-        },
-        {
-          "date": "2026-11-01",
-          "opponent": "LAL",
-          "value": 29.0
-        },
-        {
-          "date": "2026-11-02",
-          "opponent": "LAC",
-          "value": 22.0
-        },
-        {
-          "date": "2026-11-04",
-          "opponent": "DEN",
-          "value": 17.0
-        }
-      ],
-      "vs_opp": {
-        "games": 2,
-        "per_game": 14.5,
-        "best": 19.0,
-        "worst": 10.0
-      },
-      "actual": null
-    },
-    {
-      "player_id": "4395625",
-      "name": "RJ Barrett",
-      "team": "TOR",
-      "opponent": "MEM",
-      "is_home": true,
-      "position": "F",
-      "game_id": "401909955",
-      "commence_time": "2026-11-10T00:30Z",
-      "date": "2026-11-09",
-      "stat": "points",
-      "per_game": 20.3,
-      "projection": 20.1,
-      "opp_allowed": 111.8,
-      "league_allowed": 113.4,
-      "pos_slot": "F",
-      "pos_allowed": 40.2,
-      "pos_league": 42.8,
-      "pos_rank": 21,
-      "pos_of": 30,
-      "weight": 0.474,
-      "recent": [
-        {
-          "date": "2026-10-21",
-          "opponent": "CHI",
-          "value": 20.0
-        },
-        {
-          "date": "2026-10-23",
-          "opponent": "WSH",
-          "value": 23.0
-        },
-        {
-          "date": "2026-10-25",
-          "opponent": "MIN",
-          "value": 20.0
-        },
-        {
-          "date": "2026-10-28",
-          "opponent": "ORL",
-          "value": 25.0
-        },
-        {
-          "date": "2026-10-30",
-          "opponent": "ORL",
-          "value": 9.0
-        },
-        {
-          "date": "2026-11-01",
-          "opponent": "LAL",
-          "value": 22.0
-        },
-        {
-          "date": "2026-11-02",
-          "opponent": "LAC",
-          "value": 26.0
-        },
-        {
-          "date": "2026-11-04",
-          "opponent": "DEN",
-          "value": 22.0
-        },
-        {
-          "date": "2026-11-06",
-          "opponent": "MIL",
-          "value": 27.0
-        }
-      ],
-      "vs_opp": {
-        "games": 2,
-        "per_game": 26.0,
-        "best": 27.0,
-        "worst": 25.0
-      },
-      "actual": null
-    },
-    {
-      "player_id": "5041935",
-      "name": "Cameron Boozer",
-      "team": "MEM",
-      "opponent": "TOR",
-      "is_home": false,
-      "position": "F",
-      "game_id": "401909955",
-      "commence_time": "2026-11-10T00:30Z",
-      "date": "2026-11-09",
-      "stat": "points",
-      "per_game": 15.6,
-      "projection": 15.5,
-      "opp_allowed": 112.8,
-      "league_allowed": 113.4,
-      "pos_slot": "F",
-      "pos_allowed": 40.7,
-      "pos_league": 42.8,
-      "pos_rank": 18,
-      "pos_of": 30,
-      "weight": 1.0,
-      "recent": [
-        {
-          "date": "2026-10-21",
-          "opponent": "UTAH",
-          "value": 7.0
-        },
-        {
-          "date": "2026-10-23",
-          "opponent": "GS",
-          "value": 25.0
-        },
-        {
-          "date": "2026-10-25",
-          "opponent": "SAC",
-          "value": 14.0
-        },
-        {
-          "date": "2026-10-26",
-          "opponent": "UTAH",
-          "value": 13.0
-        },
-        {
-          "date": "2026-10-29",
-          "opponent": "POR",
-          "value": 18.0
-        },
-        {
-          "date": "2026-10-31",
-          "opponent": "SAC",
-          "value": 27.0
-        },
-        {
-          "date": "2026-11-02",
-          "opponent": "NO",
-          "value": 18.0
-        },
-        {
-          "date": "2026-11-04",
-          "opponent": "IND",
-          "value": 10.0
-        },
-        {
-          "date": "2026-11-06",
-          "opponent": "OKC",
-          "value": 8.0
-        }
-      ],
-      "vs_opp": null,
-      "actual": null
-    },
-    {
-      "player_id": "2991070",
-      "name": "Jerami Grant",
-      "team": "MEM",
-      "opponent": "TOR",
-      "is_home": false,
-      "position": "F",
-      "game_id": "401909955",
-      "commence_time": "2026-11-10T00:30Z",
-      "date": "2026-11-09",
-      "stat": "points",
-      "per_game": 14.4,
-      "projection": 14.3,
-      "opp_allowed": 112.8,
-      "league_allowed": 113.4,
-      "pos_slot": "F",
-      "pos_allowed": 40.7,
-      "pos_league": 42.8,
-      "pos_rank": 18,
-      "pos_of": 30,
-      "weight": 0.474,
-      "recent": [
-        {
-          "date": "2026-10-21",
-          "opponent": "UTAH",
-          "value": 15.0
-        },
-        {
-          "date": "2026-10-23",
-          "opponent": "GS",
-          "value": 6.0
-        },
-        {
-          "date": "2026-10-25",
-          "opponent": "SAC",
-          "value": 5.0
-        },
-        {
-          "date": "2026-10-26",
-          "opponent": "UTAH",
-          "value": 13.0
-        },
-        {
-          "date": "2026-10-29",
-          "opponent": "POR",
-          "value": 2.0
-        },
-        {
-          "date": "2026-10-31",
-          "opponent": "SAC",
-          "value": 14.0
-        },
-        {
-          "date": "2026-11-02",
-          "opponent": "NO",
-          "value": 11.0
-        },
-        {
-          "date": "2026-11-04",
-          "opponent": "IND",
-          "value": 11.0
-        },
-        {
-          "date": "2026-11-06",
-          "opponent": "OKC",
-          "value": 10.0
-        }
-      ],
-      "vs_opp": {
-        "games": 2,
-        "per_game": 13.5,
-        "best": 19.0,
-        "worst": 8.0
-      },
-      "actual": null
-    },
-    {
-      "player_id": "5041939",
-      "name": "Cooper Flagg",
-      "team": "DAL",
-      "opponent": "IND",
-      "is_home": true,
-      "position": "F",
-      "game_id": "401909956",
-      "commence_time": "2026-11-10T01:00Z",
-      "date": "2026-11-09",
-      "stat": "points",
-      "per_game": 22.4,
-      "projection": 22.6,
-      "opp_allowed": 114.2,
-      "league_allowed": 113.4,
-      "pos_slot": "F",
-      "pos_allowed": 47.2,
-      "pos_league": 42.8,
-      "pos_rank": 7,
-      "pos_of": 30,
-      "weight": 0.474,
-      "recent": [
-        {
-          "date": "2026-10-21",
-          "opponent": "HOU",
-          "value": 32.0
-        },
-        {
-          "date": "2026-10-23",
-          "opponent": "IND",
-          "value": 14.0
-        },
-        {
-          "date": "2026-10-26",
-          "opponent": "MIA",
-          "value": 29.0
-        },
-        {
-          "date": "2026-10-28",
-          "opponent": "OKC",
-          "value": 26.0
-        },
-        {
-          "date": "2026-10-30",
-          "opponent": "HOU",
-          "value": 33.0
-        },
-        {
-          "date": "2026-11-02",
-          "opponent": "SAC",
-          "value": 17.0
-        },
-        {
-          "date": "2026-11-04",
-          "opponent": "SA",
-          "value": 19.0
-        },
-        {
-          "date": "2026-11-06",
-          "opponent": "UTAH",
-          "value": 21.0
-        },
-        {
-          "date": "2026-11-08",
-          "opponent": "BKN",
-          "value": 25.0
-        }
-      ],
-      "vs_opp": {
-        "games": 2,
-        "per_game": 14.5,
-        "best": 15.0,
-        "worst": 14.0
-      },
-      "actual": null
-    },
-    {
-      "player_id": "3149673",
-      "name": "Pascal Siakam",
-      "team": "IND",
-      "opponent": "DAL",
-      "is_home": false,
-      "position": "F",
-      "game_id": "401909956",
-      "commence_time": "2026-11-10T01:00Z",
-      "date": "2026-11-09",
-      "stat": "points",
-      "per_game": 22.8,
-      "projection": 21.9,
-      "opp_allowed": 109.1,
-      "league_allowed": 113.4,
-      "pos_slot": "F",
-      "pos_allowed": 44.1,
-      "pos_league": 42.8,
-      "pos_rank": 9,
-      "pos_of": 30,
-      "weight": 0.474,
-      "recent": [
-        {
-          "date": "2026-10-21",
-          "opponent": "NO",
-          "value": 30.0
-        },
-        {
-          "date": "2026-10-23",
-          "opponent": "DAL",
-          "value": 23.0
-        },
-        {
-          "date": "2026-10-25",
-          "opponent": "BKN",
-          "value": 21.0
-        },
-        {
-          "date": "2026-10-26",
-          "opponent": "MIL",
-          "value": 20.0
-        },
-        {
-          "date": "2026-10-28",
-          "opponent": "PHI",
-          "value": 26.0
-        },
-        {
-          "date": "2026-10-30",
-          "opponent": "MIA",
-          "value": 13.0
-        },
-        {
-          "date": "2026-11-01",
-          "opponent": "BKN",
-          "value": 17.0
-        },
-        {
-          "date": "2026-11-04",
-          "opponent": "MEM",
-          "value": 20.0
-        },
-        {
-          "date": "2026-11-07",
-          "opponent": "DEN",
-          "value": 23.0
-        }
-      ],
-      "vs_opp": {
-        "games": 3,
-        "per_game": 26.7,
-        "best": 30.0,
-        "worst": 23.0
-      },
-      "actual": null
-    },
-    {
-      "player_id": "6442",
-      "name": "Kyrie Irving",
-      "team": "DAL",
-      "opponent": "IND",
+      "player_id": "3917376",
+      "name": "Jaylen Brown",
+      "team": "PHI",
+      "opponent": "BOS",
       "is_home": true,
       "position": "G",
-      "game_id": "401909956",
-      "commence_time": "2026-11-10T01:00Z",
-      "date": "2026-11-09",
-      "stat": "points",
-      "per_game": 21.4,
-      "projection": 21.5,
-      "opp_allowed": 114.2,
-      "league_allowed": 113.4,
-      "pos_slot": "G",
-      "pos_allowed": 48.2,
-      "pos_league": 56.4,
-      "pos_rank": 28,
-      "pos_of": 30,
-      "weight": 1.0,
-      "recent": [
-        {
-          "date": "2026-10-21",
-          "opponent": "HOU",
-          "value": 15.0
-        },
-        {
-          "date": "2026-10-23",
-          "opponent": "IND",
-          "value": 24.0
-        },
-        {
-          "date": "2026-10-26",
-          "opponent": "MIA",
-          "value": 18.0
-        },
-        {
-          "date": "2026-10-28",
-          "opponent": "OKC",
-          "value": 15.0
-        },
-        {
-          "date": "2026-10-30",
-          "opponent": "HOU",
-          "value": 35.0
-        },
-        {
-          "date": "2026-11-04",
-          "opponent": "SA",
-          "value": 29.0
-        },
-        {
-          "date": "2026-11-06",
-          "opponent": "UTAH",
-          "value": 14.0
-        },
-        {
-          "date": "2026-11-08",
-          "opponent": "BKN",
-          "value": 21.0
-        }
-      ],
-      "vs_opp": {
-        "games": 1,
-        "per_game": 24.0,
-        "best": 24.0,
-        "worst": 24.0
-      },
-      "actual": null
-    },
-    {
-      "player_id": "4395712",
-      "name": "Andrew Nembhard",
-      "team": "IND",
-      "opponent": "DAL",
-      "is_home": false,
-      "position": "G",
-      "game_id": "401909956",
-      "commence_time": "2026-11-10T01:00Z",
-      "date": "2026-11-09",
-      "stat": "points",
-      "per_game": 17.3,
-      "projection": 16.6,
-      "opp_allowed": 109.1,
-      "league_allowed": 113.4,
-      "pos_slot": "G",
-      "pos_allowed": 55.9,
-      "pos_league": 56.4,
-      "pos_rank": 16,
-      "pos_of": 30,
-      "weight": 0.444,
-      "recent": [
-        {
-          "date": "2026-10-21",
-          "opponent": "NO",
-          "value": 18.0
-        },
-        {
-          "date": "2026-10-23",
-          "opponent": "DAL",
-          "value": 16.0
-        },
-        {
-          "date": "2026-10-25",
-          "opponent": "BKN",
-          "value": 14.0
-        },
-        {
-          "date": "2026-10-28",
-          "opponent": "PHI",
-          "value": 18.0
-        },
-        {
-          "date": "2026-10-30",
-          "opponent": "MIA",
-          "value": 22.0
-        },
-        {
-          "date": "2026-11-01",
-          "opponent": "BKN",
-          "value": 23.0
-        },
-        {
-          "date": "2026-11-04",
-          "opponent": "MEM",
-          "value": 22.0
-        },
-        {
-          "date": "2026-11-07",
-          "opponent": "DEN",
-          "value": 9.0
-        }
-      ],
-      "vs_opp": {
-        "games": 2,
-        "per_game": 19.0,
-        "best": 22.0,
-        "worst": 16.0
-      },
-      "actual": null
-    },
-    {
-      "player_id": "4278078",
-      "name": "P.J. Washington",
-      "team": "DAL",
-      "opponent": "IND",
-      "is_home": true,
-      "position": "F",
-      "game_id": "401909956",
-      "commence_time": "2026-11-10T01:00Z",
-      "date": "2026-11-09",
-      "stat": "points",
-      "per_game": 14.5,
-      "projection": 14.6,
-      "opp_allowed": 114.2,
-      "league_allowed": 113.4,
-      "pos_slot": "F",
-      "pos_allowed": 47.2,
-      "pos_league": 42.8,
-      "pos_rank": 7,
-      "pos_of": 30,
-      "weight": 0.5,
-      "recent": [
-        {
-          "date": "2026-10-21",
-          "opponent": "HOU",
-          "value": 10.0
-        },
-        {
-          "date": "2026-10-23",
-          "opponent": "IND",
-          "value": 20.0
-        },
-        {
-          "date": "2026-10-24",
-          "opponent": "SA",
-          "value": 12.0
-        },
-        {
-          "date": "2026-10-26",
-          "opponent": "MIA",
-          "value": 20.0
-        },
-        {
-          "date": "2026-10-28",
-          "opponent": "OKC",
-          "value": 18.0
-        },
-        {
-          "date": "2026-10-30",
-          "opponent": "HOU",
-          "value": 3.0
-        },
-        {
-          "date": "2026-11-02",
-          "opponent": "SAC",
-          "value": 12.0
-        },
-        {
-          "date": "2026-11-04",
-          "opponent": "SA",
-          "value": 21.0
-        },
-        {
-          "date": "2026-11-06",
-          "opponent": "UTAH",
-          "value": 26.0
-        },
-        {
-          "date": "2026-11-08",
-          "opponent": "BKN",
-          "value": 6.0
-        }
-      ],
-      "vs_opp": {
-        "games": 3,
-        "per_game": 17.3,
-        "best": 23.0,
-        "worst": 9.0
-      },
-      "actual": null
-    },
-    {
-      "player_id": "4396909",
-      "name": "Aaron Nesmith",
-      "team": "IND",
-      "opponent": "DAL",
-      "is_home": false,
-      "position": "G",
-      "game_id": "401909956",
-      "commence_time": "2026-11-10T01:00Z",
-      "date": "2026-11-09",
-      "stat": "points",
-      "per_game": 13.1,
-      "projection": 12.6,
-      "opp_allowed": 109.1,
-      "league_allowed": 113.4,
-      "pos_slot": "G",
-      "pos_allowed": 55.9,
-      "pos_league": 56.4,
-      "pos_rank": 16,
-      "pos_of": 30,
-      "weight": 0.444,
-      "recent": [
-        {
-          "date": "2026-10-23",
-          "opponent": "DAL",
-          "value": 9.0
-        },
-        {
-          "date": "2026-10-25",
-          "opponent": "BKN",
-          "value": 13.0
-        },
-        {
-          "date": "2026-10-26",
-          "opponent": "MIL",
-          "value": 13.0
-        },
-        {
-          "date": "2026-10-28",
-          "opponent": "PHI",
-          "value": 18.0
-        },
-        {
-          "date": "2026-10-30",
-          "opponent": "MIA",
-          "value": 9.0
-        },
-        {
-          "date": "2026-11-01",
-          "opponent": "BKN",
-          "value": 11.0
-        },
-        {
-          "date": "2026-11-04",
-          "opponent": "MEM",
-          "value": 16.0
-        },
-        {
-          "date": "2026-11-07",
-          "opponent": "DEN",
-          "value": 8.0
-        }
-      ],
-      "vs_opp": {
-        "games": 2,
-        "per_game": 7.0,
-        "best": 9.0,
-        "worst": 5.0
-      },
-      "actual": null
-    },
-    {
-      "player_id": "3112335",
-      "name": "Nikola Jokic",
-      "team": "DEN",
-      "opponent": "HOU",
-      "is_home": false,
-      "position": "C",
-      "game_id": "401909957",
-      "commence_time": "2026-11-10T01:30Z",
-      "date": "2026-11-09",
+      "game_id": "401909961",
+      "commence_time": "2026-11-11T01:00Z",
+      "date": "2026-11-10",
       "stat": "points",
       "per_game": 25.5,
-      "projection": 24.1,
-      "opp_allowed": 107.0,
-      "league_allowed": 113.4,
-      "pos_slot": "C",
-      "pos_allowed": 10.8,
-      "pos_league": 15.8,
-      "pos_rank": 28,
-      "pos_of": 30,
-      "weight": 0.444,
-      "recent": [
-        {
-          "date": "2026-10-22",
-          "opponent": "OKC",
-          "value": 13.0
-        },
-        {
-          "date": "2026-10-24",
-          "opponent": "NO",
-          "value": 35.0
-        },
-        {
-          "date": "2026-10-26",
-          "opponent": "GS",
-          "value": 19.0
-        },
-        {
-          "date": "2026-10-28",
-          "opponent": "NO",
-          "value": 21.0
-        },
-        {
-          "date": "2026-10-30",
-          "opponent": "PHX",
-          "value": 18.0
-        },
-        {
-          "date": "2026-11-02",
-          "opponent": "POR",
-          "value": 26.0
-        },
-        {
-          "date": "2026-11-04",
-          "opponent": "TOR",
-          "value": 32.0
-        },
-        {
-          "date": "2026-11-07",
-          "opponent": "IND",
-          "value": 19.0
-        }
-      ],
-      "vs_opp": {
-        "games": 4,
-        "per_game": 28.5,
-        "best": 39.0,
-        "worst": 16.0
-      },
-      "actual": null
-    },
-    {
-      "player_id": "3936299",
-      "name": "Jamal Murray",
-      "team": "DEN",
-      "opponent": "HOU",
-      "is_home": false,
-      "position": "G",
-      "game_id": "401909957",
-      "commence_time": "2026-11-10T01:30Z",
-      "date": "2026-11-09",
-      "stat": "points",
-      "per_game": 24.9,
-      "projection": 23.5,
-      "opp_allowed": 107.0,
-      "league_allowed": 113.4,
+      "projection": 23.4,
+      "opp_allowed": 104.3,
+      "league_allowed": 113.5,
       "pos_slot": "G",
-      "pos_allowed": 57.4,
-      "pos_league": 56.4,
-      "pos_rank": 12,
-      "pos_of": 30,
-      "weight": 0.444,
-      "recent": [
-        {
-          "date": "2026-10-22",
-          "opponent": "OKC",
-          "value": 6.0
-        },
-        {
-          "date": "2026-10-24",
-          "opponent": "NO",
-          "value": 42.0
-        },
-        {
-          "date": "2026-10-26",
-          "opponent": "GS",
-          "value": 19.0
-        },
-        {
-          "date": "2026-10-28",
-          "opponent": "NO",
-          "value": 23.0
-        },
-        {
-          "date": "2026-10-30",
-          "opponent": "PHX",
-          "value": 39.0
-        },
-        {
-          "date": "2026-11-02",
-          "opponent": "POR",
-          "value": 35.0
-        },
-        {
-          "date": "2026-11-04",
-          "opponent": "TOR",
-          "value": 14.0
-        },
-        {
-          "date": "2026-11-07",
-          "opponent": "IND",
-          "value": 16.0
-        }
-      ],
-      "vs_opp": {
-        "games": 4,
-        "per_game": 26.8,
-        "best": 35.0,
-        "worst": 16.0
-      },
-      "actual": null
-    },
-    {
-      "player_id": "3202",
-      "name": "Kevin Durant",
-      "team": "HOU",
-      "opponent": "DEN",
-      "is_home": true,
-      "position": "F",
-      "game_id": "401909957",
-      "commence_time": "2026-11-10T01:30Z",
-      "date": "2026-11-09",
-      "stat": "points",
-      "per_game": 23.4,
-      "projection": 23.3,
-      "opp_allowed": 113.1,
-      "league_allowed": 113.4,
-      "pos_slot": "F",
-      "pos_allowed": 49.1,
-      "pos_league": 42.8,
-      "pos_rank": 5,
-      "pos_of": 30,
-      "weight": 0.5,
-      "recent": [
-        {
-          "date": "2026-10-21",
-          "opponent": "DAL",
-          "value": 30.0
-        },
-        {
-          "date": "2026-10-23",
-          "opponent": "SA",
-          "value": 20.0
-        },
-        {
-          "date": "2026-10-24",
-          "opponent": "ATL",
-          "value": 22.0
-        },
-        {
-          "date": "2026-10-26",
-          "opponent": "ATL",
-          "value": 22.0
-        },
-        {
-          "date": "2026-10-28",
-          "opponent": "MIL",
-          "value": 18.0
-        },
-        {
-          "date": "2026-10-30",
-          "opponent": "DAL",
-          "value": 28.0
-        },
-        {
-          "date": "2026-10-31",
-          "opponent": "OKC",
-          "value": 14.0
-        },
-        {
-          "date": "2026-11-02",
-          "opponent": "BOS",
-          "value": 12.0
-        },
-        {
-          "date": "2026-11-04",
-          "opponent": "MIN",
-          "value": 21.0
-        },
-        {
-          "date": "2026-11-07",
-          "opponent": "PHX",
-          "value": 21.0
-        }
-      ],
-      "vs_opp": {
-        "games": 4,
-        "per_game": 20.0,
-        "best": 31.0,
-        "worst": 11.0
-      },
-      "actual": null
-    },
-    {
-      "player_id": "4871144",
-      "name": "Alperen Sengun",
-      "team": "HOU",
-      "opponent": "DEN",
-      "is_home": true,
-      "position": "C",
-      "game_id": "401909957",
-      "commence_time": "2026-11-10T01:30Z",
-      "date": "2026-11-09",
-      "stat": "points",
-      "per_game": 20.9,
-      "projection": 20.8,
-      "opp_allowed": 113.1,
-      "league_allowed": 113.4,
-      "pos_slot": "C",
-      "pos_allowed": 14.6,
-      "pos_league": 15.8,
-      "pos_rank": 18,
-      "pos_of": 30,
-      "weight": 0.444,
-      "recent": [
-        {
-          "date": "2026-10-21",
-          "opponent": "DAL",
-          "value": 23.0
-        },
-        {
-          "date": "2026-10-23",
-          "opponent": "SA",
-          "value": 29.0
-        },
-        {
-          "date": "2026-10-24",
-          "opponent": "ATL",
-          "value": 17.0
-        },
-        {
-          "date": "2026-10-26",
-          "opponent": "ATL",
-          "value": 29.0
-        },
-        {
-          "date": "2026-10-31",
-          "opponent": "OKC",
-          "value": 16.0
-        },
-        {
-          "date": "2026-11-02",
-          "opponent": "BOS",
-          "value": 26.0
-        },
-        {
-          "date": "2026-11-04",
-          "opponent": "MIN",
-          "value": 17.0
-        },
-        {
-          "date": "2026-11-07",
-          "opponent": "PHX",
-          "value": 15.0
-        }
-      ],
-      "vs_opp": {
-        "games": 4,
-        "per_game": 16.2,
-        "best": 33.0,
-        "worst": 8.0
-      },
-      "actual": null
-    },
-    {
-      "player_id": "4684740",
-      "name": "Amen Thompson",
-      "team": "HOU",
-      "opponent": "DEN",
-      "is_home": true,
-      "position": "G",
-      "game_id": "401909957",
-      "commence_time": "2026-11-10T01:30Z",
-      "date": "2026-11-09",
-      "stat": "points",
-      "per_game": 16.9,
-      "projection": 16.9,
-      "opp_allowed": 113.1,
-      "league_allowed": 113.4,
-      "pos_slot": "G",
-      "pos_allowed": 49.4,
-      "pos_league": 56.4,
-      "pos_rank": 27,
-      "pos_of": 30,
-      "weight": 0.5,
-      "recent": [
-        {
-          "date": "2026-10-21",
-          "opponent": "DAL",
-          "value": 16.0
-        },
-        {
-          "date": "2026-10-23",
-          "opponent": "SA",
-          "value": 20.0
-        },
-        {
-          "date": "2026-10-24",
-          "opponent": "ATL",
-          "value": 17.0
-        },
-        {
-          "date": "2026-10-26",
-          "opponent": "ATL",
-          "value": 15.0
-        },
-        {
-          "date": "2026-10-28",
-          "opponent": "MIL",
-          "value": 23.0
-        },
-        {
-          "date": "2026-10-30",
-          "opponent": "DAL",
-          "value": 15.0
-        },
-        {
-          "date": "2026-10-31",
-          "opponent": "OKC",
-          "value": 8.0
-        },
-        {
-          "date": "2026-11-02",
-          "opponent": "BOS",
-          "value": 14.0
-        },
-        {
-          "date": "2026-11-04",
-          "opponent": "MIN",
-          "value": 11.0
-        },
-        {
-          "date": "2026-11-07",
-          "opponent": "PHX",
-          "value": 17.0
-        }
-      ],
-      "vs_opp": {
-        "games": 4,
-        "per_game": 17.0,
-        "best": 22.0,
-        "worst": 14.0
-      },
-      "actual": null
-    },
-    {
-      "player_id": "3978",
-      "name": "DeMar DeRozan",
-      "team": "DEN",
-      "opponent": "HOU",
-      "is_home": false,
-      "position": "G",
-      "game_id": "401909957",
-      "commence_time": "2026-11-10T01:30Z",
-      "date": "2026-11-09",
-      "stat": "points",
-      "per_game": 15.3,
-      "projection": 14.4,
-      "opp_allowed": 107.0,
-      "league_allowed": 113.4,
-      "pos_slot": "G",
-      "pos_allowed": 57.4,
-      "pos_league": 56.4,
-      "pos_rank": 12,
-      "pos_of": 30,
-      "weight": 0.412,
-      "recent": [
-        {
-          "date": "2026-10-22",
-          "opponent": "OKC",
-          "value": 13.0
-        },
-        {
-          "date": "2026-10-24",
-          "opponent": "NO",
-          "value": 12.0
-        },
-        {
-          "date": "2026-10-26",
-          "opponent": "GS",
-          "value": 21.0
-        },
-        {
-          "date": "2026-10-28",
-          "opponent": "NO",
-          "value": 6.0
-        },
-        {
-          "date": "2026-10-30",
-          "opponent": "PHX",
-          "value": 3.0
-        },
-        {
-          "date": "2026-11-02",
-          "opponent": "POR",
-          "value": 9.0
-        },
-        {
-          "date": "2026-11-07",
-          "opponent": "IND",
-          "value": 11.0
-        }
-      ],
-      "vs_opp": {
-        "games": 4,
-        "per_game": 19.0,
-        "best": 27.0,
-        "worst": 12.0
-      },
-      "actual": null
-    },
-    {
-      "player_id": "5104157",
-      "name": "Victor Wembanyama",
-      "team": "SA",
-      "opponent": "PHX",
-      "is_home": false,
-      "position": "F",
-      "game_id": "401909958",
-      "commence_time": "2026-11-10T02:00Z",
-      "date": "2026-11-09",
-      "stat": "points",
-      "per_game": 27.0,
-      "projection": 28.2,
-      "opp_allowed": 118.6,
-      "league_allowed": 113.4,
-      "pos_slot": "F",
-      "pos_allowed": 33.4,
-      "pos_league": 42.8,
+      "pos_allowed": 46.8,
+      "pos_league": 56.2,
       "pos_rank": 29,
       "pos_of": 30,
       "weight": 0.5,
       "recent": [
         {
           "date": "2026-10-20",
-          "opponent": "OKC",
-          "value": 12.0
+          "opponent": "NY",
+          "value": 19.0
         },
         {
-          "date": "2026-10-23",
-          "opponent": "HOU",
-          "value": 25.0
+          "date": "2026-10-22",
+          "opponent": "CLE",
+          "value": 21.0
         },
         {
           "date": "2026-10-24",
-          "opponent": "DAL",
+          "opponent": "MIL",
+          "value": 27.0
+        },
+        {
+          "date": "2026-10-25",
+          "opponent": "DET",
+          "value": 16.0
+        },
+        {
+          "date": "2026-10-28",
+          "opponent": "IND",
+          "value": 20.0
+        },
+        {
+          "date": "2026-10-31",
+          "opponent": "CHA",
+          "value": 16.0
+        },
+        {
+          "date": "2026-11-02",
+          "opponent": "CHI",
+          "value": 25.0
+        },
+        {
+          "date": "2026-11-04",
+          "opponent": "DET",
+          "value": 30.0
+        },
+        {
+          "date": "2026-11-06",
+          "opponent": "CLE",
+          "value": 20.0
+        },
+        {
+          "date": "2026-11-08",
+          "opponent": "CHI",
+          "value": 29.0
+        }
+      ],
+      "vs_opp": null,
+      "actual": null
+    },
+    {
+      "player_id": "4065648",
+      "name": "Jayson Tatum",
+      "team": "BOS",
+      "opponent": "PHI",
+      "is_home": false,
+      "position": "F",
+      "game_id": "401909961",
+      "commence_time": "2026-11-11T01:00Z",
+      "date": "2026-11-10",
+      "stat": "points",
+      "per_game": 24.3,
+      "projection": 23.1,
+      "opp_allowed": 107.9,
+      "league_allowed": 113.5,
+      "pos_slot": "F",
+      "pos_allowed": 38.5,
+      "pos_league": 43.1,
+      "pos_rank": 26,
+      "pos_of": 30,
+      "weight": 0.474,
+      "recent": [
+        {
+          "date": "2026-10-20",
+          "opponent": "DET",
+          "value": 13.0
+        },
+        {
+          "date": "2026-10-23",
+          "opponent": "NY",
+          "value": 36.0
+        },
+        {
+          "date": "2026-10-26",
+          "opponent": "CHI",
           "value": 23.0
         },
         {
           "date": "2026-10-27",
-          "opponent": "SAC",
+          "opponent": "BKN",
+          "value": 40.0
+        },
+        {
+          "date": "2026-10-30",
+          "opponent": "CHI",
+          "value": 26.0
+        },
+        {
+          "date": "2026-11-01",
+          "opponent": "ORL",
+          "value": 32.0
+        },
+        {
+          "date": "2026-11-02",
+          "opponent": "HOU",
+          "value": 19.0
+        },
+        {
+          "date": "2026-11-06",
+          "opponent": "CHA",
+          "value": 34.0
+        },
+        {
+          "date": "2026-11-08",
+          "opponent": "MIL",
+          "value": 21.0
+        }
+      ],
+      "vs_opp": null,
+      "actual": null
+    },
+    {
+      "player_id": "3059318",
+      "name": "Joel Embiid",
+      "team": "PHI",
+      "opponent": "BOS",
+      "is_home": true,
+      "position": "C",
+      "game_id": "401909961",
+      "commence_time": "2026-11-11T01:00Z",
+      "date": "2026-11-10",
+      "stat": "points",
+      "per_game": 22.6,
+      "projection": 20.8,
+      "opp_allowed": 104.3,
+      "league_allowed": 113.5,
+      "pos_slot": "C",
+      "pos_allowed": 17.6,
+      "pos_league": 15.8,
+      "pos_rank": 10,
+      "pos_of": 30,
+      "weight": 0.474,
+      "recent": [
+        {
+          "date": "2026-10-20",
+          "opponent": "NY",
+          "value": 13.0
+        },
+        {
+          "date": "2026-10-22",
+          "opponent": "CLE",
+          "value": 24.0
+        },
+        {
+          "date": "2026-10-24",
+          "opponent": "MIL",
+          "value": 28.0
+        },
+        {
+          "date": "2026-10-28",
+          "opponent": "IND",
+          "value": 21.0
+        },
+        {
+          "date": "2026-10-30",
+          "opponent": "NY",
+          "value": 10.0
+        },
+        {
+          "date": "2026-11-02",
+          "opponent": "CHI",
+          "value": 15.0
+        },
+        {
+          "date": "2026-11-04",
+          "opponent": "DET",
+          "value": 26.0
+        },
+        {
+          "date": "2026-11-06",
+          "opponent": "CLE",
+          "value": 6.0
+        },
+        {
+          "date": "2026-11-08",
+          "opponent": "CHI",
+          "value": 18.0
+        }
+      ],
+      "vs_opp": {
+        "games": 2,
+        "per_game": 12.0,
+        "best": 20.0,
+        "worst": 4.0
+      },
+      "actual": null
+    },
+    {
+      "player_id": "4251",
+      "name": "Paul George",
+      "team": "BOS",
+      "opponent": "PHI",
+      "is_home": false,
+      "position": "F",
+      "game_id": "401909961",
+      "commence_time": "2026-11-11T01:00Z",
+      "date": "2026-11-10",
+      "stat": "points",
+      "per_game": 18.8,
+      "projection": 17.9,
+      "opp_allowed": 107.9,
+      "league_allowed": 113.5,
+      "pos_slot": "F",
+      "pos_allowed": 38.5,
+      "pos_league": 43.1,
+      "pos_rank": 26,
+      "pos_of": 30,
+      "weight": 0.474,
+      "recent": [
+        {
+          "date": "2026-10-20",
+          "opponent": "DET",
+          "value": 38.0
+        },
+        {
+          "date": "2026-10-23",
+          "opponent": "NY",
+          "value": 15.0
+        },
+        {
+          "date": "2026-10-26",
+          "opponent": "CHI",
+          "value": 16.0
+        },
+        {
+          "date": "2026-10-27",
+          "opponent": "BKN",
+          "value": 20.0
+        },
+        {
+          "date": "2026-10-30",
+          "opponent": "CHI",
+          "value": 18.0
+        },
+        {
+          "date": "2026-11-01",
+          "opponent": "ORL",
+          "value": 17.0
+        },
+        {
+          "date": "2026-11-04",
+          "opponent": "MIL",
+          "value": 25.0
+        },
+        {
+          "date": "2026-11-06",
+          "opponent": "CHA",
+          "value": 8.0
+        },
+        {
+          "date": "2026-11-08",
+          "opponent": "MIL",
+          "value": 27.0
+        }
+      ],
+      "vs_opp": null,
+      "actual": null
+    },
+    {
+      "player_id": "4066354",
+      "name": "Payton Pritchard",
+      "team": "BOS",
+      "opponent": "PHI",
+      "is_home": false,
+      "position": "G",
+      "game_id": "401909961",
+      "commence_time": "2026-11-11T01:00Z",
+      "date": "2026-11-10",
+      "stat": "points",
+      "per_game": 14.9,
+      "projection": 14.2,
+      "opp_allowed": 107.9,
+      "league_allowed": 113.5,
+      "pos_slot": "G",
+      "pos_allowed": 54.1,
+      "pos_league": 56.2,
+      "pos_rank": 22,
+      "pos_of": 30,
+      "weight": 0.5,
+      "recent": [
+        {
+          "date": "2026-10-20",
+          "opponent": "DET",
+          "value": 17.0
+        },
+        {
+          "date": "2026-10-23",
+          "opponent": "NY",
+          "value": 4.0
+        },
+        {
+          "date": "2026-10-26",
+          "opponent": "CHI",
+          "value": 28.0
+        },
+        {
+          "date": "2026-10-27",
+          "opponent": "BKN",
+          "value": 4.0
+        },
+        {
+          "date": "2026-10-30",
+          "opponent": "CHI",
+          "value": 30.0
+        },
+        {
+          "date": "2026-11-01",
+          "opponent": "ORL",
+          "value": 7.0
+        },
+        {
+          "date": "2026-11-02",
+          "opponent": "HOU",
+          "value": 4.0
+        },
+        {
+          "date": "2026-11-04",
+          "opponent": "MIL",
+          "value": 10.0
+        },
+        {
+          "date": "2026-11-06",
+          "opponent": "CHA",
+          "value": 12.0
+        },
+        {
+          "date": "2026-11-08",
+          "opponent": "MIL",
+          "value": 12.0
+        }
+      ],
+      "vs_opp": {
+        "games": 4,
+        "per_game": 9.0,
+        "best": 16.0,
+        "worst": 0.0
+      },
+      "actual": null
+    },
+    {
+      "player_id": "3032977",
+      "name": "Giannis Antetokounmpo",
+      "team": "MIA",
+      "opponent": "UTAH",
+      "is_home": false,
+      "position": "F",
+      "game_id": "401909963",
+      "commence_time": "2026-11-11T02:00Z",
+      "date": "2026-11-10",
+      "stat": "points",
+      "per_game": 27.5,
+      "projection": 28.6,
+      "opp_allowed": 117.9,
+      "league_allowed": 113.5,
+      "pos_slot": "F",
+      "pos_allowed": 51.8,
+      "pos_league": 43.1,
+      "pos_rank": 2,
+      "pos_of": 30,
+      "weight": 0.5,
+      "recent": [
+        {
+          "date": "2026-10-21",
+          "opponent": "MIN",
+          "value": 35.0
+        },
+        {
+          "date": "2026-10-23",
+          "opponent": "DET",
+          "value": 36.0
+        },
+        {
+          "date": "2026-10-24",
+          "opponent": "CHA",
+          "value": 14.0
+        },
+        {
+          "date": "2026-10-26",
+          "opponent": "DAL",
           "value": 29.0
         },
         {
           "date": "2026-10-28",
-          "opponent": "UTAH",
-          "value": 36.0
+          "opponent": "ATL",
+          "value": 24.0
         },
         {
-          "date": "2026-10-31",
-          "opponent": "MIN",
-          "value": 43.0
+          "date": "2026-10-30",
+          "opponent": "IND",
+          "value": 31.0
         },
         {
           "date": "2026-11-02",
-          "opponent": "UTAH",
-          "value": 12.0
-        },
-        {
-          "date": "2026-11-04",
-          "opponent": "DAL",
-          "value": 52.0
-        },
-        {
-          "date": "2026-11-06",
-          "opponent": "SAC",
+          "opponent": "LAL",
           "value": 30.0
         },
         {
-          "date": "2026-11-07",
-          "opponent": "POR",
+          "date": "2026-11-04",
+          "opponent": "LAC",
+          "value": 27.0
+        },
+        {
+          "date": "2026-11-05",
+          "opponent": "GS",
+          "value": 20.0
+        },
+        {
+          "date": "2026-11-08",
+          "opponent": "SAC",
           "value": 29.0
         }
       ],
       "vs_opp": {
-        "games": 3,
-        "per_game": 20.0,
-        "best": 34.0,
-        "worst": 9.0
+        "games": 1,
+        "per_game": 27.0,
+        "best": 27.0,
+        "worst": 27.0
       },
       "actual": null
     },
@@ -2663,23 +953,23 @@
       "player_id": "3136193",
       "name": "Devin Booker",
       "team": "PHX",
-      "opponent": "SA",
+      "opponent": "LAC",
       "is_home": true,
       "position": "G",
-      "game_id": "401909958",
-      "commence_time": "2026-11-10T02:00Z",
-      "date": "2026-11-09",
+      "game_id": "401909962",
+      "commence_time": "2026-11-11T02:00Z",
+      "date": "2026-11-10",
       "stat": "points",
-      "per_game": 25.7,
-      "projection": 24.5,
-      "opp_allowed": 108.1,
-      "league_allowed": 113.4,
+      "per_game": 26.0,
+      "projection": 26.7,
+      "opp_allowed": 116.4,
+      "league_allowed": 113.5,
       "pos_slot": "G",
-      "pos_allowed": 54.6,
-      "pos_league": 56.4,
-      "pos_rank": 19,
+      "pos_allowed": 63.6,
+      "pos_league": 56.2,
+      "pos_rank": 6,
       "pos_of": 30,
-      "weight": 0.444,
+      "weight": 0.474,
       "recent": [
         {
           "date": "2026-10-21",
@@ -2720,13 +1010,408 @@
           "date": "2026-11-07",
           "opponent": "HOU",
           "value": 24.0
+        },
+        {
+          "date": "2026-11-09",
+          "opponent": "SA",
+          "value": 32.0
         }
       ],
       "vs_opp": {
-        "games": 4,
-        "per_game": 19.8,
-        "best": 28.0,
-        "worst": 5.0
+        "games": 3,
+        "per_game": 21.0,
+        "best": 24.0,
+        "worst": 18.0
+      },
+      "actual": null
+    },
+    {
+      "player_id": "4066336",
+      "name": "Lauri Markkanen",
+      "team": "UTAH",
+      "opponent": "MIA",
+      "is_home": true,
+      "position": "F",
+      "game_id": "401909963",
+      "commence_time": "2026-11-11T02:00Z",
+      "date": "2026-11-10",
+      "stat": "points",
+      "per_game": 22.9,
+      "projection": 24.4,
+      "opp_allowed": 121.1,
+      "league_allowed": 113.5,
+      "pos_slot": "F",
+      "pos_allowed": 40.4,
+      "pos_league": 43.1,
+      "pos_rank": 21,
+      "pos_of": 30,
+      "weight": 0.444,
+      "recent": [
+        {
+          "date": "2026-10-21",
+          "opponent": "MEM",
+          "value": 18.0
+        },
+        {
+          "date": "2026-10-23",
+          "opponent": "NO",
+          "value": 16.0
+        },
+        {
+          "date": "2026-10-25",
+          "opponent": "LAL",
+          "value": 28.0
+        },
+        {
+          "date": "2026-10-26",
+          "opponent": "MEM",
+          "value": 2.0
+        },
+        {
+          "date": "2026-10-31",
+          "opponent": "POR",
+          "value": 13.0
+        },
+        {
+          "date": "2026-11-02",
+          "opponent": "SA",
+          "value": 22.0
+        },
+        {
+          "date": "2026-11-04",
+          "opponent": "NO",
+          "value": 21.0
+        },
+        {
+          "date": "2026-11-06",
+          "opponent": "DAL",
+          "value": 24.0
+        }
+      ],
+      "vs_opp": {
+        "games": 1,
+        "per_game": 17.0,
+        "best": 17.0,
+        "worst": 17.0
+      },
+      "actual": null
+    },
+    {
+      "player_id": "4433627",
+      "name": "Keyonte George",
+      "team": "UTAH",
+      "opponent": "MIA",
+      "is_home": true,
+      "position": "G",
+      "game_id": "401909963",
+      "commence_time": "2026-11-11T02:00Z",
+      "date": "2026-11-10",
+      "stat": "points",
+      "per_game": 22.4,
+      "projection": 23.9,
+      "opp_allowed": 121.1,
+      "league_allowed": 113.5,
+      "pos_slot": "G",
+      "pos_allowed": 69.1,
+      "pos_league": 56.2,
+      "pos_rank": 1,
+      "pos_of": 30,
+      "weight": 0.5,
+      "recent": [
+        {
+          "date": "2026-10-21",
+          "opponent": "MEM",
+          "value": 22.0
+        },
+        {
+          "date": "2026-10-23",
+          "opponent": "NO",
+          "value": 19.0
+        },
+        {
+          "date": "2026-10-25",
+          "opponent": "LAL",
+          "value": 24.0
+        },
+        {
+          "date": "2026-10-26",
+          "opponent": "MEM",
+          "value": 26.0
+        },
+        {
+          "date": "2026-10-28",
+          "opponent": "SA",
+          "value": 31.0
+        },
+        {
+          "date": "2026-10-31",
+          "opponent": "POR",
+          "value": 8.0
+        },
+        {
+          "date": "2026-11-02",
+          "opponent": "SA",
+          "value": 7.0
+        },
+        {
+          "date": "2026-11-04",
+          "opponent": "NO",
+          "value": 39.0
+        },
+        {
+          "date": "2026-11-06",
+          "opponent": "DAL",
+          "value": 16.0
+        },
+        {
+          "date": "2026-11-08",
+          "opponent": "MIN",
+          "value": 19.0
+        }
+      ],
+      "vs_opp": {
+        "games": 1,
+        "per_game": 19.0,
+        "best": 19.0,
+        "worst": 19.0
+      },
+      "actual": null
+    },
+    {
+      "player_id": "3913176",
+      "name": "Brandon Ingram",
+      "team": "LAC",
+      "opponent": "PHX",
+      "is_home": false,
+      "position": "F",
+      "game_id": "401909962",
+      "commence_time": "2026-11-11T02:00Z",
+      "date": "2026-11-10",
+      "stat": "points",
+      "per_game": 21.5,
+      "projection": 22.5,
+      "opp_allowed": 119.0,
+      "league_allowed": 113.5,
+      "pos_slot": "F",
+      "pos_allowed": 38.1,
+      "pos_league": 43.1,
+      "pos_rank": 29,
+      "pos_of": 30,
+      "weight": 0.0,
+      "recent": [],
+      "vs_opp": {
+        "games": 2,
+        "per_game": 21.0,
+        "best": 36.0,
+        "worst": 6.0
+      },
+      "actual": null
+    },
+    {
+      "player_id": "4396907",
+      "name": "Darius Garland",
+      "team": "LAC",
+      "opponent": "PHX",
+      "is_home": false,
+      "position": "G",
+      "game_id": "401909962",
+      "commence_time": "2026-11-11T02:00Z",
+      "date": "2026-11-10",
+      "stat": "points",
+      "per_game": 19.9,
+      "projection": 20.9,
+      "opp_allowed": 119.0,
+      "league_allowed": 113.5,
+      "pos_slot": "G",
+      "pos_allowed": 60.0,
+      "pos_league": 56.2,
+      "pos_rank": 7,
+      "pos_of": 30,
+      "weight": 0.474,
+      "recent": [
+        {
+          "date": "2026-10-21",
+          "opponent": "SAC",
+          "value": 30.0
+        },
+        {
+          "date": "2026-10-23",
+          "opponent": "LAL",
+          "value": 26.0
+        },
+        {
+          "date": "2026-10-25",
+          "opponent": "OKC",
+          "value": 16.0
+        },
+        {
+          "date": "2026-10-28",
+          "opponent": "LAL",
+          "value": 14.0
+        },
+        {
+          "date": "2026-10-30",
+          "opponent": "MIN",
+          "value": 24.0
+        },
+        {
+          "date": "2026-11-01",
+          "opponent": "GS",
+          "value": 15.0
+        },
+        {
+          "date": "2026-11-02",
+          "opponent": "TOR",
+          "value": 16.0
+        },
+        {
+          "date": "2026-11-04",
+          "opponent": "MIA",
+          "value": 26.0
+        },
+        {
+          "date": "2026-11-08",
+          "opponent": "NO",
+          "value": 24.0
+        }
+      ],
+      "vs_opp": {
+        "games": 1,
+        "per_game": 19.0,
+        "best": 19.0,
+        "worst": 19.0
+      },
+      "actual": null
+    },
+    {
+      "player_id": "4277961",
+      "name": "Jaren Jackson Jr.",
+      "team": "UTAH",
+      "opponent": "MIA",
+      "is_home": true,
+      "position": "F",
+      "game_id": "401909963",
+      "commence_time": "2026-11-11T02:00Z",
+      "date": "2026-11-10",
+      "stat": "points",
+      "per_game": 19.4,
+      "projection": 20.7,
+      "opp_allowed": 121.1,
+      "league_allowed": 113.5,
+      "pos_slot": "F",
+      "pos_allowed": 40.4,
+      "pos_league": 43.1,
+      "pos_rank": 21,
+      "pos_of": 30,
+      "weight": 0.0,
+      "recent": [
+        {
+          "date": "2026-10-21",
+          "opponent": "MEM",
+          "value": 15.0
+        },
+        {
+          "date": "2026-10-23",
+          "opponent": "NO",
+          "value": 24.0
+        },
+        {
+          "date": "2026-10-25",
+          "opponent": "LAL",
+          "value": 20.0
+        },
+        {
+          "date": "2026-10-26",
+          "opponent": "MEM",
+          "value": 6.0
+        }
+      ],
+      "vs_opp": {
+        "games": 2,
+        "per_game": 20.5,
+        "best": 22.0,
+        "worst": 19.0
+      },
+      "actual": null
+    },
+    {
+      "player_id": "4066261",
+      "name": "Bam Adebayo",
+      "team": "MIA",
+      "opponent": "UTAH",
+      "is_home": false,
+      "position": "C",
+      "game_id": "401909963",
+      "commence_time": "2026-11-11T02:00Z",
+      "date": "2026-11-10",
+      "stat": "points",
+      "per_game": 19.3,
+      "projection": 20.1,
+      "opp_allowed": 117.9,
+      "league_allowed": 113.5,
+      "pos_slot": "C",
+      "pos_allowed": 11.1,
+      "pos_league": 15.8,
+      "pos_rank": 29,
+      "pos_of": 30,
+      "weight": 0.5,
+      "recent": [
+        {
+          "date": "2026-10-21",
+          "opponent": "MIN",
+          "value": 15.0
+        },
+        {
+          "date": "2026-10-23",
+          "opponent": "DET",
+          "value": 4.0
+        },
+        {
+          "date": "2026-10-24",
+          "opponent": "CHA",
+          "value": 20.0
+        },
+        {
+          "date": "2026-10-26",
+          "opponent": "DAL",
+          "value": 8.0
+        },
+        {
+          "date": "2026-10-28",
+          "opponent": "ATL",
+          "value": 24.0
+        },
+        {
+          "date": "2026-10-30",
+          "opponent": "IND",
+          "value": 27.0
+        },
+        {
+          "date": "2026-11-02",
+          "opponent": "LAL",
+          "value": 16.0
+        },
+        {
+          "date": "2026-11-04",
+          "opponent": "LAC",
+          "value": 35.0
+        },
+        {
+          "date": "2026-11-05",
+          "opponent": "GS",
+          "value": 18.0
+        },
+        {
+          "date": "2026-11-08",
+          "opponent": "SAC",
+          "value": 18.0
+        }
+      ],
+      "vs_opp": {
+        "games": 2,
+        "per_game": 24.5,
+        "best": 26.0,
+        "worst": 23.0
       },
       "actual": null
     },
@@ -2734,23 +1419,23 @@
       "player_id": "3155526",
       "name": "Dillon Brooks",
       "team": "PHX",
-      "opponent": "SA",
+      "opponent": "LAC",
       "is_home": true,
       "position": "F",
-      "game_id": "401909958",
-      "commence_time": "2026-11-10T02:00Z",
-      "date": "2026-11-09",
+      "game_id": "401909962",
+      "commence_time": "2026-11-11T02:00Z",
+      "date": "2026-11-10",
       "stat": "points",
-      "per_game": 18.7,
-      "projection": 17.8,
-      "opp_allowed": 108.1,
-      "league_allowed": 113.4,
+      "per_game": 18.1,
+      "projection": 18.5,
+      "opp_allowed": 116.4,
+      "league_allowed": 113.5,
       "pos_slot": "F",
-      "pos_allowed": 40.6,
-      "pos_league": 42.8,
-      "pos_rank": 19,
+      "pos_allowed": 39.1,
+      "pos_league": 43.1,
+      "pos_rank": 24,
       "pos_of": 30,
-      "weight": 0.444,
+      "weight": 0.474,
       "recent": [
         {
           "date": "2026-10-21",
@@ -2791,175 +1476,18 @@
           "date": "2026-11-07",
           "opponent": "HOU",
           "value": 11.0
-        }
-      ],
-      "vs_opp": {
-        "games": 1,
-        "per_game": 25.0,
-        "best": 25.0,
-        "worst": 25.0
-      },
-      "actual": null
-    },
-    {
-      "player_id": "4066259",
-      "name": "De'Aaron Fox",
-      "team": "SA",
-      "opponent": "PHX",
-      "is_home": false,
-      "position": "G",
-      "game_id": "401909958",
-      "commence_time": "2026-11-10T02:00Z",
-      "date": "2026-11-09",
-      "stat": "points",
-      "per_game": 16.2,
-      "projection": 16.9,
-      "opp_allowed": 118.6,
-      "league_allowed": 113.4,
-      "pos_slot": "G",
-      "pos_allowed": 62.5,
-      "pos_league": 56.4,
-      "pos_rank": 7,
-      "pos_of": 30,
-      "weight": 0.5,
-      "recent": [
-        {
-          "date": "2026-10-20",
-          "opponent": "OKC",
-          "value": 14.0
         },
         {
-          "date": "2026-10-23",
-          "opponent": "HOU",
-          "value": 19.0
-        },
-        {
-          "date": "2026-10-24",
-          "opponent": "DAL",
-          "value": 19.0
-        },
-        {
-          "date": "2026-10-27",
-          "opponent": "SAC",
-          "value": 11.0
-        },
-        {
-          "date": "2026-10-28",
-          "opponent": "UTAH",
-          "value": 14.0
-        },
-        {
-          "date": "2026-10-31",
-          "opponent": "MIN",
-          "value": 22.0
-        },
-        {
-          "date": "2026-11-02",
-          "opponent": "UTAH",
-          "value": 12.0
-        },
-        {
-          "date": "2026-11-04",
-          "opponent": "DAL",
-          "value": 10.0
-        },
-        {
-          "date": "2026-11-06",
-          "opponent": "SAC",
-          "value": 9.0
-        },
-        {
-          "date": "2026-11-07",
-          "opponent": "POR",
-          "value": 8.0
+          "date": "2026-11-09",
+          "opponent": "SA",
+          "value": 7.0
         }
       ],
       "vs_opp": {
         "games": 3,
-        "per_game": 21.3,
-        "best": 26.0,
-        "worst": 15.0
-      },
-      "actual": null
-    },
-    {
-      "player_id": "4845367",
-      "name": "Stephon Castle",
-      "team": "SA",
-      "opponent": "PHX",
-      "is_home": false,
-      "position": "G",
-      "game_id": "401909958",
-      "commence_time": "2026-11-10T02:00Z",
-      "date": "2026-11-09",
-      "stat": "points",
-      "per_game": 16.0,
-      "projection": 16.7,
-      "opp_allowed": 118.6,
-      "league_allowed": 113.4,
-      "pos_slot": "G",
-      "pos_allowed": 62.5,
-      "pos_league": 56.4,
-      "pos_rank": 7,
-      "pos_of": 30,
-      "weight": 0.5,
-      "recent": [
-        {
-          "date": "2026-10-20",
-          "opponent": "OKC",
-          "value": 24.0
-        },
-        {
-          "date": "2026-10-23",
-          "opponent": "HOU",
-          "value": 15.0
-        },
-        {
-          "date": "2026-10-24",
-          "opponent": "DAL",
-          "value": 19.0
-        },
-        {
-          "date": "2026-10-27",
-          "opponent": "SAC",
-          "value": 15.0
-        },
-        {
-          "date": "2026-10-28",
-          "opponent": "UTAH",
-          "value": 14.0
-        },
-        {
-          "date": "2026-10-31",
-          "opponent": "MIN",
-          "value": 0.0
-        },
-        {
-          "date": "2026-11-02",
-          "opponent": "UTAH",
-          "value": 16.0
-        },
-        {
-          "date": "2026-11-04",
-          "opponent": "DAL",
-          "value": 17.0
-        },
-        {
-          "date": "2026-11-06",
-          "opponent": "SAC",
-          "value": 19.0
-        },
-        {
-          "date": "2026-11-07",
-          "opponent": "POR",
-          "value": 14.0
-        }
-      ],
-      "vs_opp": {
-        "games": 2,
-        "per_game": 23.0,
-        "best": 26.0,
-        "worst": 20.0
+        "per_game": 19.7,
+        "best": 22.0,
+        "worst": 16.0
       },
       "actual": null
     },
@@ -2967,23 +1495,23 @@
       "player_id": "4066383",
       "name": "Miles Bridges",
       "team": "PHX",
-      "opponent": "SA",
+      "opponent": "LAC",
       "is_home": true,
       "position": "F",
-      "game_id": "401909958",
-      "commence_time": "2026-11-10T02:00Z",
-      "date": "2026-11-09",
+      "game_id": "401909962",
+      "commence_time": "2026-11-11T02:00Z",
+      "date": "2026-11-10",
       "stat": "points",
-      "per_game": 17.0,
-      "projection": 16.2,
-      "opp_allowed": 108.1,
-      "league_allowed": 113.4,
+      "per_game": 16.5,
+      "projection": 16.9,
+      "opp_allowed": 116.4,
+      "league_allowed": 113.5,
       "pos_slot": "F",
-      "pos_allowed": 40.6,
-      "pos_league": 42.8,
-      "pos_rank": 19,
+      "pos_allowed": 39.1,
+      "pos_league": 43.1,
+      "pos_rank": 24,
       "pos_of": 30,
-      "weight": 0.444,
+      "weight": 0.474,
       "recent": [
         {
           "date": "2026-10-21",
@@ -3024,437 +1552,910 @@
           "date": "2026-11-07",
           "opponent": "HOU",
           "value": 13.0
+        },
+        {
+          "date": "2026-11-09",
+          "opponent": "SA",
+          "value": 7.0
         }
       ],
       "vs_opp": {
         "games": 2,
-        "per_game": 18.0,
-        "best": 22.0,
-        "worst": 14.0
+        "per_game": 15.0,
+        "best": 19.0,
+        "worst": 11.0
       },
       "actual": null
     },
     {
-      "player_id": "3975",
-      "name": "Stephen Curry",
-      "team": "GS",
-      "opponent": "NO",
-      "is_home": true,
+      "player_id": "6475",
+      "name": "Klay Thompson",
+      "team": "MIA",
+      "opponent": "UTAH",
+      "is_home": false,
       "position": "G",
-      "game_id": "401909959",
-      "commence_time": "2026-11-10T03:00Z",
-      "date": "2026-11-09",
+      "game_id": "401909963",
+      "commence_time": "2026-11-11T02:00Z",
+      "date": "2026-11-10",
       "stat": "points",
-      "per_game": 28.6,
-      "projection": 30.5,
-      "opp_allowed": 120.8,
-      "league_allowed": 113.4,
+      "per_game": 13.2,
+      "projection": 13.7,
+      "opp_allowed": 117.9,
+      "league_allowed": 113.5,
       "pos_slot": "G",
-      "pos_allowed": 62.4,
-      "pos_league": 56.4,
-      "pos_rank": 8,
+      "pos_allowed": 55.0,
+      "pos_league": 56.2,
+      "pos_rank": 17,
       "pos_of": 30,
-      "weight": 0.444,
+      "weight": 0.5,
       "recent": [
         {
           "date": "2026-10-21",
-          "opponent": "LAL",
-          "value": 23.0
+          "opponent": "MIN",
+          "value": 10.0
         },
         {
           "date": "2026-10-23",
-          "opponent": "MEM",
-          "value": 24.0
+          "opponent": "DET",
+          "value": 6.0
+        },
+        {
+          "date": "2026-10-24",
+          "opponent": "CHA",
+          "value": 14.0
         },
         {
           "date": "2026-10-26",
-          "opponent": "DEN",
-          "value": 24.0
+          "opponent": "DAL",
+          "value": 6.0
         },
         {
           "date": "2026-10-28",
-          "opponent": "MIN",
-          "value": 44.0
+          "opponent": "ATL",
+          "value": 3.0
         },
         {
           "date": "2026-10-30",
-          "opponent": "LAL",
-          "value": 31.0
+          "opponent": "IND",
+          "value": 25.0
         },
         {
           "date": "2026-11-02",
-          "opponent": "PHX",
-          "value": 34.0
+          "opponent": "LAL",
+          "value": 19.0
+        },
+        {
+          "date": "2026-11-04",
+          "opponent": "LAC",
+          "value": 30.0
         },
         {
           "date": "2026-11-05",
-          "opponent": "MIA",
-          "value": 29.0
+          "opponent": "GS",
+          "value": 11.0
         },
         {
-          "date": "2026-11-07",
-          "opponent": "ORL",
-          "value": 41.0
+          "date": "2026-11-08",
+          "opponent": "SAC",
+          "value": 23.0
         }
       ],
       "vs_opp": {
-        "games": 1,
-        "per_game": 9.0,
-        "best": 9.0,
-        "worst": 9.0
+        "games": 4,
+        "per_game": 21.0,
+        "best": 26.0,
+        "worst": 12.0
       },
       "actual": null
     },
     {
-      "player_id": "5175737",
-      "name": "Yaxel Lendeborg",
-      "team": "GS",
-      "opponent": "NO",
-      "is_home": true,
+      "player_id": "4066648",
+      "name": "Rui Hachimura",
+      "team": "LAC",
+      "opponent": "PHX",
+      "is_home": false,
       "position": "F",
-      "game_id": "401909959",
-      "commence_time": "2026-11-10T03:00Z",
-      "date": "2026-11-09",
+      "game_id": "401909962",
+      "commence_time": "2026-11-11T02:00Z",
+      "date": "2026-11-10",
       "stat": "points",
-      "per_game": 21.2,
-      "projection": 22.6,
-      "opp_allowed": 120.8,
-      "league_allowed": 113.4,
+      "per_game": 12.7,
+      "projection": 13.4,
+      "opp_allowed": 119.0,
+      "league_allowed": 113.5,
       "pos_slot": "F",
-      "pos_allowed": 43.8,
-      "pos_league": 42.8,
-      "pos_rank": 11,
+      "pos_allowed": 38.1,
+      "pos_league": 43.1,
+      "pos_rank": 29,
+      "pos_of": 30,
+      "weight": 0.412,
+      "recent": [
+        {
+          "date": "2026-10-21",
+          "opponent": "SAC",
+          "value": 10.0
+        },
+        {
+          "date": "2026-10-23",
+          "opponent": "LAL",
+          "value": 16.0
+        },
+        {
+          "date": "2026-10-25",
+          "opponent": "OKC",
+          "value": 5.0
+        },
+        {
+          "date": "2026-10-30",
+          "opponent": "MIN",
+          "value": 12.0
+        },
+        {
+          "date": "2026-11-01",
+          "opponent": "GS",
+          "value": 24.0
+        },
+        {
+          "date": "2026-11-04",
+          "opponent": "MIA",
+          "value": 21.0
+        },
+        {
+          "date": "2026-11-08",
+          "opponent": "NO",
+          "value": 14.0
+        }
+      ],
+      "vs_opp": {
+        "games": 3,
+        "per_game": 5.3,
+        "best": 13.0,
+        "worst": 0.0
+      },
+      "actual": null
+    },
+    {
+      "player_id": "5142620",
+      "name": "Darius Acuff Jr.",
+      "team": "SAC",
+      "opponent": "ORL",
+      "is_home": true,
+      "position": "G",
+      "game_id": "401909964",
+      "commence_time": "2026-11-11T03:00Z",
+      "date": "2026-11-10",
+      "stat": "points",
+      "per_game": 25.9,
+      "projection": 26.5,
+      "opp_allowed": 116.2,
+      "league_allowed": 113.5,
+      "pos_slot": "G",
+      "pos_allowed": 53.0,
+      "pos_league": 56.2,
+      "pos_rank": 23,
       "pos_of": 30,
       "weight": 1.0,
       "recent": [
         {
           "date": "2026-10-21",
-          "opponent": "LAL",
+          "opponent": "LAC",
           "value": 12.0
         },
         {
           "date": "2026-10-23",
+          "opponent": "POR",
+          "value": 33.0
+        },
+        {
+          "date": "2026-10-25",
           "opponent": "MEM",
-          "value": 18.0
+          "value": 22.0
         },
         {
-          "date": "2026-10-24",
-          "opponent": "PHX",
-          "value": 26.0
+          "date": "2026-10-27",
+          "opponent": "SA",
+          "value": 19.0
         },
         {
-          "date": "2026-10-26",
-          "opponent": "DEN",
-          "value": 31.0
+          "date": "2026-10-29",
+          "opponent": "NO",
+          "value": 34.0
         },
         {
-          "date": "2026-10-28",
-          "opponent": "MIN",
-          "value": 26.0
-        },
-        {
-          "date": "2026-10-30",
-          "opponent": "LAL",
-          "value": 6.0
-        },
-        {
-          "date": "2026-11-01",
-          "opponent": "LAC",
-          "value": 37.0
+          "date": "2026-10-31",
+          "opponent": "MEM",
+          "value": 38.0
         },
         {
           "date": "2026-11-02",
-          "opponent": "PHX",
-          "value": 16.0
+          "opponent": "DAL",
+          "value": 25.0
         },
         {
-          "date": "2026-11-05",
+          "date": "2026-11-04",
+          "opponent": "LAL",
+          "value": 22.0
+        },
+        {
+          "date": "2026-11-06",
+          "opponent": "SA",
+          "value": 22.0
+        },
+        {
+          "date": "2026-11-08",
           "opponent": "MIA",
-          "value": 17.0
-        },
-        {
-          "date": "2026-11-07",
-          "opponent": "ORL",
-          "value": 23.0
+          "value": 32.0
         }
       ],
       "vs_opp": null,
       "actual": null
     },
     {
-      "player_id": "6430",
-      "name": "Jimmy Butler III",
-      "team": "GS",
-      "opponent": "NO",
-      "is_home": true,
-      "position": "F",
-      "game_id": "401909959",
-      "commence_time": "2026-11-10T03:00Z",
-      "date": "2026-11-09",
-      "stat": "points",
-      "per_game": 20.0,
-      "projection": 21.3,
-      "opp_allowed": 120.8,
-      "league_allowed": 113.4,
-      "pos_slot": "F",
-      "pos_allowed": 43.8,
-      "pos_league": 42.8,
-      "pos_rank": 11,
-      "pos_of": 30,
-      "weight": 0.0,
-      "recent": [],
-      "vs_opp": {
-        "games": 2,
-        "per_game": 21.0,
-        "best": 24.0,
-        "worst": 18.0
-      },
-      "actual": null
-    },
-    {
-      "player_id": "4395628",
-      "name": "Zion Williamson",
-      "team": "NO",
-      "opponent": "GS",
+      "player_id": "4432573",
+      "name": "Paolo Banchero",
+      "team": "ORL",
+      "opponent": "SAC",
       "is_home": false,
       "position": "F",
-      "game_id": "401909959",
-      "commence_time": "2026-11-10T03:00Z",
-      "date": "2026-11-09",
+      "game_id": "401909964",
+      "commence_time": "2026-11-11T03:00Z",
+      "date": "2026-11-10",
       "stat": "points",
-      "per_game": 21.0,
-      "projection": 21.0,
-      "opp_allowed": 113.6,
-      "league_allowed": 113.4,
+      "per_game": 22.2,
+      "projection": 24.0,
+      "opp_allowed": 122.4,
+      "league_allowed": 113.5,
       "pos_slot": "F",
-      "pos_allowed": 42.3,
-      "pos_league": 42.8,
-      "pos_rank": 14,
+      "pos_allowed": 56.9,
+      "pos_league": 43.1,
+      "pos_rank": 1,
       "pos_of": 30,
-      "weight": 0.5,
+      "weight": 0.0,
       "recent": [
         {
           "date": "2026-10-21",
-          "opponent": "IND",
-          "value": 22.0
+          "opponent": "ATL",
+          "value": 35.0
         },
         {
           "date": "2026-10-23",
-          "opponent": "UTAH",
-          "value": 23.0
-        },
-        {
-          "date": "2026-10-24",
-          "opponent": "DEN",
-          "value": 17.0
-        },
-        {
-          "date": "2026-10-28",
-          "opponent": "DEN",
-          "value": 25.0
-        },
-        {
-          "date": "2026-10-29",
-          "opponent": "SAC",
-          "value": 22.0
-        },
-        {
-          "date": "2026-10-31",
-          "opponent": "ATL",
-          "value": 15.0
-        },
-        {
-          "date": "2026-11-02",
-          "opponent": "MEM",
-          "value": 25.0
-        },
-        {
-          "date": "2026-11-04",
-          "opponent": "UTAH",
-          "value": 23.0
-        },
-        {
-          "date": "2026-11-06",
           "opponent": "MIN",
-          "value": 13.0
-        },
-        {
-          "date": "2026-11-08",
-          "opponent": "LAC",
-          "value": 25.0
+          "value": 14.0
         }
       ],
       "vs_opp": {
         "games": 2,
-        "per_game": 25.5,
-        "best": 26.0,
-        "worst": 25.0
+        "per_game": 30.0,
+        "best": 30.0,
+        "worst": 30.0
       },
       "actual": null
     },
     {
-      "player_id": "4397688",
-      "name": "Trey Murphy III",
-      "team": "NO",
-      "opponent": "GS",
+      "player_id": "4566434",
+      "name": "Franz Wagner",
+      "team": "ORL",
+      "opponent": "SAC",
       "is_home": false,
       "position": "F",
-      "game_id": "401909959",
-      "commence_time": "2026-11-10T03:00Z",
-      "date": "2026-11-09",
+      "game_id": "401909964",
+      "commence_time": "2026-11-11T03:00Z",
+      "date": "2026-11-10",
       "stat": "points",
-      "per_game": 18.7,
-      "projection": 18.7,
-      "opp_allowed": 113.6,
-      "league_allowed": 113.4,
+      "per_game": 20.7,
+      "projection": 22.3,
+      "opp_allowed": 122.4,
+      "league_allowed": 113.5,
       "pos_slot": "F",
-      "pos_allowed": 42.3,
-      "pos_league": 42.8,
-      "pos_rank": 14,
+      "pos_allowed": 56.9,
+      "pos_league": 43.1,
+      "pos_rank": 1,
       "pos_of": 30,
       "weight": 0.474,
       "recent": [
         {
           "date": "2026-10-21",
-          "opponent": "IND",
-          "value": 11.0
+          "opponent": "ATL",
+          "value": 22.0
         },
         {
           "date": "2026-10-23",
-          "opponent": "UTAH",
-          "value": 9.0
-        },
-        {
-          "date": "2026-10-24",
-          "opponent": "DEN",
-          "value": 26.0
-        },
-        {
-          "date": "2026-10-28",
-          "opponent": "DEN",
-          "value": 6.0
-        },
-        {
-          "date": "2026-10-29",
-          "opponent": "SAC",
-          "value": 19.0
-        },
-        {
-          "date": "2026-10-31",
-          "opponent": "ATL",
-          "value": 15.0
-        },
-        {
-          "date": "2026-11-02",
-          "opponent": "MEM",
+          "opponent": "MIN",
           "value": 18.0
         },
         {
-          "date": "2026-11-06",
-          "opponent": "MIN",
-          "value": 10.0
+          "date": "2026-10-25",
+          "opponent": "NY",
+          "value": 23.0
         },
         {
-          "date": "2026-11-08",
-          "opponent": "LAC",
+          "date": "2026-10-28",
+          "opponent": "TOR",
+          "value": 15.0
+        },
+        {
+          "date": "2026-10-30",
+          "opponent": "TOR",
           "value": 26.0
+        },
+        {
+          "date": "2026-11-01",
+          "opponent": "BOS",
+          "value": 14.0
+        },
+        {
+          "date": "2026-11-02",
+          "opponent": "WSH",
+          "value": 24.0
+        },
+        {
+          "date": "2026-11-05",
+          "opponent": "PHX",
+          "value": 15.0
+        },
+        {
+          "date": "2026-11-07",
+          "opponent": "GS",
+          "value": 30.0
         }
       ],
-      "vs_opp": {
-        "games": 1,
-        "per_game": 20.0,
-        "best": 20.0,
-        "worst": 20.0
-      },
+      "vs_opp": null,
       "actual": null
     },
     {
-      "player_id": "4397136",
-      "name": "Saddiq Bey",
-      "team": "NO",
-      "opponent": "GS",
-      "is_home": false,
-      "position": "F",
-      "game_id": "401909959",
-      "commence_time": "2026-11-10T03:00Z",
-      "date": "2026-11-09",
+      "player_id": "3064440",
+      "name": "Zach LaVine",
+      "team": "SAC",
+      "opponent": "ORL",
+      "is_home": true,
+      "position": "G",
+      "game_id": "401909964",
+      "commence_time": "2026-11-11T03:00Z",
+      "date": "2026-11-10",
       "stat": "points",
-      "per_game": 16.9,
-      "projection": 16.9,
-      "opp_allowed": 113.6,
-      "league_allowed": 113.4,
-      "pos_slot": "F",
-      "pos_allowed": 42.3,
-      "pos_league": 42.8,
-      "pos_rank": 14,
+      "per_game": 20.3,
+      "projection": 20.8,
+      "opp_allowed": 116.2,
+      "league_allowed": 113.5,
+      "pos_slot": "G",
+      "pos_allowed": 53.0,
+      "pos_league": 56.2,
+      "pos_rank": 23,
       "pos_of": 30,
       "weight": 0.5,
       "recent": [
         {
           "date": "2026-10-21",
-          "opponent": "IND",
-          "value": 13.0
+          "opponent": "LAC",
+          "value": 28.0
         },
         {
           "date": "2026-10-23",
-          "opponent": "UTAH",
-          "value": 20.0
-        },
-        {
-          "date": "2026-10-24",
-          "opponent": "DEN",
-          "value": 14.0
-        },
-        {
-          "date": "2026-10-28",
-          "opponent": "DEN",
-          "value": 9.0
-        },
-        {
-          "date": "2026-10-29",
-          "opponent": "SAC",
-          "value": 10.0
-        },
-        {
-          "date": "2026-10-31",
-          "opponent": "ATL",
-          "value": 25.0
-        },
-        {
-          "date": "2026-11-02",
-          "opponent": "MEM",
-          "value": 18.0
-        },
-        {
-          "date": "2026-11-04",
-          "opponent": "UTAH",
+          "opponent": "POR",
           "value": 22.0
         },
         {
+          "date": "2026-10-25",
+          "opponent": "MEM",
+          "value": 37.0
+        },
+        {
+          "date": "2026-10-27",
+          "opponent": "SA",
+          "value": 22.0
+        },
+        {
+          "date": "2026-10-29",
+          "opponent": "NO",
+          "value": 21.0
+        },
+        {
+          "date": "2026-10-31",
+          "opponent": "MEM",
+          "value": 11.0
+        },
+        {
+          "date": "2026-11-02",
+          "opponent": "DAL",
+          "value": 23.0
+        },
+        {
+          "date": "2026-11-04",
+          "opponent": "LAL",
+          "value": 21.0
+        },
+        {
           "date": "2026-11-06",
-          "opponent": "MIN",
-          "value": 17.0
+          "opponent": "SA",
+          "value": 14.0
         },
         {
           "date": "2026-11-08",
-          "opponent": "LAC",
+          "opponent": "MIA",
+          "value": 15.0
+        }
+      ],
+      "vs_opp": null,
+      "actual": null
+    },
+    {
+      "player_id": "4066320",
+      "name": "Desmond Bane",
+      "team": "ORL",
+      "opponent": "SAC",
+      "is_home": false,
+      "position": "G",
+      "game_id": "401909964",
+      "commence_time": "2026-11-11T03:00Z",
+      "date": "2026-11-10",
+      "stat": "points",
+      "per_game": 18.9,
+      "projection": 20.4,
+      "opp_allowed": 122.4,
+      "league_allowed": 113.5,
+      "pos_slot": "G",
+      "pos_allowed": 52.0,
+      "pos_league": 56.2,
+      "pos_rank": 24,
+      "pos_of": 30,
+      "weight": 0.444,
+      "recent": [
+        {
+          "date": "2026-10-21",
+          "opponent": "ATL",
+          "value": 18.0
+        },
+        {
+          "date": "2026-10-23",
+          "opponent": "MIN",
+          "value": 5.0
+        },
+        {
+          "date": "2026-10-25",
+          "opponent": "NY",
+          "value": 22.0
+        },
+        {
+          "date": "2026-10-28",
+          "opponent": "TOR",
           "value": 13.0
+        },
+        {
+          "date": "2026-10-30",
+          "opponent": "TOR",
+          "value": 28.0
+        },
+        {
+          "date": "2026-11-01",
+          "opponent": "BOS",
+          "value": 19.0
+        },
+        {
+          "date": "2026-11-02",
+          "opponent": "WSH",
+          "value": 20.0
+        },
+        {
+          "date": "2026-11-05",
+          "opponent": "PHX",
+          "value": 15.0
+        }
+      ],
+      "vs_opp": {
+        "games": 2,
+        "per_game": 20.0,
+        "best": 23.0,
+        "worst": 17.0
+      },
+      "actual": null
+    },
+    {
+      "player_id": "3155942",
+      "name": "Domantas Sabonis",
+      "team": "SAC",
+      "opponent": "ORL",
+      "is_home": true,
+      "position": "F",
+      "game_id": "401909964",
+      "commence_time": "2026-11-11T03:00Z",
+      "date": "2026-11-10",
+      "stat": "points",
+      "per_game": 15.6,
+      "projection": 16.0,
+      "opp_allowed": 116.2,
+      "league_allowed": 113.5,
+      "pos_slot": "F",
+      "pos_allowed": 51.4,
+      "pos_league": 43.1,
+      "pos_rank": 3,
+      "pos_of": 30,
+      "weight": 0.474,
+      "recent": [
+        {
+          "date": "2026-10-21",
+          "opponent": "LAC",
+          "value": 14.0
+        },
+        {
+          "date": "2026-10-23",
+          "opponent": "POR",
+          "value": 27.0
+        },
+        {
+          "date": "2026-10-25",
+          "opponent": "MEM",
+          "value": 15.0
+        },
+        {
+          "date": "2026-10-27",
+          "opponent": "SA",
+          "value": 20.0
+        },
+        {
+          "date": "2026-10-29",
+          "opponent": "NO",
+          "value": 9.0
+        },
+        {
+          "date": "2026-10-31",
+          "opponent": "MEM",
+          "value": 11.0
+        },
+        {
+          "date": "2026-11-02",
+          "opponent": "DAL",
+          "value": 9.0
+        },
+        {
+          "date": "2026-11-04",
+          "opponent": "LAL",
+          "value": 16.0
+        },
+        {
+          "date": "2026-11-06",
+          "opponent": "SA",
+          "value": 17.0
+        }
+      ],
+      "vs_opp": null,
+      "actual": null
+    },
+    {
+      "player_id": "4278073",
+      "name": "Shai Gilgeous-Alexander",
+      "team": "OKC",
+      "opponent": "POR",
+      "is_home": false,
+      "position": "G",
+      "game_id": "401909965",
+      "commence_time": "2026-11-11T04:00Z",
+      "date": "2026-11-10",
+      "stat": "points",
+      "per_game": 30.5,
+      "projection": 30.6,
+      "opp_allowed": 113.8,
+      "league_allowed": 113.5,
+      "pos_slot": "G",
+      "pos_allowed": 56.7,
+      "pos_league": 56.2,
+      "pos_rank": 15,
+      "pos_of": 30,
+      "weight": 0.5,
+      "recent": [
+        {
+          "date": "2026-10-20",
+          "opponent": "SA",
+          "value": 32.0
+        },
+        {
+          "date": "2026-10-22",
+          "opponent": "DEN",
+          "value": 17.0
+        },
+        {
+          "date": "2026-10-25",
+          "opponent": "LAC",
+          "value": 34.0
+        },
+        {
+          "date": "2026-10-26",
+          "opponent": "PHX",
+          "value": 26.0
+        },
+        {
+          "date": "2026-10-28",
+          "opponent": "DAL",
+          "value": 21.0
+        },
+        {
+          "date": "2026-10-31",
+          "opponent": "HOU",
+          "value": 26.0
+        },
+        {
+          "date": "2026-11-02",
+          "opponent": "CLE",
+          "value": 43.0
+        },
+        {
+          "date": "2026-11-04",
+          "opponent": "CLE",
+          "value": 42.0
+        },
+        {
+          "date": "2026-11-06",
+          "opponent": "MEM",
+          "value": 28.0
+        },
+        {
+          "date": "2026-11-07",
+          "opponent": "WSH",
+          "value": 30.0
+        }
+      ],
+      "vs_opp": {
+        "games": 4,
+        "per_game": 32.0,
+        "best": 37.0,
+        "worst": 26.0
+      },
+      "actual": null
+    },
+    {
+      "player_id": "4683021",
+      "name": "Deni Avdija",
+      "team": "POR",
+      "opponent": "OKC",
+      "is_home": true,
+      "position": "F",
+      "game_id": "401909965",
+      "commence_time": "2026-11-11T04:00Z",
+      "date": "2026-11-10",
+      "stat": "points",
+      "per_game": 23.3,
+      "projection": 21.4,
+      "opp_allowed": 104.2,
+      "league_allowed": 113.5,
+      "pos_slot": "F",
+      "pos_allowed": 39.2,
+      "pos_league": 43.1,
+      "pos_rank": 23,
+      "pos_of": 30,
+      "weight": 0.474,
+      "recent": [
+        {
+          "date": "2026-10-21",
+          "opponent": "PHX",
+          "value": 18.0
+        },
+        {
+          "date": "2026-10-23",
+          "opponent": "SAC",
+          "value": 26.0
+        },
+        {
+          "date": "2026-10-27",
+          "opponent": "LAL",
+          "value": 23.0
+        },
+        {
+          "date": "2026-10-29",
+          "opponent": "MEM",
+          "value": 24.0
+        },
+        {
+          "date": "2026-10-31",
+          "opponent": "UTAH",
+          "value": 24.0
+        },
+        {
+          "date": "2026-11-02",
+          "opponent": "DEN",
+          "value": 28.0
+        },
+        {
+          "date": "2026-11-04",
+          "opponent": "PHX",
+          "value": 21.0
+        },
+        {
+          "date": "2026-11-06",
+          "opponent": "LAL",
+          "value": 22.0
+        },
+        {
+          "date": "2026-11-07",
+          "opponent": "SA",
+          "value": 15.0
+        }
+      ],
+      "vs_opp": {
+        "games": 4,
+        "per_game": 21.2,
+        "best": 31.0,
+        "worst": 11.0
+      },
+      "actual": null
+    },
+    {
+      "player_id": "4914336",
+      "name": "Shaedon Sharpe",
+      "team": "POR",
+      "opponent": "OKC",
+      "is_home": true,
+      "position": "G",
+      "game_id": "401909965",
+      "commence_time": "2026-11-11T04:00Z",
+      "date": "2026-11-10",
+      "stat": "points",
+      "per_game": 20.8,
+      "projection": 19.1,
+      "opp_allowed": 104.2,
+      "league_allowed": 113.5,
+      "pos_slot": "G",
+      "pos_allowed": 49.4,
+      "pos_league": 56.2,
+      "pos_rank": 25,
+      "pos_of": 30,
+      "weight": 0.0,
+      "recent": [],
+      "vs_opp": {
+        "games": 3,
+        "per_game": 13.0,
+        "best": 18.0,
+        "worst": 7.0
+      },
+      "actual": null
+    },
+    {
+      "player_id": "4279888",
+      "name": "Ja Morant",
+      "team": "POR",
+      "opponent": "OKC",
+      "is_home": true,
+      "position": "G",
+      "game_id": "401909965",
+      "commence_time": "2026-11-11T04:00Z",
+      "date": "2026-11-10",
+      "stat": "points",
+      "per_game": 19.4,
+      "projection": 17.9,
+      "opp_allowed": 104.2,
+      "league_allowed": 113.5,
+      "pos_slot": "G",
+      "pos_allowed": 49.4,
+      "pos_league": 56.2,
+      "pos_rank": 25,
+      "pos_of": 30,
+      "weight": 0.0,
+      "recent": [
+        {
+          "date": "2026-10-21",
+          "opponent": "PHX",
+          "value": 14.0
+        },
+        {
+          "date": "2026-10-23",
+          "opponent": "SAC",
+          "value": 12.0
+        },
+        {
+          "date": "2026-10-27",
+          "opponent": "LAL",
+          "value": 23.0
+        },
+        {
+          "date": "2026-10-29",
+          "opponent": "MEM",
+          "value": 14.0
+        }
+      ],
+      "vs_opp": {
+        "games": 1,
+        "per_game": 11.0,
+        "best": 11.0,
+        "worst": 11.0
+      },
+      "actual": null
+    },
+    {
+      "player_id": "4433255",
+      "name": "Chet Holmgren",
+      "team": "OKC",
+      "opponent": "POR",
+      "is_home": false,
+      "position": "C",
+      "game_id": "401909965",
+      "commence_time": "2026-11-11T04:00Z",
+      "date": "2026-11-10",
+      "stat": "points",
+      "per_game": 17.1,
+      "projection": 17.2,
+      "opp_allowed": 113.8,
+      "league_allowed": 113.5,
+      "pos_slot": "C",
+      "pos_allowed": 17.1,
+      "pos_league": 15.8,
+      "pos_rank": 11,
+      "pos_of": 30,
+      "weight": 0.0,
+      "recent": [
+        {
+          "date": "2026-10-20",
+          "opponent": "SA",
+          "value": 14.0
+        },
+        {
+          "date": "2026-10-22",
+          "opponent": "DEN",
+          "value": 12.0
+        },
+        {
+          "date": "2026-10-25",
+          "opponent": "LAC",
+          "value": 10.0
         }
       ],
       "vs_opp": {
         "games": 3,
-        "per_game": 16.7,
-        "best": 21.0,
-        "worst": 11.0
+        "per_game": 12.0,
+        "best": 19.0,
+        "worst": 5.0
+      },
+      "actual": null
+    },
+    {
+      "player_id": "4593803",
+      "name": "Jalen Williams",
+      "team": "OKC",
+      "opponent": "POR",
+      "is_home": false,
+      "position": "G",
+      "game_id": "401909965",
+      "commence_time": "2026-11-11T04:00Z",
+      "date": "2026-11-10",
+      "stat": "points",
+      "per_game": 17.1,
+      "projection": 17.1,
+      "opp_allowed": 113.8,
+      "league_allowed": 113.5,
+      "pos_slot": "G",
+      "pos_allowed": 56.7,
+      "pos_league": 56.2,
+      "pos_rank": 15,
+      "pos_of": 30,
+      "weight": 0.0,
+      "recent": [
+        {
+          "date": "2026-10-20",
+          "opponent": "SA",
+          "value": 12.0
+        },
+        {
+          "date": "2026-10-22",
+          "opponent": "DEN",
+          "value": 21.0
+        },
+        {
+          "date": "2026-10-25",
+          "opponent": "LAC",
+          "value": 8.0
+        }
+      ],
+      "vs_opp": {
+        "games": 2,
+        "per_game": 14.5,
+        "best": 16.0,
+        "worst": 13.0
       },
       "actual": null
     }
   ],
   "summary": {
-    "rated": 931,
-    "graded": 729,
-    "mae": 6.16,
-    "baseline": 6.11,
-    "bias": 1.3
+    "rated": 967,
+    "graded": 768,
+    "mae": 6.2,
+    "baseline": 6.16,
+    "bias": 1.23
   }
 }
