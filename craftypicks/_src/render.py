@@ -1237,6 +1237,55 @@ def _cv_edge(model: dict) -> str:
     return f'<span class="ge down">{_("cv_fade", v="&minus;" + v)}</span>'
 
 
+def _live_hooks(row: dict) -> str:
+    """Data attributes board.js reads to fetch a started college game's live
+    score from ESPN and judge the pick. Nothing for other leagues."""
+    if row.get("league") not in COLLEGE:
+        return ""
+    a = row.get("ats") or {}
+    attrs = {"sport": row["league"], "espn": row.get("espn_id") or "",
+             "home": row.get("home", ""), "away": row.get("away", ""),
+             "tip": row.get("commence_time", "")}
+    if a:
+        attrs["side"], attrs["line"] = a["side"], f'{a["line"]:g}'
+    return "".join(f' data-{k}="{esc(str(v))}"' for k, v in attrs.items())
+
+
+def _verdict(row: dict, away_pts, home_pts) -> str:
+    a = row.get("ats")
+    if not a:
+        return ""
+    mine, theirs = ((home_pts, away_pts) if a["side"] == "home"
+                    else (away_pts, home_pts))
+    edge = mine - theirs + a["line"]
+    if edge > 0:
+        return f'<b class="won">&#10003; {_("res_covered")}</b>'
+    if edge < 0:
+        return f'<b class="lost">&#10007; {_("res_missed")}</b>'
+    return f'<b class="push">{_("res_push")}</b>'
+
+
+def _result_strip(row: dict) -> str:
+    """College cards: the final score and whether our pick covered, from the
+    ESPN store at build time. Before that, an empty strip board.js fills with
+    the live score. A pick posted after tip-off says it is not in the record."""
+    if row.get("league") not in COLLEGE:
+        return ""
+    note = (f'<p class="cv-nc">{_("res_not_counted")}</p>'
+            if row.get("counted") is False else "")
+    f = row.get("final")
+    if not f:
+        labels = "|".join(_(k) for k in ("res_final", "res_live", "res_covered",
+                                         "res_missed", "res_push", "res_covering",
+                                         "res_not_covering"))
+        return f'<div class="cv-res" hidden data-l="{esc(labels)}"></div>' + note
+    an = f.get("away_short") or row.get("away", "")
+    hn = f.get("home_short") or row.get("home", "")
+    return (f'<div class="cv-res"><span><span class="st">{_("res_final")}</span>'
+            f'{esc(an)} {f["away"]:g} &ndash; {esc(hn)} {f["home"]:g}</span>'
+            f'{_verdict(row, f["away"], f["home"])}</div>' + note)
+
+
 def _spread_body(row: dict) -> str:
     """College cards: our side against the market spread, its chance to
     cover, and the point gap between our line and the market's.
@@ -1323,12 +1372,13 @@ def board_card(row: dict) -> str:
           </div>"""
 
     return f"""
-      <article class="gcard"{style} id="g-{esc(row.get('event_id',''))}">
+      <article class="gcard"{style} id="g-{esc(row.get('event_id',''))}"{_live_hooks(row)}>
         <div class="gcard-body">
           <div class="cv-head">
             <h3 class="cv-tm">{esc(_name(away, row))} <span>@</span> {esc(_name(home, row))}</h3>
             <span class="cv-time">{esc(tip)}</span>
           </div>
+          {_result_strip(row)}
           {body}
           {_line_note(row)}
           {_disclosure(row)}
@@ -3170,7 +3220,44 @@ def _test_spread_card() -> None:
     assert "win prob" in plain.lower() and "to cover" not in plain
 
 
+def _test_result_strip() -> None:
+    """Started college games: score and verdict on the card, live hooks for
+    the browser, and a note when a pick is outside the record."""
+    pick = {"side": "away", "team": "Marshall Thundering Herd", "line": 25.5,
+            "cover": 0.6588, "gap": 4.5}
+    row = {"event_id": "o1", "espn_id": "401", "league": "ncaab",
+           "commence_time": "2026-11-09T23:00:00Z",
+           "home": "Ohio State Buckeyes", "away": "Marshall Thundering Herd",
+           "markets": {"spreads": {"point": -25.5, "side_a": "home"}},
+           "model": {"home_win_prob": 0.97, "away_win_prob": 0.03, "margin": 21.0},
+           "ats": pick, "final": {"away": 66, "home": 88, "away_short": "Marshall",
+                                  "home_short": "Ohio State"}}
+    card = board_card(row)
+    assert 'class="cv-res"' in card and "Final" in card
+    assert "Marshall 66 &ndash; Ohio State 88" in card, "school names, not mascots"
+    assert "&#10003; Covered" in card and 'class="won"' in card
+    missed = board_card(dict(row, final=dict(row["final"], away=60)))
+    assert "&#10007; Missed" in missed and 'class="lost"' in missed
+    push = board_card(dict(row, final=dict(row["final"], away=62.5)))
+    assert ">Push<" in push
+    # Not final yet: an empty strip the browser fills, and the hooks it needs.
+    live = board_card(dict(row, final=None))
+    assert '<div class="cv-res" hidden data-l="Final|Live|Covered|Missed|Push|Covering|Not covering"></div>' in live, \
+        "the empty strip carries its labels for board.js"
+    for attr in ('data-sport="ncaab"', 'data-espn="401"', 'data-side="away"',
+                 'data-line="25.5"', 'data-tip="2026-11-09T23:00:00Z"',
+                 'data-home="Ohio State Buckeyes"', 'data-away="Marshall Thundering Herd"'):
+        assert attr in live, attr
+    # Outside the record.
+    nc = board_card(dict(row, counted=False))
+    assert "not counted in the record" in nc
+    # Other leagues: no strip, no hooks.
+    nba = board_card(dict(row, league="nba", ats=None, final=None))
+    assert "cv-res" not in nba and "data-sport" not in nba
+
+
 def _self_test() -> None:
+    _test_result_strip()
     _test_spread_card()
     _test_ncaab_lines()
     _test_ncaaf_card()

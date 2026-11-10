@@ -202,6 +202,35 @@ def add_ncaaf(board_doc: dict, ncaaf_doc: dict) -> None:
     board_doc.setdefault("counts", {})["ncaaf"] = len(games)
 
 
+def attach_finals(board_doc: dict, ncaab_store: dict, ncaaf_store: dict) -> None:
+    """Give each finished college game on the board its final score, from the
+    ESPN stores the daily and boards jobs keep. Matched by ESPN id, else by
+    the two names (punctuation-blind), and the id is learned on the way."""
+    import ncaab_system  # noqa: PLC0415
+    key = ncaab_system.name_key
+    for league, store in (("ncaab", ncaab_store), ("ncaaf", ncaaf_store)):
+        games = (store or {}).get("games") or {}
+        # Keyed by names AND Eastern date: the same two clubs can meet twice
+        # in a season, and the earlier final must not land on today's game.
+        import board as board_mod  # noqa: PLC0415 -- _et_day
+        by_pair = {(key(g["away"]["name"]), key(g["home"]["name"]),
+                    board_mod._et_day(g.get("commence_time"))): g
+                   for g in games.values()}
+        for row in ((board_doc.get("leagues") or {}).get(league) or {}).get("games") or []:
+            eid = row.get("espn_id") or (row.get("event_id") if league == "ncaaf" else None)
+            g = games.get(str(eid)) if eid else None
+            if g is None:
+                g = by_pair.get((key(row.get("away")), key(row.get("home")),
+                                 board_mod._et_day(row.get("commence_time"))))
+            if not g:
+                continue
+            row.setdefault("espn_id", str(g["event_id"]))
+            if g.get("completed") and g.get("home_score") is not None:
+                row["final"] = {"away": g["away_score"], "home": g["home_score"],
+                                "away_short": g["away"].get("short") or g["away"]["name"],
+                                "home_short": g["home"].get("short") or g["home"]["name"]}
+
+
 def tonight_rows(doc: dict) -> list[dict]:
     """Every league's games merged into one list, earliest first.
 
@@ -407,6 +436,7 @@ def build() -> None:
     pitch_doc = load("pitchers.json", {"date_label": "", "pitchers": [], "summary": {}})
     board_doc = load("board.json", {})
     add_ncaaf(board_doc, load("ncaaf.json", {}))
+    attach_finals(board_doc, load("ncaab_games.json", {}), load("ncaaf_games.json", {}))
     attach_team_stats(board_doc,
                       load("ncaab_teams.json", {}).get("teams") or {})
     batter_doc = load("batters.json",
@@ -724,6 +754,47 @@ def _self_test() -> None:
     ts = doc["leagues"]["ncaab"]["games"][0]["team_stats"]
     assert ts["home"]["name"] == "St John's Red Storm" and ts["away"]
     assert "team_stats" not in doc["leagues"]["nba"]["games"][0]
+
+    # Finished college games pick up their final score from the ESPN stores:
+    # by ESPN id when the row has one, else by the two names.
+    doc = {"leagues": {
+        "ncaab": {"games": [
+            {"league": "ncaab", "espn_id": "401", "home": "Ohio State Buckeyes",
+             "away": "Marshall Thundering Herd"},
+            {"league": "ncaab", "home": "St. John's Red Storm", "away": "Army Black Knights"},
+            {"league": "ncaab", "espn_id": "999", "home": "Q", "away": "R"}]},
+        "ncaaf": {"games": [{"league": "ncaaf", "event_id": "77",
+                             "home": "Alabama Crimson Tide", "away": "LSU Tigers"}]}}}
+    cbb = {"games": {
+        "401": {"event_id": "401", "completed": True, "home_score": 88, "away_score": 66,
+                "home": {"name": "Ohio State Buckeyes", "short": "Ohio State"},
+                "away": {"name": "Marshall Thundering Herd", "short": "Marshall"}},
+        "402": {"event_id": "402", "completed": True, "home_score": 80, "away_score": 61,
+                "home": {"name": "St John's Red Storm"},
+                "away": {"name": "Army Black Knights"}},
+        "999": {"event_id": "999", "completed": False, "home_score": None,
+                "away_score": None, "home": {"name": "Q"}, "away": {"name": "R"}}}}
+    cfb = {"games": {"77": {"event_id": "77", "completed": True, "home_score": 31,
+                            "away_score": 17, "home": {"name": "Alabama Crimson Tide"},
+                            "away": {"name": "LSU Tigers"}}}}
+    attach_finals(doc, cbb, cfb)
+    g = doc["leagues"]["ncaab"]["games"]
+    assert g[0]["final"] == {"away": 66, "home": 88, "away_short": "Marshall",
+                             "home_short": "Ohio State"}
+    assert g[1]["final"]["home"] == 80 and g[1]["final"]["away"] == 61, \
+        "matched by name, St. vs St"
+    assert g[1]["espn_id"] == "402"
+    assert "final" not in g[2], "not finished, no final"
+    assert doc["leagues"]["ncaaf"]["games"][0]["final"]["home"] == 31
+    # A rematch: an earlier meeting's final must never land on today's game.
+    redoc = {"leagues": {"ncaab": {"games": [
+        {"league": "ncaab", "home": "Q", "away": "R",
+         "commence_time": "2026-11-10T00:00:00Z"}]}}}
+    old_meet = {"games": {"5": {"event_id": "5", "completed": True, "home_score": 70,
+                                "away_score": 60, "commence_time": "2026-11-03T00:00Z",
+                                "home": {"name": "Q"}, "away": {"name": "R"}}}}
+    attach_finals(redoc, old_meet, {})
+    assert "final" not in redoc["leagues"]["ncaab"]["games"][0], "wrong day"
 
     # NCAAF: its own page and tab, but never in leagues.LEAGUES (that list
     # buys odds).

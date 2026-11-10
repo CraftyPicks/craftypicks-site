@@ -709,6 +709,22 @@ def main() -> int:
                 print(f"!! storing {short} results failed "
                       f"({type(e).__name__}: {e})", file=sys.stderr)
 
+    # The whole day's college basketball slate. The Odds API drops a game at
+    # tip-off, so a board priced late lost every game already under way (Nov 9
+    # was priced at 7:32 PM and showed 13 of 34). ESPN's scoreboard, already
+    # stored by the System run, keeps them all with ESPN's line. Free.
+    if board_mod and "ncaab" in boards:
+        try:
+            espn_day = list((load_json(DATA / "ncaab_games.json", {})
+                             .get("games") or {}).values())
+            extra = board_mod.espn_fill(boards["ncaab"], espn_day, now.date())
+            boards["ncaab"].extend(extra)
+            print(f"-- ncaab: +{len(extra)} game(s) from ESPN's slate "
+                  f"(not on the Odds API board)")
+        except Exception as e:                               # noqa: BLE001
+            print(f"!! ncaab espn fill failed ({type(e).__name__}: {e})",
+                  file=sys.stderr)
+
     # MLB already carries a richer number from the slate -- Elo plus the
     # starting pitcher -- so it is rated above and deliberately skipped here.
     # Everything else gets plain Elo once its store is deep enough.
@@ -784,7 +800,8 @@ def main() -> int:
                 # every other league's has never been checked at all, which
                 # is the one thing this site is not allowed to do.
                 if board_ratings is not None:
-                    fresh = board_ratings.record(rows, short)
+                    clock = datetime.now(timezone.utc)
+                    fresh = board_ratings.record(rows, short, now=clock)
                     n_new = board_ratings.merge(board_rated, fresh)
                     if n_new:
                         save_json(DATA / "board_ratings.json",

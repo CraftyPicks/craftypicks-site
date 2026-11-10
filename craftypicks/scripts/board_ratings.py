@@ -49,15 +49,29 @@ def _day(stamp: str) -> date | None:
             return None
 
 
-def record(rows, league: str) -> list[dict]:
+def record(rows, league: str, now: datetime | None = None) -> list[dict]:
     """The publishable ratings on one league's board, as storable rows.
 
     Only rows that actually carry a probability. A board row with no model is
     a game we did not rate, and storing it as a zero would put a 0% call into
     the calibration.
+
+    With `now`, a game that has already tipped off is never recorded and is
+    marked counted=False for the card: a pick made after the start could be
+    made knowing the score, and the record is only worth anything if every
+    pick in it was posted before tip-off.
     """
     out = []
     for row in rows or []:
+        if now is not None:
+            try:
+                tip = datetime.fromisoformat(
+                    str(row.get("commence_time")).replace("Z", "+00:00"))
+            except ValueError:
+                tip = None
+            if tip is not None and tip <= now:
+                row["counted"] = False
+                continue
         model = row.get("model") or {}
         prob = model.get("home_win_prob")
         if prob is None or not row.get("home") or not row.get("away"):
@@ -184,8 +198,23 @@ def _test_ats() -> None:
     assert "ats_result" not in plain[0] and summary(plain, "ncaab")["ats"] == [0, 0, 0]
 
 
+def _test_pretip_only() -> None:
+    from datetime import datetime as _dt, timezone as _tz
+    rows = [{"event_id": "early", "home": "H", "away": "A",
+             "commence_time": "2026-11-09T21:00:00Z", "model": {"home_win_prob": 0.6}},
+            {"event_id": "late", "home": "H2", "away": "A2",
+             "commence_time": "2026-11-10T01:00:00Z", "model": {"home_win_prob": 0.6}}]
+    now = _dt(2026, 11, 10, 0, 32, tzinfo=_tz.utc)      # 7:32 PM ET
+    rec = record(rows, "ncaab", now=now)
+    assert [r["event_id"] for r in rec] == ["late"], "a started game is never recorded"
+    assert rows[0]["counted"] is False and rows[1].get("counted") is not False
+    # Without a clock the old behaviour holds (every row recorded).
+    assert len(record(rows, "ncaab")) == 2
+
+
 def _self_test() -> None:
     _test_ats()
+    _test_pretip_only()
     board = [
         {"event_id": "e1", "home": "Buffalo Bills", "away": "Detroit Lions",
          "commence_time": "2026-09-14T00:20:00Z",

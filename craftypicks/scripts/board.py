@@ -478,6 +478,52 @@ BPI_SD = 11.0
 BPI_FLOOR, BPI_CEIL = 0.01, 0.99
 
 
+def _et_day(stamp):
+    from datetime import datetime          # noqa: PLC0415
+    from zoneinfo import ZoneInfo          # noqa: PLC0415
+    try:
+        t = datetime.fromisoformat(str(stamp).replace("Z", "+00:00"))
+    except ValueError:
+        return None
+    return t.astimezone(ZoneInfo("America/New_York")).date()
+
+
+def espn_fill(rows: list[dict], espn_games: list[dict], day) -> list[dict]:
+    """The whole day's college basketball slate, not just what the Odds API
+    still lists. The Odds API drops a game once it tips off, so a board priced
+    late in the day lost every game already under way. ESPN's scoreboard keeps
+    them all, each with ESPN's own line.
+
+    Priced rows keep their Odds API line and learn their ESPN id (for scores).
+    ESPN games the Odds API did not list come back as new rows carrying
+    ESPN's spread and total; games with no line at all are skipped.
+    Returns the new rows; the caller appends them.
+    """
+    import ncaab_system  # noqa: PLC0415 -- name_key
+    key = ncaab_system.name_key
+    by_pair = {(key(r.get("away")), key(r.get("home"))): r for r in rows}
+    added = []
+    for g in espn_games:
+        if _et_day(g.get("commence_time")) != day:
+            continue
+        home, away = g["home"]["name"], g["away"]["name"]
+        priced = by_pair.get((key(away), key(home)))
+        if priced is not None:
+            priced["espn_id"] = str(g["event_id"])
+            continue
+        if g.get("spread_home") is None:
+            continue
+        markets = {"spreads": {"point": g["spread_home"], "side_a": "home"}}
+        if g.get("total") is not None:
+            markets["totals"] = {"point": g["total"]}
+        added.append({"event_id": f"espn-{g['event_id']}", "espn_id": str(g["event_id"]),
+                      "league": "ncaab", "commence_time": g.get("commence_time", ""),
+                      "home": home, "away": away, "markets": markets,
+                      "model": None, "line_source": "espn"})
+    added.sort(key=lambda r: r["commence_time"])
+    return added
+
+
 def attach_ats(rows: list[dict], sd: float) -> int:
     """Our side against the market spread, for rows whose rating carries an
     expected margin (BPI does; Elo does not). Returns rows given a pick."""
@@ -655,8 +701,34 @@ def _test_bpi_model() -> None:
     assert attach_ats(plain, 11.0) == 0 and "ats" not in plain[0]
 
 
+def _test_espn_fill() -> None:
+    from datetime import date as _d
+    odds = [{"event_id": "odds1", "league": "ncaab", "home": "Ohio State Buckeyes",
+             "away": "Marshall Thundering Herd", "commence_time": "2026-11-09T23:00:00Z",
+             "markets": {"spreads": {"point": -25.5, "side_a": "home"}}}]
+    def eg(eid, home, away, when, spread, total=None):
+        return {"event_id": eid, "commence_time": when, "home": {"name": home},
+                "away": {"name": away}, "spread_home": spread, "total": total}
+    espn = [eg("401", "Ohio State Buckeyes", "Marshall Thundering Herd",
+               "2026-11-09T23:00Z", -24.5),
+            eg("402", "Duke Blue Devils", "Army Black Knights", "2026-11-09T21:00Z",
+               -30.5, 145.5),
+            eg("403", "Kansas Jayhawks", "X", "2026-11-11T00:00Z", -20.0),   # tomorrow ET
+            eg("404", "Y", "Z", "2026-11-09T22:00Z", None)]                   # no line
+    added = espn_fill(odds, espn, _d(2026, 11, 9))
+    assert odds[0]["espn_id"] == "401", "priced game learns its ESPN id"
+    assert odds[0]["markets"]["spreads"]["point"] == -25.5, "the Odds API line wins"
+    assert [r["event_id"] for r in added] == ["espn-402"], added
+    r = added[0]
+    assert r["espn_id"] == "402" and r["league"] == "ncaab"
+    assert r["markets"]["spreads"] == {"point": -30.5, "side_a": "home"}
+    assert r["markets"]["totals"] == {"point": 145.5}
+    assert r["line_source"] == "espn"
+
+
 def _self_test() -> None:
     _test_bpi_model()
+    _test_espn_fill()
     import io                        # noqa: PLC0415
     import contextlib                # noqa: PLC0415
 

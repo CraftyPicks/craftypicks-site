@@ -369,6 +369,23 @@ def main() -> int:
         print(f"!! NFL boards failed ({type(e).__name__}: {e})",
               file=sys.stderr)
 
+    # College basketball and football: refresh the ESPN stores (free,
+    # idempotent) so games that started today show their final score on the
+    # board at this afternoon's rebuild instead of tomorrow morning's.
+    for name, mod in (("ncaab system", "ncaab_system"), ("ncaaf", "ncaaf")):
+        try:
+            if mod == "ncaab_system":
+                import ncaab_system as ncaab_sys          # noqa: PLC0415
+                out = ncaab_sys.daily(now.date(), DATA)
+            else:
+                import ncaaf as ncaaf_mod                 # noqa: PLC0415
+                out = ncaaf_mod.daily(now.date(), DATA)
+            if out:
+                print(f"-- {name}: refreshed ({out})")
+        except Exception as e:                               # noqa: BLE001
+            print(f"!! {name} refresh failed ({type(e).__name__}: {e})",
+                  file=sys.stderr)
+
     return 0
 
 

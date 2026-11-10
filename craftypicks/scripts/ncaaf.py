@@ -129,7 +129,9 @@ def board_rows(store: dict, power: dict, day: date, sheet: dict) -> list[dict]:
     rows = []
     for g in store.get("games", {}).values():
         d = _et_day(g.get("commence_time"))
-        if g.get("completed") or d is None or not (day <= d <= last):
+        # Unplayed games through the week, plus today's games however far
+        # along they are: a finished game stays up for its result.
+        if d is None or not (day <= d <= last) or (g.get("completed") and d != day):
             continue
         home, away = g["home"]["name"], g["away"]["name"]
         notes = []
@@ -171,14 +173,24 @@ def board_rows(store: dict, power: dict, day: date, sheet: dict) -> list[dict]:
 
 
 # ---------------------------------------------------------- record keeping
-def merge(history: list[dict], rows: list[dict]) -> int:
-    """Record each rated game once; never rewritten after."""
+def merge(history: list[dict], rows: list[dict], now: datetime | None = None) -> int:
+    """Record each rated game once; never rewritten after. With `now`, a
+    game that has kicked off is never recorded (marked counted=False): the
+    record only holds picks posted before the start."""
     have = {h["event_id"] for h in history}
     n = 0
     for r in rows:
         m = r.get("model") or {}
         if not m or r["event_id"] in have:
             continue
+        if now is not None:
+            try:
+                tip = datetime.fromisoformat(str(r["commence_time"]).replace("Z", "+00:00"))
+            except ValueError:
+                tip = None
+            if tip is not None and tip <= now:
+                r["counted"] = False
+                continue
         history.append({"event_id": r["event_id"], "date": r["date"],
                         "home": r["home"], "away": r["away"],
                         "p_home": m["home_win_prob"],
@@ -225,7 +237,7 @@ def summary(history: list[dict]) -> dict:
 
 
 # ---------------------------------------------------------------- daily run
-def daily(day: date, data, fetch=None) -> dict | None:
+def daily(day: date, data, fetch=None, now: datetime | None = None) -> dict | None:
     """Fetch, store, grade, publish. ESPN only, idempotent; None off season."""
     if day.month not in SEASON_MONTHS:
         return None
@@ -279,7 +291,7 @@ def daily(day: date, data, fetch=None) -> dict | None:
     graded = grade(history, store)
     sheet = team_sheet(store, power)
     rows = board_rows(store, power, day, sheet)
-    added = merge(history, rows)
+    added = merge(history, rows, now=now or datetime.now(ZoneInfo("UTC")))
     nsys._save(data / "ncaaf_games.json", store, compact=True)
     nsys._save(data / "ncaaf.json", {
         "season": season, "date": day.isoformat(),
@@ -370,6 +382,13 @@ def _self_test() -> None:
     assert r["ats"]["side"] == "home" and r["ats"]["line"] == -6.5
     assert r["ats"]["gap"] == 6.0 and r["ats"]["team"] == "Team BAMA"
     # No FPI for either side: listed, not rated.
+    # Today's games stay on the board after they finish (to show the result);
+    # earlier days' finals do not.
+    done_today = _game("13", "bama", "lsu", 30, 20, spread=-3.0, when="2026-11-09T17:00Z")
+    done_before = _game("14", "bama", "lsu", 30, 20, spread=-3.0, when="2026-11-02T17:00Z")
+    tmp = dict(store, games=dict(store["games"], **{"13": done_today, "14": done_before}))
+    ids = [x["event_id"] for x in board_rows(tmp, power, day, team_sheet(store, power))]
+    assert "13" in ids and "14" not in ids, ids
     # A team with no finals stored: no panel, rather than half a table.
     lone = dict(store, games={k: v for k, v in store["games"].items() if k != "3"})
     lone_rows = board_rows(lone, power, day, team_sheet(lone, power))
@@ -378,6 +397,12 @@ def _self_test() -> None:
     assert r11["model"] == {} and r11["line_note"][0] == "Spread: Team Y -3"
 
     # Record: merge once, grade on the final.
+    # A game that has kicked off is never recorded.
+    late: list[dict] = []
+    assert merge(late, rows, now=datetime(2026, 11, 15, 1, 0,
+                                          tzinfo=ZoneInfo("UTC"))) == 0
+    assert rows[1].get("counted") is False
+    rows[1].pop("counted")
     hist: list[dict] = []
     assert merge(hist, rows) == 1, "only rated games are recorded"
     assert merge(hist, rows) == 0
@@ -394,6 +419,11 @@ def _self_test() -> None:
 
     _test_daily()
     print("ncaaf self-test: all invariants hold")
+
+
+def _morning(d: int) -> datetime:
+    """9 AM Eastern on November d, 2026: tests never read the wall clock."""
+    return datetime(2026, 11, d, 14, 0, tzinfo=ZoneInfo("UTC"))
 
 
 def _test_daily() -> None:
@@ -426,7 +456,7 @@ def _test_daily() -> None:
     with tempfile.TemporaryDirectory() as tmp:
         data = Path(tmp)
         assert daily(date(2026, 6, 1), data, fetch=f) is None, "off season"
-        out = daily(date(2026, 11, 9), data, fetch=f)
+        out = daily(date(2026, 11, 9), data, fetch=f, now=_morning(9))
         # 14 days back to yesterday, plus today and the 6 days after it.
         assert f.calls["sb"] == CATCH_UP_DAYS + WINDOW_DAYS, f.calls
         assert f.calls["sum"] == 2 and out["games"] == 1
@@ -435,7 +465,7 @@ def _test_daily() -> None:
         assert doc["games"][0]["team_stats"]["home"]["stats"]["ats"] == [1, 0, 0]
         # Next morning: yesterday again plus the week ahead; no box refetch.
         before = dict(f.calls)
-        daily(date(2026, 11, 10), data, fetch=f)
+        daily(date(2026, 11, 10), data, fetch=f, now=_morning(10))
         assert f.calls["sb"] - before["sb"] == 1 + WINDOW_DAYS
         assert f.calls["sum"] == before["sum"]
 
@@ -444,7 +474,7 @@ def _test_daily() -> None:
     real = g.scoreboard
     g.scoreboard = lambda d: None if d == "20261105" else real(d)
     with tempfile.TemporaryDirectory() as tmp:
-        daily(date(2026, 11, 9), Path(tmp), fetch=g)
+        daily(date(2026, 11, 9), Path(tmp), fetch=g, now=_morning(9))
         st = json.loads((Path(tmp) / "ncaaf_games.json").read_text())
         assert st["last_day"] == "2026-11-04", st["last_day"]
         doc = json.loads((Path(tmp) / "ncaaf.json").read_text())

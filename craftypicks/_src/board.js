@@ -129,3 +129,139 @@
     }
   }
 })();
+
+/* Live scores for started college games (NCAAB, NCAAF).
+
+   Each college card carries data-sport, data-espn, data-home, data-away,
+   data-tip and, when we made a pick, data-side and data-line. Once a game
+   has tipped off and the build did not already print its final, this asks
+   ESPN's free scoreboard for that day and fills the card's empty strip:
+   the score, and whether our side is covering (live) or covered (final).
+
+   Silent for screen readers on purpose: a score that ticks every minute is
+   noise as an announcement, and the strip is plain text anyone can reach.
+   Polling stops while the tab is hidden and resumes when it comes back.
+   Any failure (offline, ESPN refusing the request) leaves the card exactly
+   as the build drew it -- the morning's line and pick. */
+(function () {
+  var URLS = {
+    ncaab: "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/scoreboard?groups=50&limit=400&dates=",
+    ncaaf: "https://site.api.espn.com/apis/site/v2/sports/football/college-football/scoreboard?groups=80&limit=300&dates="
+  };
+  var EVERY = 60000;
+  var timer = null;
+
+  function norm(s) {
+    return String(s || "").toLowerCase().replace(/&/g, " and ")
+      .replace(/[^a-z0-9 ]+/g, "").replace(/\s+/g, " ").trim();
+  }
+
+  function etDate(iso) {
+    var d = new Date(iso);
+    if (isNaN(d)) { return ""; }
+    // en-CA formats as YYYY-MM-DD.
+    return new Intl.DateTimeFormat("en-CA", { timeZone: "America/New_York" })
+      .format(d).replace(/-/g, "");
+  }
+
+  function startedCards() {
+    var now = Date.now();
+    return Array.prototype.filter.call(
+      document.querySelectorAll("article[data-sport]"), function (c) {
+        var strip = c.querySelector(".cv-res[data-l]");
+        var tip = Date.parse(c.getAttribute("data-tip") || "");
+        return strip && !isNaN(tip) && tip <= now;
+      });
+  }
+
+  function verdict(card, away, home, done, L) {
+    var side = card.getAttribute("data-side");
+    var line = parseFloat(card.getAttribute("data-line"));
+    if (!side || isNaN(line)) { return ""; }
+    var edge = (side === "home" ? home - away : away - home) + line;
+    if (done) {
+      if (edge > 0) { return '<b class="won">✓ ' + L[2] + "</b>"; }
+      if (edge < 0) { return '<b class="lost">✗ ' + L[3] + "</b>"; }
+      return '<b class="push">' + L[4] + "</b>";
+    }
+    return edge > 0 ? '<b class="won">' + L[5] + "</b>"
+                    : '<b class="lost">' + L[6] + "</b>";
+  }
+
+  function esc(s) {
+    return String(s).replace(/[&<>"]/g, function (ch) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[ch];
+    });
+  }
+
+  function fill(card, ev) {
+    var comp = (ev.competitions || [])[0] || {};
+    var sides = {};
+    (comp.competitors || []).forEach(function (c) { sides[c.homeAway] = c; });
+    if (!sides.home || !sides.away) { return false; }
+    var st = ((comp.status || ev.status || {}).type) || {};
+    if (st.state === "pre") { return true; }
+    var strip = card.querySelector(".cv-res[data-l]");
+    var L = (strip.getAttribute("data-l") || "").split("|");
+    var away = parseFloat(sides.away.score), home = parseFloat(sides.home.score);
+    if (isNaN(away) || isNaN(home)) { return true; }
+    var done = st.state === "post" || st.completed === true;
+    var label = done ? L[0] : L[1] + " · " + (st.shortDetail || "");
+    var an = (sides.away.team || {}).shortDisplayName || card.getAttribute("data-away");
+    var hn = (sides.home.team || {}).shortDisplayName || card.getAttribute("data-home");
+    strip.innerHTML =
+      '<span><span class="st' + (done ? "" : " live") + '">' + esc(label) + "</span>" +
+      esc(an) + " " + away + " – " + esc(hn) + " " + home + "</span>" +
+      verdict(card, away, home, done, L);
+    strip.hidden = false;
+    if (done) { strip.removeAttribute("data-l"); }
+    return !done;
+  }
+
+  function run() {
+    timer = null;
+    if (document.visibilityState === "hidden") { return; }
+    var cards = startedCards();
+    if (!cards.length) { return; }
+    var groups = {};
+    cards.forEach(function (c) {
+      var k = c.getAttribute("data-sport") + "|" + etDate(c.getAttribute("data-tip"));
+      (groups[k] = groups[k] || []).push(c);
+    });
+    var pending = Object.keys(groups).map(function (k) {
+      var sport = k.split("|")[0], day = k.split("|")[1];
+      if (!URLS[sport] || !day) { return Promise.resolve(false); }
+      return fetch(URLS[sport] + day).then(function (r) {
+        if (!r.ok) { throw new Error(r.status); }
+        return r.json();
+      }).then(function (data) {
+        var byId = {}, byPair = {};
+        (data.events || []).forEach(function (ev) {
+          byId[ev.id] = ev;
+          var comp = (ev.competitions || [])[0] || {};
+          var h = "", a = "";
+          (comp.competitors || []).forEach(function (c) {
+            if (c.homeAway === "home") { h = norm((c.team || {}).displayName); }
+            if (c.homeAway === "away") { a = norm((c.team || {}).displayName); }
+          });
+          byPair[a + "@" + h] = ev;
+        });
+        var live = false;
+        groups[k].forEach(function (c) {
+          var ev = byId[c.getAttribute("data-espn")] ||
+                   byPair[norm(c.getAttribute("data-away")) + "@" + norm(c.getAttribute("data-home"))];
+          if (ev && fill(c, ev)) { live = true; }
+        });
+        return live;
+      }).catch(function () { return false; });
+    });
+    Promise.all(pending).then(function (states) {
+      if (states.some(Boolean)) { timer = setTimeout(run, EVERY); }
+    });
+  }
+
+  document.addEventListener("visibilitychange", function () {
+    if (document.visibilityState === "visible" && !timer) { run(); }
+  });
+  run();
+})();

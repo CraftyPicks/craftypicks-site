@@ -1503,3 +1503,20 @@ footer{background:var(--bg-2);padding:56px 0 40px}
 .cv-lines{margin:4px 0 14px;font-size:12.5px;line-height:1.5;color:var(--muted)}
 .cv-lines p{margin:0}
 .cv-lines p+p{color:var(--txt)}
+
+/* College result strip: final score and whether our pick covered, or the
+   live score while a game is on (board.js fills it). The verdict carries a
+   symbol as well as a colour. */
+.cv-res{display:flex;justify-content:space-between;align-items:center;gap:10px;
+  margin:-6px 0 16px;padding:9px 12px;background:var(--bg-2);
+  border:1px solid var(--line);font-size:13px;color:var(--txt)}
+.cv-res[hidden]{display:none}
+.cv-res .st{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--muted);margin-right:8px}
+.cv-res .st.live{color:var(--red)}
+.cv-res b{font-family:var(--mono);font-size:11px;letter-spacing:.08em;
+  text-transform:uppercase;white-space:nowrap;font-weight:700}
+.cv-res .won{color:var(--green)}
+.cv-res .lost{color:var(--red)}
+.cv-res .push{color:var(--muted)}
+.cv-nc{font-size:11.5px;color:var(--muted);margin:-8px 0 12px}

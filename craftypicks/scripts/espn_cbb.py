@@ -115,6 +115,7 @@ def parse_event(ev) -> dict | None:
                       and r.get("type") in ("total", None)), None)
         return {"id": str(t.get("id", "")), "name": t.get("displayName", ""),
                 "abbr": t.get("abbreviation", ""),
+                "short": t.get("shortDisplayName") or t.get("location") or "",
                 "color": str(t.get("color") or ""),
                 "rank": rank if rank and 0 < rank <= 25 else None,
                 "record": str((total or {}).get("summary") or "")}
@@ -458,6 +459,7 @@ def _self_test() -> None:
     assert parse_event({}) is None and parse_event({"competitions": []}) is None
 
     # --- team colour, AP rank (99 means unranked), record
+    assert g["home"]["short"] == "Purdue", "school name for score lines"
     assert g["home"]["color"] == "ceb888" and g["home"]["rank"] == 9
     assert g["home"]["record"] == "2-0"
     assert g["away"]["rank"] is None and g["away"]["record"] == ""
