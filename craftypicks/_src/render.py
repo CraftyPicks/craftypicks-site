@@ -435,8 +435,17 @@ def calibration_section(summary: dict) -> str:
         f'<span><i class="key-dot"></i> {_("cal_happened")}</span>'
         f'<span><i class="key-band"></i> {_("cal_band")}</span></div>'
         f'<div class="note" style="margin-top:26px">'
-        f'<p class="disclaimer">{brier_line(summary)}</p></div>'
+        f'<p class="disclaimer">{brier_line(summary)}</p>{_ats_line(summary)}</div>'
         f'</div></section>')
+
+
+def _ats_line(summary: dict) -> str:
+    """Our side against the closing spread, once any pick has been graded."""
+    w, l, p = (summary or {}).get("ats") or [0, 0, 0]
+    if not (w or l or p):
+        return ""
+    rec = f"{w}-{l}" + (f"-{p}" if p else "")
+    return f'<p class="sys-rec" style="margin-top:12px"><b>{_("cal_ats", r=rec)}</b></p>'
 
 
 def brier_line(summary: dict) -> str:
@@ -1228,6 +1237,31 @@ def _cv_edge(model: dict) -> str:
     return f'<span class="ge down">{_("cv_fade", v="&minus;" + v)}</span>'
 
 
+def _spread_body(row: dict) -> str:
+    """College cards: our side against the market spread, its chance to
+    cover, and the point gap between our line and the market's.
+
+    The tick is the market's own chance for that side, from the devigged
+    spread prices when the board has them (basketball, Odds API), else a
+    coin flip (football, ESPN's single line)."""
+    a = row["ats"]
+    sp = (row.get("markets") or {}).get("spreads") or {}
+    side_a = sp.get("side_a", "home")
+    mkt = sp.get("fair_home" if a["side"] == side_a else "fair_away")
+    mkt = 0.5 if mkt is None else mkt
+    line = f'{a["line"]:+g}' if a["line"] else "PK"
+    cover = max(0.0, min(100.0, a["cover"] * 100))
+    return f"""
+          <div class="cv-row">
+            <span class="cv-lab">{_("cv_cover", team=esc(a["team"]), line=esc(line))}</span>
+            <span class="cv-pct">{cover:.0f}%</span>
+          </div>
+          <div class="cv-bar"><i class="cv-fill" style="width:{cover:.1f}%"></i><i class="cv-tick" style="left:{mkt * 100:.1f}%"></i></div>
+          <div class="cv-foot">
+            <span class="gm">{_("cv_mkt_cover", v=f"{mkt * 100:.0f}%")}</span><span class="ge up">{_("cv_ptedge", v=f"+{a['gap']:g}")}</span>
+          </div>"""
+
+
 def board_card(row: dict) -> str:
     """One game, priced, with everything else behind a disclosure.
 
@@ -1259,7 +1293,9 @@ def board_card(row: dict) -> str:
     ap = model.get("away_win_prob")
     away, home = row.get("away", ""), row.get("home", "")
 
-    if hp is None or ap is None:
+    if row.get("ats"):
+        body = _spread_body(row)
+    elif hp is None or ap is None:
         body = f'<div class="cv-none">{_("not_rated")}</div>'
     else:
         # One side, and it is ours -- the club our number likes. A card that
@@ -3098,7 +3134,44 @@ def _test_ncaab_lines() -> None:
     assert "Spread:" not in board_card(dict(row, league="nba"))
 
 
+def _test_spread_card() -> None:
+    """College cards lead with our side against the spread."""
+    row = {"event_id": "o1", "league": "ncaab", "commence_time": "2026-11-10T23:00Z",
+           "home": "Ohio State Buckeyes", "away": "Marshall Thundering Herd",
+           "markets": {"spreads": {"point": -25.5, "side_a": "home",
+                                   "fair_home": 0.48, "fair_away": 0.52},
+                       "totals": {"point": 162.5}},
+           "model": {"home_win_prob": 0.97, "away_win_prob": 0.03,
+                     "market_home_prob": 0.99, "source": "bpi",
+                     "proj": [86.2, 65.2], "margin": 21.0},
+           "ats": {"side": "away", "team": "Marshall Thundering Herd",
+                   "line": 25.5, "cover": 0.6588, "gap": 4.5}}
+    card = board_card(row)
+    assert "Marshall Thundering Herd +25.5 to cover" in card
+    assert ">66%<" in card and "+4.5 pt edge" in card
+    assert "market 52% to cover" in card, "the away side's own devigged price"
+    assert 'left:52.0%' in card and 'width:65.9%' in card
+    assert "win prob" not in card.lower()
+    assert "BPI line: Ohio State Buckeyes -21.0" in card, "lines stay underneath"
+    # Football: no spread prices from ESPN, so the market is a coin flip.
+    cf = board_card(dict(row, league="ncaaf", markets={},
+                         ats={"side": "home", "team": "Alabama Crimson Tide",
+                              "line": -6.5, "cover": 0.626, "gap": 4.5},
+                         line_note=["FPI line: Alabama Crimson Tide -11.0"]))
+    assert "Alabama Crimson Tide -6.5 to cover" in cf and "market 50% to cover" in cf
+    # The Graded section adds our side's record against the spread.
+    sec = calibration_section({"graded": 3, "calibration": [], "brier": 0.2,
+                               "market_brier": 0.21, "ats": [2, 1, 0]})
+    assert "<b>Our side ATS: 2-1</b></p></div>" in sec, "well-formed markup"
+    assert "ATS" not in calibration_section({"graded": 3, "calibration": [],
+                                             "brier": 0.2, "ats": [0, 0, 0]})
+    # No pick: the win-probability card, unchanged.
+    plain = board_card(dict(row, ats=None))
+    assert "win prob" in plain.lower() and "to cover" not in plain
+
+
 def _self_test() -> None:
+    _test_spread_card()
     _test_ncaab_lines()
     _test_ncaaf_card()
     _test_team_stats()

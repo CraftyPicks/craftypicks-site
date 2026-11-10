@@ -71,6 +71,10 @@ def record(rows, league: str) -> list[dict]:
             "home_win_prob": round(float(prob), 4),
             "market_home_prob": model.get("market_home_prob"),
             "source": model.get("source"),
+            # The college boards also publish our side against the spread;
+            # graded below beside the win probability.
+            **({"ats_side": row["ats"]["side"], "ats_line": row["ats"]["line"]}
+               if row.get("ats") else {}),
             "result": None,
         })
     return out
@@ -118,6 +122,11 @@ def grade(history: list[dict], finals_by_league: dict) -> int:
                 break
             row["result"] = "home" if hs > as_ else "away"
             row["final"] = f"{as_}–{hs}"
+            if row.get("ats_side") and row.get("ats_line") is not None:
+                mine, theirs = ((hs, as_) if row["ats_side"] == "home"
+                                else (as_, hs))
+                edge = mine - theirs + row["ats_line"]
+                row["ats_result"] = "W" if edge > 0 else "L" if edge < 0 else "P"
             row["graded_at"] = now
             graded += 1
             break
@@ -147,10 +156,36 @@ def summary(history: list[dict], league: str = "") -> dict:
         "brier": rate_mlb.brier(graded),
         "market_brier": theirs,
         "market_compared": len(with_market),
+        "ats": [sum(1 for r in graded if r.get("ats_result") == k) for k in "WLP"],
     }
 
 
+def _test_ats() -> None:
+    rows = [{"event_id": "a", "home": "Ohio State Buckeyes",
+             "away": "Marshall Thundering Herd",
+             "commence_time": "2026-11-10T23:00:00Z",
+             "model": {"home_win_prob": 0.97, "market_home_prob": 0.99},
+             "ats": {"side": "away", "line": 25.5, "team": "Marshall Thundering Herd",
+                     "cover": 0.66, "gap": 4.5}}]
+    rec = record(rows, "ncaab")
+    assert rec[0]["ats_side"] == "away" and rec[0]["ats_line"] == 25.5
+    finals = {"ncaab": [{"home": "Ohio State Buckeyes", "away": "Marshall Thundering Herd",
+                         "home_score": 88, "away_score": 66, "date": "2026-11-10"}]}
+    assert grade(rec, finals) == 1
+    assert rec[0]["ats_result"] == "W", "lost by 22 getting 25.5 covers"
+    rec2 = record(rows, "ncaab")
+    grade(rec2, {"ncaab": [dict(finals["ncaab"][0], home_score=92, away_score=66)]})
+    assert rec2[0]["ats_result"] == "L"
+    s = summary(rec + rec2, "ncaab")
+    assert s["ats"] == [1, 1, 0]
+    # No pick recorded: no ATS result, and the count leaves it out.
+    plain = record([dict(rows[0], ats=None)], "ncaab")
+    grade(plain, finals)
+    assert "ats_result" not in plain[0] and summary(plain, "ncaab")["ats"] == [0, 0, 0]
+
+
 def _self_test() -> None:
+    _test_ats()
     board = [
         {"event_id": "e1", "home": "Buffalo Bills", "away": "Detroit Lions",
          "commence_time": "2026-09-14T00:20:00Z",

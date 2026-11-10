@@ -158,6 +158,10 @@ def board_rows(store: dict, power: dict, day: date, sheet: dict) -> list[dict]:
                "commence_time": g.get("commence_time", ""), "date": d.isoformat(),
                "home": home, "away": away, "model": model, "line_note": notes,
                "spread_home": sp, "fpi_margin": margin}
+        import ats  # noqa: PLC0415
+        pick = ats.pick(margin, sp, MARGIN_SD, home, away)
+        if pick:
+            row["ats"] = pick
         a_t, h_t = sheet.get(nsys.name_key(away)), sheet.get(nsys.name_key(home))
         if a_t and h_t:
             row["team_stats"] = {"away": a_t, "home": h_t}
@@ -362,6 +366,9 @@ def _self_test() -> None:
     assert r["line_note"] == ["Spread: Team BAMA -6.5 \u00b7 Total 52.5",
                               "FPI line: Team BAMA -12.5"], r["line_note"]
     assert r["team_stats"]["home"]["name"] == "Team BAMA"
+    # Our side against the spread: FPI home by 12.5 against -6.5.
+    assert r["ats"]["side"] == "home" and r["ats"]["line"] == -6.5
+    assert r["ats"]["gap"] == 6.0 and r["ats"]["team"] == "Team BAMA"
     # No FPI for either side: listed, not rated.
     # A team with no finals stored: no panel, rather than half a table.
     lone = dict(store, games={k: v for k, v in store["games"].items() if k != "3"})

@@ -392,6 +392,8 @@ def merge_model(rows: list[dict], rated: list[dict], source: str) -> int:
             "suspect": bool(rating.get("suspect")),
             "source": source,
             **({"proj": rating["proj"]} if rating.get("proj") else {}),
+            **({"margin": rating["margin"]}
+               if rating.get("margin") is not None else {}),
             "ev_home": model_ev(hp, h2h.get("best_home")),
             "ev_away": model_ev(ap, h2h.get("best_away")),
         }
@@ -476,6 +478,24 @@ BPI_SD = 11.0
 BPI_FLOOR, BPI_CEIL = 0.01, 0.99
 
 
+def attach_ats(rows: list[dict], sd: float) -> int:
+    """Our side against the market spread, for rows whose rating carries an
+    expected margin (BPI does; Elo does not). Returns rows given a pick."""
+    import ats  # noqa: PLC0415
+    n = 0
+    for row in rows:
+        margin = (row.get("model") or {}).get("margin")
+        sp = (row.get("markets") or {}).get("spreads") or {}
+        if margin is None or sp.get("point") is None:
+            continue
+        home_pt = sp["point"] if sp.get("side_a", "home") == "home" else -sp["point"]
+        p = ats.pick(margin, home_pt, sd, row.get("home", ""), row.get("away", ""))
+        if p:
+            row["ats"] = p
+            n += 1
+    return n
+
+
 def bpi_model(rows: list[dict], doc: dict) -> list[dict]:
     """Rate board rows from data/ncaab_bpi.json, by team name.
 
@@ -498,7 +518,7 @@ def bpi_model(rows: list[dict], doc: dict) -> list[dict]:
         hp = 0.5 * (1 + math.erf(margin / BPI_SD / math.sqrt(2)))
         hp = round(max(BPI_FLOOR, min(BPI_CEIL, hp)), 4)
         rated = {"event_id": row.get("event_id"), "home_win_prob": hp,
-                 "away_win_prob": round(1.0 - hp, 4)}
+                 "away_win_prob": round(1.0 - hp, 4), "margin": round(margin, 1)}
         # Projected score: each offence against the other defence, around
         # the league's points per team per game, home edge split evenly.
         # Its margin equals the BPI margin above by construction.
@@ -612,6 +632,27 @@ def _test_bpi_model() -> None:
     merge_model(board_rows, [{"event_id": "a", "home_win_prob": 0.8,
                               "away_win_prob": 0.2, "proj": [77.8, 68.2]}], "bpi")
     assert board_rows[0]["model"]["proj"] == [77.8, 68.2], "projection reaches the card"
+    # The expected margin travels too, and attach_ats turns it plus the
+    # market spread into our side against the number.
+    assert rated[0]["margin"] == 9.5
+    ats_rows = [{"event_id": "a", "home": "Ohio State Buckeyes",
+                 "away": "Marshall Thundering Herd",
+                 "markets": {"spreads": {"point": -25.5, "side_a": "home"},
+                             "h2h": {"fair_home": 0.99}}}]
+    merge_model(ats_rows, [{"event_id": "a", "home_win_prob": 0.97,
+                            "away_win_prob": 0.03, "margin": 21.0}], "bpi")
+    assert attach_ats(ats_rows, 11.0) == 1
+    assert ats_rows[0]["ats"]["team"] == "Marshall Thundering Herd"
+    assert ats_rows[0]["ats"]["line"] == 25.5 and ats_rows[0]["ats"]["gap"] == 4.5
+    # Spread quoted on the away side is turned to the home side first.
+    away_q = [dict(ats_rows[0], markets={"spreads": {"point": 25.5, "side_a": "away"}})]
+    away_q[0].pop("ats")
+    attach_ats(away_q, 11.0)
+    assert away_q[0]["ats"]["line"] == 25.5 and away_q[0]["ats"]["side"] == "away"
+    # No margin (Elo-rated): nothing attached.
+    plain = [{"event_id": "b", "home": "H", "away": "A", "model": {"home_win_prob": 0.6},
+              "markets": {"spreads": {"point": -3.0, "side_a": "home"}}}]
+    assert attach_ats(plain, 11.0) == 0 and "ats" not in plain[0]
 
 
 def _self_test() -> None:

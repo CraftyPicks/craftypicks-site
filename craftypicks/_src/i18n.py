@@ -124,6 +124,10 @@ T = {
     "cv_winprob":    {"en": "{who} win prob", "es": "prob. victoria {who}"},
     "cv_market":     {"en": "market {v}", "es": "mercado {v}"},
     "cv_edge":       {"en": "{v} edge", "es": "ventaja {v}"},
+    "cal_ats":       {"en": "Our side ATS: {r}", "es": "Nuestro lado ATS: {r}"},
+    "cv_cover":      {"en": "{team} {line} to cover", "es": "{team} {line} cubre"},
+    "cv_mkt_cover":  {"en": "market {v} to cover", "es": "mercado {v} cubre"},
+    "cv_ptedge":     {"en": "{v} pt edge", "es": "ventaja {v} pts"},
     "cv_fade":       {"en": "{v} fade", "es": "{v} en contra"},
     "cv_noedge":     {"en": "no edge", "es": "sin ventaja"},
     # ---- the starter comparison table

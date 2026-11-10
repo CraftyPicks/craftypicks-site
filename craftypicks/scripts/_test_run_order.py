@@ -76,6 +76,10 @@ def _self_test() -> None:
     # other way round, or BPI would overwrite a game Elo can rate.
     assert line_of(r"board_mod\.elo_model\(") < line_of(r"board_mod\.bpi_model\("), \
         "BPI must fill in after Elo, not before"
+    # The spread pick needs BPI's margin, and must exist before the record is
+    # written or it is never graded.
+    assert (line_of(r"board_mod\.bpi_model\(") < line_of(r"board_mod\.attach_ats\(")
+            < line_of(r"board_ratings\.record\(")), "attach_ats in the wrong place"
 
     # Every MLB board run_boards builds must ALSO be built here. The two jobs
     # are each other's backup: run_boards runs on three :30 crons that
