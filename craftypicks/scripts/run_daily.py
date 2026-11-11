@@ -760,7 +760,9 @@ def main() -> int:
                           if by_bpi else 0)
                     print(f"-- ratings: {nb} ncaab game(s) rated from ESPN BPI"
                           f" ({len(unrated) - nb} unmatched)")
-                    picks = board_mod.attach_ats(rows, board_mod.BPI_SD)
+                    picks = board_mod.attach_ats(
+                        rows, board_mod.BPI_SD, season=board_mod.season_margins(
+                            load_json(DATA / "ncaab_teams.json", {})))
                     print(f"-- ats: {picks} ncaab spread pick(s) from BPI")
                 # MLB fills these from StatsAPI in slate.py. Every other
                 # league has no free source, so it uses the same stored

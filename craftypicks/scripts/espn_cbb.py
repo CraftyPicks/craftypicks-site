@@ -48,7 +48,7 @@ EMPTY_ODDS = {"spread_home": None, "ml_home": None, "ml_away": None,
               "total": None}
 
 
-def parse_odds(odds, home_abbr: str) -> dict:
+def parse_odds(odds, home_abbr: str, away_abbr: str = "") -> dict:
     """The first odds block, as the HOME team's spread plus both moneylines.
 
     `details` ("DUKE -7.5") names the favourite, so it fixes the sign without
@@ -70,10 +70,14 @@ def parse_odds(odds, home_abbr: str) -> dict:
         line = _num(parts[-1]) if len(parts) == 2 else None
         if line is not None:
             fav = parts[0].strip().upper()
-            if home_abbr:
-                home_fav = fav == home_abbr.upper()
+            if home_abbr and fav == home_abbr.upper():
+                home_fav = True
+            elif away_abbr and fav == away_abbr.upper():
+                home_fav = False
             else:
-                # No abbreviation to match against: the favourite flag says.
+                # Neither abbreviation matches (the odds feed spells some
+                # differently: "AF" for "AFA"): the favourite flag says, and
+                # without one there is no line rather than a guessed sign.
                 home_fav = (True if home_o.get("favorite") is True else
                             False if away_o.get("favorite") is True else None)
             if home_fav is not None:
@@ -144,7 +148,7 @@ def parse_event(ev) -> dict | None:
         "away_score": _int(away.get("score")) if done else None,
         "home_1h": first_half(home) if done else None,
         "away_1h": first_half(away) if done else None,
-        **parse_odds(comp.get("odds"), h["abbr"]),
+        **parse_odds(comp.get("odds"), h["abbr"], a["abbr"]),
     }
 
 
@@ -199,12 +203,12 @@ def parse_box(summary) -> dict:
     except (KeyError, IndexError, TypeError):
         pass
     out["_1h"] = halves
-    home_abbr = ""
+    abbr = {"home": "", "away": ""}
     for c in ((summary.get("header") or {}).get("competitions") or [{}])[0].get(
             "competitors") or []:
-        if c.get("homeAway") == "home":
-            home_abbr = (c.get("team") or {}).get("abbreviation", "")
-    out["_odds"] = parse_odds(summary.get("pickcenter"), home_abbr)
+        if c.get("homeAway") in abbr:
+            abbr[c["homeAway"]] = (c.get("team") or {}).get("abbreviation", "")
+    out["_odds"] = parse_odds(summary.get("pickcenter"), abbr["home"], abbr["away"])
     return out
 
 
@@ -431,7 +435,7 @@ def _self_test() -> None:
     assert o == {"spread_home": -9.5, "ml_home": -500, "ml_away": 380,
                  "total": 141.5}, o
     fav_away = [{"details": "LIB -3", "homeTeamOdds": {}, "awayTeamOdds": {}}]
-    assert parse_odds(fav_away, "PUR")["spread_home"] == 3.0
+    assert parse_odds(fav_away, "PUR", "LIB")["spread_home"] == 3.0
     assert parse_odds([{"details": "EVEN"}], "PUR")["spread_home"] == 0.0
     # No details: fall back to the bare number and who is favoured.
     bare = [{"spread": 6.5, "homeTeamOdds": {"favorite": False},
@@ -442,6 +446,16 @@ def _self_test() -> None:
     assert parse_odds(None, "PUR") == {"spread_home": None, "ml_home": None,
                                         "ml_away": None, "total": None}
     assert parse_odds([{"details": "garbage"}], "PUR")["spread_home"] is None
+    # The odds feed's abbreviation can differ from the team's ("AF" for
+    # Air Force, "AFA"): an unmatched name must not be read as "the away
+    # team is favoured" -- that posted Air Force +12.5 instead of -12.5.
+    odd = [{"details": "AF -12.5", "homeTeamOdds": {"favorite": True},
+            "awayTeamOdds": {"favorite": False}}]
+    assert parse_odds(odd, "AFA", "SJSU")["spread_home"] == -12.5
+    odd[0]["homeTeamOdds"], odd[0]["awayTeamOdds"] = {}, {}
+    assert parse_odds(odd, "AFA", "SJSU")["spread_home"] is None, "unknown: no line"
+    # The away abbreviation matching still says away; flags not needed.
+    assert parse_odds([{"details": "SJSU -3"}], "AFA", "SJSU")["spread_home"] == 3.0
 
     # --- event
     g = parse_event(_fx_event(odds=fav_home))

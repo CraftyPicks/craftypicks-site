@@ -53,3 +53,10 @@ Saved ideas, newest first. Read this at the start of any session on the site.
   graded; no home-field term; no Brier on the ladder; `splits[0]` for traded
   pitchers.
 - NCAAB System: optional filter to only post when the spread is under 6.5.
+
+## Calibrated spread pricing (shipped 2026-11-11), follow-ups
+- Tier thresholds (Best 4+, Lean 2+ on the shrunk gap) and SHRINK 0.5 are
+  starting values. Revisit once each tier has ~50 graded picks.
+- Past ESPN lines stored with a flipped sign (odds feed abbreviation not
+  matching the team's, e.g. "AF" vs "AFA") stay as stored; team ATS
+  records for those clubs may be off by a game or two. Fixed for new data.

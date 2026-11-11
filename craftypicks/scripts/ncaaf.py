@@ -160,16 +160,38 @@ def board_rows(store: dict, power: dict, day: date, sheet: dict) -> list[dict]:
                "commence_time": g.get("commence_time", ""), "date": d.isoformat(),
                "home": home, "away": away, "model": model, "line_note": notes,
                "spread_home": sp, "fpi_margin": margin, "total": g.get("total")}
-        import ats  # noqa: PLC0415
-        pick = ats.pick(margin, sp, MARGIN_SD, home, away)
-        if pick:
-            row["ats"] = pick
+        row["_edge"] = 0.0 if g.get("neutral", False) else HOME_EDGE
         a_t, h_t = sheet.get(nsys.name_key(away)), sheet.get(nsys.name_key(home))
         if a_t and h_t:
             row["team_stats"] = {"away": a_t, "home": h_t}
         rows.append(row)
+    _price(rows, sheet)
     rows.sort(key=lambda r: (r["commence_time"], r["home"]))
     return rows
+
+
+def _price(rows: list[dict], sheet: dict) -> None:
+    """Our side against the spread for every rated row with a line: FPI's
+    margin stretched to the market's scale (fitted on the window's games),
+    blended with this season's margins, then ats.pick. See ats.py."""
+    import ats  # noqa: PLC0415
+    k = ats.fit_stretch([(r["fpi_margin"], -r["spread_home"]) for r in rows
+                         if r["fpi_margin"] is not None and r["spread_home"] is not None],
+                        ats.STRETCH_DEFAULT["ncaaf"])
+    season = {key: (t["games"], round(t["stats"]["pts"] - t["stats"]["opp"], 1))
+              for key, t in sheet.items()
+              if t.get("games") and (t.get("stats") or {}).get("pts") is not None
+              and t["stats"].get("opp") is not None}
+    for r in rows:
+        edge = r.pop("_edge")
+        if r["fpi_margin"] is None or r["spread_home"] is None:
+            continue
+        m = ats.blend(r["fpi_margin"] * k, season.get(nsys.name_key(r["home"])),
+                      season.get(nsys.name_key(r["away"])), edge)
+        p = ats.pick(m, r["spread_home"], MARGIN_SD, r["home"], r["away"])
+        if p:
+            p["stretch"] = k
+            r["ats"] = p
 
 
 # ---------------------------------------------------------- record keeping
@@ -196,7 +218,9 @@ def merge(history: list[dict], rows: list[dict], now: datetime | None = None) ->
                         "p_home": m["home_win_prob"],
                         "mkt_home": m.get("market_home_prob"),
                         "spread_home": r.get("spread_home"),
-                        "fpi_margin": r.get("fpi_margin")})
+                        "fpi_margin": r.get("fpi_margin"),
+                        **({"ats_side": r["ats"]["side"], "ats_tier": r["ats"]["tier"]}
+                           if r.get("ats") else {})})
         have.add(r["event_id"])
         n += 1
     return n
@@ -216,8 +240,10 @@ def grade(history: list[dict], store: dict) -> int:
         margin = g["home_score"] - g["away_score"]
         h["home_won"] = margin > 0
         sp, fm = h.get("spread_home"), h.get("fpi_margin")
-        if sp is not None and fm is not None and fm + sp != 0:
-            side = 1 if fm + sp > 0 else -1          # +1 home, -1 away
+        posted = h.get("ats_side")
+        if sp is not None and (posted or (fm is not None and fm + sp != 0)):
+            # The side posted on the card; older rows had only FPI's raw line.
+            side = (1 if posted == "home" else -1) if posted else (1 if fm + sp > 0 else -1)
             edge = side * (margin + sp)
             h["fpi_ats"] = "W" if edge > 0 else "L" if edge < 0 else "P"
         n += 1
@@ -231,12 +257,12 @@ def summary(history: list[dict]) -> dict:
            if h.get("mkt_home") is not None]
     ats = [sum(1 for h in done if h.get("fpi_ats") == k) for k in "WLP"]
     import ats as _ats  # noqa: PLC0415
-    tiers = {t: [0, 0, 0] for t in ("best", "lean", "pass")}
+    # Only picks posted with a tier (calibrated pricing, Nov 2026 on): the
+    # older raw-FPI picks were tiered on a different scale.
+    tiers = {t: [0, 0, 0] for t in _ats.TIERS}
     for h in done:
-        if h.get("fpi_ats") in ("W", "L", "P") and h.get("fpi_margin") is not None \
-                and h.get("spread_home") is not None:
-            t = _ats.tier(abs(round(h["fpi_margin"] + h["spread_home"], 1)))
-            tiers[t]["WLP".index(h["fpi_ats"])] += 1
+        if h.get("fpi_ats") in ("W", "L", "P") and h.get("ats_tier") in tiers:
+            tiers[h["ats_tier"]]["WLP".index(h["fpi_ats"])] += 1
     return {"graded": len(done), "pending": len(history) - len(done),
             "brier": round(sum(brier) / len(brier), 4) if brier else None,
             "market_brier": round(sum(mkt) / len(mkt), 4) if mkt else None,
@@ -385,9 +411,11 @@ def _self_test() -> None:
     assert r["line_note"] == ["Spread: Team BAMA -6.5 \u00b7 Total 52.5",
                               "FPI line: Team BAMA -12.5"], r["line_note"]
     assert r["team_stats"]["home"]["name"] == "Team BAMA"
-    # Our side against the spread: FPI home by 12.5 against -6.5.
+    # Our side against the spread: FPI home by 12.5, too few games to fit a
+    # stretch, so the default 0.83: home by 10.4 against -6.5, raw 3.9.
     assert r["ats"]["side"] == "home" and r["ats"]["line"] == -6.5
-    assert r["ats"]["gap"] == 6.0 and r["ats"]["team"] == "Team BAMA"
+    assert r["ats"]["raw"] == 3.9 and r["ats"]["team"] == "Team BAMA"
+    assert r["ats"]["stretch"] == 0.83
     assert r["total"] == 52.5, "the card's Total chip"
     # No FPI for either side: listed, not rated.
     # Today's games stay on the board after they finish (to show the result);
@@ -422,8 +450,21 @@ def _self_test() -> None:
     assert h["fpi_ats"] == "W"
     s = summary(hist)
     assert s["graded"] == 1 and s["fpi_ats"] == [1, 0, 0]
-    # FPI home by 12.5 against -6.5: a 6-point edge, a best bet.
-    assert s["ats_tiers"]["best"] == [1, 0, 0] and s["ats_tiers"]["lean"] == [0, 0, 0]
+    # Tiered by the tier posted on the card, not recomputed later.
+    assert h["ats_side"] == "home" and h["ats_tier"] == r["ats"]["tier"]
+    assert s["ats_tiers"][h["ats_tier"]] == [1, 0, 0]
+    assert sum(sum(v) for v in s["ats_tiers"].values()) == 1
+    assert set(s["ats_tiers"]) == {"best", "lean", "check", "pass"}
+    # Graded on the side posted: a posted away pick loses when home covers.
+    h2 = dict(h, ats_side="away")
+    for k in ("home_won", "fpi_ats"):
+        h2.pop(k)
+    grade([h2], store)
+    assert h2["fpi_ats"] == "L"
+    # Legacy rows (no tier stored) stay out of the tier records.
+    legacy = dict(h)
+    legacy.pop("ats_tier")
+    assert sum(sum(v) for v in summary([legacy])["ats_tiers"].values()) == 0
     assert s["brier"] == round((1 - h["p_home"]) ** 2, 4)
     assert s["market_brier"] == round((1 - h["mkt_home"]) ** 2, 4)
 

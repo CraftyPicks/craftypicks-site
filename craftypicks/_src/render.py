@@ -1312,7 +1312,17 @@ def _spread_body(row: dict) -> str:
 
 
 # ------------------------------------------------- Redesign B: pick card
-TIER_LABEL = {"best": "pc_best", "lean": "pc_lean", "pass": "pc_pass", "none": "pc_none"}
+TIER_LABEL = {"best": "pc_best", "lean": "pc_lean", "check": "pc_check",
+              "pass": "pc_pass", "none": "pc_none"}
+
+
+def _tier_of(a: dict | None) -> str:
+    """The tier the pricing posted; rows from before tiers were stored fall
+    back to their gap."""
+    if not a:
+        return "none"
+    import ats as _ats  # noqa: PLC0415
+    return a.get("tier") or _ats.tier(a.get("gap")) or "none"
 LOGO = "https://a.espncdn.com/i/teamlogos/ncaa/500/{id}.png"
 
 
@@ -1334,15 +1344,16 @@ def _logo(row: dict, side: str, size: int) -> str:
 
 
 def _pick_card(row: dict) -> str:
-    import ats as _ats  # noqa: PLC0415
     a = row.get("ats")
-    tier = _ats.tier(a.get("gap")) if a else "none"
+    tier = _tier_of(a)
+    # A flagged line gets no cover %: the number is the thing in doubt.
     eid = esc(str(row.get("event_id", "")))
     side = a["side"] if a else "home"
     if a:
         line = f'{a["line"]:+g}' if a["line"] else "PK"
         who = f'{esc(_school(row, side))} {esc(line)}'
-        pct = f'<span class="pc-pct">{a["cover"] * 100:.0f}%<small>{_("pc_to_cover")}</small></span>'
+        pct = ("" if tier == "check" else
+               f'<span class="pc-pct">{a["cover"] * 100:.0f}%<small>{_("pc_to_cover")}</small></span>')
     else:
         who, pct = esc(_("pc_no_pick_sub")), ""
     m = row.get("markets") or {}
@@ -1365,6 +1376,10 @@ def _pick_card(row: dict) -> str:
         tot = row.get("total")
     if tot is not None:
         chips.append(f'{_("pc_total")} <b>{tot:g}</b>')
+    warn = ""
+    if tier == "check" and a.get("raw") is not None and sp.get("point") is not None:
+        warn = ('<p class="pc-warn">\u26a0 ' + esc(_("pc_check_note").format(
+            raw=f'{a["raw"]:g}', sp=f'{abs(sp["point"]):g}')) + "</p>")
     ts = row.get("team_stats") or {}
     if ts.get("home") and ts.get("away"):
         # The panel header names schools too, like the rest of the card.
@@ -1378,7 +1393,7 @@ def _pick_card(row: dict) -> str:
         <div class="pc-ribbon">{_logo(row, side, 28)}<span class="pc-who"><span class="pc-tag">{_(TIER_LABEL[tier])}</span><strong>{who}</strong></span>{pct}</div>
         <div class="pc-body">
           <div class="pc-match">{_logo(row, "away", 20)}{esc(_school(row, "away"))} @ {_logo(row, "home", 20)}{esc(_school(row, "home"))}<span class="pc-time">{esc(game_time(row.get("commence_time")))}</span></div>
-          <div class="pc-chips">{"".join(f"<span>{c}</span>" for c in chips)}</div>
+          {warn}<div class="pc-chips">{"".join(f"<span>{c}</span>" for c in chips)}</div>
           {_result_strip(row)}
           {more}
         </div>
@@ -1388,20 +1403,20 @@ def _pick_card(row: dict) -> str:
 def college_board(rows: list[dict], summary: dict | None) -> str:
     """A college board: the tier records, the Best-bets-only filter, cards."""
     tiers = (summary or {}).get("ats_tiers") or {}
-    import ats as _ats  # noqa: PLC0415
-    today = {t: sum(1 for r in rows if r.get("ats") and _ats.tier(r["ats"].get("gap")) == t)
-             for t in ("best", "lean", "pass")}
+    today = {t: sum(1 for r in rows if _tier_of(r.get("ats")) == t)
+             for t in ("best", "lean", "check", "pass")}
     tiles = "".join(
         f'<div><span>{_(lab)}</span><b>{today[t]} {_("pc_today")}</b>'
         f'{_("pc_record")} <em>{(tiers.get(t) or [0, 0, 0])[0]}-{(tiers.get(t) or [0, 0, 0])[1]}</em></div>'
-        for t, lab in (("best", "pc_tile_best"), ("lean", "pc_tile_lean"), ("pass", "pc_tile_pass")))
+        for t, lab in (("best", "pc_tile_best"), ("lean", "pc_tile_lean"),
+                       ("check", "pc_tile_check"), ("pass", "pc_tile_pass")))
     head = (f'<div class="pc-tiers">{tiles}</div>'
             f'<div class="pc-filter" role="group" aria-label="{esc(_("pc_show"))}">'
             f'<button type="button" data-f="best" aria-pressed="false">{_("pc_only_best")}</button>'
             f'<button type="button" data-f="all" aria-pressed="true">{_("pc_all")}</button></div>')
-    rank = {"best": 0, "lean": 1, "pass": 2}
+    rank = {"best": 0, "lean": 1, "check": 2, "pass": 3}
     ordered = sorted(rows, key=lambda r: (
-        rank.get(_ats.tier((r.get("ats") or {}).get("gap")), 3),
+        rank.get(_tier_of(r.get("ats")), 4),
         r.get("commence_time") or ""))
     return head + board_cards(ordered)
 
@@ -3298,7 +3313,7 @@ def _test_pick_card() -> None:
            "markets": {"spreads": {"point": -17.5, "side_a": "home"}, "totals": {"point": 162}},
            "model": {"home_win_prob": 0.9, "away_win_prob": 0.1, "proj": [83.0, 74.0], "margin": 8.9},
            "ats": {"side": "away", "team": "Eastern Washington Eagles", "line": 17.5,
-                   "cover": 0.78, "gap": 8.6},
+                   "cover": 0.78, "gap": 8.6, "raw": 17.2, "tier": "best"},
            "teams": teams,
            "team_stats": {"away": {"name": "Eastern Washington Eagles", "stats": {"pts": 73.3, "opp": 88.7}},
                           "home": {"name": "Oregon State Beavers", "stats": {"pts": 97.3, "opp": 71.0}}}}
@@ -3319,9 +3334,18 @@ def _test_pick_card() -> None:
     assert 'class="cv-res"' in c, "the result strip stays (live/final)"
     assert "Details" not in board_card(dict(row, team_stats=None)), "no panel, no button"
     # Tiers.
-    assert 'pc-lean' in board_card(dict(row, ats=dict(row["ats"], gap=4.0)))
-    passed = board_card(dict(row, ats=dict(row["ats"], gap=1.5)))
+    assert 'pc-lean' in board_card(dict(row, ats=dict(row["ats"], tier="lean")))
+    passed = board_card(dict(row, ats=dict(row["ats"], tier="pass")))
     assert 'pc-pass' in passed and "Pass" in passed
+    # The card shows the tier the pricing posted; a row from before tiers
+    # were stored falls back to its gap.
+    assert 'pc-best' in board_card(dict(row, ats={k: v for k, v in row["ats"].items() if k != "tier"}))
+    # Check the line: amber banner, the reason in words, never "Best bet".
+    chk = board_card(dict(row, ats=dict(row["ats"], tier="check", check=True)))
+    assert 'pc-check' in chk and 'data-tier="check"' in chk and ">Check the line<" in chk
+    assert 'class="pc-warn"' in chk and "17.2 pts off the market on a 17.5-pt spread" in chk
+    assert ">Best bet<" not in chk and 'pc-warn' not in c
+    assert "pc-pct" not in chk, "no cover % on a line we do not trust"
     # No pick: a grey banner, still the card.
     none = board_card(dict(row, ats=None))
     assert 'pc-none' in none and "No pick" in none and 'data-tier="none"' in none
@@ -3332,18 +3356,20 @@ def _test_pick_card() -> None:
     assert " pc " not in board_card(dict(row, league="nba", ats=None, teams=None))
     # The college board: tier tiles with season records, and the filter.
     head = college_board([row], {"ats_tiers": {"best": [3, 6, 0], "lean": [7, 1, 0],
-                                               "pass": [5, 6, 0]}})
+                                               "check": [2, 2, 0], "pass": [5, 6, 0]}})
     assert "Best bets" in head and "3-6" in head and "7-1" in head
+    assert "Check the line" in head and "2-2" in head and head.count("<div><span>") == 4
     assert 'aria-pressed="false">Best bets only' in head and 'aria-pressed="true">All picks' in head
     assert head.count('class="gcard pc') == 1
-    # Best bets first, then leans, passes, games with no pick; by time inside.
-    def mk(eid, gap, tip):
+    # Best bets first, then leans, checks, passes, no pick; by time inside.
+    def mk(eid, t, tip):
         return dict(row, event_id=eid, commence_time=tip,
-                    ats=(dict(row["ats"], gap=gap) if gap is not None else None))
-    order = college_board([mk("p", 1.0, "2026-11-10T23:00:00Z"), mk("b2", 9.0, "2026-11-11T01:00:00Z"),
-                           mk("n", None, "2026-11-10T22:00:00Z"), mk("l", 4.0, "2026-11-10T23:30:00Z"),
-                           mk("b1", 7.0, "2026-11-11T00:00:00Z")], {})
-    ids = [order.index(f'id="g-{x}"') for x in ("b1", "b2", "l", "p", "n")]
+                    ats=(dict(row["ats"], tier=t) if t is not None else None))
+    order = college_board([mk("p", "pass", "2026-11-10T23:00:00Z"), mk("b2", "best", "2026-11-11T01:00:00Z"),
+                           mk("n", None, "2026-11-10T22:00:00Z"), mk("l", "lean", "2026-11-10T23:30:00Z"),
+                           mk("c", "check", "2026-11-10T21:00:00Z"),
+                           mk("b1", "best", "2026-11-11T00:00:00Z")], {})
+    ids = [order.index(f'id="g-{x}"') for x in ("b1", "b2", "l", "c", "p", "n")]
     assert ids == sorted(ids), "tier first, then time"
     # Football rows carry the spread and total in their own fields.
     cf = dict(row, league="ncaaf", markets=None, spread_home=-6.5, total=52.5,

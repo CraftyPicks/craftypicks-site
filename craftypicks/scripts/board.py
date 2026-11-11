@@ -394,6 +394,7 @@ def merge_model(rows: list[dict], rated: list[dict], source: str) -> int:
             **({"proj": rating["proj"]} if rating.get("proj") else {}),
             **({"margin": rating["margin"]}
                if rating.get("margin") is not None else {}),
+            **({"edge": rating["edge"]} if rating.get("edge") is not None else {}),
             "ev_home": model_ev(hp, h2h.get("best_home")),
             "ev_away": model_ev(ap, h2h.get("best_away")),
         }
@@ -526,22 +527,52 @@ def espn_fill(rows: list[dict], espn_games: list[dict], day) -> list[dict]:
     return added
 
 
-def attach_ats(rows: list[dict], sd: float) -> int:
+def attach_ats(rows: list[dict], sd: float, stretch: float | None = None,
+               season: dict | None = None) -> int:
     """Our side against the market spread, for rows whose rating carries an
-    expected margin (BPI does; Elo does not). Returns rows given a pick."""
+    expected margin (BPI does; Elo does not). Returns rows given a pick.
+
+    The margin is first stretched to the market's scale -- `stretch`, else
+    fitted on these rows, else ats.STRETCH_DEFAULT -- then blended with
+    `season` ({name_key: (games, margin per game)}) when both clubs have
+    played enough. See ats.py for why."""
     import ats  # noqa: PLC0415
-    n = 0
+    import ncaab_system  # noqa: PLC0415 -- name_key
+    priced = []
     for row in rows:
         margin = (row.get("model") or {}).get("margin")
         sp = (row.get("markets") or {}).get("spreads") or {}
         if margin is None or sp.get("point") is None:
             continue
         home_pt = sp["point"] if sp.get("side_a", "home") == "home" else -sp["point"]
-        p = ats.pick(margin, home_pt, sd, row.get("home", ""), row.get("away", ""))
+        priced.append((row, margin, home_pt))
+    k = stretch if stretch is not None else ats.fit_stretch(
+        [(m, -hp) for _, m, hp in priced], ats.STRETCH_DEFAULT["ncaab"])
+    key = ncaab_system.name_key
+    n = 0
+    for row, margin, home_pt in priced:
+        m = margin * k
+        if season:
+            edge = (row.get("model") or {}).get("edge", BPI_HOME_EDGE)
+            m = ats.blend(m, season.get(key(row.get("home"))),
+                          season.get(key(row.get("away"))), edge)
+        p = ats.pick(m, home_pt, sd, row.get("home", ""), row.get("away", ""))
         if p:
+            p["stretch"] = k
             row["ats"] = p
             n += 1
     return n
+
+
+def season_margins(teams_doc: dict | None) -> dict:
+    """{name_key: (games, points for minus against per game)} from the
+    Team Stats sheet (ncaab_teams.json or ncaaf's), for ats.blend."""
+    out = {}
+    for k, t in ((teams_doc or {}).get("teams") or {}).items():
+        st = t.get("stats") or {}
+        if st.get("pts") is not None and st.get("opp") is not None and t.get("games"):
+            out[k] = (t["games"], round(st["pts"] - st["opp"], 1))
+    return out
 
 
 def bpi_model(rows: list[dict], doc: dict) -> list[dict]:
@@ -568,7 +599,8 @@ def bpi_model(rows: list[dict], doc: dict) -> list[dict]:
         hp = 0.5 * (1 + math.erf(margin / BPI_SD / math.sqrt(2)))
         hp = round(max(BPI_FLOOR, min(BPI_CEIL, hp)), 4)
         rated = {"event_id": row.get("event_id"), "home_win_prob": hp,
-                 "away_win_prob": round(1.0 - hp, 4), "margin": round(margin, 1)}
+                 "away_win_prob": round(1.0 - hp, 4), "margin": round(margin, 1),
+                 "edge": edge}
         # Projected score: each offence against the other defence, around
         # the league's points per team per game, home edge split evenly.
         # Its margin equals the BPI margin above by construction.
@@ -688,20 +720,44 @@ def _test_bpi_model() -> None:
     assert board_rows[0]["model"]["proj"] == [77.8, 68.2], "projection reaches the card"
     # The expected margin travels too, and attach_ats turns it plus the
     # market spread into our side against the number.
-    assert rated[0]["margin"] == 9.5
+    assert rated[0]["margin"] == 9.5 and rated[0]["edge"] == BPI_HOME_EDGE
     ats_rows = [{"event_id": "a", "home": "Ohio State Buckeyes",
                  "away": "Marshall Thundering Herd",
                  "markets": {"spreads": {"point": -25.5, "side_a": "home"},
                              "h2h": {"fair_home": 0.99}}}]
     merge_model(ats_rows, [{"event_id": "a", "home_win_prob": 0.97,
-                            "away_win_prob": 0.03, "margin": 21.0}], "bpi")
-    assert attach_ats(ats_rows, 11.0) == 1
+                            "away_win_prob": 0.03, "margin": 21.0, "edge": 3.5}], "bpi")
+    assert ats_rows[0]["model"]["edge"] == 3.5, "home edge travels with the margin"
+    assert attach_ats(ats_rows, 11.0, stretch=1.0) == 1
     assert ats_rows[0]["ats"]["team"] == "Marshall Thundering Herd"
-    assert ats_rows[0]["ats"]["line"] == 25.5 and ats_rows[0]["ats"]["gap"] == 4.5
+    assert ats_rows[0]["ats"]["line"] == 25.5 and ats_rows[0]["ats"]["raw"] == 4.5
+    # Stretched by the default when the day is too thin to fit: 21 x 1.24
+    # = 26.0 against 25.5, so Ohio State by half a point.
+    ats_rows[0].pop("ats")
+    attach_ats(ats_rows, 11.0)
+    assert ats_rows[0]["ats"]["side"] == "home" and ats_rows[0]["ats"]["raw"] == 0.5
+    assert ats_rows[0]["ats"]["stretch"] == 1.24
+    # Fitted from the day when there are enough games: every market line
+    # 1.1x ours, so the stretched line equals the market's -- no pick.
+    day = [{"event_id": f"e{i}", "home": f"H{i}", "away": f"A{i}",
+            "model": {"home_win_prob": 0.7, "margin": 10.0 + i},
+            "markets": {"spreads": {"point": -round(1.1 * (10.0 + i), 1), "side_a": "home"}}}
+           for i in range(12)]
+    assert attach_ats(day, 11.0) == 0
+    # Season blend: both clubs with 10 games, half the margin from the
+    # season (halved margins plus the home edge carried on the rating).
+    season = {"h": (10, 20.0), "a": (10, -10.0)}
+    one = [{"event_id": "s", "home": "H", "away": "A",
+            "model": {"home_win_prob": 0.7, "margin": 10.0, "edge": 3.5},
+            "markets": {"spreads": {"point": -10.0, "side_a": "home"}}}]
+    attach_ats(one, 11.0, stretch=1.0, season=season)
+    assert season_margins({"teams": {"x": {"games": 6, "stats": {"pts": 80.0, "opp": 70.5}},
+                                     "y": {"games": 0, "stats": {"pts": None}}}}) == {"x": (6, 9.5)}
+    assert one[0]["ats"]["raw"] == 4.2     # 0.5 x 10 + 0.5 x (15 + 3.5) = 14.2, less 10
     # Spread quoted on the away side is turned to the home side first.
     away_q = [dict(ats_rows[0], markets={"spreads": {"point": 25.5, "side_a": "away"}})]
     away_q[0].pop("ats")
-    attach_ats(away_q, 11.0)
+    attach_ats(away_q, 11.0, stretch=1.0)
     assert away_q[0]["ats"]["line"] == 25.5 and away_q[0]["ats"]["side"] == "away"
     # No margin (Elo-rated): nothing attached.
     plain = [{"event_id": "b", "home": "H", "away": "A", "model": {"home_win_prob": 0.6},

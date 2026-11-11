@@ -88,7 +88,7 @@ def record(rows, league: str, now: datetime | None = None) -> list[dict]:
             # The college boards also publish our side against the spread;
             # graded below beside the win probability.
             **({"ats_side": row["ats"]["side"], "ats_line": row["ats"]["line"],
-                "ats_gap": row["ats"].get("gap")}
+                "ats_gap": row["ats"].get("gap"), "ats_tier": row["ats"].get("tier")}
                if row.get("ats") else {}),
             "result": None,
         })
@@ -149,12 +149,14 @@ def grade(history: list[dict], finals_by_league: dict) -> int:
 
 
 def _tiers(graded: list[dict]) -> dict:
-    """W-L-P of our spread picks, per tier (ats.tier of the recorded gap)."""
+    """W-L-P of our spread picks, per tier as posted on the card. Picks from
+    before calibrated pricing (Nov 2026) have no stored tier and are left
+    out: their gaps were on a different scale."""
     import ats  # noqa: PLC0415
-    out = {t: [0, 0, 0] for t in ("best", "lean", "pass")}
+    out = {t: [0, 0, 0] for t in ats.TIERS}
     for r in graded:
-        t = ats.tier(r.get("ats_gap"))
-        if t and r.get("ats_result") in ("W", "L", "P"):
+        t = r.get("ats_tier")
+        if t in out and r.get("ats_result") in ("W", "L", "P"):
             out[t]["WLP".index(r["ats_result"])] += 1
     return out
 
@@ -193,7 +195,7 @@ def _test_ats() -> None:
              "commence_time": "2026-11-10T23:00:00Z",
              "model": {"home_win_prob": 0.97, "market_home_prob": 0.99},
              "ats": {"side": "away", "line": 25.5, "team": "Marshall Thundering Herd",
-                     "cover": 0.66, "gap": 4.5}}]
+                     "cover": 0.66, "gap": 2.2, "tier": "lean"}}]
     rec = record(rows, "ncaab")
     assert rec[0]["ats_side"] == "away" and rec[0]["ats_line"] == 25.5
     finals = {"ncaab": [{"home": "Ohio State Buckeyes", "away": "Marshall Thundering Herd",
@@ -205,8 +207,14 @@ def _test_ats() -> None:
     assert rec2[0]["ats_result"] == "L"
     s = summary(rec + rec2, "ncaab")
     assert s["ats"] == [1, 1, 0]
-    assert rec[0]["ats_gap"] == 4.5
-    assert s["ats_tiers"] == {"best": [0, 0, 0], "lean": [1, 1, 0], "pass": [0, 0, 0]}
+    assert rec[0]["ats_gap"] == 2.2 and rec[0]["ats_tier"] == "lean"
+    assert s["ats_tiers"] == {"best": [0, 0, 0], "lean": [1, 1, 0],
+                              "check": [0, 0, 0], "pass": [0, 0, 0]}
+    # Rows from before calibrated pricing carry no tier: left out of tiers.
+    old = [dict(r) for r in rec]
+    for r in old:
+        r.pop("ats_tier")
+    assert summary(old, "ncaab")["ats_tiers"]["lean"] == [0, 0, 0]
     # No pick recorded: no ATS result, and the count leaves it out.
     plain = record([dict(rows[0], ats=None)], "ncaab")
     grade(plain, finals)
