@@ -8,22 +8,19 @@
 <meta property="og:title" content="First 7 innings — Craftypicks">
 <meta property="og:description" content="Free daily pricing boards, with the accuracy score in public.">
 <meta property="og:type" content="website">
-<meta name="theme-color" content="#08090B">
+<meta name="theme-color" content="#0E1116">
 
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%2308090B'/><path d='M8 20 L14 12 L18 17 L24 9' stroke='%233BE081' stroke-width='2.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>">
-<link rel="stylesheet" href="style.css?v=b77fc95a">
+<link rel="stylesheet" href="style.css?v=82f89fc0">
 </head>
 <body>
 <header class="nav">
   <div class="nav-in">
     <a href="index.html" class="logo">Craftypicks<em>.</em></a>
-    <nav class="nav-links"><a href="index.html" class="">Today's Games</a><a href="mlb/index.html" class="on">MLB</a><a href="nba/index.html" class="">NBA</a><a href="nfl/index.html" class="">NFL</a><a href="ncaab/index.html" class="">NCAAB</a><a href="ncaaf/index.html" class="">NCAAF</a></nav>
-    <div class="nav-cta">
-      <a href="about.html" class="link-quiet">Why it's free</a>
-    </div>
+    <div class="sport-pick"><button class="sport-btn" popovertarget="sports" aria-haspopup="true"><span aria-hidden="true">&#9918;</span>MLB <span aria-hidden="true">&#9662;</span></button><nav aria-label="Sports" id="sports" popover class="sport-menu"><ul><li><a href="index.html" class=""><span aria-hidden="true">&#128197;</span>Today's Games</a></li><li><a href="mlb/index.html" class="on" aria-current="page"><span aria-hidden="true">&#9918;</span>MLB</a></li><li><a href="nba/index.html" class=""><span aria-hidden="true">&#127936;</span>NBA</a></li><li><a href="nfl/index.html" class=""><span aria-hidden="true">&#127944;</span>NFL</a></li><li><a href="ncaab/index.html" class=""><span aria-hidden="true">&#127936;</span>NCAAB</a></li><li><a href="ncaaf/index.html" class=""><span aria-hidden="true">&#127944;</span>NCAAF</a></li></ul></nav></div>
   </div>
 </header>
-<div class="nav-views"><div class="nav-in"><a href="mlb/index.html" class="">Board</a><a href="pitchers.html" class="">Pitchers Prop</a><a href="f7.html" class="on">First 7</a><a href="batters.html" class="">Home runs</a><a href="hits.html" class="">Hits</a></div></div>
+<nav aria-label="Views" class="nav-views"><div class="nav-in"><a href="mlb/index.html" class="">Board</a><a href="pitchers.html" class="">Pitchers Prop</a><a href="f7.html" class="on" aria-current="page">First 7</a><a href="batters.html" class="">Home runs</a><a href="hits.html" class="">Hits</a></div></nav>
 
 <div class="wrap">
   <p class="kicker">Wednesday, October 28, 2026 &middot; 2 club-games projected</p>
@@ -393,4 +390,32 @@
   });
   run();
 })();
+
+/* Redesign B: Details buttons on the college pick cards, and the
+   "Best bets only / All picks" filter. Both are plain buttons whose state is
+   in aria-expanded / aria-pressed, so assistive tech hears what they do. */
+(function () {
+  document.addEventListener("click", function (e) {
+    var more = e.target.closest && e.target.closest(".pc-more");
+    if (more) {
+      var panel = document.getElementById(more.getAttribute("aria-controls"));
+      var open = more.getAttribute("aria-expanded") !== "true";
+      more.setAttribute("aria-expanded", open ? "true" : "false");
+      more.textContent = more.getAttribute(open ? "data-open" : "data-shut");
+      if (panel) { panel.hidden = !open; }
+      return;
+    }
+    var f = e.target.closest && e.target.closest(".pc-filter button");
+    if (f) {
+      var best = f.getAttribute("data-f") === "best";
+      f.parentNode.querySelectorAll("button").forEach(function (b) {
+        b.setAttribute("aria-pressed", b === f ? "true" : "false");
+      });
+      document.querySelectorAll(".gcard.pc").forEach(function (c) {
+        c.hidden = best && c.getAttribute("data-tier") !== "best";
+      });
+    }
+  });
+})();
+
 </script>
