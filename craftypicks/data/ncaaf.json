@@ -20,35 +20,29 @@
       ],
       "spread_home": 15.5,
       "fpi_margin": -16.698,
-      "ats": {
-        "side": "away",
-        "team": "Western Michigan Broncos",
-        "line": -15.5,
-        "cover": 0.5342,
-        "gap": 1.2
-      },
+      "total": 49.5,
       "team_stats": {
         "away": {
           "id": "2711",
           "name": "Western Michigan Broncos",
           "color": "532e1f",
           "rank": null,
-          "record": "1-0",
-          "games": 1,
+          "record": "2-0",
+          "games": 2,
           "fpi": 84,
           "power_rank": 84,
           "rank_label": "FPI",
           "stats": {
             "ats": [
-              0,
+              1,
               0,
               0
             ],
-            "pts": 23.0,
-            "opp": 10.0,
-            "giv": 2.0,
-            "tak": 3.0,
-            "ypp": 5.9
+            "pts": 32.5,
+            "opp": 12.0,
+            "giv": 1.0,
+            "tak": 1.5,
+            "ypp": 6.6
           }
         },
         "home": {
@@ -56,24 +50,35 @@
           "name": "Akron Zips",
           "color": "041e42",
           "rank": null,
-          "record": "0-1",
-          "games": 1,
+          "record": "0-2",
+          "games": 2,
           "fpi": 134,
           "power_rank": 134,
           "rank_label": "FPI",
           "stats": {
             "ats": [
               0,
-              0,
+              1,
               0
             ],
-            "pts": 20.0,
-            "opp": 28.0,
-            "giv": 2.0,
-            "tak": 1.0,
-            "ypp": 5.0
+            "pts": 17.0,
+            "opp": 35.0,
+            "giv": 1.0,
+            "tak": 0.5,
+            "ypp": 5.4
           }
         }
+      },
+      "ats": {
+        "side": "home",
+        "team": "Akron Zips",
+        "line": 15.5,
+        "cover": 0.5134,
+        "gap": 0.6,
+        "raw": 1.1,
+        "check": false,
+        "tier": "pass",
+        "stretch": 0.86
       }
     },
     {
@@ -93,13 +98,7 @@
       ],
       "spread_home": -4.5,
       "fpi_margin": 8.725000000000001,
-      "ats": {
-        "side": "home",
-        "team": "Bowling Green Falcons",
-        "line": -4.5,
-        "cover": 0.6179,
-        "gap": 4.2
-      },
+      "total": 43.5,
       "team_stats": {
         "away": {
           "id": "2309",
@@ -147,6 +146,17 @@
             "ypp": 4.4
           }
         }
+      },
+      "ats": {
+        "side": "home",
+        "team": "Bowling Green Falcons",
+        "line": -4.5,
+        "cover": 0.5407,
+        "gap": 1.5,
+        "raw": 3.0,
+        "check": false,
+        "tier": "pass",
+        "stretch": 0.86
       }
     },
     {
@@ -166,13 +176,7 @@
       ],
       "spread_home": 1.5,
       "fpi_margin": 0.718,
-      "ats": {
-        "side": "home",
-        "team": "Miami (OH) RedHawks",
-        "line": 1.5,
-        "cover": 0.5624,
-        "gap": 2.2
-      },
+      "total": 47.5,
       "team_stats": {
         "away": {
           "id": "195",
@@ -220,6 +224,17 @@
             "ypp": 4.9
           }
         }
+      },
+      "ats": {
+        "side": "home",
+        "team": "Miami (OH) RedHawks",
+        "line": 1.5,
+        "cover": 0.5294,
+        "gap": 1.1,
+        "raw": 2.1,
+        "check": false,
+        "tier": "pass",
+        "stretch": 0.86
       }
     },
     {
@@ -234,18 +249,12 @@
         "away_win_prob": 0.6298396068107228
       },
       "line_note": [
-        "Spread: Buffalo Bulls -2.5 · Total 50.5",
+        "Spread: Buffalo Bulls -1.5 · Total 50.5",
         "FPI line: Buffalo Bulls -4.6"
       ],
-      "spread_home": 2.5,
+      "spread_home": 1.5,
       "fpi_margin": -4.639999999999999,
-      "ats": {
-        "side": "away",
-        "team": "Buffalo Bulls",
-        "line": -2.5,
-        "cover": 0.5596,
-        "gap": 2.1
-      },
+      "total": 50.5,
       "team_stats": {
         "away": {
           "id": "2084",
@@ -293,6 +302,17 @@
             "ypp": 5.5
           }
         }
+      },
+      "ats": {
+        "side": "away",
+        "team": "Buffalo Bulls",
+        "line": -1.5,
+        "cover": 0.535,
+        "gap": 1.2,
+        "raw": 2.5,
+        "check": false,
+        "tier": "pass",
+        "stretch": 0.86
       }
     },
     {
@@ -312,13 +332,7 @@
       ],
       "spread_home": -18.5,
       "fpi_margin": 19.243000000000002,
-      "ats": {
-        "side": "home",
-        "team": "Central Michigan Chippewas",
-        "line": -18.5,
-        "cover": 0.5199,
-        "gap": 0.7
-      },
+      "total": 43.5,
       "team_stats": {
         "away": {
           "id": "16",
@@ -366,6 +380,17 @@
             "ypp": 5.6
           }
         }
+      },
+      "ats": {
+        "side": "away",
+        "team": "Sacramento State Hornets",
+        "line": 18.5,
+        "cover": 0.5238,
+        "gap": 1.0,
+        "raw": 2.0,
+        "check": false,
+        "tier": "pass",
+        "stretch": 0.86
       }
     },
     {
@@ -385,13 +410,7 @@
       ],
       "spread_home": -14.5,
       "fpi_margin": 13.668,
-      "ats": {
-        "side": "away",
-        "team": "Massachusetts Minutemen",
-        "line": 14.5,
-        "cover": 0.5228,
-        "gap": 0.8
-      },
+      "total": 51.5,
       "team_stats": {
         "away": {
           "id": "113",
@@ -439,6 +458,17 @@
             "ypp": 4.4
           }
         }
+      },
+      "ats": {
+        "side": "away",
+        "team": "Massachusetts Minutemen",
+        "line": 14.5,
+        "cover": 0.5333,
+        "gap": 1.4,
+        "raw": 2.7,
+        "check": false,
+        "tier": "pass",
+        "stretch": 0.86
       }
     },
     {
@@ -458,13 +488,7 @@
       ],
       "spread_home": 3.5,
       "fpi_margin": -3.266,
-      "ats": {
-        "side": "home",
-        "team": "South Florida Bulls",
-        "line": 3.5,
-        "cover": 0.5057,
-        "gap": 0.2
-      },
+      "total": 49.5,
       "team_stats": {
         "away": {
           "id": "235",
@@ -512,6 +536,17 @@
             "ypp": 5.0
           }
         }
+      },
+      "ats": {
+        "side": "home",
+        "team": "South Florida Bulls",
+        "line": 3.5,
+        "cover": 0.5096,
+        "gap": 0.3,
+        "raw": 0.7,
+        "check": false,
+        "tier": "pass",
+        "stretch": 0.86
       }
     },
     {
@@ -531,13 +566,7 @@
       ],
       "spread_home": 10.5,
       "fpi_margin": -18.075,
-      "ats": {
-        "side": "away",
-        "team": "Louisiana Ragin' Cajuns",
-        "line": -10.5,
-        "cover": 0.7064,
-        "gap": 7.6
-      },
+      "total": 49.5,
       "team_stats": {
         "away": {
           "id": "309",
@@ -585,6 +614,17 @@
             "ypp": 5.1
           }
         }
+      },
+      "ats": {
+        "side": "away",
+        "team": "Louisiana Ragin' Cajuns",
+        "line": -10.5,
+        "cover": 0.5638,
+        "gap": 2.5,
+        "raw": 5.0,
+        "check": false,
+        "tier": "lean",
+        "stretch": 0.86
       }
     },
     {
@@ -604,13 +644,7 @@
       ],
       "spread_home": -3.5,
       "fpi_margin": 2.7200000000000006,
-      "ats": {
-        "side": "away",
-        "team": "Florida State Seminoles",
-        "line": 3.5,
-        "cover": 0.5228,
-        "gap": 0.8
-      },
+      "total": 53.5,
       "team_stats": {
         "away": {
           "id": "52",
@@ -658,6 +692,17 @@
             "ypp": 5.3
           }
         }
+      },
+      "ats": {
+        "side": "away",
+        "team": "Florida State Seminoles",
+        "line": 3.5,
+        "cover": 0.5165,
+        "gap": 0.6,
+        "raw": 1.2,
+        "check": false,
+        "tier": "pass",
+        "stretch": 0.86
       }
     },
     {
@@ -677,13 +722,7 @@
       ],
       "spread_home": -10.0,
       "fpi_margin": 7.363999999999999,
-      "ats": {
-        "side": "away",
-        "team": "Illinois Fighting Illini",
-        "line": 10.0,
-        "cover": 0.5737,
-        "gap": 2.6
-      },
+      "total": 47.5,
       "team_stats": {
         "away": {
           "id": "356",
@@ -731,6 +770,17 @@
             "ypp": 6.7
           }
         }
+      },
+      "ats": {
+        "side": "away",
+        "team": "Illinois Fighting Illini",
+        "line": 10.0,
+        "cover": 0.5475,
+        "gap": 1.9,
+        "raw": 3.7,
+        "check": false,
+        "tier": "pass",
+        "stretch": 0.86
       }
     },
     {
@@ -750,13 +800,7 @@
       ],
       "spread_home": 9.5,
       "fpi_margin": -13.098,
-      "ats": {
-        "side": "away",
-        "team": "Houston Cougars",
-        "line": -9.5,
-        "cover": 0.6015,
-        "gap": 3.6
-      },
+      "total": 51.5,
       "team_stats": {
         "away": {
           "id": "248",
@@ -804,6 +848,17 @@
             "ypp": 5.6
           }
         }
+      },
+      "ats": {
+        "side": "away",
+        "team": "Houston Cougars",
+        "line": -9.5,
+        "cover": 0.5233,
+        "gap": 0.9,
+        "raw": 1.8,
+        "check": false,
+        "tier": "pass",
+        "stretch": 0.86
       }
     },
     {
@@ -823,13 +878,7 @@
       ],
       "spread_home": -3.0,
       "fpi_margin": 0.6190000000000002,
-      "ats": {
-        "side": "away",
-        "team": "Cincinnati Bearcats",
-        "line": 3.0,
-        "cover": 0.5681,
-        "gap": 2.4
-      },
+      "total": 59.5,
       "team_stats": {
         "away": {
           "id": "2132",
@@ -877,6 +926,17 @@
             "ypp": 6.9
           }
         }
+      },
+      "ats": {
+        "side": "away",
+        "team": "Cincinnati Bearcats",
+        "line": 3.0,
+        "cover": 0.5345,
+        "gap": 1.2,
+        "raw": 2.5,
+        "check": false,
+        "tier": "pass",
+        "stretch": 0.86
       }
     },
     {
@@ -896,13 +956,7 @@
       ],
       "spread_home": 8.5,
       "fpi_margin": -9.995000000000001,
-      "ats": {
-        "side": "away",
-        "team": "Wisconsin Badgers",
-        "line": -8.5,
-        "cover": 0.5427,
-        "gap": 1.5
-      },
+      "total": 43.5,
       "team_stats": {
         "away": {
           "id": "275",
@@ -950,6 +1004,17 @@
             "ypp": 6.6
           }
         }
+      },
+      "ats": {
+        "side": "away",
+        "team": "Wisconsin Badgers",
+        "line": -8.5,
+        "cover": 0.5013,
+        "gap": 0.1,
+        "raw": 0.1,
+        "check": false,
+        "tier": "pass",
+        "stretch": 0.86
       }
     },
     {
@@ -969,13 +1034,7 @@
       ],
       "spread_home": -13.5,
       "fpi_margin": 16.052,
-      "ats": {
-        "side": "home",
-        "team": "Miami Hurricanes",
-        "line": -13.5,
-        "cover": 0.5737,
-        "gap": 2.6
-      },
+      "total": 54.5,
       "team_stats": {
         "away": {
           "id": "150",
@@ -1023,6 +1082,17 @@
             "ypp": 6.0
           }
         }
+      },
+      "ats": {
+        "side": "home",
+        "team": "Miami Hurricanes",
+        "line": -13.5,
+        "cover": 0.5037,
+        "gap": 0.1,
+        "raw": 0.3,
+        "check": false,
+        "tier": "pass",
+        "stretch": 0.86
       }
     },
     {
@@ -1042,13 +1112,7 @@
       ],
       "spread_home": 2.5,
       "fpi_margin": 0.8040000000000003,
-      "ats": {
-        "side": "home",
-        "team": "Mississippi State Bulldogs",
-        "line": 2.5,
-        "cover": 0.5932,
-        "gap": 3.3
-      },
+      "total": 50.5,
       "team_stats": {
         "away": {
           "id": "2",
@@ -1096,6 +1160,17 @@
             "ypp": 4.0
           }
         }
+      },
+      "ats": {
+        "side": "home",
+        "team": "Mississippi State Bulldogs",
+        "line": 2.5,
+        "cover": 0.5443,
+        "gap": 1.6,
+        "raw": 3.2,
+        "check": false,
+        "tier": "pass",
+        "stretch": 0.86
       }
     },
     {
@@ -1115,13 +1190,7 @@
       ],
       "spread_home": 3.0,
       "fpi_margin": -0.9489999999999998,
-      "ats": {
-        "side": "home",
-        "team": "NC State Wolfpack",
-        "line": 3.0,
-        "cover": 0.5596,
-        "gap": 2.1
-      },
+      "total": 53.5,
       "team_stats": {
         "away": {
           "id": "183",
@@ -1169,6 +1238,17 @@
             "ypp": 4.5
           }
         }
+      },
+      "ats": {
+        "side": "home",
+        "team": "NC State Wolfpack",
+        "line": 3.0,
+        "cover": 0.5303,
+        "gap": 1.1,
+        "raw": 2.2,
+        "check": false,
+        "tier": "pass",
+        "stretch": 0.86
       }
     },
     {
@@ -1188,13 +1268,7 @@
       ],
       "spread_home": -12.5,
       "fpi_margin": 14.719,
-      "ats": {
-        "side": "home",
-        "team": "Ohio State Buckeyes",
-        "line": -12.5,
-        "cover": 0.5624,
-        "gap": 2.2
-      },
+      "total": 45.5,
       "team_stats": {
         "away": {
           "id": "77",
@@ -1242,6 +1316,17 @@
             "ypp": 5.8
           }
         }
+      },
+      "ats": {
+        "side": "home",
+        "team": "Ohio State Buckeyes",
+        "line": -12.5,
+        "cover": 0.5025,
+        "gap": 0.1,
+        "raw": 0.2,
+        "check": false,
+        "tier": "pass",
+        "stretch": 0.86
       }
     },
     {
@@ -1261,13 +1346,7 @@
       ],
       "spread_home": -1.5,
       "fpi_margin": -3.5779999999999994,
-      "ats": {
-        "side": "away",
-        "team": "Wake Forest Demon Deacons",
-        "line": 1.5,
-        "cover": 0.6422,
-        "gap": 5.1
-      },
+      "total": 60.5,
       "team_stats": {
         "away": {
           "id": "154",
@@ -1315,6 +1394,17 @@
             "ypp": 7.3
           }
         }
+      },
+      "ats": {
+        "side": "away",
+        "team": "Wake Forest Demon Deacons",
+        "line": 1.5,
+        "cover": 0.5642,
+        "gap": 2.3,
+        "raw": 4.6,
+        "check": false,
+        "tier": "lean",
+        "stretch": 0.86
       }
     },
     {
@@ -1334,13 +1424,7 @@
       ],
       "spread_home": 4.0,
       "fpi_margin": -8.457,
-      "ats": {
-        "side": "away",
-        "team": "James Madison Dukes",
-        "line": -4.0,
-        "cover": 0.6261,
-        "gap": 4.5
-      },
+      "total": 57.5,
       "team_stats": {
         "away": {
           "id": "256",
@@ -1388,6 +1472,17 @@
             "ypp": 6.1
           }
         }
+      },
+      "ats": {
+        "side": "away",
+        "team": "James Madison Dukes",
+        "line": -4.0,
+        "cover": 0.545,
+        "gap": 1.6,
+        "raw": 3.3,
+        "check": false,
+        "tier": "pass",
+        "stretch": 0.86
       }
     },
     {
@@ -1407,13 +1502,7 @@
       ],
       "spread_home": -13.5,
       "fpi_margin": 14.204,
-      "ats": {
-        "side": "home",
-        "team": "Clemson Tigers",
-        "line": -13.5,
-        "cover": 0.5199,
-        "gap": 0.7
-      },
+      "total": 47.5,
       "team_stats": {
         "away": {
           "id": "59",
@@ -1461,6 +1550,17 @@
             "ypp": 5.1
           }
         }
+      },
+      "ats": {
+        "side": "away",
+        "team": "Georgia Tech Yellow Jackets",
+        "line": 13.5,
+        "cover": 0.5162,
+        "gap": 0.7,
+        "raw": 1.3,
+        "check": false,
+        "tier": "pass",
+        "stretch": 0.86
       }
     },
     {
@@ -1480,13 +1580,7 @@
       ],
       "spread_home": 13.5,
       "fpi_margin": -15.997,
-      "ats": {
-        "side": "away",
-        "team": "Nebraska Cornhuskers",
-        "line": -13.5,
-        "cover": 0.5709,
-        "gap": 2.5
-      },
+      "total": 52.5,
       "team_stats": {
         "away": {
           "id": "158",
@@ -1534,6 +1628,17 @@
             "ypp": 5.1
           }
         }
+      },
+      "ats": {
+        "side": "away",
+        "team": "Nebraska Cornhuskers",
+        "line": -13.5,
+        "cover": 0.5037,
+        "gap": 0.1,
+        "raw": 0.3,
+        "check": false,
+        "tier": "pass",
+        "stretch": 0.86
       }
     },
     {
@@ -1553,13 +1658,7 @@
       ],
       "spread_home": 15.5,
       "fpi_margin": -22.914,
-      "ats": {
-        "side": "away",
-        "team": "Alabama Crimson Tide",
-        "line": -15.5,
-        "cover": 0.7014,
-        "gap": 7.4
-      },
+      "total": 50.5,
       "team_stats": {
         "away": {
           "id": "333",
@@ -1607,6 +1706,17 @@
             "ypp": 4.2
           }
         }
+      },
+      "ats": {
+        "side": "away",
+        "team": "Alabama Crimson Tide",
+        "line": -15.5,
+        "cover": 0.5512,
+        "gap": 2.1,
+        "raw": 4.2,
+        "check": false,
+        "tier": "lean",
+        "stretch": 0.86
       }
     },
     {
@@ -1626,13 +1736,7 @@
       ],
       "spread_home": 11.5,
       "fpi_margin": -15.350000000000001,
-      "ats": {
-        "side": "away",
-        "team": "East Carolina Pirates",
-        "line": -11.5,
-        "cover": 0.6097,
-        "gap": 3.9
-      },
+      "total": 44.5,
       "team_stats": {
         "away": {
           "id": "151",
@@ -1680,6 +1784,17 @@
             "ypp": 4.9
           }
         }
+      },
+      "ats": {
+        "side": "away",
+        "team": "East Carolina Pirates",
+        "line": -11.5,
+        "cover": 0.5216,
+        "gap": 0.8,
+        "raw": 1.7,
+        "check": false,
+        "tier": "pass",
+        "stretch": 0.86
       }
     },
     {
@@ -1699,13 +1814,7 @@
       ],
       "spread_home": -1.5,
       "fpi_margin": 0.7539999999999996,
-      "ats": {
-        "side": "away",
-        "team": "Arkansas State Red Wolves",
-        "line": 1.5,
-        "cover": 0.5199,
-        "gap": 0.7
-      },
+      "total": 50.5,
       "team_stats": {
         "away": {
           "id": "2032",
@@ -1753,6 +1862,17 @@
             "ypp": 4.7
           }
         }
+      },
+      "ats": {
+        "side": "away",
+        "team": "Arkansas State Red Wolves",
+        "line": 1.5,
+        "cover": 0.5126,
+        "gap": 0.5,
+        "raw": 0.9,
+        "check": false,
+        "tier": "pass",
+        "stretch": 0.86
       }
     },
     {
@@ -1772,13 +1892,7 @@
       ],
       "spread_home": -2.5,
       "fpi_margin": 5.879000000000001,
-      "ats": {
-        "side": "home",
-        "team": "Temple Owls",
-        "line": -2.5,
-        "cover": 0.5959,
-        "gap": 3.4
-      },
+      "total": 48.5,
       "team_stats": {
         "away": {
           "id": "5",
@@ -1826,6 +1940,17 @@
             "ypp": 4.8
           }
         }
+      },
+      "ats": {
+        "side": "home",
+        "team": "Temple Owls",
+        "line": -2.5,
+        "cover": 0.536,
+        "gap": 1.3,
+        "raw": 2.6,
+        "check": false,
+        "tier": "pass",
+        "stretch": 0.86
       }
     },
     {
@@ -1845,13 +1970,7 @@
       ],
       "spread_home": -2.5,
       "fpi_margin": -2.606,
-      "ats": {
-        "side": "away",
-        "team": "Tulane Green Wave",
-        "line": 2.5,
-        "cover": 0.6422,
-        "gap": 5.1
-      },
+      "total": 48.5,
       "team_stats": {
         "away": {
           "id": "2655",
@@ -1899,6 +2018,17 @@
             "ypp": 6.7
           }
         }
+      },
+      "ats": {
+        "side": "away",
+        "team": "Tulane Green Wave",
+        "line": 2.5,
+        "cover": 0.5649,
+        "gap": 2.4,
+        "raw": 4.7,
+        "check": false,
+        "tier": "lean",
+        "stretch": 0.86
       }
     },
     {
@@ -1918,13 +2048,7 @@
       ],
       "spread_home": 7.5,
       "fpi_margin": -6.332000000000001,
-      "ats": {
-        "side": "home",
-        "team": "Sam Houston Bearkats",
-        "line": 7.5,
-        "cover": 0.5342,
-        "gap": 1.2
-      },
+      "total": 46.5,
       "team_stats": {
         "away": {
           "id": "338",
@@ -1972,6 +2096,17 @@
             "ypp": 4.8
           }
         }
+      },
+      "ats": {
+        "side": "home",
+        "team": "Sam Houston Bearkats",
+        "line": 7.5,
+        "cover": 0.5277,
+        "gap": 1.1,
+        "raw": 2.1,
+        "check": false,
+        "tier": "pass",
+        "stretch": 0.86
       }
     },
     {
@@ -1991,13 +2126,7 @@
       ],
       "spread_home": -10.0,
       "fpi_margin": 8.661000000000001,
-      "ats": {
-        "side": "away",
-        "team": "Kansas State Wildcats",
-        "line": 10.0,
-        "cover": 0.537,
-        "gap": 1.3
-      },
+      "total": 45.5,
       "team_stats": {
         "away": {
           "id": "2306",
@@ -2045,6 +2174,17 @@
             "ypp": 4.8
           }
         }
+      },
+      "ats": {
+        "side": "away",
+        "team": "Kansas State Wildcats",
+        "line": 10.0,
+        "cover": 0.5334,
+        "gap": 1.3,
+        "raw": 2.6,
+        "check": false,
+        "tier": "pass",
+        "stretch": 0.86
       }
     },
     {
@@ -2064,13 +2204,7 @@
       ],
       "spread_home": -5.5,
       "fpi_margin": 5.638,
-      "ats": {
-        "side": "home",
-        "team": "Delaware Blue Hens",
-        "line": -5.5,
-        "cover": 0.5028,
-        "gap": 0.1
-      },
+      "total": 54.5,
       "team_stats": {
         "away": {
           "id": "2229",
@@ -2118,6 +2252,17 @@
             "ypp": 6.5
           }
         }
+      },
+      "ats": {
+        "side": "away",
+        "team": "Florida International Panthers",
+        "line": 5.5,
+        "cover": 0.5094,
+        "gap": 0.3,
+        "raw": 0.7,
+        "check": false,
+        "tier": "pass",
+        "stretch": 0.86
       }
     },
     {
@@ -2137,13 +2282,7 @@
       ],
       "spread_home": -1.5,
       "fpi_margin": 2.5680000000000014,
-      "ats": {
-        "side": "home",
-        "team": "Missouri State Bears",
-        "line": -1.5,
-        "cover": 0.5313,
-        "gap": 1.1
-      },
+      "total": 48.5,
       "team_stats": {
         "away": {
           "id": "166",
@@ -2191,6 +2330,17 @@
             "ypp": 5.0
           }
         }
+      },
+      "ats": {
+        "side": "home",
+        "team": "Missouri State Bears",
+        "line": -1.5,
+        "cover": 0.5098,
+        "gap": 0.3,
+        "raw": 0.7,
+        "check": false,
+        "tier": "pass",
+        "stretch": 0.86
       }
     },
     {
@@ -2210,13 +2360,7 @@
       ],
       "spread_home": 2.5,
       "fpi_margin": -2.9890000000000008,
-      "ats": {
-        "side": "away",
-        "team": "Tennessee Volunteers",
-        "line": -2.5,
-        "cover": 0.5142,
-        "gap": 0.5
-      },
+      "total": 43.5,
       "team_stats": {
         "away": {
           "id": "2633",
@@ -2264,6 +2408,17 @@
             "ypp": 5.3
           }
         }
+      },
+      "ats": {
+        "side": "away",
+        "team": "Tennessee Volunteers",
+        "line": -2.5,
+        "cover": 0.5014,
+        "gap": 0.1,
+        "raw": 0.1,
+        "check": false,
+        "tier": "pass",
+        "stretch": 0.86
       }
     },
     {
@@ -2283,13 +2438,7 @@
       ],
       "spread_home": -7.5,
       "fpi_margin": 5.878,
-      "ats": {
-        "side": "away",
-        "team": "Baylor Bears",
-        "line": 7.5,
-        "cover": 0.5455,
-        "gap": 1.6
-      },
+      "total": 49.5,
       "team_stats": {
         "away": {
           "id": "239",
@@ -2337,6 +2486,17 @@
             "ypp": 5.4
           }
         }
+      },
+      "ats": {
+        "side": "away",
+        "team": "Baylor Bears",
+        "line": 7.5,
+        "cover": 0.5316,
+        "gap": 1.2,
+        "raw": 2.4,
+        "check": false,
+        "tier": "pass",
+        "stretch": 0.86
       }
     },
     {
@@ -2356,13 +2516,7 @@
       ],
       "spread_home": -15.5,
       "fpi_margin": 16.811999999999998,
-      "ats": {
-        "side": "home",
-        "team": "Georgia Bulldogs",
-        "line": -15.5,
-        "cover": 0.537,
-        "gap": 1.3
-      },
+      "total": 47.5,
       "team_stats": {
         "away": {
           "id": "142",
@@ -2410,6 +2564,17 @@
             "ypp": 6.2
           }
         }
+      },
+      "ats": {
+        "side": "away",
+        "team": "Missouri Tigers",
+        "line": 15.5,
+        "cover": 0.5122,
+        "gap": 0.5,
+        "raw": 1.0,
+        "check": false,
+        "tier": "pass",
+        "stretch": 0.86
       }
     },
     {
@@ -2429,13 +2594,7 @@
       ],
       "spread_home": 5.5,
       "fpi_margin": -3.1710000000000003,
-      "ats": {
-        "side": "home",
-        "team": "Georgia State Panthers",
-        "line": 5.5,
-        "cover": 0.5652,
-        "gap": 2.3
-      },
+      "total": 56.5,
       "team_stats": {
         "away": {
           "id": "290",
@@ -2483,6 +2642,17 @@
             "ypp": 5.4
           }
         }
+      },
+      "ats": {
+        "side": "home",
+        "team": "Georgia State Panthers",
+        "line": 5.5,
+        "cover": 0.5376,
+        "gap": 1.4,
+        "raw": 2.8,
+        "check": false,
+        "tier": "pass",
+        "stretch": 0.86
       }
     },
     {
@@ -2502,13 +2672,7 @@
       ],
       "spread_home": -7.5,
       "fpi_margin": 9.072999999999999,
-      "ats": {
-        "side": "home",
-        "team": "Indiana Hoosiers",
-        "line": -7.5,
-        "cover": 0.5455,
-        "gap": 1.6
-      },
+      "total": 50.5,
       "team_stats": {
         "away": {
           "id": "30",
@@ -2556,6 +2720,17 @@
             "ypp": 6.1
           }
         }
+      },
+      "ats": {
+        "side": "home",
+        "team": "Indiana Hoosiers",
+        "line": -7.5,
+        "cover": 0.504,
+        "gap": 0.1,
+        "raw": 0.3,
+        "check": false,
+        "tier": "pass",
+        "stretch": 0.86
       }
     },
     {
@@ -2575,13 +2750,7 @@
       ],
       "spread_home": -20.5,
       "fpi_margin": 23.744999999999997,
-      "ats": {
-        "side": "home",
-        "team": "Liberty Flames",
-        "line": -20.5,
-        "cover": 0.5904,
-        "gap": 3.2
-      },
+      "total": 53.5,
       "team_stats": {
         "away": {
           "id": "2393",
@@ -2629,6 +2798,17 @@
             "ypp": 6.1
           }
         }
+      },
+      "ats": {
+        "side": "away",
+        "team": "Middle Tennessee Blue Raiders",
+        "line": 20.5,
+        "cover": 0.5012,
+        "gap": 0.1,
+        "raw": 0.1,
+        "check": false,
+        "tier": "pass",
+        "stretch": 0.86
       }
     },
     {
@@ -2648,13 +2828,7 @@
       ],
       "spread_home": 7.0,
       "fpi_margin": -9.474000000000002,
-      "ats": {
-        "side": "away",
-        "team": "Nevada Wolf Pack",
-        "line": -7.0,
-        "cover": 0.5709,
-        "gap": 2.5
-      },
+      "total": 47.5,
       "team_stats": {
         "away": {
           "id": "2440",
@@ -2702,6 +2876,17 @@
             "ypp": 6.0
           }
         }
+      },
+      "ats": {
+        "side": "away",
+        "team": "Nevada Wolf Pack",
+        "line": -7.0,
+        "cover": 0.5146,
+        "gap": 0.6,
+        "raw": 1.1,
+        "check": false,
+        "tier": "pass",
+        "stretch": 0.86
       }
     },
     {
@@ -2721,13 +2906,7 @@
       ],
       "spread_home": -29.5,
       "fpi_margin": 33.444,
-      "ats": {
-        "side": "home",
-        "team": "Notre Dame Fighting Irish",
-        "line": -29.5,
-        "cover": 0.6097,
-        "gap": 3.9
-      },
+      "total": 52.5,
       "team_stats": {
         "away": {
           "id": "103",
@@ -2775,6 +2954,17 @@
             "ypp": 6.5
           }
         }
+      },
+      "ats": {
+        "side": "away",
+        "team": "Boston College Eagles",
+        "line": 29.5,
+        "cover": 0.5076,
+        "gap": 0.3,
+        "raw": 0.7,
+        "check": false,
+        "tier": "pass",
+        "stretch": 0.86
       }
     },
     {
@@ -2794,13 +2984,7 @@
       ],
       "spread_home": -11.5,
       "fpi_margin": 13.145999999999999,
-      "ats": {
-        "side": "home",
-        "team": "Oregon Ducks",
-        "line": -11.5,
-        "cover": 0.5455,
-        "gap": 1.6
-      },
+      "total": 38.5,
       "team_stats": {
         "away": {
           "id": "130",
@@ -2848,6 +3032,17 @@
             "ypp": 6.3
           }
         }
+      },
+      "ats": {
+        "side": "away",
+        "team": "Michigan Wolverines",
+        "line": 11.5,
+        "cover": 0.5025,
+        "gap": 0.1,
+        "raw": 0.2,
+        "check": false,
+        "tier": "pass",
+        "stretch": 0.86
       }
     },
     {
@@ -2867,13 +3062,7 @@
       ],
       "spread_home": -5.5,
       "fpi_margin": 9.362,
-      "ats": {
-        "side": "home",
-        "team": "Tulsa Golden Hurricane",
-        "line": -5.5,
-        "cover": 0.6097,
-        "gap": 3.9
-      },
+      "total": 74.5,
       "team_stats": {
         "away": {
           "id": "2226",
@@ -2921,6 +3110,17 @@
             "ypp": 7.4
           }
         }
+      },
+      "ats": {
+        "side": "home",
+        "team": "Tulsa Golden Hurricane",
+        "line": -5.5,
+        "cover": 0.5349,
+        "gap": 1.3,
+        "raw": 2.6,
+        "check": false,
+        "tier": "pass",
+        "stretch": 0.86
       }
     },
     {
@@ -2940,13 +3140,7 @@
       ],
       "spread_home": -3.5,
       "fpi_margin": 4.634,
-      "ats": {
-        "side": "home",
-        "team": "UCF Knights",
-        "line": -3.5,
-        "cover": 0.5313,
-        "gap": 1.1
-      },
+      "total": 48.5,
       "team_stats": {
         "away": {
           "id": "9",
@@ -2994,6 +3188,17 @@
             "ypp": 4.7
           }
         }
+      },
+      "ats": {
+        "side": "home",
+        "team": "UCF Knights",
+        "line": -3.5,
+        "cover": 0.5069,
+        "gap": 0.2,
+        "raw": 0.5,
+        "check": false,
+        "tier": "pass",
+        "stretch": 0.86
       }
     },
     {
@@ -3013,13 +3218,7 @@
       ],
       "spread_home": -10.0,
       "fpi_margin": 13.558,
-      "ats": {
-        "side": "home",
-        "team": "Virginia Cavaliers",
-        "line": -10.0,
-        "cover": 0.6015,
-        "gap": 3.6
-      },
+      "total": 47.5,
       "team_stats": {
         "away": {
           "id": "25",
@@ -3067,6 +3266,17 @@
             "ypp": 5.2
           }
         }
+      },
+      "ats": {
+        "side": "home",
+        "team": "Virginia Cavaliers",
+        "line": -10.0,
+        "cover": 0.5219,
+        "gap": 0.8,
+        "raw": 1.7,
+        "check": false,
+        "tier": "pass",
+        "stretch": 0.86
       }
     },
     {
@@ -3086,13 +3296,7 @@
       ],
       "spread_home": 7.5,
       "fpi_margin": -7.329000000000001,
-      "ats": {
-        "side": "home",
-        "team": "Western Kentucky Hilltoppers",
-        "line": 7.5,
-        "cover": 0.5057,
-        "gap": 0.2
-      },
+      "total": 54.5,
       "team_stats": {
         "away": {
           "id": "55",
@@ -3140,6 +3344,17 @@
             "ypp": 6.7
           }
         }
+      },
+      "ats": {
+        "side": "home",
+        "team": "Western Kentucky Hilltoppers",
+        "line": 7.5,
+        "cover": 0.5158,
+        "gap": 0.6,
+        "raw": 1.2,
+        "check": false,
+        "tier": "pass",
+        "stretch": 0.86
       }
     },
     {
@@ -3159,13 +3374,7 @@
       ],
       "spread_home": -10.0,
       "fpi_margin": 4.939,
-      "ats": {
-        "side": "away",
-        "team": "Fresno State Bulldogs",
-        "line": 10.0,
-        "cover": 0.6422,
-        "gap": 5.1
-      },
+      "total": 59.5,
       "team_stats": {
         "away": {
           "id": "278",
@@ -3213,6 +3422,17 @@
             "ypp": 7.1
           }
         }
+      },
+      "ats": {
+        "side": "away",
+        "team": "Fresno State Bulldogs",
+        "line": 10.0,
+        "cover": 0.5742,
+        "gap": 2.9,
+        "raw": 5.8,
+        "check": false,
+        "tier": "lean",
+        "stretch": 0.86
       }
     },
     {
@@ -3232,13 +3452,7 @@
       ],
       "spread_home": 3.0,
       "fpi_margin": -1.9209999999999994,
-      "ats": {
-        "side": "home",
-        "team": "Michigan State Spartans",
-        "line": 3.0,
-        "cover": 0.5313,
-        "gap": 1.1
-      },
+      "total": 43.5,
       "team_stats": {
         "away": {
           "id": "264",
@@ -3286,6 +3500,17 @@
             "ypp": 4.0
           }
         }
+      },
+      "ats": {
+        "side": "home",
+        "team": "Michigan State Spartans",
+        "line": 3.0,
+        "cover": 0.5179,
+        "gap": 0.7,
+        "raw": 1.3,
+        "check": false,
+        "tier": "pass",
+        "stretch": 0.86
       }
     },
     {
@@ -3305,13 +3530,7 @@
       ],
       "spread_home": 1.5,
       "fpi_margin": -2.225999999999999,
-      "ats": {
-        "side": "away",
-        "team": "Ole Miss Rebels",
-        "line": -1.5,
-        "cover": 0.5199,
-        "gap": 0.7
-      },
+      "total": 49.5,
       "team_stats": {
         "away": {
           "id": "145",
@@ -3359,6 +3578,17 @@
             "ypp": 4.8
           }
         }
+      },
+      "ats": {
+        "side": "away",
+        "team": "Ole Miss Rebels",
+        "line": -1.5,
+        "cover": 0.5056,
+        "gap": 0.2,
+        "raw": 0.4,
+        "check": false,
+        "tier": "pass",
+        "stretch": 0.86
       }
     },
     {
@@ -3378,13 +3608,7 @@
       ],
       "spread_home": -17.5,
       "fpi_margin": 17.355,
-      "ats": {
-        "side": "away",
-        "team": "Southern Miss Golden Eagles",
-        "line": 17.5,
-        "cover": 0.5028,
-        "gap": 0.1
-      },
+      "total": 55.5,
       "team_stats": {
         "away": {
           "id": "2572",
@@ -3432,6 +3656,17 @@
             "ypp": 5.4
           }
         }
+      },
+      "ats": {
+        "side": "away",
+        "team": "Southern Miss Golden Eagles",
+        "line": 17.5,
+        "cover": 0.5312,
+        "gap": 1.3,
+        "raw": 2.6,
+        "check": false,
+        "tier": "pass",
+        "stretch": 0.86
       }
     },
     {
@@ -3451,13 +3686,7 @@
       ],
       "spread_home": -3.0,
       "fpi_margin": 1.0459999999999998,
-      "ats": {
-        "side": "away",
-        "team": "Kansas Jayhawks",
-        "line": 3.0,
-        "cover": 0.5568,
-        "gap": 2.0
-      },
+      "total": 67.5,
       "team_stats": {
         "away": {
           "id": "2305",
@@ -3505,6 +3734,17 @@
             "ypp": 7.8
           }
         }
+      },
+      "ats": {
+        "side": "away",
+        "team": "Kansas Jayhawks",
+        "line": 3.0,
+        "cover": 0.529,
+        "gap": 1.1,
+        "raw": 2.1,
+        "check": false,
+        "tier": "pass",
+        "stretch": 0.86
       }
     },
     {
@@ -3524,13 +3764,7 @@
       ],
       "spread_home": -13.5,
       "fpi_margin": 12.34,
-      "ats": {
-        "side": "away",
-        "team": "Oregon State Beavers",
-        "line": 13.5,
-        "cover": 0.5342,
-        "gap": 1.2
-      },
+      "total": 65.5,
       "team_stats": {
         "away": {
           "id": "204",
@@ -3578,6 +3812,17 @@
             "ypp": 7.7
           }
         }
+      },
+      "ats": {
+        "side": "away",
+        "team": "Oregon State Beavers",
+        "line": 13.5,
+        "cover": 0.536,
+        "gap": 1.4,
+        "raw": 2.9,
+        "check": false,
+        "tier": "pass",
+        "stretch": 0.86
       }
     },
     {
@@ -3597,13 +3842,7 @@
       ],
       "spread_home": 1.5,
       "fpi_margin": -2.917,
-      "ats": {
-        "side": "away",
-        "team": "App State Mountaineers",
-        "line": -1.5,
-        "cover": 0.5398,
-        "gap": 1.4
-      },
+      "total": 53.5,
       "team_stats": {
         "away": {
           "id": "2026",
@@ -3651,6 +3890,17 @@
             "ypp": 5.4
           }
         }
+      },
+      "ats": {
+        "side": "away",
+        "team": "App State Mountaineers",
+        "line": -1.5,
+        "cover": 0.514,
+        "gap": 0.5,
+        "raw": 1.0,
+        "check": false,
+        "tier": "pass",
+        "stretch": 0.86
       }
     },
     {
@@ -3670,13 +3920,7 @@
       ],
       "spread_home": -3.5,
       "fpi_margin": 1.2880000000000003,
-      "ats": {
-        "side": "away",
-        "team": "Florida Gators",
-        "line": 3.5,
-        "cover": 0.5624,
-        "gap": 2.2
-      },
+      "total": 52.5,
       "team_stats": {
         "away": {
           "id": "57",
@@ -3724,6 +3968,17 @@
             "ypp": 5.1
           }
         }
+      },
+      "ats": {
+        "side": "away",
+        "team": "Florida Gators",
+        "line": 3.5,
+        "cover": 0.5329,
+        "gap": 1.2,
+        "raw": 2.4,
+        "check": false,
+        "tier": "pass",
+        "stretch": 0.86
       }
     },
     {
@@ -3738,18 +3993,12 @@
         "away_win_prob": 0.21080163220749992
       },
       "line_note": [
-        "Spread: San José State Spartans -12.5 · Total 47.5",
+        "Spread: Air Force Falcons -12.5 · Total 47.5",
         "FPI line: Air Force Falcons -11.3"
       ],
-      "spread_home": 12.5,
+      "spread_home": -12.5,
       "fpi_margin": 11.251,
-      "ats": {
-        "side": "home",
-        "team": "Air Force Falcons",
-        "line": 12.5,
-        "cover": 0.9554,
-        "gap": 23.8
-      },
+      "total": 47.5,
       "team_stats": {
         "away": {
           "id": "23",
@@ -3797,6 +4046,17 @@
             "ypp": 5.1
           }
         }
+      },
+      "ats": {
+        "side": "away",
+        "team": "San José State Spartans",
+        "line": 12.5,
+        "cover": 0.5351,
+        "gap": 1.4,
+        "raw": 2.8,
+        "check": false,
+        "tier": "pass",
+        "stretch": 0.86
       }
     },
     {
@@ -3816,13 +4076,7 @@
       ],
       "spread_home": 3.5,
       "fpi_margin": -3.0009999999999994,
-      "ats": {
-        "side": "home",
-        "team": "North Carolina Tar Heels",
-        "line": 3.5,
-        "cover": 0.5142,
-        "gap": 0.5
-      },
+      "total": 59.5,
       "team_stats": {
         "away": {
           "id": "97",
@@ -3870,6 +4124,17 @@
             "ypp": 6.0
           }
         }
+      },
+      "ats": {
+        "side": "home",
+        "team": "North Carolina Tar Heels",
+        "line": 3.5,
+        "cover": 0.5124,
+        "gap": 0.5,
+        "raw": 0.9,
+        "check": false,
+        "tier": "pass",
+        "stretch": 0.86
       }
     },
     {
@@ -3889,13 +4154,7 @@
       ],
       "spread_home": -9.5,
       "fpi_margin": 12.699,
-      "ats": {
-        "side": "home",
-        "team": "Penn State Nittany Lions",
-        "line": -9.5,
-        "cover": 0.5904,
-        "gap": 3.2
-      },
+      "total": 41.5,
       "team_stats": {
         "away": {
           "id": "135",
@@ -3943,6 +4202,17 @@
             "ypp": 6.2
           }
         }
+      },
+      "ats": {
+        "side": "home",
+        "team": "Penn State Nittany Lions",
+        "line": -9.5,
+        "cover": 0.5181,
+        "gap": 0.7,
+        "raw": 1.4,
+        "check": false,
+        "tier": "pass",
+        "stretch": 0.86
       }
     },
     {
@@ -3962,13 +4232,7 @@
       ],
       "spread_home": -3.0,
       "fpi_margin": 3.404,
-      "ats": {
-        "side": "home",
-        "team": "South Alabama Jaguars",
-        "line": -3.0,
-        "cover": 0.5114,
-        "gap": 0.4
-      },
+      "total": 55.5,
       "team_stats": {
         "away": {
           "id": "2653",
@@ -4016,6 +4280,17 @@
             "ypp": 5.8
           }
         }
+      },
+      "ats": {
+        "side": "away",
+        "team": "Troy Trojans",
+        "line": 3.0,
+        "cover": 0.5014,
+        "gap": 0.1,
+        "raw": 0.1,
+        "check": false,
+        "tier": "pass",
+        "stretch": 0.86
       }
     },
     {
@@ -4035,13 +4310,7 @@
       ],
       "spread_home": 2.5,
       "fpi_margin": -3.541999999999998,
-      "ats": {
-        "side": "away",
-        "team": "Utah Utes",
-        "line": -2.5,
-        "cover": 0.5285,
-        "gap": 1.0
-      },
+      "total": 54.5,
       "team_stats": {
         "away": {
           "id": "254",
@@ -4089,6 +4358,17 @@
             "ypp": 6.0
           }
         }
+      },
+      "ats": {
+        "side": "away",
+        "team": "Utah Utes",
+        "line": -2.5,
+        "cover": 0.5069,
+        "gap": 0.2,
+        "raw": 0.5,
+        "check": false,
+        "tier": "pass",
+        "stretch": 0.86
       }
     },
     {
@@ -4108,13 +4388,7 @@
       ],
       "spread_home": -16.5,
       "fpi_margin": 15.839,
-      "ats": {
-        "side": "away",
-        "team": "Purdue Boilermakers",
-        "line": 16.5,
-        "cover": 0.5199,
-        "gap": 0.7
-      },
+      "total": 47.5,
       "team_stats": {
         "away": {
           "id": "2509",
@@ -4162,6 +4436,17 @@
             "ypp": 5.5
           }
         }
+      },
+      "ats": {
+        "side": "away",
+        "team": "Purdue Boilermakers",
+        "line": 16.5,
+        "cover": 0.5351,
+        "gap": 1.4,
+        "raw": 2.9,
+        "check": false,
+        "tier": "pass",
+        "stretch": 0.86
       }
     },
     {
@@ -4181,13 +4466,7 @@
       ],
       "spread_home": -4.0,
       "fpi_margin": 1.1189999999999998,
-      "ats": {
-        "side": "away",
-        "team": "Texas Longhorns",
-        "line": 4.0,
-        "cover": 0.5821,
-        "gap": 2.9
-      },
+      "total": 46.5,
       "team_stats": {
         "away": {
           "id": "251",
@@ -4235,6 +4514,17 @@
             "ypp": 5.6
           }
         }
+      },
+      "ats": {
+        "side": "away",
+        "team": "Texas Longhorns",
+        "line": 4.0,
+        "cover": 0.5409,
+        "gap": 1.5,
+        "raw": 3.0,
+        "check": false,
+        "tier": "pass",
+        "stretch": 0.86
       }
     },
     {
@@ -4254,13 +4544,7 @@
       ],
       "spread_home": -14.0,
       "fpi_margin": 15.152000000000001,
-      "ats": {
-        "side": "home",
-        "team": "New Mexico Lobos",
-        "line": -14.0,
-        "cover": 0.5342,
-        "gap": 1.2
-      },
+      "total": 46.5,
       "team_stats": {
         "away": {
           "id": "2439",
@@ -4308,6 +4592,17 @@
             "ypp": 5.7
           }
         }
+      },
+      "ats": {
+        "side": "away",
+        "team": "UNLV Rebels",
+        "line": 14.0,
+        "cover": 0.5124,
+        "gap": 0.5,
+        "raw": 1.0,
+        "check": false,
+        "tier": "pass",
+        "stretch": 0.86
       }
     },
     {
@@ -4327,13 +4622,7 @@
       ],
       "spread_home": -14.5,
       "fpi_margin": 17.368,
-      "ats": {
-        "side": "home",
-        "team": "Virginia Tech Hokies",
-        "line": -14.5,
-        "cover": 0.5821,
-        "gap": 2.9
-      },
+      "total": 58.5,
       "team_stats": {
         "away": {
           "id": "24",
@@ -4381,6 +4670,17 @@
             "ypp": 6.3
           }
         }
+      },
+      "ats": {
+        "side": "home",
+        "team": "Virginia Tech Hokies",
+        "line": -14.5,
+        "cover": 0.5049,
+        "gap": 0.2,
+        "raw": 0.4,
+        "check": false,
+        "tier": "pass",
+        "stretch": 0.86
       }
     },
     {
@@ -4400,13 +4700,7 @@
       ],
       "spread_home": 7.5,
       "fpi_margin": -9.968,
-      "ats": {
-        "side": "away",
-        "team": "South Carolina Gamecocks",
-        "line": -7.5,
-        "cover": 0.5709,
-        "gap": 2.5
-      },
+      "total": 51.5,
       "team_stats": {
         "away": {
           "id": "2579",
@@ -4454,6 +4748,17 @@
             "ypp": 4.4
           }
         }
+      },
+      "ats": {
+        "side": "away",
+        "team": "South Carolina Gamecocks",
+        "line": -7.5,
+        "cover": 0.5145,
+        "gap": 0.6,
+        "raw": 1.1,
+        "check": false,
+        "tier": "pass",
+        "stretch": 0.86
       }
     },
     {
@@ -4473,13 +4778,7 @@
       ],
       "spread_home": 2.5,
       "fpi_margin": -4.218999999999999,
-      "ats": {
-        "side": "away",
-        "team": "North Texas Mean Green",
-        "line": -2.5,
-        "cover": 0.5483,
-        "gap": 1.7
-      },
+      "total": 75.5,
       "team_stats": {
         "away": {
           "id": "249",
@@ -4527,6 +4826,17 @@
             "ypp": 5.7
           }
         }
+      },
+      "ats": {
+        "side": "away",
+        "team": "North Texas Mean Green",
+        "line": -2.5,
+        "cover": 0.5153,
+        "gap": 0.6,
+        "raw": 1.1,
+        "check": false,
+        "tier": "pass",
+        "stretch": 0.86
       }
     },
     {
@@ -4546,13 +4856,7 @@
       ],
       "spread_home": -3.5,
       "fpi_margin": 0.8819999999999997,
-      "ats": {
-        "side": "away",
-        "team": "Texas Tech Red Raiders",
-        "line": 3.5,
-        "cover": 0.5737,
-        "gap": 2.6
-      },
+      "total": 72.5,
       "team_stats": {
         "away": {
           "id": "2641",
@@ -4600,6 +4904,17 @@
             "ypp": 8.0
           }
         }
+      },
+      "ats": {
+        "side": "away",
+        "team": "Texas Tech Red Raiders",
+        "line": 3.5,
+        "cover": 0.537,
+        "gap": 1.4,
+        "raw": 2.7,
+        "check": false,
+        "tier": "pass",
+        "stretch": 0.86
       }
     },
     {
@@ -4619,13 +4934,7 @@
       ],
       "spread_home": 2.5,
       "fpi_margin": -2.9540000000000006,
-      "ats": {
-        "side": "away",
-        "team": "Utah State Aggies",
-        "line": -2.5,
-        "cover": 0.5142,
-        "gap": 0.5
-      },
+      "total": 42.5,
       "team_stats": {
         "away": {
           "id": "328",
@@ -4692,13 +5001,7 @@
       ],
       "spread_home": 7.5,
       "fpi_margin": -10.523,
-      "ats": {
-        "side": "away",
-        "team": "Wyoming Cowboys",
-        "line": -7.5,
-        "cover": 0.5848,
-        "gap": 3.0
-      },
+      "total": 39.5,
       "team_stats": {
         "away": {
           "id": "2751",
@@ -4746,6 +5049,17 @@
             "ypp": 5.3
           }
         }
+      },
+      "ats": {
+        "side": "away",
+        "team": "Wyoming Cowboys",
+        "line": -7.5,
+        "cover": 0.5198,
+        "gap": 0.8,
+        "raw": 1.5,
+        "check": false,
+        "tier": "pass",
+        "stretch": 0.86
       }
     },
     {
@@ -4765,13 +5079,7 @@
       ],
       "spread_home": -9.5,
       "fpi_margin": 5.725,
-      "ats": {
-        "side": "away",
-        "team": "Colorado State Rams",
-        "line": 9.5,
-        "cover": 0.607,
-        "gap": 3.8
-      },
+      "total": 67.5,
       "team_stats": {
         "away": {
           "id": "36",
@@ -4819,6 +5127,17 @@
             "ypp": 5.1
           }
         }
+      },
+      "ats": {
+        "side": "away",
+        "team": "Colorado State Rams",
+        "line": 9.5,
+        "cover": 0.5593,
+        "gap": 2.3,
+        "raw": 4.6,
+        "check": false,
+        "tier": "lean",
+        "stretch": 0.86
       }
     },
     {
@@ -4838,13 +5157,7 @@
       ],
       "spread_home": 6.5,
       "fpi_margin": -8.174,
-      "ats": {
-        "side": "away",
-        "team": "North Dakota State Bison",
-        "line": -6.5,
-        "cover": 0.5483,
-        "gap": 1.7
-      },
+      "total": 38.5,
       "team_stats": {
         "away": {
           "id": "2449",
@@ -4892,19 +5205,52 @@
             "ypp": 5.4
           }
         }
+      },
+      "ats": {
+        "side": "away",
+        "team": "North Dakota State Bison",
+        "line": -6.5,
+        "cover": 0.5067,
+        "gap": 0.2,
+        "raw": 0.5,
+        "check": false,
+        "tier": "pass",
+        "stretch": 0.86
       }
     }
   ],
   "summary": {
-    "graded": 0,
-    "pending": 67,
-    "brier": null,
+    "graded": 1,
+    "pending": 66,
+    "brier": 0.0136,
     "market_brier": null,
     "fpi_ats": [
-      0,
+      1,
       0,
       0
-    ]
+    ],
+    "ats_tiers": {
+      "best": [
+        0,
+        0,
+        0
+      ],
+      "lean": [
+        0,
+        0,
+        0
+      ],
+      "check": [
+        0,
+        0,
+        0
+      ],
+      "pass": [
+        0,
+        0,
+        0
+      ]
+    }
   },
   "fpi": {
     "87": {
@@ -5469,7 +5815,9 @@
       "p_home": 0.11649064442875579,
       "mkt_home": null,
       "spread_home": 14.0,
-      "fpi_margin": -16.698
+      "fpi_margin": -16.698,
+      "home_won": false,
+      "fpi_ats": "W"
     },
     {
       "event_id": "401866459",
