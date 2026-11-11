@@ -1121,6 +1121,12 @@ T = {
     # NCAAB System tabs.
     "pc_best": {"en": "Best bet", "es": "Mejor apuesta"},
     "pc_lean": {"en": "Lean", "es": "Inclinación"},
+    "pc_spread": {"en": "Spread {r}", "es": "Spread {r}"},
+    "pc_no_line": {"en": "No line", "es": "Sin línea"},
+    "pc_games": {"en": "games", "es": "juegos"},
+    "pc_g_best": {"en": "{n} best", "es": "{n} mejor"},
+    "pc_g_lean": {"en": "{n} lean", "es": "{n} incl."},
+    "pc_g_check": {"en": "{n} check", "es": "{n} revisar"},
     "pc_check": {"en": "Check the line", "es": "Revisa la línea"},
     "pc_check_note": {"en": "Our rating is {raw} pts off the market on a {sp}-pt spread. That usually means the rating is missing something (injuries, lineup news). Check before betting.",
                       "es": "Nuestra calificación está a {raw} pts del mercado con un spread de {sp}. Suele significar que le falta algo (lesiones, alineación). Revisa antes de apostar."},

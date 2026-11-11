@@ -62,8 +62,6 @@ PAGES: dict[str, Page] = {
     "nfl/rushing.html":   Page("nfl/rushing.html",   "nfl_rushing",   "nfl_rushing",   "nfl"),
     "nfl/receiving.html": Page("nfl/receiving.html", "nfl_receiving", "nfl_receiving", "nfl"),
     "nfl/td.html":        Page("nfl/td.html",        "nfl_td",        "nfl_td",        "nfl"),
-    "ncaab/system.html":     Page("ncaab/system.html",     "ncaab_system", "ncaab_system", "ncaab"),
-    "ncaab/first-half.html": Page("ncaab/first-half.html", "ncaab_1h",     "ncaab_1h",     "ncaab"),
     "about.html":    Page("about.html",    "about",    "about",    None),
     "pitchers.html": Page("pitchers.html", "pitchers", "pitchers", "mlb"),
     "slate.html":    Page("slate.html",    "slate",    "slate",    None),
@@ -115,8 +113,6 @@ _EXTRA_VIEWS: dict[str, list[tuple[str, str]]] = {
             ("nfl/rushing.html", "nav_rush"),
             ("nfl/receiving.html", "nav_recv"),
             ("nfl/td.html", "nav_nfltd")],
-    "ncaab": [("ncaab/system.html", "nav_ncaab_sys"),
-              ("ncaab/first-half.html", "nav_ncaab_1h")],
 }
 
 # The views each league actually has. A league is not listed with a props tab
@@ -334,10 +330,6 @@ TITLES = {
                 "es": f"Primeras 7 entradas — {config.SITE_NAME}"},
     "ncaaf/index.html": {"en": f"NCAAF board — {config.SITE_NAME}",
                          "es": f"Tablero NCAAF — {config.SITE_NAME}"},
-    "ncaab/system.html": {"en": f"NCAAB System — {config.SITE_NAME}",
-                          "es": f"Sistema NCAAB — {config.SITE_NAME}"},
-    "ncaab/first-half.html": {"en": f"NCAAB 1st Half — {config.SITE_NAME}",
-                              "es": f"NCAAB 1.ª mitad — {config.SITE_NAME}"},
     "nba/points.html": {"en": f"Points — {config.SITE_NAME}",
                         "es": f"Puntos — {config.SITE_NAME}"},
     "nba/assists.html": {"en": f"Assists — {config.SITE_NAME}",
@@ -903,12 +895,10 @@ def _self_test() -> None:
     assert nf["leagues"]["ncaaf"]["games"] == [{"event_id": "x"}]
     assert nf["counts"]["ncaaf"] == 1
 
-    # The NCAAB System tabs are reachable from the NCAAB view row.
-    for out in ("ncaab/system.html", "ncaab/first-half.html"):
-        assert out in PAGES and PAGES[out].league == "ncaab", out
-        assert out in [o for o, _k in _EXTRA_VIEWS["ncaab"]], out
-        assert out in TITLES, out
-    for gone in ("homers.html",):
+    # The NCAAB System and 1st Half tabs were retired (Nov 2026): the board's
+    # spread groups replaced them. Their old URLs redirect to the board.
+    assert VIEWS["ncaab"] == [("ncaab/index.html", "nav_board")]
+    for gone in ("homers.html", "ncaab/system.html", "ncaab/first-half.html"):
         assert gone not in PAGES, f"{gone} is retired but still built"
         assert all(gone != out for views in _EXTRA_VIEWS.values()
                    for out, _key in views), f"{gone} is retired but in the nav"

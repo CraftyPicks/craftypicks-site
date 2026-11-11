@@ -1418,7 +1418,48 @@ def college_board(rows: list[dict], summary: dict | None) -> str:
     ordered = sorted(rows, key=lambda r: (
         rank.get(_tier_of(r.get("ats")), 4),
         r.get("commence_time") or ""))
-    return head + board_cards(ordered)
+    if not ordered:
+        return head + board_cards(ordered)
+    return head + _spread_groups(ordered)
+
+
+# Spread-size groups on the college boards, by the absolute line: lower
+# bound inclusive. Pick'em sits with 1-5.
+SPREAD_GROUPS = ((0, 5, "1\u20135"), (5, 10, "5\u201310"), (10, 20, "10\u201320"),
+                 (20, None, "20+"))
+
+
+def _abs_spread(row: dict):
+    sp = ((row.get("markets") or {}).get("spreads") or {}).get("point")
+    if sp is None:
+        sp = row.get("spread_home")
+    return None if sp is None else abs(sp)
+
+
+def _spread_groups(rows: list[dict]) -> str:
+    """Collapsed groups like a sportsbook's market list. Native <details>:
+    keyboard, find-in-page and screen readers come free; not exclusive, so
+    two groups can be open side by side. Rows keep their order inside."""
+    buckets: list[tuple[str, list[dict]]] = [
+        (_("pc_spread").format(r=lab), [r for r in rows if _abs_spread(r) is not None
+                                        and lo <= _abs_spread(r) and (hi is None or _abs_spread(r) < hi)])
+        for lo, hi, lab in SPREAD_GROUPS]
+    buckets.append((_("pc_no_line"), [r for r in rows if _abs_spread(r) is None]))
+    out = []
+    for title, group in buckets:
+        if not group:
+            continue
+        tiers = [_tier_of(r.get("ats")) for r in group]
+        bits = [_("pc_g_" + t).format(n=tiers.count(t))
+                for t in ("best", "lean", "check") if tiers.count(t)]
+        joined = " \u00b7 ".join(bits)
+        sub = f'<span class="pc-grp-s">{esc(joined)}</span>' if bits else ""
+        out.append(
+            f'<details class="pc-grp" data-best="{tiers.count("best")}">'
+            f'<summary><span class="pc-grp-t">{esc(title)}</span>{sub}'
+            f'<span class="pc-grp-n" aria-label="{len(group)} {esc(_("pc_games"))}">{len(group)}</span></summary>'
+            + board_cards(group) + "</details>")
+    return f'<div class="pc-groups">{"".join(out)}</div>'
 
 
 def board_card(row: dict) -> str:
@@ -3371,6 +3412,26 @@ def _test_pick_card() -> None:
                            mk("b1", "best", "2026-11-11T00:00:00Z")], {})
     ids = [order.index(f'id="g-{x}"') for x in ("b1", "b2", "l", "c", "p", "n")]
     assert ids == sorted(ids), "tier first, then time"
+    # Grouped by spread size, collapsed, like a sportsbook's market list:
+    # 1-5, 5-10, 10-20, 20+ (by the absolute line), then games with no line.
+    def sp(eid, pt, t="lean"):
+        return dict(row, event_id=eid, markets={"spreads": {"point": pt, "side_a": "home"}},
+                    ats=dict(row["ats"], tier=t))
+    grp = college_board([sp("a", -3.5), sp("b", 7.0, "best"), sp("c", -5.0), sp("d", -12.5),
+                         sp("e", 24.0, "pass"), sp("f", -20.0, "pass"),
+                         dict(row, event_id="g", markets={}, ats=None)], {})
+    titles = _re.findall(r'<span class="pc-grp-t">([^<]+)</span>', grp)
+    assert titles == ["Spread 1\u20135", "Spread 5\u201310", "Spread 10\u201320",
+                      "Spread 20+", "No line"], titles
+    counts = _re.findall(r'<span class="pc-grp-n"[^>]*>(\d+)</span>', grp)
+    assert counts == ["1", "2", "1", "2", "1"], counts
+    assert grp.count("<details class=\"pc-grp\"") == 5 and "<details class=\"pc-grp\" open" not in grp
+    sec = grp[grp.index("Spread 5\u201310"):grp.index("Spread 10\u201320")]
+    assert sec.index('id="g-b"') < sec.index('id="g-c"'), "best first inside a group"
+    assert "1 best" in sec and "1 lean" in sec, "tier counts on the collapsed row"
+    assert '<details class="pc-grp" data-best="1"><summary><span class="pc-grp-t">Spread 5\u201310' in grp
+    empty_grp = college_board([sp("a", -3.5)], {})
+    assert "Spread 20+" not in empty_grp, "no empty groups"
     # Football rows carry the spread and total in their own fields.
     cf = dict(row, league="ncaaf", markets=None, spread_home=-6.5, total=52.5,
               teams={"home": {"school": "Alabama"}, "away": {"school": "LSU"}}, model={})

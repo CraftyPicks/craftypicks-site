@@ -305,6 +305,12 @@
       document.querySelectorAll(".gcard.pc").forEach(function (c) {
         c.hidden = best && c.getAttribute("data-tier") !== "best";
       });
+      // Groups with no best bet disappear; the rest open so the picks show.
+      document.querySelectorAll(".pc-grp").forEach(function (g) {
+        var has = g.getAttribute("data-best") !== "0";
+        g.hidden = best && !has;
+        if (best && has) { g.open = true; }
+      });
     }
   });
 })();
