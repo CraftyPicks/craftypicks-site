@@ -87,7 +87,8 @@ def record(rows, league: str, now: datetime | None = None) -> list[dict]:
             "source": model.get("source"),
             # The college boards also publish our side against the spread;
             # graded below beside the win probability.
-            **({"ats_side": row["ats"]["side"], "ats_line": row["ats"]["line"]}
+            **({"ats_side": row["ats"]["side"], "ats_line": row["ats"]["line"],
+                "ats_gap": row["ats"].get("gap")}
                if row.get("ats") else {}),
             "result": None,
         })
@@ -147,6 +148,17 @@ def grade(history: list[dict], finals_by_league: dict) -> int:
     return graded
 
 
+def _tiers(graded: list[dict]) -> dict:
+    """W-L-P of our spread picks, per tier (ats.tier of the recorded gap)."""
+    import ats  # noqa: PLC0415
+    out = {t: [0, 0, 0] for t in ("best", "lean", "pass")}
+    for r in graded:
+        t = ats.tier(r.get("ats_gap"))
+        if t and r.get("ats_result") in ("W", "L", "P"):
+            out[t]["WLP".index(r["ats_result"])] += 1
+    return out
+
+
 def summary(history: list[dict], league: str = "") -> dict:
     """Calibration and Brier, ours against the market's on the same games.
 
@@ -171,6 +183,7 @@ def summary(history: list[dict], league: str = "") -> dict:
         "market_brier": theirs,
         "market_compared": len(with_market),
         "ats": [sum(1 for r in graded if r.get("ats_result") == k) for k in "WLP"],
+        "ats_tiers": _tiers(graded),
     }
 
 
@@ -192,6 +205,8 @@ def _test_ats() -> None:
     assert rec2[0]["ats_result"] == "L"
     s = summary(rec + rec2, "ncaab")
     assert s["ats"] == [1, 1, 0]
+    assert rec[0]["ats_gap"] == 4.5
+    assert s["ats_tiers"] == {"best": [0, 0, 0], "lean": [1, 1, 0], "pass": [0, 0, 0]}
     # No pick recorded: no ATS result, and the count leaves it out.
     plain = record([dict(rows[0], ats=None)], "ncaab")
     grade(plain, finals)

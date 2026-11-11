@@ -116,6 +116,7 @@ def parse_event(ev) -> dict | None:
         return {"id": str(t.get("id", "")), "name": t.get("displayName", ""),
                 "abbr": t.get("abbreviation", ""),
                 "short": t.get("shortDisplayName") or t.get("location") or "",
+                "school": t.get("location") or t.get("shortDisplayName") or "",
                 "color": str(t.get("color") or ""),
                 "rank": rank if rank and 0 < rank <= 25 else None,
                 "record": str((total or {}).get("summary") or "")}
@@ -342,6 +343,7 @@ def bpi(season: int) -> dict[str, int]:
 def _team(tid, name, abbr):
     return {"id": tid, "displayName": name, "abbreviation": abbr,
             "shortDisplayName": name.split()[0], "name": name.split()[-1],
+            "location": " ".join(name.split()[:-1]),
             "color": "ceb888", "alternateColor": "000000"}
 
 
@@ -460,6 +462,9 @@ def _self_test() -> None:
 
     # --- team colour, AP rank (99 means unranked), record
     assert g["home"]["short"] == "Purdue", "school name for score lines"
+    # ESPN's "location" is the school without abbreviations ("Western
+    # Michigan", not "W Michigan"): what the cards print.
+    assert g["home"]["school"] == "Purdue"
     assert g["home"]["color"] == "ceb888" and g["home"]["rank"] == 9
     assert g["home"]["record"] == "2-0"
     assert g["away"]["rank"] is None and g["away"]["record"] == ""

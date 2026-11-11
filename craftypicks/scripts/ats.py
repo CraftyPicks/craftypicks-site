@@ -20,6 +20,19 @@ import math
 SD = {"ncaab": 11.0, "ncaaf": 14.0}
 
 
+# Tiers by the point gap between our line and the market's. Starting
+# values; the tier records on the page say whether bigger gaps really win
+# more often, and these move if they do not.
+BEST, LEAN = 6.0, 3.0
+
+
+def tier(gap) -> str | None:
+    """"best" (6+ points), "lean" (3-6), "pass" (under 3), or None."""
+    if gap is None:
+        return None
+    return "best" if gap >= BEST else "lean" if gap >= LEAN else "pass"
+
+
 def pick(margin_home, spread_home, sd: float, home: str, away: str) -> dict | None:
     """{"side", "team", "line" (that side's spread), "cover", "gap"} or None
     when either number is missing or our line sits exactly on the market's."""
@@ -51,6 +64,9 @@ def _self_test() -> None:
     assert pick(6.5, -6.5, 11.0, "H", "A") is None
     assert pick(None, -3.0, 11.0, "H", "A") is None
     assert pick(3.0, None, 11.0, "H", "A") is None
+    # Tiers by edge in points.
+    assert (tier(6.0), tier(5.9), tier(3.0), tier(2.9)) == ("best", "lean", "lean", "pass")
+    assert tier(None) is None
     print("ats self-test: all invariants hold")
 
 

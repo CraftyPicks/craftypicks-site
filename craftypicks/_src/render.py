@@ -1311,6 +1311,101 @@ def _spread_body(row: dict) -> str:
           </div>"""
 
 
+# ------------------------------------------------- Redesign B: pick card
+TIER_LABEL = {"best": "pc_best", "lean": "pc_lean", "pass": "pc_pass", "none": "pc_none"}
+LOGO = "https://a.espncdn.com/i/teamlogos/ncaa/500/{id}.png"
+
+
+def _school(row: dict, side: str) -> str:
+    t = ((row.get("teams") or {}).get(side)) or {}
+    return t.get("school") or row.get(side, "")
+
+
+def _logo(row: dict, side: str, size: int) -> str:
+    """The school's logo over a badge in its colour. If the image fails to
+    load, onerror removes it and the badge (colour + abbreviation) shows."""
+    t = ((row.get("teams") or {}).get(side)) or {}
+    col = (t.get("color") or "").lstrip("#")
+    style = f"--s:{size}px" + (f";--c:#{esc(col)}" if len(col) == 6 else "")
+    img = (f'<img src="{LOGO.format(id=esc(t["id"]))}" alt="" width="{size}" height="{size}" '
+           f'loading="lazy" decoding="async" onerror="this.remove()">' if t.get("id") else "")
+    return (f'<span class="pc-lg" style="{style}" aria-hidden="true">{img}'
+            f'{esc((t.get("abbr") or "")[:4])}</span>')
+
+
+def _pick_card(row: dict) -> str:
+    import ats as _ats  # noqa: PLC0415
+    a = row.get("ats")
+    tier = _ats.tier(a.get("gap")) if a else "none"
+    eid = esc(str(row.get("event_id", "")))
+    side = a["side"] if a else "home"
+    if a:
+        line = f'{a["line"]:+g}' if a["line"] else "PK"
+        who = f'{esc(_school(row, side))} {esc(line)}'
+        pct = f'<span class="pc-pct">{a["cover"] * 100:.0f}%<small>{_("pc_to_cover")}</small></span>'
+    else:
+        who, pct = esc(_("pc_no_pick_sub")), ""
+    m = row.get("markets") or {}
+    sp = m.get("spreads") or {}
+    if sp.get("point") is None and row.get("spread_home") is not None:
+        sp = {"point": row["spread_home"], "side_a": "home"}   # football (ESPN)
+    chips = []
+    if a:
+        chips.append(f'{_("pc_edge")} <b>+{a["gap"]:g}</b>')
+    if sp.get("point") is not None:
+        hp = sp["point"] if sp.get("side_a", "home") == "home" else -sp["point"]
+        fav, pt = ("home", hp) if hp <= 0 else ("away", -hp)
+        chips.append(f'{_("pc_line")} <b>' + ("PK" if pt == 0 else
+                     f'{esc(_school(row, fav))} {pt:g}') + "</b>")
+    proj = (row.get("model") or {}).get("proj")
+    if proj:
+        chips.append(f'{_("pc_proj")} <b>{max(proj):.0f}-{min(proj):.0f}</b>')
+    tot = (m.get("totals") or {}).get("point")
+    if tot is None:
+        tot = row.get("total")
+    if tot is not None:
+        chips.append(f'{_("pc_total")} <b>{tot:g}</b>')
+    ts = row.get("team_stats") or {}
+    if ts.get("home") and ts.get("away"):
+        # The panel header names schools too, like the rest of the card.
+        ts = {side: dict(ts[side], name=_school(row, side)) for side in ("home", "away")}
+    panel = _detail_panel(dict(row, team_stats=ts or None))
+    more = (f'<button class="pc-more" aria-expanded="false" aria-controls="d-{eid}" '
+            f'data-open="{esc(_("pc_hide"))}" data-shut="{esc(_("pc_details"))}">{_("pc_details")}</button>'
+            f'<div class="pc-detail" id="d-{eid}" hidden>{panel}</div>' if panel else "")
+    return f"""
+      <article class="gcard pc pc-{tier}" id="g-{eid}" data-tier="{tier}"{_live_hooks(row)}>
+        <div class="pc-ribbon">{_logo(row, side, 28)}<span class="pc-who"><span class="pc-tag">{_(TIER_LABEL[tier])}</span><strong>{who}</strong></span>{pct}</div>
+        <div class="pc-body">
+          <div class="pc-match">{_logo(row, "away", 20)}{esc(_school(row, "away"))} @ {_logo(row, "home", 20)}{esc(_school(row, "home"))}<span class="pc-time">{esc(game_time(row.get("commence_time")))}</span></div>
+          <div class="pc-chips">{"".join(f"<span>{c}</span>" for c in chips)}</div>
+          {_result_strip(row)}
+          {more}
+        </div>
+      </article>"""
+
+
+def college_board(rows: list[dict], summary: dict | None) -> str:
+    """A college board: the tier records, the Best-bets-only filter, cards."""
+    tiers = (summary or {}).get("ats_tiers") or {}
+    import ats as _ats  # noqa: PLC0415
+    today = {t: sum(1 for r in rows if r.get("ats") and _ats.tier(r["ats"].get("gap")) == t)
+             for t in ("best", "lean", "pass")}
+    tiles = "".join(
+        f'<div><span>{_(lab)}</span><b>{today[t]} {_("pc_today")}</b>'
+        f'{_("pc_record")} <em>{(tiers.get(t) or [0, 0, 0])[0]}-{(tiers.get(t) or [0, 0, 0])[1]}</em></div>'
+        for t, lab in (("best", "pc_tile_best"), ("lean", "pc_tile_lean"), ("pass", "pc_tile_pass")))
+    head = (f'<div class="pc-tiers">{tiles}</div>'
+            f'<div class="pc-filter" role="group" aria-label="{esc(_("pc_show"))}">'
+            f'<button type="button" data-f="best" aria-pressed="false">{_("pc_only_best")}</button>'
+            f'<button type="button" data-f="all" aria-pressed="true">{_("pc_all")}</button></div>')
+    rank = {"best": 0, "lean": 1, "pass": 2}
+    ordered = sorted(rows, key=lambda r: (
+        rank.get(_ats.tier((r.get("ats") or {}).get("gap")), 3),
+        r.get("commence_time") or ""))
+    return head + board_cards(ordered)
+
+
 def board_card(row: dict) -> str:
     """One game, priced, with everything else behind a disclosure.
 
@@ -1333,6 +1428,8 @@ def board_card(row: dict) -> str:
     back is exactly the footprint of its front, and the detail does not fit.
     <details> also stays findable by Ctrl+F and works with no JavaScript.
     """
+    if row.get("league") in COLLEGE:
+        return _pick_card(row)
     model = row.get("model") or {}
     tip = game_time(row.get("commence_time"))
     accent = team_color(row.get("home"))
@@ -2917,7 +3014,7 @@ def _test_ncaab_system() -> None:
             "home": "Pittsburgh Panthers", "away": "Liberty Flames",
             "model": {"home_win_prob": 0.8, "away_win_prob": 0.2}}
     card = board_card(game)
-    assert "Liberty Flames <span>@</span> Pittsburgh Panthers" in card, card[:400]
+    assert "Liberty Flames @" in card and "Pittsburgh Panthers" in card, card[:400]
     mlb = board_card(dict(game, league="mlb", home="San Diego Padres",
                           away="Chicago Cubs"))
     assert "Cubs <span>@</span> Padres" in mlb
@@ -3135,9 +3232,8 @@ def _test_ncaaf_card() -> None:
                "away": side("LSU Tigers", 14, [5, 4, 0], 30.2, 22.1, 1.4, 1.1, 6.1),
                "home": side("Alabama Crimson Tide", 3, [6, 3, 1], 35.0, 18.4, 0.9, 1.8, 6.8)}}
     card = board_card(row)
-    assert "LSU Tigers <span>@</span> Alabama Crimson Tide" in card
-    assert "Spread: Alabama Crimson Tide -6.5 \u00b7 Total 52.5" in card
-    assert "FPI line: Alabama Crimson Tide -12.5" in card
+    # Redesign B: college cards are pick cards; the panel sits behind Details.
+    assert "LSU Tigers @" in card and "Alabama Crimson Tide" in card
     labels = ["ATS", "Points", "Points Against", "Turnovers", "Takeaways",
               "Yards per Play"]
     pos = [card.index(f'<th scope="row">{l}</th>') for l in labels]
@@ -3155,69 +3251,6 @@ def _test_ncaaf_card() -> None:
         "away": {"name": "A", "stats": {"reb": 30.0}},
         "home": {"name": "B", "stats": {"reb": 33.0}}}))
     assert '<th scope="row">Rebounds</th>' in nb and "Yards per Play" not in nb
-
-
-def _test_ncaab_lines() -> None:
-    """NCAAB cards print the market spread/total and our BPI line, like the
-    football cards, built from data already on the board row."""
-    row = {"event_id": "o1", "league": "ncaab", "commence_time": "2026-11-10T00:00Z",
-           "home": "Ohio State Buckeyes", "away": "Marshall Thundering Herd",
-           "markets": {"spreads": {"point": -25.5, "side_a": "home"},
-                       "totals": {"point": 162.5}},
-           "model": {"home_win_prob": 0.97, "away_win_prob": 0.03,
-                     "market_home_prob": 0.96, "disagreement": 1.0,
-                     "source": "bpi", "proj": [84.2, 63.1]}}
-    card = board_card(row)
-    assert "Spread: Ohio State Buckeyes -25.5 \u00b7 Total 162.5" in card, card
-    assert "BPI line: Ohio State Buckeyes -21.1 \u00b7 Projected 84-63 (total 147)" in card
-    # Away favourite; spread quoted on the away side.
-    away_fav = dict(row, markets={"spreads": {"point": -4.0, "side_a": "away"}},
-                    model=dict(row["model"], proj=[70.0, 74.5]))
-    c2 = board_card(away_fav)
-    assert "Spread: Marshall Thundering Herd -4" in c2
-    assert "BPI line: Marshall Thundering Herd -4.5 \u00b7 Projected 74-70" in c2, \
-        "the favourite's score first, after its name"
-    # No projection (Elo-rated): the spread line only.
-    c3 = board_card(dict(row, model=dict(row["model"], source="elo", proj=None)))
-    assert "Spread: Ohio State" in c3 and "BPI line" not in c3
-    # Other leagues untouched.
-    assert "Spread:" not in board_card(dict(row, league="nba"))
-
-
-def _test_spread_card() -> None:
-    """College cards lead with our side against the spread."""
-    row = {"event_id": "o1", "league": "ncaab", "commence_time": "2026-11-10T23:00Z",
-           "home": "Ohio State Buckeyes", "away": "Marshall Thundering Herd",
-           "markets": {"spreads": {"point": -25.5, "side_a": "home",
-                                   "fair_home": 0.48, "fair_away": 0.52},
-                       "totals": {"point": 162.5}},
-           "model": {"home_win_prob": 0.97, "away_win_prob": 0.03,
-                     "market_home_prob": 0.99, "source": "bpi",
-                     "proj": [86.2, 65.2], "margin": 21.0},
-           "ats": {"side": "away", "team": "Marshall Thundering Herd",
-                   "line": 25.5, "cover": 0.6588, "gap": 4.5}}
-    card = board_card(row)
-    assert "Marshall Thundering Herd +25.5 to cover" in card
-    assert ">66%<" in card and "+4.5 pt edge" in card
-    assert "market 52% to cover" in card, "the away side's own devigged price"
-    assert 'left:52.0%' in card and 'width:65.9%' in card
-    assert "win prob" not in card.lower()
-    assert "BPI line: Ohio State Buckeyes -21.0" in card, "lines stay underneath"
-    # Football: no spread prices from ESPN, so the market is a coin flip.
-    cf = board_card(dict(row, league="ncaaf", markets={},
-                         ats={"side": "home", "team": "Alabama Crimson Tide",
-                              "line": -6.5, "cover": 0.626, "gap": 4.5},
-                         line_note=["FPI line: Alabama Crimson Tide -11.0"]))
-    assert "Alabama Crimson Tide -6.5 to cover" in cf and "market 50% to cover" in cf
-    # The Graded section adds our side's record against the spread.
-    sec = calibration_section({"graded": 3, "calibration": [], "brier": 0.2,
-                               "market_brier": 0.21, "ats": [2, 1, 0]})
-    assert "<b>Our side ATS: 2-1</b></p></div>" in sec, "well-formed markup"
-    assert "ATS" not in calibration_section({"graded": 3, "calibration": [],
-                                             "brier": 0.2, "ats": [0, 0, 0]})
-    # No pick: the win-probability card, unchanged.
-    plain = board_card(dict(row, ats=None))
-    assert "win prob" in plain.lower() and "to cover" not in plain
 
 
 def _test_result_strip() -> None:
@@ -3256,10 +3289,72 @@ def _test_result_strip() -> None:
     assert "cv-res" not in nba and "data-sport" not in nba
 
 
+def _test_pick_card() -> None:
+    """Redesign B: the compact college pick card."""
+    teams = {"home": {"id": "204", "color": "dc4405", "abbr": "ORST", "school": "Oregon State"},
+             "away": {"id": "331", "color": "a10022", "abbr": "EWU", "school": "Eastern Washington"}}
+    row = {"event_id": "ew", "league": "ncaab", "commence_time": "2026-11-10T02:30:00Z",
+           "home": "Oregon St Beavers", "away": "Eastern Washington Eagles",
+           "markets": {"spreads": {"point": -17.5, "side_a": "home"}, "totals": {"point": 162}},
+           "model": {"home_win_prob": 0.9, "away_win_prob": 0.1, "proj": [83.0, 74.0], "margin": 8.9},
+           "ats": {"side": "away", "team": "Eastern Washington Eagles", "line": 17.5,
+                   "cover": 0.78, "gap": 8.6},
+           "teams": teams,
+           "team_stats": {"away": {"name": "Eastern Washington Eagles", "stats": {"pts": 73.3, "opp": 88.7}},
+                          "home": {"name": "Oregon State Beavers", "stats": {"pts": 97.3, "opp": 71.0}}}}
+    c = board_card(row)
+    assert 'class="gcard pc pc-best"' in c and 'data-tier="best"' in c
+    assert ">Best bet<" in c and "Eastern Washington +17.5" in c and ">78%<" in c
+    import re as _re
+    visible = _re.sub(r"<[^>]+>", " ", c)   # tags and their attributes out
+    assert "Eagles" not in visible and "Beavers" not in visible, "school names only"
+    assert "Eastern Washington @" in c and "Oregon State" in c
+    assert 'src="https://a.espncdn.com/i/teamlogos/ncaa/500/331.png"' in c
+    assert 'onerror="this.remove()"' in c and "--c:#a10022" in c and ">EWU<" in c, \
+        "a failed logo leaves the team-colour badge"
+    for chip in ("Edge <b>+8.6</b>", "Line <b>Oregon State -17.5</b>",
+                 "Proj <b>83-74</b>", "Total <b>162</b>"):
+        assert chip in c, chip
+    assert 'aria-expanded="false" aria-controls="d-ew"' in c and 'id="d-ew" hidden' in c
+    assert 'class="cv-res"' in c, "the result strip stays (live/final)"
+    assert "Details" not in board_card(dict(row, team_stats=None)), "no panel, no button"
+    # Tiers.
+    assert 'pc-lean' in board_card(dict(row, ats=dict(row["ats"], gap=4.0)))
+    passed = board_card(dict(row, ats=dict(row["ats"], gap=1.5)))
+    assert 'pc-pass' in passed and "Pass" in passed
+    # No pick: a grey banner, still the card.
+    none = board_card(dict(row, ats=None))
+    assert 'pc-none' in none and "No pick" in none and 'data-tier="none"' in none
+    # Without team info: names from the row, badge without a logo.
+    bare = board_card(dict(row, teams=None))
+    assert "Eastern Washington Eagles +17.5" in bare and "espncdn" not in bare
+    # Other leagues keep their card.
+    assert " pc " not in board_card(dict(row, league="nba", ats=None, teams=None))
+    # The college board: tier tiles with season records, and the filter.
+    head = college_board([row], {"ats_tiers": {"best": [3, 6, 0], "lean": [7, 1, 0],
+                                               "pass": [5, 6, 0]}})
+    assert "Best bets" in head and "3-6" in head and "7-1" in head
+    assert 'aria-pressed="false">Best bets only' in head and 'aria-pressed="true">All picks' in head
+    assert head.count('class="gcard pc') == 1
+    # Best bets first, then leans, passes, games with no pick; by time inside.
+    def mk(eid, gap, tip):
+        return dict(row, event_id=eid, commence_time=tip,
+                    ats=(dict(row["ats"], gap=gap) if gap is not None else None))
+    order = college_board([mk("p", 1.0, "2026-11-10T23:00:00Z"), mk("b2", 9.0, "2026-11-11T01:00:00Z"),
+                           mk("n", None, "2026-11-10T22:00:00Z"), mk("l", 4.0, "2026-11-10T23:30:00Z"),
+                           mk("b1", 7.0, "2026-11-11T00:00:00Z")], {})
+    ids = [order.index(f'id="g-{x}"') for x in ("b1", "b2", "l", "p", "n")]
+    assert ids == sorted(ids), "tier first, then time"
+    # Football rows carry the spread and total in their own fields.
+    cf = dict(row, league="ncaaf", markets=None, spread_home=-6.5, total=52.5,
+              teams={"home": {"school": "Alabama"}, "away": {"school": "LSU"}}, model={})
+    cc = board_card(cf)
+    assert "Line <b>Alabama -6.5</b>" in cc and "Total <b>52.5</b>" in cc
+
+
 def _self_test() -> None:
+    _test_pick_card()
     _test_result_strip()
-    _test_spread_card()
-    _test_ncaab_lines()
     _test_ncaaf_card()
     _test_team_stats()
     _test_ncaab_system()

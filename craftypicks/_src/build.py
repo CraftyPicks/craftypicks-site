@@ -131,6 +131,10 @@ VIEWS.update({short: [(f"{short}/index.html", "nav_board")]
               for short, _label in FREE_LEAGUES})
 
 
+SPORT_ICON = {"tonight": "&#128197;", "mlb": "&#9918;", "nba": "&#127936;",
+              "nfl": "&#127944;", "ncaab": "&#127936;", "ncaaf": "&#127944;"}
+
+
 def sport_row(page: Page, lang: str) -> str:
     """The first navigation row: Tonight, then one tab per league.
 
@@ -149,10 +153,24 @@ def sport_row(page: Page, lang: str) -> str:
     for short, label in FREE_LEAGUES:
         items.append((f"{short}/index.html", label, short))
     out = []
+    current = None
     for href, label, key in items:
-        active = " on" if (page.key == key or page.league == key) else ""
-        out.append(f'<a href="{up}{href}" class="{active.strip()}">{label}</a>')
-    return "".join(out)
+        on = page.key == key or page.league == key
+        if on:
+            current = (key, label)
+        cur = ' aria-current="page"' if on else ""
+        out.append(f'<li><a href="{up}{href}" class="{"on" if on else ""}"{cur}>'
+                   f'<span aria-hidden="true">{SPORT_ICON.get(key, "")}</span>{label}</a></li>')
+    # One button naming the sport you are on, opening the list of sports.
+    # The list is a native popover; a browser without popover support simply
+    # shows it, which is a usable fallback with no polyfill to load.
+    icon = SPORT_ICON.get(current[0], "") if current else ""
+    name = current[1] if current else i18n.t("nav_sports", lang)
+    return (f'<button class="sport-btn" popovertarget="sports" aria-haspopup="true">'
+            f'<span aria-hidden="true">{icon}</span>{name} '
+            f'<span aria-hidden="true">&#9662;</span></button>'
+            f'<nav aria-label="Sports" id="sports" popover class="sport-menu"><ul>'
+            + "".join(out) + "</ul></nav>")
 
 
 def view_row(page: Page, lang: str) -> str:
@@ -170,8 +188,9 @@ def view_row(page: Page, lang: str) -> str:
     up = rel_root(page)
     out = []
     for href, key in VIEWS[page.league]:
-        active = " on" if href == page.out else ""
-        out.append(f'<a href="{up}{href}" class="{active.strip()}">'
+        on = href == page.out
+        out.append(f'<a href="{up}{href}" class="{"on" if on else ""}"'
+                   f'{" aria-current=\"page\"" if on else ""}>'
                    f'{i18n.t(key, lang)}</a>')
     return "".join(out)
 
@@ -235,6 +254,35 @@ def attach_finals(board_doc: dict, ncaab_store: dict, ncaaf_store: dict) -> None
                 row["final"] = {"away": as_, "home": hs,
                                 "away_short": a.get("short") or a["name"],
                                 "home_short": h.get("short") or h["name"]}
+
+
+def attach_teams(board_doc: dict, ncaab_store: dict, ncaaf_store: dict) -> None:
+    """Give each college card both clubs' ESPN id (for the logo), colour
+    (for the badge shown when a logo fails) and school name ("Oregon State",
+    not "Oregon St Beavers"). Taken from each club's newest stored game, so
+    a school name ESPN added later wins over an older copy without one."""
+    import ncaab_system  # noqa: PLC0415
+    key = ncaab_system.name_key
+    for league, store in (("ncaab", ncaab_store), ("ncaaf", ncaaf_store)):
+        clubs: dict[str, dict] = {}
+        for g in sorted(((store or {}).get("games") or {}).values(),
+                        key=lambda g: g.get("commence_time") or ""):
+            for side in ("home", "away"):
+                c = g.get(side) or {}
+                if c.get("name"):
+                    prev = clubs.get(key(c["name"]), {})
+                    clubs[key(c["name"])] = {
+                        "id": str(c.get("id", "")), "color": c.get("color", ""),
+                        "abbr": c.get("abbr", ""),
+                        # ESPN's school name; until a club has a game stored
+                        # with it, ESPN's short name, then the full name.
+                        "school": (c.get("school") or prev.get("school")
+                                   or c.get("short") or prev.get("short_") or c["name"]),
+                        "short_": c.get("short") or prev.get("short_")}
+        for row in ((board_doc.get("leagues") or {}).get(league) or {}).get("games") or []:
+            h, a = clubs.get(key(row.get("home"))), clubs.get(key(row.get("away")))
+            if h or a:
+                row["teams"] = {"home": h, "away": a}
 
 
 def tonight_rows(doc: dict) -> list[dict]:
@@ -328,7 +376,7 @@ HEAD = """<!DOCTYPE html>
 <meta property="og:title" content="{title}">
 <meta property="og:description" content="Free daily pricing boards, with the accuracy score in public.">
 <meta property="og:type" content="website">
-<meta name="theme-color" content="#08090B">
+<meta name="theme-color" content="#0E1116">
 {hreflang}
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%2308090B'/><path d='M8 20 L14 12 L18 17 L24 9' stroke='%233BE081' stroke-width='2.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>">
 <link rel="stylesheet" href="{up}style.css?v={cssv}">
@@ -337,13 +385,10 @@ HEAD = """<!DOCTYPE html>
 <header class="nav">
   <div class="nav-in">
     <a href="{up}index.html" class="logo">Craftypicks<em>.</em></a>
-    <nav class="nav-links">{links}</nav>
-    <div class="nav-cta">
-      <a href="{about_href}" class="link-quiet">{why_free}</a>
-    </div>
+    <div class="sport-pick">{links}</div>
   </div>
 </header>
-<div class="nav-views{views_empty}"><div class="nav-in">{views}</div></div>
+<nav aria-label="Views" class="nav-views{views_empty}"><div class="nav-in">{views}</div></nav>
 {banner}
 """
 
@@ -442,7 +487,9 @@ def build() -> None:
     pitch_doc = load("pitchers.json", {"date_label": "", "pitchers": [], "summary": {}})
     board_doc = load("board.json", {})
     add_ncaaf(board_doc, load("ncaaf.json", {}))
-    attach_finals(board_doc, load("ncaab_games.json", {}), load("ncaaf_games.json", {}))
+    _cbb, _cfb = load("ncaab_games.json", {}), load("ncaaf_games.json", {})
+    attach_finals(board_doc, _cbb, _cfb)
+    attach_teams(board_doc, _cbb, _cfb)
     attach_team_stats(board_doc,
                       load("ncaab_teams.json", {}).get("teams") or {})
     batter_doc = load("batters.json",
@@ -627,8 +674,15 @@ def build() -> None:
                 entry = (board_doc.get("leagues") or {}).get(page.league, {})
                 page_tokens["{{LEAGUE_NAME}}"] = entry.get("label") or (
                     leagues.LEAGUES[page.league].label)
-                page_tokens["{{LEAGUE_BOARD}}"] = R.board_cards(
-                    entry.get("games") or [])
+                if page.league in ("ncaab", "ncaaf"):
+                    # Redesign B: tier records, the best-bets filter, pick cards.
+                    tier_src = (entry.get("summary") if page.league == "ncaaf"
+                                else rating_summaries.get("ncaab"))
+                    page_tokens["{{LEAGUE_BOARD}}"] = R.college_board(
+                        entry.get("games") or [], tier_src or {})
+                else:
+                    page_tokens["{{LEAGUE_BOARD}}"] = R.board_cards(
+                        entry.get("games") or [])
                 page_tokens["{{BOARD_EYEBROW}}"] = i18n.t(
                     "board_eyebrow", lang,
                     n=(board_doc.get("counts") or {}).get(page.league, 0),
@@ -815,6 +869,28 @@ def _self_test() -> None:
     assert (fin["home"], fin["home_short"], fin["away"], fin["away_short"]) == \
         (74, "Seton Hall", 61, "Charlotte"), fin
 
+    # Team identity for college cards: ESPN id (logo), colour (fallback
+    # badge) and school name, from the newest stored game of each club.
+    tdoc = {"leagues": {"ncaab": {"games": [
+        {"league": "ncaab", "home": "Oregon St Beavers", "away": "Eastern Washington Eagles"}]},
+        "nba": {"games": [{"league": "nba", "home": "X", "away": "Y"}]}}}
+    tstore = {"games": {
+        "1": {"commence_time": "2026-11-01T00:00Z",
+              "home": {"id": "204", "name": "Oregon State Beavers", "color": "dc4405",
+                       "abbr": "ORST"},
+              "away": {"id": "331", "name": "Eastern Washington Eagles", "color": "a10022",
+                       "abbr": "EWU", "school": "Eastern Washington"}},
+        "2": {"commence_time": "2026-11-08T00:00Z",
+              "home": {"id": "204", "name": "Oregon State Beavers", "color": "dc4405",
+                       "abbr": "ORST", "school": "Oregon State"},
+              "away": {"id": "9", "name": "Q", "color": "000000", "abbr": "Q"}}}}
+    attach_teams(tdoc, tstore, {})
+    tt = tdoc["leagues"]["ncaab"]["games"][0]["teams"]
+    assert {k: tt["home"][k] for k in ("id", "color", "abbr", "school")} == \
+        {"id": "204", "color": "dc4405", "abbr": "ORST", "school": "Oregon State"}
+    assert tt["away"]["school"] == "Eastern Washington"
+    assert "teams" not in tdoc["leagues"]["nba"]["games"][0]
+
     # NCAAF: its own page and tab, but never in leagues.LEAGUES (that list
     # buys odds).
     assert "ncaaf/index.html" in PAGES and PAGES["ncaaf/index.html"].league == "ncaaf"
@@ -867,6 +943,20 @@ def _self_test() -> None:
 
     assert sport_row(PAGES["mlb/index.html"], "en").count('class="on"') == 1
     assert sport_row(PAGES["about.html"], "en").count('class="on"') == 0
+
+    # Redesign: the sports live in one menu behind a button that names the
+    # current sport; the current item is marked for assistive tech too.
+    ncaab_row = sport_row(PAGES["ncaab/index.html"], "en")
+    assert 'popovertarget="sports"' in ncaab_row and 'id="sports" popover' in ncaab_row
+    assert '<nav aria-label="Sports"' in ncaab_row
+    btn = ncaab_row[:ncaab_row.index("</button>")]
+    assert "NCAAB" in btn and "&#127936;" in btn, "the button names the sport"
+    assert ncaab_row.count('aria-current="page"') == 1
+    assert 'aria-current="page"' in ncaab_row.split('href="../ncaab/index.html"')[1][:60] \
+        or 'href="../ncaab/index.html" class="on" aria-current="page"' in ncaab_row
+    about_row = sport_row(PAGES["about.html"], "en")
+    assert 'aria-current' not in about_row and "Sports" in about_row[:about_row.index("</button>")]
+    assert view_row(PAGES["ncaab/index.html"], "en").count('aria-current="page"') == 1
 
     # A league page shows its own views; MLB has props and NCAAB does not.
     mlb = view_row(PAGES["mlb/index.html"], "en")

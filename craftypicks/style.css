@@ -28,7 +28,7 @@
      rather than eyeballed. The canvas is darker than Graphite was at every
      level -- page, band, card -- which is what lets the green read as the
      one loud thing on the screen. */
-  --bg:#08090B;
+  --bg:#0E1116;
   --bg-2:#0A0B0E;
   /* The canvas draws its card at #0E1014, which is 1.046:1 against this
      ground -- effectively invisible by fill, separated only by its border
@@ -36,9 +36,9 @@
      in daylight the border is the first thing to disappear. #101318 is the
      nearest value that clears the 1.05 floor, and the design's lighter top
      edge and shadow still do the rest of the work. */
-  --panel:#101318;
+  --panel:#181C23;
   --panel-2:#0B0C10;
-  --line:#1C2029;
+  --line:#2C333E;
   --line-2:#3B434F;
 
   /* The type hierarchy, in the order a reader meets it. --dim is the only
@@ -54,10 +54,13 @@
      comfortable at the 10px mono this token is mostly set in. 7.23:1 is
      inside AAA for normal text, which is the right target for a page whose
      whole content is small numbers. */
-  --muted:#9AA2AF;    /* mono labels, card headers, units */
-  --dim:#626D7A;      /* footnote captions only */
+  /* Redesign B (2026-11-11): raised again after readers called the site
+     hard to read. 9.0:1 on a card. */
+  --muted:#B9C1CD;    /* mono labels, card headers, units */
+  --dim:#76818F;      /* footnote captions only */
 
   --green:#5BE39C;
+  --on-green:#06210F;  /* text on a green banner: 11.6:1 */
   --green-deep:#226E49;   /* hard button shadow, and the bar gradient's tail */
   --green-hover:#8CEFBA;
   --green-dim:#3F9E71;
@@ -118,7 +121,7 @@ p{color:var(--muted);font-size:16px}
 
 /* ---------- nav ---------- */
 header.nav{
-  position:sticky;top:0;z-index:50;background:rgba(8,9,11,.86);
+  position:sticky;top:0;z-index:50;background:rgba(14,17,22,.86);
   backdrop-filter:blur(14px);border-bottom:1px solid var(--line);
 }
 .nav-in{max-width:var(--maxw);margin:0 auto;padding:0 28px;height:68px;
@@ -292,12 +295,12 @@ section{border-bottom:1px solid var(--line)}
    It is also what keeps the card legible against a ground it is only 1.07:1
    away from. */
 .gcard{background:var(--panel);border:1px solid var(--line);
-  border-top-color:var(--line-2);box-shadow:0 10px 24px rgba(8,9,11,.4);
+  border-top-color:var(--line-2);box-shadow:0 10px 24px rgba(14,17,22,.4);
   transform-style:preserve-3d;
   transition:transform .3s cubic-bezier(.2,.8,.2,1),box-shadow .3s,border-color .3s}
 @media (prefers-reduced-motion:no-preference){
   .gcard:hover{transform:translateZ(46px) rotateX(4deg);
-    box-shadow:0 34px 60px rgba(8,9,11,.7);border-color:var(--line-2)}
+    box-shadow:0 34px 60px rgba(14,17,22,.7);border-color:var(--line-2)}
 }
 @media (prefers-reduced-motion:reduce){
   .gcard:hover{border-color:var(--line-2);background:var(--panel-2)}
@@ -352,7 +355,7 @@ section{border-bottom:1px solid var(--line)}
   background:linear-gradient(90deg,rgba(91,227,156,.30),var(--green))}
 /* Ringed in the page ground so it reads over both halves of the bar. */
 .cv-tick{position:absolute;top:0;bottom:0;width:2px;background:var(--txt);
-  box-shadow:0 0 0 1px rgba(8,9,11,.85)}
+  box-shadow:0 0 0 1px rgba(14,17,22,.85)}
 .cv-foot{display:flex;align-items:baseline;justify-content:space-between;
   gap:10px;margin-top:14px;padding-top:12px;border-top:1px solid var(--line);
   font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;
@@ -454,7 +457,7 @@ section{border-bottom:1px solid var(--line)}
 .gbar .seg{position:absolute;top:0;bottom:0;background:transparent}
 .gbar .seg.on{background:linear-gradient(90deg,rgba(91,227,156,.28),var(--green))}
 .gbar .tick{position:absolute;top:0;bottom:0;width:2px;background:var(--txt);
-  box-shadow:0 0 0 1px rgba(8,9,11,.8);z-index:1}
+  box-shadow:0 0 0 1px rgba(14,17,22,.8);z-index:1}
 .gfoot{
   display:flex;align-items:baseline;justify-content:space-between;gap:10px;
   padding-top:12px;margin-top:14px;border-top:1px solid var(--line);
@@ -526,12 +529,12 @@ section{border-bottom:1px solid var(--line)}
 .pb-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(336px,1fr));
   gap:20px;perspective:1600px;align-items:start}
 .pb-card{background:var(--panel);border:1px solid var(--line);
-  border-top-color:var(--line-2);box-shadow:0 10px 24px rgba(8,9,11,.4);
+  border-top-color:var(--line-2);box-shadow:0 10px 24px rgba(14,17,22,.4);
   transform-style:preserve-3d;
   transition:transform .3s cubic-bezier(.2,.8,.2,1),box-shadow .3s,border-color .3s}
 @media (prefers-reduced-motion:no-preference){
   .pb-card:hover{transform:translateZ(46px) rotateX(4deg);
-    box-shadow:0 34px 60px rgba(8,9,11,.7);border-color:var(--line-2)}
+    box-shadow:0 34px 60px rgba(14,17,22,.7);border-color:var(--line-2)}
 }
 @media (prefers-reduced-motion:reduce){
   .pb-card:hover{border-color:var(--line-2);background:var(--panel-2)}
@@ -1326,7 +1329,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
 .pl-bar{position:relative;height:6px;background:var(--ext-4);margin-top:9px}
 .pl-fill{position:absolute;left:0;top:0;bottom:0;background:var(--line-2)}
 .pl-tick{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--txt);
-  box-shadow:0 0 0 1px rgba(8,9,11,.85)}
+  box-shadow:0 0 0 1px rgba(14,17,22,.85)}
 /* Both ends of the axis and the market's own number, printed. A fill with
    no scale under it is decoration; this is the difference between a bar
    the reader can measure and one they have to trust. */
@@ -1520,3 +1523,71 @@ footer{background:var(--bg-2);padding:56px 0 40px}
 .cv-res .lost{color:var(--red)}
 .cv-res .push{color:var(--muted)}
 .cv-nc{font-size:11.5px;color:var(--muted);margin:-8px 0 12px}
+
+
+/* ------------------------------------------------------------ Redesign B
+   Header: the logo, and one button that names the sport you are on and
+   opens the list of sports (a native popover; a browser without popover
+   support shows the list inline instead). Views sit underneath as tabs,
+   the current one underlined -- marked by shape, not colour alone. */
+.nav-in{height:auto;min-height:60px;gap:12px;justify-content:space-between}
+.sport-pick{position:relative;margin-left:auto}
+.sport-btn{display:inline-flex;align-items:center;gap:8px;border:1.5px solid var(--txt);
+  border-radius:12px;padding:7px 12px;background:transparent;color:var(--txt);
+  font:700 15px/1 var(--sans);cursor:pointer}
+.sport-menu{margin:0;padding:6px;background:var(--panel);border:1px solid var(--line-2);
+  border-radius:14px;color:var(--txt);min-width:200px}
+.sport-menu:popover-open{position:fixed;inset:auto;top:62px;right:16px}
+.sport-menu ul{list-style:none;margin:0;padding:0}
+.sport-menu a{display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:10px;
+  color:var(--txt);font:600 16px var(--sans)}
+.sport-menu a:hover{background:var(--bg-2)}
+.sport-menu a[aria-current="page"]{background:var(--bg-2);box-shadow:inset 3px 0 0 var(--green)}
+.nav-views{background:var(--bg)}
+.nav-views .nav-in{min-height:0;gap:22px}
+.nav-views a{font:600 15px var(--sans);letter-spacing:0;text-transform:none;color:var(--sub);
+  padding:11px 0;border-bottom:3px solid transparent}
+.nav-views a[aria-current="page"]{color:var(--txt);border-bottom-color:var(--green)}
+
+/* Redesign B: the college pick card. A slim banner says the pick (tier,
+   school, line, cover %); the body names both schools with their logos,
+   the numbers as chips, the result line, and Details. Pass and no-pick
+   banners are grey so the real picks stand out -- the tier is also written
+   in words, never colour alone. */
+.gcard.pc{padding:0;overflow:hidden;border-radius:14px;border:1px solid var(--line);background:var(--panel)}
+.pc-ribbon{display:flex;align-items:center;gap:10px;padding:8px 12px;background:var(--green);color:var(--on-green)}
+.pc-pass .pc-ribbon,.pc-none .pc-ribbon{background:var(--line);color:var(--txt)}
+.pc-who{flex:1;min-width:0;line-height:1.15}
+.pc-who strong{display:block;font:700 17px/1.2 var(--sans)}
+.pc-tag{display:block;font:800 10.5px/1.3 var(--sans);letter-spacing:.06em;text-transform:uppercase}
+.pc-pct{font:800 20px/1 var(--sans);white-space:nowrap}
+.pc-pct small{font-size:11px;font-weight:700;margin-left:4px}
+.pc-pass .pc-pct{color:var(--sub)}
+.pc-lg{position:relative;flex:none;width:var(--s);height:var(--s);display:inline-grid;place-items:center;
+  border-radius:50%;background:var(--c,var(--line-2));color:#fff;font:800 8px var(--sans);overflow:hidden}
+.pc-lg img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#fff;border-radius:50%}
+.pc-body{padding:10px 12px}
+.pc-match{display:flex;align-items:center;flex-wrap:wrap;gap:6px;font:600 15px/1.35 var(--sans);color:var(--txt);margin-bottom:8px}
+.pc-time{margin-left:auto;color:var(--sub);font-weight:500}
+.pc-chips{display:flex;flex-wrap:wrap;gap:6px}
+.pc-chips span{background:var(--bg-2);border-radius:8px;padding:4px 8px;font:500 13px var(--sans);color:var(--sub)}
+.pc-chips b{color:var(--txt)}
+.pc .cv-res{margin:8px 0 0}
+.pc-more{display:block;width:100%;margin-top:8px;padding:8px;border:1px solid var(--line-2);border-radius:10px;
+  background:transparent;color:var(--txt);font:600 14px var(--sans);cursor:pointer}
+.pc-detail{margin-top:8px}
+.pc-detail .pnl{padding:0;border:0;background:none}
+.pc-detail .ts-v td{font-size:16px;padding:8px 0 3px}
+.pc-detail .ts-v th{font-size:12.5px;font-weight:500;color:var(--sub)}
+.pc-detail .ts-bar{height:5px}
+.pc-detail .ts-cap{font-size:12px;padding-bottom:6px}
+.pc-tiers{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px}
+.pc-tiers div{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:8px 10px;
+  font:500 12.5px/1.35 var(--sans);color:var(--sub)}
+.pc-tiers b{display:block;color:var(--txt);font-size:15px}
+.pc-tiers em{font-style:normal;color:var(--txt);font-weight:700}
+.pc-filter{display:flex;background:var(--bg-2);border-radius:10px;padding:3px;margin-bottom:12px}
+.pc-filter button{flex:1;border:0;background:transparent;color:var(--sub);font:600 14px var(--sans);
+  padding:8px 0;border-radius:8px;cursor:pointer}
+.pc-filter button[aria-pressed="true"]{background:var(--txt);color:var(--bg)}
+.board .gcard.pc[hidden]{display:none}

@@ -159,7 +159,7 @@ def board_rows(store: dict, power: dict, day: date, sheet: dict) -> list[dict]:
         row = {"event_id": g["event_id"], "league": "ncaaf",
                "commence_time": g.get("commence_time", ""), "date": d.isoformat(),
                "home": home, "away": away, "model": model, "line_note": notes,
-               "spread_home": sp, "fpi_margin": margin}
+               "spread_home": sp, "fpi_margin": margin, "total": g.get("total")}
         import ats  # noqa: PLC0415
         pick = ats.pick(margin, sp, MARGIN_SD, home, away)
         if pick:
@@ -230,10 +230,17 @@ def summary(history: list[dict]) -> dict:
     mkt = [(h["mkt_home"] - h["home_won"]) ** 2 for h in done
            if h.get("mkt_home") is not None]
     ats = [sum(1 for h in done if h.get("fpi_ats") == k) for k in "WLP"]
+    import ats as _ats  # noqa: PLC0415
+    tiers = {t: [0, 0, 0] for t in ("best", "lean", "pass")}
+    for h in done:
+        if h.get("fpi_ats") in ("W", "L", "P") and h.get("fpi_margin") is not None \
+                and h.get("spread_home") is not None:
+            t = _ats.tier(abs(round(h["fpi_margin"] + h["spread_home"], 1)))
+            tiers[t]["WLP".index(h["fpi_ats"])] += 1
     return {"graded": len(done), "pending": len(history) - len(done),
             "brier": round(sum(brier) / len(brier), 4) if brier else None,
             "market_brier": round(sum(mkt) / len(mkt), 4) if mkt else None,
-            "fpi_ats": ats}
+            "fpi_ats": ats, "ats_tiers": tiers}
 
 
 # ---------------------------------------------------------------- daily run
@@ -381,6 +388,7 @@ def _self_test() -> None:
     # Our side against the spread: FPI home by 12.5 against -6.5.
     assert r["ats"]["side"] == "home" and r["ats"]["line"] == -6.5
     assert r["ats"]["gap"] == 6.0 and r["ats"]["team"] == "Team BAMA"
+    assert r["total"] == 52.5, "the card's Total chip"
     # No FPI for either side: listed, not rated.
     # Today's games stay on the board after they finish (to show the result);
     # earlier days' finals do not.
@@ -414,6 +422,8 @@ def _self_test() -> None:
     assert h["fpi_ats"] == "W"
     s = summary(hist)
     assert s["graded"] == 1 and s["fpi_ats"] == [1, 0, 0]
+    # FPI home by 12.5 against -6.5: a 6-point edge, a best bet.
+    assert s["ats_tiers"]["best"] == [1, 0, 0] and s["ats_tiers"]["lean"] == [0, 0, 0]
     assert s["brier"] == round((1 - h["p_home"]) ** 2, 4)
     assert s["market_brier"] == round((1 - h["mkt_home"]) ** 2, 4)
 

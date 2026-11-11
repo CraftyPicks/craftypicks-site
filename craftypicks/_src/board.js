@@ -281,3 +281,31 @@
   });
   run();
 })();
+
+/* Redesign B: Details buttons on the college pick cards, and the
+   "Best bets only / All picks" filter. Both are plain buttons whose state is
+   in aria-expanded / aria-pressed, so assistive tech hears what they do. */
+(function () {
+  document.addEventListener("click", function (e) {
+    var more = e.target.closest && e.target.closest(".pc-more");
+    if (more) {
+      var panel = document.getElementById(more.getAttribute("aria-controls"));
+      var open = more.getAttribute("aria-expanded") !== "true";
+      more.setAttribute("aria-expanded", open ? "true" : "false");
+      more.textContent = more.getAttribute(open ? "data-open" : "data-shut");
+      if (panel) { panel.hidden = !open; }
+      return;
+    }
+    var f = e.target.closest && e.target.closest(".pc-filter button");
+    if (f) {
+      var best = f.getAttribute("data-f") === "best";
+      f.parentNode.querySelectorAll("button").forEach(function (b) {
+        b.setAttribute("aria-pressed", b === f ? "true" : "false");
+      });
+      document.querySelectorAll(".gcard.pc").forEach(function (c) {
+        c.hidden = best && c.getAttribute("data-tier") !== "best";
+      });
+    }
+  });
+})();
+
