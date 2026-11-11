@@ -283,6 +283,32 @@ def document(boards: dict[str, list[dict]], generated_at: str,
     }
 
 
+def keep_started(boards: dict[str, list[dict]], old_doc: dict | None,
+                 date: str, now) -> int:
+    """Carry over games from the board already published for `date` that
+    have started and are missing from this fetch. The odds feed drops a
+    game once it is under way, so a late re-run (10:30 PM on Nov 10)
+    replaced 62 college games with one NBA game. Fresh rows win; an
+    unstarted game the feed no longer lists is dropped. Returns rows kept."""
+    from datetime import datetime  # noqa: PLC0415
+    if not old_doc or old_doc.get("date") != date:
+        return 0
+    n = 0
+    for short, league in (old_doc.get("leagues") or {}).items():
+        have = {r.get("event_id") for r in boards.get(short) or []}
+        for row in league.get("games") or []:
+            try:
+                tip = datetime.fromisoformat(str(row.get("commence_time")).replace("Z", "+00:00"))
+            except ValueError:
+                continue
+            if tip <= now and row.get("event_id") not in have:
+                boards.setdefault(short, []).append(row)
+                n += 1
+        if boards.get(short):
+            boards[short].sort(key=lambda r: r.get("commence_time") or "")
+    return n
+
+
 def _book(key: str, title: str, h2h: tuple[int, int],
           spread: tuple[int, int, float] | None = None,
           total: tuple[int, int, float] | None = None,
@@ -798,7 +824,29 @@ def _test_espn_fill() -> None:
     assert extra == [] and flipped[0]["espn_id"] == "401920887"
 
 
+def _test_keep_started() -> None:
+    from datetime import datetime, timezone  # noqa: PLC0415
+    now = datetime(2026, 11, 11, 3, 30, tzinfo=timezone.utc)   # 10:30 PM ET
+    old = {"date": "2026-11-10", "leagues": {
+        "ncaab": {"games": [{"event_id": "x", "commence_time": "2026-11-11T00:00:00Z"},
+                            {"event_id": "late", "commence_time": "2026-11-11T05:00:00Z"}]},
+        "nba": {"games": [{"event_id": "n1", "commence_time": "2026-11-11T00:30:00Z"},
+                          {"event_id": "n2", "commence_time": "2026-11-11T03:00:00Z"}]}}}
+    # A late re-run: the odds feed has dropped every game already under way.
+    boards = {"nba": [{"event_id": "n2", "commence_time": "2026-11-11T03:00:00Z", "fresh": True}]}
+    assert keep_started(boards, old, "2026-11-10", now) == 2
+    assert [r["event_id"] for r in boards["ncaab"]] == ["x"], "started game kept"
+    assert "late" not in [r["event_id"] for r in boards["ncaab"]], "unstarted, gone: dropped"
+    assert {r["event_id"] for r in boards["nba"]} == {"n1", "n2"}
+    assert next(r for r in boards["nba"] if r["event_id"] == "n2")["fresh"], "fresh row wins"
+    # A new day: yesterday's board is not carried.
+    b2: dict = {}
+    assert keep_started(b2, old, "2026-11-11", now) == 0 and b2 == {}
+    assert keep_started({}, None, "2026-11-10", now) == 0
+
+
 def _self_test() -> None:
+    _test_keep_started()
     _test_bpi_model()
     _test_espn_fill()
     import io                        # noqa: PLC0415

@@ -816,6 +816,12 @@ def main() -> int:
                 print(f"!! rating {short} failed "
                       f"({type(e).__name__}: {e})", file=sys.stderr)
 
+    if board_mod:
+        # A re-run after tip-off must not wipe games the feed has dropped.
+        kept = board_mod.keep_started(boards, load_json(DATA / "board.json", {}),
+                                      today, datetime.now(timezone.utc))
+        if kept:
+            print(f"-- board: kept {kept} game(s) already under way")
     if board_mod and boards:
         doc = board_mod.document(
             boards, now.isoformat(timespec="seconds"), today)
