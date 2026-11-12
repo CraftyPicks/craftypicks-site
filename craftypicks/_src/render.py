@@ -1431,7 +1431,7 @@ def college_board(rows: list[dict], summary: dict | None) -> str:
     return head + _spread_groups(ordered)
 
 
-def college_list(rows: list[dict]) -> str:
+def college_list(rows: list[dict], caption: str | None = None) -> str:
     """The Simple tab: a plain table, one row per game by start time. Time
     (or Final), both schools with their power rank (BPI, FPI for football)
     and score once final, and our pick with its chance to cover and, once
@@ -1495,17 +1495,96 @@ def college_list(rows: list[dict]) -> str:
                     f'{_("pc_details")}</button>')
             extra = (f'<tr class="cl-detail" id="ld-{eid}" hidden><td colspan="2">'
                      f'{inner}</td></tr>')
+        live = "" if f else _result_strip(r)
         body.append(
-            f'<tr id="l-{esc(str(r.get("event_id", "")))}" class="cl-{t}">'
+            f'<tr id="l-{esc(str(r.get("event_id", "")))}" class="cl-{t}"{"" if f else _live_hooks(r)}>'
             f'<th scope="row"><span class="cl-time">{esc(when)}</span>'
             f'{team(r, "away", f["away"] if f else None)}'
             f'{team(r, "home", f["home"] if f else None)}</th>'
-            f'<td class="cl-pick">{pick}{more}</td></tr>' + extra)
+            f'<td class="cl-pick">{pick}{live}{more}</td></tr>' + extra)
     return (f'<div class="cl-wrap" role="region" aria-labelledby="cl-cap" tabindex="0">'
-            f'<table class="cl"><caption id="cl-cap">{_("cl_caption")}</caption>'
+            f'<table class="cl"><caption id="cl-cap">{esc(caption) if caption else _("cl_caption")}</caption>'
             f'<thead><tr><th scope="col">{_("cl_game")}</th>'
             f'<th scope="col">{_("cl_pick")}</th></tr></thead>'
             f'<tbody>{"".join(body)}</tbody></table></div>')
+
+
+def day_record(rows: list[dict]) -> list[int]:
+    """W-L-P of the day's Best bets and Leans that have a final."""
+    out = [0, 0, 0]
+    for r in rows:
+        a, f = r.get("ats"), r.get("final")
+        if not a or not f or _tier_of(a) not in ("best", "lean"):
+            continue
+        mine, theirs = ((f["home"], f["away"]) if a["side"] == "home"
+                        else (f["away"], f["home"]))
+        edge = mine - theirs + a["line"]
+        out[0 if edge > 0 else 1 if edge < 0 else 2] += 1
+    return out
+
+
+def _wlp(rec) -> str:
+    return f"{rec[0]}-{rec[1]}" + (f"-{rec[2]}" if rec[2] else "")
+
+
+def history_calendar(days: dict[str, list[dict]], league: str) -> str:
+    """The History tab: one month grid per month with a saved day, newest
+    first. A saved day links to its page and shows the day's record of Best
+    bets and Leans; other days are plain numbers. A real table, so the
+    weekday headers are announced with each date."""
+    import calendar as _cal  # noqa: PLC0415
+    from datetime import date as _date  # noqa: PLC0415
+    if not days:
+        return f'<p class="empty-board">{_("hc_empty")}</p>'
+    recs = {d: day_record(rows) for d, rows in days.items()}
+    total = [sum(r[i] for r in recs.values()) for i in range(3)]
+    months = sorted({d[:7] for d in days}, reverse=True)
+    week = _cal.Calendar(firstweekday=6)          # Sunday first, as US calendars
+    heads = "".join(f'<th scope="col" abbr="{esc(full)}">{esc(full[:1])}</th>'
+                    for full in _("hc_days").split(","))
+    out = [f'<p class="hc-sum">{_("hc_total")} <b>{_wlp(total)}</b></p>']
+    for ym in months:
+        y, m = int(ym[:4]), int(ym[5:])
+        title = f'{_("hc_months").split(",")[m - 1]} {y}'
+        rows = []
+        for wk in week.monthdatescalendar(y, m):
+            cells = []
+            for d in wk:
+                if d.month != m:
+                    cells.append('<td class="hc-pad"></td>')
+                    continue
+                iso = d.isoformat()
+                if iso in days:
+                    rec = recs[iso]
+                    lab = f'{title.split(" ")[0]} {d.day}: {_wlp(rec)}'
+                    cls = " hc-up" if rec[0] > rec[1] else " hc-down" if rec[1] > rec[0] else ""
+                    cells.append(f'<td class="hc-on{cls}"><a href="day-{iso}.html" aria-label="{esc(lab)}">'
+                                 f'<span class="hc-d">{d.day}</span>'
+                                 f'<span class="hc-r">{_wlp(rec)}</span></a></td>')
+                else:
+                    cells.append(f'<td class="hc-off"><span class="hc-d">{d.day}</span></td>')
+            rows.append("<tr>" + "".join(cells) + "</tr>")
+        out.append(f'<table class="hc"><caption>{esc(title)}</caption>'
+                   f'<thead><tr>{heads}</tr></thead><tbody>{"".join(rows)}</tbody></table>')
+    out.append(f'<p class="hc-note">{_("hc_note")}</p>')
+    return '<div class="hc-wrap">' + "".join(out) + "</div>"
+
+
+def history_day(rows: list[dict], day: str, prev: str | None, nxt: str | None) -> str:
+    """One saved day: previous / calendar / next links, the day's record,
+    and the Simple list with finals and results."""
+    from datetime import date as _date  # noqa: PLC0415
+    def lab(iso):
+        d = _date.fromisoformat(iso)
+        return f'{_("hc_months").split(",")[d.month - 1][:3]} {d.day}'
+    nav = (f'<nav class="hd-nav" aria-label="{esc(_("hc_days_nav"))}">'
+           + (f'<a href="day-{prev}.html" rel="prev">&lsaquo; {esc(lab(prev))}</a>' if prev else "<span></span>")
+           + f'<a href="history.html">{_("hc_calendar")}</a>'
+           + (f'<a href="day-{nxt}.html" rel="next">{esc(lab(nxt))} &rsaquo;</a>' if nxt else "<span></span>")
+           + "</nav>")
+    rec = day_record(rows)
+    head = f'<p class="hc-sum">{_("hc_day_total")} <b>{_wlp(rec)}</b></p>'
+    return nav + head + college_list(rows, caption=_("hc_caption"))
 
 
 # Spread-size groups on the college boards, by the absolute line: lower
@@ -3560,6 +3639,37 @@ def _test_pick_card() -> None:
     assert "(78%)" not in chk and "Check line" in chk
     assert "&mdash;" in college_list([dict(row, ats=None)])
     assert college_list([]).startswith('<p class="empty-board">')
+    # Live scores: a game not yet final carries the same hooks and empty
+    # strip the board's cards do, so board.js fills it once it tips off.
+    live = college_list([dict(row, espn_id="401")])
+    assert '<tr id="l-ew" class="cl-best" data-sport="ncaab" data-espn="401"' in live
+    assert '<div class="cv-res" hidden data-l="Final|Live|' in live
+    assert 'data-l=' not in fin.split("</tr>")[0], "a final row needs no live strip"
+    # History: a day's record counts Best bets and Leans with a final.
+    def h(eid, tier, away, home):
+        return dict(row, event_id=eid, ats=dict(row["ats"], tier=tier),
+                    final={"away": away, "home": home})
+    day_rows = [h("w", "best", 80, 90),     # EWU +17.5, lost by 10: covered
+                h("l", "lean", 60, 90),     # lost by 30: missed
+                h("p", "pass", 80, 90),     # a pass: not in the record
+                dict(row, event_id="u")]    # not final yet
+    assert day_record(day_rows) == [1, 1, 0]
+    cal = history_calendar({"2026-11-10": day_rows, "2026-11-12": [h("w", "best", 80, 90)]},
+                           "ncaab")
+    assert "<caption>November 2026</caption>" in cal
+    assert '<a href="day-2026-11-10.html"' in cal and 'aria-label="November 10: 1-1"' in cal
+    assert '<span class="hc-r">1-1</span>' in cal and '<span class="hc-r">1-0</span>' in cal
+    assert '<td class="hc-off"><span class="hc-d">11</span></td>' in cal, "no snapshot, no link"
+    assert cal.count('<th scope="col"') == 7
+    # November 2026 starts on a Sunday: the 1st sits in the first column.
+    first_week = cal[cal.index("<tbody>"):cal.index("</tr>", cal.index("<tbody>"))]
+    assert first_week.count("<td") == 7 and '<span class="hc-d">1</span>' in first_week
+    assert "2-1" in cal, "season total of Best + Lean"
+    assert history_calendar({}, "ncaab").startswith('<p class="empty-board">')
+    page = history_day(day_rows, "2026-11-10", "2026-11-09", None)
+    assert 'href="day-2026-11-09.html"' in page and 'href="history.html"' in page
+    assert "day-None" not in page and page.count('<tr id="l-') == 4
+    assert "1-1" in page
     # Football rows carry the spread and total in their own fields.
     cf = dict(row, league="ncaaf", markets=None, spread_home=-6.5, total=52.5,
               teams={"home": {"school": "Alabama"}, "away": {"school": "LSU"}}, model={})

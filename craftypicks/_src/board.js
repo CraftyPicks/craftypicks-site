@@ -177,7 +177,8 @@
   function startedCards() {
     var now = Date.now();
     return Array.prototype.filter.call(
-      document.querySelectorAll("article[data-sport]"), function (c) {
+      // Board cards and the Simple tab's table rows carry the same hooks.
+      document.querySelectorAll("[data-sport]"), function (c) {
         var strip = c.querySelector(".cv-res[data-l]");
         var tip = Date.parse(c.getAttribute("data-tip") || "");
         return strip && !isNaN(tip) && tip <= now;

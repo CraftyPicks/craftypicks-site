@@ -1613,6 +1613,11 @@ footer{background:var(--bg-2);padding:56px 0 40px}
 .cl-tag.cl-best{background:var(--green);color:var(--on-green)}
 .cl-tag.cl-check{background:var(--amber);color:var(--on-green)}
 .cl-res{display:block;margin-top:2px;font-size:13px}
+/* The live strip, stacked to fit the narrow pick column: status, score,
+   then whether our side is covering. */
+.cl-pick .cv-res:not([hidden]){display:block;margin:6px 0 0;padding:6px 8px;font-size:12.5px;line-height:1.35}
+.cl-pick .cv-res > span,.cl-pick .cv-res .st,.cl-pick .cv-res > b{display:block;margin:0}
+.cl-pick .cv-res > b{margin-top:2px}
 /* Details: the board's chips and Team Stats, in a full-width row below. */
 .cl .cl-more{margin-top:8px;padding:5px 8px;font-size:13px}
 .cl-detail > td{padding:4px 10px 14px;border-top:0;background:var(--panel)}
@@ -1620,6 +1625,30 @@ footer{background:var(--bg-2);padding:56px 0 40px}
 .cl-detail .pnl{padding:0;border:0;background:none}
 .cl tr:has(+ .cl-detail:not([hidden])) > *{background:var(--panel)}
 .cl-pass .cl-pick,.cl-pass .cl-pick b{color:var(--sub);font-weight:500}
+
+/* History: month grids of saved days, each linking to that day's list. */
+.hc-wrap{display:grid;gap:14px}
+.hc-sum{margin:0 0 4px;color:var(--sub);font:500 14px var(--sans)}
+.hc-sum b{color:var(--txt);font-weight:800}
+.hc{inline-size:100%;table-layout:fixed;border-collapse:separate;border-spacing:4px;
+  background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px}
+.hc > caption{text-align:left;padding:4px 4px 8px;color:var(--txt);font:800 17px var(--sans)}
+.hc th{color:var(--muted);font:700 11px var(--sans);padding:2px 0 4px;text-align:center}
+.hc td{block-size:52px;padding:0;text-align:center;vertical-align:middle;border-radius:10px}
+.hc-off .hc-d{color:var(--muted);font:500 13px var(--sans);opacity:.55}
+.hc-on{background:var(--bg-2)}
+.hc-on a{display:grid;place-content:center;gap:1px;block-size:100%;border-radius:10px;
+  color:var(--txt);text-decoration:none;border:1px solid var(--line-2)}
+.hc-on a:hover,.hc-on a:focus-visible{border-color:var(--green)}
+.hc-on .hc-d{font:700 14px var(--sans)}
+.hc-r{font:700 11.5px var(--mono);color:var(--sub)}
+.hc-up .hc-r{color:var(--green)}
+.hc-down .hc-r{color:var(--red)}
+.hc-note{margin:0;color:var(--sub);font:500 13px/1.4 var(--sans)}
+.hd-nav{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:8px;margin-bottom:10px}
+.hd-nav a{color:var(--txt);font:600 15px var(--sans);text-decoration:none;padding:8px 0}
+.hd-nav a[rel="next"]{text-align:right}
+.hd-nav a[href="history.html"]{padding:6px 12px;border:1px solid var(--line-2);border-radius:999px}
 
 /* Spread groups: native <details>, collapsed, a sportsbook-style market
    list. Chevron sits before the label (rotated, one icon for both states). */
