@@ -11,7 +11,7 @@
 <meta name="theme-color" content="#0E1116">
 
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%2308090B'/><path d='M8 20 L14 12 L18 17 L24 9' stroke='%233BE081' stroke-width='2.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>">
-<link rel="stylesheet" href="style.css?v=39307eaa">
+<link rel="stylesheet" href="style.css?v=f14ba7bd">
 </head>
 <body>
 <header class="nav">
@@ -311,7 +311,8 @@
   function startedCards() {
     var now = Date.now();
     return Array.prototype.filter.call(
-      document.querySelectorAll("article[data-sport]"), function (c) {
+      // Board cards and the Simple tab's table rows carry the same hooks.
+      document.querySelectorAll("[data-sport]"), function (c) {
         var strip = c.querySelector(".cv-res[data-l]");
         var tip = Date.parse(c.getAttribute("data-tip") || "");
         return strip && !isNaN(tip) && tip <= now;
