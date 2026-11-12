@@ -1589,11 +1589,12 @@ footer{background:var(--bg-2);padding:56px 0 40px}
    its own focusable region if it ever outgrows the screen. */
 .cl-wrap{overflow:auto;max-inline-size:100%;border:1px solid var(--line);border-radius:12px;background:var(--panel)}
 .cl{inline-size:100%;border-collapse:separate;border-spacing:0;font:500 14px/1.35 var(--sans);color:var(--txt)}
-.cl caption{text-align:left;padding:10px 12px 0;color:var(--sub);font:500 13px var(--sans)}
-.cl thead th{position:sticky;inset-block-start:0;background:var(--bg-2);color:var(--muted);text-align:left;
+/* Child combinators throughout: the Team Stats table nests inside a row. */
+.cl > caption{text-align:left;padding:10px 12px 0;color:var(--sub);font:500 13px var(--sans)}
+.cl > thead > tr > th{position:sticky;inset-block-start:0;background:var(--bg-2);color:var(--muted);text-align:left;
   font:700 11px/1.3 var(--sans);letter-spacing:.05em;text-transform:uppercase;padding:8px 10px}
-.cl td,.cl tbody th{padding:10px;border-top:1px solid var(--line);vertical-align:middle;text-align:left}
-.cl tbody th{font-weight:600}
+.cl > tbody > tr > td,.cl > tbody > tr > th{padding:10px;border-top:1px solid var(--line);vertical-align:middle;text-align:left}
+.cl > tbody > tr > th{font-weight:600}
 .cl-time{display:block;margin-bottom:3px;color:var(--sub);font:600 12px var(--sans);letter-spacing:.02em}
 .cl-tm{display:flex;align-items:baseline;gap:6px;line-height:1.3}
 .cl-rk{flex:none;min-inline-size:2.2em;color:var(--sub);font:500 12px var(--mono);text-align:right}
@@ -1612,6 +1613,12 @@ footer{background:var(--bg-2);padding:56px 0 40px}
 .cl-tag.cl-best{background:var(--green);color:var(--on-green)}
 .cl-tag.cl-check{background:var(--amber);color:var(--on-green)}
 .cl-res{display:block;margin-top:2px;font-size:13px}
+/* Details: the board's chips and Team Stats, in a full-width row below. */
+.cl .cl-more{margin-top:8px;padding:5px 8px;font-size:13px}
+.cl-detail > td{padding:4px 10px 14px;border-top:0;background:var(--panel)}
+.cl-detail .pc-chips{margin:2px 0 8px}
+.cl-detail .pnl{padding:0;border:0;background:none}
+.cl tr:has(+ .cl-detail:not([hidden])) > *{background:var(--panel)}
 .cl-pass .cl-pick,.cl-pass .cl-pick b{color:var(--sub);font-weight:500}
 
 /* Spread groups: native <details>, collapsed, a sportsbook-style market

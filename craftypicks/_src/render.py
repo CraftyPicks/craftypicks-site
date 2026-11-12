@@ -1343,19 +1343,10 @@ def _logo(row: dict, side: str, size: int) -> str:
             f'{esc((t.get("abbr") or "")[:4])}</span>')
 
 
-def _pick_card(row: dict) -> str:
+def _pick_chips(row: dict) -> tuple[dict, list[str]]:
+    """The home-side spread market and the card's chips: Edge, Line, Proj,
+    Total. Shared by the pick card and the Simple tab's details."""
     a = row.get("ats")
-    tier = _tier_of(a)
-    # A flagged line gets no cover %: the number is the thing in doubt.
-    eid = esc(str(row.get("event_id", "")))
-    side = a["side"] if a else "home"
-    if a:
-        line = f'{a["line"]:+g}' if a["line"] else "PK"
-        who = f'{esc(_school(row, side))} {esc(line)}'
-        pct = ("" if tier == "check" else
-               f'<span class="pc-pct">{a["cover"] * 100:.0f}%<small>{_("pc_to_cover")}</small></span>')
-    else:
-        who, pct = esc(_("pc_no_pick_sub")), ""
     m = row.get("markets") or {}
     sp = m.get("spreads") or {}
     if sp.get("point") is None and row.get("spread_home") is not None:
@@ -1376,6 +1367,23 @@ def _pick_card(row: dict) -> str:
         tot = row.get("total")
     if tot is not None:
         chips.append(f'{_("pc_total")} <b>{tot:g}</b>')
+    return sp, chips
+
+
+def _pick_card(row: dict) -> str:
+    a = row.get("ats")
+    tier = _tier_of(a)
+    # A flagged line gets no cover %: the number is the thing in doubt.
+    eid = esc(str(row.get("event_id", "")))
+    side = a["side"] if a else "home"
+    if a:
+        line = f'{a["line"]:+g}' if a["line"] else "PK"
+        who = f'{esc(_school(row, side))} {esc(line)}'
+        pct = ("" if tier == "check" else
+               f'<span class="pc-pct">{a["cover"] * 100:.0f}%<small>{_("pc_to_cover")}</small></span>')
+    else:
+        who, pct = esc(_("pc_no_pick_sub")), ""
+    sp, chips = _pick_chips(row)
     warn = ""
     if tier == "check" and a.get("raw") is not None and sp.get("point") is not None:
         warn = ('<p class="pc-warn">\u26a0 ' + esc(_("pc_check_note").format(
@@ -1470,12 +1478,29 @@ def college_list(rows: list[dict]) -> str:
                 pick += f'<span class="cl-res">{_verdict(r, f["away"], f["home"])}</span>'
         else:
             pick = "&mdash;"
+        # Details, as on the board: the chips and the Team Stats panel, in a
+        # row of their own below, opened by the same Details button.
+        eid = esc(str(r.get("event_id", "")))
+        sp_, chips = _pick_chips(r)
+        ts = r.get("team_stats") or {}
+        if ts.get("home") and ts.get("away"):
+            ts = {sd: dict(ts[sd], name=_school(r, sd)) for sd in ("home", "away")}
+        panel = _detail_panel(dict(r, team_stats=ts or None))
+        inner = ((f'<div class="pc-chips">{"".join(f"<span>{c}</span>" for c in chips)}</div>'
+                  if chips else "") + (panel or ""))
+        more, extra = "", ""
+        if inner:
+            more = (f'<button class="pc-more cl-more" aria-expanded="false" aria-controls="ld-{eid}" '
+                    f'data-open="{esc(_("pc_hide"))}" data-shut="{esc(_("pc_details"))}">'
+                    f'{_("pc_details")}</button>')
+            extra = (f'<tr class="cl-detail" id="ld-{eid}" hidden><td colspan="2">'
+                     f'{inner}</td></tr>')
         body.append(
             f'<tr id="l-{esc(str(r.get("event_id", "")))}" class="cl-{t}">'
             f'<th scope="row"><span class="cl-time">{esc(when)}</span>'
             f'{team(r, "away", f["away"] if f else None)}'
             f'{team(r, "home", f["home"] if f else None)}</th>'
-            f'<td class="cl-pick">{pick}</td></tr>')
+            f'<td class="cl-pick">{pick}{more}</td></tr>' + extra)
     return (f'<div class="cl-wrap" role="region" aria-labelledby="cl-cap" tabindex="0">'
             f'<table class="cl"><caption id="cl-cap">{_("cl_caption")}</caption>'
             f'<thead><tr><th scope="col">{_("cl_game")}</th>'
@@ -3499,7 +3524,9 @@ def _test_pick_card() -> None:
                         dict(row, event_id="z", commence_time="2026-11-10T00:00:00Z",
                              final={"away": 70, "home": 90}, team_stats=None,
                              ats=dict(row["ats"], tier="lean"))])
-    assert lst.count("<tr") == 3 and lst.count('<th scope="col">') == 2 and 'role="region"' in lst
+    assert lst.count('<tr id="l-') == 2 and 'role="region"' in lst
+    head_ = lst[lst.index('<table class="cl">'):lst.index("</thead>")]
+    assert head_.count('<th scope="col">') == 2
     assert '<span class="cl-time">9:30 PM</span>' in lst, "time above the teams"
     assert lst.index('id="l-z"') < lst.index('id="l-ew"'), "by time"
     mixed = college_list([dict(row, event_id="late", commence_time="2026-11-11T17:00:00Z"),
@@ -3515,6 +3542,20 @@ def _test_pick_card() -> None:
     fin = lst[lst.index('id="l-z"'):]
     assert ">Final<" in fin and "<b>90</b>" in fin and '<span class="cl-sc">70</span>' in fin and "Missed" in fin, "lost by 20 getting 17.5"
     assert "Lean" in fin
+    # Details, like the board: a button under the pick opens a row below
+    # with the chips and the Team Stats panel.
+    one = college_list([dict(row, team_stats={
+        "away": {"name": "Eastern Washington Eagles", "stats": {"pts": 73.3, "opp": 88.7}},
+        "home": {"name": "Oregon State Beavers", "stats": {"pts": 97.3, "opp": 71.0}}})])
+    assert 'class="pc-more cl-more" aria-expanded="false" aria-controls="ld-ew"' in one
+    assert '<tr class="cl-detail" id="ld-ew" hidden><td colspan="2">' in one
+    det = one[one.index('id="ld-ew"'):]
+    assert "Edge <b>+8.6</b>" in det and "Line <b>Oregon State -17.5</b>" in det
+    assert "Points Against" in det and "Oregon State" in det
+    assert one.count('<tr id="l-') == 1 and one.count('class="cl-detail"') == 1
+    assert one.index('id="l-ew"') < one.index('id="ld-ew"'), "details right below its game"
+    bare = college_list([dict(row, team_stats=None, markets={}, model={}, ats=None)])
+    assert "cl-more" not in bare and "cl-detail" not in bare, "nothing behind it, no button"
     chk = college_list([dict(row, ats=dict(row["ats"], tier="check"))])
     assert "(78%)" not in chk and "Check line" in chk
     assert "&mdash;" in college_list([dict(row, ats=None)])
