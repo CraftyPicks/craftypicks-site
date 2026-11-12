@@ -1,6 +1,6 @@
 {
-  "date": "2026-11-11",
-  "date_label": "Wednesday, November 11, 2026",
+  "date": "2026-11-12",
+  "date_label": "Thursday, November 12, 2026",
   "rows": [
     {
       "player_id": "00-0040715",
@@ -2152,7 +2152,7 @@
     },
     {
       "player_id": "00-0039373",
-      "name": "Audric Estimé",
+      "name": "Audric Estime",
       "team": "NO",
       "opponent": "CAR",
       "position": "RB",
@@ -4935,20 +4935,50 @@
       "scored": null
     },
     {
-      "player_id": "00-0033293",
-      "name": "Aaron Jones",
+      "player_id": "00-0032918",
+      "name": "C.J. Ham",
       "team": "MIN",
       "opponent": "GB",
-      "position": "RB",
+      "position": "FB",
       "per_game": 0.25,
       "chance": 0.22967187024387126,
-      "weight": 0.667,
+      "weight": 0.0,
       "opp_allowed": 2.55,
       "league_allowed": 2.45,
       "week": 10,
       "game_id": "2026_10_MIN_GB",
       "commence_time": "2026-11-15T13:00:00-05:00",
       "recent": [
+        {
+          "season": 2025,
+          "week": 5,
+          "opponent": "CLE",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 7,
+          "opponent": "PHI",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 10,
+          "opponent": "BAL",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 11,
+          "opponent": "CHI",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 15,
+          "opponent": "DAL",
+          "value": 1.0
+        },
         {
           "season": 2025,
           "week": 16,
@@ -4959,55 +4989,13 @@
           "season": 2025,
           "week": 17,
           "opponent": "DET",
-          "value": 1.0
+          "value": 0.0
         },
         {
-          "season": 2026,
-          "week": 1,
+          "season": 2025,
+          "week": 18,
           "opponent": "GB",
           "value": 1.0
-        },
-        {
-          "season": 2026,
-          "week": 2,
-          "opponent": "CHI",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 3,
-          "opponent": "TB",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 4,
-          "opponent": "MIA",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 5,
-          "opponent": "NO",
-          "value": 1.0
-        },
-        {
-          "season": 2026,
-          "week": 7,
-          "opponent": "IND",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 8,
-          "opponent": "DET",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 9,
-          "opponent": "BUF",
-          "value": 0.0
         }
       ],
       "scored": null
@@ -6495,48 +6483,6 @@
       "scored": null
     },
     {
-      "player_id": "00-0037277",
-      "name": "Teagan Quitoriano",
-      "team": "ARI",
-      "opponent": "LA",
-      "position": "TE",
-      "per_game": 0.333,
-      "chance": 0.21431447963573558,
-      "weight": 0.333,
-      "opp_allowed": 1.77,
-      "league_allowed": 2.45,
-      "week": 10,
-      "game_id": "2026_10_LA_ARI",
-      "commence_time": "2026-11-15T16:05:00-05:00",
-      "recent": [
-        {
-          "season": 2025,
-          "week": 12,
-          "opponent": "NO",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 17,
-          "opponent": "LA",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 5,
-          "opponent": "DET",
-          "value": 2.0
-        },
-        {
-          "season": 2026,
-          "week": 9,
-          "opponent": "SEA",
-          "value": 0.0
-        }
-      ],
-      "scored": null
-    },
-    {
       "player_id": "00-0041027",
       "name": "Jeremiyah Love",
       "team": "ARI",
@@ -6585,6 +6531,48 @@
           "season": 2026,
           "week": 8,
           "opponent": "DAL",
+          "value": 0.0
+        }
+      ],
+      "scored": null
+    },
+    {
+      "player_id": "00-0037277",
+      "name": "Teagan Quitoriano",
+      "team": "ARI",
+      "opponent": "LA",
+      "position": "TE",
+      "per_game": 0.333,
+      "chance": 0.21431447963573558,
+      "weight": 0.333,
+      "opp_allowed": 1.77,
+      "league_allowed": 2.45,
+      "week": 10,
+      "game_id": "2026_10_LA_ARI",
+      "commence_time": "2026-11-15T16:05:00-05:00",
+      "recent": [
+        {
+          "season": 2025,
+          "week": 12,
+          "opponent": "NO",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 17,
+          "opponent": "LA",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 5,
+          "opponent": "DET",
+          "value": 2.0
+        },
+        {
+          "season": 2026,
+          "week": 9,
+          "opponent": "SEA",
           "value": 0.0
         }
       ],
