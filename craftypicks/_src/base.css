@@ -1585,6 +1585,35 @@ footer{background:var(--bg-2);padding:56px 0 40px}
 .pc-detail .ts-v th{font-size:12.5px;font-weight:500;color:var(--sub)}
 .pc-detail .ts-bar{height:5px}
 .pc-detail .ts-cap{font-size:12px;padding-bottom:6px}
+/* The Simple tab: one plain table, the game as the row header. Scrolls in
+   its own focusable region if it ever outgrows the screen. */
+.cl-wrap{overflow:auto;max-inline-size:100%;border:1px solid var(--line);border-radius:12px;background:var(--panel)}
+.cl{inline-size:100%;border-collapse:separate;border-spacing:0;font:500 14px/1.35 var(--sans);color:var(--txt)}
+.cl caption{text-align:left;padding:10px 12px 0;color:var(--sub);font:500 13px var(--sans)}
+.cl thead th{position:sticky;inset-block-start:0;background:var(--bg-2);color:var(--muted);text-align:left;
+  font:700 11px/1.3 var(--sans);letter-spacing:.05em;text-transform:uppercase;padding:8px 10px}
+.cl td,.cl tbody th{padding:10px;border-top:1px solid var(--line);vertical-align:middle;text-align:left}
+.cl tbody th{font-weight:600}
+.cl-time{display:block;margin-bottom:3px;color:var(--sub);font:600 12px var(--sans);letter-spacing:.02em}
+.cl-tm{display:flex;align-items:baseline;gap:6px;line-height:1.3}
+.cl-rk{flex:none;min-inline-size:2.2em;color:var(--sub);font:500 12px var(--mono);text-align:right}
+.cl-nm{flex:1;min-inline-size:0}
+.cl-tm b,.cl-tm{font-variant-numeric:tabular-nums}
+.cl-at{color:var(--sub);font-weight:500}
+/* ATS sits under the school as a small labelled tag, not a loose column. */
+.cl-ats{display:table;margin:2px 0 4px;padding:0 6px;border-radius:5px;background:var(--bg-2);
+  color:var(--txt);font:600 11.5px/1.6 var(--sans);font-variant-numeric:tabular-nums}
+.cl-ats-l{color:var(--muted);font-size:10.5px;font-weight:700;letter-spacing:.06em}
+.cl-sc{flex:none;min-inline-size:2.1em;text-align:right}
+.cl-pick{inline-size:42%}
+.cl-pick b{color:var(--txt)}
+.cl-tag{display:inline-block;margin-inline-start:6px;padding:1px 6px;border-radius:6px;
+  font:800 10.5px/1.5 var(--sans);letter-spacing:.04em;text-transform:uppercase;background:var(--line);color:var(--txt)}
+.cl-tag.cl-best{background:var(--green);color:var(--on-green)}
+.cl-tag.cl-check{background:var(--amber);color:var(--on-green)}
+.cl-res{display:block;margin-top:2px;font-size:13px}
+.cl-pass .cl-pick,.cl-pass .cl-pick b{color:var(--sub);font-weight:500}
+
 /* Spread groups: native <details>, collapsed, a sportsbook-style market
    list. Chevron sits before the label (rotated, one icon for both states). */
 .pc-groups{display:grid;gap:10px}

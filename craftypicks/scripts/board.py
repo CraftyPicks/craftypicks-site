@@ -531,12 +531,38 @@ def espn_fill(rows: list[dict], espn_games: list[dict], day) -> list[dict]:
     # Unordered: the two feeds sometimes disagree on who is home (a neutral
     # site), and that is still one game.
     by_pair = {frozenset((key(r.get("away")), key(r.get("home")))): r for r in rows}
+
+    def minute(stamp):
+        try:
+            from datetime import datetime  # noqa: PLC0415
+            return datetime.fromisoformat(str(stamp).replace("Z", "+00:00")).replace(
+                second=0, microsecond=0)
+        except ValueError:
+            return None
+
     added = []
     for g in espn_games:
         if _et_day(g.get("commence_time")) != day:
             continue
         home, away = g["home"]["name"], g["away"]["name"]
         priced = by_pair.get(frozenset((key(away), key(home))))
+        if priced is None:
+            # Spelled differently by the two feeds ("UMKC" / "Kansas City"):
+            # the same tip-off with one school in common is the same game.
+            # The row takes ESPN's names, in its own home/away order.
+            tip, names = minute(g.get("commence_time")), {key(home): home, key(away): away}
+            for r in rows:
+                if tip is None or minute(r.get("commence_time")) != tip:
+                    continue
+                rk = {"home": key(r.get("home")), "away": key(r.get("away"))}
+                hit = [side for side, k in rk.items() if k in names]
+                if len(hit) != 1:
+                    continue
+                other = "away" if hit[0] == "home" else "home"
+                r[other] = next(n for k, n in names.items() if k != rk[hit[0]])
+                r[hit[0]] = names[rk[hit[0]]]
+                priced = r
+                break
         if priced is not None:
             priced["espn_id"] = str(g["event_id"])
             continue
@@ -822,6 +848,30 @@ def _test_espn_fill() -> None:
     extra = espn_fill(flipped, [eg("401920887", "Charlotte 49ers", "Seton Hall Pirates",
                                    "2026-11-10T02:00Z", 4.5)], _d(2026, 11, 9))
     assert extra == [] and flipped[0]["espn_id"] == "401920887"
+    # The feeds spell some schools differently ("UMKC Kangaroos" / "Kansas
+    # City Roos", "Loyola (Chi)" / "Loyola Chicago": ten games doubled on
+    # 2026-11-11). Same tip-off and one school in common is the same game;
+    # the row takes ESPN's names, which BPI, the team sheets and the live
+    # scores all use.
+    umkc = [{"event_id": "o3", "league": "ncaab", "home": "Florida A&M Rattlers",
+             "away": "UMKC Kangaroos", "commence_time": "2026-11-11T17:00:00Z",
+             "markets": {"spreads": {"point": 7.5, "side_a": "home"}}}]
+    extra = espn_fill(umkc, [eg("501", "Florida A&M Rattlers", "Kansas City Roos",
+                                "2026-11-11T17:00Z", 7.5)], _d(2026, 11, 11))
+    assert extra == [] and umkc[0]["espn_id"] == "501"
+    assert umkc[0]["away"] == "Kansas City Roos" and umkc[0]["home"] == "Florida A&M Rattlers"
+    # Flipped home/away AND a spelling difference: names follow the row's order.
+    lb = [{"event_id": "o4", "league": "ncaab", "home": "Pacific Tigers",
+           "away": "Long Beach St 49ers", "commence_time": "2026-11-12T03:00:00Z",
+           "markets": {}}]
+    espn_fill(lb, [eg("502", "Long Beach State Beach", "Pacific Tigers",
+                      "2026-11-12T03:00Z", -3.0)], _d(2026, 11, 11))
+    assert lb[0]["away"] == "Long Beach State Beach" and lb[0]["home"] == "Pacific Tigers"
+    # One school in common but a different start: a different game.
+    other = [{"event_id": "o5", "league": "ncaab", "home": "Florida A&M Rattlers",
+              "away": "Somebody", "commence_time": "2026-11-11T23:00:00Z", "markets": {}}]
+    assert len(espn_fill(other, [eg("503", "Florida A&M Rattlers", "Kansas City Roos",
+                                    "2026-11-11T17:00Z", 7.5)], _d(2026, 11, 11))) == 1
 
 
 def _test_keep_started() -> None:

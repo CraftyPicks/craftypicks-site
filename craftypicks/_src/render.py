@@ -1423,6 +1423,66 @@ def college_board(rows: list[dict], summary: dict | None) -> str:
     return head + _spread_groups(ordered)
 
 
+def college_list(rows: list[dict]) -> str:
+    """The Simple tab: a plain table, one row per game by start time. Time
+    (or Final), both schools with their power rank (BPI, FPI for football)
+    and score once final, and our pick with its chance to cover and, once
+    final, whether it covered. The game is the row header."""
+    if not rows:
+        return board_cards([])
+    tag = {"best": "pc_best_s", "lean": "pc_lean", "check": "pc_check_s"}
+
+    def team(r: dict, side: str, pts) -> str:
+        sheet = ((r.get("team_stats") or {}).get(side)) or {}
+        rk = sheet.get("bpi") or sheet.get("fpi")
+        name = esc(_school(r, side))
+        sc = "" if pts is None else (
+            f'<span class="cl-sc"><b>{pts:g}</b></span>' if pts == max(
+                r["final"]["away"], r["final"]["home"]) else f'<span class="cl-sc">{pts:g}</span>')
+        rank = f'<span class="cl-rk">{rk}</span>' if rk else ""
+        rec = (sheet.get("stats") or {}).get("ats") or []
+        ats = ""
+        if len(rec) == 3 and sum(rec):
+            ats = (f'<span class="cl-ats"><span class="cl-ats-l">ATS</span> {rec[0]}-{rec[1]}'
+                   + (f"-{rec[2]}" if rec[2] else "") + "</span>")
+        at = f' <span class="cl-at">{_("cl_at")}</span>' if side == "away" else ""
+        return f'<span class="cl-tm">{rank}<span class="cl-nm">{name}{at}{ats}</span>{sc}</span>'
+
+    body = []
+    def tip(r):   # "...T17:00Z" and "...T17:00:00Z" must sort as the same time
+        try:
+            return datetime.fromisoformat(str(r.get("commence_time")).replace("Z", "+00:00")).timestamp()
+        except ValueError:
+            return float("inf")
+    for r in sorted(rows, key=lambda r: (tip(r), r.get("home") or "")):
+        f = r.get("final")
+        when = _("res_final") if f else game_time(r.get("commence_time")).replace(" ET", "")
+        a = r.get("ats")
+        t = _tier_of(a)
+        if a:
+            line = f'{a["line"]:+g}' if a["line"] else "PK"
+            pick = f'<b>{esc(_school(r, a["side"]))} {esc(line)}</b>'
+            if t != "check":
+                pick += f' ({a["cover"] * 100:.0f}%)'
+            if t in tag:
+                pick += f'<span class="cl-tag cl-{t}">{_(tag[t])}</span>'
+            if f:
+                pick += f'<span class="cl-res">{_verdict(r, f["away"], f["home"])}</span>'
+        else:
+            pick = "&mdash;"
+        body.append(
+            f'<tr id="l-{esc(str(r.get("event_id", "")))}" class="cl-{t}">'
+            f'<th scope="row"><span class="cl-time">{esc(when)}</span>'
+            f'{team(r, "away", f["away"] if f else None)}'
+            f'{team(r, "home", f["home"] if f else None)}</th>'
+            f'<td class="cl-pick">{pick}</td></tr>')
+    return (f'<div class="cl-wrap" role="region" aria-labelledby="cl-cap" tabindex="0">'
+            f'<table class="cl"><caption id="cl-cap">{_("cl_caption")}</caption>'
+            f'<thead><tr><th scope="col">{_("cl_game")}</th>'
+            f'<th scope="col">{_("cl_pick")}</th></tr></thead>'
+            f'<tbody>{"".join(body)}</tbody></table></div>')
+
+
 # Spread-size groups on the college boards, by the absolute line: lower
 # bound inclusive. Pick'em sits with 1-5.
 SPREAD_GROUPS = ((0, 5, "1\u20135"), (5, 10, "5\u201310"), (10, 20, "10\u201320"),
@@ -3432,6 +3492,33 @@ def _test_pick_card() -> None:
     assert '<details class="pc-grp" data-best="1"><summary><span class="pc-grp-t">Spread 5\u201310' in grp
     empty_grp = college_board([sp("a", -3.5)], {})
     assert "Spread 20+" not in empty_grp, "no empty groups"
+    # The Simple list: one table row per game, time, ranked schools, our pick.
+    st = {"away": {"bpi": 278, "stats": {"ats": [2, 1, 0]}},
+          "home": {"bpi": 137, "stats": {"ats": [0, 2, 1]}}}
+    lst = college_list([dict(row, team_stats=st),
+                        dict(row, event_id="z", commence_time="2026-11-10T00:00:00Z",
+                             final={"away": 70, "home": 90}, team_stats=None,
+                             ats=dict(row["ats"], tier="lean"))])
+    assert lst.count("<tr") == 3 and lst.count('<th scope="col">') == 2 and 'role="region"' in lst
+    assert '<span class="cl-time">9:30 PM</span>' in lst, "time above the teams"
+    assert lst.index('id="l-z"') < lst.index('id="l-ew"'), "by time"
+    mixed = college_list([dict(row, event_id="late", commence_time="2026-11-11T17:00:00Z"),
+                          dict(row, event_id="early", commence_time="2026-11-11T16:00Z")])
+    assert mixed.index('id="l-early"') < mixed.index('id="l-late"'), "stamp formats mixed"
+    assert '<span class="cl-rk">278</span><span class="cl-nm">Eastern Washington <span class="cl-at">at</span>' in lst
+    assert '<span class="cl-rk">137</span><span class="cl-nm">Oregon State<span class="cl-ats">' in lst
+    assert "Eastern Washington +17.5" in lst and "(78%)" in lst and ">Best<" in lst
+    # Each school's record against the spread this season (W-L, pushes if any).
+    assert '<span class="cl-ats"><span class="cl-ats-l">ATS</span> 2-1</span>' in lst
+    assert '<span class="cl-ats"><span class="cl-ats-l">ATS</span> 0-2-1</span>' in lst
+    assert "Eagles" not in _re.sub(r"<[^>]+>", " ", lst), "school names only"
+    fin = lst[lst.index('id="l-z"'):]
+    assert ">Final<" in fin and "<b>90</b>" in fin and '<span class="cl-sc">70</span>' in fin and "Missed" in fin, "lost by 20 getting 17.5"
+    assert "Lean" in fin
+    chk = college_list([dict(row, ats=dict(row["ats"], tier="check"))])
+    assert "(78%)" not in chk and "Check line" in chk
+    assert "&mdash;" in college_list([dict(row, ats=None)])
+    assert college_list([]).startswith('<p class="empty-board">')
     # Football rows carry the spread and total in their own fields.
     cf = dict(row, league="ncaaf", markets=None, spread_home=-6.5, total=52.5,
               teams={"home": {"school": "Alabama"}, "away": {"school": "LSU"}}, model={})

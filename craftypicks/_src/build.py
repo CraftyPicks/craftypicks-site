@@ -68,6 +68,10 @@ PAGES: dict[str, Page] = {
     # NCAAF rides the shared league template but is not a leagues.py league:
     # that list decides what the Odds API buys, and this board buys nothing.
     "ncaaf/index.html": Page("ncaaf/index.html", "league", "ncaaf", "ncaaf"),
+    # The Simple tab: the same board as one plain table (time, ranked
+    # schools, our pick). Same template; the key picks the renderer.
+    "ncaab/simple.html": Page("ncaab/simple.html", "league", "ncaab_simple", "ncaab"),
+    "ncaaf/simple.html": Page("ncaaf/simple.html", "league", "ncaaf_simple", "ncaaf"),
 }
 
 # Free (ESPN-only) leagues, shown after the Odds-API leagues in the nav.
@@ -109,6 +113,8 @@ _EXTRA_VIEWS: dict[str, list[tuple[str, str]]] = {
     "nba": [("nba/points.html", "nav_nbapts"),
             ("nba/assists.html", "nav_nbaast"),
             ("nba/rebounds.html", "nav_nbareb")],
+    "ncaab": [("ncaab/simple.html", "nav_simple")],
+    "ncaaf": [("ncaaf/simple.html", "nav_simple")],
     "nfl": [("nfl/passing.html", "nav_pass"),
             ("nfl/rushing.html", "nav_rush"),
             ("nfl/receiving.html", "nav_recv"),
@@ -124,6 +130,7 @@ VIEWS: dict[str, list[tuple[str, str]]] = {
     for short in leagues.ORDER
 }
 VIEWS.update({short: [(f"{short}/index.html", "nav_board")]
+              + _EXTRA_VIEWS.get(short, [])
               for short, _label in FREE_LEAGUES})
 
 
@@ -328,6 +335,10 @@ TITLES = {
                   "es": f"Hits — {config.SITE_NAME}"},
     "f7.html": {"en": f"First 7 innings — {config.SITE_NAME}",
                 "es": f"Primeras 7 entradas — {config.SITE_NAME}"},
+    "ncaab/simple.html": {"en": f"NCAAB simple — {config.SITE_NAME}",
+                          "es": f"NCAAB simple — {config.SITE_NAME}"},
+    "ncaaf/simple.html": {"en": f"NCAAF simple — {config.SITE_NAME}",
+                          "es": f"NCAAF simple — {config.SITE_NAME}"},
     "ncaaf/index.html": {"en": f"NCAAF board — {config.SITE_NAME}",
                          "es": f"Tablero NCAAF — {config.SITE_NAME}"},
     "nba/points.html": {"en": f"Points — {config.SITE_NAME}",
@@ -670,8 +681,10 @@ def build() -> None:
                     # Redesign B: tier records, the best-bets filter, pick cards.
                     tier_src = (entry.get("summary") if page.league == "ncaaf"
                                 else rating_summaries.get("ncaab"))
-                    page_tokens["{{LEAGUE_BOARD}}"] = R.college_board(
-                        entry.get("games") or [], tier_src or {})
+                    page_tokens["{{LEAGUE_BOARD}}"] = (
+                        R.college_list(entry.get("games") or [])
+                        if page.key.endswith("_simple") else
+                        R.college_board(entry.get("games") or [], tier_src or {}))
                 else:
                     page_tokens["{{LEAGUE_BOARD}}"] = R.board_cards(
                         entry.get("games") or [])
@@ -897,7 +910,12 @@ def _self_test() -> None:
 
     # The NCAAB System and 1st Half tabs were retired (Nov 2026): the board's
     # spread groups replaced them. Their old URLs redirect to the board.
-    assert VIEWS["ncaab"] == [("ncaab/index.html", "nav_board")]
+    assert VIEWS["ncaab"] == [("ncaab/index.html", "nav_board"),
+                              ("ncaab/simple.html", "nav_simple")]
+    for short in ("ncaab", "ncaaf"):
+        out = f"{short}/simple.html"
+        assert out in PAGES and PAGES[out].league == short and out in TITLES
+        assert (out, "nav_simple") in VIEWS[short]
     for gone in ("homers.html", "ncaab/system.html", "ncaab/first-half.html"):
         assert gone not in PAGES, f"{gone} is retired but still built"
         assert all(gone != out for views in _EXTRA_VIEWS.values()
