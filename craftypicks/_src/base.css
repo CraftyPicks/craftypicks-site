@@ -1626,9 +1626,87 @@ footer{background:var(--bg-2);padding:56px 0 40px}
 .cl tr:has(+ .cl-detail:not([hidden])) > *{background:var(--panel)}
 .cl-pass .cl-pick,.cl-pass .cl-pick b{color:var(--sub);font-weight:500}
 
+/* Scoreboard style (Nov 2026): the game card every list shares. Square
+   6px corners throughout; mono type for status, labels and numbers; a
+   stripe down the left edge for a best bet (green) or a live game (red),
+   each also written in words on the card. */
+.gm-sum{display:grid;grid-template-columns:repeat(auto-fit,minmax(0,1fr));gap:8px;margin-bottom:8px}
+.gm-sum div{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:10px 12px}
+.gm-sum b{display:block;color:var(--txt);font:700 22px/1.1 var(--mono);letter-spacing:-.03em}
+.gm-sum span{color:var(--sub);font:500 12.5px var(--sans)}
+.gm-key{margin:0 0 12px;color:var(--sub);font:500 12.5px/1.4 var(--sans)}
+.gm-list{display:grid;gap:12px}
+.gm{position:relative;overflow:hidden;padding:14px 14px 14px 18px;background:var(--panel);
+  border:1px solid var(--line);border-radius:6px}
+.gm::before{content:"";position:absolute;inset-block:0;inset-inline-start:0;inline-size:4px;background:var(--line-2)}
+.gm-best::before{background:var(--green)}
+.gm-check::before{background:var(--amber)}
+.gm.is-live::before{background:var(--red)}
+.gm-h{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px}
+.gm-st{color:var(--sub);font:600 12px var(--mono);letter-spacing:.08em;text-transform:uppercase}
+.is-live .gm-st{color:var(--red)}
+.gm-tier{padding:3px 9px;border-radius:6px;background:var(--line);color:var(--txt);
+  font:700 11px/1.5 var(--mono);letter-spacing:.08em;text-transform:uppercase}
+.gm-tier-best{background:var(--green);color:var(--on-green)}
+.gm-tier-check{background:var(--amber);color:var(--on-green)}
+.gm-tm{display:flex;align-items:center;gap:10px;padding:5px 0}
+.gm .pc-lg{border-radius:6px;font-size:9.5px}
+.gm .pc-lg img{border-radius:6px}
+.gm-nm{flex:1;min-inline-size:0}
+.gm-nm b{display:block;color:var(--txt);font:700 16.5px/1.2 var(--sans)}
+.gm-nm small{display:block;margin-top:1px;color:var(--sub);font:500 12px var(--mono);white-space:pre}
+.gm-sc{flex:none;min-inline-size:2ch;text-align:right;color:var(--sub);
+  font:600 22px/1 var(--mono);letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.gm-sc.w{color:var(--txt);font-weight:800}
+.gm-pk{display:grid;grid-template-columns:1fr auto;align-items:end;gap:2px 10px;margin-top:10px;
+  padding-top:11px;border-top:1px dashed var(--line-2)}
+.gm-lb{grid-column:1/-1;color:var(--sub);font:600 10.5px var(--mono);letter-spacing:.1em;text-transform:uppercase}
+.gm-pv{color:var(--txt);font:800 17px/1.25 var(--sans)}
+.gm-pc{color:var(--green);font:800 26px/1 var(--mono);letter-spacing:-.04em}
+.gm-pc small{margin-left:1px;font-size:13px}
+.gm-pass .gm-pc{color:var(--sub)}
+.gm-pass .gm-pv,.gm-nopick .gm-pv{color:var(--sub);font-weight:600}
+.gm-ou{color:var(--sub);font:600 15px var(--mono)}
+.gm-meter{grid-column:1/-1;block-size:4px;margin-top:7px;border-radius:6px;background:var(--line);overflow:hidden}
+.gm-meter i{display:block;block-size:100%;background:var(--green);border-radius:6px}
+.gm-pass .gm-meter i{background:var(--line-2)}
+.gm-res{grid-column:1/-1;font:800 13px var(--sans)}
+.gm-res:not(:empty){margin-top:8px}
+.gm-res .won{color:var(--green)}
+.gm-res .lost{color:var(--red)}
+.gm-res .push{color:var(--sub)}
+.gm .gm-more{display:block;inline-size:100%;margin-top:12px;padding:10px;border:1px solid var(--line-2);
+  border-radius:6px;background:transparent;color:var(--txt);font:700 14px var(--sans);cursor:pointer}
+.gm .gm-more:hover,.gm .gm-more:focus-visible{border-color:var(--green)}
+.gm .gm-more:active{transform:translateY(1px)}
+.gm-detail{margin-top:12px}
+.gm-detail .pc-chips{margin:0 0 10px}
+.gm-detail .pc-chips span{border-radius:6px}
+.gm-detail .pnl{padding:0;border:0;background:none}
+.gm-detail .pc-grp,.gm-detail .pc-grp-n{border-radius:6px}
+@media (prefers-reduced-motion:reduce){.gm .gm-more:active{transform:none}}
+
+/* Pro list (NBA): a game's markets as collapsed sections inside Details. */
+.pl-ou{color:var(--sub);font-size:13px}
+.mk{background:var(--bg-2)}
+.mk > summary{min-height:48px;padding:8px 12px}
+.mk .pc-grp-t{font-size:15px}
+.mk-body{padding:0 10px 10px}
+.mk-t{inline-size:100%;border-collapse:separate;border-spacing:0;font:500 14px/1.3 var(--sans);color:var(--txt)}
+.mk-t th,.mk-t td{padding:8px 6px;text-align:right;font-variant-numeric:tabular-nums;border-top:1px solid var(--line)}
+.mk-t thead th{border-top:0;color:var(--muted);font:700 11px/1.3 var(--sans);letter-spacing:.05em;text-transform:uppercase}
+.mk-t tbody th,.mk-t thead th:first-child{text-align:left}
+.mk-t tbody th{font-weight:700}
+.mk-t small{display:block;color:var(--sub);font:500 12px/1.35 var(--sans)}
+.mk-t td{font-weight:700}
+.mk-p td:not(.mk-proj){color:var(--sub);font-weight:500}
+.mk-proj{font-size:16px}
+.mk-note{margin:6px 2px 0;color:var(--sub);font:500 12px var(--sans)}
+.pa-h{margin:18px 0 4px;font:700 15px var(--sans);color:var(--txt)}
+
 /* History: home vs away against the spread, above the calendar. */
 .ha{inline-size:100%;border-collapse:separate;border-spacing:0;margin-bottom:6px;
-  background:var(--panel);border:1px solid var(--line);border-radius:14px;font:500 14px var(--sans);color:var(--txt)}
+  background:var(--panel);border:1px solid var(--line);border-radius:6px;font:500 14px var(--sans);color:var(--txt)}
 .ha > caption{text-align:left;padding:0 2px 8px;color:var(--txt);font:800 17px var(--sans)}
 .ha th,.ha td{padding:9px 12px;text-align:right;font-variant-numeric:tabular-nums}
 .ha thead th{color:var(--muted);font:700 11px/1.3 var(--sans);letter-spacing:.05em;text-transform:uppercase}
@@ -1645,13 +1723,13 @@ footer{background:var(--bg-2);padding:56px 0 40px}
 .hc-sum{margin:0 0 4px;color:var(--sub);font:500 14px var(--sans)}
 .hc-sum b{color:var(--txt);font-weight:800}
 .hc{inline-size:100%;table-layout:fixed;border-collapse:separate;border-spacing:4px;
-  background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px}
+  background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:6px}
 .hc > caption{text-align:left;padding:4px 4px 8px;color:var(--txt);font:800 17px var(--sans)}
 .hc th{color:var(--muted);font:700 11px var(--sans);padding:2px 0 4px;text-align:center}
-.hc td{block-size:52px;padding:0;text-align:center;vertical-align:middle;border-radius:10px}
+.hc td{block-size:52px;padding:0;text-align:center;vertical-align:middle;border-radius:6px}
 .hc-off .hc-d{color:var(--muted);font:500 13px var(--sans);opacity:.55}
 .hc-on{background:var(--bg-2)}
-.hc-on a{display:grid;place-content:center;gap:1px;block-size:100%;border-radius:10px;
+.hc-on a{display:grid;place-content:center;gap:1px;block-size:100%;border-radius:6px;
   color:var(--txt);text-decoration:none;border:1px solid var(--line-2)}
 .hc-on a:hover,.hc-on a:focus-visible{border-color:var(--green)}
 .hc-on .hc-d{font:700 14px var(--sans)}
@@ -1662,7 +1740,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
 .hd-nav{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:8px;margin-bottom:10px}
 .hd-nav a{color:var(--txt);font:600 15px var(--sans);text-decoration:none;padding:8px 0}
 .hd-nav a[rel="next"]{text-align:right}
-.hd-nav a[href="history.html"]{padding:6px 12px;border:1px solid var(--line-2);border-radius:999px}
+.hd-nav a[href="history.html"]{padding:6px 12px;border:1px solid var(--line-2);border-radius:6px}
 
 /* Spread groups: native <details>, collapsed, a sportsbook-style market
    list. Chevron sits before the label (rotated, one icon for both states). */

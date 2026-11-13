@@ -55,9 +55,6 @@ PAGES: dict[str, Page] = {
     "batters.html":  Page("batters.html",  "batters",  "batters",  "mlb"),
     "hits.html":     Page("hits.html",     "hits",     "hits",     "mlb"),
     "f7.html":       Page("f7.html",       "f7",       "f7",       "mlb"),
-    "nba/points.html":    Page("nba/points.html",    "nba_points",    "nba_points",    "nba"),
-    "nba/assists.html":   Page("nba/assists.html",   "nba_assists",   "nba_assists",   "nba"),
-    "nba/rebounds.html":  Page("nba/rebounds.html",  "nba_rebounds",  "nba_rebounds",  "nba"),
     "nfl/passing.html":   Page("nfl/passing.html",   "nfl_passing",   "nfl_passing",   "nfl"),
     "nfl/rushing.html":   Page("nfl/rushing.html",   "nfl_rushing",   "nfl_rushing",   "nfl"),
     "nfl/receiving.html": Page("nfl/receiving.html", "nfl_receiving", "nfl_receiving", "nfl"),
@@ -112,9 +109,6 @@ _EXTRA_VIEWS: dict[str, list[tuple[str, str]]] = {
             ("f7.html", "nav_f7"),
             ("batters.html", "nav_batters"),
             ("hits.html", "nav_hits")],
-    "nba": [("nba/points.html", "nav_nbapts"),
-            ("nba/assists.html", "nav_nbaast"),
-            ("nba/rebounds.html", "nav_nbareb")],
     "ncaab": [("ncaab/history.html", "nav_history")],
     "ncaaf": [("ncaaf/history.html", "nav_history")],
     "nfl": [("nfl/passing.html", "nav_pass"),
@@ -135,7 +129,7 @@ VIEWS.update({short: [(f"{short}/index.html", "nav_board")]
               + _EXTRA_VIEWS.get(short, [])
               for short, _label in FREE_LEAGUES})
 # The college boards are the day's list now; "Today" sits beside "History".
-for _short in ("ncaab", "ncaaf"):
+for _short in ("ncaab", "ncaaf", "nba"):
     VIEWS[_short][0] = (f"{_short}/index.html", "nav_today")
 
 
@@ -347,12 +341,6 @@ TITLES = {
                            "es": f"Historial NCAAF — {config.SITE_NAME}"},
     "ncaaf/index.html": {"en": f"NCAAF board — {config.SITE_NAME}",
                          "es": f"Tablero NCAAF — {config.SITE_NAME}"},
-    "nba/points.html": {"en": f"Points — {config.SITE_NAME}",
-                        "es": f"Puntos — {config.SITE_NAME}"},
-    "nba/assists.html": {"en": f"Assists — {config.SITE_NAME}",
-                         "es": f"Asistencias — {config.SITE_NAME}"},
-    "nba/rebounds.html": {"en": f"Rebounds — {config.SITE_NAME}",
-                          "es": f"Rebotes — {config.SITE_NAME}"},
     "nfl/passing.html": {"en": f"Passing yards — {config.SITE_NAME}",
                          "es": f"Yardas de pase — {config.SITE_NAME}"},
     "nfl/rushing.html": {"en": f"Rushing yards — {config.SITE_NAME}",
@@ -465,7 +453,10 @@ COLLEGE_LEAGUES = ("ncaab", "ncaaf")
 # a redirect on every build, so the orphan sweep keeps them.
 RETIRED = {"ncaab/system.html": "index.html", "ncaab/first-half.html": "index.html",
            # The Simple list is the college board now.
-           "ncaab/simple.html": "index.html", "ncaaf/simple.html": "index.html"}
+           "ncaab/simple.html": "index.html", "ncaaf/simple.html": "index.html",
+           # NBA's prop boards live inside each game's Details now.
+           "nba/points.html": "index.html", "nba/assists.html": "index.html",
+           "nba/rebounds.html": "index.html"}
 
 
 def _trim(row: dict) -> dict:
@@ -814,6 +805,14 @@ def build() -> None:
                         # The Simple list is the college board (Nov 2026).
                         page_tokens["{{LEAGUE_BOARD}}"] = R.college_list(
                             entry.get("games") or [])
+                elif page.league == "nba":
+                    # One list; each game's Details holds its lines and the
+                    # three projection boards as collapsed sections.
+                    page_tokens["{{LEAGUE_BOARD}}"] = R.pro_list(
+                        entry.get("games") or [],
+                        {f"mk_{stat}": NBA_DOCS[f"nba_{stat}"].get("rows", [])
+                         for stat in ("points", "assists", "rebounds")},
+                        R._NBA_BY_NAME)
                 else:
                     page_tokens["{{LEAGUE_BOARD}}"] = R.board_cards(
                         entry.get("games") or [])
@@ -839,6 +838,10 @@ def build() -> None:
                     page_tokens["{{LEAGUE_CALIBRATION}}"] = (
                         R.ncaaf_record(entry.get("summary") or {})
                         if page.league == "ncaaf" else R.calibration_section(scored))
+                    if page.league == "nba":
+                        page_tokens["{{LEAGUE_CALIBRATION}}"] += R.prop_accuracy(
+                            {f"mk_{stat}": NBA_DOCS[f"nba_{stat}"].get("summary", {})
+                             for stat in ("points", "assists", "rebounds")})
             if page.body == "hits":
                 # {{DATE_LABEL}} has no site-wide value any more; each body
                 # that shows a date supplies its own here.
@@ -966,7 +969,8 @@ def _test_history() -> None:
     assert list(split) == ["all", "1\u20135", "5\u201310", "10\u201320", "20+"]
     assert 'url=index.html' in retired_stub("index.html")
     assert set(RETIRED) == {"ncaab/system.html", "ncaab/first-half.html",
-                            "ncaab/simple.html", "ncaaf/simple.html"}
+                            "ncaab/simple.html", "ncaaf/simple.html",
+                            "nba/points.html", "nba/assists.html", "nba/rebounds.html"}
     import tempfile  # noqa: PLC0415
     doc = {"date": "2026-11-11", "leagues": {
         "ncaab": {"games": [{"event_id": "a", "commence_time": "2026-11-12T00:00:00Z",
@@ -1129,7 +1133,12 @@ def _self_test() -> None:
         assert VIEWS[short] == [(f"{short}/index.html", "nav_today"),
                                 (f"{short}/history.html", "nav_history")], VIEWS[short]
         assert RETIRED[f"{short}/simple.html"] == "index.html"
-    assert VIEWS["nba"][0] == ("nba/index.html", "nav_board"), "other sports keep Board"
+    # NBA (Nov 2026): one Today list; the three prop tabs moved inside each
+    # game's Details and their URLs redirect.
+    assert VIEWS["nba"] == [("nba/index.html", "nav_today")], VIEWS["nba"]
+    for gone in ("nba/points.html", "nba/assists.html", "nba/rebounds.html"):
+        assert gone not in PAGES and RETIRED[gone] == "index.html"
+    assert VIEWS["nfl"][0] == ("nfl/index.html", "nav_board"), "other sports keep Board"
     for gone in ("homers.html", "ncaab/system.html", "ncaab/first-half.html",
                  "ncaab/simple.html", "ncaaf/simple.html"):
         assert gone not in PAGES, f"{gone} is retired but still built"

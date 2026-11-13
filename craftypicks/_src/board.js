@@ -146,7 +146,8 @@
 (function () {
   var URLS = {
     ncaab: "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/scoreboard?groups=50&limit=400&dates=",
-    ncaaf: "https://site.api.espn.com/apis/site/v2/sports/football/college-football/scoreboard?groups=80&limit=300&dates="
+    ncaaf: "https://site.api.espn.com/apis/site/v2/sports/football/college-football/scoreboard?groups=80&limit=300&dates=",
+    nba: "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates="
   };
   var EVERY = 60000;
   var timer = null;
@@ -163,7 +164,9 @@
       if (x === "st" && i > 0) { return "state"; }
       return WORDS[x] || x;
     });
-    return w.join(" ").replace("appalachian state", "app state");
+    // ESPN writes "LA Clippers"; the odds feed "Los Angeles Clippers".
+    return w.join(" ").replace("appalachian state", "app state")
+      .replace(/^la clippers$/, "los angeles clippers");
   }
 
   function etDate(iso) {
@@ -224,11 +227,29 @@
     var label = done ? L[0] : L[1] + " · " + (st.shortDetail || "");
     var an = (sides.away.team || {}).shortDisplayName || card.getAttribute("data-away");
     var hn = (sides.home.team || {}).shortDisplayName || card.getAttribute("data-home");
-    strip.innerHTML =
-      '<span><span class="st' + (done ? "" : " live") + '">' + esc(label) + "</span>" +
-      esc(an) + " " + away + " – " + esc(hn) + " " + home + "</span>" +
-      verdict(card, cardAway, cardHome, done, L);
-    strip.hidden = false;
+    if (card.classList.contains("gm")) {
+      // Scoreboard cards show the game in place: status line, each club's
+      // score cell, and the verdict under the pick. The strip stays hidden.
+      var stEl = card.querySelector(".gm-st");
+      if (stEl) { stEl.textContent = label; }
+      card.classList.toggle("is-live", !done);
+      card.classList.toggle("is-final", done);
+      [["away", cardAway, cardHome], ["home", cardHome, cardAway]].forEach(function (t) {
+        var cell = card.querySelector('.gm-sc[data-sc="' + t[0] + '"]');
+        if (cell) {
+          cell.textContent = t[1];
+          cell.classList.toggle("w", t[1] > t[2]);
+        }
+      });
+      var res = card.querySelector(".gm-res");
+      if (res) { res.innerHTML = verdict(card, cardAway, cardHome, done, L); }
+    } else {
+      strip.innerHTML =
+        '<span><span class="st' + (done ? "" : " live") + '">' + esc(label) + "</span>" +
+        esc(an) + " " + away + " – " + esc(hn) + " " + home + "</span>" +
+        verdict(card, cardAway, cardHome, done, L);
+      strip.hidden = false;
+    }
     if (done) { strip.removeAttribute("data-l"); }
     return !done;
   }

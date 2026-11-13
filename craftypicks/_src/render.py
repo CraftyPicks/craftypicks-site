@@ -1431,82 +1431,284 @@ def college_board(rows: list[dict], summary: dict | None) -> str:
     return head + _spread_groups(ordered)
 
 
-def college_list(rows: list[dict], caption: str | None = None) -> str:
-    """The Simple tab: a plain table, one row per game by start time. Time
-    (or Final), both schools with their power rank (BPI, FPI for football)
-    and score once final, and our pick with its chance to cover and, once
-    final, whether it covered. The game is the row header."""
+def _tip(r: dict) -> float:
+    """Start time as a number: "...T17:00Z" and "...T17:00:00Z" sort alike."""
+    try:
+        return datetime.fromisoformat(str(r.get("commence_time")).replace("Z", "+00:00")).timestamp()
+    except ValueError:
+        return float("inf")
+
+
+LIVE_LABELS = ("res_final", "res_live", "res_covered", "res_missed", "res_push",
+               "res_covering", "res_not_covering")
+
+
+def _gm_team(logo: str, name: str, sub: str, side: str, pts=None, win: bool = False) -> str:
+    """One club's line on a game card: badge, name, the small facts under
+    it, and the score. The score cell is always there (empty before the
+    game) so board.js can fill it live."""
+    sc = "" if pts is None else f"{pts:g}"
+    return (f'<div class="gm-tm">{logo}<span class="gm-nm"><b>{name}</b>'
+            + (f'<small>{sub}</small>' if sub else "")
+            + f'</span><span class="gm-sc{" w" if win else ""}" data-sc="{side}">{sc}</span></div>')
+
+
+def _gm_card(row: dict, *, tier: str, teams: str, pick: str, detail: str,
+             tag: str = "", final: bool = False) -> str:
+    """The game card every list on the site shares (Scoreboard style): a
+    status line, the two clubs, the pick box, Details. A stripe down the
+    left edge says best bet or live; both are also written in words."""
+    eid = esc(str(row.get("event_id", "")))
+    when = _("res_final") if final else game_time(row.get("commence_time")).replace(" ET", "")
+    hooks = "".join(f' data-{k}="{esc(str(v))}"' for k, v in (
+        ("sport", row.get("league", "")), ("espn", row.get("espn_id") or ""),
+        ("home", row.get("home", "")), ("away", row.get("away", "")),
+        ("tip", row.get("commence_time", ""))))
+    a = row.get("ats") or {}
+    if a:
+        hooks += f' data-side="{esc(a["side"])}" data-line="{a["line"]:g}"'
+    # The hidden strip carries the words board.js needs for a live game.
+    live = ("" if final else
+            f'<span class="cv-res" hidden data-l="{esc("|".join(_(k) for k in LIVE_LABELS))}"></span>')
+    more = ""
+    if detail:
+        more = (f'<button class="pc-more gm-more" aria-expanded="false" aria-controls="ld-{eid}" '
+                f'data-open="{esc(_("pc_hide"))}" data-shut="{esc(_("pc_details"))}">'
+                f'{_("pc_details")}</button>'
+                f'<div class="gm-detail" id="ld-{eid}" hidden>{detail}</div>')
+    return (f'<article class="gm gm-{tier}{" is-final" if final else ""}" id="l-{eid}"{hooks}>'
+            f'<header class="gm-h"><span class="gm-st">{esc(when)}</span>{tag}</header>'
+            f'{teams}{pick}{live}{more}</article>')
+
+
+def _gm_summary(items: list[tuple[int, str]]) -> str:
+    return ('<div class="gm-sum">' + "".join(
+        f'<div><b>{n}</b><span>{esc(label)}</span></div>' for n, label in items) + "</div>")
+
+
+def college_list(rows: list[dict]) -> str:
+    """The college board: one card per game by start time. Both schools with
+    logo, power rank (BPI, FPI for football), ATS record and score; our pick
+    with its chance to cover and, once final, whether it covered; Details
+    with the chips and the Team Stats panel."""
     if not rows:
         return board_cards([])
-    tag = {"best": "pc_best_s", "lean": "pc_lean", "check": "pc_check_s"}
-
-    def team(r: dict, side: str, pts) -> str:
-        sheet = ((r.get("team_stats") or {}).get(side)) or {}
-        rk = sheet.get("bpi") or sheet.get("fpi")
-        name = esc(_school(r, side))
-        sc = "" if pts is None else (
-            f'<span class="cl-sc"><b>{pts:g}</b></span>' if pts == max(
-                r["final"]["away"], r["final"]["home"]) else f'<span class="cl-sc">{pts:g}</span>')
-        rank = f'<span class="cl-rk">{rk}</span>' if rk else ""
-        rec = (sheet.get("stats") or {}).get("ats") or []
-        ats = ""
-        if len(rec) == 3 and sum(rec):
-            ats = (f'<span class="cl-ats"><span class="cl-ats-l">ATS</span> {rec[0]}-{rec[1]}'
-                   + (f"-{rec[2]}" if rec[2] else "") + "</span>")
-        at = f' <span class="cl-at">{_("cl_at")}</span>' if side == "away" else ""
-        return f'<span class="cl-tm">{rank}<span class="cl-nm">{name}{at}{ats}</span>{sc}</span>'
-
-    body = []
-    def tip(r):   # "...T17:00Z" and "...T17:00:00Z" must sort as the same time
-        try:
-            return datetime.fromisoformat(str(r.get("commence_time")).replace("Z", "+00:00")).timestamp()
-        except ValueError:
-            return float("inf")
-    for r in sorted(rows, key=lambda r: (tip(r), r.get("home") or "")):
+    tag = {"best": "pc_best", "lean": "pc_lean", "check": "pc_check"}
+    cards, tiers = [], []
+    for r in sorted(rows, key=lambda r: (_tip(r), r.get("home") or "")):
         f = r.get("final")
-        when = _("res_final") if f else game_time(r.get("commence_time")).replace(" ET", "")
         a = r.get("ats")
         t = _tier_of(a)
+        tiers.append(t)
+        top = max(f["away"], f["home"]) if f else None
+        teams = ""
+        for side in ("away", "home"):
+            sheet = ((r.get("team_stats") or {}).get(side)) or {}
+            rk = sheet.get("bpi") or sheet.get("fpi")
+            rec = (sheet.get("stats") or {}).get("ats") or []
+            bits = [f"#{rk}"] if rk else []
+            if len(rec) == 3 and sum(rec):
+                bits.append(f'ATS {rec[0]}-{rec[1]}' + (f"-{rec[2]}" if rec[2] else ""))
+            pts = f[side] if f else None
+            teams += _gm_team(_logo(r, side, 34), esc(_school(r, side)), esc("  ".join(bits)),
+                              side, pts, f is not None and pts == top and f["away"] != f["home"])
         if a:
             line = f'{a["line"]:+g}' if a["line"] else "PK"
-            pick = f'<b>{esc(_school(r, a["side"]))} {esc(line)}</b>'
-            if t != "check":
-                pick += f' ({a["cover"] * 100:.0f}%)'
-            if t in tag:
-                pick += f'<span class="cl-tag cl-{t}">{_(tag[t])}</span>'
-            if f:
-                pick += f'<span class="cl-res">{_verdict(r, f["away"], f["home"])}</span>'
+            cover = a["cover"] * 100
+            pct = ("" if t == "check" else
+                   f'<span class="gm-pc">{cover:.0f}<small>%</small></span>'
+                   f'<span class="gm-meter" aria-hidden="true"><i style="width:{cover:.0f}%"></i></span>')
+            res = _verdict(r, f["away"], f["home"]) if f else ""
+            pick = (f'<div class="gm-pk"><span class="gm-lb">{_("cl_pick")}</span>'
+                    f'<span class="gm-pv">{esc(_school(r, a["side"]))} {esc(line)}</span>{pct}'
+                    f'<span class="gm-res">{res}</span></div>')
         else:
-            pick = "&mdash;"
-        # Details, as on the board: the chips and the Team Stats panel, in a
-        # row of their own below, opened by the same Details button.
-        eid = esc(str(r.get("event_id", "")))
-        sp_, chips = _pick_chips(r)
+            pick = (f'<div class="gm-pk gm-nopick"><span class="gm-lb">{_("cl_pick")}</span>'
+                    f'<span class="gm-pv">{_("pc_none")}</span><span class="gm-res"></span></div>')
+        _sp, chips = _pick_chips(r)
         ts = r.get("team_stats") or {}
         if ts.get("home") and ts.get("away"):
             ts = {sd: dict(ts[sd], name=_school(r, sd)) for sd in ("home", "away")}
         panel = _detail_panel(dict(r, team_stats=ts or None))
-        inner = ((f'<div class="pc-chips">{"".join(f"<span>{c}</span>" for c in chips)}</div>'
-                  if chips else "") + (panel or ""))
-        more, extra = "", ""
-        if inner:
-            more = (f'<button class="pc-more cl-more" aria-expanded="false" aria-controls="ld-{eid}" '
-                    f'data-open="{esc(_("pc_hide"))}" data-shut="{esc(_("pc_details"))}">'
-                    f'{_("pc_details")}</button>')
-            extra = (f'<tr class="cl-detail" id="ld-{eid}" hidden><td colspan="2">'
-                     f'{inner}</td></tr>')
-        live = "" if f else _result_strip(r)
-        body.append(
-            f'<tr id="l-{esc(str(r.get("event_id", "")))}" class="cl-{t}"{"" if f else _live_hooks(r)}>'
-            f'<th scope="row"><span class="cl-time">{esc(when)}</span>'
-            f'{team(r, "away", f["away"] if f else None)}'
-            f'{team(r, "home", f["home"] if f else None)}</th>'
-            f'<td class="cl-pick">{pick}{live}{more}</td></tr>' + extra)
-    return (f'<div class="cl-wrap" role="region" aria-labelledby="cl-cap" tabindex="0">'
-            f'<table class="cl"><caption id="cl-cap">{esc(caption) if caption else _("cl_caption")}</caption>'
-            f'<thead><tr><th scope="col">{_("cl_game")}</th>'
-            f'<th scope="col">{_("cl_pick")}</th></tr></thead>'
-            f'<tbody>{"".join(body)}</tbody></table></div>')
+        detail = ((f'<div class="pc-chips">{"".join(f"<span>{c}</span>" for c in chips)}</div>'
+                   if chips else "") + (panel or ""))
+        tag_html = f'<span class="gm-tier gm-tier-{t}">{_(tag[t])}</span>' if t in tag else ""
+        cards.append(_gm_card(r, tier=t, teams=teams, pick=pick, detail=detail,
+                              tag=tag_html, final=bool(f)))
+    head = _gm_summary([(len(rows), _("gm_games")), (tiers.count("best"), _("pc_tile_best")),
+                        (tiers.count("lean"), _("pc_tile_lean"))])
+    return (head + f'<p class="gm-key">{_("gm_key")}</p>'
+            + '<div class="gm-list">' + "".join(cards) + "</div>")
+
+
+# ------------------------------------------------------------ pro game list
+# NBA (and MLB next): the day's games as one list, like the college boards.
+# Details opens the game's markets as collapsed sections -- Game lines, then
+# one per player-prop board -- each with its count, a sportsbook's layout.
+NBA_ABBR = {
+    "ATL": "Atlanta Hawks", "BOS": "Boston Celtics", "BKN": "Brooklyn Nets",
+    "CHA": "Charlotte Hornets", "CHI": "Chicago Bulls", "CLE": "Cleveland Cavaliers",
+    "DAL": "Dallas Mavericks", "DEN": "Denver Nuggets", "DET": "Detroit Pistons",
+    "GS": "Golden State Warriors", "HOU": "Houston Rockets", "IND": "Indiana Pacers",
+    "LAC": "Los Angeles Clippers", "LAL": "Los Angeles Lakers", "MEM": "Memphis Grizzlies",
+    "MIA": "Miami Heat", "MIL": "Milwaukee Bucks", "MIN": "Minnesota Timberwolves",
+    "NO": "New Orleans Pelicans", "NY": "New York Knicks", "OKC": "Oklahoma City Thunder",
+    "ORL": "Orlando Magic", "PHI": "Philadelphia 76ers", "PHX": "Phoenix Suns",
+    "POR": "Portland Trail Blazers", "SAC": "Sacramento Kings", "SA": "San Antonio Spurs",
+    "TOR": "Toronto Raptors", "UTAH": "Utah Jazz", "WSH": "Washington Wizards",
+    # Spellings other feeds use for the same clubs.
+    "GSW": "Golden State Warriors", "NOP": "New Orleans Pelicans", "NYK": "New York Knicks",
+    "SAS": "San Antonio Spurs", "UTA": "Utah Jazz", "WAS": "Washington Wizards",
+    "PHO": "Phoenix Suns", "BRK": "Brooklyn Nets", "CHO": "Charlotte Hornets",
+}
+_NBA_BY_NAME = {}
+for _ab, _nm in NBA_ABBR.items():
+    _NBA_BY_NAME.setdefault(_nm, _ab)          # first spelling is ESPN's
+_NBA_BY_NAME["LA Clippers"] = "LAC"
+
+
+def _price(v) -> str:
+    """An American price as books write it: +360, -110."""
+    if v is None:
+        return ""
+    return f"+{v:g}" if v > 0 else f"{v:g}"
+
+
+def _game_lines(row: dict) -> tuple[str, int]:
+    """The Game lines section: spread, moneyline, total, each side at the
+    best price on the board. Returns (html, markets shown)."""
+    m = row.get("markets") or {}
+    away, home = esc(_nickname(row.get("away"))), esc(_nickname(row.get("home")))
+    out = []
+    sp = m.get("spreads") or {}
+    if sp.get("point") is not None:
+        hp = sp["point"] if sp.get("side_a", "home") == "home" else -sp["point"]
+        bh, ba = sp.get("best_home") or {}, sp.get("best_away") or {}
+        if sp.get("side_a", "home") != "home":
+            bh, ba = ba, bh
+        out.append((_("mk_spread"), f"{-hp:+g}", _price(ba.get("price")),
+                    f"{hp:+g}", _price(bh.get("price"))))
+    h2h = m.get("h2h") or {}
+    if (h2h.get("best_home") or {}).get("price") is not None:
+        out.append((_("mk_ml"), _price(h2h["best_away"]["price"]) if h2h.get("best_away") else "", "",
+                    _price(h2h["best_home"]["price"]), ""))
+    tot = m.get("totals") or {}
+    if tot.get("point") is not None:
+        over, under = tot.get("best_home") or {}, tot.get("best_away") or {}
+        if tot.get("side_a", "over") != "over":
+            over, under = under, over
+        out.append((_("mk_total"), f'O {tot["point"]:g}', _price(over.get("price")),
+                    f'U {tot["point"]:g}', _price(under.get("price"))))
+    if not out:
+        return "", 0
+
+    def cell(main, price):
+        return f'<td>{esc(main)}' + (f'<small>{esc(price)}</small>' if price else "") + "</td>"
+
+    body = "".join(f'<tr><th scope="row">{esc(lab)}</th>{cell(a, ap)}{cell(h, hp_)}</tr>'
+                   for lab, a, ap, h, hp_ in out)
+    return (f'<table class="mk-t"><thead><tr><th scope="col"><span class="ts-vh">{_("mk_market")}</span></th>'
+            f'<th scope="col">{away}</th><th scope="col">{home}</th></tr></thead>'
+            f'<tbody>{body}</tbody></table>'
+            f'<p class="mk-note">{_("mk_lines_note")}</p>'), len(out)
+
+
+def _prop_table(rows: list[dict]) -> str:
+    """One prop board's players for one game: projection beside the season
+    average and the last five, highest projection first."""
+    def num(v):
+        return "&ndash;" if v is None else f"{v:.1f}"
+
+    body = []
+    for r in sorted(rows, key=lambda r: -(r.get("projection") or 0)):
+        last = [g.get("value") for g in (r.get("recent") or [])[-5:] if g.get("value") is not None]
+        l5 = sum(last) / len(last) if last else None
+        sub = " · ".join(x for x in (r.get("team"), r.get("position")) if x)
+        if r.get("pos_rank") and r.get("pos_of"):
+            sub += " · " + _("mk_pos_rank", opp=r.get("opponent", ""), r=r["pos_rank"],
+                                  ord=_ordinal(r["pos_rank"]), n=r["pos_of"])
+        got = ""
+        if r.get("actual") is not None:
+            actual = f'{r["actual"]:g}'
+            got = f'<small class="mk-got">{_("mk_got", v=actual)}</small>'
+        body.append(f'<tr><th scope="row">{esc(r.get("name", ""))}<small>{esc(sub)}</small></th>'
+                    f'<td class="mk-proj">{num(r.get("projection"))}{got}</td>'
+                    f'<td>{num(r.get("per_game"))}</td><td>{num(l5)}</td></tr>')
+    return (f'<table class="mk-t mk-p"><thead><tr><th scope="col">{_("mk_player")}</th>'
+            f'<th scope="col">{_("mk_proj")}</th><th scope="col">{_("mk_avg")}</th>'
+            f'<th scope="col">{_("mk_l5")}</th></tr></thead><tbody>{"".join(body)}</tbody></table>')
+
+
+def _market_section(title: str, count: int, inner: str) -> str:
+    return (f'<details class="pc-grp mk"><summary><span class="pc-grp-t">{esc(title)}</span>'
+            f'<span class="pc-grp-n" aria-label="{count} {esc(_("mk_count"))}">{count}</span></summary>'
+            f'<div class="mk-body">{inner}</div></details>')
+
+
+def _pro_logo(row: dict, side: str, abbr: dict, size: int = 34) -> str:
+    """A pro club's logo over a badge with its abbreviation; the image
+    removes itself if it fails, leaving the badge."""
+    ab = abbr.get(row.get(side)) or ""
+    img = (f'<img src="https://a.espncdn.com/i/teamlogos/{esc(row.get("league", ""))}/500/{esc(ab.lower())}.png" '
+           f'alt="" width="{size}" height="{size}" loading="lazy" decoding="async" '
+           f'onerror="this.remove()">' if ab else "")
+    return f'<span class="pc-lg" style="--s:{size}px" aria-hidden="true">{img}{esc(ab[:4])}</span>'
+
+
+def pro_list(rows: list[dict], props: dict[str, list[dict]] | None = None,
+             abbr: dict | None = None) -> str:
+    """The pro Today list: one card per game by start time with the market's
+    line, and Details opening that game's markets as collapsed sections.
+    `props` maps a section's i18n key to that board's rows; a row belongs to
+    the game whose two clubs are its team and opponent (`abbr`: full name ->
+    the abbreviation the prop rows use)."""
+    if not rows:
+        return board_cards([])
+    abbr = abbr or {}
+    cards, n_props = [], 0
+    for r in sorted(rows, key=lambda r: (_tip(r), r.get("home") or "")):
+        m = r.get("markets") or {}
+        sp, tot = m.get("spreads") or {}, m.get("totals") or {}
+        teams = ""
+        for side in ("away", "home"):
+            form = ((r.get("detail") or {}).get(f"{side}_form")) or {}
+            rec = (f'{form["w"]}-{form["l"]}'
+                   if form.get("w") is not None and form.get("l") is not None else "")
+            teams += _gm_team(_pro_logo(r, side, abbr), esc(_nickname(r.get(side))), esc(rec), side)
+        line = []
+        if sp.get("point") is not None:
+            hp = sp["point"] if sp.get("side_a", "home") == "home" else -sp["point"]
+            fav, pt = ("home", hp) if hp <= 0 else ("away", -hp)
+            line.append("PK" if pt == 0 else f'{esc(_nickname(r.get(fav)))} {pt:g}')
+        ou = f'<span class="gm-ou">{_("pl_ou")} {tot["point"]:g}</span>' if tot.get("point") is not None else ""
+        pick = (f'<div class="gm-pk gm-line"><span class="gm-lb">{_("pl_line")}</span>'
+                f'<span class="gm-pv">{line[0] if line else "&mdash;"}</span>{ou}'
+                f'<span class="gm-res"></span></div>')
+        pair = {abbr.get(r.get("home")), abbr.get(r.get("away"))} - {None}
+        sections = []
+        gl, n = _game_lines(r)
+        if gl:
+            sections.append(_market_section(_("mk_lines"), n, gl))
+        for key, prop_rows in (props or {}).items():
+            mine = [p for p in prop_rows
+                    if len(pair) == 2 and {p.get("team"), p.get("opponent")} == pair]
+            if mine:
+                n_props += len(mine)
+                sections.append(_market_section(_(key), len(mine), _prop_table(mine)))
+        detail = f'<div class="pc-groups">{"".join(sections)}</div>' if sections else ""
+        cards.append(_gm_card(r, tier="line", teams=teams, pick=pick, detail=detail))
+    head = _gm_summary([(len(rows), _("gm_games")), (n_props, _("gm_projections"))])
+    return head + '<div class="gm-list">' + "".join(cards) + "</div>"
+
+
+def prop_accuracy(summaries: dict[str, dict]) -> str:
+    """How the player projections have scored, one line per board, under
+    the pro list (the boards' own pages are gone; their record is not)."""
+    lines = "".join(f'<h3 class="pa-h">{_(key)}</h3>{nba_accuracy(summ)}'
+                    for key, summ in summaries.items())
+    return (f'<section class="pad-sm" id="projections"><div class="wrap">'
+            f'<div class="eyebrow">{_("pa_eyebrow")}</div>'
+            f'<h2 style="font-size:26px;margin-top:10px">{_("pa_head")}</h2>{lines}</div></section>')
 
 
 def day_record(rows: list[dict]) -> list[int]:
@@ -1618,7 +1820,7 @@ def history_day(rows: list[dict], day: str, prev: str | None, nxt: str | None) -
            + "</nav>")
     rec = day_record(rows)
     head = f'<p class="hc-sum">{_("hc_day_total")} <b>{_wlp(rec)}</b></p>'
-    return nav + head + college_list(rows, caption=_("hc_caption"))
+    return nav + head + college_list(rows)
 
 
 # Spread-size groups on the college boards, by the absolute line: lower
@@ -3630,55 +3832,53 @@ def _test_pick_card() -> None:
     assert '<details class="pc-grp" data-best="1"><summary><span class="pc-grp-t">Spread 5\u201310' in grp
     empty_grp = college_board([sp("a", -3.5)], {})
     assert "Spread 20+" not in empty_grp, "no empty groups"
-    # The Simple list: one table row per game, time, ranked schools, our pick.
+    # The college board: one Scoreboard card per game, by start time.
     st = {"away": {"bpi": 278, "stats": {"ats": [2, 1, 0]}},
           "home": {"bpi": 137, "stats": {"ats": [0, 2, 1]}}}
-    lst = college_list([dict(row, team_stats=st),
+    lst = college_list([dict(row, team_stats=st, espn_id="401"),
                         dict(row, event_id="z", commence_time="2026-11-10T00:00:00Z",
                              final={"away": 70, "home": 90}, team_stats=None,
                              ats=dict(row["ats"], tier="lean"))])
-    assert lst.count('<tr id="l-') == 2 and 'role="region"' in lst
-    head_ = lst[lst.index('<table class="cl">'):lst.index("</thead>")]
-    assert head_.count('<th scope="col">') == 2
-    assert '<span class="cl-time">9:30 PM</span>' in lst, "time above the teams"
+    assert lst.count('<article class="gm ') == 2 and '<div class="gm-list">' in lst
     assert lst.index('id="l-z"') < lst.index('id="l-ew"'), "by time"
     mixed = college_list([dict(row, event_id="late", commence_time="2026-11-11T17:00:00Z"),
                           dict(row, event_id="early", commence_time="2026-11-11T16:00Z")])
     assert mixed.index('id="l-early"') < mixed.index('id="l-late"'), "stamp formats mixed"
-    assert '<span class="cl-rk">278</span><span class="cl-nm">Eastern Washington <span class="cl-at">at</span>' in lst
-    assert '<span class="cl-rk">137</span><span class="cl-nm">Oregon State<span class="cl-ats">' in lst
-    assert "Eastern Washington +17.5" in lst and "(78%)" in lst and ">Best<" in lst
-    # Each school's record against the spread this season (W-L, pushes if any).
-    assert '<span class="cl-ats"><span class="cl-ats-l">ATS</span> 2-1</span>' in lst
-    assert '<span class="cl-ats"><span class="cl-ats-l">ATS</span> 0-2-1</span>' in lst
+    # The summary strip: games, best bets, leans.
+    assert "<div><b>2</b><span>Games</span></div><div><b>1</b><span>Best bets</span></div>" \
+           "<div><b>1</b><span>Leans</span></div>" in lst
+    ew = lst[lst.index('id="l-ew"'):]
+    assert '<article class="gm gm-best" id="l-ew" data-sport="ncaab" data-espn="401"' in lst
+    assert 'data-side="away" data-line="17.5"' in ew
+    assert '<span class="gm-st">9:30 PM</span><span class="gm-tier gm-tier-best">Best bet</span>' in ew
+    assert "<b>Eastern Washington</b><small>#278  ATS 2-1</small>" in ew
+    assert "<b>Oregon State</b><small>#137  ATS 0-2-1</small>" in ew
+    assert 'teamlogos/ncaa/500/331.png' in ew, "school logos"
+    assert '<span class="gm-sc" data-sc="away"></span>' in ew, "an empty score cell for live scores"
+    assert '<span class="gm-pv">Eastern Washington +17.5</span><span class="gm-pc">78<small>%</small></span>' in ew
+    assert '<i style="width:78%"></i>' in ew
+    assert '<span class="cv-res" hidden data-l="Final|Live|' in ew, "live words for board.js"
     assert "Eagles" not in _re.sub(r"<[^>]+>", " ", lst), "school names only"
-    fin = lst[lst.index('id="l-z"'):]
-    assert ">Final<" in fin and "<b>90</b>" in fin and '<span class="cl-sc">70</span>' in fin and "Missed" in fin, "lost by 20 getting 17.5"
-    assert "Lean" in fin
-    # Details, like the board: a button under the pick opens a row below
-    # with the chips and the Team Stats panel.
+    fin = lst[lst.index('<article class="gm gm-lean'):lst.index('id="l-ew"')]
+    assert 'class="gm gm-lean is-final"' in fin and '<span class="gm-st">Final</span>' in fin
+    assert '<span class="gm-sc" data-sc="away">70</span>' in fin
+    assert '<span class="gm-sc w" data-sc="home">90</span>' in fin, "the winner's score is marked"
+    assert "Missed" in fin and ">Lean<" in fin, "lost by 20 getting 17.5"
+    assert "data-l=" not in fin, "a final card needs no live strip"
+    # Details: the chips and the Team Stats panel behind the same button.
     one = college_list([dict(row, team_stats={
         "away": {"name": "Eastern Washington Eagles", "stats": {"pts": 73.3, "opp": 88.7}},
         "home": {"name": "Oregon State Beavers", "stats": {"pts": 97.3, "opp": 71.0}}})])
-    assert 'class="pc-more cl-more" aria-expanded="false" aria-controls="ld-ew"' in one
-    assert '<tr class="cl-detail" id="ld-ew" hidden><td colspan="2">' in one
-    det = one[one.index('id="ld-ew"'):]
+    assert 'class="pc-more gm-more" aria-expanded="false" aria-controls="ld-ew"' in one
+    det = one[one.index('<div class="gm-detail" id="ld-ew" hidden>'):]
     assert "Edge <b>+8.6</b>" in det and "Line <b>Oregon State -17.5</b>" in det
-    assert "Points Against" in det and "Oregon State" in det
-    assert one.count('<tr id="l-') == 1 and one.count('class="cl-detail"') == 1
-    assert one.index('id="l-ew"') < one.index('id="ld-ew"'), "details right below its game"
+    assert "Points Against" in det
     bare = college_list([dict(row, team_stats=None, markets={}, model={}, ats=None)])
-    assert "cl-more" not in bare and "cl-detail" not in bare, "nothing behind it, no button"
+    assert "gm-more" not in bare and "gm-detail" not in bare, "nothing behind it, no button"
+    assert 'class="gm gm-none"' in bare and "No pick" in bare
     chk = college_list([dict(row, ats=dict(row["ats"], tier="check"))])
-    assert "(78%)" not in chk and "Check line" in chk
-    assert "&mdash;" in college_list([dict(row, ats=None)])
+    assert "gm-pc" not in chk and ">Check the line<" in chk, "no cover % on a flagged line"
     assert college_list([]).startswith('<p class="empty-board">')
-    # Live scores: a game not yet final carries the same hooks and empty
-    # strip the board's cards do, so board.js fills it once it tips off.
-    live = college_list([dict(row, espn_id="401")])
-    assert '<tr id="l-ew" class="cl-best" data-sport="ncaab" data-espn="401"' in live
-    assert '<div class="cv-res" hidden data-l="Final|Live|' in live
-    assert 'data-l=' not in fin.split("</tr>")[0], "a final row needs no live strip"
     # History: a day's record counts Best bets and Leans with a final.
     def h(eid, tier, away, home):
         return dict(row, event_id=eid, ats=dict(row["ats"], tier=tier),
@@ -3722,7 +3922,7 @@ def _test_pick_card() -> None:
     assert "Away teams against the spread" in aw and "away covers - home covers" in aw
     page = history_day(day_rows, "2026-11-10", "2026-11-09", None)
     assert 'href="day-2026-11-09.html"' in page and 'href="history.html"' in page
-    assert "day-None" not in page and page.count('<tr id="l-') == 4
+    assert "day-None" not in page and page.count('<article class="gm ') == 4
     assert "1-1" in page
     # Football rows carry the spread and total in their own fields.
     cf = dict(row, league="ncaaf", markets=None, spread_home=-6.5, total=52.5,
@@ -3731,7 +3931,57 @@ def _test_pick_card() -> None:
     assert "Line <b>Alabama -6.5</b>" in cc and "Total <b>52.5</b>" in cc
 
 
+def _test_pro_list() -> None:
+    game = {"event_id": "g1", "league": "nba", "commence_time": "2026-11-13T00:10:00Z",
+            "home": "Philadelphia 76ers", "away": "Toronto Raptors",
+            "detail": {"home_form": {"w": 8, "l": 3}, "away_form": {"w": 5, "l": 4}},
+            "markets": {"spreads": {"point": -10.0, "side_a": "home",
+                                    "best_home": {"price": -106}, "best_away": {"price": -104}},
+                        "h2h": {"best_home": {"price": -450}, "best_away": {"price": 360}},
+                        "totals": {"point": 221.0, "side_a": "over",
+                                   "best_home": {"price": -107}, "best_away": {"price": -105}}}}
+    def pl(name, team, opp, proj, **kw):
+        return dict({"name": name, "team": team, "opponent": opp, "position": "G",
+                     "projection": proj, "per_game": 20.0,
+                     "recent": [{"value": v} for v in (10, 20, 30, 20, 20, 40)]}, **kw)
+    props = {"mk_points": [pl("Tyrese Maxey", "PHI", "TOR", 27.0, pos_rank=16, pos_of=30),
+                           pl("RJ Barrett", "TOR", "PHI", 21.5, actual=31),
+                           pl("Someone Else", "DAL", "MIN", 30.0)],
+             "mk_assists": [pl("Nobody Here", "DAL", "MIN", 9.0)]}
+    out = pro_list([game], props, _NBA_BY_NAME)
+    assert '<article class="gm gm-line" id="l-g1" data-sport="nba"' in out
+    assert 'data-home="Philadelphia 76ers"' in out and "data-side" not in out
+    assert '<span class="gm-st">7:10 PM</span>' in out
+    assert "<b>Raptors</b><small>5-4</small>" in out and "<b>76ers</b><small>8-3</small>" in out
+    assert 'teamlogos/nba/500/phi.png' in out and ">TOR</span>" in out, "logo over an abbreviation badge"
+    assert '<span class="gm-lb">Line</span><span class="gm-pv">76ers -10</span><span class="gm-ou">O/U 221</span>' in out
+    assert "<div><b>1</b><span>Games</span></div><div><b>2</b><span>Projections</span></div>" in out
+    assert 'aria-controls="ld-g1"' in out and '<div class="gm-detail" id="ld-g1" hidden>' in out
+    titles = re.findall(r'<span class="pc-grp-t">([^<]+)</span><span class="pc-grp-n"[^>]*>(\d+)<', out)
+    assert titles == [("Game lines", "3"), ("Points", "2")], titles
+    assert "<details class=\"pc-grp mk\" open" not in out, "sections start closed"
+    # Game lines: the road side's spread is the home line flipped; best prices.
+    assert "<td>+10<small>-104</small></td><td>-10<small>-106</small></td>" in out
+    assert "<td>+360</td><td>-450</td>" in out
+    assert "<td>O 221<small>-107</small></td><td>U 221<small>-105</small></td>" in out
+    # Players: this game's only, best projection first, with the last five.
+    assert out.index("Tyrese Maxey") < out.index("RJ Barrett") and "Someone Else" not in out
+    assert '<td class="mk-proj">27.0</td><td>20.0</td><td>26.0</td>' in out
+    assert "PHI \u00b7 G \u00b7 TOR: 16th of 30 vs G" not in out   # wording lives in i18n
+    assert "16th" in out and "Final: 31" in out
+    # A game with no lines and no props: no Details button.
+    bare = pro_list([dict(game, markets={}, event_id="g2")], {}, _NBA_BY_NAME)
+    assert "gm-more" not in bare and "&mdash;" in bare
+    assert pro_list([], {}, {}).startswith('<p class="empty-board">')
+    assert _NBA_BY_NAME["Los Angeles Clippers"] == "LAC" and _NBA_BY_NAME["New York Knicks"] == "NY"
+    assert len(set(NBA_ABBR.values())) == 30
+    acc = prop_accuracy({"mk_points": {"graded": 839, "mae": 6.12, "baseline": 6.07},
+                         "mk_assists": {}})
+    assert ">Points<" in acc and "839" in acc and "6.12" in acc and ">Assists<" in acc
+
+
 def _self_test() -> None:
+    _test_pro_list()
     _test_pick_card()
     _test_result_strip()
     _test_ncaaf_card()
