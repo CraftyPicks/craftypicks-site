@@ -1722,6 +1722,26 @@ footer{background:var(--bg-2);padding:56px 0 40px}
 .ha .ha-none{color:var(--sub);font-weight:500}
 .ha-note{margin:0 0 14px;color:var(--sub);font:500 13px/1.4 var(--sans)}
 
+/* History: the spread calculator. */
+.sc{margin:6px 0 18px}
+.sc-h{margin:0 0 10px;color:var(--txt);font:800 17px var(--sans)}
+.sc label{display:block;margin-bottom:6px;color:var(--sub);font:600 13px var(--sans)}
+.sc-in{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:10px}
+.sc-in input{inline-size:5.5em;min-block-size:44px;padding:8px 10px;border:1px solid var(--line-2);border-radius:6px;
+  background:var(--bg-2);color:var(--txt);font:700 18px var(--mono);color-scheme:dark}
+.sc-in input:focus-visible{outline:2px solid var(--green);outline-offset:1px}
+.sc-preset{min-inline-size:44px;min-block-size:44px;padding:0 10px;border:1px solid var(--line-2);border-radius:6px;
+  background:transparent;color:var(--txt);font:600 14px var(--mono);cursor:pointer}
+.sc-preset[aria-pressed="true"]{background:var(--txt);color:var(--bg);border-color:var(--txt)}
+.sc-out{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
+.sc-panel{padding:12px;background:var(--panel);border:1px solid var(--line);border-radius:6px}
+.sc-panel h3{margin:0;color:var(--txt);font:800 15px/1.25 var(--sans)}
+.sc-n{margin:2px 0 8px;color:var(--sub);font:500 12px var(--mono)}
+.sc-row{display:grid;grid-template-columns:1fr auto;gap:0 8px;align-items:baseline;padding:7px 0;border-top:1px solid var(--line)}
+.sc-row span{color:var(--sub);font:500 13px var(--sans)}
+.sc-row b{color:var(--txt);font:700 15px var(--mono);font-variant-numeric:tabular-nums}
+.sc-row small{grid-column:2;justify-self:end;color:var(--sub);font:600 12px var(--mono)}
+
 /* History: month grids of saved days, each linking to that day's list. */
 .hc-wrap{display:grid;gap:14px}
 .hc-sum{margin:0 0 4px;color:var(--sub);font:500 14px var(--sans)}

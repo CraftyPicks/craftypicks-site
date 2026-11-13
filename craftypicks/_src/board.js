@@ -354,3 +354,59 @@
   });
 })();
 
+
+/* The calculators on History (spread, total). Each section arrives with
+   its split drawn for the default number; this recomputes it from the games
+   embedded in the section whenever the number changes. A game is
+   [value, winners]: a group whose letter is in `winners` won, the rest
+   lost; null is a push. Same sum as render.calc_split. */
+(function () {
+  Array.prototype.forEach.call(document.querySelectorAll(".sc"), function (box) {
+    var raw = box.querySelector(".sc-data");
+    var input = box.querySelector("input");
+    var letters = (box.getAttribute("data-letters") || "").split("");
+    if (!raw || !input || !letters.length) { return; }
+    var games;
+    try { games = JSON.parse(raw.textContent); } catch (e) { return; }
+
+    function fmt(x) { return String(Math.round(x * 2) / 2); }
+
+    function draw() {
+      var x = parseFloat(input.value);
+      if (isNaN(x) || x <= 0) { return; }
+      var s = { under: { n: 0 }, over: { n: 0 } };
+      letters.forEach(function (c) { s.under[c] = [0, 0]; s.over[c] = [0, 0]; });
+      games.forEach(function (g) {
+        if (g[1] === null) { return; }
+        var t = s[g[0] < x ? "under" : "over"];
+        t.n += 1;
+        letters.forEach(function (c) { t[c][g[1].indexOf(c) >= 0 ? 0 : 1] += 1; });
+      });
+      ["under", "over"].forEach(function (k) {
+        var title = box.querySelector('[data-sc-title="' + k + '"]');
+        if (title) { title.textContent = box.getAttribute("data-" + k).replace("{x}", fmt(x)); }
+        var n = box.querySelector('[data-sc-n="' + k + '"]');
+        if (n) { n.textContent = s[k].n; }
+        letters.forEach(function (c) {
+          var v = s[k][c], tot = v[0] + v[1];
+          var cell = box.querySelector('[data-sc-cell="' + k + "-" + c + '"]');
+          var pct = box.querySelector('[data-sc-pct="' + k + "-" + c + '"]');
+          if (cell) { cell.textContent = v[0] + "-" + v[1]; }
+          if (pct) { pct.textContent = tot ? Math.round(100 * v[0] / tot) + "%" : "–"; }
+        });
+      });
+      Array.prototype.forEach.call(box.querySelectorAll(".sc-preset"), function (b) {
+        b.setAttribute("aria-pressed", parseFloat(b.getAttribute("data-v")) === x ? "true" : "false");
+      });
+    }
+
+    input.addEventListener("input", draw);
+    box.addEventListener("click", function (e) {
+      var b = e.target.closest && e.target.closest(".sc-preset");
+      if (!b) { return; }
+      input.value = b.getAttribute("data-v");
+      draw();
+    });
+    draw();
+  });
+})();

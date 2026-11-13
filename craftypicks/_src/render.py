@@ -1867,6 +1867,112 @@ def home_away_table(split: dict, side: str = "home") -> str:
             f'</tr></thead><tbody>{body}</tbody></table>' + foot)
 
 
+def cover_split(games: list[list], x: float) -> dict:
+    """Who covered below a spread and at-or-above it. `games` are
+    [absolute spread, 1 if the home side was favored else 0, "h" / "a" / "p"
+    for home covered, away covered, push]. For each side of `x`:
+    {"n", "fav": [covered, not], "dog": [...], "home": [...], "away": [...]}.
+    Pushes are left out."""
+    names = {"f": "fav", "d": "dog", "h": "home", "a": "away"}
+    raw = calc_split(_spread_coded(games), x, "fdha")
+    return {side: dict({"n": g["n"]}, **{names[k]: g[k] for k in "fdha"})
+            for side, g in raw.items()}
+
+
+def _spread_coded(games: list[list]) -> list[list]:
+    """Spread games as the calculator's [value, winners]: the letters of
+    every group that covered (f favorite, d underdog, h home, a away), or
+    None for a push."""
+    out = []
+    for sp, home_fav, res in games:
+        if res not in ("h", "a"):
+            out.append([sp, None])
+            continue
+        fav_cov = (res == "h") == bool(home_fav)
+        out.append([sp, ("f" if fav_cov else "d") + res])
+    return out
+
+
+def calc_split(coded: list[list], x: float, letters: str) -> dict:
+    """The calculator's sum, shared by every calculator and mirrored in
+    board.js: for games below `x` ("under") and at-or-above it ("over"),
+    how often each lettered group won. A game is [value, winners]; a group
+    whose letter is in `winners` won, the rest lost; None is a push and is
+    left out."""
+    out = {k: dict({"n": 0}, **{c: [0, 0] for c in letters}) for k in ("under", "over")}
+    for value, winners in coded:
+        if winners is None:
+            continue
+        g = out["under" if value < x else "over"]
+        g["n"] += 1
+        for c in letters:
+            g[c][0 if c in winners else 1] += 1
+    return out
+
+
+def _calc(cid: str, coded: list[list], x: float, groups: list[tuple[str, str]], *,
+          head: str, label: str, under: str, over: str, note: str,
+          presets: tuple, lo: float, hi: float) -> str:
+    """One calculator: a number box with presets, and two panels (below the
+    number, at-or-above it) listing each group's record and rate. Drawn for
+    the default number here so it reads without scripts; board.js recomputes
+    from the embedded games when the number changes."""
+    import json as _json  # noqa: PLC0415
+    if not coded:
+        return ""
+    letters = "".join(c for c, _lab in groups)
+    split = calc_split(coded, x, letters)
+
+    def panel(key: str, title: str) -> str:
+        g = split[key]
+        rows = "".join(
+            f'<div class="sc-row"><span>{esc(lab)}</span>'
+            f'<b data-sc-cell="{key}-{c}">{g[c][0]}-{g[c][1]}</b>'
+            f'<small data-sc-pct="{key}-{c}">'
+            f'{(str(round(100 * g[c][0] / (g[c][0] + g[c][1]))) + "%") if sum(g[c]) else "&ndash;"}</small></div>'
+            for c, lab in groups)
+        return (f'<div class="sc-panel"><h3 data-sc-title="{key}">{esc(title)}</h3>'
+                f'<p class="sc-n"><span data-sc-n="{key}">{g["n"]}</span> {_("gm_games").lower()}</p>{rows}</div>')
+
+    chips = "".join(f'<button type="button" class="sc-preset" data-v="{v:g}">{v:g}</button>'
+                    for v in presets)
+    return (f'<section class="sc" data-letters="{letters}" data-under="{esc(under)}" data-over="{esc(over)}">'
+            f'<h2 class="sc-h">{esc(head)}</h2>'
+            f'<label for="{cid}">{esc(label)}</label>'
+            f'<div class="sc-in"><input id="{cid}" type="number" inputmode="decimal" min="{lo:g}" max="{hi:g}" '
+            f'step="0.5" value="{x:g}">{chips}</div>'
+            f'<div class="sc-out" role="status">'
+            f'{panel("under", under.format(x=f"{x:g}"))}{panel("over", over.format(x=f"{x:g}"))}</div>'
+            f'<p class="ha-note">{esc(note)}</p>'
+            f'<script type="application/json" class="sc-data">{_json.dumps(coded, separators=(",", ":"))}</script>'
+            f'</section>')
+
+
+def spread_calc(games: list[list], x: float = 10.0) -> str:
+    """Who covers at a spread: favorites, underdogs, home and away, under
+    any number and at-or-above it."""
+    return _calc("sc-x", _spread_coded(games), x,
+                 [("f", _("sc_fav")), ("d", _("sc_dog")), ("h", _("sc_home")), ("a", _("sc_away"))],
+                 head=_("sc_head"), label=_("sc_label"), under=_("sc_under"), over=_("sc_over"),
+                 note=_("sc_note"), presets=(3, 5, 7.5, 10, 15, 20), lo=0.5, hi=45)
+
+
+def total_calc(games: list[list], x: float | None = None) -> str:
+    """Over or under at a total: `games` are [total line, "o" / "u" / "p"].
+    The default number is the middle total of the season so far."""
+    coded = [[t, (r if r in ("o", "u") else None)] for t, r in games]
+    if not coded:
+        return ""
+    if x is None:
+        vals = sorted(t for t, _r in coded)
+        x = round(vals[len(vals) // 2] * 2) / 2
+    base = round(x / 5) * 5
+    return _calc("tc-x", coded, x, [("o", _("tc_over")), ("u", _("tc_under"))],
+                 head=_("tc_head"), label=_("tc_label"), under=_("tc_below"), over=_("tc_above"),
+                 note=_("tc_note"), presets=tuple(base + d for d in (-15, -10, -5, 0, 5, 10)),
+                 lo=30, hi=300)
+
+
 def history_day(rows: list[dict], day: str, prev: str | None, nxt: str | None) -> str:
     """One saved day: previous / calendar / next links, the day's record,
     and the Simple list with finals and results."""
@@ -3974,6 +4080,31 @@ def _test_pick_card() -> None:
     assert '<td class="ha-none">&mdash;</td>' in ha, "no home underdogs of 20+"
     assert "2 pushes" in ha
     assert home_away_table({"all": {"fav": [0, 0, 0], "dog": [0, 0, 0]}}) == ""
+    # The spread calculator: who covered under a number and at-or-above it.
+    gms = [[3.5, 1, "h"], [3.5, 1, "a"], [4.0, 0, "h"], [12.0, 1, "h"], [10.0, 0, "a"], [25.0, 1, "p"]]
+    cs = cover_split(gms, 10.0)
+    assert cs["under"] == {"n": 3, "fav": [1, 2], "dog": [2, 1], "home": [2, 1], "away": [1, 2]}
+    assert cs["over"] == {"n": 2, "fav": [2, 0], "dog": [0, 2], "home": [1, 1], "away": [1, 1]}, \
+        "a 10 counts as 10 or more; the push is left out"
+    calc = spread_calc(gms, 10.0)
+    assert '<label for="sc-x">' in calc and 'id="sc-x" type="number"' in calc and 'value="10"' in calc
+    assert ">Spread under 10<" in calc and ">Spread 10 or more<" in calc
+    assert '<b data-sc-cell="under-f">1-2</b><small data-sc-pct="under-f">33%</small>' in calc
+    assert '<b data-sc-cell="over-d">0-2</b><small data-sc-pct="over-d">0%</small>' in calc
+    assert 'class="sc-data">[[3.5,"fh"],[3.5,"da"],[4.0,"dh"]' in calc and 'role="status"' in calc
+    assert '[25.0,null]' in calc and 'data-letters="fdha"' in calc
+    assert spread_calc([]) == ""
+    # Totals: overs and unders below a total line and at-or-above it.
+    tots = [[140.5, "o"], [141.0, "u"], [150.0, "u"], [150.0, "o"], [160.5, "u"], [160.5, "p"]]
+    assert calc_split([[t, r if r != "p" else None] for t, r in tots], 150.0, "ou") == {
+        "under": {"n": 2, "o": [1, 1], "u": [1, 1]}, "over": {"n": 3, "o": [1, 2], "u": [2, 1]}}
+    tc = total_calc(tots, 150.0)
+    assert '<label for="tc-x">' in tc and 'id="tc-x" type="number"' in tc and 'data-letters="ou"' in tc
+    assert ">Total under 150<" in tc and ">Total 150 or more<" in tc
+    assert '<span>Overs</span><b data-sc-cell="over-o">1-2</b><small data-sc-pct="over-o">33%</small>' in tc
+    assert 'data-v="135"' in tc and 'data-v="160"' in tc, "presets around the number"
+    assert 'value="150"' in total_calc(tots), "defaults to the middle total"
+    assert total_calc([]) == ""
     # The same games from the road team's side: an away favorite is a home
     # underdog's opponent, so its record is that column flipped.
     aw = home_away_table(split, "away")

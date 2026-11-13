@@ -539,6 +539,37 @@ def home_away_split(store: dict) -> dict:
     return out
 
 
+def spread_games(store: dict) -> list[list]:
+    """Every final in an ESPN store with a line on a true home court, as
+    [absolute spread, 1 if home was favored else 0, "h"/"a"/"p"] for the
+    spread calculator. Pick'ems have no favorite and are left out."""
+    out = []
+    for g in (store or {}).get("games", {}).values():
+        sp = g.get("spread_home")
+        if (not g.get("completed") or g.get("neutral") or sp in (None, 0)
+                or g.get("home_score") is None or g.get("away_score") is None):
+            continue
+        edge = g["home_score"] - g["away_score"] + sp
+        out.append([abs(sp), 1 if sp < 0 else 0, "h" if edge > 0 else "a" if edge < 0 else "p"])
+    out.sort()
+    return out
+
+
+def total_games(store: dict) -> list[list]:
+    """Every final in an ESPN store with a total, as [total line, "o"/"u"/"p"]
+    for the totals calculator. Neutral sites count: a total has no home side."""
+    out = []
+    for g in (store or {}).get("games", {}).values():
+        t = g.get("total")
+        if (not g.get("completed") or t is None
+                or g.get("home_score") is None or g.get("away_score") is None):
+            continue
+        pts = g["home_score"] + g["away_score"]
+        out.append([t, "o" if pts > t else "u" if pts < t else "p"])
+    out.sort()
+    return out
+
+
 def past_days(history: dict, today: str) -> dict:
     """Only days that have started: football's board saves games a week
     ahead, and History is for what already happened."""
@@ -804,6 +835,10 @@ def build() -> None:
                             R.home_away_table(_split := home_away_split(
                                 _cbb if page.league == "ncaab" else _cfb))
                             + R.home_away_table(_split, "away")
+                            + R.spread_calc(spread_games(
+                                _cbb if page.league == "ncaab" else _cfb))
+                            + R.total_calc(total_games(
+                                _cbb if page.league == "ncaab" else _cfb))
                             + R.history_calendar(by_day, page.league))
                     elif ":" in page.key:
                         d = page.key.split(":", 1)[1]
@@ -984,6 +1019,12 @@ def _test_history() -> None:
     store = {"games": {"1": g(80, 70, -7.5), "2": g(80, 75, -7.5), "3": g(70, 72, 3.5),
                        "4": g(70, 80, 3.5), "5": g(80, 70, -10), "6": g(90, 60, -5, neutral=True),
                        "7": g(None, None, -3, done=False), "8": g(70, 70, 0), "9": g(1, 2, None)}}
+    assert spread_games(store) == [[3.5, 0, "a"], [3.5, 0, "h"], [7.5, 1, "a"],
+                                   [7.5, 1, "h"], [10, 1, "p"]]
+    tstore = {"games": {"1": dict(g(80, 70, -7.5), total=145.5), "2": dict(g(60, 70, 3.5), total=140.0),
+                        "3": dict(g(70, 70, -1, neutral=True), total=140.0), "4": g(80, 70, -7.5),
+                        "5": dict(g(None, None, -3, done=False), total=150.0)}}
+    assert total_games(tstore) == [[140.0, "p"], [140.0, "u"], [145.5, "o"]]
     split = home_away_split(store)
     assert split["all"] == {"fav": [1, 1, 1], "dog": [1, 1, 0]}
     assert split["1\u20135"] == {"fav": [0, 0, 0], "dog": [1, 1, 0]}
