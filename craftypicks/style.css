@@ -1626,6 +1626,20 @@ footer{background:var(--bg-2);padding:56px 0 40px}
 .cl tr:has(+ .cl-detail:not([hidden])) > *{background:var(--panel)}
 .cl-pass .cl-pick,.cl-pass .cl-pick b{color:var(--sub);font-weight:500}
 
+/* History: home vs away against the spread, above the calendar. */
+.ha{inline-size:100%;border-collapse:separate;border-spacing:0;margin-bottom:6px;
+  background:var(--panel);border:1px solid var(--line);border-radius:14px;font:500 14px var(--sans);color:var(--txt)}
+.ha > caption{text-align:left;padding:0 2px 8px;color:var(--txt);font:800 17px var(--sans)}
+.ha th,.ha td{padding:9px 12px;text-align:right;font-variant-numeric:tabular-nums}
+.ha thead th{color:var(--muted);font:700 11px/1.3 var(--sans);letter-spacing:.05em;text-transform:uppercase}
+.ha tbody th{text-align:left;font-weight:600;color:var(--sub);white-space:nowrap}
+.ha tbody tr > *{border-top:1px solid var(--line)}
+.ha td{font-weight:700}
+.ha td small{display:block;color:var(--sub);font:600 12px var(--sans)}
+.ha .ha-all th{color:var(--txt);font-weight:800}
+.ha .ha-none{color:var(--sub);font-weight:500}
+.ha-note{margin:0 0 14px;color:var(--sub);font:500 13px/1.4 var(--sans)}
+
 /* History: month grids of saved days, each linking to that day's list. */
 .hc-wrap{display:grid;gap:14px}
 .hc-sum{margin:0 0 4px;color:var(--sub);font:500 14px var(--sans)}

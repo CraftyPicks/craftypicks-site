@@ -520,6 +520,28 @@ def load_history(root: Path = HISTORY_DIR) -> dict:
     return out
 
 
+def home_away_split(store: dict) -> dict:
+    """Home side against the spread over every final in an ESPN store with a
+    line, true home courts only, as {bucket: {"fav": [home covered, away
+    covered, push], "dog": [...]}}. Buckets are "all" and the board's
+    spread groups by the absolute line (1-5, 5-10, 10-20, 20+). Pick'ems
+    have no favorite and are left out."""
+    groups = [("all", 0, None)] + [(lab, lo, hi) for lo, hi, lab in R.SPREAD_GROUPS]
+    out = {k: {"fav": [0, 0, 0], "dog": [0, 0, 0]} for k, _lo, _hi in groups}
+    for g in (store or {}).get("games", {}).values():
+        sp = g.get("spread_home")
+        if (not g.get("completed") or g.get("neutral") or sp in (None, 0)
+                or g.get("home_score") is None or g.get("away_score") is None):
+            continue
+        edge = g["home_score"] - g["away_score"] + sp
+        i = 0 if edge > 0 else 1 if edge < 0 else 2
+        side = "fav" if sp < 0 else "dog"
+        for k, lo, hi in groups:
+            if lo <= abs(sp) and (hi is None or abs(sp) < hi):
+                out[k][side][i] += 1
+    return out
+
+
 def past_days(history: dict, today: str) -> dict:
     """Only days that have started: football's board saves games a week
     ahead, and History is for what already happened."""
@@ -776,7 +798,9 @@ def build() -> None:
                     # College: today's list, the History calendar, saved days.
                     by_day = history.get(page.league) or {}
                     if page.key.endswith("_history"):
-                        page_tokens["{{LEAGUE_BOARD}}"] = R.history_calendar(by_day, page.league)
+                        page_tokens["{{LEAGUE_BOARD}}"] = (
+                            R.home_away_table(home_away_split(_cbb if page.league == "ncaab" else _cfb))
+                            + R.history_calendar(by_day, page.league))
                     elif ":" in page.key:
                         d = page.key.split(":", 1)[1]
                         order = sorted(by_day)
@@ -926,6 +950,18 @@ def _remove_orphans(written: set) -> None:
 
 
 def _test_history() -> None:
+    def g(hs, as_, sp, neutral=False, done=True):
+        return {"completed": done, "neutral": neutral, "spread_home": sp,
+                "home_score": hs, "away_score": as_}
+    store = {"games": {"1": g(80, 70, -7.5), "2": g(80, 75, -7.5), "3": g(70, 72, 3.5),
+                       "4": g(70, 80, 3.5), "5": g(80, 70, -10), "6": g(90, 60, -5, neutral=True),
+                       "7": g(None, None, -3, done=False), "8": g(70, 70, 0), "9": g(1, 2, None)}}
+    split = home_away_split(store)
+    assert split["all"] == {"fav": [1, 1, 1], "dog": [1, 1, 0]}
+    assert split["1\u20135"] == {"fav": [0, 0, 0], "dog": [1, 1, 0]}
+    assert split["5\u201310"] == {"fav": [1, 1, 0], "dog": [0, 0, 0]}
+    assert split["10\u201320"] == {"fav": [0, 0, 1], "dog": [0, 0, 0]}, "a 10 sits in 10-20"
+    assert list(split) == ["all", "1\u20135", "5\u201310", "10\u201320", "20+"]
     assert 'url=index.html' in retired_stub("index.html")
     assert set(RETIRED) == {"ncaab/system.html", "ncaab/first-half.html",
                             "ncaab/simple.html", "ncaaf/simple.html"}
