@@ -1,0 +1,195 @@
+{
+"date": "2026-11-12",
+"games": [
+{
+"event_id": "401862824",
+"league": "ncaaf",
+"commence_time": "2026-11-13T01:00Z",
+"date": "2026-11-12",
+"home": "South Florida Bulls",
+"away": "Memphis Tigers",
+"model": {
+"home_win_prob": 0.40832448626680085,
+"away_win_prob": 0.5916755137331992
+},
+"line_note": [
+"Spread: Memphis Tigers -4.5 \u00b7 Total 51.5",
+"FPI line: Memphis Tigers -3.2"
+],
+"spread_home": 4.5,
+"fpi_margin": -3.2460000000000004,
+"total": 51.5,
+"team_stats": {
+"away": {
+"id": "235",
+"name": "Memphis Tigers",
+"color": "004991",
+"rank": null,
+"record": "1-0",
+"games": 1,
+"fpi": 56,
+"power_rank": 56,
+"rank_label": "FPI",
+"stats": {
+"ats": [
+0,
+0,
+0
+],
+"pts": 49.0,
+"opp": 22.0,
+"giv": 1.0,
+"tak": 2.0,
+"ypp": 7.4
+}
+},
+"home": {
+"id": "58",
+"name": "South Florida Bulls",
+"color": "006747",
+"rank": null,
+"record": "1-1",
+"games": 2,
+"fpi": 77,
+"power_rank": 77,
+"rank_label": "FPI",
+"stats": {
+"ats": [
+0,
+0,
+0
+],
+"pts": 23.5,
+"opp": 15.0,
+"giv": 0.0,
+"tak": 1.5,
+"ypp": 5.0
+}
+}
+},
+"ats": {
+"side": "home",
+"team": "South Florida Bulls",
+"line": 4.5,
+"cover": 0.5217,
+"gap": 0.8,
+"raw": 1.6,
+"check": false,
+"tier": "pass",
+"stretch": 0.88
+},
+"espn_id": "401862824",
+"teams": {
+"home": {
+"id": "58",
+"color": "006747",
+"abbr": "USF",
+"school": "South Florida",
+"short_": "South Florida"
+},
+"away": {
+"id": "235",
+"color": "004991",
+"abbr": "MEM",
+"school": "Memphis",
+"short_": "Memphis"
+}
+}
+},
+{
+"event_id": "401869969",
+"league": "ncaaf",
+"commence_time": "2026-11-13T02:00Z",
+"date": "2026-11-12",
+"home": "UL Monroe Warhawks",
+"away": "Louisiana Ragin' Cajuns",
+"model": {
+"home_win_prob": 0.0983766093778356,
+"away_win_prob": 0.9016233906221645
+},
+"line_note": [
+"Spread: Louisiana Ragin' Cajuns -10.5 \u00b7 Total 47.5",
+"FPI line: Louisiana Ragin' Cajuns -18.1"
+],
+"spread_home": 10.5,
+"fpi_margin": -18.072,
+"total": 47.5,
+"team_stats": {
+"away": {
+"id": "309",
+"name": "Louisiana Ragin' Cajuns",
+"color": "ce181e",
+"rank": null,
+"record": "1-0",
+"games": 1,
+"fpi": 83,
+"power_rank": 83,
+"rank_label": "FPI",
+"stats": {
+"ats": [
+0,
+0,
+0
+],
+"pts": 28.0,
+"opp": 26.0,
+"giv": 1.0,
+"tak": 1.0,
+"ypp": 7.9
+}
+},
+"home": {
+"id": "2433",
+"name": "UL Monroe Warhawks",
+"color": "840029",
+"rank": null,
+"record": "1-1",
+"games": 2,
+"fpi": 136,
+"power_rank": 136,
+"rank_label": "FPI",
+"stats": {
+"ats": [
+0,
+0,
+0
+],
+"pts": 20.0,
+"opp": 26.0,
+"giv": 2.0,
+"tak": 1.0,
+"ypp": 5.1
+}
+}
+},
+"ats": {
+"side": "away",
+"team": "Louisiana Ragin' Cajuns",
+"line": -10.5,
+"cover": 0.5688,
+"gap": 2.7,
+"raw": 5.4,
+"check": false,
+"tier": "lean",
+"stretch": 0.88
+},
+"espn_id": "401869969",
+"teams": {
+"home": {
+"id": "2433",
+"color": "840029",
+"abbr": "ULM",
+"school": "UL Monroe",
+"short_": "UL Monroe"
+},
+"away": {
+"id": "309",
+"color": "ce181e",
+"abbr": "UL",
+"school": "Louisiana",
+"short_": "Louisiana"
+}
+}
+}
+]
+}

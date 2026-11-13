@@ -70,8 +70,10 @@ PAGES: dict[str, Page] = {
     "ncaaf/index.html": Page("ncaaf/index.html", "league", "ncaaf", "ncaaf"),
     # The Simple tab: the same board as one plain table (time, ranked
     # schools, our pick). Same template; the key picks the renderer.
-    "ncaab/simple.html": Page("ncaab/simple.html", "league", "ncaab_simple", "ncaab"),
-    "ncaaf/simple.html": Page("ncaaf/simple.html", "league", "ncaaf_simple", "ncaaf"),
+    # History: a calendar of saved days; each day is its own page, added at
+    # build time by history_pages() from data/history/.
+    "ncaab/history.html": Page("ncaab/history.html", "league", "ncaab_history", "ncaab"),
+    "ncaaf/history.html": Page("ncaaf/history.html", "league", "ncaaf_history", "ncaaf"),
 }
 
 # Free (ESPN-only) leagues, shown after the Odds-API leagues in the nav.
@@ -113,8 +115,8 @@ _EXTRA_VIEWS: dict[str, list[tuple[str, str]]] = {
     "nba": [("nba/points.html", "nav_nbapts"),
             ("nba/assists.html", "nav_nbaast"),
             ("nba/rebounds.html", "nav_nbareb")],
-    "ncaab": [("ncaab/simple.html", "nav_simple")],
-    "ncaaf": [("ncaaf/simple.html", "nav_simple")],
+    "ncaab": [("ncaab/history.html", "nav_history")],
+    "ncaaf": [("ncaaf/history.html", "nav_history")],
     "nfl": [("nfl/passing.html", "nav_pass"),
             ("nfl/rushing.html", "nav_rush"),
             ("nfl/receiving.html", "nav_recv"),
@@ -132,6 +134,9 @@ VIEWS: dict[str, list[tuple[str, str]]] = {
 VIEWS.update({short: [(f"{short}/index.html", "nav_board")]
               + _EXTRA_VIEWS.get(short, [])
               for short, _label in FREE_LEAGUES})
+# The college boards are the day's list now; "Today" sits beside "History".
+for _short in ("ncaab", "ncaaf"):
+    VIEWS[_short][0] = (f"{_short}/index.html", "nav_today")
 
 
 SPORT_ICON = {"tonight": "&#128197;", "mlb": "&#9918;", "nba": "&#127936;",
@@ -191,7 +196,8 @@ def view_row(page: Page, lang: str) -> str:
     up = rel_root(page)
     out = []
     for href, key in VIEWS[page.league]:
-        on = href == page.out
+        # A saved day's page belongs to the History tab.
+        on = href == page.out or (":" in page.key and href.endswith("/history.html"))
         out.append(f'<a href="{up}{href}" class="{"on" if on else ""}"'
                    f'{" aria-current=\"page\"" if on else ""}>'
                    f'{i18n.t(key, lang)}</a>')
@@ -335,10 +341,10 @@ TITLES = {
                   "es": f"Hits — {config.SITE_NAME}"},
     "f7.html": {"en": f"First 7 innings — {config.SITE_NAME}",
                 "es": f"Primeras 7 entradas — {config.SITE_NAME}"},
-    "ncaab/simple.html": {"en": f"NCAAB simple — {config.SITE_NAME}",
-                          "es": f"NCAAB simple — {config.SITE_NAME}"},
-    "ncaaf/simple.html": {"en": f"NCAAF simple — {config.SITE_NAME}",
-                          "es": f"NCAAF simple — {config.SITE_NAME}"},
+    "ncaab/history.html": {"en": f"NCAAB history — {config.SITE_NAME}",
+                           "es": f"Historial NCAAB — {config.SITE_NAME}"},
+    "ncaaf/history.html": {"en": f"NCAAF history — {config.SITE_NAME}",
+                           "es": f"Historial NCAAF — {config.SITE_NAME}"},
     "ncaaf/index.html": {"en": f"NCAAF board — {config.SITE_NAME}",
                          "es": f"Tablero NCAAF — {config.SITE_NAME}"},
     "nba/points.html": {"en": f"Points — {config.SITE_NAME}",
@@ -453,6 +459,80 @@ def footer_html(lang: str, year: int, up: str = "",
 
 
 # ------------------------------------------------------------------ data load
+HISTORY_DIR = DATA / "history"
+COLLEGE_LEAGUES = ("ncaab", "ncaaf")
+# Pages retired from the nav whose old URLs still lead somewhere: written as
+# a redirect on every build, so the orphan sweep keeps them.
+RETIRED = {"ncaab/system.html": "index.html", "ncaab/first-half.html": "index.html",
+           # The Simple list is the college board now.
+           "ncaab/simple.html": "index.html", "ncaaf/simple.html": "index.html"}
+
+
+def _trim(row: dict) -> dict:
+    """A board row as saved for History: everything the Simple list and its
+    Details show, minus the bulky per-book prices and the final (attached
+    fresh from the ESPN store whenever the page is built)."""
+    out = {k: v for k, v in row.items() if k not in ("final", "markets", "detail")}
+    m = row.get("markets") or {}
+    keep = {}
+    if (m.get("spreads") or {}).get("point") is not None:
+        keep["spreads"] = {"point": m["spreads"]["point"],
+                           "side_a": m["spreads"].get("side_a", "home")}
+    if (m.get("totals") or {}).get("point") is not None:
+        keep["totals"] = {"point": m["totals"]["point"]}
+    if keep:
+        out["markets"] = keep
+    return out
+
+
+def save_history(board_doc: dict, root: Path = HISTORY_DIR) -> int:
+    """Save each college day on the board to data/history/<league>/<date>.json,
+    replacing that day's file. Basketball is the board's one day; football's
+    board spans a week, so each game files under its own date. The daily
+    and boards jobs commit data/, so each day's last build is what stays.
+    Returns files written."""
+    n = 0
+    for lg in COLLEGE_LEAGUES:
+        rows = ((board_doc.get("leagues") or {}).get(lg) or {}).get("games") or []
+        by_day: dict[str, list] = {}
+        for r in rows:
+            d = board_doc.get("date") if lg == "ncaab" else r.get("date")
+            if d:
+                by_day.setdefault(d, []).append(_trim(r))
+        for d, day_rows in by_day.items():
+            path = root / lg / f"{d}.json"
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text(json.dumps({"date": d, "games": day_rows}, indent=0),
+                            encoding="utf-8")
+            n += 1
+    return n
+
+
+def load_history(root: Path = HISTORY_DIR) -> dict:
+    """{league: {date: rows}} for every saved day."""
+    out: dict[str, dict] = {lg: {} for lg in COLLEGE_LEAGUES}
+    for lg in COLLEGE_LEAGUES:
+        for f in sorted((root / lg).glob("*.json")) if (root / lg).is_dir() else []:
+            try:
+                out[lg][f.stem] = json.loads(f.read_text()).get("games") or []
+            except (json.JSONDecodeError, OSError):
+                continue
+    return out
+
+
+def past_days(history: dict, today: str) -> dict:
+    """Only days that have started: football's board saves games a week
+    ahead, and History is for what already happened."""
+    return {lg: {d: rows for d, rows in by_day.items() if d <= today}
+            for lg, by_day in history.items()}
+
+
+def history_pages(days: dict) -> dict:
+    """One page per saved day, filed beside the league's board."""
+    return {f"{lg}/day-{d}.html": Page(f"{lg}/day-{d}.html", "league", f"{lg}_day:{d}", lg)
+            for lg, by_day in days.items() for d in by_day}
+
+
 def load(name: str, default):
     path = DATA / name
     if not path.exists():
@@ -495,6 +575,21 @@ def build() -> None:
     attach_teams(board_doc, _cbb, _cfb)
     attach_team_stats(board_doc,
                       load("ncaab_teams.json", {}).get("teams") or {})
+    try:
+        print(f"history: saved {save_history(board_doc)} day file(s)")
+    except OSError as _h_err:
+        print(f"!! history not saved ({_h_err})", file=sys.stderr)
+    from zoneinfo import ZoneInfo  # noqa: PLC0415
+    history = past_days(load_history(),
+                        datetime.now(ZoneInfo("America/New_York")).date().isoformat())
+    for _lg, _by_day in history.items():
+        for _rows in _by_day.values():
+            attach_finals({"leagues": {_lg: {"games": _rows}}}, _cbb, _cfb)
+    day_pages = history_pages(history)
+    for _out in day_pages:
+        _d = date.fromisoformat(_out.split("day-")[1][:10])
+        TITLES[_out] = {l: f"{_out.split('/')[0].upper()} \u00b7 {i18n.day_and_date(_d, l)} \u2014 {config.SITE_NAME}"
+                        for l in i18n.ALL_LANGS}
     batter_doc = load("batters.json",
                       {"date_label": "", "batters": [], "summary": {}})
     # Every win probability the non-MLB boards have published, with whatever
@@ -654,7 +749,7 @@ def build() -> None:
 
         tokens = build_tokens(lang, slate_doc, pitch_doc)
 
-        for out_name, page in PAGES.items():
+        for out_name, page in {**PAGES, **day_pages}.items():
             key = page.key
             title = TITLES[out_name][lang]
             up = rel_root(page)
@@ -678,13 +773,21 @@ def build() -> None:
                 page_tokens["{{LEAGUE_NAME}}"] = entry.get("label") or (
                     leagues.LEAGUES[page.league].label)
                 if page.league in ("ncaab", "ncaaf"):
-                    # Redesign B: tier records, the best-bets filter, pick cards.
-                    tier_src = (entry.get("summary") if page.league == "ncaaf"
-                                else rating_summaries.get("ncaab"))
-                    page_tokens["{{LEAGUE_BOARD}}"] = (
-                        R.college_list(entry.get("games") or [])
-                        if page.key.endswith("_simple") else
-                        R.college_board(entry.get("games") or [], tier_src or {}))
+                    # College: today's list, the History calendar, saved days.
+                    by_day = history.get(page.league) or {}
+                    if page.key.endswith("_history"):
+                        page_tokens["{{LEAGUE_BOARD}}"] = R.history_calendar(by_day, page.league)
+                    elif ":" in page.key:
+                        d = page.key.split(":", 1)[1]
+                        order = sorted(by_day)
+                        i = order.index(d)
+                        page_tokens["{{LEAGUE_BOARD}}"] = R.history_day(
+                            by_day[d], d, order[i - 1] if i else None,
+                            order[i + 1] if i + 1 < len(order) else None)
+                    else:
+                        # The Simple list is the college board (Nov 2026).
+                        page_tokens["{{LEAGUE_BOARD}}"] = R.college_list(
+                            entry.get("games") or [])
                 else:
                     page_tokens["{{LEAGUE_BOARD}}"] = R.board_cards(
                         entry.get("games") or [])
@@ -692,14 +795,24 @@ def build() -> None:
                     "board_eyebrow", lang,
                     n=(board_doc.get("counts") or {}).get(page.league, 0),
                     d=_board_day(board_doc.get("date", ""), lang))
+                if page.key.endswith("_history") or ":" in page.key:
+                    # Saved days: the day the page is about, not tonight.
+                    d = page.key.split(":", 1)[1] if ":" in page.key else ""
+                    n_day = len((history.get(page.league) or {}).get(d) or [])
+                    page_tokens["{{BOARD_EYEBROW}}"] = (
+                        i18n.t("board_eyebrow", lang, n=n_day, d=_board_day(d, lang))
+                        if d else i18n.t("nav_history", lang))
+                    page_tokens["{{LEAGUE_CALIBRATION}}"] = ""
                 # How this league's own number has scored. MLB's lives on the
                 # slate page, which is its home; every other league had no
                 # such page and, until now, nothing scoring it at all.
                 scored = (rating_summaries.get(page.league) or {}
                           if page.league != "mlb" else {})
-                page_tokens["{{LEAGUE_CALIBRATION}}"] = (
-                    R.ncaaf_record(entry.get("summary") or {})
-                    if page.league == "ncaaf" else R.calibration_section(scored))
+                if "{{LEAGUE_CALIBRATION}}" not in page_tokens or not (
+                        page.key.endswith("_history") or ":" in page.key):
+                    page_tokens["{{LEAGUE_CALIBRATION}}"] = (
+                        R.ncaaf_record(entry.get("summary") or {})
+                        if page.league == "ncaaf" else R.calibration_section(scored))
             if page.body == "hits":
                 # {{DATE_LABEL}} has no site-wide value any more; each body
                 # that shows a date supplies its own here.
@@ -771,7 +884,22 @@ def build() -> None:
             written.add(target.resolve())
             print(f"built {lang}/{out_name}  ({len(html_out)//1024} KB)")
 
+    for out_name, to in RETIRED.items():
+        stub = ROOT / out_name
+        stub.parent.mkdir(parents=True, exist_ok=True)
+        stub.write_text(retired_stub(to), encoding="utf-8")
+        written.add(stub.resolve())
     _remove_orphans(written)
+
+
+def retired_stub(to: str) -> str:
+    """A page that moved: send the reader on, keep it out of search."""
+    return ('<!doctype html>\n<html lang="en"><head><meta charset="utf-8">\n'
+            '<meta name="robots" content="noindex">\n'
+            f'<meta http-equiv="refresh" content="0; url={to}">\n'
+            f'<link rel="canonical" href="{to}">\n'
+            f'<title>Moved \u2014 {config.SITE_NAME}</title></head>\n'
+            f'<body><p>This page moved. <a href="{to}">Go there</a>.</p></body></html>\n')
 
 
 def _remove_orphans(written: set) -> None:
@@ -797,7 +925,53 @@ def _remove_orphans(written: set) -> None:
               f"— no longer built")
 
 
+def _test_history() -> None:
+    assert 'url=index.html' in retired_stub("index.html")
+    assert set(RETIRED) == {"ncaab/system.html", "ncaab/first-half.html",
+                            "ncaab/simple.html", "ncaaf/simple.html"}
+    import tempfile  # noqa: PLC0415
+    doc = {"date": "2026-11-11", "leagues": {
+        "ncaab": {"games": [{"event_id": "a", "commence_time": "2026-11-12T00:00:00Z",
+                             "home": "H", "away": "A", "final": {"away": 1, "home": 2},
+                             "markets": {"spreads": {"point": -3.0, "side_a": "home",
+                                                     "best_home": {"book": "x"}},
+                                         "h2h": {"big": 1}, "totals": {"point": 140}}}]},
+        "ncaaf": {"games": [{"event_id": "f1", "date": "2026-11-11", "commence_time": "2026-11-12T00:00Z"},
+                            {"event_id": "f2", "date": "2026-11-14", "commence_time": "2026-11-14T17:00Z"}]},
+        "nba": {"games": [{"event_id": "n"}]}}}
+    with tempfile.TemporaryDirectory() as tmp:
+        root = Path(tmp)
+        assert save_history(doc, root) == 3
+        saved = json.loads((root / "ncaab" / "2026-11-11.json").read_text())
+        g = saved["games"][0]
+        assert "final" not in g, "finals are attached fresh at build time"
+        assert g["markets"] == {"spreads": {"point": -3.0, "side_a": "home"},
+                                "totals": {"point": 140}}, "only what the list shows"
+        assert (root / "ncaaf" / "2026-11-14.json").exists()
+        assert not (root / "nba").exists()
+        days = load_history(root)
+        assert sorted(days["ncaaf"]) == ["2026-11-11", "2026-11-14"]
+        assert days["ncaab"]["2026-11-11"][0]["event_id"] == "a"
+        # A later run for the same day replaces the file, never another day's.
+        doc2 = {"date": "2026-11-11", "leagues": {"ncaab": {"games": [{"event_id": "b",
+                "commence_time": "2026-11-12T01:00:00Z", "home": "H", "away": "A"}]}}}
+        save_history(doc2, root)
+        assert [r["event_id"] for r in load_history(root)["ncaab"]["2026-11-11"]] == ["b"]
+        assert (root / "ncaaf" / "2026-11-14.json").exists()
+    assert past_days({"ncaaf": {"2026-11-11": [1], "2026-11-14": [2]}}, "2026-11-12") == \
+        {"ncaaf": {"2026-11-11": [1]}}
+    pages = history_pages({"ncaab": {"2026-11-10": [], "2026-11-11": []}})
+    assert pages["ncaab/day-2026-11-10.html"].league == "ncaab"
+    assert pages["ncaab/day-2026-11-11.html"].key == "ncaab_day:2026-11-11"
+    assert ("ncaab/history.html", "nav_history") in VIEWS["ncaab"]
+    assert ("ncaaf/history.html", "nav_history") in VIEWS["ncaaf"]
+    day_page = pages["ncaab/day-2026-11-10.html"]
+    assert 'history.html" class="on" aria-current="page">History<' in view_row(day_page, "en"), \
+        "a day page lights the History tab"
+
+
 def _self_test() -> None:
+    _test_history()
     # Every registry entry is a Page, and the key matches its output path.
     for out, page in PAGES.items():
         assert isinstance(page, Page), f"{out} is not a Page: {page!r}"
@@ -910,13 +1084,16 @@ def _self_test() -> None:
 
     # The NCAAB System and 1st Half tabs were retired (Nov 2026): the board's
     # spread groups replaced them. Their old URLs redirect to the board.
-    assert VIEWS["ncaab"] == [("ncaab/index.html", "nav_board"),
-                              ("ncaab/simple.html", "nav_simple")]
+    # Nov 2026: the Simple list became the college board (the card board was
+    # retired); its own tab's URL redirects to the board. Two tabs: Today
+    # and History.
     for short in ("ncaab", "ncaaf"):
-        out = f"{short}/simple.html"
-        assert out in PAGES and PAGES[out].league == short and out in TITLES
-        assert (out, "nav_simple") in VIEWS[short]
-    for gone in ("homers.html", "ncaab/system.html", "ncaab/first-half.html"):
+        assert VIEWS[short] == [(f"{short}/index.html", "nav_today"),
+                                (f"{short}/history.html", "nav_history")], VIEWS[short]
+        assert RETIRED[f"{short}/simple.html"] == "index.html"
+    assert VIEWS["nba"][0] == ("nba/index.html", "nav_board"), "other sports keep Board"
+    for gone in ("homers.html", "ncaab/system.html", "ncaab/first-half.html",
+                 "ncaab/simple.html", "ncaaf/simple.html"):
         assert gone not in PAGES, f"{gone} is retired but still built"
         assert all(gone != out for views in _EXTRA_VIEWS.values()
                    for out, _key in views), f"{gone} is retired but in the nav"

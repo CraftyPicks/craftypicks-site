@@ -1129,6 +1129,7 @@ T = {
     "pc_best_s": {"en": "Best", "es": "Mejor"},
     "pc_check_s": {"en": "Check line", "es": "Revisar"},
     "nav_simple": {"en": "Simple", "es": "Simple"},
+    "nav_today": {"en": "Today", "es": "Hoy"},
     "nav_history": {"en": "History", "es": "Historial"},
     "hc_empty": {"en": "No saved days yet. Each day's board is saved from now on.", "es": "Aún no hay días guardados."},
     "hc_days": {"en": "Sunday,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday", "es": "Domingo,Lunes,Martes,Miércoles,Jueves,Viernes,Sábado"},
