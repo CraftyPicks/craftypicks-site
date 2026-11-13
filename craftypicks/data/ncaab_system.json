@@ -1,7 +1,95 @@
 {
-  "date": "2026-11-12",
-  "date_label": "Thursday, November 12, 2026",
-  "rows": [],
+  "date": "2026-11-13",
+  "date_label": "Friday, November 13, 2026",
+  "rows": [
+    {
+      "tab": "1h",
+      "event_id": "401925739",
+      "date": "2026-11-14",
+      "commence_time": "2026-11-14T02:30Z",
+      "home": {
+        "id": "204",
+        "name": "Oregon State Beavers",
+        "abbr": "ORST",
+        "short": "Oregon St",
+        "school": "Oregon State",
+        "color": "dc4405",
+        "rank": null,
+        "record": "3-0"
+      },
+      "away": {
+        "id": "2400",
+        "name": "Mississippi Valley State Delta Devils",
+        "abbr": "MVSU",
+        "short": "Miss Valley St",
+        "school": "Mississippi Valley State",
+        "color": "005328",
+        "rank": null,
+        "record": "0-3"
+      },
+      "side": "home",
+      "line": -17.5,
+      "est": true,
+      "ml": null,
+      "checks": [
+        {
+          "key": "reb",
+          "mark": "y",
+          "v": [
+            42.0,
+            27.67
+          ]
+        },
+        {
+          "key": "ats",
+          "mark": "na",
+          "v": [
+            2,
+            1,
+            "home"
+          ]
+        },
+        {
+          "key": "h2h",
+          "mark": "na",
+          "v": [
+            0,
+            0
+          ]
+        },
+        {
+          "key": "depth",
+          "mark": "y",
+          "v": [
+            3,
+            0
+          ]
+        },
+        {
+          "key": "form",
+          "mark": "y",
+          "v": [
+            3,
+            3,
+            "home"
+          ]
+        },
+        {
+          "key": "def",
+          "mark": "y",
+          "v": [
+            0.3,
+            -0.3
+          ]
+        }
+      ],
+      "passed": 4,
+      "applicable": 4,
+      "postseason": false,
+      "under_note": false,
+      "total": 155.5
+    }
+  ],
   "summary": {
     "system": {
       "w": 0,
@@ -15,10 +103,98 @@
       "w": 0,
       "l": 0,
       "p": 0,
-      "pending": 0,
+      "pending": 1,
       "units": 0.0,
       "checks": {}
     }
   },
-  "history": []
+  "history": [
+    {
+      "tab": "1h",
+      "event_id": "401925739",
+      "date": "2026-11-14",
+      "commence_time": "2026-11-14T02:30Z",
+      "home": {
+        "id": "204",
+        "name": "Oregon State Beavers",
+        "abbr": "ORST",
+        "short": "Oregon St",
+        "school": "Oregon State",
+        "color": "dc4405",
+        "rank": null,
+        "record": "3-0"
+      },
+      "away": {
+        "id": "2400",
+        "name": "Mississippi Valley State Delta Devils",
+        "abbr": "MVSU",
+        "short": "Miss Valley St",
+        "school": "Mississippi Valley State",
+        "color": "005328",
+        "rank": null,
+        "record": "0-3"
+      },
+      "side": "home",
+      "line": -17.5,
+      "est": true,
+      "ml": null,
+      "checks": [
+        {
+          "key": "reb",
+          "mark": "y",
+          "v": [
+            42.0,
+            27.67
+          ]
+        },
+        {
+          "key": "ats",
+          "mark": "na",
+          "v": [
+            2,
+            1,
+            "home"
+          ]
+        },
+        {
+          "key": "h2h",
+          "mark": "na",
+          "v": [
+            0,
+            0
+          ]
+        },
+        {
+          "key": "depth",
+          "mark": "y",
+          "v": [
+            3,
+            0
+          ]
+        },
+        {
+          "key": "form",
+          "mark": "y",
+          "v": [
+            3,
+            3,
+            "home"
+          ]
+        },
+        {
+          "key": "def",
+          "mark": "y",
+          "v": [
+            0.3,
+            -0.3
+          ]
+        }
+      ],
+      "passed": 4,
+      "applicable": 4,
+      "postseason": false,
+      "under_note": false,
+      "total": 155.5
+    }
+  ]
 }
