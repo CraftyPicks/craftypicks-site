@@ -8,10 +8,16 @@
 <meta property="og:title" content="Hits — Craftypicks">
 <meta property="og:description" content="Free daily pricing boards, with the accuracy score in public.">
 <meta property="og:type" content="website">
+<meta property="og:image" content="https://craftypicks.org/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-180.png">
 <meta name="theme-color" content="#0E1116">
 
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%2308090B'/><path d='M8 20 L14 12 L18 17 L24 9' stroke='%233BE081' stroke-width='2.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>">
-<link rel="stylesheet" href="style.css?v=8f7786ab">
+<link rel="stylesheet" href="style.css?v=d9a09204">
 </head>
 <body>
 <header class="nav">
@@ -388,11 +394,27 @@
     return !done;
   }
 
+  /* Nothing live right now: wake up when the next game on the page starts,
+     so a page opened in the afternoon and left open picks up the evening's
+     scores without a reload. One timer, capped so a sleeping phone's stale
+     clock cannot push it out for hours. */
+  function waitForTip() {
+    if (timer) { return; }
+    var now = Date.now(), next = Infinity;
+    Array.prototype.forEach.call(document.querySelectorAll("[data-sport]"), function (c) {
+      if (!c.querySelector(".cv-res[data-l]")) { return; }
+      var tip = Date.parse(c.getAttribute("data-tip") || "");
+      if (!isNaN(tip) && tip > now && tip < next) { next = tip; }
+    });
+    if (next === Infinity) { return; }
+    timer = setTimeout(run, Math.min(next - now + 5000, 30 * 60000));
+  }
+
   function run() {
     timer = null;
     if (document.visibilityState === "hidden") { return; }
     var cards = startedCards();
-    if (!cards.length) { return; }
+    if (!cards.length) { waitForTip(); return; }
     var groups = {};
     cards.forEach(function (c) {
       var k = c.getAttribute("data-sport") + "|" + etDate(c.getAttribute("data-tip"));
@@ -429,6 +451,7 @@
     });
     Promise.all(pending).then(function (states) {
       if (states.some(Boolean)) { timer = setTimeout(run, EVERY); }
+      else { waitForTip(); }
     });
   }
 
