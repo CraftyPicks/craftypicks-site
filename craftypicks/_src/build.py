@@ -799,7 +799,9 @@ def build() -> None:
                     by_day = history.get(page.league) or {}
                     if page.key.endswith("_history"):
                         page_tokens["{{LEAGUE_BOARD}}"] = (
-                            R.home_away_table(home_away_split(_cbb if page.league == "ncaab" else _cfb))
+                            R.home_away_table(_split := home_away_split(
+                                _cbb if page.league == "ncaab" else _cfb))
+                            + R.home_away_table(_split, "away")
                             + R.history_calendar(by_day, page.league))
                     elif ":" in page.key:
                         d = page.key.split(":", 1)[1]

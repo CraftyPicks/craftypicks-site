@@ -1570,7 +1570,7 @@ def history_calendar(days: dict[str, list[dict]], league: str) -> str:
     return '<div class="hc-wrap">' + "".join(out) + "</div>"
 
 
-def home_away_table(split: dict) -> str:
+def home_away_table(split: dict, side: str = "home") -> str:
     """Season to date on true home courts: the home side's record against
     the spread as favorite and as underdog, overall and by spread size.
     Each cell is home covers - away covers, then the home cover rate, so
@@ -1584,17 +1584,23 @@ def home_away_table(split: dict) -> str:
             return '<td class="ha-none">&mdash;</td>'
         return f'<td>{v[0]}-{v[1]}<small>{round(100 * v[0] / n)}%</small></td>'
 
+    def flip(v):          # the road team's side of the same game
+        return [v[1], v[0], v[2]]
+
     body = ""
     for k, row in split.items():
         label = _("ha_all") if k == "all" else _("pc_spread").format(r=k)
+        fav, dog = ((row["fav"], row["dog"]) if side == "home"
+                    else (flip(row["dog"]), flip(row["fav"])))
         body += (f'<tr class="ha-{"all" if k == "all" else "grp"}"><th scope="row">{esc(label)}</th>'
-                 f'{cell(row["fav"])}{cell(row["dog"])}</tr>')
+                 f'{cell(fav)}{cell(dog)}</tr>')
     pushes = sum(split["all"][s][2] for s in ("fav", "dog"))
-    foot = f'<p class="ha-note">{_("ha_note")}' + (
-        f' {_("ha_pushes", n=pushes)}' if pushes else "") + "</p>"
-    return (f'<table class="ha"><caption>{_("ha_caption")}</caption><thead><tr>'
+    sfx = "" if side == "home" else "_away"
+    foot = f'<p class="ha-note">{_("ha_note" + sfx)}' + (
+        f' {_("ha_pushes", n=pushes)}' if pushes and side == "home" else "") + "</p>"
+    return (f'<table class="ha"><caption>{_("ha_caption" + sfx)}</caption><thead><tr>'
             f'<th scope="col"><span class="ts-vh">{_("ha_spread")}</span></th>'
-            f'<th scope="col">{_("ha_fav")}</th><th scope="col">{_("ha_dog")}</th>'
+            f'<th scope="col">{_("ha_fav" + sfx)}</th><th scope="col">{_("ha_dog" + sfx)}</th>'
             f'</tr></thead><tbody>{body}</tbody></table>' + foot)
 
 
@@ -3707,6 +3713,13 @@ def _test_pick_card() -> None:
     assert '<td class="ha-none">&mdash;</td>' in ha, "no home underdogs of 20+"
     assert "2 pushes" in ha
     assert home_away_table({"all": {"fav": [0, 0, 0], "dog": [0, 0, 0]}}) == ""
+    # The same games from the road team's side: an away favorite is a home
+    # underdog's opponent, so its record is that column flipped.
+    aw = home_away_table(split, "away")
+    assert ">Away favorites<" in aw and ">Away underdogs<" in aw
+    assert '<th scope="row">All spreads</th><td>24-30<small>44%</small></td><td>194-183<small>51%</small></td>' in aw
+    assert '<th scope="row">Spread 1\u20135</th><td>14-24<small>37%</small></td><td>29-17<small>63%</small></td>' in aw
+    assert "Away teams against the spread" in aw and "away covers - home covers" in aw
     page = history_day(day_rows, "2026-11-10", "2026-11-09", None)
     assert 'href="day-2026-11-09.html"' in page and 'href="history.html"' in page
     assert "day-None" not in page and page.count('<tr id="l-') == 4
