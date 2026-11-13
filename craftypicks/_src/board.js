@@ -254,11 +254,27 @@
     return !done;
   }
 
+  /* Nothing live right now: wake up when the next game on the page starts,
+     so a page opened in the afternoon and left open picks up the evening's
+     scores without a reload. One timer, capped so a sleeping phone's stale
+     clock cannot push it out for hours. */
+  function waitForTip() {
+    if (timer) { return; }
+    var now = Date.now(), next = Infinity;
+    Array.prototype.forEach.call(document.querySelectorAll("[data-sport]"), function (c) {
+      if (!c.querySelector(".cv-res[data-l]")) { return; }
+      var tip = Date.parse(c.getAttribute("data-tip") || "");
+      if (!isNaN(tip) && tip > now && tip < next) { next = tip; }
+    });
+    if (next === Infinity) { return; }
+    timer = setTimeout(run, Math.min(next - now + 5000, 30 * 60000));
+  }
+
   function run() {
     timer = null;
     if (document.visibilityState === "hidden") { return; }
     var cards = startedCards();
-    if (!cards.length) { return; }
+    if (!cards.length) { waitForTip(); return; }
     var groups = {};
     cards.forEach(function (c) {
       var k = c.getAttribute("data-sport") + "|" + etDate(c.getAttribute("data-tip"));
@@ -295,6 +311,7 @@
     });
     Promise.all(pending).then(function (states) {
       if (states.some(Boolean)) { timer = setTimeout(run, EVERY); }
+      else { waitForTip(); }
     });
   }
 

@@ -114,6 +114,44 @@ def merge(history: list[dict], fresh: list[dict]) -> int:
     return added
 
 
+def _key(name) -> str:
+    """ncaab_system.name_key: a name both feeds agree on."""
+    import ncaab_system  # noqa: PLC0415
+    return ncaab_system.name_key(name)
+
+
+def _candidates(mine: tuple, when, finals: list[dict], college: bool) -> list[dict]:
+    """The final for a recorded game: the same two clubs in either order
+    (the feeds can disagree on who is home), else -- because the feeds also
+    spell some schools differently ("Sam Houston St" / "Sam Houston") --
+    the one final that day sharing a club with it. Never a guess: two
+    possible finals is no final.
+
+    Pro leagues stay exact, home and away as written: there the feeds agree,
+    and the reversed pair is the return fixture."""
+    near, loose = [], []
+    for game in finals:
+        played = _day(game.get("date"))
+        if when and played and abs((played - when).days) > DAY_SLACK:
+            continue
+        if not college:
+            if (game.get("home"), game.get("away")) == mine:
+                near.append(game)
+            continue
+        theirs = {_key(game.get("home")), _key(game.get("away"))}
+        if len(set(mine)) == 2 and set(mine) == theirs:
+            near.append(game)
+        elif len(theirs & set(mine)) == 1:
+            loose.append((abs((played - when).days) if when and played else 0, game))
+    if near:
+        return near[:1]
+    if loose:
+        best = min(d for d, _g in loose)
+        same = [g for d, g in loose if d == best]
+        return same if len(same) == 1 else []
+    return []
+
+
 def grade(history: list[dict], finals_by_league: dict) -> int:
     """Settle every ungraded rating we now have a final for. Free."""
     now = datetime.now(timezone.utc).isoformat(timespec="seconds")
@@ -123,14 +161,15 @@ def grade(history: list[dict], finals_by_league: dict) -> int:
             continue
         finals = finals_by_league.get(row.get("league")) or []
         when = _day(row.get("commence_time"))
-        for game in finals:
-            if (game.get("home") != row.get("home")
-                    or game.get("away") != row.get("away")):
-                continue
-            played = _day(game.get("date"))
-            if when and played and abs((played - when).days) > DAY_SLACK:
-                continue
+        college = row.get("league") in ("ncaab", "ncaaf")
+        mine = ((_key(row.get("home")), _key(row.get("away"))) if college
+                else (row.get("home"), row.get("away")))
+        for game in _candidates(mine, when, finals, college):
+            theirs = ((_key(game.get("home")), _key(game.get("away"))) if college
+                      else (game.get("home"), game.get("away")))
             hs, as_ = game.get("home_score"), game.get("away_score")
+            if mine[0] == theirs[1] or mine[1] == theirs[0]:
+                hs, as_ = as_, hs          # scores follow the pick's home/away
             if hs is None or as_ is None or hs == as_:
                 # A tie has no winner to score a probability against. The NFL
                 # ties about twice a season; leaving it ungraded is right.
@@ -215,6 +254,33 @@ def _test_ats() -> None:
     for r in old:
         r.pop("ats_tier")
     assert summary(old, "ncaab")["ats_tiers"]["lean"] == [0, 0, 0]
+    # The two feeds spell some schools differently and can disagree on who
+    # is home; a pick must still be graded (17 were left open on Nov 10-11).
+    odd = record([dict(rows[0], home="Sam Houston St Bearkats", away="Pepperdine Waves",
+                       ats={"side": "home", "line": 3.5, "gap": 2.0, "tier": "lean"})], "ncaab")
+    assert grade(odd, {"ncaab": [{"home": "Sam Houston Bearkats", "away": "Pepperdine Waves",
+                                  "home_score": 70, "away_score": 72, "date": "2026-11-10"}]}) == 1
+    assert odd[0]["result"] == "away" and odd[0]["ats_result"] == "W", "lost by 2 getting 3.5"
+    flip = record([dict(rows[0], home="Seton Hall Pirates", away="Charlotte 49ers",
+                        ats={"side": "home", "line": -4.5, "gap": 2.0, "tier": "lean"})], "ncaab")
+    assert grade(flip, {"ncaab": [{"home": "Charlotte 49ers", "away": "Seton Hall Pirates",
+                                   "home_score": 60, "away_score": 70, "date": "2026-11-10"}]}) == 1
+    assert flip[0]["result"] == "home" and flip[0]["final"] == "60\u201370", "scores follow the pick's order"
+    assert flip[0]["ats_result"] == "W", "Seton Hall won by 10 laying 4.5"
+    # Back-to-back days (a tournament): the final on the pick's own day wins.
+    b2b = record([dict(rows[0], home="Sam Houston St Bearkats", away="Pepperdine Waves",
+                       ats={"side": "home", "line": 3.5, "gap": 2.0, "tier": "lean"})], "ncaab")
+    assert grade(b2b, {"ncaab": [
+        {"home": "Z", "away": "Pepperdine Waves", "home_score": 90, "away_score": 50, "date": "2026-11-11"},
+        {"home": "Sam Houston Bearkats", "away": "Pepperdine Waves", "home_score": 70, "away_score": 72,
+         "date": "2026-11-10"}]}) == 1
+    assert b2b[0]["final"] == "72\u201370"
+    # Two possible finals the same day: ambiguous, left open rather than guessed.
+    amb = record([dict(rows[0], home="Sam Houston St Bearkats", away="Pepperdine Waves",
+                       ats={"side": "home", "line": 3.5, "gap": 2.0, "tier": "lean"})], "ncaab")
+    assert grade(amb, {"ncaab": [
+        {"home": "X", "away": "Pepperdine Waves", "home_score": 1, "away_score": 2, "date": "2026-11-10"},
+        {"home": "Y", "away": "Pepperdine Waves", "home_score": 1, "away_score": 2, "date": "2026-11-10"}]}) == 0
     # No pick recorded: no ATS result, and the count leaves it out.
     plain = record([dict(rows[0], ats=None)], "ncaab")
     grade(plain, finals)

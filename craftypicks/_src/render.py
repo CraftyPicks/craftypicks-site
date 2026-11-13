@@ -1454,7 +1454,7 @@ def _gm_team(logo: str, name: str, sub: str, side: str, pts=None, win: bool = Fa
 
 
 def _gm_card(row: dict, *, tier: str, teams: str, pick: str, detail: str,
-             tag: str = "", final: bool = False) -> str:
+             tag: str = "", final: bool = False, lead: str = "") -> str:
     """The game card every list on the site shares (Scoreboard style): a
     status line, the two clubs, the pick box, Details. A stripe down the
     left edge says best bet or live; both are also written in words."""
@@ -1477,13 +1477,61 @@ def _gm_card(row: dict, *, tier: str, teams: str, pick: str, detail: str,
                 f'{_("pc_details")}</button>'
                 f'<div class="gm-detail" id="ld-{eid}" hidden>{detail}</div>')
     return (f'<article class="gm gm-{tier}{" is-final" if final else ""}" id="l-{eid}"{hooks}>'
-            f'<header class="gm-h"><span class="gm-st">{esc(when)}</span>{tag}</header>'
+            f'<header class="gm-h">'
+            + (f'<span class="gm-lg">{esc(lead)}</span>' if lead else "")
+            + f'<span class="gm-st">{esc(when)}</span>{tag}</header>'
             f'{teams}{pick}{live}{more}</article>')
 
 
 def _gm_summary(items: list[tuple[int, str]]) -> str:
     return ('<div class="gm-sum">' + "".join(
         f'<div><b>{n}</b><span>{esc(label)}</span></div>' for n, label in items) + "</div>")
+
+
+_TIER_TAG = {"best": "pc_best", "lean": "pc_lean", "check": "pc_check"}
+
+
+def _college_card(r: dict, lead: str = "") -> tuple[str, str]:
+    """One college game as a Scoreboard card, and its tier."""
+    tag = _TIER_TAG
+    f = r.get("final")
+    a = r.get("ats")
+    t = _tier_of(a)
+    top = max(f["away"], f["home"]) if f else None
+    teams = ""
+    for side in ("away", "home"):
+        sheet = ((r.get("team_stats") or {}).get(side)) or {}
+        rk = sheet.get("bpi") or sheet.get("fpi")
+        rec = (sheet.get("stats") or {}).get("ats") or []
+        bits = [f"#{rk}"] if rk else []
+        if len(rec) == 3 and sum(rec):
+            bits.append(f'ATS {rec[0]}-{rec[1]}' + (f"-{rec[2]}" if rec[2] else ""))
+        pts = f[side] if f else None
+        teams += _gm_team(_logo(r, side, 34), esc(_school(r, side)), esc("  ".join(bits)),
+                          side, pts, f is not None and pts == top and f["away"] != f["home"])
+    if a:
+        line = f'{a["line"]:+g}' if a["line"] else "PK"
+        cover = a["cover"] * 100
+        pct = ("" if t == "check" else
+               f'<span class="gm-pc">{cover:.0f}<small>%</small></span>'
+               f'<span class="gm-meter" aria-hidden="true"><i style="width:{cover:.0f}%"></i></span>')
+        res = _verdict(r, f["away"], f["home"]) if f else ""
+        pick = (f'<div class="gm-pk"><span class="gm-lb">{_("cl_pick")}</span>'
+                f'<span class="gm-pv">{esc(_school(r, a["side"]))} {esc(line)}</span>{pct}'
+                f'<span class="gm-res">{res}</span></div>')
+    else:
+        pick = (f'<div class="gm-pk gm-nopick"><span class="gm-lb">{_("cl_pick")}</span>'
+                f'<span class="gm-pv">{_("pc_none")}</span><span class="gm-res"></span></div>')
+    _sp, chips = _pick_chips(r)
+    ts = r.get("team_stats") or {}
+    if ts.get("home") and ts.get("away"):
+        ts = {sd: dict(ts[sd], name=_school(r, sd)) for sd in ("home", "away")}
+    panel = _detail_panel(dict(r, team_stats=ts or None))
+    detail = ((f'<div class="pc-chips">{"".join(f"<span>{c}</span>" for c in chips)}</div>'
+               if chips else "") + (panel or ""))
+    tag_html = f'<span class="gm-tier gm-tier-{t}">{_(tag[t])}</span>' if t in tag else ""
+    return _gm_card(r, tier=t, teams=teams, pick=pick, detail=detail,
+                    tag=tag_html, final=bool(f), lead=lead), t
 
 
 def college_list(rows: list[dict]) -> str:
@@ -1493,48 +1541,11 @@ def college_list(rows: list[dict]) -> str:
     with the chips and the Team Stats panel."""
     if not rows:
         return board_cards([])
-    tag = {"best": "pc_best", "lean": "pc_lean", "check": "pc_check"}
     cards, tiers = [], []
     for r in sorted(rows, key=lambda r: (_tip(r), r.get("home") or "")):
-        f = r.get("final")
-        a = r.get("ats")
-        t = _tier_of(a)
+        html_, t = _college_card(r)
+        cards.append(html_)
         tiers.append(t)
-        top = max(f["away"], f["home"]) if f else None
-        teams = ""
-        for side in ("away", "home"):
-            sheet = ((r.get("team_stats") or {}).get(side)) or {}
-            rk = sheet.get("bpi") or sheet.get("fpi")
-            rec = (sheet.get("stats") or {}).get("ats") or []
-            bits = [f"#{rk}"] if rk else []
-            if len(rec) == 3 and sum(rec):
-                bits.append(f'ATS {rec[0]}-{rec[1]}' + (f"-{rec[2]}" if rec[2] else ""))
-            pts = f[side] if f else None
-            teams += _gm_team(_logo(r, side, 34), esc(_school(r, side)), esc("  ".join(bits)),
-                              side, pts, f is not None and pts == top and f["away"] != f["home"])
-        if a:
-            line = f'{a["line"]:+g}' if a["line"] else "PK"
-            cover = a["cover"] * 100
-            pct = ("" if t == "check" else
-                   f'<span class="gm-pc">{cover:.0f}<small>%</small></span>'
-                   f'<span class="gm-meter" aria-hidden="true"><i style="width:{cover:.0f}%"></i></span>')
-            res = _verdict(r, f["away"], f["home"]) if f else ""
-            pick = (f'<div class="gm-pk"><span class="gm-lb">{_("cl_pick")}</span>'
-                    f'<span class="gm-pv">{esc(_school(r, a["side"]))} {esc(line)}</span>{pct}'
-                    f'<span class="gm-res">{res}</span></div>')
-        else:
-            pick = (f'<div class="gm-pk gm-nopick"><span class="gm-lb">{_("cl_pick")}</span>'
-                    f'<span class="gm-pv">{_("pc_none")}</span><span class="gm-res"></span></div>')
-        _sp, chips = _pick_chips(r)
-        ts = r.get("team_stats") or {}
-        if ts.get("home") and ts.get("away"):
-            ts = {sd: dict(ts[sd], name=_school(r, sd)) for sd in ("home", "away")}
-        panel = _detail_panel(dict(r, team_stats=ts or None))
-        detail = ((f'<div class="pc-chips">{"".join(f"<span>{c}</span>" for c in chips)}</div>'
-                   if chips else "") + (panel or ""))
-        tag_html = f'<span class="gm-tier gm-tier-{t}">{_(tag[t])}</span>' if t in tag else ""
-        cards.append(_gm_card(r, tier=t, teams=teams, pick=pick, detail=detail,
-                              tag=tag_html, final=bool(f)))
     head = _gm_summary([(len(rows), _("gm_games")), (tiers.count("best"), _("pc_tile_best")),
                         (tiers.count("lean"), _("pc_tile_lean"))])
     return (head + f'<p class="gm-key">{_("gm_key")}</p>'
@@ -1565,6 +1576,46 @@ _NBA_BY_NAME = {}
 for _ab, _nm in NBA_ABBR.items():
     _NBA_BY_NAME.setdefault(_nm, _ab)          # first spelling is ESPN's
 _NBA_BY_NAME["LA Clippers"] = "LAC"
+
+
+NFL_ABBR = {
+    "ARI": "Arizona Cardinals", "ATL": "Atlanta Falcons", "BAL": "Baltimore Ravens",
+    "BUF": "Buffalo Bills", "CAR": "Carolina Panthers", "CHI": "Chicago Bears",
+    "CIN": "Cincinnati Bengals", "CLE": "Cleveland Browns", "DAL": "Dallas Cowboys",
+    "DEN": "Denver Broncos", "DET": "Detroit Lions", "GB": "Green Bay Packers",
+    "HOU": "Houston Texans", "IND": "Indianapolis Colts", "JAX": "Jacksonville Jaguars",
+    "KC": "Kansas City Chiefs", "LV": "Las Vegas Raiders", "LAC": "Los Angeles Chargers",
+    "LAR": "Los Angeles Rams", "MIA": "Miami Dolphins", "MIN": "Minnesota Vikings",
+    "NE": "New England Patriots", "NO": "New Orleans Saints", "NYG": "New York Giants",
+    "NYJ": "New York Jets", "PHI": "Philadelphia Eagles", "PIT": "Pittsburgh Steelers",
+    "SF": "San Francisco 49ers", "SEA": "Seattle Seahawks", "TB": "Tampa Bay Buccaneers",
+    "TEN": "Tennessee Titans", "WSH": "Washington Commanders",
+}
+PRO_ABBR = {"nba": _NBA_BY_NAME, "nfl": {name: ab for ab, name in NFL_ABBR.items()}}
+LEAGUE_TAG = {"nba": "NBA", "nfl": "NFL", "mlb": "MLB", "ncaab": "NCAAB", "ncaaf": "NCAAF"}
+
+
+def tonight_list(rows: list[dict], props: dict[str, dict] | None = None) -> str:
+    """Tonight: every league's games in one list by start time, each card
+    saying its league. College games are pick cards, NBA and NFL line
+    cards (`props`: league -> that league's projection boards); a league
+    without a Scoreboard card yet keeps its own."""
+    if not rows:
+        return board_cards([])
+    cards, count = [], {}
+    for r in sorted(rows, key=lambda r: (_tip(r), r.get("home") or "")):
+        lg = r.get("league", "")
+        count[lg] = count.get(lg, 0) + 1
+        lead = LEAGUE_TAG.get(lg, lg.upper())
+        if lg in COLLEGE:
+            cards.append(_college_card(r, lead)[0])
+        elif lg in PRO_ABBR:
+            cards.append(_pro_card(r, (props or {}).get(lg), PRO_ABBR[lg], lead)[0])
+        else:
+            cards.append(board_card(r))
+    head = _gm_summary([(len(rows), _("gm_games"))]
+                       + [(n, LEAGUE_TAG.get(lg, lg.upper())) for lg, n in count.items()][:3])
+    return head + '<div class="gm-list">' + "".join(cards) + "</div>"
 
 
 def _price(v) -> str:
@@ -1655,6 +1706,43 @@ def _pro_logo(row: dict, side: str, abbr: dict, size: int = 34) -> str:
     return f'<span class="pc-lg" style="--s:{size}px" aria-hidden="true">{img}{esc(ab[:4])}</span>'
 
 
+def _pro_card(r: dict, props: dict | None, abbr: dict | None,
+              lead: str = "") -> tuple[str, int]:
+    """One pro game as a Scoreboard card, and how many projections it holds."""
+    abbr = abbr or {}
+    n_props = 0
+    m = r.get("markets") or {}
+    sp, tot = m.get("spreads") or {}, m.get("totals") or {}
+    teams = ""
+    for side in ("away", "home"):
+        form = ((r.get("detail") or {}).get(f"{side}_form")) or {}
+        rec = (f'{form["w"]}-{form["l"]}'
+               if form.get("w") is not None and form.get("l") is not None else "")
+        teams += _gm_team(_pro_logo(r, side, abbr), esc(_nickname(r.get(side))), esc(rec), side)
+    line = []
+    if sp.get("point") is not None:
+        hp = sp["point"] if sp.get("side_a", "home") == "home" else -sp["point"]
+        fav, pt = ("home", hp) if hp <= 0 else ("away", -hp)
+        line.append("PK" if pt == 0 else f'{esc(_nickname(r.get(fav)))} {pt:g}')
+    ou = f'<span class="gm-ou">{_("pl_ou")} {tot["point"]:g}</span>' if tot.get("point") is not None else ""
+    pick = (f'<div class="gm-pk gm-line"><span class="gm-lb">{_("pl_line")}</span>'
+            f'<span class="gm-pv">{line[0] if line else "&mdash;"}</span>{ou}'
+            f'<span class="gm-res"></span></div>')
+    pair = {abbr.get(r.get("home")), abbr.get(r.get("away"))} - {None}
+    sections = []
+    gl, n = _game_lines(r)
+    if gl:
+        sections.append(_market_section(_("mk_lines"), n, gl))
+    for key, prop_rows in (props or {}).items():
+        mine = [p for p in prop_rows
+                if len(pair) == 2 and {p.get("team"), p.get("opponent")} == pair]
+        if mine:
+            n_props += len(mine)
+            sections.append(_market_section(_(key), len(mine), _prop_table(mine)))
+    detail = f'<div class="pc-groups">{"".join(sections)}</div>' if sections else ""
+    return _gm_card(r, tier="line", teams=teams, pick=pick, detail=detail, lead=lead), n_props
+
+
 def pro_list(rows: list[dict], props: dict[str, list[dict]] | None = None,
              abbr: dict | None = None) -> str:
     """The pro Today list: one card per game by start time with the market's
@@ -1664,40 +1752,13 @@ def pro_list(rows: list[dict], props: dict[str, list[dict]] | None = None,
     the abbreviation the prop rows use)."""
     if not rows:
         return board_cards([])
-    abbr = abbr or {}
     cards, n_props = [], 0
     for r in sorted(rows, key=lambda r: (_tip(r), r.get("home") or "")):
-        m = r.get("markets") or {}
-        sp, tot = m.get("spreads") or {}, m.get("totals") or {}
-        teams = ""
-        for side in ("away", "home"):
-            form = ((r.get("detail") or {}).get(f"{side}_form")) or {}
-            rec = (f'{form["w"]}-{form["l"]}'
-                   if form.get("w") is not None and form.get("l") is not None else "")
-            teams += _gm_team(_pro_logo(r, side, abbr), esc(_nickname(r.get(side))), esc(rec), side)
-        line = []
-        if sp.get("point") is not None:
-            hp = sp["point"] if sp.get("side_a", "home") == "home" else -sp["point"]
-            fav, pt = ("home", hp) if hp <= 0 else ("away", -hp)
-            line.append("PK" if pt == 0 else f'{esc(_nickname(r.get(fav)))} {pt:g}')
-        ou = f'<span class="gm-ou">{_("pl_ou")} {tot["point"]:g}</span>' if tot.get("point") is not None else ""
-        pick = (f'<div class="gm-pk gm-line"><span class="gm-lb">{_("pl_line")}</span>'
-                f'<span class="gm-pv">{line[0] if line else "&mdash;"}</span>{ou}'
-                f'<span class="gm-res"></span></div>')
-        pair = {abbr.get(r.get("home")), abbr.get(r.get("away"))} - {None}
-        sections = []
-        gl, n = _game_lines(r)
-        if gl:
-            sections.append(_market_section(_("mk_lines"), n, gl))
-        for key, prop_rows in (props or {}).items():
-            mine = [p for p in prop_rows
-                    if len(pair) == 2 and {p.get("team"), p.get("opponent")} == pair]
-            if mine:
-                n_props += len(mine)
-                sections.append(_market_section(_(key), len(mine), _prop_table(mine)))
-        detail = f'<div class="pc-groups">{"".join(sections)}</div>' if sections else ""
-        cards.append(_gm_card(r, tier="line", teams=teams, pick=pick, detail=detail))
-    head = _gm_summary([(len(rows), _("gm_games")), (n_props, _("gm_projections"))])
+        html_, n = _pro_card(r, props, abbr)
+        cards.append(html_)
+        n_props += n
+    head = _gm_summary([(len(rows), _("gm_games"))]
+                       + ([(n_props, _("gm_projections"))] if props else []))
     return head + '<div class="gm-list">' + "".join(cards) + "</div>"
 
 
@@ -3975,6 +4036,23 @@ def _test_pro_list() -> None:
     assert pro_list([], {}, {}).startswith('<p class="empty-board">')
     assert _NBA_BY_NAME["Los Angeles Clippers"] == "LAC" and _NBA_BY_NAME["New York Knicks"] == "NY"
     assert len(set(NBA_ABBR.values())) == 30
+    # Tonight: every league in one list by time, each card saying its league.
+    college = {"event_id": "c1", "league": "ncaab", "commence_time": "2026-11-12T23:00:00Z",
+               "home": "Bradley Braves", "away": "Coppin St Eagles",
+               "markets": {"spreads": {"point": -10.5, "side_a": "home"}},
+               "ats": {"side": "home", "team": "Bradley Braves", "line": -10.5, "cover": 0.56,
+                       "gap": 1.0, "tier": "pass"}}
+    nfl = dict(game, event_id="f1", league="nfl", home="New York Giants",
+               away="Washington Commanders", commence_time="2026-11-13T01:15:00Z")
+    ton = tonight_list([nfl, game, college], {"nba": props})
+    order = [ton.index(f'id="l-{x}"') for x in ("c1", "g1", "f1")]
+    assert order == sorted(order), "by start time across leagues"
+    assert '<span class="gm-lg">NCAAB</span><span class="gm-st">6:00 PM</span>' in ton
+    assert '<span class="gm-lg">NBA</span>' in ton and '<span class="gm-lg">NFL</span>' in ton
+    assert "teamlogos/nfl/500/nyg.png" in ton and "Tyrese Maxey" in ton
+    assert "<div><b>3</b><span>Games</span></div>" in ton and "<span>NCAAB</span>" in ton
+    assert tonight_list([]).startswith('<p class="empty-board">')
+    assert len(NFL_ABBR) == 32
     acc = prop_accuracy({"mk_points": {"graded": 839, "mae": 6.12, "baseline": 6.07},
                          "mk_assists": {}})
     assert ">Points<" in acc and "839" in acc and "6.12" in acc and ">Assists<" in acc

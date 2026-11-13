@@ -373,6 +373,12 @@ HEAD = """<!DOCTYPE html>
 <meta property="og:title" content="{title}">
 <meta property="og:description" content="Free daily pricing boards, with the accuracy score in public.">
 <meta property="og:type" content="website">
+<meta property="og:image" content="https://craftypicks.org/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="manifest" href="{up}manifest.webmanifest">
+<link rel="apple-touch-icon" href="{up}icon-180.png">
 <meta name="theme-color" content="#0E1116">
 {hreflang}
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%2308090B'/><path d='M8 20 L14 12 L18 17 L24 9' stroke='%233BE081' stroke-width='2.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>">
@@ -677,7 +683,10 @@ def build() -> None:
             "{{MIN_BOOKS}}": str(config.MIN_BOOKS),
             "{{MAX_PLAYS}}": str(config.MAX_PLAYS_PER_DAY),
             "{{POST_TIME}}": config.POST_TIME_LABEL,
-            "{{TONIGHT_BOARD}}": R.board_cards(tonight_rows(board_doc)),
+            "{{TONIGHT_BOARD}}": R.tonight_list(
+                tonight_rows(board_doc),
+                {"nba": {f"mk_{stat}": NBA_DOCS[f"nba_{stat}"].get("rows", [])
+                         for stat in ("points", "assists", "rebounds")}}),
             "{{BAT_DATE}}": doc_date_label(batter_doc, lang) or L("not_rated"),
             "{{BATTER_CARDS}}": R.batter_cards(batter_doc.get("batters", [])),
             "{{BAT_CALIBRATION}}": R.batter_calibration(
@@ -779,7 +788,9 @@ def build() -> None:
             if page.key == "tonight":
                 page_tokens["{{BOARD_EYEBROW}}"] = i18n.t(
                     "board_eyebrow", lang,
-                    n=sum((board_doc.get("counts") or {}).values()),
+                    # What the page lists: football's board holds a whole
+                    # week, Tonight only today's games.
+                    n=len(tonight_rows(board_doc)),
                     d=_board_day(board_doc.get("date", ""), lang))
             if page.league:
                 entry = (board_doc.get("leagues") or {}).get(page.league, {})
@@ -813,6 +824,10 @@ def build() -> None:
                         {f"mk_{stat}": NBA_DOCS[f"nba_{stat}"].get("rows", [])
                          for stat in ("points", "assists", "rebounds")},
                         R._NBA_BY_NAME)
+                elif page.league == "nfl" and page.body == "league":
+                    # Line cards; the prop boards keep their own tabs.
+                    page_tokens["{{LEAGUE_BOARD}}"] = R.pro_list(
+                        entry.get("games") or [], {}, R.PRO_ABBR["nfl"])
                 else:
                     page_tokens["{{LEAGUE_BOARD}}"] = R.board_cards(
                         entry.get("games") or [])
@@ -955,6 +970,14 @@ def _remove_orphans(written: set) -> None:
 
 
 def _test_history() -> None:
+    # Share card and home-screen icon: every page links them, at its depth.
+    assert 'og:image" content="https://craftypicks.org/og.png"' in HEAD
+    assert 'rel="manifest" href="{up}manifest.webmanifest"' in HEAD
+    man = json.loads((ROOT / "manifest.webmanifest").read_text())
+    assert man["display"] == "standalone" and man["start_url"] == "./"
+    for icon in man["icons"]:
+        assert (ROOT / icon["src"]).exists(), icon["src"]
+    assert (ROOT / "og.png").exists() and (ROOT / "icon-180.png").exists()
     def g(hs, as_, sp, neutral=False, done=True):
         return {"completed": done, "neutral": neutral, "spread_home": sp,
                 "home_score": hs, "away_score": as_}
