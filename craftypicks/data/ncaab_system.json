@@ -1,34 +1,34 @@
 {
-  "date": "2026-11-13",
-  "date_label": "Friday, November 13, 2026",
+  "date": "2026-11-14",
+  "date_label": "Saturday, November 14, 2026",
   "rows": [
     {
       "tab": "1h",
-      "event_id": "401925739",
+      "event_id": "401920193",
       "date": "2026-11-14",
-      "commence_time": "2026-11-14T02:30Z",
+      "commence_time": "2026-11-14T23:30Z",
       "home": {
-        "id": "204",
-        "name": "Oregon State Beavers",
-        "abbr": "ORST",
-        "short": "Oregon St",
-        "school": "Oregon State",
-        "color": "dc4405",
+        "id": "2603",
+        "name": "Saint Joseph's Hawks",
+        "abbr": "JOES",
+        "short": "Saint Joseph's",
+        "school": "Saint Joseph's",
+        "color": "9e1b32",
         "rank": null,
         "record": "3-0"
       },
       "away": {
-        "id": "2400",
-        "name": "Mississippi Valley State Delta Devils",
-        "abbr": "MVSU",
-        "short": "Miss Valley St",
-        "school": "Mississippi Valley State",
-        "color": "005328",
+        "id": "219",
+        "name": "Pennsylvania Quakers",
+        "abbr": "PENN",
+        "short": "Penn",
+        "school": "Pennsylvania",
+        "color": "082A74",
         "rank": null,
-        "record": "0-3"
+        "record": "1-2"
       },
       "side": "home",
-      "line": -17.5,
+      "line": -2.0,
       "est": true,
       "ml": null,
       "checks": [
@@ -36,25 +36,25 @@
           "key": "reb",
           "mark": "y",
           "v": [
-            42.0,
-            27.67
+            39.33,
+            35.0
           ]
         },
         {
           "key": "ats",
           "mark": "na",
           "v": [
+            0,
             2,
-            1,
             "home"
           ]
         },
         {
           "key": "h2h",
-          "mark": "na",
+          "mark": "y",
           "v": [
-            0,
-            0
+            3,
+            4
           ]
         },
         {
@@ -62,15 +62,15 @@
           "mark": "y",
           "v": [
             3,
-            0
+            2
           ]
         },
         {
           "key": "form",
-          "mark": "y",
+          "mark": "na",
           "v": [
-            3,
-            3,
+            0,
+            2,
             "home"
           ]
         },
@@ -78,8 +78,8 @@
           "key": "def",
           "mark": "y",
           "v": [
-            0.3,
-            -0.3
+            11.3,
+            6.3
           ]
         }
       ],
@@ -87,7 +87,7 @@
       "applicable": 4,
       "postseason": false,
       "under_note": false,
-      "total": 155.5
+      "total": 153.5
     }
   ],
   "summary": {
@@ -101,11 +101,28 @@
     },
     "1h": {
       "w": 0,
-      "l": 0,
+      "l": 1,
       "p": 0,
       "pending": 1,
-      "units": 0.0,
-      "checks": {}
+      "units": -1.0,
+      "checks": {
+        "reb": [
+          0,
+          1
+        ],
+        "depth": [
+          0,
+          1
+        ],
+        "form": [
+          0,
+          1
+        ],
+        "def": [
+          0,
+          1
+        ]
+      }
     }
   },
   "history": [
@@ -194,7 +211,99 @@
       "applicable": 4,
       "postseason": false,
       "under_note": false,
-      "total": 155.5
+      "total": 155.5,
+      "result": "L",
+      "final": [
+        65,
+        81
+      ]
+    },
+    {
+      "tab": "1h",
+      "event_id": "401920193",
+      "date": "2026-11-14",
+      "commence_time": "2026-11-14T23:30Z",
+      "home": {
+        "id": "2603",
+        "name": "Saint Joseph's Hawks",
+        "abbr": "JOES",
+        "short": "Saint Joseph's",
+        "school": "Saint Joseph's",
+        "color": "9e1b32",
+        "rank": null,
+        "record": "3-0"
+      },
+      "away": {
+        "id": "219",
+        "name": "Pennsylvania Quakers",
+        "abbr": "PENN",
+        "short": "Penn",
+        "school": "Pennsylvania",
+        "color": "082A74",
+        "rank": null,
+        "record": "1-2"
+      },
+      "side": "home",
+      "line": -2.0,
+      "est": true,
+      "ml": null,
+      "checks": [
+        {
+          "key": "reb",
+          "mark": "y",
+          "v": [
+            39.33,
+            35.0
+          ]
+        },
+        {
+          "key": "ats",
+          "mark": "na",
+          "v": [
+            0,
+            2,
+            "home"
+          ]
+        },
+        {
+          "key": "h2h",
+          "mark": "y",
+          "v": [
+            3,
+            4
+          ]
+        },
+        {
+          "key": "depth",
+          "mark": "y",
+          "v": [
+            3,
+            2
+          ]
+        },
+        {
+          "key": "form",
+          "mark": "na",
+          "v": [
+            0,
+            2,
+            "home"
+          ]
+        },
+        {
+          "key": "def",
+          "mark": "y",
+          "v": [
+            11.3,
+            6.3
+          ]
+        }
+      ],
+      "passed": 4,
+      "applicable": 4,
+      "postseason": false,
+      "under_note": false,
+      "total": 153.5
     }
   ]
 }
