@@ -31,7 +31,8 @@ _num = espn_cbb._num
 
 
 def parse_box(summary) -> dict:
-    """Per team: points, total yards, offensive plays, turnovers.
+    """Per team: points, total yards, offensive plays, turnovers; plus the
+    game's line under "_odds" when the summary carries one.
 
     Plays are rush attempts plus pass attempts (sacks are not in either
     count, so yards per play reads a touch high -- the same for everyone).
@@ -52,15 +53,25 @@ def parse_box(summary) -> dict:
                     "tov": _int(st.get("turnovers"))}
     if not out:
         return {}
+    abbr = {"home": "", "away": ""}
     try:
         for c in summary["header"]["competitions"][0]["competitors"]:
             tid = str(c["team"]["id"])
             if tid in out:
                 out[tid]["pts"] = _int(c.get("score"))
+            if c.get("homeAway") in abbr:
+                abbr[c["homeAway"]] = (c.get("team") or {}).get("abbreviation", "")
     except (KeyError, IndexError, TypeError):
         pass
-    return {k: {"pts": v["pts"], "yds": v["yds"], "plays": v["plays"],
-                "tov": v["tov"]} for k, v in out.items()}
+    box = {k: {"pts": v["pts"], "yds": v["yds"], "plays": v["plays"],
+               "tov": v["tov"]} for k, v in out.items()}
+    # The game's line. The scoreboard drops its odds once a game is final;
+    # the summary keeps them, and ncaab_system.attach_box fills a missing
+    # line from here (keys starting "_" are not stored in the box).
+    odds = espn_cbb.parse_odds(summary.get("pickcenter"), abbr["home"], abbr["away"])
+    if odds.get("spread_home") is not None or odds.get("total") is not None:
+        box["_odds"] = odds
+    return box
 
 
 def parse_power(payload, kind: str = "fpi") -> dict[str, dict]:
@@ -145,6 +156,19 @@ def _self_test() -> None:
     # ESPN writes completions/attempts with "/" or "-": both read.
     assert b["130"]["plays"] == 65 and b["130"]["tov"] == 2
     assert parse_box({}) == {}
+    assert "_odds" not in b, "no line in the summary, nothing claimed"
+    # The summary keeps the game's line (pickcenter) after the scoreboard
+    # has dropped it: that is what fills ATS for games already played.
+    fx = _fx_summary()
+    fx["header"]["competitions"][0]["competitors"][0]["team"]["abbreviation"] = "OSU"
+    fx["header"]["competitions"][0]["competitors"][1]["team"]["abbreviation"] = "MICH"
+    fx["pickcenter"] = [{"details": "OSU -7.5", "overUnder": 44.5,
+                         "homeTeamOdds": {"favorite": True, "moneyLine": -300},
+                         "awayTeamOdds": {"favorite": False, "moneyLine": 240}}]
+    lined = parse_box(fx)
+    assert lined["_odds"] == {"spread_home": -7.5, "ml_home": -300, "ml_away": 240,
+                              "total": 44.5}, lined["_odds"]
+    assert lined["194"]["yds"] == 445, "the box itself is unchanged"
 
     fpi = {"categories": [{"name": "fpi", "names": ["fpi", "fpirank", "fpioff"]}],
            "teams": [

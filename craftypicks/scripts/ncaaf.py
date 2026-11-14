@@ -29,6 +29,7 @@ WINDOW_DAYS = 7
 SEASON_MONTHS = (8, 9, 10, 11, 12, 1)
 CATCH_UP_DAYS = 14
 SUMMARY_CAP = 300
+LINE_TRIES = 2
 ET = ZoneInfo("America/New_York")
 
 
@@ -308,10 +309,17 @@ def daily(day: date, data, fetch=None, now: datetime | None = None) -> dict | No
     for g in nsys._finals(store):
         if boxes >= SUMMARY_CAP:
             break
-        if g.get("box") or g.get("box_tries", 0) >= nsys.BOX_TRIES:
+        # A final with its box but no line asks the summary again for the
+        # line (the scoreboard drops odds once a game is over), LINE_TRIES
+        # times at most: some games never had one.
+        need_line = (g.get("box") and g.get("spread_home") is None
+                     and g.get("line_tries", 0) < LINE_TRIES)
+        if (g.get("box") and not need_line) or g.get("box_tries", 0) >= nsys.BOX_TRIES:
             continue
         box = fetch.summary(g["event_id"])
         boxes += 1
+        if need_line:
+            g["line_tries"] = g.get("line_tries", 0) + 1
         if box:
             nsys.attach_box(store, g["event_id"], box)
         else:
@@ -519,6 +527,37 @@ def _test_daily() -> None:
         daily(date(2026, 11, 10), data, fetch=f, now=_morning(10))
         assert f.calls["sb"] - before["sb"] == 1 + WINDOW_DAYS
         assert f.calls["sum"] == before["sum"]
+
+    # A final stored without a line (ESPN's scoreboard drops the odds once a
+    # game is over) asks its summary for the line once more, and ATS fills.
+    h = Fake()
+    h.days = {"20261107": [_game("1", "bama", "x", 42, 10)]}          # no spread
+    h.boxes = {"1": _box("bama", "x", 500, 70, 1, 200, 60, 3, 42, 10)}
+    with tempfile.TemporaryDirectory() as tmp:
+        data = Path(tmp)
+        daily(date(2026, 11, 9), data, fetch=h, now=_morning(9))
+        st = json.loads((data / "ncaaf_games.json").read_text())
+        assert st["games"]["1"]["spread_home"] is None and st["games"]["1"]["box"]
+        # The summary now carries the line.
+        h.boxes["1"] = dict(h.boxes["1"], _odds={"spread_home": -20.0, "total": 51.5,
+                                                 "ml_home": None, "ml_away": None})
+        n = h.calls["sum"]
+        daily(date(2026, 11, 10), data, fetch=h, now=_morning(10))
+        st = json.loads((data / "ncaaf_games.json").read_text())
+        assert h.calls["sum"] == n + 1, "asked again for the line"
+        assert st["games"]["1"]["spread_home"] == -20.0 and st["games"]["1"]["total"] == 51.5
+        assert "_odds" not in st["games"]["1"]["box"]
+        n = h.calls["sum"]
+        daily(date(2026, 11, 11), data, fetch=h, now=_morning(11))
+        assert h.calls["sum"] == n, "has its line: not asked again"
+    # A game whose summary never has a line is asked LINE_TRIES times, no more.
+    k = Fake()
+    k.days = {"20261107": [_game("1", "bama", "x", 42, 10)]}
+    k.boxes = {"1": _box("bama", "x", 500, 70, 1, 200, 60, 3, 42, 10)}
+    with tempfile.TemporaryDirectory() as tmp:
+        for i in range(9, 9 + LINE_TRIES + 3):
+            daily(date(2026, 11, i), Path(tmp), fetch=k, now=_morning(i))
+        assert k.calls["sum"] == 1 + LINE_TRIES, k.calls
 
     # A failed past scoreboard is not a closed day: it is fetched again.
     g = Fake()
