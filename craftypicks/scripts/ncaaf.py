@@ -30,6 +30,7 @@ SEASON_MONTHS = (8, 9, 10, 11, 12, 1)
 CATCH_UP_DAYS = 14
 SUMMARY_CAP = 300
 LINE_TRIES = 2
+SEASON_START = (8, 20)     # month, day: before FBS week zero
 ET = ZoneInfo("America/New_York")
 
 
@@ -287,6 +288,24 @@ def daily(day: date, data, fetch=None, now: datetime | None = None) -> dict | No
     # Finals since the last closed day, then the week ahead.
     start = (date.fromisoformat(store["last_day"]) + one if store.get("last_day")
              else day - one * CATCH_UP_DAYS)
+
+    # Once per season: every final since the season began, so Team Stats and
+    # records cover the year and not just the days since the board started.
+    # A day that fails leaves the flag unset and the walk is repeated; games
+    # merge by id, so repeating costs requests, never data.
+    if not store.get("backfilled"):
+        d, ok = date(season, *SEASON_START), True
+        stop = min(start, day - one * CATCH_UP_DAYS)
+        while d < stop:
+            got = fetch.scoreboard(d.strftime("%Y%m%d"))
+            if got is None:
+                ok = False
+            else:
+                nsys.merge_games(store, [g for g in got
+                                         if g.get("season") in (None, season)])
+            d += one
+        if ok:
+            store["backfilled"] = True
     closed = start - one
     d = start
     while d <= day + one * (WINDOW_DAYS - 1):
@@ -516,8 +535,11 @@ def _test_daily() -> None:
         data = Path(tmp)
         assert daily(date(2026, 6, 1), data, fetch=f) is None, "off season"
         out = daily(date(2026, 11, 9), data, fetch=f, now=_morning(9))
-        # 14 days back to yesterday, plus today and the 6 days after it.
-        assert f.calls["sb"] == CATCH_UP_DAYS + WINDOW_DAYS, f.calls
+        # The whole season so far, once (Aug 20 up to the catch-up window),
+        # then 14 days back to yesterday, today and the 6 days after it.
+        early = (date(2026, 11, 9) - timedelta(days=CATCH_UP_DAYS) - date(2026, *SEASON_START)).days
+        assert f.calls["sb"] == early + CATCH_UP_DAYS + WINDOW_DAYS, f.calls
+        assert json.loads((data / "ncaaf_games.json").read_text())["backfilled"] is True
         assert f.calls["sum"] == 2 and out["games"] == 1
         doc = json.loads((data / "ncaaf.json").read_text())
         assert [g["event_id"] for g in doc["games"]] == ["10"]
@@ -558,6 +580,31 @@ def _test_daily() -> None:
         for i in range(9, 9 + LINE_TRIES + 3):
             daily(date(2026, 11, i), Path(tmp), fetch=k, now=_morning(i))
         assert k.calls["sum"] == 1 + LINE_TRIES, k.calls
+
+    # Team Stats must cover the season, not the last fortnight (Auburn showed
+    # "1-1" from two games in November): an early-season final is stored.
+    e = Fake()
+    e.days = {"20260905": [_game("s1", "bama", "x", 35, 7)],
+              "20261107": [_game("1", "bama", "x", 42, 10, spread=-20.0)]}
+    with tempfile.TemporaryDirectory() as tmp:
+        daily(date(2026, 11, 9), Path(tmp), fetch=e, now=_morning(9))
+        st = json.loads((Path(tmp) / "ncaaf_games.json").read_text())
+        assert "s1" in st["games"] and st["games"]["s1"]["home_score"] == 35
+        sheet = team_sheet(st, {})
+        assert sheet[nsys.name_key("Team BAMA")]["record"] == "2-0"
+    # A day that fails during the season backfill leaves it unfinished, and
+    # the next run walks the early season again (merging is idempotent).
+    b = Fake()
+    real_b = b.scoreboard
+    b.scoreboard = lambda d: None if d == "20260912" else real_b(d)
+    with tempfile.TemporaryDirectory() as tmp:
+        daily(date(2026, 11, 9), Path(tmp), fetch=b, now=_morning(9))
+        assert not json.loads((Path(tmp) / "ncaaf_games.json").read_text()).get("backfilled")
+        b.scoreboard = real_b
+        n = b.calls["sb"]
+        daily(date(2026, 11, 10), Path(tmp), fetch=b, now=_morning(10))
+        assert json.loads((Path(tmp) / "ncaaf_games.json").read_text())["backfilled"] is True
+        assert b.calls["sb"] - n > 60, "the early season was walked again"
 
     # A failed past scoreboard is not a closed day: it is fetched again.
     g = Fake()
