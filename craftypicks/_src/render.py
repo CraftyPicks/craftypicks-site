@@ -1664,30 +1664,76 @@ def _game_lines(row: dict) -> tuple[str, int]:
             f'<p class="mk-note">{_("mk_lines_note")}</p>'), len(out)
 
 
-def _prop_table(rows: list[dict]) -> str:
-    """One prop board's players for one game: projection beside the season
-    average and the last five, highest projection first."""
-    def num(v):
-        return "&ndash;" if v is None else f"{v:.1f}"
+# Each club's main colour, dark enough for white text on top (a club whose
+# first colour is too light uses its darker one).
+NBA_COLOR = {
+    "ATL": "C8102E", "BOS": "007A33", "BKN": "111111", "CHA": "1D1160", "CHI": "CE1141",
+    "CLE": "860038", "DAL": "00538C", "DEN": "0E2240", "DET": "1D42BA", "GS": "1D428A",
+    "HOU": "CE1141", "IND": "002D62", "LAC": "1D428A", "LAL": "552583", "MEM": "12173F",
+    "MIA": "98002E", "MIL": "00471B", "MIN": "0C2340", "NO": "0C2340", "NY": "006BB6",
+    "OKC": "002D62", "ORL": "0077C0", "PHI": "006BB6", "PHX": "1D1160", "POR": "111111",
+    "SAC": "5A2D81", "SA": "111111", "TOR": "CE1141", "UTAH": "002B5C", "WSH": "002B5C",
+}
+POS_ONE_WORD = {"G": "pos_one_g", "F": "pos_one_f", "C": "pos_one_c"}
 
-    body = []
+
+def _last5(recent: list[dict], ref) -> str:
+    """The last five games as boxes, each showing its number: `hit` at or
+    above tonight's projection, `near` within 15% under it, `miss` below
+    that. The number is always printed; colour only repeats it."""
+    vals = [g.get("value") for g in (recent or [])[-5:] if g.get("value") is not None]
+    if not vals:
+        return ""
+    def cls(v):
+        if not ref:
+            return "near"
+        return "hit" if v >= ref else "near" if v >= 0.85 * ref else "miss"
+    boxes = "".join(f'<i class="pp-{cls(v)}">{v:g}</i>' for v in vals)
+    return f'<div class="pp-l5"><span>{_("pp_last5")}</span>{boxes}</div>'
+
+
+def _prop_cards(rows: list[dict], stat_key: str, league: str = "nba") -> str:
+    """One prop board's players for one game as cards, best projection
+    first: who and against whom on the club's colour, tonight's projection
+    beside the season average, what this opponent gives up to the position,
+    and the last five games."""
+    stat = _(stat_key)
+    cards = []
     for r in sorted(rows, key=lambda r: -(r.get("projection") or 0)):
-        last = [g.get("value") for g in (r.get("recent") or [])[-5:] if g.get("value") is not None]
-        l5 = sum(last) / len(last) if last else None
-        sub = " · ".join(x for x in (r.get("team"), r.get("position")) if x)
-        if r.get("pos_rank") and r.get("pos_of"):
-            sub += " · " + _("mk_pos_rank", opp=r.get("opponent", ""), r=r["pos_rank"],
-                                  ord=_ordinal(r["pos_rank"]), n=r["pos_of"])
-        got = ""
+        ab = r.get("team") or ""
+        col = NBA_COLOR.get(ab, "")
+        opp = _nickname(NBA_ABBR.get(r.get("opponent") or "", r.get("opponent") or ""))
+        pos = _(POS_ONE_WORD[r["position"]]) if r.get("position") in POS_ONE_WORD else (r.get("position") or "")
+        logo = (f'<span class="pc-lg" style="--s:30px" aria-hidden="true">'
+                f'<img src="https://a.espncdn.com/i/teamlogos/{esc(league)}/500/{esc(ab.lower())}.png" alt="" '
+                f'width="30" height="30" loading="lazy" decoding="async" onerror="this.remove()">'
+                f'{esc(ab[:4])}</span>') if ab else ""
+        who = " · ".join(x for x in (pos, _("pp_vs", opp=opp) if opp else "") if x)
+        why = ""
+        if r.get("pos_allowed") is not None and r.get("pos_rank") and r.get("pos_of"):
+            why = _("pp_why", opp=opp, v=f'{r["pos_allowed"]:.1f}', stat=stat.lower(),
+                    pos=_(POS_LABEL.get(r.get("pos_slot", ""), "nba_pos_any")),
+                    r=r["pos_rank"], ord=_ordinal(r["pos_rank"]), n=r["pos_of"])
+        elif r.get("opp_allowed") is not None:
+            why = _("pp_why_team", opp=opp, v=f'{r["opp_allowed"]:.1f}')
+        proj, avg = r.get("projection"), r.get("per_game")
+        nums = "".join(
+            f'<div><b>{"&ndash;" if v is None else f"{v:.1f}"}</b><span>{lab}</span></div>'
+            for v, lab in ((proj, _("pp_tonight")), (avg, _("pp_season"))))
+        final = ""
         if r.get("actual") is not None:
             actual = f'{r["actual"]:g}'
-            got = f'<small class="mk-got">{_("mk_got", v=actual)}</small>'
-        body.append(f'<tr><th scope="row">{esc(r.get("name", ""))}<small>{esc(sub)}</small></th>'
-                    f'<td class="mk-proj">{num(r.get("projection"))}{got}</td>'
-                    f'<td>{num(r.get("per_game"))}</td><td>{num(l5)}</td></tr>')
-    return (f'<table class="mk-t mk-p"><thead><tr><th scope="col">{_("mk_player")}</th>'
-            f'<th scope="col">{_("mk_proj")}</th><th scope="col">{_("mk_avg")}</th>'
-            f'<th scope="col">{_("mk_l5")}</th></tr></thead><tbody>{"".join(body)}</tbody></table>')
+            final = f'<p class="pp-final">{_("mk_got", v=actual)}</p>'
+        cards.append(
+            f'<article class="pp"><header class="pp-h"'
+            + (f' style="--c:#{col}"' if col else "") + f'>{logo}'
+            f'<span class="pp-who"><b>{esc(r.get("name", ""))}</b><small>{esc(who)}</small></span></header>'
+            f'<p class="pp-bar">{_("pp_projected", stat=stat)}</p>'
+            f'<div class="pp-nums">{nums}</div>'
+            + (f'<p class="pp-why">{esc(why)}</p>' if why else "")
+            + _last5(r.get("recent"), proj) + final + "</article>")
+    return (f'<div class="pp-grid">{"".join(cards)}</div>'
+            f'<p class="mk-note">{_("pp_key")}</p>')
 
 
 def _market_section(title: str, count: int, inner: str) -> str:
@@ -1738,7 +1784,7 @@ def _pro_card(r: dict, props: dict | None, abbr: dict | None,
                 if len(pair) == 2 and {p.get("team"), p.get("opponent")} == pair]
         if mine:
             n_props += len(mine)
-            sections.append(_market_section(_(key), len(mine), _prop_table(mine)))
+            sections.append(_market_section(_(key), len(mine), _prop_cards(mine, key, r.get("league", "nba"))))
     detail = f'<div class="pc-groups">{"".join(sections)}</div>' if sections else ""
     return _gm_card(r, tier="line", teams=teams, pick=pick, detail=detail, lead=lead), n_props
 
@@ -1758,7 +1804,9 @@ def pro_list(rows: list[dict], props: dict[str, list[dict]] | None = None,
         cards.append(html_)
         n_props += n
     head = _gm_summary([(len(rows), _("gm_games"))]
-                       + ([(n_props, _("gm_projections"))] if props else []))
+                       + ([(n_props, _("gm_projections"))] if n_props else []))
+    if props and not n_props:
+        head += f'<p class="gm-key">{_("gm_props_pending")}</p>'
     return head + '<div class="gm-list">' + "".join(cards) + "</div>"
 
 
@@ -4136,7 +4184,8 @@ def _test_pro_list() -> None:
         return dict({"name": name, "team": team, "opponent": opp, "position": "G",
                      "projection": proj, "per_game": 20.0,
                      "recent": [{"value": v} for v in (10, 20, 30, 20, 20, 40)]}, **kw)
-    props = {"mk_points": [pl("Tyrese Maxey", "PHI", "TOR", 27.0, pos_rank=16, pos_of=30),
+    props = {"mk_points": [pl("Tyrese Maxey", "PHI", "TOR", 27.0, pos_rank=16, pos_of=30,
+                              pos_allowed=56.0, pos_slot="G"),
                            pl("RJ Barrett", "TOR", "PHI", 21.5, actual=31),
                            pl("Someone Else", "DAL", "MIN", 30.0)],
              "mk_assists": [pl("Nobody Here", "DAL", "MIN", 9.0)]}
@@ -4156,15 +4205,30 @@ def _test_pro_list() -> None:
     assert "<td>+10<small>-104</small></td><td>-10<small>-106</small></td>" in out
     assert "<td>+360</td><td>-450</td>" in out
     assert "<td>O 221<small>-107</small></td><td>U 221<small>-105</small></td>" in out
-    # Players: this game's only, best projection first, with the last five.
+    # Players: this game's only, best projection first, one card each.
     assert out.index("Tyrese Maxey") < out.index("RJ Barrett") and "Someone Else" not in out
-    assert '<td class="mk-proj">27.0</td><td>20.0</td><td>26.0</td>' in out
-    assert "PHI \u00b7 G \u00b7 TOR: 16th of 30 vs G" not in out   # wording lives in i18n
-    assert "16th" in out and "Final: 31" in out
+    assert out.count('<article class="pp">') == 2
+    mx = out[out.index('<article class="pp">'):out.index("RJ Barrett")]
+    assert 'class="pp-h" style="--c:#006BB6"' in mx, "the club's colour behind the name"
+    assert "<b>Tyrese Maxey</b><small>Guard · vs Raptors</small>" in mx
+    assert "teamlogos/nba/500/phi.png" in mx
+    assert '<p class="pp-bar">Projected Points</p>' in mx
+    assert "<div><b>27.0</b><span>Tonight</span></div><div><b>20.0</b><span>Season avg</span></div>" in mx
+    assert "Raptors give up 56.0 points a game to guards, 16th most of 30." in mx
+    # Last five: the numbers themselves, marked against tonight's 27.0.
+    assert ('<span>Last 5</span><i class="pp-miss">20</i><i class="pp-hit">30</i>'
+            '<i class="pp-miss">20</i><i class="pp-miss">20</i><i class="pp-hit">40</i>') in mx
+    assert _last5([{"value": 24.0}], 27.0) .count("pp-near") == 1, "within 15% under"
+    assert "Final: 31" in out and "green" in out.lower(), "the colour key is written out"
     # A game with no lines and no props: no Details button.
     bare = pro_list([dict(game, markets={}, event_id="g2")], {}, _NBA_BY_NAME)
     assert "gm-more" not in bare and "&mdash;" in bare
     assert pro_list([], {}, {}).startswith('<p class="empty-board">')
+    # Projections not in yet for tonight's games (the boards are dated
+    # yesterday): say so, rather than a tile reading "0 Projections".
+    stale = pro_list([game], {"mk_points": [pl("Nobody Here", "DAL", "MIN", 9.0)]}, _NBA_BY_NAME)
+    assert "<span>Projections</span>" not in stale and "not in yet" in stale
+    assert "not in yet" not in out
     assert _NBA_BY_NAME["Los Angeles Clippers"] == "LAC" and _NBA_BY_NAME["New York Knicks"] == "NY"
     assert len(set(NBA_ABBR.values())) == 30
     # Tonight: every league in one list by time, each card saying its league.

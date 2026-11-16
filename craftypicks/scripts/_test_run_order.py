@@ -92,6 +92,13 @@ def _self_test() -> None:
     assert "ncaab_sys.daily(" in _b and "ncaaf_mod.daily(" in _b, \
         "run_boards must refresh the college stores"
 
+    # NBA projections are free (ESPN) and the NBA page shows them inside each
+    # game, so the morning run builds them too, above the guard: waiting for
+    # the afternoon boards job left the page with "0 Projections" until 3 PM.
+    assert "def nba_boards(" in _b, "run_boards must expose the NBA block"
+    assert line_of(r"nba_boards\(") < guard, \
+        "the morning run must build NBA projections, above the odds guard"
+
     # Every MLB board run_boards builds must ALSO be built here. The two jobs
     # are each other's backup: run_boards runs on three :30 crons that
     # GitHub drops on busy days, and this one runs on its own schedule.

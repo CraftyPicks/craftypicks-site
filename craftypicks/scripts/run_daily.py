@@ -307,6 +307,18 @@ def main() -> int:
             print(f"!! ncaaf board failed ({type(e).__name__}: {e})",
                   file=sys.stderr)
 
+    # ------------------------------------------- 0d. NBA projections
+    # Points, assists and rebounds from ESPN, and the NBA results store the
+    # ratings read. Free and idempotent. The NBA page shows these inside
+    # each game, so the morning board must not wait for the boards job: it
+    # ran mid-afternoon and the page said "0 Projections" until then.
+    try:
+        import run_boards                                    # noqa: PLC0415
+        run_boards.nba_boards(today, f"{now:%A, %B %-d, %Y}")
+    except Exception as e:                                   # noqa: BLE001
+        print(f"!! nba projections failed ({type(e).__name__}: {e})",
+              file=sys.stderr)
+
     # Already bought odds today? Then this is a retry of a scheduled run that
     # already succeeded, and it must not spend a second set of credits.
     # GitHub's scheduler is unreliable enough that the workflow fires several

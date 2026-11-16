@@ -99,6 +99,51 @@ def save_json(path: Path, payload) -> None:
     results_store._write_atomic(path, text)
 
 
+def nba_boards(today: str, label: str) -> None:
+    """The three NBA projection boards (points, assists, rebounds) and the
+    NBA results store, from ESPN. Free and idempotent, so the morning run
+    calls it as well as this job: the NBA page shows the projections inside
+    each game and must not wait for the afternoon."""
+    # Guarded as a whole like the NFL block: a bad day at a third party must
+    # not cost the other boards their run.
+    try:
+        nba_season = nba_data.season_for(today)
+        # Seed the NBA results store from the published schedule, which
+        # carries the score of every finished game. Same fix the NFL board
+        # needed: board.py's records, head-to-head and Elo all read this
+        # file, and it has never held a single NBA game.
+        try:
+            sched_rows = nba_stats.fetch_schedule(nba_season) + \
+                nba_stats.fetch_schedule(nba_season - 1)
+            gained = results_store.seed("nba", nba_history.finals(sched_rows))
+            if gained:
+                print(f"-- results: nba store gained {gained} completed "
+                      f"game(s) from the schedule")
+        except Exception as e:                               # noqa: BLE001
+            print(f"!! nba history: {type(e).__name__}: {e}", file=sys.stderr)
+
+        for stat in ("points", "assists", "rebounds"):
+            store = DATA / f"nba_{stat}_ratings.json"
+            hist = load_json(store, {"rows": []})["rows"]
+            fixed = projection.repair_premature(hist, verdict_key="actual")
+            if fixed:
+                print(f"-- nba_{stat}: reset {fixed} premature verdict(s)")
+            settled = nba_stats.grade(
+                hist, nba_data.fetch(nba_season), stat)
+            rows = nba_stats.build(nba_season, stat, today)
+            added = projection.merge(hist, rows, ("player_id", "date"))
+            save_json(store, {"rows": hist})
+            if rows:
+                save_json(DATA / f"nba_{stat}.json", {
+                    "date": today, "date_label": label, "rows": rows,
+                    "summary": nba_stats.summary(hist, stat)})
+                print(f"-- nba_{stat}: {len(rows)} rated, {added} new, "
+                      f"{settled} graded")
+    except Exception as e:                                   # noqa: BLE001
+        print(f"!! nba boards failed ({type(e).__name__}: {e})",
+              file=sys.stderr)
+
+
 def main() -> int:
     now = datetime.now(ZoneInfo(config.TIMEZONE))
     today = now.date().isoformat()
@@ -266,44 +311,7 @@ def main() -> int:
                   file=sys.stderr)
 
     # ---------------------------------------------------------- NBA
-    # Guarded as a whole like the NFL block: a bad day at a third party must
-    # not cost the other boards their run.
-    try:
-        nba_season = nba_data.season_for(today)
-        # Seed the NBA results store from the published schedule, which
-        # carries the score of every finished game. Same fix the NFL board
-        # needed: board.py's records, head-to-head and Elo all read this
-        # file, and it has never held a single NBA game.
-        try:
-            sched_rows = nba_stats.fetch_schedule(nba_season) + \
-                nba_stats.fetch_schedule(nba_season - 1)
-            gained = results_store.seed("nba", nba_history.finals(sched_rows))
-            if gained:
-                print(f"-- results: nba store gained {gained} completed "
-                      f"game(s) from the schedule")
-        except Exception as e:                               # noqa: BLE001
-            print(f"!! nba history: {type(e).__name__}: {e}", file=sys.stderr)
-
-        for stat in ("points", "assists", "rebounds"):
-            store = DATA / f"nba_{stat}_ratings.json"
-            hist = load_json(store, {"rows": []})["rows"]
-            fixed = projection.repair_premature(hist, verdict_key="actual")
-            if fixed:
-                print(f"-- nba_{stat}: reset {fixed} premature verdict(s)")
-            settled = nba_stats.grade(
-                hist, nba_data.fetch(nba_season), stat)
-            rows = nba_stats.build(nba_season, stat, today)
-            added = projection.merge(hist, rows, ("player_id", "date"))
-            save_json(store, {"rows": hist})
-            if rows:
-                save_json(DATA / f"nba_{stat}.json", {
-                    "date": today, "date_label": label, "rows": rows,
-                    "summary": nba_stats.summary(hist, stat)})
-                print(f"-- nba_{stat}: {len(rows)} rated, {added} new, "
-                      f"{settled} graded")
-    except Exception as e:                                   # noqa: BLE001
-        print(f"!! nba boards failed ({type(e).__name__}: {e})",
-              file=sys.stderr)
+    nba_boards(today, label)
 
     # ---------------------------------------------------------- NFL
     # Guarded as a whole: the NFL feed is a third party, and a bad day

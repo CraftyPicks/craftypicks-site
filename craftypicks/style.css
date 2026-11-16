@@ -1706,6 +1706,34 @@ footer{background:var(--bg-2);padding:56px 0 40px}
 .mk-p td:not(.mk-proj){color:var(--sub);font-weight:500}
 .mk-proj{font-size:16px}
 .mk-note{margin:6px 2px 0;color:var(--sub);font:500 12px var(--sans)}
+/* Player cards inside a game's markets: the club's colour behind the name,
+   tonight's projection beside the season average, the matchup in a line,
+   and the last five games as numbered boxes. */
+.pp-grid{display:grid;grid-template-columns:1fr;gap:10px}
+@media (min-width:600px){.pp-grid{grid-template-columns:repeat(2,1fr)}}
+@media (min-width:980px){.pp-grid{grid-template-columns:repeat(3,1fr)}}
+.pp{overflow:hidden;background:var(--panel);border:1px solid var(--line-2);border-radius:6px}
+.pp-h{display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--c,var(--line));color:var(--txt)}
+.pp-h .pc-lg{border-radius:6px;background:var(--bg-2)}
+.pp-who{min-inline-size:0}
+.pp-who b{display:block;font:800 16px/1.2 var(--sans);letter-spacing:.01em}
+.pp-who small{display:block;font:600 12px/1.4 var(--sans);opacity:.92}
+.pp-bar{margin:0;padding:5px 12px;background:var(--bg-2);color:var(--txt);
+  font:700 11px/1.5 var(--mono);letter-spacing:.09em;text-transform:uppercase}
+.pp-nums{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:10px 12px 4px}
+.pp-nums div{padding:8px 10px;border-radius:6px;background:var(--bg-2)}
+.pp-nums b{display:block;color:var(--txt);font:800 24px/1.1 var(--mono);letter-spacing:-.03em}
+.pp-nums div:first-child b{color:var(--green)}
+.pp-nums span{color:var(--sub);font:600 10.5px var(--mono);letter-spacing:.08em;text-transform:uppercase}
+.pp-why{margin:6px 12px 0;color:var(--sub);font:500 13px/1.4 var(--sans)}
+.pp-l5{display:flex;align-items:center;gap:5px;padding:10px 12px 12px}
+.pp-l5 span{margin-inline-end:4px;color:var(--txt);font:700 12px var(--sans)}
+.pp-l5 i{min-inline-size:30px;padding:3px 4px;border-radius:6px;text-align:center;
+  font:700 12.5px/1.5 var(--mono);font-style:normal;color:var(--on-green)}
+.pp-hit{background:var(--green)}
+.pp-near{background:var(--amber)}
+.pp-miss{background:var(--red)}
+.pp-final{margin:0;padding:0 12px 12px;color:var(--txt);font:700 13px var(--mono)}
 .pa-h{margin:18px 0 4px;font:700 15px var(--sans);color:var(--txt)}
 
 /* History: home vs away against the spread, above the calendar. */
