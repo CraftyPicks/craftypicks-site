@@ -55,10 +55,6 @@ PAGES: dict[str, Page] = {
     "batters.html":  Page("batters.html",  "batters",  "batters",  "mlb"),
     "hits.html":     Page("hits.html",     "hits",     "hits",     "mlb"),
     "f7.html":       Page("f7.html",       "f7",       "f7",       "mlb"),
-    "nfl/passing.html":   Page("nfl/passing.html",   "nfl_passing",   "nfl_passing",   "nfl"),
-    "nfl/rushing.html":   Page("nfl/rushing.html",   "nfl_rushing",   "nfl_rushing",   "nfl"),
-    "nfl/receiving.html": Page("nfl/receiving.html", "nfl_receiving", "nfl_receiving", "nfl"),
-    "nfl/td.html":        Page("nfl/td.html",        "nfl_td",        "nfl_td",        "nfl"),
     "about.html":    Page("about.html",    "about",    "about",    None),
     "pitchers.html": Page("pitchers.html", "pitchers", "pitchers", "mlb"),
     "slate.html":    Page("slate.html",    "slate",    "slate",    None),
@@ -111,10 +107,6 @@ _EXTRA_VIEWS: dict[str, list[tuple[str, str]]] = {
             ("hits.html", "nav_hits")],
     "ncaab": [("ncaab/history.html", "nav_history")],
     "ncaaf": [("ncaaf/history.html", "nav_history")],
-    "nfl": [("nfl/passing.html", "nav_pass"),
-            ("nfl/rushing.html", "nav_rush"),
-            ("nfl/receiving.html", "nav_recv"),
-            ("nfl/td.html", "nav_nfltd")],
 }
 
 # The views each league actually has. A league is not listed with a props tab
@@ -129,7 +121,7 @@ VIEWS.update({short: [(f"{short}/index.html", "nav_board")]
               + _EXTRA_VIEWS.get(short, [])
               for short, _label in FREE_LEAGUES})
 # The college boards are the day's list now; "Today" sits beside "History".
-for _short in ("ncaab", "ncaaf", "nba"):
+for _short in ("ncaab", "ncaaf", "nba", "nfl"):
     VIEWS[_short][0] = (f"{_short}/index.html", "nav_today")
 
 
@@ -341,14 +333,6 @@ TITLES = {
                            "es": f"Historial NCAAF — {config.SITE_NAME}"},
     "ncaaf/index.html": {"en": f"NCAAF board — {config.SITE_NAME}",
                          "es": f"Tablero NCAAF — {config.SITE_NAME}"},
-    "nfl/passing.html": {"en": f"Passing yards — {config.SITE_NAME}",
-                         "es": f"Yardas de pase — {config.SITE_NAME}"},
-    "nfl/rushing.html": {"en": f"Rushing yards — {config.SITE_NAME}",
-                         "es": f"Yardas de acarreo — {config.SITE_NAME}"},
-    "nfl/receiving.html": {"en": f"Receiving yards — {config.SITE_NAME}",
-                           "es": f"Yardas de recepción — {config.SITE_NAME}"},
-    "nfl/td.html": {"en": f"Anytime touchdown — {config.SITE_NAME}",
-                    "es": f"Touchdown en cualquier momento — {config.SITE_NAME}"},
     "slate.html": {"en": f"MLB Board — {config.SITE_NAME}",
                    "es": f"Pizarra MLB — {config.SITE_NAME}"},
     "pitchers.html": {"en": f"Pitchers Prop — {config.SITE_NAME}",
@@ -462,7 +446,10 @@ RETIRED = {"ncaab/system.html": "index.html", "ncaab/first-half.html": "index.ht
            "ncaab/simple.html": "index.html", "ncaaf/simple.html": "index.html",
            # NBA's prop boards live inside each game's Details now.
            "nba/points.html": "index.html", "nba/assists.html": "index.html",
-           "nba/rebounds.html": "index.html"}
+           "nba/rebounds.html": "index.html",
+           # ... and so do the NFL's.
+           "nfl/passing.html": "index.html", "nfl/rushing.html": "index.html",
+           "nfl/receiving.html": "index.html", "nfl/td.html": "index.html"}
 
 
 def _trim(row: dict) -> dict:
@@ -678,6 +665,12 @@ def build() -> None:
                        {"date_label": "", "rows": [], "summary": {}}),
     }
 
+    # The four as the sections of an NFL game's Details, in display order.
+    NFL_PROPS = {"mk_pass": NFL_DOCS["nfl_passing"].get("rows", []),
+                 "mk_rush": NFL_DOCS["nfl_rushing"].get("rows", []),
+                 "mk_recv": NFL_DOCS["nfl_receiving"].get("rows", []),
+                 "mk_td": NFL_DOCS["nfl_td"].get("rows", [])}
+
     # The three NBA boards, the same shape as the NFL four.
     NBA_DOCS = {
         f"nba_{stat}": load(f"nba_{stat}.json",
@@ -717,7 +710,8 @@ def build() -> None:
             "{{TONIGHT_BOARD}}": R.tonight_list(
                 tonight_rows(board_doc),
                 {"nba": {f"mk_{stat}": NBA_DOCS[f"nba_{stat}"].get("rows", [])
-                         for stat in ("points", "assists", "rebounds")}}),
+                         for stat in ("points", "assists", "rebounds")},
+                 "nfl": NFL_PROPS}),
             "{{BAT_DATE}}": doc_date_label(batter_doc, lang) or L("not_rated"),
             "{{BATTER_CARDS}}": R.batter_cards(batter_doc.get("batters", [])),
             "{{BAT_CALIBRATION}}": R.batter_calibration(
@@ -859,10 +853,20 @@ def build() -> None:
                         {f"mk_{stat}": NBA_DOCS[f"nba_{stat}"].get("rows", [])
                          for stat in ("points", "assists", "rebounds")},
                         R._NBA_BY_NAME)
-                elif page.league == "nfl" and page.body == "league":
-                    # Line cards; the prop boards keep their own tabs.
-                    page_tokens["{{LEAGUE_BOARD}}"] = R.pro_list(
-                        entry.get("games") or [], {}, R.PRO_ABBR["nfl"])
+                elif page.league == "nfl":
+                    # Today's games with their lines; each game's Details
+                    # holds the four projection boards. Then the rest of the
+                    # week the boards cover, so Sunday can be read on Friday.
+                    today_games = entry.get("games") or []
+                    week = R.week_games(NFL_PROPS, today_games)
+                    board_html = (R.pro_list(today_games, NFL_PROPS, R.PRO_ABBR["nfl"],
+                                             pair=R.NFL_PAIR) if today_games else "")
+                    if week:
+                        board_html += (
+                            f'<h2 class="gm-sub">{i18n.t("gm_week", lang)}</h2>'
+                            + R.pro_list(week, NFL_PROPS, R.PRO_ABBR["nfl"],
+                                         pair=R.NFL_PAIR, summary=False))
+                    page_tokens["{{LEAGUE_BOARD}}"] = board_html or R.board_cards([])
                 else:
                     page_tokens["{{LEAGUE_BOARD}}"] = R.board_cards(
                         entry.get("games") or [])
@@ -888,6 +892,13 @@ def build() -> None:
                     page_tokens["{{LEAGUE_CALIBRATION}}"] = (
                         R.ncaaf_record(entry.get("summary") or {})
                         if page.league == "ncaaf" else R.calibration_section(scored))
+                    if page.league == "nfl":
+                        page_tokens["{{LEAGUE_CALIBRATION}}"] += R.accuracy_section(
+                            [(i18n.t(k, lang), R.yard_accuracy(NFL_DOCS[d].get("summary", {})))
+                             for k, d in (("mk_pass", "nfl_passing"), ("mk_rush", "nfl_rushing"),
+                                          ("mk_recv", "nfl_receiving"))]
+                            + [(i18n.t("mk_td", lang),
+                                R.td_calibration(NFL_DOCS["nfl_td"].get("summary", {})))])
                     if page.league == "nba":
                         page_tokens["{{LEAGUE_CALIBRATION}}"] += R.prop_accuracy(
                             {f"mk_{stat}": NBA_DOCS[f"nba_{stat}"].get("summary", {})
@@ -1034,7 +1045,9 @@ def _test_history() -> None:
     assert 'url=index.html' in retired_stub("index.html")
     assert set(RETIRED) == {"ncaab/system.html", "ncaab/first-half.html",
                             "ncaab/simple.html", "ncaaf/simple.html",
-                            "nba/points.html", "nba/assists.html", "nba/rebounds.html"}
+                            "nba/points.html", "nba/assists.html", "nba/rebounds.html",
+                            "nfl/passing.html", "nfl/rushing.html", "nfl/receiving.html",
+                            "nfl/td.html"}
     import tempfile  # noqa: PLC0415
     doc = {"date": "2026-11-11", "leagues": {
         "ncaab": {"games": [{"event_id": "a", "commence_time": "2026-11-12T00:00:00Z",
@@ -1202,7 +1215,11 @@ def _self_test() -> None:
     assert VIEWS["nba"] == [("nba/index.html", "nav_today")], VIEWS["nba"]
     for gone in ("nba/points.html", "nba/assists.html", "nba/rebounds.html"):
         assert gone not in PAGES and RETIRED[gone] == "index.html"
-    assert VIEWS["nfl"][0] == ("nfl/index.html", "nav_board"), "other sports keep Board"
+    # NFL (Nov 2026): the same. Its four prop tabs moved inside each game.
+    assert VIEWS["nfl"] == [("nfl/index.html", "nav_today")], VIEWS["nfl"]
+    for gone in ("nfl/passing.html", "nfl/rushing.html", "nfl/receiving.html", "nfl/td.html"):
+        assert gone not in PAGES and RETIRED[gone] == "index.html"
+    assert VIEWS["mlb"][0] == ("mlb/index.html", "nav_board"), "MLB keeps Board for now"
     for gone in ("homers.html", "ncaab/system.html", "ncaab/first-half.html",
                  "ncaab/simple.html", "ncaaf/simple.html"):
         assert gone not in PAGES, f"{gone} is retired but still built"

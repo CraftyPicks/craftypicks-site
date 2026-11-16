@@ -147,7 +147,8 @@
   var URLS = {
     ncaab: "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/scoreboard?groups=50&limit=400&dates=",
     ncaaf: "https://site.api.espn.com/apis/site/v2/sports/football/college-football/scoreboard?groups=80&limit=300&dates=",
-    nba: "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates="
+    nba: "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates=",
+    nfl: "https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?dates="
   };
   var EVERY = 60000;
   var timer = null;

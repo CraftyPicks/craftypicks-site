@@ -1454,12 +1454,13 @@ def _gm_team(logo: str, name: str, sub: str, side: str, pts=None, win: bool = Fa
 
 
 def _gm_card(row: dict, *, tier: str, teams: str, pick: str, detail: str,
-             tag: str = "", final: bool = False, lead: str = "") -> str:
+             tag: str = "", final: bool = False, lead: str = "", when: str = "") -> str:
     """The game card every list on the site shares (Scoreboard style): a
     status line, the two clubs, the pick box, Details. A stripe down the
     left edge says best bet or live; both are also written in words."""
     eid = esc(str(row.get("event_id", "")))
-    when = _("res_final") if final else game_time(row.get("commence_time")).replace(" ET", "")
+    when = when or (_("res_final") if final
+                    else game_time(row.get("commence_time")).replace(" ET", ""))
     hooks = "".join(f' data-{k}="{esc(str(v))}"' for k, v in (
         ("sport", row.get("league", "")), ("espn", row.get("espn_id") or ""),
         ("home", row.get("home", "")), ("away", row.get("away", "")),
@@ -1594,6 +1595,58 @@ NFL_ABBR = {
 PRO_ABBR = {"nba": _NBA_BY_NAME, "nfl": {name: ab for ab, name in NFL_ABBR.items()}}
 LEAGUE_TAG = {"nba": "NBA", "nfl": "NFL", "mlb": "MLB", "ncaab": "NCAAB", "ncaaf": "NCAAF"}
 
+# The NFL projection boards use nflverse's abbreviations, which differ from
+# ESPN's for two clubs: full name by nflverse abbreviation, the ESPN one
+# for the logo, and a colour dark enough for white text.
+NFL_VERSE = {
+    "ARI": "Arizona Cardinals", "ATL": "Atlanta Falcons", "BAL": "Baltimore Ravens",
+    "BUF": "Buffalo Bills", "CAR": "Carolina Panthers", "CHI": "Chicago Bears",
+    "CIN": "Cincinnati Bengals", "CLE": "Cleveland Browns", "DAL": "Dallas Cowboys",
+    "DEN": "Denver Broncos", "DET": "Detroit Lions", "GB": "Green Bay Packers",
+    "HOU": "Houston Texans", "IND": "Indianapolis Colts", "JAX": "Jacksonville Jaguars",
+    "KC": "Kansas City Chiefs", "LV": "Las Vegas Raiders", "LAC": "Los Angeles Chargers",
+    "LA": "Los Angeles Rams", "MIA": "Miami Dolphins", "MIN": "Minnesota Vikings",
+    "NE": "New England Patriots", "NO": "New Orleans Saints", "NYG": "New York Giants",
+    "NYJ": "New York Jets", "PHI": "Philadelphia Eagles", "PIT": "Pittsburgh Steelers",
+    "SF": "San Francisco 49ers", "SEA": "Seattle Seahawks", "TB": "Tampa Bay Buccaneers",
+    "TEN": "Tennessee Titans", "WAS": "Washington Commanders",
+}
+NFL_LOGO = {"LA": "lar", "WAS": "wsh"}        # nflverse -> ESPN, where they differ
+NFL_PAIR = {name: ab for ab, name in NFL_VERSE.items()}   # full name -> nflverse
+NFL_COLOR = {
+    "ARI": "97233F", "ATL": "A71930", "BAL": "241773", "BUF": "00338D", "CAR": "101820",
+    "CHI": "0B162A", "CIN": "101820", "CLE": "311D00", "DAL": "003594", "DEN": "002244",
+    "DET": "0076B6", "GB": "203731", "HOU": "03202F", "IND": "002C5F", "JAX": "006778",
+    "KC": "E31837", "LV": "111111", "LAC": "002A5E", "LA": "003594", "MIA": "005778",
+    "MIN": "4F2683", "NE": "002244", "NO": "101820", "NYG": "0B2265", "NYJ": "125740",
+    "PHI": "004C54", "PIT": "101820", "SF": "AA0000", "SEA": "002244", "TB": "D50A0A",
+    "TEN": "0C2340", "WAS": "5A1414",
+}
+
+
+def week_games(props: dict[str, list[dict]], board: list[dict]) -> list[dict]:
+    """The NFL games the projection boards cover that are not on today's
+    board, as bare rows (no line) for the rest-of-the-week list. nflverse
+    game ids read season_week_away_home."""
+    on_board = {frozenset((NFL_PAIR.get(g.get("home")), NFL_PAIR.get(g.get("away"))))
+                for g in board}
+    seen, out = set(), []
+    for rows in (props or {}).values():
+        for r in rows:
+            gid = str(r.get("game_id") or "")
+            parts = gid.split("_")
+            if gid in seen or len(parts) != 4:
+                continue
+            seen.add(gid)
+            away, home = parts[2], parts[3]
+            if frozenset((home, away)) in on_board or home not in NFL_VERSE or away not in NFL_VERSE:
+                continue
+            out.append({"event_id": gid, "league": "nfl", "week_game": True,
+                        "commence_time": r.get("commence_time") or "",
+                        "home": NFL_VERSE[home], "away": NFL_VERSE[away], "markets": {}})
+    out.sort(key=lambda g: (_tip(g), g["home"]))
+    return out
+
 
 def tonight_list(rows: list[dict], props: dict[str, dict] | None = None) -> str:
     """Tonight: every league's games in one list by start time, each card
@@ -1610,7 +1663,8 @@ def tonight_list(rows: list[dict], props: dict[str, dict] | None = None) -> str:
         if lg in COLLEGE:
             cards.append(_college_card(r, lead)[0])
         elif lg in PRO_ABBR:
-            cards.append(_pro_card(r, (props or {}).get(lg), PRO_ABBR[lg], lead)[0])
+            cards.append(_pro_card(r, (props or {}).get(lg), PRO_ABBR[lg], lead,
+                                   pair=NFL_PAIR if lg == "nfl" else None)[0])
         else:
             cards.append(board_card(r))
     head = _gm_summary([(len(rows), _("gm_games"))]
@@ -1677,35 +1731,43 @@ NBA_COLOR = {
 POS_ONE_WORD = {"G": "pos_one_g", "F": "pos_one_f", "C": "pos_one_c"}
 
 
-def _last5(recent: list[dict], ref) -> str:
-    """The last five games as boxes, each showing its number: `hit` at or
-    above tonight's projection, `near` within 15% under it, `miss` below
-    that. The number is always printed; colour only repeats it."""
+def _last5(recent: list[dict], ref, label: str | None = None, strict: bool = False) -> str:
+    """The last games (five at most) as boxes, each showing its number:
+    `hit` at or above the reference (the projection), `near` within 15%
+    under it, `miss` below that. `strict` has no middle: a touchdown was
+    scored or it was not. The number is always printed; colour repeats it."""
     vals = [g.get("value") for g in (recent or [])[-5:] if g.get("value") is not None]
     if not vals:
         return ""
     def cls(v):
         if not ref:
             return "near"
-        return "hit" if v >= ref else "near" if v >= 0.85 * ref else "miss"
+        if v >= ref:
+            return "hit"
+        return "near" if not strict and v >= 0.85 * ref else "miss"
     boxes = "".join(f'<i class="pp-{cls(v)}">{v:g}</i>' for v in vals)
-    return f'<div class="pp-l5"><span>{_("pp_last5")}</span>{boxes}</div>'
+    return f'<div class="pp-l5"><span>{label or _("pp_last5")}</span>{boxes}</div>'
 
 
 def _prop_cards(rows: list[dict], stat_key: str, league: str = "nba") -> str:
     """One prop board's players for one game as cards, best projection
-    first: who and against whom on the club's colour, tonight's projection
-    beside the season average, what this opponent gives up to the position,
-    and the last five games."""
+    first: who and against whom on the club's colour, the projection beside
+    the season average, what this opponent gives up, and recent games.
+    A touchdown board (rows with `chance`) shows the chance to score."""
+    nfl = league == "nfl"
+    names = NFL_VERSE if nfl else NBA_ABBR
+    colors = NFL_COLOR if nfl else NBA_COLOR
     stat = _(stat_key)
     cards = []
-    for r in sorted(rows, key=lambda r: -(r.get("projection") or 0)):
+    for r in sorted(rows, key=lambda r: -(r.get("chance") or r.get("projection") or 0)):
+        td = r.get("chance") is not None
         ab = r.get("team") or ""
-        col = NBA_COLOR.get(ab, "")
-        opp = _nickname(NBA_ABBR.get(r.get("opponent") or "", r.get("opponent") or ""))
+        col = colors.get(ab, "")
+        slug = (NFL_LOGO.get(ab, ab.lower()) if nfl else ab.lower())
+        opp = _nickname(names.get(r.get("opponent") or "", r.get("opponent") or ""))
         pos = _(POS_ONE_WORD[r["position"]]) if r.get("position") in POS_ONE_WORD else (r.get("position") or "")
         logo = (f'<span class="pc-lg" style="--s:30px" aria-hidden="true">'
-                f'<img src="https://a.espncdn.com/i/teamlogos/{esc(league)}/500/{esc(ab.lower())}.png" alt="" '
+                f'<img src="https://a.espncdn.com/i/teamlogos/{esc(league)}/500/{esc(slug)}.png" alt="" '
                 f'width="30" height="30" loading="lazy" decoding="async" onerror="this.remove()">'
                 f'{esc(ab[:4])}</span>') if ab else ""
         who = " · ".join(x for x in (pos, _("pp_vs", opp=opp) if opp else "") if x)
@@ -1714,26 +1776,42 @@ def _prop_cards(rows: list[dict], stat_key: str, league: str = "nba") -> str:
             why = _("pp_why", opp=opp, v=f'{r["pos_allowed"]:.1f}', stat=stat.lower(),
                     pos=_(POS_LABEL.get(r.get("pos_slot", ""), "nba_pos_any")),
                     r=r["pos_rank"], ord=_ordinal(r["pos_rank"]), n=r["pos_of"])
+        elif r.get("opp_allowed") is not None and r.get("league_allowed") is not None:
+            why = _("pp_why_avg", opp=opp, stat=_("pp_tds") if td else stat.lower(),
+                    v=f'{r["opp_allowed"]:.2f}' if td else f'{r["opp_allowed"]:.1f}',
+                    avg=f'{r["league_allowed"]:.2f}' if td else f'{r["league_allowed"]:.1f}')
         elif r.get("opp_allowed") is not None:
             why = _("pp_why_team", opp=opp, v=f'{r["opp_allowed"]:.1f}')
         proj, avg = r.get("projection"), r.get("per_game")
-        nums = "".join(
-            f'<div><b>{"&ndash;" if v is None else f"{v:.1f}"}</b><span>{lab}</span></div>'
-            for v, lab in ((proj, _("pp_tonight")), (avg, _("pp_season"))))
+        if td:
+            pairs = ((f'{r["chance"] * 100:.0f}%', _("pp_chance")),
+                     ("&ndash;" if avg is None else f"{avg:.2f}", _("pp_td_game")))
+            bar, ref = stat, 1
+        else:
+            pairs = (("&ndash;" if proj is None else f"{proj:.1f}",
+                      _("pp_week") if nfl else _("pp_tonight")),
+                     ("&ndash;" if avg is None else f"{avg:.1f}", _("pp_season")))
+            bar, ref = _("pp_projected", stat=stat), proj
+        nums = "".join(f'<div><b>{v}</b><span>{lab}</span></div>' for v, lab in pairs)
         final = ""
-        if r.get("actual") is not None:
+        if td and r.get("scored") is not None:
+            final = f'<p class="pp-final">{_("pp_scored") if r["scored"] else _("pp_no_score")}</p>'
+        elif r.get("actual") is not None:
             actual = f'{r["actual"]:g}'
             final = f'<p class="pp-final">{_("mk_got", v=actual)}</p>'
         cards.append(
             f'<article class="pp"><header class="pp-h"'
             + (f' style="--c:#{col}"' if col else "") + f'>{logo}'
             f'<span class="pp-who"><b>{esc(r.get("name", ""))}</b><small>{esc(who)}</small></span></header>'
-            f'<p class="pp-bar">{_("pp_projected", stat=stat)}</p>'
+            f'<p class="pp-bar">{esc(bar)}</p>'
             f'<div class="pp-nums">{nums}</div>'
             + (f'<p class="pp-why">{esc(why)}</p>' if why else "")
-            + _last5(r.get("recent"), proj) + final + "</article>")
+            + _last5(r.get("recent"), ref, _("pp_recent") if nfl else _("pp_last5"), strict=td)
+            + final + "</article>")
+    key = _("pp_key_td") if any(r.get("chance") is not None for r in rows) else (
+        _("pp_key_nfl") if nfl else _("pp_key"))
     return (f'<div class="pp-grid">{"".join(cards)}</div>'
-            f'<p class="mk-note">{_("pp_key")}</p>')
+            f'<p class="mk-note">{key}</p>')
 
 
 def _market_section(title: str, count: int, inner: str) -> str:
@@ -1753,9 +1831,12 @@ def _pro_logo(row: dict, side: str, abbr: dict, size: int = 34) -> str:
 
 
 def _pro_card(r: dict, props: dict | None, abbr: dict | None,
-              lead: str = "") -> tuple[str, int]:
-    """One pro game as a Scoreboard card, and how many projections it holds."""
+              lead: str = "", pair: dict | None = None) -> tuple[str, int]:
+    """One pro game as a Scoreboard card, and how many projections it holds.
+    `abbr` (full name -> abbreviation) finds the logo; `pair`, when the
+    projection boards abbreviate differently, finds the game's players."""
     abbr = abbr or {}
+    pair = pair or abbr
     n_props = 0
     m = r.get("markets") or {}
     sp, tot = m.get("spreads") or {}, m.get("totals") or {}
@@ -1774,7 +1855,18 @@ def _pro_card(r: dict, props: dict | None, abbr: dict | None,
     pick = (f'<div class="gm-pk gm-line"><span class="gm-lb">{_("pl_line")}</span>'
             f'<span class="gm-pv">{line[0] if line else "&mdash;"}</span>{ou}'
             f'<span class="gm-res"></span></div>')
-    pair = {abbr.get(r.get("home")), abbr.get(r.get("away"))} - {None}
+    when = ""
+    if r.get("week_game"):
+        # A game later in the week: no line yet, and the day matters.
+        pick = '<span class="gm-res"></span>'
+        try:
+            from zoneinfo import ZoneInfo  # noqa: PLC0415
+            dt = datetime.fromisoformat(str(r.get("commence_time")).replace("Z", "+00:00")
+                                        ).astimezone(ZoneInfo(config.TIMEZONE))
+            when = f"{dt:%a} {dt:%-I:%M %p}"
+        except ValueError:
+            when = ""
+    pair = {pair.get(r.get("home")), pair.get(r.get("away"))} - {None}
     sections = []
     gl, n = _game_lines(r)
     if gl:
@@ -1786,11 +1878,13 @@ def _pro_card(r: dict, props: dict | None, abbr: dict | None,
             n_props += len(mine)
             sections.append(_market_section(_(key), len(mine), _prop_cards(mine, key, r.get("league", "nba"))))
     detail = f'<div class="pc-groups">{"".join(sections)}</div>' if sections else ""
-    return _gm_card(r, tier="line", teams=teams, pick=pick, detail=detail, lead=lead), n_props
+    return _gm_card(r, tier="line", teams=teams, pick=pick, detail=detail, lead=lead,
+                    when=when), n_props
 
 
 def pro_list(rows: list[dict], props: dict[str, list[dict]] | None = None,
-             abbr: dict | None = None) -> str:
+             abbr: dict | None = None, pair: dict | None = None,
+             summary: bool = True) -> str:
     """The pro Today list: one card per game by start time with the market's
     line, and Details opening that game's markets as collapsed sections.
     `props` maps a section's i18n key to that board's rows; a row belongs to
@@ -1800,9 +1894,11 @@ def pro_list(rows: list[dict], props: dict[str, list[dict]] | None = None,
         return board_cards([])
     cards, n_props = [], 0
     for r in sorted(rows, key=lambda r: (_tip(r), r.get("home") or "")):
-        html_, n = _pro_card(r, props, abbr)
+        html_, n = _pro_card(r, props, abbr, pair=pair)
         cards.append(html_)
         n_props += n
+    if not summary:
+        return '<div class="gm-list">' + "".join(cards) + "</div>"
     head = _gm_summary([(len(rows), _("gm_games"))]
                        + ([(n_props, _("gm_projections"))] if n_props else []))
     if props and not n_props:
@@ -1813,8 +1909,12 @@ def pro_list(rows: list[dict], props: dict[str, list[dict]] | None = None,
 def prop_accuracy(summaries: dict[str, dict]) -> str:
     """How the player projections have scored, one line per board, under
     the pro list (the boards' own pages are gone; their record is not)."""
-    lines = "".join(f'<h3 class="pa-h">{_(key)}</h3>{nba_accuracy(summ)}'
-                    for key, summ in summaries.items())
+    return accuracy_section([(_(key), nba_accuracy(summ)) for key, summ in summaries.items()])
+
+
+def accuracy_section(blocks: list[tuple[str, str]]) -> str:
+    """The scored-in-public section under a pro list: (heading, html) per board."""
+    lines = "".join(f'<h3 class="pa-h">{esc(title)}</h3>{body}' for title, body in blocks)
     return (f'<section class="pad-sm" id="projections"><div class="wrap">'
             f'<div class="eyebrow">{_("pa_eyebrow")}</div>'
             f'<h2 style="font-size:26px;margin-top:10px">{_("pa_head")}</h2>{lines}</div></section>')
@@ -4248,6 +4348,47 @@ def _test_pro_list() -> None:
     assert "<div><b>3</b><span>Games</span></div>" in ton and "<span>NCAAB</span>" in ton
     assert tonight_list([]).startswith('<p class="empty-board">')
     assert len(NFL_ABBR) == 32
+    # NFL: the same cards. Prop rows use nflverse's abbreviations (WAS, LA),
+    # logos ESPN's (wsh, lar); the week's other games get a card with the
+    # kickoff day and no line.
+    def nf(name, team, opp, pos, proj, **kw):
+        return dict({"name": name, "team": team, "opponent": opp, "position": pos,
+                     "projection": proj, "per_game": 174.2, "opp_allowed": 259.2,
+                     "league_allowed": 231.8, "game_id": "2026_10_WAS_NYG",
+                     "commence_time": "2026-11-15T13:00:00-05:00",
+                     "recent": [{"value": v} for v in (252.0, 127.0, 293.0)]}, **kw)
+    nfl_props = {
+        "mk_pass": [nf("J.J. McCarthy", "NYG", "WAS", "QB", 194.8, actual=293.0)],
+        "mk_td": [dict(nf("Cam Skattebo", "NYG", "WAS", "RB", None), chance=0.556, per_game=0.682,
+                       opp_allowed=2.92, league_allowed=2.46, scored=True,
+                       recent=[{"value": v} for v in (0.0, 1.0, 2.0)])]}
+    board_game = dict(game, event_id="n1", league="nfl", home="New York Giants",
+                      away="Washington Commanders")
+    nl = pro_list([board_game], nfl_props, PRO_ABBR["nfl"], pair=NFL_PAIR)
+    assert "teamlogos/nfl/500/wsh.png" in nl and "teamlogos/nfl/500/nyg.png" in nl
+    titles = re.findall(r'<span class="pc-grp-t">([^<]+)</span>', nl)
+    assert titles == ["Game lines", "Passing yards", "Anytime touchdown"], titles
+    assert 'class="pp-h" style="--c:#0B2265"' in nl, "Giants blue"
+    assert "<b>J.J. McCarthy</b><small>QB \u00b7 vs Commanders</small>" in nl
+    assert '<p class="pp-bar">Projected Passing yards</p>' in nl
+    assert "<div><b>194.8</b><span>This week</span></div><div><b>174.2</b><span>Season avg</span></div>" in nl
+    assert "Commanders give up 259.2 passing yards a game; the league average is 231.8." in nl
+    assert '<span>Recent</span><i class="pp-hit">252</i><i class="pp-miss">127</i><i class="pp-hit">293</i>' in nl
+    assert "Final: 293" in nl
+    # Touchdowns: the chance to score, and each recent game marked by scoring.
+    td = nl[nl.index("Cam Skattebo"):]
+    assert "<div><b>56%</b><span>Chance to score</span></div><div><b>0.68</b><span>TDs a game</span></div>" in td
+    assert '<i class="pp-miss">0</i><i class="pp-hit">1</i><i class="pp-hit">2</i>' in td
+    assert "Scored" in td and "Commanders give up 2.92 touchdowns a game" in td
+    # The rest of the week: games the props cover that are not on today's board.
+    wk = week_games(nfl_props, [dict(board_game, home="Buffalo Bills", away="Miami Dolphins")])
+    assert [(g["away"], g["home"]) for g in wk] == [("Washington Commanders", "New York Giants")]
+    assert week_games(nfl_props, [board_game]) == [], "already on the board"
+    extra = pro_list(wk, nfl_props, PRO_ABBR["nfl"], pair=NFL_PAIR, summary=False)
+    assert '<span class="gm-st">Sun 1:00 PM</span>' in extra and "gm-sum" not in extra
+    assert 'class="gm-pk' not in extra, "no line box without a line"
+    assert "J.J. McCarthy" in extra
+    assert len(NFL_COLOR) == 32 and set(NFL_COLOR) == set(NFL_VERSE)
     acc = prop_accuracy({"mk_points": {"graded": 839, "mae": 6.12, "baseline": 6.07},
                          "mk_assists": {}})
     assert ">Points<" in acc and "839" in acc and "6.12" in acc and ">Assists<" in acc
