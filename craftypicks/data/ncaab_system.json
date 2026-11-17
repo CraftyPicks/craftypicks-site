@@ -1,126 +1,34 @@
 {
-  "date": "2026-11-16",
-  "date_label": "Monday, November 16, 2026",
+  "date": "2026-11-17",
+  "date_label": "Tuesday, November 17, 2026",
   "rows": [
     {
       "tab": "1h",
-      "event_id": "401920735",
-      "date": "2026-11-17",
-      "commence_time": "2026-11-17T01:00Z",
+      "event_id": "401921826",
+      "date": "2026-11-18",
+      "commence_time": "2026-11-18T01:00Z",
       "home": {
-        "id": "77",
-        "name": "Northwestern Wildcats",
-        "abbr": "NU",
-        "short": "Northwestern",
-        "school": "Northwestern",
-        "color": "492f92",
-        "rank": null,
-        "record": "3-1"
-      },
-      "away": {
-        "id": "171",
-        "name": "Columbia Lions",
-        "abbr": "COLU",
-        "short": "Columbia",
-        "school": "Columbia",
-        "color": "7ba4db",
-        "rank": null,
-        "record": "3-1"
-      },
-      "side": "home",
-      "line": -6.0,
-      "est": true,
-      "ml": null,
-      "checks": [
-        {
-          "key": "reb",
-          "mark": "n",
-          "v": [
-            31.5,
-            43.0
-          ]
-        },
-        {
-          "key": "ats",
-          "mark": "y",
-          "v": [
-            3,
-            1,
-            "home"
-          ]
-        },
-        {
-          "key": "h2h",
-          "mark": "na",
-          "v": [
-            0,
-            0
-          ]
-        },
-        {
-          "key": "depth",
-          "mark": "y",
-          "v": [
-            3,
-            1
-          ]
-        },
-        {
-          "key": "form",
-          "mark": "y",
-          "v": [
-            3,
-            4,
-            "home"
-          ]
-        },
-        {
-          "key": "def",
-          "mark": "y",
-          "v": [
-            4.5,
-            1.5
-          ]
-        }
-      ],
-      "passed": 4,
-      "applicable": 5,
-      "postseason": false,
-      "under_note": false,
-      "total": 140.5,
-      "result": "L",
-      "final": [
-        75,
-        53
-      ]
-    },
-    {
-      "tab": "1h",
-      "event_id": "401920808",
-      "date": "2026-11-17",
-      "commence_time": "2026-11-17T01:30Z",
-      "home": {
-        "id": "245",
-        "name": "Texas A&M Aggies",
-        "abbr": "TA&M",
-        "short": "Texas A&M",
-        "school": "Texas A&M",
-        "color": "500000",
-        "rank": null,
+        "id": "238",
+        "name": "Vanderbilt Commodores",
+        "abbr": "VAN",
+        "short": "Vanderbilt",
+        "school": "Vanderbilt",
+        "color": "000000",
+        "rank": 15,
         "record": "4-0"
       },
       "away": {
-        "id": "2545",
-        "name": "SE Louisiana Lions",
-        "abbr": "SELA",
-        "short": "SE Louisiana",
-        "school": "SE Louisiana",
-        "color": "215732",
+        "id": "2197",
+        "name": "Eastern Illinois Panthers",
+        "abbr": "EIU",
+        "short": "E Illinois",
+        "school": "Eastern Illinois",
+        "color": "000000",
         "rank": null,
-        "record": "1-2"
+        "record": "1-4"
       },
       "side": "home",
-      "line": -17.5,
+      "line": -21.5,
       "est": true,
       "ml": null,
       "checks": [
@@ -128,8 +36,8 @@
           "key": "reb",
           "mark": "y",
           "v": [
-            41.5,
-            32.33
+            43.33,
+            30.2
           ]
         },
         {
@@ -170,8 +78,8 @@
           "key": "def",
           "mark": "y",
           "v": [
-            8.5,
-            -6.0
+            3.0,
+            -2.4
           ]
         }
       ],
@@ -179,12 +87,7 @@
       "applicable": 5,
       "postseason": false,
       "under_note": false,
-      "total": 160.5,
-      "result": "L",
-      "final": [
-        69,
-        101
-      ]
+      "total": 146.5
     }
   ],
   "summary": {
@@ -200,7 +103,7 @@
       "w": 0,
       "l": 4,
       "p": 0,
-      "pending": 0,
+      "pending": 1,
       "units": -4.0,
       "checks": {
         "reb": [
@@ -598,6 +501,93 @@
         69,
         101
       ]
+    },
+    {
+      "tab": "1h",
+      "event_id": "401921826",
+      "date": "2026-11-18",
+      "commence_time": "2026-11-18T01:00Z",
+      "home": {
+        "id": "238",
+        "name": "Vanderbilt Commodores",
+        "abbr": "VAN",
+        "short": "Vanderbilt",
+        "school": "Vanderbilt",
+        "color": "000000",
+        "rank": 15,
+        "record": "4-0"
+      },
+      "away": {
+        "id": "2197",
+        "name": "Eastern Illinois Panthers",
+        "abbr": "EIU",
+        "short": "E Illinois",
+        "school": "Eastern Illinois",
+        "color": "000000",
+        "rank": null,
+        "record": "1-4"
+      },
+      "side": "home",
+      "line": -21.5,
+      "est": true,
+      "ml": null,
+      "checks": [
+        {
+          "key": "reb",
+          "mark": "y",
+          "v": [
+            43.33,
+            30.2
+          ]
+        },
+        {
+          "key": "ats",
+          "mark": "y",
+          "v": [
+            3,
+            1,
+            "home"
+          ]
+        },
+        {
+          "key": "h2h",
+          "mark": "na",
+          "v": [
+            0,
+            0
+          ]
+        },
+        {
+          "key": "depth",
+          "mark": "n",
+          "v": [
+            2,
+            0
+          ]
+        },
+        {
+          "key": "form",
+          "mark": "y",
+          "v": [
+            4,
+            4,
+            "home"
+          ]
+        },
+        {
+          "key": "def",
+          "mark": "y",
+          "v": [
+            3.0,
+            -2.4
+          ]
+        }
+      ],
+      "passed": 4,
+      "applicable": 5,
+      "postseason": false,
+      "under_note": false,
+      "total": 146.5
     }
   ]
 }
