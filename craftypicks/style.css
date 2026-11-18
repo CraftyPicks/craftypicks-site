@@ -1845,3 +1845,8 @@ footer{background:var(--bg-2);padding:56px 0 40px}
 .sys-sec .ha th[scope="row"] small{display:block;margin-top:2px;color:var(--sub);
   font:700 11px var(--mono);letter-spacing:.08em;text-transform:uppercase}
 .sys-sec .ha thead th{white-space:nowrap}
+/* The play's win rate, where its result goes once final. */
+.gm-sys-l .gm-sys-rate{flex:none;align-items:flex-end}
+.gm-sys-l .gm-sys-rate b{color:var(--green);font:800 22px/1 var(--sans)}
+.gm-sys-l .gm-sys-rate small{margin-top:3px;color:var(--sub);font:600 12px var(--mono)}
+.gm-sys-note{margin:2px 0 0;color:var(--sub);font:500 12px/1.35 var(--sans)}
