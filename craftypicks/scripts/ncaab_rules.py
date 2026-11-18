@@ -31,7 +31,10 @@ SMALL_DOG = 6.0
 PA_SD, STL_SD, REB_SD = 10.8, 2.54, 8.6
 
 # The backtest, for the page. Not the record: that is counted forward.
-BACKTEST = {"spread": [143, 90, 0], "through": "2026-11-17"}
+BACKTEST = {"spread": [143, 90, 0], "through": "2026-11-17",
+            # Tracked, not played: when DEFENSE fires, the favourite's team
+            # total (total/2 + spread/2) going under.
+            "tt": [70, 42, 0]}
 
 
 def _ts(stamp) -> float | None:

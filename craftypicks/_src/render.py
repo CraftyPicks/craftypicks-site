@@ -1504,17 +1504,29 @@ def _home_spread(r: dict):
     return r.get("spread_home")
 
 
+def _row_total(r: dict):
+    t = ((r.get("markets") or {}).get("totals") or {}).get("point")
+    return t if t is not None else r.get("total")
+
+
 def _sys_grade(r: dict) -> dict:
-    """W/L/P for a row's System play once it is final."""
+    """W/L/P for a row's System play once it is final. "tt" is tracked, not
+    played: when the defense rule fires, the favourite's team total (from the
+    spread and total, as books set it) going under."""
     play, f = r.get("system") or {}, r.get("final")
-    out = {"spread": None}
+    out = {"spread": None, "tt": None}
     if not f:
         return out
-    hp = _home_spread(r)
+    hp, tot = _home_spread(r), _row_total(r)
     if play.get("side") and hp is not None:
         e = f["home"] - f["away"] + hp
         e = -e if play["side"] == "away" else e
         out["spread"] = "W" if e > 0 else "L" if e < 0 else "P"
+        if "defense" in (play.get("reasons") or []) and tot is not None and hp:
+            fav = "away" if play["side"] == "home" else "home"
+            line = tot / 2 + abs(hp) / 2
+            d = f[fav] - line
+            out["tt"] = "W" if d < 0 else "L" if d > 0 else "P"
     return out
 
 
@@ -1541,16 +1553,17 @@ def _sys_box(r: dict) -> str:
 def rules_record(days: dict[str, list[dict]], since: str) -> dict:
     """The System's record from `since` on (games it had not been tested on),
     graded on each saved day's finals."""
-    out = {"spread": [0, 0, 0], "days": 0}
+    out = {"spread": [0, 0, 0], "tt": [0, 0, 0], "days": 0}
     for d, rows in days.items():
         if d < since:
             continue
         counted = False
         for r in rows:
             g = _sys_grade(r)
-            if g["spread"]:
-                out["spread"]["WLP".index(g["spread"])] += 1
-                counted = True
+            for k in ("spread", "tt"):
+                if g[k]:
+                    out[k]["WLP".index(g[k])] += 1
+                    counted = True
         out["days"] += counted
     return out
 
@@ -1568,7 +1581,7 @@ def rules_section(days: dict[str, list[dict]], since: str) -> str:
                 + (f'<small>{round(100 * v[0] / n)}%</small>' if n else "<small>&ndash;</small>") + "</td>")
 
     rows = "".join(f'<tr><th scope="row">{_(lab)}</th>{cell(rec[k])}{cell(bt[k])}</tr>'
-                   for k, lab in (("spread", "sys_spread_plays"),))
+                   for k, lab in (("spread", "sys_spread_plays"), ("tt", "sys_tt_plays")))
     return (f'<section class="sys-sec"><h2 class="sc-h">{_("sys_head")}</h2>'
             f'<ul class="sys-rules"><li>{_("sys_rule_small")}</li><li>{_("sys_rule_defense")}</li>'
             f'</ul>'
@@ -4319,9 +4332,19 @@ def _test_pick_card() -> None:
             "2026-11-18": [dict(sysrow, final={"away": 60, "home": 80}),
                            dict(sysrow, event_id="o", final=None)]}
     rec = rules_record(days, "2026-11-18")
-    assert rec == {"spread": [0, 1, 0], "days": 1}, rec
+    # Tracked, not played: the favourite's team total under when the
+    # defense rule fires. Home -4.5, total 150.5: home implied 77.5.
+    # 80-60 is over it (L); the Nov 17 game is before go-live.
+    assert rec == {"spread": [0, 1, 0], "tt": [0, 1, 0], "days": 1}, rec
     box = rules_section(days, "2026-11-18")
-    assert "0-1" in box and "143-90" in box and "276-216" not in box and "Under" not in box
+    assert "0-1" in box and "143-90" in box and "276-216" not in box
+    assert "Favorite team total under" in box and "70-42" in box and "Tracking" in box
+    small_only = dict(sysrow, system={"side": "away", "reasons": ["small"]},
+                      final={"away": 60, "home": 70})
+    assert _sys_grade(small_only)["tt"] is None, "tracked only when the defense rule fires"
+    held = dict(sysrow, final={"away": 70, "home": 72})
+    assert _sys_grade(held)["tt"] == "W", "72 under 77.5"
+    assert "team total" not in college_list([held]).lower(), "not shown on the cards"
     # History: a day's record counts Best bets and Leans with a final.
     def h(eid, tier, away, home):
         return dict(row, event_id=eid, ats=dict(row["ats"], tier=tier),

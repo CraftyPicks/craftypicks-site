@@ -1232,6 +1232,8 @@ T = {
     "sys_live": {"en": "Since {d}", "es": "Desde {d}"},
     "sys_backtest": {"en": "Backtest", "es": "Prueba"},
     "sys_spread_plays": {"en": "Spread plays", "es": "Spread"},
+    "sys_tt_plays": {"en": "Favorite team total under <small>Tracking only</small>",
+                     "es": "Baja del total del favorito <small>Seguimiento</small>"},
     "sys_note": {"en": "The backtest is every game with a line from Nov 1 to 17, when the rules were found, so it is the best case. The live column counts only games the rules had never seen, using numbers from before each tip-off. 52.4% breaks even at -110.",
                  "es": "La prueba cubre cada juego con línea del 1 al 17 de noviembre, cuando se hallaron las reglas: es el mejor caso. La columna en vivo solo cuenta juegos nuevos. 52.4% es el punto de equilibrio a -110."},
     "nav_today": {"en": "Today", "es": "Hoy"},
