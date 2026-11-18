@@ -557,7 +557,7 @@ def total_games(store: dict) -> list[list]:
     return out
 
 
-SYSTEM_LIVE = "2026-11-18"     # the System's record counts from here
+SYSTEM_LIVE = R.SYS_SINCE      # the System's record counts from here
 
 
 def attach_system(rows: list[dict], store: dict, ranks: dict | None = None) -> int:
@@ -677,6 +677,9 @@ def build() -> None:
                     attach_system(_rows, _cbb, _bpi_ranks())
                 except Exception as _s_err:                  # noqa: BLE001
                     print(f"!! system not attached to history ({_s_err})", file=sys.stderr)
+    # Each System play's win rate on the cards: live once a kind has enough
+    # graded games, else the backtest.
+    R.set_sys_rates(R.sys_rates(history.get("ncaab") or {}, SYSTEM_LIVE))
     day_pages = history_pages(history)
     for _out in day_pages:
         _d = date.fromisoformat(_out.split("day-")[1][:10])

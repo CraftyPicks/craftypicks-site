@@ -1495,6 +1495,35 @@ _TIER_TAG = {"best": "pc_best", "lean": "pc_lean", "check": "pc_check"}
 
 
 SYS_REASON = {"small": "sys_small", "defense": "sys_defense"}
+SYS_SINCE = "2026-11-18"       # the System's live record starts here
+SYS_LIVE_MIN = 20              # live games of a kind before its rate is shown
+_SYS_RATES: dict | None = None  # set by build from History; None = backtest
+
+
+def sys_rates(days: dict[str, list[dict]], since: str) -> dict:
+    """{reasons key: (won, lost, live)} for each kind of System play
+    ("small", "defense", "small+defense"): the live record from `since` once
+    it has SYS_LIVE_MIN graded games, else the backtest."""
+    import ncaab_rules as _nr  # noqa: PLC0415
+    live: dict[str, list[int]] = {}
+    for d, rows in days.items():
+        if d < since:
+            continue
+        for r in rows:
+            g = _sys_grade(r)["spread"]
+            if g in ("W", "L"):
+                k = "+".join((r.get("system") or {}).get("reasons") or [])
+                live.setdefault(k, [0, 0])["WL".index(g)] += 1
+    out = {}
+    for k, (w, l) in _nr.BACKTEST["by_reason"].items():
+        lw, ll = live.get(k, (0, 0))
+        out[k] = (lw, ll, True) if lw + ll >= SYS_LIVE_MIN else (w, l, False)
+    return out
+
+
+def set_sys_rates(rates: dict | None) -> None:
+    global _SYS_RATES
+    _SYS_RATES = rates
 
 
 def _home_spread(r: dict):
@@ -1543,8 +1572,20 @@ def _sys_box(r: dict) -> str:
         pt = hp if play["side"] == "home" else -hp
         why = " · ".join(_(SYS_REASON[k]) for k in play.get("reasons") or [] if k in SYS_REASON)
         res = (f'<b class="{words[g["spread"]][0]}">{words[g["spread"]][1]}</b>' if g["spread"] else "")
+        rates = _SYS_RATES or sys_rates({}, "")
+        w, l, live = rates.get("+".join(play.get("reasons") or []), (0, 0, False))
+        rate = note = ""
+        if w + l:
+            pct = round(100 * w / (w + l))
+            when = _("sys_rate_live", d=_short_day(SYS_SINCE)) if live else _("sys_rate_bt")
+            if res:
+                note = _("sys_rate_done", p=pct, r=f"{w}-{l}", when=when)
+            else:
+                rate = f'<span class="gm-sys-rate"><b>{pct}%</b><small>{w}-{l}</small></span>'
+                note = _("sys_rate_open", when=when)
+            note = f'<p class="gm-sys-note">{note}</p>'
         lines.append(f'<div class="gm-sys-l"><span><b>{esc(_school(r, play["side"]))} {pt:+g}</b>'
-                     f'<small>{esc(why)}</small></span>{res}</div>')
+                     f'<small>{esc(why)}</small></span>{res or rate}</div>{note}')
     if not lines:
         return ""
     return f'<div class="gm-sys"><span class="gm-sys-tag">{_("sys_tag")}</span>{"".join(lines)}</div>'
@@ -4323,6 +4364,26 @@ def _test_pick_card() -> None:
     assert "Under 150.5" not in card and "Total 145" not in card
     assert "<div><b>1</b><span>System plays</span></div>" in sl
     assert 'data-sf="sys"' in sl and 'aria-pressed="true">All games' in sl
+    # The play's win rate: the backtest for its rules until the live record
+    # has SYS_LIVE_MIN games of that kind, then the live record.
+    assert '<span class="gm-sys-rate"><b>67%</b><small>16-8</small></span>' in card, card
+    assert "Win rate for this play, Nov 1–17" in card
+    one = dict(sysrow, system={"side": "away", "reasons": ["small"]})
+    assert "<b>70%</b><small>45-19</small>" in college_list([one])
+    done = college_list([dict(one, final={"away": 70, "home": 72})])
+    assert "gm-sys-rate" not in done, "the result takes the rate's place"
+    assert "Wins 70% of the time (45-19, Nov 1–17)" in done
+    live = {"2026-11-18": [dict(one, event_id=f"g{i}", final={"away": 70, "home": 72 if i < 15 else 80})
+                           for i in range(20)]}
+    assert sys_rates(live, "2026-11-18")["small"] == (15, 5, True)
+    assert sys_rates({"2026-11-18": live["2026-11-18"][:19]}, "2026-11-18")["small"] == (45, 19, False)
+    try:
+        set_sys_rates(sys_rates(live, "2026-11-18"))
+        lv = college_list([one])
+        assert "<b>75%</b><small>15-5</small>" in lv and "Win rate for this play, since Nov 18" in lv
+        assert "<b>67%</b><small>16-8</small>" in college_list([sysrow]), "other kinds keep the backtest"
+    finally:
+        set_sys_rates(None)
     won = college_list([dict(sysrow, final={"away": 70, "home": 72})])
     sysbox = won[won.index('class="gm-sys"'):]
     sysbox = sysbox[:sysbox.index('class="pc-more')]

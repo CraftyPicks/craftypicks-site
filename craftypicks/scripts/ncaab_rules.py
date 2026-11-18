@@ -41,7 +41,10 @@ PA_SD, STL_SD, REB_SD = 10.8, 2.54, 8.6
 BACKTEST = {"spread": [98, 46, 0], "through": "2026-11-17",
             # Tracked, not played: when DEFENSE fires, the favourite's team
             # total (total/2 + spread/2) going under.
-            "tt": [55, 25, 0]}
+            "tt": [55, 25, 0],
+            # Spread plays by the rules that chose them, for the cards.
+            "by_reason": {"small": [45, 19], "defense": [37, 19],
+                          "small+defense": [16, 8]}}
 
 
 def _ts(stamp) -> float | None:
