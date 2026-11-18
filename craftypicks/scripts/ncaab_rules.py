@@ -1,0 +1,162 @@
+#!/usr/bin/env python3
+"""The college basketball System: plays chosen by rules, not by the rating.
+
+Rules (Nov 2026), tested on every game with a line from Nov 1 to Nov 17.
+Each was found on Nov 1-11 and checked on Nov 12-17, which it had never
+seen; all three held up in both halves:
+
+  DEFENSE  The underdog is the better defensive team: fewer points allowed,
+           a better rebound margin and more steals, combined into one score.
+           70-43 (62%) against the spread.
+  SMALL    The underdog gets 6 points or fewer on a true home court
+           (neutral sites left out). 99-63 (61%).
+  UNDER    Under when the total is 145 or more. 276-216 (56%).
+
+A dog meeting DEFENSE or SMALL is a spread play (143-90, 61%); UNDER is a
+total play. The bar for a -110 bet is 52.4%.
+
+Every number a play uses comes from games that started BEFORE it, so a
+page rebuilt after the game cannot leak the result into its own pick.
+Teams need MIN_GAMES finals before DEFENSE applies. Stdlib only.
+"""
+from __future__ import annotations
+
+from datetime import datetime
+
+MIN_GAMES = 2
+SMALL_DOG = 6.0
+UNDER_TOTAL = 145.0
+# The spread of each defensive stat across teams this season, used to put
+# points allowed (about 11 points), steals (2.5) and rebound margin (8.6)
+# on one scale. Measured Nov 2026; they only weigh the three stats.
+PA_SD, STL_SD, REB_SD = 10.8, 2.54, 8.6
+
+# The backtest, for the page. Not the record: that is counted forward.
+BACKTEST = {"spread": [143, 90, 0], "total": [276, 216, 0],
+            "through": "2026-11-17"}
+
+
+def _ts(stamp) -> float | None:
+    try:
+        return datetime.fromisoformat(str(stamp).replace("Z", "+00:00")).timestamp()
+    except ValueError:
+        return None
+
+
+def team_forms(store: dict, before) -> dict:
+    """{team id: {"n", "pa", "stl", "reb"}} per game, from finals that
+    started before `before` (a timestamp). `reb` is the rebound margin."""
+    acc: dict[str, list] = {}
+    for g in (store or {}).get("games", {}).values():
+        t = _ts(g.get("commence_time"))
+        if (not g.get("completed") or g.get("home_score") is None or t is None
+                or before is None or t >= before):
+            continue
+        box = g.get("box") or {}
+        for me, ot in (("home", "away"), ("away", "home")):
+            tid, oid = str(g[me]["id"]), str(g[ot]["id"])
+            a = acc.setdefault(tid, [0, 0.0, 0.0, 0.0, 0])  # n, pa, stl, reb margin, boxed
+            a[0] += 1
+            a[1] += g[f"{ot}_score"]
+            mb, ob = box.get(tid) or {}, box.get(oid) or {}
+            if mb.get("stl") is not None and mb.get("reb") is not None and ob.get("reb") is not None:
+                a[2] += mb["stl"]
+                a[3] += mb["reb"] - ob["reb"]
+                a[4] += 1
+    return {tid: {"n": n, "pa": pa / n, "stl": stl / bx if bx else 0.0,
+                  "reb": reb / bx if bx else 0.0}
+            for tid, (n, pa, stl, reb, bx) in acc.items() if n}
+
+
+def defense(form: dict) -> float:
+    """One defensive score: higher is better."""
+    return -form["pa"] / PA_SD + form["stl"] / STL_SD + form["reb"] / REB_SD
+
+
+def plays(spread_home, total, neutral: bool, home_form: dict | None,
+          away_form: dict | None) -> dict:
+    """The System's plays for one game: {"side": "home"/"away" or None,
+    "reasons": [...], "under": bool}. The side is always the underdog."""
+    out = {"side": None, "reasons": [], "under": False}
+    if total is not None and total >= UNDER_TOTAL:
+        out["under"] = True
+    if spread_home in (None, 0):
+        return out
+    dog = "home" if spread_home > 0 else "away"
+    if abs(spread_home) <= SMALL_DOG and not neutral:
+        out["reasons"].append("small")
+    forms = {"home": home_form, "away": away_form}
+    if all(f and f["n"] >= MIN_GAMES for f in forms.values()):
+        other = "away" if dog == "home" else "home"
+        if defense(forms[dog]) > defense(forms[other]):
+            out["reasons"].append("defense")
+    if out["reasons"]:
+        out["side"] = dog
+    return out
+
+
+def for_game(store: dict, home_id, away_id, commence, spread_home, total,
+             neutral: bool) -> dict:
+    """plays() for a game, with each team's form as of its start."""
+    forms = team_forms(store, _ts(commence))
+    return plays(spread_home, total, neutral, forms.get(str(home_id)), forms.get(str(away_id)))
+
+
+def grade(play: dict, spread_home, total, home_score, away_score) -> dict:
+    """{"spread": "W"/"L"/"P" or None, "total": ...} for a finished game."""
+    out = {"spread": None, "total": None}
+    if play.get("side") and spread_home is not None:
+        e = home_score - away_score + spread_home
+        if play["side"] == "away":
+            e = -e
+        out["spread"] = "W" if e > 0 else "L" if e < 0 else "P"
+    if play.get("under") and total is not None:
+        t = home_score + away_score - total
+        out["total"] = "W" if t < 0 else "L" if t > 0 else "P"
+    return out
+
+
+def _self_test() -> None:
+    def g(eid, when, h, a, hs, as_, box=None):
+        return {"event_id": eid, "commence_time": when, "completed": True,
+                "home": {"id": h}, "away": {"id": a}, "home_score": hs, "away_score": as_,
+                "box": box or {}}
+    def bx(h, a, hreb, areb, hstl, astl):
+        return {h: {"reb": hreb, "stl": hstl}, a: {"reb": areb, "stl": astl}}
+    store = {"games": {
+        "1": g("1", "2026-11-03T23:00Z", "D", "x", 60, 50, bx("D", "x", 40, 30, 10, 4)),
+        "2": g("2", "2026-11-06T23:00Z", "y", "D", 55, 65, bx("y", "D", 28, 38, 5, 9)),
+        "3": g("3", "2026-11-04T23:00Z", "O", "x", 90, 85, bx("O", "x", 30, 35, 3, 6)),
+        "4": g("4", "2026-11-07T23:00Z", "O", "y", 95, 92, bx("O", "y", 31, 36, 4, 7)),
+        "5": g("5", "2026-11-20T23:00Z", "D", "O", 70, 60, bx("D", "O", 40, 30, 10, 2)),
+    }}
+    before = _ts("2026-11-10T00:00Z")
+    f = team_forms(store, before)
+    assert f["D"] == {"n": 2, "pa": 52.5, "stl": 9.5, "reb": 10.0}, f["D"]
+    assert f["O"]["n"] == 2 and f["O"]["pa"] == 88.5 and f["O"]["reb"] == -5.0
+    assert team_forms(store, _ts("2026-11-21T00:00Z"))["D"]["n"] == 3, "later cutoff sees game 5"
+    assert defense(f["D"]) > defense(f["O"])
+    # D is the better defense and the underdog by 8 at home: DEFENSE only.
+    p = plays(8.0, 140.0, False, f["D"], f["O"])
+    assert p == {"side": "home", "reasons": ["defense"], "under": False}, p
+    # Small dog with the worse defense: SMALL only, and an under at 150.
+    p = plays(-4.5, 150.0, False, f["D"], f["O"])
+    assert p == {"side": "away", "reasons": ["small"], "under": True}, p
+    # Both rules.
+    assert plays(4.0, None, False, f["D"], f["O"])["reasons"] == ["small", "defense"]
+    # A neutral site is not a small-dog play; too few games is not a defense play.
+    assert plays(-4.5, None, True, f["D"], f["O"])["side"] is None
+    thin = dict(f["D"], n=1)
+    assert plays(8.0, None, False, thin, f["O"])["side"] is None
+    assert plays(0, 150.0, False, f["D"], f["O"]) == {"side": None, "reasons": [], "under": True}
+    # No leak: a game's own result never feeds its play.
+    assert for_game(store, "D", "O", "2026-11-20T23:00Z", 8.0, None, False)["side"] == "home"
+    # Grading.
+    assert grade({"side": "home", "under": True}, 8.0, 140.0, 60, 65) == {"spread": "W", "total": "W"}
+    assert grade({"side": "away", "under": False}, -4.5, 140.0, 70, 60) == {"spread": "L", "total": None}
+    assert grade({"side": "away", "under": True}, -4.0, 130.0, 70, 66) == {"spread": "P", "total": "L"}
+    print("ncaab_rules self-test: all invariants hold")
+
+
+if __name__ == "__main__":
+    _self_test()

@@ -557,6 +557,37 @@ def total_games(store: dict) -> list[list]:
     return out
 
 
+SYSTEM_LIVE = "2026-11-18"     # the System's record counts from here
+
+
+def attach_system(rows: list[dict], store: dict) -> int:
+    """The System's plays for each college basketball row (ncaab_rules),
+    from the ESPN store as of that game's start, so a rebuild after the
+    game cannot use its result. Rows without both teams' ids are left out.
+    Returns rows given plays."""
+    import ncaab_rules  # noqa: PLC0415
+    games = (store or {}).get("games") or {}
+    n = 0
+    for r in rows:
+        t = r.get("teams") or {}
+        hid, aid = (t.get("home") or {}).get("id"), (t.get("away") or {}).get("id")
+        if not hid or not aid:
+            continue
+        sp = (r.get("markets") or {}).get("spreads") or {}
+        hp = (sp["point"] if sp.get("side_a", "home") == "home" else -sp["point"]) \
+            if sp.get("point") is not None else r.get("spread_home")
+        tot = ((r.get("markets") or {}).get("totals") or {}).get("point")
+        g = games.get(str(r.get("espn_id") or "")) or {}
+        play = ncaab_rules.for_game(store, hid, aid, r.get("commence_time"), hp, tot,
+                                    bool(g.get("neutral")))
+        if play["side"] or play["under"]:
+            r["system"] = play
+            n += 1
+        else:
+            r.pop("system", None)
+    return n
+
+
 def past_days(history: dict, today: str) -> dict:
     """Only days that have started: football's board saves games a week
     ahead, and History is for what already happened."""
@@ -613,6 +644,11 @@ def build() -> None:
     attach_team_stats(board_doc,
                       load("ncaab_teams.json", {}).get("teams") or {})
     try:
+        _ns = attach_system(((board_doc.get("leagues") or {}).get("ncaab") or {}).get("games") or [], _cbb)
+        print(f"system: {_ns} ncaab game(s) with a play")
+    except Exception as _s_err:                              # noqa: BLE001
+        print(f"!! system not attached ({_s_err})", file=sys.stderr)
+    try:
         print(f"history: saved {save_history(board_doc)} day file(s)")
     except OSError as _h_err:
         print(f"!! history not saved ({_h_err})", file=sys.stderr)
@@ -622,6 +658,11 @@ def build() -> None:
     for _lg, _by_day in history.items():
         for _rows in _by_day.values():
             attach_finals({"leagues": {_lg: {"games": _rows}}}, _cbb, _cfb)
+            if _lg == "ncaab":
+                try:
+                    attach_system(_rows, _cbb)
+                except Exception as _s_err:                  # noqa: BLE001
+                    print(f"!! system not attached to history ({_s_err})", file=sys.stderr)
     day_pages = history_pages(history)
     for _out in day_pages:
         _d = date.fromisoformat(_out.split("day-")[1][:10])
@@ -826,7 +867,8 @@ def build() -> None:
                     by_day = history.get(page.league) or {}
                     if page.key.endswith("_history"):
                         page_tokens["{{LEAGUE_BOARD}}"] = (
-                            R.home_away_table(_split := home_away_split(
+                            (R.rules_section(by_day, SYSTEM_LIVE) if page.league == "ncaab" else "")
+                            + R.home_away_table(_split := home_away_split(
                                 _cbb if page.league == "ncaab" else _cfb))
                             + R.home_away_table(_split, "away")
                             + R.spread_calc(spread_games(
@@ -1016,6 +1058,31 @@ def _remove_orphans(written: set) -> None:
 
 
 def _test_history() -> None:
+    # The System, attached to each college basketball row from the store as
+    # of that game's start.
+    sstore = {"games": {
+        "1": {"event_id": "1", "commence_time": "2026-11-03T23:00Z", "completed": True,
+              "home": {"id": "D"}, "away": {"id": "x"}, "home_score": 60, "away_score": 50,
+              "box": {"D": {"reb": 40, "stl": 10}, "x": {"reb": 30, "stl": 4}}},
+        "2": {"event_id": "2", "commence_time": "2026-11-05T23:00Z", "completed": True,
+              "home": {"id": "x"}, "away": {"id": "D"}, "home_score": 50, "away_score": 66,
+              "box": {"D": {"reb": 38, "stl": 9}, "x": {"reb": 30, "stl": 4}}},
+        "3": {"event_id": "3", "commence_time": "2026-11-04T23:00Z", "completed": True,
+              "home": {"id": "O"}, "away": {"id": "y"}, "home_score": 90, "away_score": 85,
+              "box": {"O": {"reb": 30, "stl": 3}, "y": {"reb": 35, "stl": 6}}},
+        "4": {"event_id": "4", "commence_time": "2026-11-06T23:00Z", "completed": True,
+              "home": {"id": "y"}, "away": {"id": "O"}, "home_score": 92, "away_score": 95,
+              "box": {"O": {"reb": 31, "stl": 4}, "y": {"reb": 36, "stl": 7}}},
+        "9": {"event_id": "9", "commence_time": "2026-11-10T23:00Z", "completed": False,
+              "neutral": True, "home": {"id": "O"}, "away": {"id": "D"}}}}
+    srows = [{"league": "ncaab", "espn_id": "9", "commence_time": "2026-11-10T23:00Z",
+              "teams": {"home": {"id": "O"}, "away": {"id": "D"}},
+              "markets": {"spreads": {"point": -8.0, "side_a": "home"}, "totals": {"point": 150.0}}},
+             {"league": "ncaab", "commence_time": "2026-11-10T23:00Z", "markets": {}}]
+    assert attach_system(srows, sstore) == 1
+    assert srows[0]["system"] == {"side": "away", "reasons": ["defense"], "under": True}, \
+        "D is the better defence getting 8; neutral site, so not a small-dog play"
+    assert "system" not in srows[1], "no teams, no play"
     # Share card and home-screen icon: every page links them, at its depth.
     assert 'og:image" content="https://craftypicks.org/og.png"' in HEAD
     assert 'rel="manifest" href="{up}manifest.webmanifest"' in HEAD

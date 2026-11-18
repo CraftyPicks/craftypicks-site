@@ -336,6 +336,17 @@
       if (panel) { panel.hidden = !open; }
       return;
     }
+    var sf = e.target.closest && e.target.closest(".sys-filter button[data-sf]");
+    if (sf) {
+      var only = sf.getAttribute("data-sf") === "sys";
+      sf.parentNode.querySelectorAll("button").forEach(function (b) {
+        b.setAttribute("aria-pressed", b === sf ? "true" : "false");
+      });
+      document.querySelectorAll(".gm-list .gm").forEach(function (c) {
+        c.hidden = only && !c.hasAttribute("data-sys");
+      });
+      return;
+    }
     var f = e.target.closest && e.target.closest(".pc-filter button");
     if (f) {
       var best = f.getAttribute("data-f") === "best";
