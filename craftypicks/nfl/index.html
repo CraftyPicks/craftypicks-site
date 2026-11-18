@@ -17,7 +17,7 @@
 <meta name="theme-color" content="#0E1116">
 
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%2308090B'/><path d='M8 20 L14 12 L18 17 L24 9' stroke='%233BE081' stroke-width='2.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>">
-<link rel="stylesheet" href="../style.css?v=5182ac3e">
+<link rel="stylesheet" href="../style.css?v=f41bb691">
 </head>
 <body>
 <header class="nav">
@@ -477,6 +477,17 @@
       more.setAttribute("aria-expanded", open ? "true" : "false");
       more.textContent = more.getAttribute(open ? "data-open" : "data-shut");
       if (panel) { panel.hidden = !open; }
+      return;
+    }
+    var sf = e.target.closest && e.target.closest(".sys-filter button[data-sf]");
+    if (sf) {
+      var only = sf.getAttribute("data-sf") === "sys";
+      sf.parentNode.querySelectorAll("button").forEach(function (b) {
+        b.setAttribute("aria-pressed", b === sf ? "true" : "false");
+      });
+      document.querySelectorAll(".gm-list .gm").forEach(function (c) {
+        c.hidden = only && !c.hasAttribute("data-sys");
+      });
       return;
     }
     var f = e.target.closest && e.target.closest(".pc-filter button");
