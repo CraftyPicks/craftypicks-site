@@ -3,17 +3,17 @@
 
 Rules (Nov 2026), tested on every game with a line from Nov 1 to Nov 17.
 Each was found on Nov 1-11 and checked on Nov 12-17, which it had never
-seen; all three held up in both halves:
+seen; both held up in both halves:
 
   DEFENSE  The underdog is the better defensive team: fewer points allowed,
            a better rebound margin and more steals, combined into one score.
            70-43 (62%) against the spread.
   SMALL    The underdog gets 6 points or fewer on a true home court
            (neutral sites left out). 99-63 (61%).
-  UNDER    Under when the total is 145 or more. 276-216 (56%).
 
-A dog meeting DEFENSE or SMALL is a spread play (143-90, 61%); UNDER is a
-total play. The bar for a -110 bet is 52.4%.
+A dog meeting DEFENSE or SMALL is a spread play (143-90, 61%). The bar for
+a -110 bet is 52.4%. (An under-at-145+ rule went 276-216 but was dropped,
+Nov 18, at the owner's call: the System is spreads only.)
 
 Every number a play uses comes from games that started BEFORE it, so a
 page rebuilt after the game cannot leak the result into its own pick.
@@ -25,15 +25,13 @@ from datetime import datetime
 
 MIN_GAMES = 2
 SMALL_DOG = 6.0
-UNDER_TOTAL = 145.0
 # The spread of each defensive stat across teams this season, used to put
 # points allowed (about 11 points), steals (2.5) and rebound margin (8.6)
 # on one scale. Measured Nov 2026; they only weigh the three stats.
 PA_SD, STL_SD, REB_SD = 10.8, 2.54, 8.6
 
 # The backtest, for the page. Not the record: that is counted forward.
-BACKTEST = {"spread": [143, 90, 0], "total": [276, 216, 0],
-            "through": "2026-11-17"}
+BACKTEST = {"spread": [143, 90, 0], "through": "2026-11-17"}
 
 
 def _ts(stamp) -> float | None:
@@ -73,13 +71,11 @@ def defense(form: dict) -> float:
     return -form["pa"] / PA_SD + form["stl"] / STL_SD + form["reb"] / REB_SD
 
 
-def plays(spread_home, total, neutral: bool, home_form: dict | None,
+def plays(spread_home, neutral: bool, home_form: dict | None,
           away_form: dict | None) -> dict:
-    """The System's plays for one game: {"side": "home"/"away" or None,
-    "reasons": [...], "under": bool}. The side is always the underdog."""
-    out = {"side": None, "reasons": [], "under": False}
-    if total is not None and total >= UNDER_TOTAL:
-        out["under"] = True
+    """The System's play for one game: {"side": "home"/"away" or None,
+    "reasons": [...]}. The side is always the underdog."""
+    out = {"side": None, "reasons": []}
     if spread_home in (None, 0):
         return out
     dog = "home" if spread_home > 0 else "away"
@@ -95,24 +91,21 @@ def plays(spread_home, total, neutral: bool, home_form: dict | None,
     return out
 
 
-def for_game(store: dict, home_id, away_id, commence, spread_home, total,
+def for_game(store: dict, home_id, away_id, commence, spread_home,
              neutral: bool) -> dict:
     """plays() for a game, with each team's form as of its start."""
     forms = team_forms(store, _ts(commence))
-    return plays(spread_home, total, neutral, forms.get(str(home_id)), forms.get(str(away_id)))
+    return plays(spread_home, neutral, forms.get(str(home_id)), forms.get(str(away_id)))
 
 
-def grade(play: dict, spread_home, total, home_score, away_score) -> dict:
-    """{"spread": "W"/"L"/"P" or None, "total": ...} for a finished game."""
-    out = {"spread": None, "total": None}
+def grade(play: dict, spread_home, home_score, away_score) -> dict:
+    """{"spread": "W"/"L"/"P" or None} for a finished game."""
+    out = {"spread": None}
     if play.get("side") and spread_home is not None:
         e = home_score - away_score + spread_home
         if play["side"] == "away":
             e = -e
         out["spread"] = "W" if e > 0 else "L" if e < 0 else "P"
-    if play.get("under") and total is not None:
-        t = home_score + away_score - total
-        out["total"] = "W" if t < 0 else "L" if t > 0 else "P"
     return out
 
 
@@ -137,24 +130,25 @@ def _self_test() -> None:
     assert team_forms(store, _ts("2026-11-21T00:00Z"))["D"]["n"] == 3, "later cutoff sees game 5"
     assert defense(f["D"]) > defense(f["O"])
     # D is the better defense and the underdog by 8 at home: DEFENSE only.
-    p = plays(8.0, 140.0, False, f["D"], f["O"])
-    assert p == {"side": "home", "reasons": ["defense"], "under": False}, p
-    # Small dog with the worse defense: SMALL only, and an under at 150.
-    p = plays(-4.5, 150.0, False, f["D"], f["O"])
-    assert p == {"side": "away", "reasons": ["small"], "under": True}, p
+    p = plays(8.0, False, f["D"], f["O"])
+    assert p == {"side": "home", "reasons": ["defense"]}, p
+    # Small dog with the worse defense: SMALL only. No total play any more.
+    p = plays(-4.5, False, f["D"], f["O"])
+    assert p == {"side": "away", "reasons": ["small"]}, p
     # Both rules.
-    assert plays(4.0, None, False, f["D"], f["O"])["reasons"] == ["small", "defense"]
+    assert plays(4.0, False, f["D"], f["O"])["reasons"] == ["small", "defense"]
     # A neutral site is not a small-dog play; too few games is not a defense play.
-    assert plays(-4.5, None, True, f["D"], f["O"])["side"] is None
+    assert plays(-4.5, True, f["D"], f["O"])["side"] is None
     thin = dict(f["D"], n=1)
-    assert plays(8.0, None, False, thin, f["O"])["side"] is None
-    assert plays(0, 150.0, False, f["D"], f["O"]) == {"side": None, "reasons": [], "under": True}
+    assert plays(8.0, False, thin, f["O"])["side"] is None
+    assert plays(0, False, f["D"], f["O"]) == {"side": None, "reasons": []}
     # No leak: a game's own result never feeds its play.
-    assert for_game(store, "D", "O", "2026-11-20T23:00Z", 8.0, None, False)["side"] == "home"
+    assert for_game(store, "D", "O", "2026-11-20T23:00Z", 8.0, False)["side"] == "home"
     # Grading.
-    assert grade({"side": "home", "under": True}, 8.0, 140.0, 60, 65) == {"spread": "W", "total": "W"}
-    assert grade({"side": "away", "under": False}, -4.5, 140.0, 70, 60) == {"spread": "L", "total": None}
-    assert grade({"side": "away", "under": True}, -4.0, 130.0, 70, 66) == {"spread": "P", "total": "L"}
+    assert grade({"side": "home"}, 8.0, 60, 65) == {"spread": "W"}
+    assert grade({"side": "away"}, -4.5, 70, 60) == {"spread": "L"}
+    assert grade({"side": "away"}, -4.0, 70, 66) == {"spread": "P"}
+    assert grade({"side": None}, -4.0, 70, 66) == {"spread": None}
     print("ncaab_rules self-test: all invariants hold")
 
 

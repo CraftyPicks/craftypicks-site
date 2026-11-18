@@ -1504,25 +1504,17 @@ def _home_spread(r: dict):
     return r.get("spread_home")
 
 
-def _row_total(r: dict):
-    t = ((r.get("markets") or {}).get("totals") or {}).get("point")
-    return t if t is not None else r.get("total")
-
-
 def _sys_grade(r: dict) -> dict:
-    """W/L/P for a row's System plays once it is final."""
+    """W/L/P for a row's System play once it is final."""
     play, f = r.get("system") or {}, r.get("final")
-    out = {"spread": None, "total": None}
+    out = {"spread": None}
     if not f:
         return out
-    hp, tot = _home_spread(r), _row_total(r)
+    hp = _home_spread(r)
     if play.get("side") and hp is not None:
         e = f["home"] - f["away"] + hp
         e = -e if play["side"] == "away" else e
         out["spread"] = "W" if e > 0 else "L" if e < 0 else "P"
-    if play.get("under") and tot is not None:
-        t = f["home"] + f["away"] - tot
-        out["total"] = "W" if t < 0 else "L" if t > 0 else "P"
     return out
 
 
@@ -1530,7 +1522,7 @@ def _sys_box(r: dict) -> str:
     """The System's plays on a game card, each with why and, once final,
     whether it won. Empty when the game has none."""
     play = r.get("system") or {}
-    hp, tot = _home_spread(r), _row_total(r)
+    hp = _home_spread(r)
     g = _sys_grade(r)
     words = {"W": ("won", "✓ " + _("res_covered")), "L": ("lost", "✗ " + _("res_missed")),
              "P": ("push", _("res_push"))}
@@ -1541,14 +1533,6 @@ def _sys_box(r: dict) -> str:
         res = (f'<b class="{words[g["spread"]][0]}">{words[g["spread"]][1]}</b>' if g["spread"] else "")
         lines.append(f'<div class="gm-sys-l"><span><b>{esc(_school(r, play["side"]))} {pt:+g}</b>'
                      f'<small>{esc(why)}</small></span>{res}</div>')
-    if play.get("under") and tot is not None:
-        res = ""
-        if g["total"]:
-            cls, txt = words[g["total"]]
-            txt = {"W": "✓ " + _("sys_hit"), "L": "✗ " + _("sys_miss"), "P": _("res_push")}[g["total"]]
-            res = f'<b class="{cls}">{txt}</b>'
-        lines.append(f'<div class="gm-sys-l"><span><b>{_("sys_under", t=f"{tot:g}")}</b>'
-                     f'<small>{_("sys_under_why")}</small></span>{res}</div>')
     if not lines:
         return ""
     return f'<div class="gm-sys"><span class="gm-sys-tag">{_("sys_tag")}</span>{"".join(lines)}</div>'
@@ -1557,17 +1541,16 @@ def _sys_box(r: dict) -> str:
 def rules_record(days: dict[str, list[dict]], since: str) -> dict:
     """The System's record from `since` on (games it had not been tested on),
     graded on each saved day's finals."""
-    out = {"spread": [0, 0, 0], "total": [0, 0, 0], "days": 0}
+    out = {"spread": [0, 0, 0], "days": 0}
     for d, rows in days.items():
         if d < since:
             continue
         counted = False
         for r in rows:
             g = _sys_grade(r)
-            for k in ("spread", "total"):
-                if g[k]:
-                    out[k]["WLP".index(g[k])] += 1
-                    counted = True
+            if g["spread"]:
+                out["spread"]["WLP".index(g["spread"])] += 1
+                counted = True
         out["days"] += counted
     return out
 
@@ -1585,10 +1568,10 @@ def rules_section(days: dict[str, list[dict]], since: str) -> str:
                 + (f'<small>{round(100 * v[0] / n)}%</small>' if n else "<small>&ndash;</small>") + "</td>")
 
     rows = "".join(f'<tr><th scope="row">{_(lab)}</th>{cell(rec[k])}{cell(bt[k])}</tr>'
-                   for k, lab in (("spread", "sys_spread_plays"), ("total", "sys_total_plays")))
+                   for k, lab in (("spread", "sys_spread_plays"),))
     return (f'<section class="sys-sec"><h2 class="sc-h">{_("sys_head")}</h2>'
             f'<ul class="sys-rules"><li>{_("sys_rule_small")}</li><li>{_("sys_rule_defense")}</li>'
-            f'<li>{_("sys_rule_under")}</li></ul>'
+            f'</ul>'
             f'<table class="ha"><caption>{_("sys_caption")}</caption><thead><tr>'
             f'<th scope="col"><span class="ts-vh">{_("sys_plays")}</span></th>'
             f'<th scope="col">{_("sys_live", d=_short_day(since))}</th>'
@@ -1658,8 +1641,7 @@ def college_list(rows: list[dict]) -> str:
         html_, t = _college_card(r)
         cards.append(html_)
         tiers.append(t)
-    n_sys = sum(1 for r in rows if (r.get("system") or {}).get("side")
-                or (r.get("system") or {}).get("under"))
+    n_sys = sum(1 for r in rows if (r.get("system") or {}).get("side"))
     head = _gm_summary([(len(rows), _("gm_games")), (n_sys, _("sys_tile")),
                         (tiers.count("best"), _("pc_tile_best"))])
     if n_sys:
@@ -4317,25 +4299,29 @@ def _test_pick_card() -> None:
     sysrow = dict(row, event_id="sy", markets={"spreads": {"point": -4.5, "side_a": "home"},
                                                "totals": {"point": 150.5}},
                   system={"side": "away", "reasons": ["small", "defense"], "under": True})
+    # (An "under" left in a day saved before Nov 18 must not show: unders
+    # are no longer part of the System.)
     sl = college_list([sysrow, dict(row, event_id="ns")])
     card = sl[sl.index('id="l-sy"') - 40:sl.index('id="l-ns"')]
     assert 'data-sys="1"' in card and 'data-sys="1"' not in sl[sl.index('id="l-ns"') - 40:]
     assert '<span class="gm-sys-tag">System</span>' in card
     assert "<b>Eastern Washington +4.5</b><small>Small underdog \u00b7 Better defense</small>" in card
-    assert "<b>Under 150.5</b><small>Total 145 or more</small>" in card
+    assert "Under 150.5" not in card and "Total 145" not in card
     assert "<div><b>1</b><span>System plays</span></div>" in sl
     assert 'data-sf="sys"' in sl and 'aria-pressed="true">All games' in sl
     won = college_list([dict(sysrow, final={"away": 70, "home": 72})])
-    assert won.count('class="won"') >= 2 and "Covered" in won, "dog +4.5 lost by 2: covered; 142 under 150.5"
+    sysbox = won[won.index('class="gm-sys"'):]
+    sysbox = sysbox[:sysbox.index('class="pc-more')]
+    assert sysbox.count('class="won"') == 1 and "Covered" in sysbox, "dog +4.5 lost by 2: covered"
     assert "gm-sys" not in college_list([row]), "no play, no box"
     # The System record on History: forward from go-live, plays graded on finals.
     days = {"2026-11-17": [dict(sysrow, final={"away": 70, "home": 72})],
             "2026-11-18": [dict(sysrow, final={"away": 60, "home": 80}),
                            dict(sysrow, event_id="o", final=None)]}
     rec = rules_record(days, "2026-11-18")
-    assert rec == {"spread": [0, 1, 0], "total": [1, 0, 0], "days": 1}, rec
+    assert rec == {"spread": [0, 1, 0], "days": 1}, rec
     box = rules_section(days, "2026-11-18")
-    assert "0-1" in box and "1-0" in box and "143-90" in box and "276-216" in box
+    assert "0-1" in box and "143-90" in box and "276-216" not in box and "Under" not in box
     # History: a day's record counts Best bets and Leans with a final.
     def h(eid, tier, away, home):
         return dict(row, event_id=eid, ats=dict(row["ats"], tier=tier),

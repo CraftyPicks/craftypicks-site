@@ -576,11 +576,10 @@ def attach_system(rows: list[dict], store: dict) -> int:
         sp = (r.get("markets") or {}).get("spreads") or {}
         hp = (sp["point"] if sp.get("side_a", "home") == "home" else -sp["point"]) \
             if sp.get("point") is not None else r.get("spread_home")
-        tot = ((r.get("markets") or {}).get("totals") or {}).get("point")
         g = games.get(str(r.get("espn_id") or "")) or {}
-        play = ncaab_rules.for_game(store, hid, aid, r.get("commence_time"), hp, tot,
+        play = ncaab_rules.for_game(store, hid, aid, r.get("commence_time"), hp,
                                     bool(g.get("neutral")))
-        if play["side"] or play["under"]:
+        if play["side"]:
             r["system"] = play
             n += 1
         else:
@@ -1080,7 +1079,7 @@ def _test_history() -> None:
               "markets": {"spreads": {"point": -8.0, "side_a": "home"}, "totals": {"point": 150.0}}},
              {"league": "ncaab", "commence_time": "2026-11-10T23:00Z", "markets": {}}]
     assert attach_system(srows, sstore) == 1
-    assert srows[0]["system"] == {"side": "away", "reasons": ["defense"], "under": True}, \
+    assert srows[0]["system"] == {"side": "away", "reasons": ["defense"]}, \
         "D is the better defence getting 8; neutral site, so not a small-dog play"
     assert "system" not in srows[1], "no teams, no play"
     # Share card and home-screen icon: every page links them, at its depth.
