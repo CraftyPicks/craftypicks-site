@@ -560,12 +560,15 @@ def total_games(store: dict) -> list[list]:
 SYSTEM_LIVE = "2026-11-18"     # the System's record counts from here
 
 
-def attach_system(rows: list[dict], store: dict) -> int:
+def attach_system(rows: list[dict], store: dict, ranks: dict | None = None) -> int:
     """The System's plays for each college basketball row (ncaab_rules),
     from the ESPN store as of that game's start, so a rebuild after the
     game cannot use its result. Rows without both teams' ids are left out.
+    `ranks` is {team id: power rank}; each row keeps the pair it was first
+    given (`sys_ranks`), so a play on History never changes as ranks move.
     Returns rows given plays."""
     import ncaab_rules  # noqa: PLC0415
+    ranks = {str(k): v for k, v in (ranks or {}).items()}
     games = (store or {}).get("games") or {}
     n = 0
     for r in rows:
@@ -577,14 +580,25 @@ def attach_system(rows: list[dict], store: dict) -> int:
         hp = (sp["point"] if sp.get("side_a", "home") == "home" else -sp["point"]) \
             if sp.get("point") is not None else r.get("spread_home")
         g = games.get(str(r.get("espn_id") or "")) or {}
+        pair = [ranks.get(str(hid)), ranks.get(str(aid))]
+        if "sys_ranks" not in r and None not in pair:
+            r["sys_ranks"] = pair
         play = ncaab_rules.for_game(store, hid, aid, r.get("commence_time"), hp,
-                                    bool(g.get("neutral")))
+                                    bool(g.get("neutral")), tuple(r.get("sys_ranks") or pair))
         if play["side"]:
             r["system"] = play
             n += 1
         else:
             r.pop("system", None)
     return n
+
+
+def _bpi_ranks() -> dict:
+    """{ESPN team id: BPI rank} from data/ncaab_bpi.json; {} if missing."""
+    try:
+        return json.loads((DATA / "ncaab_bpi.json").read_text()).get("ranks") or {}
+    except (OSError, ValueError):
+        return {}
 
 
 def past_days(history: dict, today: str) -> dict:
@@ -643,7 +657,8 @@ def build() -> None:
     attach_team_stats(board_doc,
                       load("ncaab_teams.json", {}).get("teams") or {})
     try:
-        _ns = attach_system(((board_doc.get("leagues") or {}).get("ncaab") or {}).get("games") or [], _cbb)
+        _ns = attach_system(((board_doc.get("leagues") or {}).get("ncaab") or {}).get("games") or [],
+                            _cbb, _bpi_ranks())
         print(f"system: {_ns} ncaab game(s) with a play")
     except Exception as _s_err:                              # noqa: BLE001
         print(f"!! system not attached ({_s_err})", file=sys.stderr)
@@ -659,7 +674,7 @@ def build() -> None:
             attach_finals({"leagues": {_lg: {"games": _rows}}}, _cbb, _cfb)
             if _lg == "ncaab":
                 try:
-                    attach_system(_rows, _cbb)
+                    attach_system(_rows, _cbb, _bpi_ranks())
                 except Exception as _s_err:                  # noqa: BLE001
                     print(f"!! system not attached to history ({_s_err})", file=sys.stderr)
     day_pages = history_pages(history)
@@ -1082,6 +1097,12 @@ def _test_history() -> None:
     assert srows[0]["system"] == {"side": "away", "reasons": ["defense"]}, \
         "D is the better defence getting 8; neutral site, so not a small-dog play"
     assert "system" not in srows[1], "no teams, no play"
+    # Power ranks: stamped on the row the first time, so History keeps the
+    # ranks the play was made with even after BPI moves.
+    assert "sys_ranks" not in srows[0], "no ranks given: nothing stamped"
+    assert attach_system(srows, sstore, {"O": 5, "D": 150}) == 0, "145 apart: no play"
+    assert srows[0]["sys_ranks"] == [5, 150] and "system" not in srows[0]
+    assert attach_system(srows, sstore, {"O": 5, "D": 20}) == 0, "the stamped ranks win"
     # Share card and home-screen icon: every page links them, at its depth.
     assert 'og:image" content="https://craftypicks.org/og.png"' in HEAD
     assert 'rel="manifest" href="{up}manifest.webmanifest"' in HEAD

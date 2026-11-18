@@ -11,7 +11,9 @@ seen; both held up in both halves:
   SMALL    The underdog gets 6 points or fewer on a true home court
            (neutral sites left out). 99-63 (61%).
 
-A dog meeting DEFENSE or SMALL is a spread play (143-90, 61%). The bar for
+A dog meeting DEFENSE or SMALL is a spread play (143-90, 61%); with the
+rank-gap rules below (Nov 18) it is 98-46 (68%), 69% and 67% in the two
+halves -- the gaps were chosen on these games, so that is the best case. The bar for
 a -110 bet is 52.4%. (An under-at-145+ rule went 276-216 but was dropped,
 Nov 18, at the owner's call: the System is spreads only.)
 
@@ -25,16 +27,21 @@ from datetime import datetime
 
 MIN_GAMES = 2
 SMALL_DOG = 6.0
+# Power-rank (BPI) gap, Nov 18: the System went 19-28 when the teams were
+# 100+ spots apart, so those are skipped; SMALL went 61-27 within 50 spots
+# and 38-36 beyond, so it needs the teams within 50.
+MAX_GAP = 100
+SMALL_GAP = 50
 # The spread of each defensive stat across teams this season, used to put
 # points allowed (about 11 points), steals (2.5) and rebound margin (8.6)
 # on one scale. Measured Nov 2026; they only weigh the three stats.
 PA_SD, STL_SD, REB_SD = 10.8, 2.54, 8.6
 
 # The backtest, for the page. Not the record: that is counted forward.
-BACKTEST = {"spread": [143, 90, 0], "through": "2026-11-17",
+BACKTEST = {"spread": [98, 46, 0], "through": "2026-11-17",
             # Tracked, not played: when DEFENSE fires, the favourite's team
             # total (total/2 + spread/2) going under.
-            "tt": [70, 42, 0]}
+            "tt": [55, 25, 0]}
 
 
 def _ts(stamp) -> float | None:
@@ -75,14 +82,19 @@ def defense(form: dict) -> float:
 
 
 def plays(spread_home, neutral: bool, home_form: dict | None,
-          away_form: dict | None) -> dict:
+          away_form: dict | None, ranks=(None, None)) -> dict:
     """The System's play for one game: {"side": "home"/"away" or None,
-    "reasons": [...]}. The side is always the underdog."""
+    "reasons": [...]}. The side is always the underdog. `ranks` is the
+    (home, away) power rank; when either is missing the gap rules are off."""
     out = {"side": None, "reasons": []}
     if spread_home in (None, 0):
         return out
+    rh, ra = ranks or (None, None)
+    gap = abs(rh - ra) if rh is not None and ra is not None else None
+    if gap is not None and gap >= MAX_GAP:
+        return out
     dog = "home" if spread_home > 0 else "away"
-    if abs(spread_home) <= SMALL_DOG and not neutral:
+    if abs(spread_home) <= SMALL_DOG and not neutral and (gap is None or gap < SMALL_GAP):
         out["reasons"].append("small")
     forms = {"home": home_form, "away": away_form}
     if all(f and f["n"] >= MIN_GAMES for f in forms.values()):
@@ -95,10 +107,10 @@ def plays(spread_home, neutral: bool, home_form: dict | None,
 
 
 def for_game(store: dict, home_id, away_id, commence, spread_home,
-             neutral: bool) -> dict:
+             neutral: bool, ranks=(None, None)) -> dict:
     """plays() for a game, with each team's form as of its start."""
     forms = team_forms(store, _ts(commence))
-    return plays(spread_home, neutral, forms.get(str(home_id)), forms.get(str(away_id)))
+    return plays(spread_home, neutral, forms.get(str(home_id)), forms.get(str(away_id)), ranks)
 
 
 def grade(play: dict, spread_home, home_score, away_score) -> dict:
@@ -147,6 +159,14 @@ def _self_test() -> None:
     assert plays(0, False, f["D"], f["O"]) == {"side": None, "reasons": []}
     # No leak: a game's own result never feeds its play.
     assert for_game(store, "D", "O", "2026-11-20T23:00Z", 8.0, False)["side"] == "home"
+    # Rank gap (BPI): 100+ apart, no play at all; SMALL needs under 50.
+    assert plays(4.0, False, f["D"], f["O"], ranks=(30, 60))["reasons"] == ["small", "defense"]
+    assert plays(4.0, False, f["D"], f["O"], ranks=(30, 90))["reasons"] == ["defense"], "gap 60: no SMALL"
+    assert plays(4.0, False, f["D"], f["O"], ranks=(30, 130))["side"] is None, "gap 100: no play"
+    assert plays(-4.5, False, f["D"], f["O"], ranks=(10, 70))["side"] is None, "SMALL only, gap 60"
+    assert plays(4.0, False, f["D"], f["O"], ranks=(None, 60))["reasons"] == ["small", "defense"], \
+        "a missing rank leaves the gap rules out"
+    assert for_game(store, "D", "O", "2026-11-20T23:00Z", 8.0, False, ranks=(5, 200))["side"] is None
     # Grading.
     assert grade({"side": "home"}, 8.0, 60, 65) == {"spread": "W"}
     assert grade({"side": "away"}, -4.5, 70, 60) == {"spread": "L"}

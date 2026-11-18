@@ -1584,6 +1584,7 @@ def rules_section(days: dict[str, list[dict]], since: str) -> str:
                    for k, lab in (("spread", "sys_spread_plays"), ("tt", "sys_tt_plays")))
     return (f'<section class="sys-sec"><h2 class="sc-h">{_("sys_head")}</h2>'
             f'<ul class="sys-rules"><li>{_("sys_rule_small")}</li><li>{_("sys_rule_defense")}</li>'
+            f'<li>{_("sys_rule_gap")}</li>'
             f'</ul>'
             f'<table class="ha"><caption>{_("sys_caption")}</caption><thead><tr>'
             f'<th scope="col"><span class="ts-vh">{_("sys_plays")}</span></th>'
@@ -4337,8 +4338,9 @@ def _test_pick_card() -> None:
     # 80-60 is over it (L); the Nov 17 game is before go-live.
     assert rec == {"spread": [0, 1, 0], "tt": [0, 1, 0], "days": 1}, rec
     box = rules_section(days, "2026-11-18")
-    assert "0-1" in box and "143-90" in box and "276-216" not in box
-    assert "Favorite team total under" in box and "70-42" in box and "Tracking" in box
+    assert "0-1" in box and "98-46" in box and "143-90" not in box
+    assert "Favorite team total under" in box and "55-25" in box and "Tracking" in box
+    assert "100 or more spots apart" in box and "within 50 spots" in box
     small_only = dict(sysrow, system={"side": "away", "reasons": ["small"]},
                       final={"away": 60, "home": 70})
     assert _sys_grade(small_only)["tt"] is None, "tracked only when the defense rule fires"
