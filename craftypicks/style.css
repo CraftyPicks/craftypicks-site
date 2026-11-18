@@ -1841,3 +1841,7 @@ footer{background:var(--bg-2);padding:56px 0 40px}
 .sys-sec{margin:6px 0 18px}
 .sys-rules{margin:0 0 12px;padding-inline-start:18px;color:var(--txt);font:500 14px/1.45 var(--sans)}
 .sys-rules li{margin-bottom:4px}
+.sys-sec .ha th[scope="row"]{white-space:normal}
+.sys-sec .ha th[scope="row"] small{display:block;margin-top:2px;color:var(--sub);
+  font:700 11px var(--mono);letter-spacing:.08em;text-transform:uppercase}
+.sys-sec .ha thead th{white-space:nowrap}
