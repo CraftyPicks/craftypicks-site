@@ -1,34 +1,34 @@
 {
-  "date": "2026-11-18",
-  "date_label": "Wednesday, November 18, 2026",
+  "date": "2026-11-19",
+  "date_label": "Thursday, November 19, 2026",
   "rows": [
     {
       "tab": "1h",
-      "event_id": "401925949",
-      "date": "2026-11-19",
-      "commence_time": "2026-11-19T02:00Z",
+      "event_id": "401902280",
+      "date": "2026-11-20",
+      "commence_time": "2026-11-20T00:00Z",
       "home": {
-        "id": "328",
-        "name": "Utah State Aggies",
-        "abbr": "USU",
-        "short": "Utah State",
-        "school": "Utah State",
-        "color": "0f2439",
+        "id": "2086",
+        "name": "Butler Bulldogs",
+        "abbr": "BTLR",
+        "short": "Butler",
+        "school": "Butler",
+        "color": "0d1361",
         "rank": null,
-        "record": "4-0"
+        "record": "3-2"
       },
       "away": {
-        "id": "2692",
-        "name": "Weber State Wildcats",
-        "abbr": "WEB",
-        "short": "Weber St",
-        "school": "Weber State",
-        "color": "18005a",
+        "id": "111",
+        "name": "Northeastern Huskies",
+        "abbr": "NE",
+        "short": "Northeastern",
+        "school": "Northeastern",
+        "color": "CC0001",
         "rank": null,
-        "record": "1-3"
+        "record": "2-2"
       },
       "side": "home",
-      "line": -15.5,
+      "line": -8.5,
       "est": true,
       "ml": null,
       "checks": [
@@ -36,16 +36,16 @@
           "key": "reb",
           "mark": "y",
           "v": [
-            42.25,
-            36.25
+            42.6,
+            31.75
           ]
         },
         {
           "key": "ats",
           "mark": "y",
           "v": [
-            4,
-            0,
+            3,
+            1,
             "home"
           ]
         },
@@ -54,7 +54,7 @@
           "mark": "na",
           "v": [
             0,
-            2
+            0
           ]
         },
         {
@@ -62,14 +62,14 @@
           "mark": "y",
           "v": [
             3,
-            0
+            2
           ]
         },
         {
           "key": "form",
           "mark": "y",
           "v": [
-            4,
+            3,
             4,
             "home"
           ]
@@ -78,8 +78,8 @@
           "key": "def",
           "mark": "y",
           "v": [
-            5.0,
-            2.0
+            -2.4,
+            -3.0
           ]
         }
       ],
@@ -87,405 +87,65 @@
       "applicable": 5,
       "postseason": false,
       "under_note": false,
-      "total": 170.5
-    },
-    {
-      "tab": "1h",
-      "event_id": "401921734",
-      "date": "2026-11-19",
-      "commence_time": "2026-11-19T02:00Z",
-      "home": {
-        "id": "9",
-        "name": "Arizona State Sun Devils",
-        "abbr": "ASU",
-        "short": "Arizona St",
-        "school": "Arizona State",
-        "color": "ffc627",
-        "rank": null,
-        "record": "4-0"
-      },
-      "away": {
-        "id": "2473",
-        "name": "Oakland Golden Grizzlies",
-        "abbr": "OAK",
-        "short": "Oakland",
-        "school": "Oakland",
-        "color": "04091c",
-        "rank": null,
-        "record": "1-5"
-      },
-      "side": "home",
-      "line": -12.0,
-      "est": true,
-      "ml": null,
-      "checks": [
-        {
-          "key": "reb",
-          "mark": "y",
-          "v": [
-            42.75,
-            34.33
-          ]
-        },
-        {
-          "key": "ats",
-          "mark": "y",
-          "v": [
-            3,
-            1,
-            "home"
-          ]
-        },
-        {
-          "key": "h2h",
-          "mark": "na",
-          "v": [
-            0,
-            0
-          ]
-        },
-        {
-          "key": "depth",
-          "mark": "n",
-          "v": [
-            1,
-            2
-          ]
-        },
-        {
-          "key": "form",
-          "mark": "y",
-          "v": [
-            4,
-            4,
-            "home"
-          ]
-        },
-        {
-          "key": "def",
-          "mark": "y",
-          "v": [
-            2.2,
-            -4.7
-          ]
-        }
-      ],
-      "passed": 4,
-      "applicable": 5,
-      "postseason": false,
-      "under_note": false,
-      "total": 147.5
-    },
-    {
-      "tab": "system",
-      "event_id": "401911473",
-      "date": "2026-11-19",
-      "commence_time": "2026-11-19T02:00Z",
-      "home": {
-        "id": "23",
-        "name": "San José State Spartans",
-        "abbr": "SJSU",
-        "short": "San José St",
-        "school": "San José State",
-        "color": "0038a8",
-        "rank": null,
-        "record": "2-2"
-      },
-      "away": {
-        "id": "278",
-        "name": "Fresno State Bulldogs",
-        "abbr": "FRES",
-        "short": "Fresno St",
-        "school": "Fresno State",
-        "color": "b1102b",
-        "rank": null,
-        "record": "3-1"
-      },
-      "side": "away",
-      "line": 6.5,
-      "est": false,
-      "ml": null,
-      "checks": [
-        {
-          "key": "reb",
-          "mark": "y",
-          "v": [
-            41.25,
-            32.5
-          ]
-        },
-        {
-          "key": "ats",
-          "mark": "na",
-          "v": [
-            0,
-            1,
-            "away"
-          ]
-        },
-        {
-          "key": "bpi",
-          "mark": "na",
-          "v": [
-            271,
-            197,
-            6.5
-          ]
-        },
-        {
-          "key": "h2h",
-          "mark": "y",
-          "v": [
-            3,
-            5
-          ]
-        },
-        {
-          "key": "depth",
-          "mark": "y",
-          "v": [
-            4,
-            2
-          ]
-        },
-        {
-          "key": "form",
-          "mark": "na",
-          "v": [
-            0,
-            1,
-            "away"
-          ]
-        },
-        {
-          "key": "def",
-          "mark": "y",
-          "v": [
-            -1.8,
-            -2.5
-          ]
-        }
-      ],
-      "passed": 4,
-      "applicable": 4,
-      "postseason": false,
-      "under_note": false,
-      "total": 156.5
-    },
-    {
-      "tab": "1h",
-      "event_id": "401929004",
-      "date": "2026-11-19",
-      "commence_time": "2026-11-19T03:00Z",
-      "home": {
-        "id": "62",
-        "name": "Hawai'i Rainbow Warriors",
-        "abbr": "HAW",
-        "short": "Hawai'i",
-        "school": "Hawai'i",
-        "color": "005737",
-        "rank": null,
-        "record": "3-1"
-      },
-      "away": {
-        "id": "265",
-        "name": "Washington State Cougars",
-        "abbr": "WSU",
-        "short": "Washington St",
-        "school": "Washington State",
-        "color": "a60f2d",
-        "rank": null,
-        "record": "1-3"
-      },
-      "side": "home",
-      "line": -1.0,
-      "est": true,
-      "ml": null,
-      "checks": [
-        {
-          "key": "reb",
-          "mark": "y",
-          "v": [
-            40.75,
-            37.0
-          ]
-        },
-        {
-          "key": "ats",
-          "mark": "na",
-          "v": [
-            1,
-            2,
-            "home"
-          ]
-        },
-        {
-          "key": "h2h",
-          "mark": "na",
-          "v": [
-            0,
-            1
-          ]
-        },
-        {
-          "key": "depth",
-          "mark": "y",
-          "v": [
-            3,
-            2
-          ]
-        },
-        {
-          "key": "form",
-          "mark": "y",
-          "v": [
-            3,
-            4,
-            "home"
-          ]
-        },
-        {
-          "key": "def",
-          "mark": "y",
-          "v": [
-            7.0,
-            -1.8
-          ]
-        }
-      ],
-      "passed": 4,
-      "applicable": 4,
-      "postseason": false,
-      "under_note": false,
-      "total": 137.5
-    },
-    {
-      "tab": "1h",
-      "event_id": "401920158",
-      "date": "2026-11-19",
-      "commence_time": "2026-11-19T03:30Z",
-      "home": {
-        "id": "26",
-        "name": "UCLA Bruins",
-        "abbr": "UCLA",
-        "short": "UCLA",
-        "school": "UCLA",
-        "color": "2774ae",
-        "rank": 7,
-        "record": "4-0"
-      },
-      "away": {
-        "id": "2239",
-        "name": "Cal State Fullerton Titans",
-        "abbr": "CSUF",
-        "short": "Fullerton",
-        "school": "Cal State Fullerton",
-        "color": "003767",
-        "rank": null,
-        "record": "2-1"
-      },
-      "side": "home",
-      "line": -16.5,
-      "est": true,
-      "ml": null,
-      "checks": [
-        {
-          "key": "reb",
-          "mark": "y",
-          "v": [
-            41.0,
-            36.67
-          ]
-        },
-        {
-          "key": "ats",
-          "mark": "na",
-          "v": [
-            3,
-            0,
-            "home"
-          ]
-        },
-        {
-          "key": "h2h",
-          "mark": "na",
-          "v": [
-            0,
-            1
-          ]
-        },
-        {
-          "key": "depth",
-          "mark": "y",
-          "v": [
-            3,
-            1
-          ]
-        },
-        {
-          "key": "form",
-          "mark": "y",
-          "v": [
-            3,
-            3,
-            "home"
-          ]
-        },
-        {
-          "key": "def",
-          "mark": "y",
-          "v": [
-            10.2,
-            9.3
-          ]
-        }
-      ],
-      "passed": 4,
-      "applicable": 4,
-      "postseason": false,
-      "under_note": false,
-      "total": 166.5
+      "total": 164.5
     }
   ],
   "summary": {
     "system": {
-      "w": 0,
+      "w": 1,
       "l": 0,
       "p": 0,
-      "pending": 1,
-      "units": 0.0,
-      "checks": {}
-    },
-    "1h": {
-      "w": 0,
-      "l": 5,
-      "p": 0,
-      "pending": 4,
-      "units": -5.0,
+      "pending": 0,
+      "units": 0.91,
       "checks": {
         "reb": [
-          0,
-          4
+          1,
+          0
+        ],
+        "h2h": [
+          1,
+          0
         ],
         "depth": [
-          0,
-          3
-        ],
-        "form": [
-          0,
-          4
+          1,
+          0
         ],
         "def": [
-          0,
+          1,
+          0
+        ]
+      }
+    },
+    "1h": {
+      "w": 1,
+      "l": 8,
+      "p": 0,
+      "pending": 1,
+      "units": -7.09,
+      "checks": {
+        "reb": [
+          1,
+          7
+        ],
+        "depth": [
+          1,
           5
+        ],
+        "form": [
+          1,
+          7
+        ],
+        "def": [
+          1,
+          8
         ],
         "h2h": [
           0,
           1
         ],
         "ats": [
-          0,
-          3
+          1,
+          4
         ]
       }
     }
@@ -1036,7 +696,12 @@
       "applicable": 5,
       "postseason": false,
       "under_note": false,
-      "total": 170.5
+      "total": 170.5,
+      "result": "W",
+      "final": [
+        71,
+        101
+      ]
     },
     {
       "tab": "1h",
@@ -1123,7 +788,12 @@
       "applicable": 5,
       "postseason": false,
       "under_note": false,
-      "total": 147.5
+      "total": 147.5,
+      "result": "L",
+      "final": [
+        65,
+        68
+      ]
     },
     {
       "tab": "system",
@@ -1219,7 +889,13 @@
       "applicable": 4,
       "postseason": false,
       "under_note": false,
-      "total": 156.5
+      "total": 156.5,
+      "result": "W",
+      "closing": 6.5,
+      "final": [
+        86,
+        92
+      ]
     },
     {
       "tab": "1h",
@@ -1306,7 +982,12 @@
       "applicable": 4,
       "postseason": false,
       "under_note": false,
-      "total": 137.5
+      "total": 137.5,
+      "result": "L",
+      "final": [
+        79,
+        63
+      ]
     },
     {
       "tab": "1h",
@@ -1393,7 +1074,99 @@
       "applicable": 4,
       "postseason": false,
       "under_note": false,
-      "total": 166.5
+      "total": 166.5,
+      "result": "L",
+      "final": [
+        71,
+        75
+      ]
+    },
+    {
+      "tab": "1h",
+      "event_id": "401902280",
+      "date": "2026-11-20",
+      "commence_time": "2026-11-20T00:00Z",
+      "home": {
+        "id": "2086",
+        "name": "Butler Bulldogs",
+        "abbr": "BTLR",
+        "short": "Butler",
+        "school": "Butler",
+        "color": "0d1361",
+        "rank": null,
+        "record": "3-2"
+      },
+      "away": {
+        "id": "111",
+        "name": "Northeastern Huskies",
+        "abbr": "NE",
+        "short": "Northeastern",
+        "school": "Northeastern",
+        "color": "CC0001",
+        "rank": null,
+        "record": "2-2"
+      },
+      "side": "home",
+      "line": -8.5,
+      "est": true,
+      "ml": null,
+      "checks": [
+        {
+          "key": "reb",
+          "mark": "y",
+          "v": [
+            42.6,
+            31.75
+          ]
+        },
+        {
+          "key": "ats",
+          "mark": "y",
+          "v": [
+            3,
+            1,
+            "home"
+          ]
+        },
+        {
+          "key": "h2h",
+          "mark": "na",
+          "v": [
+            0,
+            0
+          ]
+        },
+        {
+          "key": "depth",
+          "mark": "y",
+          "v": [
+            3,
+            2
+          ]
+        },
+        {
+          "key": "form",
+          "mark": "y",
+          "v": [
+            3,
+            4,
+            "home"
+          ]
+        },
+        {
+          "key": "def",
+          "mark": "y",
+          "v": [
+            -2.4,
+            -3.0
+          ]
+        }
+      ],
+      "passed": 5,
+      "applicable": 5,
+      "postseason": false,
+      "under_note": false,
+      "total": 164.5
     }
   ]
 }
