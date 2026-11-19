@@ -1494,7 +1494,8 @@ def _gm_summary(items: list[tuple[int, str]]) -> str:
 _TIER_TAG = {"best": "pc_best", "lean": "pc_lean", "check": "pc_check"}
 
 
-SYS_REASON = {"small": "sys_small", "defense": "sys_defense"}
+SYS_REASON = {"small": "sys_small", "road": "sys_road", "defense": "sys_defense"}
+LOW_RANK = 300                 # tracked: a team ranked worse than this
 SYS_SINCE = "2026-11-18"       # the System's live record starts here
 SYS_LIVE_MIN = 20              # live games of a kind before its rate is shown
 _SYS_RATES: dict | None = None  # set by build from History; None = backtest
@@ -1502,7 +1503,7 @@ _SYS_RATES: dict | None = None  # set by build from History; None = backtest
 
 def sys_rates(days: dict[str, list[dict]], since: str) -> dict:
     """{reasons key: (won, lost, live)} for each kind of System play
-    ("small", "defense", "small+defense"): the live record from `since` once
+    ("small", "road", "defense" and pairs of them): the live record from `since` once
     it has SYS_LIVE_MIN graded games, else the backtest."""
     import ncaab_rules as _nr  # noqa: PLC0415
     live: dict[str, list[int]] = {}
@@ -1559,6 +1560,22 @@ def _sys_grade(r: dict) -> dict:
     return out
 
 
+def _low_grade(r: dict):
+    """Tracked, not played: W/L/P for the team total of the one team ranked
+    worse than LOW_RANK going under, by the ranks stamped on the game day
+    (`sys_ranks`, home then away). None when it does not apply or is not final."""
+    rk, f = r.get("sys_ranks"), r.get("final")
+    hp, tot = _home_spread(r), _row_total(r)
+    if not rk or None in rk or not f or hp is None or tot is None:
+        return None
+    low = [s for s, n in zip(("home", "away"), rk) if n > LOW_RANK]
+    if len(low) != 1:
+        return None
+    line = tot / 2 - hp / 2 if low[0] == "home" else tot / 2 + hp / 2
+    d = f[low[0]] - line
+    return "W" if d < 0 else "L" if d > 0 else "P"
+
+
 def _sys_box(r: dict) -> str:
     """The System's plays on a game card, each with why and, once final,
     whether it won. Empty when the game has none."""
@@ -1594,14 +1611,15 @@ def _sys_box(r: dict) -> str:
 def rules_record(days: dict[str, list[dict]], since: str) -> dict:
     """The System's record from `since` on (games it had not been tested on),
     graded on each saved day's finals."""
-    out = {"spread": [0, 0, 0], "tt": [0, 0, 0], "days": 0}
+    out = {"spread": [0, 0, 0], "tt": [0, 0, 0], "low": [0, 0, 0], "days": 0}
     for d, rows in days.items():
         if d < since:
             continue
         counted = False
         for r in rows:
             g = _sys_grade(r)
-            for k in ("spread", "tt"):
+            g = dict(g, low=_low_grade(r))
+            for k in ("spread", "tt", "low"):
                 if g[k]:
                     out[k]["WLP".index(g[k])] += 1
                     counted = True
@@ -1622,10 +1640,11 @@ def rules_section(days: dict[str, list[dict]], since: str) -> str:
                 + (f'<small>{round(100 * v[0] / n)}%</small>' if n else "<small>&ndash;</small>") + "</td>")
 
     rows = "".join(f'<tr><th scope="row">{_(lab)}</th>{cell(rec[k])}{cell(bt[k])}</tr>'
-                   for k, lab in (("spread", "sys_spread_plays"), ("tt", "sys_tt_plays")))
+                   for k, lab in (("spread", "sys_spread_plays"), ("tt", "sys_tt_plays"),
+                                  ("low", "sys_low_plays")))
     return (f'<section class="sys-sec"><h2 class="sc-h">{_("sys_head")}</h2>'
             f'<ul class="sys-rules"><li>{_("sys_rule_small")}</li><li>{_("sys_rule_defense")}</li>'
-            f'<li>{_("sys_rule_gap")}</li>'
+            f'<li>{_("sys_rule_road")}</li><li>{_("sys_rule_gap")}</li>'
             f'</ul>'
             f'<table class="ha"><caption>{_("sys_caption")}</caption><thead><tr>'
             f'<th scope="col"><span class="ts-vh">{_("sys_plays")}</span></th>'
@@ -4366,22 +4385,22 @@ def _test_pick_card() -> None:
     assert 'data-sf="sys"' in sl and 'aria-pressed="true">All games' in sl
     # The play's win rate: the backtest for its rules until the live record
     # has SYS_LIVE_MIN games of that kind, then the live record.
-    assert '<span class="gm-sys-rate"><b>67%</b><small>16-8</small></span>' in card, card
+    assert '<span class="gm-sys-rate"><b>74%</b><small>17-6</small></span>' in card, card
     assert "Win rate for this play, Nov 1–17" in card
     one = dict(sysrow, system={"side": "away", "reasons": ["small"]})
-    assert "<b>70%</b><small>45-19</small>" in college_list([one])
+    assert "<b>73%</b><small>45-17</small>" in college_list([one])
     done = college_list([dict(one, final={"away": 70, "home": 72})])
     assert "gm-sys-rate" not in done, "the result takes the rate's place"
-    assert "Wins 70% of the time (45-19, Nov 1–17)" in done
+    assert "Wins 73% of the time (45-17, Nov 1–17)" in done
     live = {"2026-11-18": [dict(one, event_id=f"g{i}", final={"away": 70, "home": 72 if i < 15 else 80})
                            for i in range(20)]}
     assert sys_rates(live, "2026-11-18")["small"] == (15, 5, True)
-    assert sys_rates({"2026-11-18": live["2026-11-18"][:19]}, "2026-11-18")["small"] == (45, 19, False)
+    assert sys_rates({"2026-11-18": live["2026-11-18"][:19]}, "2026-11-18")["small"] == (45, 17, False)
     try:
         set_sys_rates(sys_rates(live, "2026-11-18"))
         lv = college_list([one])
         assert "<b>75%</b><small>15-5</small>" in lv and "Win rate for this play, since Nov 18" in lv
-        assert "<b>67%</b><small>16-8</small>" in college_list([sysrow]), "other kinds keep the backtest"
+        assert "<b>74%</b><small>17-6</small>" in college_list([sysrow]), "other kinds keep the backtest"
     finally:
         set_sys_rates(None)
     won = college_list([dict(sysrow, final={"away": 70, "home": 72})])
@@ -4397,10 +4416,28 @@ def _test_pick_card() -> None:
     # Tracked, not played: the favourite's team total under when the
     # defense rule fires. Home -4.5, total 150.5: home implied 77.5.
     # 80-60 is over it (L); the Nov 17 game is before go-live.
-    assert rec == {"spread": [0, 1, 0], "tt": [0, 1, 0], "days": 1}, rec
+    assert rec == {"spread": [0, 1, 0], "tt": [0, 1, 0], "low": [0, 0, 0], "days": 1}, rec
     box = rules_section(days, "2026-11-18")
-    assert "0-1" in box and "98-46" in box and "143-90" not in box
+    assert "0-1" in box and "128-58" in box and "98-46" not in box
     assert "Favorite team total under" in box and "55-25" in box and "Tracking" in box
+    assert "Road underdog:" in box and "6.5 to 9.5" in box
+    # Tracked, not played: the team total of a team ranked worse than 300
+    # (against one that is not), by the ranks stamped on the game day.
+    # Away 310th, home 20th; home -4.5, total 150.5: away implied 73.
+    low = dict(sysrow, event_id="lo", sys_ranks=[20, 310], final={"away": 70, "home": 80})
+    assert _low_grade(low) == "W", "70 under 73"
+    assert _low_grade(dict(low, final={"away": 75, "home": 80})) == "L"
+    assert _low_grade(dict(low, sys_ranks=[305, 310])) is None, "both 300+: not this row"
+    assert _low_grade(dict(low, sys_ranks=[20, 300])) is None, "300th is not worse than 300"
+    assert _low_grade(dict(low, final=None)) is None and _low_grade(dict(low, sys_ranks=None)) is None
+    lrec = rules_record({"2026-11-18": [low]}, "2026-11-18")
+    assert lrec["low"] == [1, 0, 0] and lrec["spread"] == [0, 1, 0]
+    assert "Team total under for a 300+ team" in box and "123-81" in box
+    # The road rule on a card: its own reason and win rate.
+    road = dict(sysrow, markets={"spreads": {"point": -7.5, "side_a": "home"}},
+                system={"side": "away", "reasons": ["road"]})
+    rc = college_list([road])
+    assert "<small>Road underdog</small>" in rc and "<b>68%</b><small>30-14</small>" in rc, rc
     assert "100 or more spots apart" in box and "within 50 spots" in box
     small_only = dict(sysrow, system={"side": "away", "reasons": ["small"]},
                       final={"away": 60, "home": 70})

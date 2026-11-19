@@ -32,19 +32,28 @@ SMALL_DOG = 6.0
 # and 38-36 beyond, so it needs the teams within 50.
 MAX_GAP = 100
 SMALL_GAP = 50
+# ROAD (Nov 19): an away dog getting 6.5 to 9.5 at the home team's court
+# covered 50-27 (65%), steady in all three stretches; 37-18 of it was not
+# already a System play. Home favourites of that size covered only 35%.
+ROAD_MIN, ROAD_MAX = 6.0, 9.5
 # The spread of each defensive stat across teams this season, used to put
 # points allowed (about 11 points), steals (2.5) and rebound margin (8.6)
 # on one scale. Measured Nov 2026; they only weigh the three stats.
 PA_SD, STL_SD, REB_SD = 10.8, 2.54, 8.6
 
 # The backtest, for the page. Not the record: that is counted forward.
-BACKTEST = {"spread": [98, 46, 0], "through": "2026-11-17",
+BACKTEST = {"spread": [128, 58, 0], "through": "2026-11-17",
             # Tracked, not played: when DEFENSE fires, the favourite's team
             # total (total/2 + spread/2) going under.
             "tt": [55, 25, 0],
             # Spread plays by the rules that chose them, for the cards.
-            "by_reason": {"small": [45, 19], "defense": [37, 19],
-                          "small+defense": [16, 8]}}
+            "by_reason": {"small": [45, 17], "defense": [25, 15],
+                          "small+defense": [17, 6], "road": [30, 14],
+                          "road+defense": [11, 6]},
+            # Tracked, not played: the team total of the one team ranked
+            # worse than 300 going under. Graded on today's ranks, which
+            # those games helped set, so it flatters; the live row is clean.
+            "low": [123, 81, 0]}
 
 
 def _ts(stamp) -> float | None:
@@ -99,6 +108,8 @@ def plays(spread_home, neutral: bool, home_form: dict | None,
     dog = "home" if spread_home > 0 else "away"
     if abs(spread_home) <= SMALL_DOG and not neutral and (gap is None or gap < SMALL_GAP):
         out["reasons"].append("small")
+    if dog == "away" and not neutral and ROAD_MIN < abs(spread_home) <= ROAD_MAX:
+        out["reasons"].append("road")
     forms = {"home": home_form, "away": away_form}
     if all(f and f["n"] >= MIN_GAMES for f in forms.values()):
         other = "away" if dog == "home" else "home"
@@ -162,6 +173,15 @@ def _self_test() -> None:
     assert plays(0, False, f["D"], f["O"]) == {"side": None, "reasons": []}
     # No leak: a game's own result never feeds its play.
     assert for_game(store, "D", "O", "2026-11-20T23:00Z", 8.0, False)["side"] == "home"
+    # ROAD: an away dog getting 6.5 to 9.5 on the home team's court.
+    # (Away team O is the worse defense; with D away it is the better one.)
+    assert plays(-7.5, False, f["D"], f["O"])["reasons"] == ["road"]
+    assert plays(-7.5, False, f["O"], f["D"])["reasons"] == ["road", "defense"]
+    assert plays(-10.0, False, f["D"], f["O"])["side"] is None, "past 9.5"
+    assert plays(-7.5, True, f["D"], f["O"])["side"] is None, "neutral site"
+    assert plays(7.5, False, f["O"], f["D"])["side"] is None, "home dogs are not ROAD"
+    assert plays(-7.5, False, f["D"], f["O"], ranks=(10, 115))["side"] is None, "100+ apart"
+    assert plays(-7.5, False, f["D"], f["O"], ranks=(10, 90))["reasons"] == ["road"], "no 50 limit"
     # Rank gap (BPI): 100+ apart, no play at all; SMALL needs under 50.
     assert plays(4.0, False, f["D"], f["O"], ranks=(30, 60))["reasons"] == ["small", "defense"]
     assert plays(4.0, False, f["D"], f["O"], ranks=(30, 90))["reasons"] == ["defense"], "gap 60: no SMALL"
