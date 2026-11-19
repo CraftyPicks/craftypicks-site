@@ -36,20 +36,26 @@ SMALL_GAP = 50
 # covered 50-27 (65%), steady in all three stretches; 37-18 of it was not
 # already a System play. Home favourites of that size covered only 35%.
 ROAD_MIN, ROAD_MAX = 6.0, 9.5
+# FAV300 (Nov 19, the owner's rule from before the System): the favourite
+# when a team ranked LOW_RANK or better is favoured by under FAV_MAX against
+# a team ranked worse than LOW_RANK. 32-19 (63%) Nov 1-19, in all three
+# stretches; graded on today's ranks, so it flatters. It takes the favourite
+# over any underdog rule (those games went 8-8) and ignores MAX_GAP.
+LOW_RANK, FAV_MAX = 300, 10.0
 # The spread of each defensive stat across teams this season, used to put
 # points allowed (about 11 points), steals (2.5) and rebound margin (8.6)
 # on one scale. Measured Nov 2026; they only weigh the three stats.
 PA_SD, STL_SD, REB_SD = 10.8, 2.54, 8.6
 
 # The backtest, for the page. Not the record: that is counted forward.
-BACKTEST = {"spread": [128, 58, 0], "through": "2026-11-17",
+BACKTEST = {"spread": [146, 67, 0], "through": "2026-11-17",
             # Tracked, not played: when DEFENSE fires, the favourite's team
             # total (total/2 + spread/2) going under.
-            "tt": [55, 25, 0],
+            "tt": [54, 20, 0],
             # Spread plays by the rules that chose them, for the cards.
-            "by_reason": {"small": [45, 17], "defense": [25, 15],
-                          "small+defense": [17, 6], "road": [30, 14],
-                          "road+defense": [11, 6]},
+            "by_reason": {"small": [43, 15], "defense": [25, 13],
+                          "small+defense": [17, 6], "road": [26, 13],
+                          "road+defense": [9, 4], "fav300": [26, 16]},
             # Tracked, not played: the team total of the one team ranked
             # worse than 300 going under. Graded on today's ranks, which
             # those games helped set, so it flatters; the live row is clean.
@@ -96,12 +102,16 @@ def defense(form: dict) -> float:
 def plays(spread_home, neutral: bool, home_form: dict | None,
           away_form: dict | None, ranks=(None, None)) -> dict:
     """The System's play for one game: {"side": "home"/"away" or None,
-    "reasons": [...]}. The side is always the underdog. `ranks` is the
-    (home, away) power rank; when either is missing the gap rules are off."""
+    "reasons": [...]}. The side is the underdog, except FAV300. `ranks` is
+    the (home, away) power rank; when either is missing the rank rules are off."""
     out = {"side": None, "reasons": []}
     if spread_home in (None, 0):
         return out
     rh, ra = ranks or (None, None)
+    if rh is not None and ra is not None and abs(spread_home) < FAV_MAX:
+        fav, fr, dr = ("home", rh, ra) if spread_home < 0 else ("away", ra, rh)
+        if fr <= LOW_RANK < dr:
+            return {"side": fav, "reasons": ["fav300"]}
     gap = abs(rh - ra) if rh is not None and ra is not None else None
     if gap is not None and gap >= MAX_GAP:
         return out
@@ -182,6 +192,18 @@ def _self_test() -> None:
     assert plays(7.5, False, f["O"], f["D"])["side"] is None, "home dogs are not ROAD"
     assert plays(-7.5, False, f["D"], f["O"], ranks=(10, 115))["side"] is None, "100+ apart"
     assert plays(-7.5, False, f["D"], f["O"], ranks=(10, 90))["reasons"] == ["road"], "no 50 limit"
+    # FAV300: a team ranked 300 or better, favored by under 10, against a
+    # team ranked worse than 300 -- the favourite, over any underdog rule,
+    # and past the 100-spot skip.
+    assert plays(-6.5, False, f["O"], f["D"], ranks=(120, 320)) == {"side": "home", "reasons": ["fav300"]}
+    assert plays(4.0, False, f["D"], f["O"], ranks=(330, 150)) == {"side": "away", "reasons": ["fav300"]}, \
+        "away favourite; beats SMALL and DEFENSE for the home dog"
+    assert plays(-9.5, False, f["O"], f["D"], ranks=(20, 310))["reasons"] == ["fav300"], "290 apart: no skip"
+    assert plays(-10.0, False, f["O"], f["D"], ranks=(20, 310))["side"] is None, "10 or more: not this rule"
+    assert plays(-6.5, False, f["O"], f["D"], ranks=(301, 320))["reasons"] != ["fav300"], "both 300+"
+    assert plays(-6.5, False, f["O"], f["D"], ranks=(300, 301))["reasons"] == ["fav300"], "300th counts"
+    assert plays(6.5, False, f["O"], f["D"], ranks=(320, 120))["reasons"] == ["fav300"]
+    assert plays(-6.5, False, f["O"], f["D"], ranks=(320, 120))["reasons"] != ["fav300"], "favourite is the 300+ team"
     # Rank gap (BPI): 100+ apart, no play at all; SMALL needs under 50.
     assert plays(4.0, False, f["D"], f["O"], ranks=(30, 60))["reasons"] == ["small", "defense"]
     assert plays(4.0, False, f["D"], f["O"], ranks=(30, 90))["reasons"] == ["defense"], "gap 60: no SMALL"

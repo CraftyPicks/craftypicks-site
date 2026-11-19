@@ -1494,7 +1494,8 @@ def _gm_summary(items: list[tuple[int, str]]) -> str:
 _TIER_TAG = {"best": "pc_best", "lean": "pc_lean", "check": "pc_check"}
 
 
-SYS_REASON = {"small": "sys_small", "road": "sys_road", "defense": "sys_defense"}
+SYS_REASON = {"small": "sys_small", "road": "sys_road", "defense": "sys_defense",
+              "fav300": "sys_fav300"}
 LOW_RANK = 300                 # tracked: a team ranked worse than this
 SYS_SINCE = "2026-11-18"       # the System's live record starts here
 SYS_LIVE_MIN = 20              # live games of a kind before its rate is shown
@@ -1644,7 +1645,7 @@ def rules_section(days: dict[str, list[dict]], since: str) -> str:
                                   ("low", "sys_low_plays")))
     return (f'<section class="sys-sec"><h2 class="sc-h">{_("sys_head")}</h2>'
             f'<ul class="sys-rules"><li>{_("sys_rule_small")}</li><li>{_("sys_rule_defense")}</li>'
-            f'<li>{_("sys_rule_road")}</li><li>{_("sys_rule_gap")}</li>'
+            f'<li>{_("sys_rule_road")}</li><li>{_("sys_rule_fav300")}</li><li>{_("sys_rule_gap")}</li>'
             f'</ul>'
             f'<table class="ha"><caption>{_("sys_caption")}</caption><thead><tr>'
             f'<th scope="col"><span class="ts-vh">{_("sys_plays")}</span></th>'
@@ -4388,14 +4389,14 @@ def _test_pick_card() -> None:
     assert '<span class="gm-sys-rate"><b>74%</b><small>17-6</small></span>' in card, card
     assert "Win rate for this play, Nov 1–17" in card
     one = dict(sysrow, system={"side": "away", "reasons": ["small"]})
-    assert "<b>73%</b><small>45-17</small>" in college_list([one])
+    assert "<b>74%</b><small>43-15</small>" in college_list([one])
     done = college_list([dict(one, final={"away": 70, "home": 72})])
     assert "gm-sys-rate" not in done, "the result takes the rate's place"
-    assert "Wins 73% of the time (45-17, Nov 1–17)" in done
+    assert "Wins 74% of the time (43-15, Nov 1–17)" in done
     live = {"2026-11-18": [dict(one, event_id=f"g{i}", final={"away": 70, "home": 72 if i < 15 else 80})
                            for i in range(20)]}
     assert sys_rates(live, "2026-11-18")["small"] == (15, 5, True)
-    assert sys_rates({"2026-11-18": live["2026-11-18"][:19]}, "2026-11-18")["small"] == (45, 17, False)
+    assert sys_rates({"2026-11-18": live["2026-11-18"][:19]}, "2026-11-18")["small"] == (43, 15, False)
     try:
         set_sys_rates(sys_rates(live, "2026-11-18"))
         lv = college_list([one])
@@ -4418,8 +4419,9 @@ def _test_pick_card() -> None:
     # 80-60 is over it (L); the Nov 17 game is before go-live.
     assert rec == {"spread": [0, 1, 0], "tt": [0, 1, 0], "low": [0, 0, 0], "days": 1}, rec
     box = rules_section(days, "2026-11-18")
-    assert "0-1" in box and "128-58" in box and "98-46" not in box
-    assert "Favorite team total under" in box and "55-25" in box and "Tracking" in box
+    assert "0-1" in box and "146-67" in box and "128-58" not in box
+    assert "Favorite team total under" in box and "54-20" in box and "Tracking" in box
+    assert "Favorite vs 300+:" in box
     assert "Road underdog:" in box and "6.5 to 9.5" in box
     # Tracked, not played: the team total of a team ranked worse than 300
     # (against one that is not), by the ranks stamped on the game day.
@@ -4437,7 +4439,10 @@ def _test_pick_card() -> None:
     road = dict(sysrow, markets={"spreads": {"point": -7.5, "side_a": "home"}},
                 system={"side": "away", "reasons": ["road"]})
     rc = college_list([road])
-    assert "<small>Road underdog</small>" in rc and "<b>68%</b><small>30-14</small>" in rc, rc
+    assert "<small>Road underdog</small>" in rc and "<b>67%</b><small>26-13</small>" in rc, rc
+    # The favourite rule: the favourite's line, its own reason and rate.
+    fv = college_list([dict(road, system={"side": "home", "reasons": ["fav300"]})])
+    assert "<b>Oregon State -7.5</b><small>Favorite vs 300+</small>" in fv and "<b>62%</b><small>26-16</small>" in fv, fv
     assert "100 or more spots apart" in box and "within 50 spots" in box
     small_only = dict(sysrow, system={"side": "away", "reasons": ["small"]},
                       final={"away": 60, "home": 70})
