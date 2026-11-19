@@ -1495,18 +1495,28 @@ _TIER_TAG = {"best": "pc_best", "lean": "pc_lean", "check": "pc_check"}
 
 
 SYS_REASON = {"small": "sys_small", "road": "sys_road", "defense": "sys_defense",
-              "fav300": "sys_fav300"}
+              "fav300": "sys_fav300", "favbottom": "sys_favbottom"}
 LOW_RANK = 300                 # tracked: a team ranked worse than this
 SYS_SINCE = "2026-11-18"       # the System's live record starts here
+SYS_SINCE_BY = {"ncaab": SYS_SINCE, "ncaaf": "2026-11-20"}   # football's, per league
 SYS_LIVE_MIN = 20              # live games of a kind before its rate is shown
-_SYS_RATES: dict | None = None  # set by build from History; None = backtest
+_SYS_RATES: dict = {}          # {league: rates}, set by build from History
 
 
-def sys_rates(days: dict[str, list[dict]], since: str) -> dict:
+def _sys_rules(league: str):
+    """The rules module for a league's System."""
+    if league == "ncaaf":
+        import ncaaf_rules as m  # noqa: PLC0415
+    else:
+        import ncaab_rules as m  # noqa: PLC0415
+    return m
+
+
+def sys_rates(days: dict[str, list[dict]], since: str, league: str = "ncaab") -> dict:
     """{reasons key: (won, lost, live)} for each kind of System play
     ("small", "road", "defense" and pairs of them): the live record from `since` once
     it has SYS_LIVE_MIN graded games, else the backtest."""
-    import ncaab_rules as _nr  # noqa: PLC0415
+    _nr = _sys_rules(league)
     live: dict[str, list[int]] = {}
     for d, rows in days.items():
         if d < since:
@@ -1523,9 +1533,12 @@ def sys_rates(days: dict[str, list[dict]], since: str) -> dict:
     return out
 
 
-def set_sys_rates(rates: dict | None) -> None:
-    global _SYS_RATES
-    _SYS_RATES = rates
+def set_sys_rates(rates: dict | None, league: str = "ncaab") -> None:
+    """The rates the cards show for a league; None goes back to the backtest."""
+    if rates is None:
+        _SYS_RATES.pop(league, None)
+    else:
+        _SYS_RATES[league] = rates
 
 
 def _home_spread(r: dict):
@@ -1590,12 +1603,14 @@ def _sys_box(r: dict) -> str:
         pt = hp if play["side"] == "home" else -hp
         why = " · ".join(_(SYS_REASON[k]) for k in play.get("reasons") or [] if k in SYS_REASON)
         res = (f'<b class="{words[g["spread"]][0]}">{words[g["spread"]][1]}</b>' if g["spread"] else "")
-        rates = _SYS_RATES or sys_rates({}, "")
+        lg = r.get("league") if r.get("league") in SYS_SINCE_BY else "ncaab"
+        rates = _SYS_RATES.get(lg) or sys_rates({}, "", lg)
         w, l, live = rates.get("+".join(play.get("reasons") or []), (0, 0, False))
         rate = note = ""
         if w + l:
             pct = round(100 * w / (w + l))
-            when = _("sys_rate_live", d=_short_day(SYS_SINCE)) if live else _("sys_rate_bt")
+            when = (_("sys_rate_live", d=_short_day(SYS_SINCE_BY[lg])) if live
+                    else _("sys_rate_bt_f" if lg == "ncaaf" else "sys_rate_bt"))
             if res:
                 note = _("sys_rate_done", p=pct, r=f"{w}-{l}", when=when)
             else:
@@ -1628,30 +1643,35 @@ def rules_record(days: dict[str, list[dict]], since: str) -> dict:
     return out
 
 
-def rules_section(days: dict[str, list[dict]], since: str) -> str:
+def rules_section(days: dict[str, list[dict]], since: str, league: str = "ncaab") -> str:
     """History's System block: the rules in a line each, the record since it
-    went live, and the backtest it was built on, labelled as such."""
-    import ncaab_rules as _nr  # noqa: PLC0415
+    went live, and the backtest it was built on, labelled as such. Football
+    has its own rules and no tracking rows."""
+    _nr = _sys_rules(league)
     rec = rules_record(days, since)
     bt = _nr.BACKTEST
+    foot = league == "ncaaf"
 
     def cell(v):
         n = v[0] + v[1]
         return (f'<td>{v[0]}-{v[1]}' + (f"-{v[2]}" if v[2] else "")
                 + (f'<small>{round(100 * v[0] / n)}%</small>' if n else "<small>&ndash;</small>") + "</td>")
 
+    kinds = (("spread", "sys_spread_plays"),) if foot else (
+        ("spread", "sys_spread_plays"), ("tt", "sys_tt_plays"), ("low", "sys_low_plays"))
     rows = "".join(f'<tr><th scope="row">{_(lab)}</th>{cell(rec[k])}{cell(bt[k])}</tr>'
-                   for k, lab in (("spread", "sys_spread_plays"), ("tt", "sys_tt_plays"),
-                                  ("low", "sys_low_plays")))
+                   for k, lab in kinds)
+    rules = (("sysf_rule_small", "sysf_rule_defense", "sysf_rule_road", "sysf_rule_fav",
+              "sysf_rule_gap", "sysf_rule_wait") if foot else
+             ("sys_rule_small", "sys_rule_defense", "sys_rule_road", "sys_rule_fav300", "sys_rule_gap"))
     return (f'<section class="sys-sec"><h2 class="sc-h">{_("sys_head")}</h2>'
-            f'<ul class="sys-rules"><li>{_("sys_rule_small")}</li><li>{_("sys_rule_defense")}</li>'
-            f'<li>{_("sys_rule_road")}</li><li>{_("sys_rule_fav300")}</li><li>{_("sys_rule_gap")}</li>'
+            f'<ul class="sys-rules">{"".join(f"<li>{_(k)}</li>" for k in rules)}'
             f'</ul>'
             f'<table class="ha"><caption>{_("sys_caption")}</caption><thead><tr>'
             f'<th scope="col"><span class="ts-vh">{_("sys_plays")}</span></th>'
             f'<th scope="col">{_("sys_live", d=_short_day(since))}</th>'
             f'<th scope="col">{_("sys_backtest")}</th></tr></thead><tbody>{rows}</tbody></table>'
-            f'<p class="ha-note">{_("sys_note")}</p></section>')
+            f'<p class="ha-note">{_("sysf_note" if foot else "sys_note")}</p></section>')
 
 
 def _short_day(iso: str) -> str:
@@ -4443,6 +4463,15 @@ def _test_pick_card() -> None:
     # The favourite rule: the favourite's line, its own reason and rate.
     fv = college_list([dict(road, system={"side": "home", "reasons": ["fav300"]})])
     assert "<b>Oregon State -7.5</b><small>Favorite vs 300+</small>" in fv and "<b>62%</b><small>26-16</small>" in fv, fv
+    # Football: its own rules, rates and History block.
+    ff = college_list([dict(road, league="ncaaf", system={"side": "home", "reasons": ["favbottom"]})])
+    assert "<small>Favorite vs bottom team</small>" in ff and "<b>64%</b><small>39-22</small>" in ff, ff
+    assert "Win rate for this play, Aug 29–Nov 19" in ff
+    fbox = rules_section({}, "2026-11-20", "ncaaf")
+    assert "155-103" in fbox and "Favorite vs bottom team:" in fbox and "113th" in fbox
+    assert "300+" not in fbox and "Tracking" not in fbox, "football has no tracking rows"
+    assert "Since Nov 20" in fbox
+    assert sys_rates({}, "", "ncaaf")["favbottom"] == (39, 22, False)
     assert "100 or more spots apart" in box and "within 50 spots" in box
     small_only = dict(sysrow, system={"side": "away", "reasons": ["small"]},
                       final={"away": 60, "home": 70})

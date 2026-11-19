@@ -560,14 +560,16 @@ def total_games(store: dict) -> list[list]:
 SYSTEM_LIVE = R.SYS_SINCE      # the System's record counts from here
 
 
-def attach_system(rows: list[dict], store: dict, ranks: dict | None = None) -> int:
+def attach_system(rows: list[dict], store: dict, ranks: dict | None = None,
+                  rules=None) -> int:
     """The System's plays for each college basketball row (ncaab_rules),
     from the ESPN store as of that game's start, so a rebuild after the
     game cannot use its result. Rows without both teams' ids are left out.
     `ranks` is {team id: power rank}; each row keeps the pair it was first
     given (`sys_ranks`), so a play on History never changes as ranks move.
     Returns rows given plays."""
-    import ncaab_rules  # noqa: PLC0415
+    if rules is None:
+        import ncaab_rules as rules  # noqa: PLC0415
     ranks = {str(k): v for k, v in (ranks or {}).items()}
     games = (store or {}).get("games") or {}
     n = 0
@@ -583,7 +585,7 @@ def attach_system(rows: list[dict], store: dict, ranks: dict | None = None) -> i
         pair = [ranks.get(str(hid)), ranks.get(str(aid))]
         if "sys_ranks" not in r and None not in pair:
             r["sys_ranks"] = pair
-        play = ncaab_rules.for_game(store, hid, aid, r.get("commence_time"), hp,
+        play = rules.for_game(store, hid, aid, r.get("commence_time"), hp,
                                     bool(g.get("neutral")), tuple(r.get("sys_ranks") or pair))
         if play["side"]:
             r["system"] = play
@@ -599,6 +601,15 @@ def _bpi_ranks() -> dict:
         return json.loads((DATA / "ncaab_bpi.json").read_text()).get("ranks") or {}
     except (OSError, ValueError):
         return {}
+
+
+def _fpi_ranks() -> dict:
+    """{ESPN team id: FPI rank} from data/ncaaf.json; {} if missing."""
+    try:
+        doc = json.loads((DATA / "ncaaf.json").read_text()).get("fpi") or {}
+    except (OSError, ValueError):
+        return {}
+    return {k: v["rank"] for k, v in doc.items() if isinstance(v, dict) and v.get("rank")}
 
 
 def past_days(history: dict, today: str) -> dict:
@@ -660,6 +671,10 @@ def build() -> None:
         _ns = attach_system(((board_doc.get("leagues") or {}).get("ncaab") or {}).get("games") or [],
                             _cbb, _bpi_ranks())
         print(f"system: {_ns} ncaab game(s) with a play")
+        import ncaaf_rules  # noqa: PLC0415
+        _nf = attach_system(((board_doc.get("leagues") or {}).get("ncaaf") or {}).get("games") or [],
+                            _cfb, _fpi_ranks(), ncaaf_rules)
+        print(f"system: {_nf} ncaaf game(s) with a play")
     except Exception as _s_err:                              # noqa: BLE001
         print(f"!! system not attached ({_s_err})", file=sys.stderr)
     try:
@@ -672,14 +687,19 @@ def build() -> None:
     for _lg, _by_day in history.items():
         for _rows in _by_day.values():
             attach_finals({"leagues": {_lg: {"games": _rows}}}, _cbb, _cfb)
-            if _lg == "ncaab":
+            if _lg in ("ncaab", "ncaaf"):
                 try:
-                    attach_system(_rows, _cbb, _bpi_ranks())
+                    import ncaaf_rules  # noqa: PLC0415
+                    if _lg == "ncaab":
+                        attach_system(_rows, _cbb, _bpi_ranks())
+                    else:
+                        attach_system(_rows, _cfb, _fpi_ranks(), ncaaf_rules)
                 except Exception as _s_err:                  # noqa: BLE001
                     print(f"!! system not attached to history ({_s_err})", file=sys.stderr)
     # Each System play's win rate on the cards: live once a kind has enough
     # graded games, else the backtest.
     R.set_sys_rates(R.sys_rates(history.get("ncaab") or {}, SYSTEM_LIVE))
+    R.set_sys_rates(R.sys_rates(history.get("ncaaf") or {}, R.SYS_SINCE_BY["ncaaf"], "ncaaf"), "ncaaf")
     day_pages = history_pages(history)
     for _out in day_pages:
         _d = date.fromisoformat(_out.split("day-")[1][:10])
@@ -884,7 +904,9 @@ def build() -> None:
                     by_day = history.get(page.league) or {}
                     if page.key.endswith("_history"):
                         page_tokens["{{LEAGUE_BOARD}}"] = (
-                            (R.rules_section(by_day, SYSTEM_LIVE) if page.league == "ncaab" else "")
+                            (R.rules_section(by_day, SYSTEM_LIVE) if page.league == "ncaab" else
+                             R.rules_section(by_day, R.SYS_SINCE_BY["ncaaf"], "ncaaf")
+                             if page.league == "ncaaf" else "")
                             + R.home_away_table(_split := home_away_split(
                                 _cbb if page.league == "ncaab" else _cfb))
                             + R.home_away_table(_split, "away")
@@ -1106,6 +1128,13 @@ def _test_history() -> None:
     assert attach_system(srows, sstore, {"O": 5, "D": 150}) == 0, "145 apart: no play"
     assert srows[0]["sys_ranks"] == [5, 150] and "system" not in srows[0]
     assert attach_system(srows, sstore, {"O": 5, "D": 20}) == 0, "the stamped ranks win"
+    # Football: the same call with its rules module and FPI ranks.
+    import ncaaf_rules  # noqa: PLC0415
+    frows = [{"league": "ncaaf", "espn_id": "f9", "commence_time": "2026-11-21T20:00Z",
+              "teams": {"home": {"id": "A"}, "away": {"id": "B"}},
+              "markets": {"spreads": {"point": -6.5, "side_a": "home"}}}]
+    assert attach_system(frows, {"games": {}}, {"A": 40, "B": 120}, ncaaf_rules) == 1
+    assert frows[0]["system"] == {"side": "home", "reasons": ["favbottom"]} and frows[0]["sys_ranks"] == [40, 120]
     # Share card and home-screen icon: every page links them, at its depth.
     assert 'og:image" content="https://craftypicks.org/og.png"' in HEAD
     assert 'rel="manifest" href="{up}manifest.webmanifest"' in HEAD
