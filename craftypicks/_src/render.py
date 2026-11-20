@@ -2933,7 +2933,7 @@ def _sv_sheet(row: dict, detail: dict, props=None) -> str:
 # colour on the right. Season averages from our own ESPN box-score store.
 TS_ROWS = (("ats", "ts_ats"), ("h1", "ts_h1"),
            ("pts", "ts_pts"), ("opp", "ts_opp"), ("fg", "ts_fg"),
-           ("reb", "ts_reb"), ("ast", "ts_ast"), ("blk", "ts_blk"),
+           ("reb", "ts_reb"), ("ast", "ts_ast"), ("tpm", "ts_tpm"),
            ("stl", "ts_stl"))
 
 
@@ -3079,10 +3079,14 @@ def _team_stats(ts: dict, spec=None) -> str:
         b = (home.get("stats") or {}).get(key)
         if key in ("ats", "h1") and a is None and b is None:
             continue    # a sheet written before this row existed
+        def cell(t, v):
+            # 3PT made carries the team's rank among all teams beside it.
+            rk = (t.get("stats") or {}).get(f"{key}_rank") if key == "tpm" else None
+            return _ts_val(key, v) + (f'<small class="ts-rkn">#{int(rk)}</small>' if rk else "")
         rows.append(
-            f'<tr class="ts-v"><td>{_ts_val(key, a)}</td>'
+            f'<tr class="ts-v"><td>{cell(away, a)}</td>'
             f'<th scope="row">{_(label)}</th>'
-            f'<td>{_ts_val(key, b)}</td></tr>'
+            f'<td>{cell(home, b)}</td></tr>'
             f'<tr class="ts-b"><td colspan="3">{_ts_bar(key, a, b)}</td></tr>')
     return (f'<section class="ts"{style}><table class="ts-t">'
             f'<caption class="ts-cap">{_("ts_title")}</caption>'
@@ -4147,10 +4151,16 @@ def _test_team_stats() -> None:
     html = _detail_panel(row)
     assert "<table" in html and "<caption" in html, "a real table"
     labels = ["Points", "Points Against", "Field Goal %", "Rebounds",
-              "Assists", "Blocks", "Steals"]
+              "Assists", "3PT Made", "Steals"]
     pos = [html.index(f'<th scope="row">{l}</th>') for l in labels]
     assert pos == sorted(pos), "rows in the example's order"
     assert "106.0" in html and "93.0" in html and "55%" in html and "51%" in html
+    assert "Blocks" not in html, "3PT made replaced blocks"
+    # 3PT made per game with each team's rank beside it; no rank, no tag.
+    tp = _detail_panel(dict(row, team_stats={
+        "away": dict(ark, stats=dict(ark["stats"], tpm=9.4, tpm_rank=31)),
+        "home": dict(uva, stats=dict(uva["stats"], tpm=6.0))}))
+    assert '<td>9.4<small class="ts-rkn">#31</small></td><th scope="row">3PT Made</th><td>6.0</td>' in tp, tp
     assert "Arkansas Razorbacks" in html and "Virginia Cavaliers" in html
     assert ">12<" in html and ">9<" in html and "1-0" in html and "2-0" in html
     # BPI under every team, ranked in the AP or not.

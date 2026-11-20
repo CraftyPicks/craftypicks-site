@@ -112,7 +112,7 @@ def profiles(store: dict) -> dict:
     def team(tid):
         return acc.setdefault(tid, {
             "box": 0, "_reb": [], "_stl": [], "_tov": [], "_forced": [],
-            "_players": {}, "_pts": [], "_opp": [], "_ast": [], "_blk": [],
+            "_players": {}, "_pts": [], "_opp": [], "_ast": [], "_blk": [], "_tpm": [],
             "_fgm": 0, "_fga": 0, "w": 0, "l": 0, "_ats": [0, 0, 0],
             "_h1f": [], "_h1a": [],
             "ats": {"home": [0, 0], "away": [0, 0]},
@@ -155,6 +155,8 @@ def profiles(store: dict) -> dict:
                 t["_forced"].append(ob.get("tov"))
                 t["_ast"].append(b.get("ast"))
                 t["_blk"].append(b.get("blk"))
+                if b.get("tpm") is not None:      # boxes before version 3 lack it
+                    t["_tpm"].append(b["tpm"])
                 if b.get("fgm") is not None and b.get("fga"):
                     t["_fgm"] += b["fgm"]
                     t["_fga"] += b["fga"]
@@ -172,6 +174,7 @@ def profiles(store: dict) -> dict:
             "scorers14": scorers, "ppg": _mean(t["_pts"]),
             "opp": _mean(t["_opp"]), "ast": _mean(t["_ast"]),
             "blk": _mean(t["_blk"]),
+            "tpm": _mean(t["_tpm"]) if t["_tpm"] else None,
             "fg": round(100 * t["_fgm"] / t["_fga"], 1) if t["_fga"] else None,
             "w": t["w"], "l": t["l"], "ats_all": t["_ats"],
             "h1": [_mean(t["_h1f"]), _mean(t["_h1a"])] if t["_h1f"] else None,
@@ -452,7 +455,16 @@ def team_sheet(store: dict, bpi: dict | None = None) -> dict:
                       "reb": p["reb"] if boxed else None,
                       "ast": p["ast"] if boxed else None,
                       "blk": p["blk"] if boxed else None,
+                      "tpm": p.get("tpm") if boxed else None,
+                      "tpm_rank": None,
                       "stl": p["stl"] if boxed else None}}
+    # 3PT made per game, ranked 1 = most among Division I teams (those BPI
+    # ranks); every team that has it when there are no BPI ranks.
+    pool = [t for t in out.values() if t["stats"]["tpm"] is not None
+            and (not bpi or t["bpi"] is not None)]
+    made = sorted(pool, key=lambda t: -t["stats"]["tpm"])
+    for i, t in enumerate(made, 1):
+        t["stats"]["tpm_rank"] = i
     return out
 
 
@@ -464,8 +476,9 @@ SCHEDULE_CAP = 300       # past-season schedules fetched per run
 H2H_SEASONS = 4          # past seasons searched for head-to-head
 BOX_TRIES = 3
 # Bumped whenever parse_box starts capturing a new stat: every stored box
-# below this version is fetched once more. 2 added FG, assists and blocks.
-BOX_VERSION = 2
+# below this version is fetched once more. 2 added FG, assists and blocks;
+# 3 added three-pointers.
+BOX_VERSION = 3
 
 
 def season_for(day) -> int:
@@ -848,12 +861,12 @@ def _test_team_sheet() -> None:
     g2["home"].update(name="Virginia Cavaliers", color="f84c1e", rank=8, record="2-0")
     for g in (g1, g2):
         merge_games(store, [g])
-    box = lambda reb, ast, blk, stl, fgm, fga: {"reb": reb, "ast": ast, "blk": blk,
-                                                 "stl": stl, "tov": 10, "fgm": fgm,
-                                                 "fga": fga, "players": {}}
-    attach_box(store, "s1", {"UVA": box(38, 20, 3, 14, 25, 50),
-                             "ARK": box(43, 19, 7, 16, 40, 72)})
-    attach_box(store, "s2", {"UVA": box(41, 23, 4, 16, 30, 58),
+    box = lambda reb, ast, blk, stl, fgm, fga, tpm=None: {
+        "reb": reb, "ast": ast, "blk": blk, "stl": stl, "tov": 10, "fgm": fgm,
+        "fga": fga, "tpm": tpm, "players": {}}
+    attach_box(store, "s1", {"UVA": box(38, 20, 3, 14, 25, 50, 7),
+                             "ARK": box(43, 19, 7, 16, 40, 72, 12)})
+    attach_box(store, "s2", {"UVA": box(41, 23, 4, 16, 30, 58, 10),
                              "X": box(30, 10, 1, 5, 20, 60)})
     sheet = team_sheet(store, {"UVA": 14})
     uva = sheet[name_key("Virginia Cavaliers")]
@@ -868,6 +881,19 @@ def _test_team_sheet() -> None:
     assert st["reb"] == 39.5 and st["ast"] == 21.5 and st["blk"] == 3.5
     assert st["stl"] == 15.0
     assert st["fg"] == round(100 * 55 / 108, 1), "FG% from totals, not a mean of games"
+    # Three-pointers made per game, from the games whose box has them, and
+    # a rank across teams: 1 = most. X's box predates threes: no number, no rank.
+    nob = team_sheet(store)                       # no BPI ranks: rank everyone
+    assert st["tpm"] == 8.5 and nob[name_key("Arkansas Razorbacks")]["stats"]["tpm"] == 12.0
+    assert nob[name_key("Arkansas Razorbacks")]["stats"]["tpm_rank"] == 1
+    assert nob[name_key("Virginia Cavaliers")]["stats"]["tpm_rank"] == 2
+    assert nob[name_key("Team X")]["stats"]["tpm"] is None
+    assert nob[name_key("Team X")]["stats"]["tpm_rank"] is None
+    # With BPI ranks, only Division I (BPI-ranked) teams are ranked, so the
+    # rank runs 1-362 and a visiting non-D-I school neither gets nor takes one.
+    d1 = team_sheet(store, {"UVA": 14})
+    assert d1[name_key("Virginia Cavaliers")]["stats"]["tpm_rank"] == 1
+    assert d1[name_key("Arkansas Razorbacks")]["stats"]["tpm_rank"] is None
     # First half: average points scored and allowed before halftime.
     store["games"]["s1"].update(home_1h=30, away_1h=50)
     store["games"]["s2"].update(home_1h=41, away_1h=25)

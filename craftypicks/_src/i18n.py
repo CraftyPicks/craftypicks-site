@@ -1117,6 +1117,7 @@ T = {
     "ts_reb":   {"en": "Rebounds", "es": "Rebotes"},
     "ts_ast":   {"en": "Assists", "es": "Asistencias"},
     "ts_blk":   {"en": "Blocks", "es": "Tapones"},
+    "ts_tpm":   {"en": "3PT Made", "es": "Triples anotados"},
     "ts_stl":   {"en": "Steals", "es": "Robos"},
     # NCAAB System tabs.
     "pc_best": {"en": "Best bet", "es": "Mejor apuesta"},

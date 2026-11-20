@@ -168,11 +168,14 @@ def parse_box(summary) -> dict:
               for s in t.get("statistics") or [] if isinstance(s, dict)}
         tov = st.get("totalTurnovers", st.get("turnovers"))
         fg = str(st.get("fieldGoalsMade-fieldGoalsAttempted") or "").split("-")
+        tp = str(st.get("threePointFieldGoalsMade-threePointFieldGoalsAttempted") or "").split("-")
         out[tid] = {"reb": _int(st.get("totalRebounds")),
                     "stl": _int(st.get("steals")), "tov": _int(tov),
                     "ast": _int(st.get("assists")), "blk": _int(st.get("blocks")),
                     "fgm": _int(fg[0]) if len(fg) == 2 else None,
                     "fga": _int(fg[1]) if len(fg) == 2 else None,
+                    "tpm": _int(tp[0]) if len(tp) == 2 else None,
+                    "tpa": _int(tp[1]) if len(tp) == 2 else None,
                     "players": {}}
     for t in box.get("players") or []:
         tid = str((t.get("team") or {}).get("id", ""))
@@ -391,6 +394,8 @@ def _fx_summary():
 
     def team_stats(reb, stl, tov):
         return [{"name": "fieldGoalsMade-fieldGoalsAttempted", "displayValue": "24-54"},
+                {"name": "threePointFieldGoalsMade-threePointFieldGoalsAttempted",
+                 "displayValue": "9-23"},
                 {"name": "totalRebounds", "displayValue": str(reb)},
                 {"name": "assists", "displayValue": "8"},
                 {"name": "steals", "displayValue": str(stl)},
@@ -488,6 +493,7 @@ def _self_test() -> None:
     assert (b["2509"]["fgm"], b["2509"]["fga"]) == (24, 54)
     assert b["2509"]["ast"] == 8 and b["2509"]["blk"] == 3
     assert b["2509"]["reb"] == 38 and b["2509"]["stl"] == 7
+    assert (b["2509"]["tpm"], b["2509"]["tpa"]) == (9, 23), "three-pointers made-attempted"
     assert b["2509"]["tov"] == 9, "totalTurnovers, not turnovers"
     assert b["2509"]["players"] == {"1": 22, "2": 15}, "DNP must be dropped"
     assert b["2335"]["players"] == {"9": 31}
