@@ -1,34 +1,34 @@
 {
-  "date": "2026-11-19",
-  "date_label": "Thursday, November 19, 2026",
+  "date": "2026-11-20",
+  "date_label": "Friday, November 20, 2026",
   "rows": [
     {
       "tab": "1h",
-      "event_id": "401902280",
+      "event_id": "401920380",
       "date": "2026-11-20",
-      "commence_time": "2026-11-20T00:00Z",
+      "commence_time": "2026-11-20T20:00Z",
       "home": {
-        "id": "2086",
-        "name": "Butler Bulldogs",
-        "abbr": "BTLR",
-        "short": "Butler",
-        "school": "Butler",
-        "color": "0d1361",
+        "id": "259",
+        "name": "Virginia Tech Hokies",
+        "abbr": "VT",
+        "short": "Virginia Tech",
+        "school": "Virginia Tech",
+        "color": "6a2c3e",
+        "rank": null,
+        "record": "5-0"
+      },
+      "away": {
+        "id": "77",
+        "name": "Northwestern Wildcats",
+        "abbr": "NU",
+        "short": "Northwestern",
+        "school": "Northwestern",
+        "color": "492f92",
         "rank": null,
         "record": "3-2"
       },
-      "away": {
-        "id": "111",
-        "name": "Northeastern Huskies",
-        "abbr": "NE",
-        "short": "Northeastern",
-        "school": "Northeastern",
-        "color": "CC0001",
-        "rank": null,
-        "record": "2-2"
-      },
       "side": "home",
-      "line": -8.5,
+      "line": -5.5,
       "est": true,
       "ml": null,
       "checks": [
@@ -36,8 +36,8 @@
           "key": "reb",
           "mark": "y",
           "v": [
-            42.6,
-            31.75
+            35.4,
+            31.0
           ]
         },
         {
@@ -59,9 +59,9 @@
         },
         {
           "key": "depth",
-          "mark": "y",
+          "mark": "n",
           "v": [
-            3,
+            2,
             2
           ]
         },
@@ -69,7 +69,7 @@
           "key": "form",
           "mark": "y",
           "v": [
-            3,
+            4,
             4,
             "home"
           ]
@@ -78,21 +78,451 @@
           "key": "def",
           "mark": "y",
           "v": [
-            -2.4,
+            8.6,
+            3.6
+          ]
+        }
+      ],
+      "passed": 4,
+      "applicable": 5,
+      "postseason": false,
+      "under_note": false,
+      "total": 142.5
+    },
+    {
+      "tab": "1h",
+      "event_id": "401921723",
+      "date": "2026-11-20",
+      "commence_time": "2026-11-20T22:00Z",
+      "home": {
+        "id": "2390",
+        "name": "Miami Hurricanes",
+        "abbr": "MIA",
+        "short": "Miami",
+        "school": "Miami",
+        "color": "f47423",
+        "rank": 17,
+        "record": "4-1"
+      },
+      "away": {
+        "id": "2363",
+        "name": "Manhattan Jaspers",
+        "abbr": "MAN",
+        "short": "Manhattan",
+        "school": "Manhattan",
+        "color": "4f8537",
+        "rank": null,
+        "record": "1-4"
+      },
+      "side": "home",
+      "line": -20.0,
+      "est": true,
+      "ml": null,
+      "checks": [
+        {
+          "key": "reb",
+          "mark": "y",
+          "v": [
+            47.8,
+            31.8
+          ]
+        },
+        {
+          "key": "ats",
+          "mark": "y",
+          "v": [
+            3,
+            1,
+            "home"
+          ]
+        },
+        {
+          "key": "h2h",
+          "mark": "na",
+          "v": [
+            0,
+            0
+          ]
+        },
+        {
+          "key": "depth",
+          "mark": "n",
+          "v": [
+            0,
+            0
+          ]
+        },
+        {
+          "key": "form",
+          "mark": "y",
+          "v": [
+            4,
+            4,
+            "home"
+          ]
+        },
+        {
+          "key": "def",
+          "mark": "y",
+          "v": [
+            3.8,
+            3.0
+          ]
+        }
+      ],
+      "passed": 4,
+      "applicable": 5,
+      "postseason": false,
+      "under_note": false,
+      "total": 149.5
+    },
+    {
+      "tab": "1h",
+      "event_id": "401924736",
+      "date": "2026-11-21",
+      "commence_time": "2026-11-21T00:00Z",
+      "home": {
+        "id": "163",
+        "name": "Princeton Tigers",
+        "abbr": "PRIN",
+        "short": "Princeton",
+        "school": "Princeton",
+        "color": "000000",
+        "rank": null,
+        "record": "3-2"
+      },
+      "away": {
+        "id": "2405",
+        "name": "Monmouth Hawks",
+        "abbr": "MONM",
+        "short": "Monmouth",
+        "school": "Monmouth",
+        "color": "051844",
+        "rank": null,
+        "record": "1-3"
+      },
+      "side": "home",
+      "line": -2.0,
+      "est": true,
+      "ml": null,
+      "checks": [
+        {
+          "key": "reb",
+          "mark": "y",
+          "v": [
+            35.6,
+            30.5
+          ]
+        },
+        {
+          "key": "ats",
+          "mark": "na",
+          "v": [
+            1,
+            1,
+            "home"
+          ]
+        },
+        {
+          "key": "h2h",
+          "mark": "y",
+          "v": [
+            3,
+            4
+          ]
+        },
+        {
+          "key": "depth",
+          "mark": "n",
+          "v": [
+            1,
+            1
+          ]
+        },
+        {
+          "key": "form",
+          "mark": "y",
+          "v": [
+            3,
+            3,
+            "home"
+          ]
+        },
+        {
+          "key": "def",
+          "mark": "y",
+          "v": [
+            5.6,
+            -0.8
+          ]
+        }
+      ],
+      "passed": 4,
+      "applicable": 5,
+      "postseason": false,
+      "under_note": false,
+      "total": 140.5
+    },
+    {
+      "tab": "1h",
+      "event_id": "401921107",
+      "date": "2026-11-21",
+      "commence_time": "2026-11-21T00:00Z",
+      "home": {
+        "id": "2198",
+        "name": "Eastern Kentucky Colonels",
+        "abbr": "EKU",
+        "short": "E Kentucky",
+        "school": "Eastern Kentucky",
+        "color": "660819",
+        "rank": null,
+        "record": "4-1"
+      },
+      "away": {
+        "id": "91",
+        "name": "Bellarmine Knights",
+        "abbr": "BELL",
+        "short": "Bellarmine",
+        "school": "Bellarmine",
+        "color": "000000",
+        "rank": null,
+        "record": "1-5"
+      },
+      "side": "home",
+      "line": -4.0,
+      "est": true,
+      "ml": null,
+      "checks": [
+        {
+          "key": "reb",
+          "mark": "y",
+          "v": [
+            45.0,
+            28.0
+          ]
+        },
+        {
+          "key": "ats",
+          "mark": "na",
+          "v": [
+            0,
+            0,
+            "home"
+          ]
+        },
+        {
+          "key": "h2h",
+          "mark": "y",
+          "v": [
+            4,
+            5
+          ]
+        },
+        {
+          "key": "depth",
+          "mark": "n",
+          "v": [
+            0,
+            0
+          ]
+        },
+        {
+          "key": "form",
+          "mark": "y",
+          "v": [
+            3,
+            3,
+            "home"
+          ]
+        },
+        {
+          "key": "def",
+          "mark": "y",
+          "v": [
+            5.6,
+            -1.2
+          ]
+        }
+      ],
+      "passed": 4,
+      "applicable": 5,
+      "postseason": false,
+      "under_note": false,
+      "total": 143.5
+    },
+    {
+      "tab": "1h",
+      "event_id": "401921757",
+      "date": "2026-11-21",
+      "commence_time": "2026-11-21T01:00Z",
+      "home": {
+        "id": "238",
+        "name": "Vanderbilt Commodores",
+        "abbr": "VAN",
+        "short": "Vanderbilt",
+        "school": "Vanderbilt",
+        "color": "000000",
+        "rank": 15,
+        "record": "5-0"
+      },
+      "away": {
+        "id": "2116",
+        "name": "UCF Knights",
+        "abbr": "UCF",
+        "short": "UCF",
+        "school": "UCF",
+        "color": "000000",
+        "rank": null,
+        "record": "4-1"
+      },
+      "side": "home",
+      "line": -9.0,
+      "est": true,
+      "ml": null,
+      "checks": [
+        {
+          "key": "reb",
+          "mark": "y",
+          "v": [
+            41.5,
+            33.0
+          ]
+        },
+        {
+          "key": "ats",
+          "mark": "y",
+          "v": [
+            4,
+            1,
+            "home"
+          ]
+        },
+        {
+          "key": "h2h",
+          "mark": "na",
+          "v": [
+            0,
+            1
+          ]
+        },
+        {
+          "key": "depth",
+          "mark": "n",
+          "v": [
+            2,
+            2
+          ]
+        },
+        {
+          "key": "form",
+          "mark": "y",
+          "v": [
+            5,
+            5,
+            "home"
+          ]
+        },
+        {
+          "key": "def",
+          "mark": "y",
+          "v": [
+            3.8,
+            3.2
+          ]
+        }
+      ],
+      "passed": 4,
+      "applicable": 5,
+      "postseason": false,
+      "under_note": false,
+      "total": 157.5
+    },
+    {
+      "tab": "1h",
+      "event_id": "401913529",
+      "date": "2026-11-21",
+      "commence_time": "2026-11-21T02:00Z",
+      "home": {
+        "id": "356",
+        "name": "Illinois Fighting Illini",
+        "abbr": "ILL",
+        "short": "Illinois",
+        "school": "Illinois",
+        "color": "ff5f05",
+        "rank": 10,
+        "record": "4-1"
+      },
+      "away": {
+        "id": "2197",
+        "name": "Eastern Illinois Panthers",
+        "abbr": "EIU",
+        "short": "E Illinois",
+        "school": "Eastern Illinois",
+        "color": "000000",
+        "rank": null,
+        "record": "1-5"
+      },
+      "side": "home",
+      "line": -25.0,
+      "est": true,
+      "ml": null,
+      "checks": [
+        {
+          "key": "reb",
+          "mark": "y",
+          "v": [
+            51.6,
+            29.17
+          ]
+        },
+        {
+          "key": "ats",
+          "mark": "na",
+          "v": [
+            2,
+            1,
+            "home"
+          ]
+        },
+        {
+          "key": "h2h",
+          "mark": "y",
+          "v": [
+            3,
+            3
+          ]
+        },
+        {
+          "key": "depth",
+          "mark": "n",
+          "v": [
+            2,
+            0
+          ]
+        },
+        {
+          "key": "form",
+          "mark": "y",
+          "v": [
+            3,
+            3,
+            "home"
+          ]
+        },
+        {
+          "key": "def",
+          "mark": "y",
+          "v": [
+            0.4,
             -3.0
           ]
         }
       ],
-      "passed": 5,
+      "passed": 4,
       "applicable": 5,
       "postseason": false,
       "under_note": false,
-      "total": 164.5,
-      "result": "L",
-      "final": [
-        77,
-        84
-      ]
+      "total": 165.5
     }
   ],
   "summary": {
@@ -125,7 +555,7 @@
       "w": 1,
       "l": 9,
       "p": 0,
-      "pending": 0,
+      "pending": 6,
       "units": -8.09,
       "checks": {
         "reb": [
@@ -1177,6 +1607,528 @@
         77,
         84
       ]
+    },
+    {
+      "tab": "1h",
+      "event_id": "401920380",
+      "date": "2026-11-20",
+      "commence_time": "2026-11-20T20:00Z",
+      "home": {
+        "id": "259",
+        "name": "Virginia Tech Hokies",
+        "abbr": "VT",
+        "short": "Virginia Tech",
+        "school": "Virginia Tech",
+        "color": "6a2c3e",
+        "rank": null,
+        "record": "5-0"
+      },
+      "away": {
+        "id": "77",
+        "name": "Northwestern Wildcats",
+        "abbr": "NU",
+        "short": "Northwestern",
+        "school": "Northwestern",
+        "color": "492f92",
+        "rank": null,
+        "record": "3-2"
+      },
+      "side": "home",
+      "line": -5.5,
+      "est": true,
+      "ml": null,
+      "checks": [
+        {
+          "key": "reb",
+          "mark": "y",
+          "v": [
+            35.4,
+            31.0
+          ]
+        },
+        {
+          "key": "ats",
+          "mark": "y",
+          "v": [
+            3,
+            1,
+            "home"
+          ]
+        },
+        {
+          "key": "h2h",
+          "mark": "na",
+          "v": [
+            0,
+            0
+          ]
+        },
+        {
+          "key": "depth",
+          "mark": "n",
+          "v": [
+            2,
+            2
+          ]
+        },
+        {
+          "key": "form",
+          "mark": "y",
+          "v": [
+            4,
+            4,
+            "home"
+          ]
+        },
+        {
+          "key": "def",
+          "mark": "y",
+          "v": [
+            8.6,
+            3.6
+          ]
+        }
+      ],
+      "passed": 4,
+      "applicable": 5,
+      "postseason": false,
+      "under_note": false,
+      "total": 142.5
+    },
+    {
+      "tab": "1h",
+      "event_id": "401921723",
+      "date": "2026-11-20",
+      "commence_time": "2026-11-20T22:00Z",
+      "home": {
+        "id": "2390",
+        "name": "Miami Hurricanes",
+        "abbr": "MIA",
+        "short": "Miami",
+        "school": "Miami",
+        "color": "f47423",
+        "rank": 17,
+        "record": "4-1"
+      },
+      "away": {
+        "id": "2363",
+        "name": "Manhattan Jaspers",
+        "abbr": "MAN",
+        "short": "Manhattan",
+        "school": "Manhattan",
+        "color": "4f8537",
+        "rank": null,
+        "record": "1-4"
+      },
+      "side": "home",
+      "line": -20.0,
+      "est": true,
+      "ml": null,
+      "checks": [
+        {
+          "key": "reb",
+          "mark": "y",
+          "v": [
+            47.8,
+            31.8
+          ]
+        },
+        {
+          "key": "ats",
+          "mark": "y",
+          "v": [
+            3,
+            1,
+            "home"
+          ]
+        },
+        {
+          "key": "h2h",
+          "mark": "na",
+          "v": [
+            0,
+            0
+          ]
+        },
+        {
+          "key": "depth",
+          "mark": "n",
+          "v": [
+            0,
+            0
+          ]
+        },
+        {
+          "key": "form",
+          "mark": "y",
+          "v": [
+            4,
+            4,
+            "home"
+          ]
+        },
+        {
+          "key": "def",
+          "mark": "y",
+          "v": [
+            3.8,
+            3.0
+          ]
+        }
+      ],
+      "passed": 4,
+      "applicable": 5,
+      "postseason": false,
+      "under_note": false,
+      "total": 149.5
+    },
+    {
+      "tab": "1h",
+      "event_id": "401924736",
+      "date": "2026-11-21",
+      "commence_time": "2026-11-21T00:00Z",
+      "home": {
+        "id": "163",
+        "name": "Princeton Tigers",
+        "abbr": "PRIN",
+        "short": "Princeton",
+        "school": "Princeton",
+        "color": "000000",
+        "rank": null,
+        "record": "3-2"
+      },
+      "away": {
+        "id": "2405",
+        "name": "Monmouth Hawks",
+        "abbr": "MONM",
+        "short": "Monmouth",
+        "school": "Monmouth",
+        "color": "051844",
+        "rank": null,
+        "record": "1-3"
+      },
+      "side": "home",
+      "line": -2.0,
+      "est": true,
+      "ml": null,
+      "checks": [
+        {
+          "key": "reb",
+          "mark": "y",
+          "v": [
+            35.6,
+            30.5
+          ]
+        },
+        {
+          "key": "ats",
+          "mark": "na",
+          "v": [
+            1,
+            1,
+            "home"
+          ]
+        },
+        {
+          "key": "h2h",
+          "mark": "y",
+          "v": [
+            3,
+            4
+          ]
+        },
+        {
+          "key": "depth",
+          "mark": "n",
+          "v": [
+            1,
+            1
+          ]
+        },
+        {
+          "key": "form",
+          "mark": "y",
+          "v": [
+            3,
+            3,
+            "home"
+          ]
+        },
+        {
+          "key": "def",
+          "mark": "y",
+          "v": [
+            5.6,
+            -0.8
+          ]
+        }
+      ],
+      "passed": 4,
+      "applicable": 5,
+      "postseason": false,
+      "under_note": false,
+      "total": 140.5
+    },
+    {
+      "tab": "1h",
+      "event_id": "401921107",
+      "date": "2026-11-21",
+      "commence_time": "2026-11-21T00:00Z",
+      "home": {
+        "id": "2198",
+        "name": "Eastern Kentucky Colonels",
+        "abbr": "EKU",
+        "short": "E Kentucky",
+        "school": "Eastern Kentucky",
+        "color": "660819",
+        "rank": null,
+        "record": "4-1"
+      },
+      "away": {
+        "id": "91",
+        "name": "Bellarmine Knights",
+        "abbr": "BELL",
+        "short": "Bellarmine",
+        "school": "Bellarmine",
+        "color": "000000",
+        "rank": null,
+        "record": "1-5"
+      },
+      "side": "home",
+      "line": -4.0,
+      "est": true,
+      "ml": null,
+      "checks": [
+        {
+          "key": "reb",
+          "mark": "y",
+          "v": [
+            45.0,
+            28.0
+          ]
+        },
+        {
+          "key": "ats",
+          "mark": "na",
+          "v": [
+            0,
+            0,
+            "home"
+          ]
+        },
+        {
+          "key": "h2h",
+          "mark": "y",
+          "v": [
+            4,
+            5
+          ]
+        },
+        {
+          "key": "depth",
+          "mark": "n",
+          "v": [
+            0,
+            0
+          ]
+        },
+        {
+          "key": "form",
+          "mark": "y",
+          "v": [
+            3,
+            3,
+            "home"
+          ]
+        },
+        {
+          "key": "def",
+          "mark": "y",
+          "v": [
+            5.6,
+            -1.2
+          ]
+        }
+      ],
+      "passed": 4,
+      "applicable": 5,
+      "postseason": false,
+      "under_note": false,
+      "total": 143.5
+    },
+    {
+      "tab": "1h",
+      "event_id": "401921757",
+      "date": "2026-11-21",
+      "commence_time": "2026-11-21T01:00Z",
+      "home": {
+        "id": "238",
+        "name": "Vanderbilt Commodores",
+        "abbr": "VAN",
+        "short": "Vanderbilt",
+        "school": "Vanderbilt",
+        "color": "000000",
+        "rank": 15,
+        "record": "5-0"
+      },
+      "away": {
+        "id": "2116",
+        "name": "UCF Knights",
+        "abbr": "UCF",
+        "short": "UCF",
+        "school": "UCF",
+        "color": "000000",
+        "rank": null,
+        "record": "4-1"
+      },
+      "side": "home",
+      "line": -9.0,
+      "est": true,
+      "ml": null,
+      "checks": [
+        {
+          "key": "reb",
+          "mark": "y",
+          "v": [
+            41.5,
+            33.0
+          ]
+        },
+        {
+          "key": "ats",
+          "mark": "y",
+          "v": [
+            4,
+            1,
+            "home"
+          ]
+        },
+        {
+          "key": "h2h",
+          "mark": "na",
+          "v": [
+            0,
+            1
+          ]
+        },
+        {
+          "key": "depth",
+          "mark": "n",
+          "v": [
+            2,
+            2
+          ]
+        },
+        {
+          "key": "form",
+          "mark": "y",
+          "v": [
+            5,
+            5,
+            "home"
+          ]
+        },
+        {
+          "key": "def",
+          "mark": "y",
+          "v": [
+            3.8,
+            3.2
+          ]
+        }
+      ],
+      "passed": 4,
+      "applicable": 5,
+      "postseason": false,
+      "under_note": false,
+      "total": 157.5
+    },
+    {
+      "tab": "1h",
+      "event_id": "401913529",
+      "date": "2026-11-21",
+      "commence_time": "2026-11-21T02:00Z",
+      "home": {
+        "id": "356",
+        "name": "Illinois Fighting Illini",
+        "abbr": "ILL",
+        "short": "Illinois",
+        "school": "Illinois",
+        "color": "ff5f05",
+        "rank": 10,
+        "record": "4-1"
+      },
+      "away": {
+        "id": "2197",
+        "name": "Eastern Illinois Panthers",
+        "abbr": "EIU",
+        "short": "E Illinois",
+        "school": "Eastern Illinois",
+        "color": "000000",
+        "rank": null,
+        "record": "1-5"
+      },
+      "side": "home",
+      "line": -25.0,
+      "est": true,
+      "ml": null,
+      "checks": [
+        {
+          "key": "reb",
+          "mark": "y",
+          "v": [
+            51.6,
+            29.17
+          ]
+        },
+        {
+          "key": "ats",
+          "mark": "na",
+          "v": [
+            2,
+            1,
+            "home"
+          ]
+        },
+        {
+          "key": "h2h",
+          "mark": "y",
+          "v": [
+            3,
+            3
+          ]
+        },
+        {
+          "key": "depth",
+          "mark": "n",
+          "v": [
+            2,
+            0
+          ]
+        },
+        {
+          "key": "form",
+          "mark": "y",
+          "v": [
+            3,
+            3,
+            "home"
+          ]
+        },
+        {
+          "key": "def",
+          "mark": "y",
+          "v": [
+            0.4,
+            -3.0
+          ]
+        }
+      ],
+      "passed": 4,
+      "applicable": 5,
+      "postseason": false,
+      "under_note": false,
+      "total": 165.5
     }
   ]
 }

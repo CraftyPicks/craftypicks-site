@@ -1,0 +1,111 @@
+{
+"date": "2026-11-26",
+"games": [
+{
+"event_id": "401856879",
+"league": "ncaaf",
+"commence_time": "2026-11-27T01:00Z",
+"date": "2026-11-26",
+"home": "Texas Tech Red Raiders",
+"away": "TCU Horned Frogs",
+"model": {
+"home_win_prob": 0.7928928882350302,
+"away_win_prob": 0.20710711176496976
+},
+"line_note": [
+"Spread: Texas Tech Red Raiders -10.5 \u00b7 Total 47.5",
+"FPI line: Texas Tech Red Raiders -11.4"
+],
+"spread_home": -10.5,
+"fpi_margin": 11.431000000000001,
+"total": 47.5,
+"team_stats": {
+"away": {
+"id": "2628",
+"name": "TCU Horned Frogs",
+"color": "4d1979",
+"rank": null,
+"record": "5-5",
+"games": 10,
+"fpi": 42,
+"power_rank": 42,
+"rank_label": "FPI",
+"stats": {
+"ats": [
+4,
+6,
+0
+],
+"pts": 23.4,
+"opp": 15.2,
+"giv": 1.5,
+"tak": 1.4,
+"ypp": 5.6
+}
+},
+"home": {
+"id": "2641",
+"name": "Texas Tech Red Raiders",
+"color": "da291c",
+"rank": 12,
+"record": "9-1",
+"games": 10,
+"fpi": 14,
+"power_rank": 14,
+"rank_label": "FPI",
+"stats": {
+"ats": [
+5,
+5,
+0
+],
+"pts": 39.0,
+"opp": 24.4,
+"giv": 1.4,
+"tak": 1.6,
+"ypp": 6.5
+}
+}
+},
+"ats": {
+"side": "away",
+"team": "TCU Horned Frogs",
+"line": 10.5,
+"cover": 0.5307,
+"gap": 1.2,
+"raw": 2.4,
+"check": false,
+"tier": "pass",
+"stretch": 0.92
+},
+"espn_id": "401856879",
+"teams": {
+"home": {
+"id": "2641",
+"color": "da291c",
+"abbr": "TTU",
+"school": "Texas Tech",
+"short_": "Texas Tech"
+},
+"away": {
+"id": "2628",
+"color": "4d1979",
+"abbr": "TCU",
+"school": "TCU",
+"short_": "TCU"
+}
+},
+"sys_ranks": [
+14,
+42
+],
+"system": {
+"side": "away",
+"reasons": [
+"road",
+"defense"
+]
+}
+}
+]
+}
