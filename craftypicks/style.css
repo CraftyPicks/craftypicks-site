@@ -1850,3 +1850,11 @@ footer{background:var(--bg-2);padding:56px 0 40px}
 .gm-sys-l .gm-sys-rate b{color:var(--green);font:800 22px/1 var(--sans)}
 .gm-sys-l .gm-sys-rate small{margin-top:3px;color:var(--sub);font:600 12px var(--mono)}
 .gm-sys-note{margin:2px 0 0;color:var(--sub);font:500 12px/1.35 var(--sans)}
+
+/* Where each System play is (Home dog, Road fav...), beside the tag; the
+   home dog, the System's best group, in green. Words and a border, so it
+   does not rest on colour alone. */
+.gm-sys-site{display:inline-block;margin:0 0 4px 6px;padding:1px 7px;border:1px solid var(--line-2);
+  border-radius:6px;color:var(--sub);font:700 11px/1.5 var(--mono);letter-spacing:.08em;
+  text-transform:uppercase}
+.gm-sys-site.gm-sys-hd{border-color:var(--green);color:var(--green)}
