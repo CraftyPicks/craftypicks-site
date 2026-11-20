@@ -582,6 +582,7 @@ def attach_system(rows: list[dict], store: dict, ranks: dict | None = None,
         hp = (sp["point"] if sp.get("side_a", "home") == "home" else -sp["point"]) \
             if sp.get("point") is not None else r.get("spread_home")
         g = games.get(str(r.get("espn_id") or "")) or {}
+        r["sys_neutral"] = bool(g.get("neutral"))
         pair = [ranks.get(str(hid)), ranks.get(str(aid))]
         if "sys_ranks" not in r and None not in pair:
             r["sys_ranks"] = pair
@@ -1135,6 +1136,8 @@ def _test_history() -> None:
               "markets": {"spreads": {"point": -6.5, "side_a": "home"}}}]
     assert attach_system(frows, {"games": {}}, {"A": 40, "B": 120}, ncaaf_rules) == 1
     assert frows[0]["system"] == {"side": "home", "reasons": ["favbottom"]} and frows[0]["sys_ranks"] == [40, 120]
+    assert srows[0]["sys_neutral"] is True and frows[0]["sys_neutral"] is False, \
+        "the site travels with the row, for the home-dog label"
     # Share card and home-screen icon: every page links them, at its depth.
     assert 'og:image" content="https://craftypicks.org/og.png"' in HEAD
     assert 'rel="manifest" href="{up}manifest.webmanifest"' in HEAD
