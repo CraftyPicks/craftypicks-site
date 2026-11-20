@@ -1,0 +1,57 @@
+name: Download NCAAB history
+
+# Manual only, and one-time: past college basketball seasons from
+# CollegeBasketballData.com (free tier, about 150 of the 1,000 monthly calls)
+# saved to research/history_ncaab for the System's multi-season backtest.
+# Seasons already saved are skipped, so it is safe to run again.
+on:
+  workflow_dispatch:
+    inputs:
+      seasons:
+        description: "Seasons (2026 = the 2025-26 season)"
+        required: true
+        default: "2021,2022,2023,2024,2025,2026"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: cbbd-history
+  cancel-in-progress: false
+
+jobs:
+  download:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Download
+        shell: bash
+        env:
+          CBBD_API_KEY: ${{ secrets.CBBD_API_KEY }}
+        run: |
+          set -o pipefail
+          python research/fetch_cbbd_history.py --seasons "${{ inputs.seasons }}" 2>&1 | tee history.txt
+
+      - name: Commit
+        run: |
+          git config user.name  "craftypicks-bot"
+          git config user.email "craftypicks-bot@users.noreply.github.com"
+          git add research/history_ncaab
+          if git diff --cached --quiet; then
+            echo "Nothing new downloaded."
+            exit 0
+          fi
+          git diff --cached --stat
+          git commit -m "research: NCAAB history from CBBD"
+          git push || { git pull --rebase && git push; }
+
+      - name: Summary
+        if: always()
+        run: |
+          { echo '## NCAAB history download'; echo '```'; cat history.txt 2>/dev/null; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
