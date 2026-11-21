@@ -1,0 +1,6411 @@
+{
+"date": "2026-11-21",
+"games": [
+{
+"event_id": "78595a04d81f88f96e1045a0c36edf26",
+"league": "ncaab",
+"commence_time": "2026-11-21T17:00:00Z",
+"home": "Boston Univ. Terriers",
+"away": "Columbia Lions",
+"model": {
+"home_win_prob": 0.4219,
+"away_win_prob": 0.5781,
+"market_home_prob": 0.495723332851674,
+"disagreement": -7.4,
+"suspect": false,
+"source": "bpi",
+"proj": [
+75.5,
+77.7
+],
+"margin": -2.2,
+"edge": 3.5,
+"ev_home": -17.2,
+"ev_away": 12.9
+},
+"espn_id": "401923402",
+"teams": {
+"home": {
+"id": "104",
+"color": "cc0000",
+"abbr": "BU",
+"school": "Boston University",
+"short_": "Boston U"
+},
+"away": {
+"id": "171",
+"color": "7ba4db",
+"abbr": "COLU",
+"school": "Columbia",
+"short_": "Columbia"
+}
+},
+"team_stats": {
+"away": {
+"id": "171",
+"name": "Columbia Lions",
+"color": "7ba4db",
+"rank": null,
+"record": "4-1",
+"bpi": 131,
+"games": 5,
+"stats": {
+"ats": [
+3,
+1,
+0
+],
+"h1": [
+36.4,
+30.0
+],
+"pts": 83.6,
+"opp": 61.8,
+"fg": 47.8,
+"reb": 43.0,
+"ast": 17.4,
+"blk": 5.6,
+"tpm": 8.0,
+"tpm_rank": 192,
+"stl": 7.6
+}
+},
+"home": {
+"id": "104",
+"name": "Boston University Terriers",
+"color": "cc0000",
+"rank": null,
+"record": "5-1",
+"bpi": 235,
+"games": 6,
+"stats": {
+"ats": [
+4,
+1,
+0
+],
+"h1": [
+38.67,
+34.33
+],
+"pts": 79.17,
+"opp": 72.17,
+"fg": 50.2,
+"reb": 37.33,
+"ast": 13.0,
+"blk": 3.33,
+"tpm": 7.0,
+"tpm_rank": 256,
+"stl": 6.0
+}
+}
+},
+"sys_neutral": false,
+"sys_ranks": [
+235,
+131
+],
+"markets": {
+"totals": {
+"point": 142.5
+}
+}
+},
+{
+"event_id": "2c2ac18a26394f55d2739cdbd06ae05c",
+"league": "ncaab",
+"commence_time": "2026-11-21T17:00:00Z",
+"home": "Michigan St Spartans",
+"away": "Detroit Mercy Titans",
+"model": {
+"home_win_prob": 0.99,
+"away_win_prob": 0.01,
+"market_home_prob": null,
+"disagreement": null,
+"suspect": false,
+"source": "bpi",
+"proj": [
+92.1,
+57.2
+],
+"margin": 34.8,
+"edge": 3.5,
+"ev_home": null,
+"ev_away": null
+},
+"espn_id": "401925756",
+"ats": {
+"side": "home",
+"team": "Michigan St Spartans",
+"line": -40.5,
+"cover": 0.5105,
+"gap": 0.5,
+"raw": 0.9,
+"check": false,
+"tier": "pass",
+"stretch": 1.19
+},
+"teams": {
+"home": {
+"id": "127",
+"color": "173f35",
+"abbr": "MSU",
+"school": "Michigan State",
+"short_": "Michigan St"
+},
+"away": {
+"id": "2174",
+"color": "165b9e",
+"abbr": "DETM",
+"school": "Detroit Mercy",
+"short_": "Detroit Mercy"
+}
+},
+"team_stats": {
+"away": {
+"id": "2174",
+"name": "Detroit Mercy Titans",
+"color": "165b9e",
+"rank": null,
+"record": "0-4",
+"bpi": 352,
+"games": 4,
+"stats": {
+"ats": [
+0,
+4,
+0
+],
+"h1": [
+27.5,
+43.0
+],
+"pts": 55.25,
+"opp": 94.25,
+"fg": 31.4,
+"reb": 36.0,
+"ast": 9.75,
+"blk": 2.75,
+"tpm": 5.75,
+"tpm_rank": 337,
+"stl": 3.75
+}
+},
+"home": {
+"id": "127",
+"name": "Michigan State Spartans",
+"color": "173f35",
+"rank": 2,
+"record": "4-1",
+"bpi": 10,
+"games": 5,
+"stats": {
+"ats": [
+4,
+1,
+0
+],
+"h1": [
+43.6,
+29.0
+],
+"pts": 83.6,
+"opp": 65.2,
+"fg": 44.9,
+"reb": 43.2,
+"ast": 17.2,
+"blk": 6.2,
+"tpm": 9.6,
+"tpm_rank": 94,
+"stl": 7.6
+}
+}
+},
+"sys_neutral": false,
+"sys_ranks": [
+10,
+352
+],
+"markets": {
+"spreads": {
+"point": -40.5,
+"side_a": "home"
+},
+"totals": {
+"point": 150.5
+}
+}
+},
+{
+"event_id": "32314571b0ef6ac30a06778a1d5c1cc1",
+"league": "ncaab",
+"commence_time": "2026-11-21T18:00:00Z",
+"home": "Cleveland St Vikings",
+"away": "Kent State Golden Flashes",
+"model": {
+"home_win_prob": 0.38,
+"away_win_prob": 0.62,
+"market_home_prob": 0.39802878603798986,
+"disagreement": -1.8,
+"suspect": false,
+"source": "bpi",
+"proj": [
+76.3,
+79.7
+],
+"margin": -3.4,
+"edge": 3.5,
+"ev_home": -8.8,
+"ev_away": 2.0
+},
+"espn_id": "401921169",
+"ats": {
+"side": "away",
+"team": "Kent State Golden Flashes",
+"line": -3.5,
+"cover": 0.5087,
+"gap": 0.2,
+"raw": 0.5,
+"check": false,
+"tier": "pass",
+"stretch": 1.19
+},
+"teams": {
+"home": {
+"id": "325",
+"color": "006633",
+"abbr": "CLE",
+"school": "Cleveland State",
+"short_": "Cleveland St"
+},
+"away": {
+"id": "2309",
+"color": "002664",
+"abbr": "KENT",
+"school": "Kent State",
+"short_": "Kent State"
+}
+},
+"team_stats": {
+"away": {
+"id": "2309",
+"name": "Kent State Golden Flashes",
+"color": "002664",
+"rank": null,
+"record": "1-3",
+"bpi": 183,
+"games": 4,
+"stats": {
+"ats": [
+0,
+3,
+0
+],
+"h1": [
+34.0,
+34.0
+],
+"pts": 74.75,
+"opp": 72.75,
+"fg": 40.9,
+"reb": 44.25,
+"ast": 11.75,
+"blk": 2.25,
+"tpm": 6.0,
+"tpm_rank": 320,
+"stl": 7.25
+}
+},
+"home": {
+"id": "325",
+"name": "Cleveland State Vikings",
+"color": "006633",
+"rank": null,
+"record": "3-3",
+"bpi": 314,
+"games": 6,
+"stats": {
+"ats": [
+2,
+3,
+0
+],
+"h1": [
+34.0,
+41.33
+],
+"pts": 73.67,
+"opp": 83.33,
+"fg": 48.1,
+"reb": 33.5,
+"ast": 12.67,
+"blk": 2.0,
+"tpm": 5.67,
+"tpm_rank": 342,
+"stl": 5.83
+}
+}
+},
+"sys_neutral": false,
+"sys_ranks": [
+314,
+183
+],
+"system": {
+"side": null,
+"reasons": [],
+"under": true
+},
+"markets": {
+"spreads": {
+"point": 3.5,
+"side_a": "home"
+},
+"totals": {
+"point": 146.5
+}
+}
+},
+{
+"event_id": "b3fab0afee75218dc01cdc6679c9ad17",
+"league": "ncaab",
+"commence_time": "2026-11-21T18:00:00Z",
+"home": "Eastern Michigan Eagles",
+"away": "Denver Pioneers",
+"model": {
+"home_win_prob": 0.7634,
+"away_win_prob": 0.2366,
+"market_home_prob": 0.746732728907724,
+"disagreement": 1.7,
+"suspect": false,
+"source": "bpi",
+"proj": [
+79.3,
+71.4
+],
+"margin": 7.9,
+"edge": 3.5,
+"ev_home": 1.0,
+"ev_away": -12.5
+},
+"espn_id": "401920948",
+"ats": {
+"side": "home",
+"team": "Eastern Michigan Eagles",
+"line": -7.5,
+"cover": 0.5312,
+"gap": 0.9,
+"raw": 1.9,
+"check": false,
+"tier": "pass",
+"stretch": 1.19
+},
+"teams": {
+"home": {
+"id": "2199",
+"color": "006938",
+"abbr": "EMU",
+"school": "Eastern Michigan",
+"short_": "E Michigan"
+},
+"away": {
+"id": "2172",
+"color": "98002e",
+"abbr": "DEN",
+"school": "Denver",
+"short_": "Denver"
+}
+},
+"team_stats": {
+"away": {
+"id": "2172",
+"name": "Denver Pioneers",
+"color": "98002e",
+"rank": null,
+"record": "1-3",
+"bpi": 253,
+"games": 4,
+"stats": {
+"ats": [
+1,
+2,
+0
+],
+"h1": [
+33.25,
+34.0
+],
+"pts": 70.5,
+"opp": 69.5,
+"fg": 45.7,
+"reb": 35.5,
+"ast": 9.75,
+"blk": 2.75,
+"tpm": 5.75,
+"tpm_rank": 336,
+"stl": 5.75
+}
+},
+"home": {
+"id": "2199",
+"name": "Eastern Michigan Eagles",
+"color": "006938",
+"rank": null,
+"record": "3-1",
+"bpi": 158,
+"games": 4,
+"stats": {
+"ats": [
+3,
+0,
+0
+],
+"h1": [
+40.25,
+30.25
+],
+"pts": 82.75,
+"opp": 63.0,
+"fg": 45.8,
+"reb": 40.0,
+"ast": 17.5,
+"blk": 2.75,
+"tpm": 9.25,
+"tpm_rank": 115,
+"stl": 7.0
+}
+}
+},
+"sys_neutral": false,
+"sys_ranks": [
+158,
+253
+],
+"markets": {
+"spreads": {
+"point": -7.5,
+"side_a": "home"
+},
+"totals": {
+"point": 139.5
+}
+}
+},
+{
+"event_id": "46f732d3eef66ef6e78bb2a0f31c1ebb",
+"league": "ncaab",
+"commence_time": "2026-11-21T18:00:00Z",
+"home": "LSU Tigers",
+"away": "Queens University Royals",
+"model": {
+"home_win_prob": 0.9254,
+"away_win_prob": 0.0746,
+"market_home_prob": 0.9940878914739492,
+"disagreement": -6.9,
+"suspect": false,
+"source": "bpi",
+"proj": [
+87.3,
+71.4
+],
+"margin": 15.9,
+"edge": 3.5,
+"ev_home": -6.5,
+"ev_away": 168.6
+},
+"espn_id": "401921811",
+"ats": {
+"side": "away",
+"team": "Queens University Royals",
+"line": 26.5,
+"cover": 0.5872,
+"gap": 3.3,
+"raw": 6.6,
+"check": false,
+"tier": "lean",
+"stretch": 1.19
+},
+"teams": {
+"home": {
+"id": "99",
+"color": "461d76",
+"abbr": "LSU",
+"school": "LSU",
+"short_": "LSU"
+},
+"away": {
+"id": "2511",
+"color": "192C66",
+"abbr": "QUC",
+"school": "Queens University",
+"short_": "Queens"
+}
+},
+"team_stats": {
+"away": {
+"id": "2511",
+"name": "Queens University Royals",
+"color": "192C66",
+"rank": null,
+"record": "3-2",
+"bpi": 195,
+"games": 5,
+"stats": {
+"ats": [
+3,
+2,
+0
+],
+"h1": [
+44.8,
+47.4
+],
+"pts": 89.2,
+"opp": 100.2,
+"fg": 48.9,
+"reb": 31.2,
+"ast": 16.4,
+"blk": 2.8,
+"tpm": 8.8,
+"tpm_rank": 143,
+"stl": 8.4
+}
+},
+"home": {
+"id": "99",
+"name": "LSU Tigers",
+"color": "461d76",
+"rank": 25,
+"record": "5-0",
+"bpi": 62,
+"games": 5,
+"stats": {
+"ats": [
+4,
+1,
+0
+],
+"h1": [
+44.4,
+28.2
+],
+"pts": 88.4,
+"opp": 61.0,
+"fg": 49.8,
+"reb": 44.2,
+"ast": 19.8,
+"blk": 6.6,
+"tpm": 7.8,
+"tpm_rank": 214,
+"stl": 9.4
+}
+}
+},
+"sys_neutral": false,
+"sys_ranks": [
+62,
+195
+],
+"markets": {
+"spreads": {
+"point": -26.5,
+"side_a": "home"
+},
+"totals": {
+"point": 172.5
+}
+}
+},
+{
+"event_id": "23caa88d308de07ac04fa745540ab35f",
+"league": "ncaab",
+"commence_time": "2026-11-21T18:00:00Z",
+"home": "New Haven Chargers",
+"away": "New Hampshire Wildcats",
+"model": {
+"home_win_prob": 0.4552,
+"away_win_prob": 0.5448,
+"market_home_prob": 0.44673484982646405,
+"disagreement": 0.8,
+"suspect": false,
+"source": "bpi",
+"proj": [
+68.2,
+69.4
+],
+"margin": -1.2,
+"edge": 3.5,
+"ev_home": -0.8,
+"ev_away": -4.2
+},
+"espn_id": "401923312",
+"ats": {
+"side": "home",
+"team": "New Haven Chargers",
+"line": 2.5,
+"cover": 0.5018,
+"gap": 0.1,
+"raw": 0.1,
+"check": false,
+"tier": "pass",
+"stretch": 1.19
+},
+"teams": {
+"home": {
+"id": "2441",
+"color": "041e42",
+"abbr": "NHVN",
+"school": "New Haven",
+"short_": "New Haven"
+},
+"away": {
+"id": "160",
+"color": "004990",
+"abbr": "UNH",
+"school": "New Hampshire",
+"short_": "New Hampshire"
+}
+},
+"team_stats": {
+"away": {
+"id": "160",
+"name": "New Hampshire Wildcats",
+"color": "004990",
+"rank": null,
+"record": "4-2",
+"bpi": 255,
+"games": 6,
+"stats": {
+"ats": [
+4,
+1,
+0
+],
+"h1": [
+32.67,
+28.67
+],
+"pts": 76.67,
+"opp": 63.83,
+"fg": 45.5,
+"reb": 39.17,
+"ast": 14.0,
+"blk": 4.0,
+"tpm": 7.83,
+"tpm_rank": 210,
+"stl": 6.33
+}
+},
+"home": {
+"id": "2441",
+"name": "New Haven Chargers",
+"color": "041e42",
+"rank": null,
+"record": "2-3",
+"bpi": 326,
+"games": 5,
+"stats": {
+"ats": [
+2,
+2,
+0
+],
+"h1": [
+28.0,
+30.6
+],
+"pts": 64.6,
+"opp": 69.2,
+"fg": 42.3,
+"reb": 36.2,
+"ast": 14.6,
+"blk": 3.8,
+"tpm": 6.8,
+"tpm_rank": 276,
+"stl": 5.6
+}
+}
+},
+"sys_neutral": false,
+"sys_ranks": [
+326,
+255
+],
+"markets": {
+"spreads": {
+"point": 2.5,
+"side_a": "home"
+},
+"totals": {
+"point": 130.5
+}
+}
+},
+{
+"event_id": "fd01d6bd019da1ef030bd2214291558c",
+"league": "ncaab",
+"commence_time": "2026-11-21T18:30:00Z",
+"home": "Western Illinois Leathernecks",
+"away": "Mercyhurst Lakers",
+"model": {
+"home_win_prob": 0.3481,
+"away_win_prob": 0.6519,
+"market_home_prob": 0.3130444376042186,
+"disagreement": 3.5,
+"suspect": false,
+"source": "bpi",
+"proj": [
+68.4,
+72.7
+],
+"margin": -4.3,
+"edge": 0.0,
+"ev_home": 4.4,
+"ev_away": -6.5
+},
+"espn_id": "401919828",
+"ats": {
+"side": "home",
+"team": "Western Illinois Leathernecks",
+"line": 5.5,
+"cover": 0.5404,
+"gap": 1.2,
+"raw": 2.4,
+"check": false,
+"tier": "pass",
+"stretch": 1.19
+},
+"teams": {
+"home": {
+"id": "2710",
+"color": "4e1e8a",
+"abbr": "WIU",
+"school": "Western Illinois",
+"short_": "W Illinois"
+},
+"away": {
+"id": "2385",
+"color": "000000",
+"abbr": "MERC",
+"school": "Mercyhurst",
+"short_": "Mercyhurst"
+}
+},
+"team_stats": {
+"away": {
+"id": "2385",
+"name": "Mercyhurst Lakers",
+"color": "000000",
+"rank": null,
+"record": "1-5",
+"bpi": 322,
+"games": 6,
+"stats": {
+"ats": [
+2,
+3,
+0
+],
+"h1": [
+27.67,
+33.5
+],
+"pts": 62.0,
+"opp": 71.0,
+"fg": 39.8,
+"reb": 32.5,
+"ast": 14.0,
+"blk": 4.33,
+"tpm": 5.67,
+"tpm_rank": 338,
+"stl": 8.83
+}
+},
+"home": {
+"id": "2710",
+"name": "Western Illinois Leathernecks",
+"color": "4e1e8a",
+"rank": null,
+"record": "1-5",
+"bpi": 356,
+"games": 6,
+"stats": {
+"ats": [
+2,
+3,
+0
+],
+"h1": [
+29.17,
+35.83
+],
+"pts": 70.17,
+"opp": 76.17,
+"fg": 42.0,
+"reb": 32.33,
+"ast": 11.83,
+"blk": 3.33,
+"tpm": 5.33,
+"tpm_rank": 348,
+"stl": 6.83
+}
+}
+},
+"sys_neutral": true,
+"sys_ranks": [
+356,
+322
+],
+"markets": {
+"spreads": {
+"point": 5.5,
+"side_a": "home"
+}
+}
+},
+{
+"event_id": "6188932ccdcc9ce9bdb8d0164df7ee6e",
+"league": "ncaab",
+"commence_time": "2026-11-21T19:00:00Z",
+"home": "Bowling Green Falcons",
+"away": "Northern Illinois Huskies",
+"model": {
+"home_win_prob": 0.7264,
+"away_win_prob": 0.2736,
+"market_home_prob": 0.676756307554237,
+"disagreement": 5.0,
+"suspect": false,
+"source": "bpi",
+"proj": [
+80.0,
+73.3
+],
+"margin": 6.6,
+"edge": 3.5,
+"ev_home": 8.1,
+"ev_away": -20.7
+},
+"espn_id": "401911022",
+"ats": {
+"side": "home",
+"team": "Bowling Green Falcons",
+"line": -5.0,
+"cover": 0.5491,
+"gap": 1.4,
+"raw": 2.9,
+"check": false,
+"tier": "pass",
+"stretch": 1.19
+},
+"teams": {
+"home": {
+"id": "189",
+"color": "fd5000",
+"abbr": "BGSU",
+"school": "Bowling Green",
+"short_": "Bowling Green"
+},
+"away": {
+"id": "2459",
+"color": "c8102e",
+"abbr": "NIU",
+"school": "Northern Illinois",
+"short_": "N Illinois"
+}
+},
+"team_stats": {
+"away": {
+"id": "2459",
+"name": "Northern Illinois Huskies",
+"color": "c8102e",
+"rank": null,
+"record": "3-3",
+"bpi": 254,
+"games": 6,
+"stats": {
+"ats": [
+3,
+2,
+0
+],
+"h1": [
+33.5,
+38.0
+],
+"pts": 77.0,
+"opp": 74.17,
+"fg": 42.3,
+"reb": 39.33,
+"ast": 15.0,
+"blk": 2.67,
+"tpm": 10.83,
+"tpm_rank": 40,
+"stl": 6.5
+}
+},
+"home": {
+"id": "189",
+"name": "Bowling Green Falcons",
+"color": "fd5000",
+"rank": null,
+"record": "3-1",
+"bpi": 182,
+"games": 4,
+"stats": {
+"ats": [
+2,
+2,
+0
+],
+"h1": [
+37.25,
+34.0
+],
+"pts": 83.0,
+"opp": 76.25,
+"fg": 51.3,
+"reb": 36.0,
+"ast": 14.5,
+"blk": 2.0,
+"tpm": 10.75,
+"tpm_rank": 48,
+"stl": 6.75
+}
+}
+},
+"sys_neutral": false,
+"sys_ranks": [
+182,
+254
+],
+"markets": {
+"spreads": {
+"point": -5.0,
+"side_a": "home"
+},
+"totals": {
+"point": 147.5
+}
+}
+},
+{
+"event_id": "6f123d463b01dadf8743c5323d3b2200",
+"league": "ncaab",
+"commence_time": "2026-11-21T19:00:00Z",
+"home": "Morgan St Bears",
+"away": "Cornell Big Red",
+"model": {
+"home_win_prob": 0.3355,
+"away_win_prob": 0.6645,
+"market_home_prob": 0.30323613037219166,
+"disagreement": 3.2,
+"suspect": false,
+"source": "bpi",
+"proj": [
+71.8,
+76.4
+],
+"margin": -4.7,
+"edge": 3.5,
+"ev_home": 5.7,
+"ev_away": -5.9
+},
+"espn_id": "401924722",
+"ats": {
+"side": "home",
+"team": "Morgan St Bears",
+"line": 5.5,
+"cover": 0.5605,
+"gap": 1.8,
+"raw": 3.6,
+"check": false,
+"tier": "pass",
+"stretch": 1.19
+},
+"teams": {
+"home": {
+"id": "2415",
+"color": "014786",
+"abbr": "MORG",
+"school": "Morgan State",
+"short_": "Morgan St"
+},
+"away": {
+"id": "172",
+"color": "b31b1b",
+"abbr": "COR",
+"school": "Cornell",
+"short_": "Cornell"
+}
+},
+"team_stats": {
+"away": {
+"id": "172",
+"name": "Cornell Big Red",
+"color": "b31b1b",
+"rank": null,
+"record": "2-3",
+"bpi": 185,
+"games": 5,
+"stats": {
+"ats": [
+2,
+2,
+0
+],
+"h1": [
+39.2,
+40.2
+],
+"pts": 79.0,
+"opp": 78.8,
+"fg": 44.2,
+"reb": 37.8,
+"ast": 18.2,
+"blk": 3.4,
+"tpm": 12.0,
+"tpm_rank": 12,
+"stl": 7.6
+}
+},
+"home": {
+"id": "2415",
+"name": "Morgan State Bears",
+"color": "014786",
+"rank": null,
+"record": "4-2",
+"bpi": 334,
+"games": 6,
+"stats": {
+"ats": [
+2,
+2,
+0
+],
+"h1": [
+40.33,
+34.33
+],
+"pts": 79.0,
+"opp": 67.5,
+"fg": 41.5,
+"reb": 45.0,
+"ast": 11.33,
+"blk": 4.0,
+"tpm": 7.17,
+"tpm_rank": 248,
+"stl": 7.17
+}
+}
+},
+"sys_neutral": false,
+"sys_ranks": [
+334,
+185
+],
+"markets": {
+"spreads": {
+"point": 5.5,
+"side_a": "home"
+},
+"totals": {
+"point": 161.5
+}
+}
+},
+{
+"event_id": "fb773220f5132a61b708f5d7ed605b9f",
+"league": "ncaab",
+"commence_time": "2026-11-21T19:00:00Z",
+"home": "North Florida Ospreys",
+"away": "Little Rock Trojans",
+"model": {
+"home_win_prob": 0.465,
+"away_win_prob": 0.535,
+"market_home_prob": 0.3465763925100267,
+"disagreement": 11.8,
+"suspect": false,
+"source": "bpi",
+"proj": [
+76.1,
+77.1
+],
+"margin": -1.0,
+"edge": 3.5,
+"ev_home": 27.9,
+"ev_away": -19.7
+},
+"espn_id": "401922222",
+"ats": {
+"side": "home",
+"team": "North Florida Ospreys",
+"line": 5.0,
+"cover": 0.5793,
+"gap": 2.4,
+"raw": 4.7,
+"check": false,
+"tier": "lean",
+"stretch": 1.19
+},
+"teams": {
+"home": {
+"id": "2454",
+"color": "004B8D",
+"abbr": "UNF",
+"school": "North Florida",
+"short_": "North Florida"
+},
+"away": {
+"id": "2031",
+"color": "AD0000",
+"abbr": "LR",
+"school": "Little Rock",
+"short_": "Little Rock"
+}
+},
+"team_stats": {
+"away": {
+"id": "2031",
+"name": "Little Rock Trojans",
+"color": "AD0000",
+"rank": null,
+"record": "2-3",
+"bpi": 234,
+"games": 5,
+"stats": {
+"ats": [
+2,
+3,
+0
+],
+"h1": [
+35.0,
+39.4
+],
+"pts": 76.4,
+"opp": 82.8,
+"fg": 43.6,
+"reb": 36.8,
+"ast": 11.6,
+"blk": 3.4,
+"tpm": 7.2,
+"tpm_rank": 244,
+"stl": 5.2
+}
+},
+"home": {
+"id": "2454",
+"name": "North Florida Ospreys",
+"color": "004B8D",
+"rank": null,
+"record": "2-3",
+"bpi": 309,
+"games": 5,
+"stats": {
+"ats": [
+1,
+3,
+0
+],
+"h1": [
+31.6,
+36.2
+],
+"pts": 71.4,
+"opp": 80.4,
+"fg": 40.3,
+"reb": 38.0,
+"ast": 13.2,
+"blk": 3.0,
+"tpm": 8.0,
+"tpm_rank": 207,
+"stl": 8.0
+}
+}
+},
+"sys_neutral": false,
+"sys_ranks": [
+309,
+234
+],
+"markets": {
+"spreads": {
+"point": 5.0,
+"side_a": "home"
+},
+"totals": {
+"point": 159.5
+}
+}
+},
+{
+"event_id": "bbccadc262abe84faa9467469b89be97",
+"league": "ncaab",
+"commence_time": "2026-11-21T19:00:00Z",
+"home": "Portland Pilots",
+"away": "Fordham Rams",
+"model": {
+"home_win_prob": 0.3392,
+"away_win_prob": 0.6608,
+"market_home_prob": 0.3366116028816011,
+"disagreement": 0.3,
+"suspect": false,
+"source": "bpi",
+"proj": [
+71.4,
+75.9
+],
+"margin": -4.6,
+"edge": 0.0,
+"ev_home": 0.1,
+"ev_away": -0.9
+},
+"espn_id": "401911199",
+"ats": {
+"side": "home",
+"team": "Portland Pilots",
+"line": 4.5,
+"cover": 0.5324,
+"gap": 0.9,
+"raw": 1.9,
+"check": false,
+"tier": "pass",
+"stretch": 1.19
+},
+"teams": {
+"home": {
+"id": "2501",
+"color": "330072",
+"abbr": "PORT",
+"school": "Portland",
+"short_": "Portland"
+},
+"away": {
+"id": "2230",
+"color": "830032",
+"abbr": "FOR",
+"school": "Fordham",
+"short_": "Fordham"
+}
+},
+"team_stats": {
+"away": {
+"id": "2230",
+"name": "Fordham Rams",
+"color": "830032",
+"rank": null,
+"record": "4-1",
+"bpi": 118,
+"games": 5,
+"stats": {
+"ats": [
+2,
+3,
+0
+],
+"h1": [
+35.4,
+32.8
+],
+"pts": 77.2,
+"opp": 69.8,
+"fg": 46.1,
+"reb": 37.4,
+"ast": 16.0,
+"blk": 3.0,
+"tpm": 8.8,
+"tpm_rank": 150,
+"stl": 9.6
+}
+},
+"home": {
+"id": "2501",
+"name": "Portland Pilots",
+"color": "330072",
+"rank": null,
+"record": "4-2",
+"bpi": 186,
+"games": 6,
+"stats": {
+"ats": [
+2,
+2,
+0
+],
+"h1": [
+49.17,
+34.0
+],
+"pts": 97.67,
+"opp": 78.0,
+"fg": 55.8,
+"reb": 43.0,
+"ast": 18.67,
+"blk": 1.83,
+"tpm": 8.0,
+"tpm_rank": 199,
+"stl": 5.5
+}
+}
+},
+"sys_neutral": true,
+"sys_ranks": [
+186,
+118
+],
+"markets": {
+"spreads": {
+"point": 4.5,
+"side_a": "home"
+},
+"totals": {
+"point": 150.5
+}
+}
+},
+{
+"event_id": "9de7cd2ef79bce15e4a473b9241c1e82",
+"league": "ncaab",
+"commence_time": "2026-11-21T19:00:00Z",
+"home": "Rider Broncs",
+"away": "Navy Midshipmen",
+"model": {
+"home_win_prob": 0.3676,
+"away_win_prob": 0.6324,
+"market_home_prob": 0.34394679509385767,
+"disagreement": 2.4,
+"suspect": false,
+"source": "bpi",
+"proj": [
+68.7,
+72.5
+],
+"margin": -3.7,
+"edge": 3.5,
+"ev_home": 1.8,
+"ev_away": -5.1
+},
+"espn_id": "401921222",
+"ats": {
+"side": "away",
+"team": "Navy Midshipmen",
+"line": -4.5,
+"cover": 0.5017,
+"gap": 0.1,
+"raw": 0.1,
+"check": false,
+"tier": "pass",
+"stretch": 1.19
+},
+"teams": {
+"home": {
+"id": "2520",
+"color": "a80532",
+"abbr": "RID",
+"school": "Rider",
+"short_": "Rider"
+},
+"away": {
+"id": "2426",
+"color": "00225b",
+"abbr": "NAVY",
+"school": "Navy",
+"short_": "Navy"
+}
+},
+"team_stats": {
+"away": {
+"id": "2426",
+"name": "Navy Midshipmen",
+"color": "00225b",
+"rank": null,
+"record": "4-2",
+"bpi": 283,
+"games": 6,
+"stats": {
+"ats": [
+2,
+3,
+0
+],
+"h1": [
+31.33,
+31.5
+],
+"pts": 66.5,
+"opp": 68.83,
+"fg": 39.1,
+"reb": 35.83,
+"ast": 12.17,
+"blk": 3.33,
+"tpm": 7.67,
+"tpm_rank": 220,
+"stl": 7.5
+}
+},
+"home": {
+"id": "2520",
+"name": "Rider Broncs",
+"color": "a80532",
+"rank": null,
+"record": "1-5",
+"bpi": 359,
+"games": 6,
+"stats": {
+"ats": [
+0,
+5,
+0
+],
+"h1": [
+28.83,
+38.17
+],
+"pts": 61.33,
+"opp": 80.5,
+"fg": 35.4,
+"reb": 36.67,
+"ast": 8.5,
+"blk": 3.33,
+"tpm": 4.83,
+"tpm_rank": 358,
+"stl": 6.33
+}
+}
+},
+"sys_neutral": false,
+"sys_ranks": [
+359,
+283
+],
+"system": {
+"side": null,
+"reasons": [],
+"under": true
+},
+"markets": {
+"spreads": {
+"point": 4.5,
+"side_a": "home"
+},
+"totals": {
+"point": 134.5
+}
+}
+},
+{
+"event_id": "ce18dbed2bcc407de6487a10df8f1771",
+"league": "ncaab",
+"commence_time": "2026-11-21T19:00:00Z",
+"home": "Saint Peter's Peacocks",
+"away": "Stony Brook Seawolves",
+"model": {
+"home_win_prob": 0.3846,
+"away_win_prob": 0.6154,
+"market_home_prob": 0.3327944406673716,
+"disagreement": 5.2,
+"suspect": false,
+"source": "bpi",
+"proj": [
+68.8,
+72.0
+],
+"margin": -3.2,
+"edge": 3.5,
+"ev_home": 17.3,
+"ev_away": -9.2
+},
+"espn_id": "401924882",
+"ats": {
+"side": "home",
+"team": "Saint Peter's Peacocks",
+"line": 5.5,
+"cover": 0.5287,
+"gap": 0.8,
+"raw": 1.7,
+"check": false,
+"tier": "pass",
+"stretch": 1.19
+},
+"teams": {
+"home": {
+"id": "2612",
+"color": "004CC2",
+"abbr": "SPU",
+"school": "Saint Peter's",
+"short_": "Saint Peter's"
+},
+"away": {
+"id": "2619",
+"color": "990000",
+"abbr": "STBK",
+"school": "Stony Brook",
+"short_": "Stony Brook"
+}
+},
+"team_stats": {
+"away": {
+"id": "2619",
+"name": "Stony Brook Seawolves",
+"color": "990000",
+"rank": null,
+"record": "2-2",
+"bpi": 216,
+"games": 4,
+"stats": {
+"ats": [
+0,
+2,
+0
+],
+"h1": [
+35.5,
+30.75
+],
+"pts": 81.25,
+"opp": 60.25,
+"fg": 48.2,
+"reb": 40.25,
+"ast": 16.0,
+"blk": 3.5,
+"tpm": 8.25,
+"tpm_rank": 180,
+"stl": 7.5
+}
+},
+"home": {
+"id": "2612",
+"name": "Saint Peter's Peacocks",
+"color": "004CC2",
+"rank": null,
+"record": "0-5",
+"bpi": 331,
+"games": 5,
+"stats": {
+"ats": [
+0,
+5,
+0
+],
+"h1": [
+21.2,
+29.8
+],
+"pts": 48.2,
+"opp": 64.2,
+"fg": 30.5,
+"reb": 30.8,
+"ast": 6.6,
+"blk": 3.4,
+"tpm": 6.2,
+"tpm_rank": 313,
+"stl": 7.2
+}
+}
+},
+"sys_neutral": false,
+"sys_ranks": [
+331,
+216
+],
+"markets": {
+"spreads": {
+"point": 5.5,
+"side_a": "home"
+},
+"totals": {
+"point": 125.5
+}
+}
+},
+{
+"event_id": "6a6c3d772fb995d1205aae1324672ea7",
+"league": "ncaab",
+"commence_time": "2026-11-21T19:00:00Z",
+"home": "Syracuse Orange",
+"away": "Lafayette Leopards",
+"model": {
+"home_win_prob": 0.9695,
+"away_win_prob": 0.0305,
+"market_home_prob": 0.9898296947463479,
+"disagreement": -2.0,
+"suspect": false,
+"source": "bpi",
+"proj": [
+83.7,
+63.1
+],
+"margin": 20.6,
+"edge": 3.5,
+"ev_home": -1.8,
+"ev_away": -11.6
+},
+"espn_id": "401909719",
+"ats": {
+"side": "away",
+"team": "Lafayette Leopards",
+"line": 25.5,
+"cover": 0.5709,
+"gap": 2.6,
+"raw": 5.3,
+"check": false,
+"tier": "lean",
+"stretch": 1.19
+},
+"teams": {
+"home": {
+"id": "183",
+"color": "000e54",
+"abbr": "SYR",
+"school": "Syracuse",
+"short_": "Syracuse"
+},
+"away": {
+"id": "322",
+"color": "790000",
+"abbr": "LAF",
+"school": "Lafayette",
+"short_": "Lafayette"
+}
+},
+"team_stats": {
+"away": {
+"id": "322",
+"name": "Lafayette Leopards",
+"color": "790000",
+"rank": null,
+"record": "3-3",
+"bpi": 318,
+"games": 6,
+"stats": {
+"ats": [
+2,
+2,
+0
+],
+"h1": [
+39.0,
+32.5
+],
+"pts": 74.67,
+"opp": 70.33,
+"fg": 44.7,
+"reb": 37.83,
+"ast": 16.5,
+"blk": 3.0,
+"tpm": 9.0,
+"tpm_rank": 126,
+"stl": 9.33
+}
+},
+"home": {
+"id": "183",
+"name": "Syracuse Orange",
+"color": "000e54",
+"rank": null,
+"record": "3-2",
+"bpi": 75,
+"games": 5,
+"stats": {
+"ats": [
+2,
+3,
+0
+],
+"h1": [
+40.0,
+29.0
+],
+"pts": 81.8,
+"opp": 70.2,
+"fg": 50.5,
+"reb": 35.6,
+"ast": 15.8,
+"blk": 5.2,
+"tpm": 6.6,
+"tpm_rank": 293,
+"stl": 9.0
+}
+}
+},
+"sys_neutral": false,
+"sys_ranks": [
+75,
+318
+],
+"system": {
+"side": "away",
+"reasons": [
+"bigdog"
+],
+"under": false
+},
+"markets": {
+"spreads": {
+"point": -25.5,
+"side_a": "home"
+},
+"totals": {
+"point": 143.5
+}
+}
+},
+{
+"event_id": "2da6119e4539c4666b49cb8015a6c289",
+"league": "ncaab",
+"commence_time": "2026-11-21T19:00:00Z",
+"home": "Wake Forest Demon Deacons",
+"away": "Western Carolina Catamounts",
+"model": {
+"home_win_prob": 0.8563,
+"away_win_prob": 0.1437,
+"market_home_prob": 0.9267821460022493,
+"disagreement": -7.0,
+"suspect": false,
+"source": "bpi",
+"proj": [
+82.1,
+70.4
+],
+"margin": 11.7,
+"edge": 3.5,
+"ev_home": -7.5,
+"ev_away": 43.7
+},
+"espn_id": "401909730",
+"ats": {
+"side": "away",
+"team": "Western Carolina Catamounts",
+"line": 14.5,
+"cover": 0.5393,
+"gap": 1.3,
+"raw": 2.6,
+"check": false,
+"tier": "pass",
+"stretch": 1.19
+},
+"teams": {
+"home": {
+"id": "154",
+"color": "ceb888",
+"abbr": "WAKE",
+"school": "Wake Forest",
+"short_": "Wake Forest"
+},
+"away": {
+"id": "2717",
+"color": "492F91",
+"abbr": "WCU",
+"school": "Western Carolina",
+"short_": "W Carolina"
+}
+},
+"team_stats": {
+"away": {
+"id": "2717",
+"name": "Western Carolina Catamounts",
+"color": "492F91",
+"rank": null,
+"record": "2-3",
+"bpi": 181,
+"games": 5,
+"stats": {
+"ats": [
+2,
+2,
+0
+],
+"h1": [
+42.8,
+35.4
+],
+"pts": 84.6,
+"opp": 77.4,
+"fg": 42.0,
+"reb": 41.8,
+"ast": 15.0,
+"blk": 3.2,
+"tpm": 11.4,
+"tpm_rank": 20,
+"stl": 7.0
+}
+},
+"home": {
+"id": "154",
+"name": "Wake Forest Demon Deacons",
+"color": "ceb888",
+"rank": null,
+"record": "4-1",
+"bpi": 82,
+"games": 5,
+"stats": {
+"ats": [
+1,
+4,
+0
+],
+"h1": [
+37.6,
+31.0
+],
+"pts": 77.2,
+"opp": 65.4,
+"fg": 46.0,
+"reb": 36.2,
+"ast": 11.8,
+"blk": 4.2,
+"tpm": 6.4,
+"tpm_rank": 304,
+"stl": 7.2
+}
+}
+},
+"sys_neutral": false,
+"sys_ranks": [
+82,
+181
+],
+"markets": {
+"spreads": {
+"point": -14.5,
+"side_a": "home"
+},
+"totals": {
+"point": 147.5
+}
+}
+},
+{
+"event_id": "e9245afd02b038b953f892119fe558d6",
+"league": "ncaab",
+"commence_time": "2026-11-21T19:00:00Z",
+"home": "Wichita St Shockers",
+"away": "New Mexico Lobos",
+"model": {
+"home_win_prob": 0.5072,
+"away_win_prob": 0.4928,
+"market_home_prob": 0.4573698884432315,
+"disagreement": 5.0,
+"suspect": false,
+"source": "bpi",
+"proj": [
+76.8,
+76.6
+],
+"margin": 0.2,
+"edge": 3.5,
+"ev_home": 13.1,
+"ev_away": -11.3
+},
+"espn_id": "401919031",
+"ats": {
+"side": "home",
+"team": "Wichita St Shockers",
+"line": 1.5,
+"cover": 0.5302,
+"gap": 0.8,
+"raw": 1.7,
+"check": false,
+"tier": "pass",
+"stretch": 1.19
+},
+"teams": {
+"home": {
+"id": "2724",
+"color": "ffcd00",
+"abbr": "WICH",
+"school": "Wichita State",
+"short_": "Wichita St"
+},
+"away": {
+"id": "167",
+"color": "ba0c2f",
+"abbr": "UNM",
+"school": "New Mexico",
+"short_": "New Mexico"
+}
+},
+"team_stats": {
+"away": {
+"id": "167",
+"name": "New Mexico Lobos",
+"color": "ba0c2f",
+"rank": null,
+"record": "3-1",
+"bpi": 58,
+"games": 4,
+"stats": {
+"ats": [
+3,
+1,
+0
+],
+"h1": [
+41.0,
+37.0
+],
+"pts": 93.25,
+"opp": 71.0,
+"fg": 49.0,
+"reb": 40.0,
+"ast": 19.25,
+"blk": 2.5,
+"tpm": 10.5,
+"tpm_rank": 54,
+"stl": 10.5
+}
+},
+"home": {
+"id": "2724",
+"name": "Wichita State Shockers",
+"color": "ffcd00",
+"rank": null,
+"record": "4-1",
+"bpi": 76,
+"games": 5,
+"stats": {
+"ats": [
+2,
+2,
+0
+],
+"h1": [
+46.6,
+35.8
+],
+"pts": 86.6,
+"opp": 71.0,
+"fg": 49.8,
+"reb": 42.2,
+"ast": 17.8,
+"blk": 3.0,
+"tpm": 10.4,
+"tpm_rank": 61,
+"stl": 4.4
+}
+}
+},
+"sys_neutral": false,
+"sys_ranks": [
+76,
+58
+],
+"markets": {
+"spreads": {
+"point": 1.5,
+"side_a": "home"
+},
+"totals": {
+"point": 157.5
+}
+}
+},
+{
+"event_id": "264c7486fa86ec1cf972df7956696ac5",
+"league": "ncaab",
+"commence_time": "2026-11-21T20:00:00Z",
+"home": "Austin Peay Governors",
+"away": "UT Rio Grande Valley Vaqueros",
+"model": {
+"home_win_prob": 0.6346,
+"away_win_prob": 0.3654,
+"market_home_prob": 0.6467004435354371,
+"disagreement": -1.2,
+"suspect": false,
+"source": "bpi",
+"proj": [
+71.5,
+67.7
+],
+"margin": 3.8,
+"edge": 3.5,
+"ev_home": -2.2,
+"ev_away": 0.5
+},
+"espn_id": "401917953",
+"ats": {
+"side": "away",
+"team": "UT Rio Grande Valley Vaqueros",
+"line": 4.5,
+"cover": 0.512,
+"gap": 0.3,
+"raw": 0.7,
+"check": false,
+"tier": "pass",
+"stretch": 1.19
+},
+"teams": {
+"home": {
+"id": "2046",
+"color": "8e0b0b",
+"abbr": "APSU",
+"school": "Austin Peay",
+"short_": "Austin Peay"
+},
+"away": {
+"id": "292",
+"color": "dc6000",
+"abbr": "RGV",
+"school": "UT Rio Grande Valley",
+"short_": "UT Rio Grande"
+}
+},
+"team_stats": {
+"away": {
+"id": "292",
+"name": "UT Rio Grande Valley Vaqueros",
+"color": "dc6000",
+"rank": null,
+"record": "3-2",
+"bpi": 247,
+"games": 5,
+"stats": {
+"ats": [
+0,
+3,
+0
+],
+"h1": [
+34.0,
+28.6
+],
+"pts": 77.8,
+"opp": 62.2,
+"fg": 44.0,
+"reb": 42.4,
+"ast": 15.2,
+"blk": 4.2,
+"tpm": 5.2,
+"tpm_rank": 352,
+"stl": 11.2
+}
+},
+"home": {
+"id": "2046",
+"name": "Austin Peay Governors",
+"color": "8e0b0b",
+"rank": null,
+"record": "3-2",
+"bpi": 237,
+"games": 5,
+"stats": {
+"ats": [
+1,
+1,
+0
+],
+"h1": [
+41.0,
+28.0
+],
+"pts": 78.0,
+"opp": 66.0,
+"fg": 41.9,
+"reb": 39.4,
+"ast": 14.2,
+"blk": 3.8,
+"tpm": 6.0,
+"tpm_rank": 322,
+"stl": 12.4
+}
+}
+},
+"sys_neutral": false,
+"sys_ranks": [
+237,
+247
+],
+"markets": {
+"spreads": {
+"point": -4.5,
+"side_a": "home"
+},
+"totals": {
+"point": 144.5
+}
+}
+},
+{
+"event_id": "e8da92986a48fdfe244d61eee9036ced",
+"league": "ncaab",
+"commence_time": "2026-11-21T20:00:00Z",
+"home": "Indiana St Sycamores",
+"away": "Middle Tennessee Blue Raiders",
+"model": {
+"home_win_prob": 0.542,
+"away_win_prob": 0.458,
+"market_home_prob": 0.4259393652556223,
+"disagreement": 11.6,
+"suspect": false,
+"source": "bpi",
+"proj": [
+75.6,
+74.4
+],
+"margin": 1.2,
+"edge": 0.0,
+"ev_home": 24.7,
+"ev_away": -20.8
+},
+"espn_id": "401920569",
+"ats": {
+"side": "home",
+"team": "Indiana St Sycamores",
+"line": 2.5,
+"cover": 0.5767,
+"gap": 2.2,
+"raw": 4.4,
+"check": false,
+"tier": "lean",
+"stretch": 1.19
+},
+"teams": {
+"home": {
+"id": "282",
+"color": "00669a",
+"abbr": "INST",
+"school": "Indiana State",
+"short_": "Indiana St"
+},
+"away": {
+"id": "2393",
+"color": "036eb7",
+"abbr": "MTSU",
+"school": "Middle Tennessee",
+"short_": "MTSU"
+}
+},
+"team_stats": {
+"away": {
+"id": "2393",
+"name": "Middle Tennessee Blue Raiders",
+"color": "036eb7",
+"rank": null,
+"record": "4-2",
+"bpi": 197,
+"games": 6,
+"stats": {
+"ats": [
+2,
+3,
+0
+],
+"h1": [
+36.33,
+36.17
+],
+"pts": 80.67,
+"opp": 78.0,
+"fg": 45.0,
+"reb": 34.33,
+"ast": 15.67,
+"blk": 4.0,
+"tpm": 10.33,
+"tpm_rank": 62,
+"stl": 7.33
+}
+},
+"home": {
+"id": "282",
+"name": "Indiana State Sycamores",
+"color": "00669a",
+"rank": null,
+"record": "2-3",
+"bpi": 176,
+"games": 5,
+"stats": {
+"ats": [
+1,
+3,
+0
+],
+"h1": [
+37.8,
+30.8
+],
+"pts": 79.4,
+"opp": 69.8,
+"fg": 46.4,
+"reb": 34.6,
+"ast": 15.6,
+"blk": 3.0,
+"tpm": 7.6,
+"tpm_rank": 223,
+"stl": 7.4
+}
+}
+},
+"sys_neutral": true,
+"sys_ranks": [
+176,
+197
+],
+"markets": {
+"spreads": {
+"point": 2.5,
+"side_a": "home"
+},
+"totals": {
+"point": 150.5
+}
+}
+},
+{
+"event_id": "800f544706a95dd11ec63acbf95fc7ca",
+"league": "ncaab",
+"commence_time": "2026-11-21T20:00:00Z",
+"home": "Milwaukee Panthers",
+"away": "St. Thomas Tommies",
+"model": {
+"home_win_prob": 0.5364,
+"away_win_prob": 0.4636,
+"market_home_prob": 0.47102786228145316,
+"disagreement": 6.5,
+"suspect": false,
+"source": "bpi",
+"proj": [
+77.3,
+76.3
+],
+"margin": 1.0,
+"edge": 3.5,
+"ev_home": 10.0,
+"ev_away": -12.6
+},
+"espn_id": "401920846",
+"ats": {
+"side": "home",
+"team": "Milwaukee Panthers",
+"line": 1.5,
+"cover": 0.5355,
+"gap": 1.0,
+"raw": 2.0,
+"check": false,
+"tier": "pass",
+"stretch": 1.19
+},
+"teams": {
+"home": {
+"id": "270",
+"color": "000000",
+"abbr": "MILW",
+"school": "Milwaukee",
+"short_": "Milwaukee"
+},
+"away": {
+"id": "2900",
+"color": "000000",
+"abbr": "STMN",
+"school": "St. Thomas",
+"short_": "St Thomas"
+}
+},
+"team_stats": {
+"away": {
+"id": "2900",
+"name": "St. Thomas Tommies",
+"color": "000000",
+"rank": null,
+"record": "4-3",
+"bpi": 149,
+"games": 7,
+"stats": {
+"ats": [
+4,
+2,
+0
+],
+"h1": [
+37.29,
+35.29
+],
+"pts": 83.43,
+"opp": 74.57,
+"fg": 49.2,
+"reb": 31.29,
+"ast": 16.14,
+"blk": 2.29,
+"tpm": 9.57,
+"tpm_rank": 100,
+"stl": 7.14
+}
+},
+"home": {
+"id": "270",
+"name": "Milwaukee Panthers",
+"color": "000000",
+"rank": null,
+"record": "2-3",
+"bpi": 190,
+"games": 5,
+"stats": {
+"ats": [
+2,
+2,
+0
+],
+"h1": [
+36.0,
+38.8
+],
+"pts": 76.0,
+"opp": 77.4,
+"fg": 43.8,
+"reb": 41.4,
+"ast": 14.2,
+"blk": 4.6,
+"tpm": 6.8,
+"tpm_rank": 283,
+"stl": 6.2
+}
+}
+},
+"sys_neutral": false,
+"sys_ranks": [
+190,
+149
+],
+"system": {
+"side": null,
+"reasons": [],
+"under": true
+},
+"markets": {
+"spreads": {
+"point": 1.5,
+"side_a": "home"
+},
+"totals": {
+"point": 152.0
+}
+}
+},
+{
+"event_id": "2b15ead6a4087a68d986d3ec08373d14",
+"league": "ncaab",
+"commence_time": "2026-11-21T20:00:00Z",
+"home": "Missouri St Bears",
+"away": "Drake Bulldogs",
+"model": {
+"home_win_prob": 0.31,
+"away_win_prob": 0.69,
+"market_home_prob": 0.39829906261939396,
+"disagreement": -8.8,
+"suspect": false,
+"source": "bpi",
+"proj": [
+71.9,
+77.4
+],
+"margin": -5.5,
+"edge": 3.5,
+"ev_home": -24.7,
+"ev_away": 12.1
+},
+"espn_id": "401927365",
+"ats": {
+"side": "away",
+"team": "Drake Bulldogs",
+"line": -3.5,
+"cover": 0.5518,
+"gap": 1.5,
+"raw": 3.0,
+"check": false,
+"tier": "pass",
+"stretch": 1.19
+},
+"teams": {
+"home": {
+"id": "2623",
+"color": "5e0009",
+"abbr": "MOST",
+"school": "Missouri State",
+"short_": "Missouri St"
+},
+"away": {
+"id": "2181",
+"color": "005596",
+"abbr": "DRKE",
+"school": "Drake",
+"short_": "Drake"
+}
+},
+"team_stats": {
+"away": {
+"id": "2181",
+"name": "Drake Bulldogs",
+"color": "005596",
+"rank": null,
+"record": "4-1",
+"bpi": 126,
+"games": 5,
+"stats": {
+"ats": [
+1,
+3,
+0
+],
+"h1": [
+35.4,
+28.4
+],
+"pts": 84.4,
+"opp": 68.2,
+"fg": 46.8,
+"reb": 40.0,
+"ast": 15.8,
+"blk": 2.2,
+"tpm": 8.2,
+"tpm_rank": 189,
+"stl": 11.4
+}
+},
+"home": {
+"id": "2623",
+"name": "Missouri State Bears",
+"color": "5e0009",
+"rank": null,
+"record": "4-0",
+"bpi": 288,
+"games": 4,
+"stats": {
+"ats": [
+1,
+0,
+0
+],
+"h1": [
+38.75,
+27.0
+],
+"pts": 82.25,
+"opp": 62.0,
+"fg": 51.3,
+"reb": 40.25,
+"ast": 16.5,
+"blk": 10.5,
+"tpm": 9.0,
+"tpm_rank": 136,
+"stl": 7.0
+}
+}
+},
+"sys_neutral": false,
+"sys_ranks": [
+288,
+126
+],
+"markets": {
+"spreads": {
+"point": 3.5,
+"side_a": "home"
+},
+"totals": {
+"point": 141.5
+}
+}
+},
+{
+"event_id": "83bb160a038344276c3b40967726065c",
+"league": "ncaab",
+"commence_time": "2026-11-21T20:30:00Z",
+"home": "Binghamton Bearcats",
+"away": "Army Black Knights",
+"model": {
+"home_win_prob": 0.481,
+"away_win_prob": 0.519,
+"market_home_prob": 0.4917619157422541,
+"disagreement": -1.1,
+"suspect": false,
+"source": "bpi",
+"proj": [
+75.7,
+76.2
+],
+"margin": -0.5,
+"edge": 3.5,
+"ev_home": -3.8,
+"ev_away": -0.9
+},
+"espn_id": "401911278",
+"ats": {
+"side": "home",
+"team": "Binghamton Bearcats",
+"line": 1.5,
+"cover": 0.5142,
+"gap": 0.4,
+"raw": 0.8,
+"check": false,
+"tier": "pass",
+"stretch": 1.19
+},
+"teams": {
+"home": {
+"id": "2066",
+"color": "00614A",
+"abbr": "BING",
+"school": "Binghamton",
+"short_": "Binghamton"
+},
+"away": {
+"id": "349",
+"color": "000000",
+"abbr": "ARMY",
+"school": "Army",
+"short_": "Army"
+}
+},
+"team_stats": {
+"away": {
+"id": "349",
+"name": "Army Black Knights",
+"color": "000000",
+"rank": null,
+"record": "2-3",
+"bpi": 282,
+"games": 5,
+"stats": {
+"ats": [
+2,
+2,
+0
+],
+"h1": [
+32.8,
+28.6
+],
+"pts": 74.0,
+"opp": 67.6,
+"fg": 46.5,
+"reb": 33.8,
+"ast": 14.6,
+"blk": 3.6,
+"tpm": 10.8,
+"tpm_rank": 45,
+"stl": 5.0
+}
+},
+"home": {
+"id": "2066",
+"name": "Binghamton Bearcats",
+"color": "00614A",
+"rank": null,
+"record": "3-3",
+"bpi": 336,
+"games": 6,
+"stats": {
+"ats": [
+3,
+2,
+0
+],
+"h1": [
+31.33,
+36.67
+],
+"pts": 67.17,
+"opp": 69.5,
+"fg": 45.7,
+"reb": 32.33,
+"ast": 13.0,
+"blk": 1.5,
+"tpm": 6.33,
+"tpm_rank": 309,
+"stl": 5.0
+}
+}
+},
+"sys_neutral": false,
+"sys_ranks": [
+336,
+282
+],
+"system": {
+"side": null,
+"reasons": [],
+"under": true
+},
+"markets": {
+"spreads": {
+"point": 1.5,
+"side_a": "home"
+},
+"totals": {
+"point": 136.5
+}
+}
+},
+{
+"event_id": "343eb2e0f080f6c844094408141efe87",
+"league": "ncaab",
+"commence_time": "2026-11-21T21:00:00Z",
+"home": "Canisius Golden Griffins",
+"away": "UAlbany Great Danes",
+"model": {
+"home_win_prob": 0.5811,
+"away_win_prob": 0.4189,
+"market_home_prob": 0.4561392813457685,
+"disagreement": 12.5,
+"suspect": false,
+"source": "bpi",
+"proj": [
+73.0,
+70.7
+],
+"margin": 2.3,
+"edge": 3.5,
+"ev_home": 24.4,
+"ev_away": -25.4
+},
+"espn_id": "401923322",
+"ats": {
+"side": "home",
+"team": "Canisius Golden Griffins",
+"line": 2.0,
+"cover": 0.5737,
+"gap": 2.1,
+"raw": 4.2,
+"check": false,
+"tier": "lean",
+"stretch": 1.19
+},
+"teams": {
+"home": {
+"id": "2099",
+"color": "004a81",
+"abbr": "CAN",
+"school": "Canisius",
+"short_": "Canisius"
+},
+"away": {
+"id": "399",
+"color": "3D2777",
+"abbr": "UALB",
+"school": "UAlbany",
+"short_": "UAlbany"
+}
+},
+"team_stats": {
+"away": {
+"id": "399",
+"name": "UAlbany Great Danes",
+"color": "3D2777",
+"rank": null,
+"record": "4-2",
+"bpi": 339,
+"games": 6,
+"stats": {
+"ats": [
+2,
+3,
+0
+],
+"h1": [
+33.83,
+30.67
+],
+"pts": 68.17,
+"opp": 68.83,
+"fg": 42.9,
+"reb": 40.83,
+"ast": 11.83,
+"blk": 5.0,
+"tpm": 4.83,
+"tpm_rank": 357,
+"stl": 8.0
+}
+},
+"home": {
+"id": "2099",
+"name": "Canisius Golden Griffins",
+"color": "004a81",
+"rank": null,
+"record": "3-3",
+"bpi": 349,
+"games": 6,
+"stats": {
+"ats": [
+2,
+3,
+0
+],
+"h1": [
+34.17,
+34.17
+],
+"pts": 71.17,
+"opp": 76.83,
+"fg": 44.5,
+"reb": 32.67,
+"ast": 13.67,
+"blk": 2.17,
+"tpm": 8.0,
+"tpm_rank": 196,
+"stl": 5.67
+}
+}
+},
+"sys_neutral": false,
+"sys_ranks": [
+349,
+339
+],
+"markets": {
+"spreads": {
+"point": 2.0,
+"side_a": "home"
+},
+"totals": {
+"point": 141.5
+}
+}
+},
+{
+"event_id": "0547585c4affb18dcbcc337074462c31",
+"league": "ncaab",
+"commence_time": "2026-11-21T21:00:00Z",
+"home": "East Tennessee St Buccaneers",
+"away": "Longwood Lancers",
+"model": {
+"home_win_prob": 0.7466,
+"away_win_prob": 0.2534,
+"market_home_prob": 0.6795247761396502,
+"disagreement": 6.7,
+"suspect": false,
+"source": "bpi",
+"proj": [
+76.7,
+69.4
+],
+"margin": 7.3,
+"edge": 3.5,
+"ev_home": 12.0,
+"ev_away": -25.2
+},
+"espn_id": "401922048",
+"ats": {
+"side": "home",
+"team": "East Tennessee St Buccaneers",
+"line": -5.5,
+"cover": 0.5538,
+"gap": 1.6,
+"raw": 3.2,
+"check": false,
+"tier": "pass",
+"stretch": 1.19
+},
+"teams": {
+"home": {
+"id": "2193",
+"color": "002d61",
+"abbr": "ETSU",
+"school": "East Tennessee State",
+"short_": "ETSU"
+},
+"away": {
+"id": "2344",
+"color": "003273",
+"abbr": "LONG",
+"school": "Longwood",
+"short_": "Longwood"
+}
+},
+"team_stats": {
+"away": {
+"id": "2344",
+"name": "Longwood Lancers",
+"color": "003273",
+"rank": null,
+"record": "4-2",
+"bpi": 218,
+"games": 6,
+"stats": {
+"ats": [
+2,
+2,
+0
+],
+"h1": [
+42.17,
+30.17
+],
+"pts": 88.83,
+"opp": 70.83,
+"fg": 46.9,
+"reb": 45.67,
+"ast": 17.0,
+"blk": 2.67,
+"tpm": 10.5,
+"tpm_rank": 53,
+"stl": 9.17
+}
+},
+"home": {
+"id": "2193",
+"name": "East Tennessee State Buccaneers",
+"color": "002d61",
+"rank": null,
+"record": "1-3",
+"bpi": 145,
+"games": 4,
+"stats": {
+"ats": [
+3,
+1,
+0
+],
+"h1": [
+27.25,
+31.25
+],
+"pts": 62.75,
+"opp": 68.0,
+"fg": 44.0,
+"reb": 33.5,
+"ast": 11.5,
+"blk": 3.25,
+"tpm": 8.0,
+"tpm_rank": 203,
+"stl": 7.25
+}
+}
+},
+"sys_neutral": false,
+"sys_ranks": [
+145,
+218
+],
+"markets": {
+"spreads": {
+"point": -5.5,
+"side_a": "home"
+},
+"totals": {
+"point": 141.5
+}
+}
+},
+{
+"event_id": "306af7e6892625ac626354ebcdefe1ba",
+"league": "ncaab",
+"commence_time": "2026-11-21T21:00:00Z",
+"home": "George Mason Patriots",
+"away": "South Florida Bulls",
+"model": {
+"home_win_prob": 0.6262,
+"away_win_prob": 0.3738,
+"market_home_prob": 0.6072548923403056,
+"disagreement": 1.9,
+"suspect": false,
+"source": "bpi",
+"proj": [
+77.1,
+73.5
+],
+"margin": 3.5,
+"edge": 3.5,
+"ev_home": 1.8,
+"ev_away": -7.3
+},
+"espn_id": "401918995",
+"ats": {
+"side": "home",
+"team": "George Mason Patriots",
+"line": -3.5,
+"cover": 0.5156,
+"gap": 0.5,
+"raw": 0.9,
+"check": false,
+"tier": "pass",
+"stretch": 1.19
+},
+"teams": {
+"home": {
+"id": "2244",
+"color": "016600",
+"abbr": "GMU",
+"school": "George Mason",
+"short_": "George Mason"
+},
+"away": {
+"id": "58",
+"color": "006747",
+"abbr": "USF",
+"school": "South Florida",
+"short_": "South Florida"
+}
+},
+"team_stats": {
+"away": {
+"id": "58",
+"name": "South Florida Bulls",
+"color": "006747",
+"rank": null,
+"record": "3-2",
+"bpi": 99,
+"games": 5,
+"stats": {
+"ats": [
+3,
+2,
+0
+],
+"h1": [
+36.8,
+38.2
+],
+"pts": 85.8,
+"opp": 74.0,
+"fg": 46.4,
+"reb": 44.0,
+"ast": 15.0,
+"blk": 3.8,
+"tpm": 7.4,
+"tpm_rank": 232,
+"stl": 7.2
+}
+},
+"home": {
+"id": "2244",
+"name": "George Mason Patriots",
+"color": "016600",
+"rank": null,
+"record": "4-1",
+"bpi": 98,
+"games": 5,
+"stats": {
+"ats": [
+3,
+2,
+0
+],
+"h1": [
+39.0,
+27.6
+],
+"pts": 74.0,
+"opp": 59.0,
+"fg": 45.5,
+"reb": 38.8,
+"ast": 13.8,
+"blk": 2.6,
+"tpm": 5.8,
+"tpm_rank": 332,
+"stl": 7.8
+}
+}
+},
+"sys_neutral": false,
+"sys_ranks": [
+98,
+99
+],
+"markets": {
+"spreads": {
+"point": -3.5,
+"side_a": "home"
+},
+"totals": {
+"point": 148.5
+}
+}
+},
+{
+"event_id": "0355b02b6389cbbb3326e2ed70b031c9",
+"league": "ncaab",
+"commence_time": "2026-11-21T21:00:00Z",
+"home": "Jacksonville Dolphins",
+"away": "Central Arkansas Bears",
+"model": {
+"home_win_prob": 0.4161,
+"away_win_prob": 0.5839,
+"market_home_prob": 0.3924913586096596,
+"disagreement": 2.4,
+"suspect": false,
+"source": "bpi",
+"proj": [
+73.9,
+76.3
+],
+"margin": -2.3,
+"edge": 3.5,
+"ev_home": 1.9,
+"ev_away": -5.1
+},
+"espn_id": "401917918",
+"ats": {
+"side": "home",
+"team": "Jacksonville Dolphins",
+"line": 3.5,
+"cover": 0.5208,
+"gap": 0.6,
+"raw": 1.2,
+"check": false,
+"tier": "pass",
+"stretch": 1.19
+},
+"teams": {
+"home": {
+"id": "294",
+"color": "00523e",
+"abbr": "JAX",
+"school": "Jacksonville",
+"short_": "Jacksonville"
+},
+"away": {
+"id": "2110",
+"color": "a7a9ac",
+"abbr": "CARK",
+"school": "Central Arkansas",
+"short_": "C Arkansas"
+}
+},
+"team_stats": {
+"away": {
+"id": "2110",
+"name": "Central Arkansas Bears",
+"color": "a7a9ac",
+"rank": null,
+"record": "2-3",
+"bpi": 157,
+"games": 5,
+"stats": {
+"ats": [
+2,
+2,
+0
+],
+"h1": [
+40.8,
+38.6
+],
+"pts": 80.8,
+"opp": 75.8,
+"fg": 46.8,
+"reb": 38.0,
+"ast": 17.6,
+"blk": 2.6,
+"tpm": 11.6,
+"tpm_rank": 19,
+"stl": 8.8
+}
+},
+"home": {
+"id": "294",
+"name": "Jacksonville Dolphins",
+"color": "00523e",
+"rank": null,
+"record": "2-3",
+"bpi": 280,
+"games": 5,
+"stats": {
+"ats": [
+2,
+2,
+0
+],
+"h1": [
+34.8,
+36.2
+],
+"pts": 75.0,
+"opp": 79.0,
+"fg": 42.8,
+"reb": 35.4,
+"ast": 13.4,
+"blk": 3.8,
+"tpm": 8.8,
+"tpm_rank": 146,
+"stl": 6.2
+}
+}
+},
+"sys_neutral": false,
+"sys_ranks": [
+280,
+157
+],
+"markets": {
+"spreads": {
+"point": 3.5,
+"side_a": "home"
+},
+"totals": {
+"point": 145.5
+}
+}
+},
+{
+"event_id": "b21de9c914b929255529918fffaa1efb",
+"league": "ncaab",
+"commence_time": "2026-11-21T21:00:00Z",
+"home": "La Salle Explorers",
+"away": "Pennsylvania Quakers",
+"model": {
+"home_win_prob": 0.4976,
+"away_win_prob": 0.5024,
+"market_home_prob": 0.5570335355844992,
+"disagreement": -5.9,
+"suspect": false,
+"source": "bpi",
+"proj": [
+73.3,
+73.4
+],
+"margin": -0.1,
+"edge": 3.5,
+"ev_home": -13.1,
+"ev_away": 10.5
+},
+"espn_id": "401921183",
+"ats": {
+"side": "away",
+"team": "Pennsylvania Quakers",
+"line": 2.5,
+"cover": 0.5385,
+"gap": 1.1,
+"raw": 2.2,
+"check": false,
+"tier": "pass",
+"stretch": 1.19
+},
+"teams": {
+"home": {
+"id": "2325",
+"color": "003356",
+"abbr": "LAS",
+"school": "La Salle",
+"short_": "La Salle"
+},
+"away": {
+"id": "219",
+"color": "082A74",
+"abbr": "PENN",
+"school": "Pennsylvania",
+"short_": "Penn"
+}
+},
+"team_stats": {
+"away": {
+"id": "219",
+"name": "Pennsylvania Quakers",
+"color": "082A74",
+"rank": null,
+"record": "2-3",
+"bpi": 156,
+"games": 5,
+"stats": {
+"ats": [
+1,
+3,
+0
+],
+"h1": [
+33.4,
+35.8
+],
+"pts": 75.2,
+"opp": 78.8,
+"fg": 39.4,
+"reb": 36.6,
+"ast": 15.2,
+"blk": 5.0,
+"tpm": 9.4,
+"tpm_rank": 110,
+"stl": 10.8
+}
+},
+"home": {
+"id": "2325",
+"name": "La Salle Explorers",
+"color": "003356",
+"rank": null,
+"record": "2-3",
+"bpi": 227,
+"games": 5,
+"stats": {
+"ats": [
+2,
+3,
+0
+],
+"h1": [
+36.2,
+36.2
+],
+"pts": 72.2,
+"opp": 79.8,
+"fg": 37.5,
+"reb": 39.8,
+"ast": 16.8,
+"blk": 2.6,
+"tpm": 10.4,
+"tpm_rank": 59,
+"stl": 7.2
+}
+}
+},
+"sys_neutral": false,
+"sys_ranks": [
+227,
+156
+],
+"system": {
+"side": null,
+"reasons": [],
+"under": true
+},
+"markets": {
+"spreads": {
+"point": -2.5,
+"side_a": "home"
+},
+"totals": {
+"point": 159.5
+}
+}
+},
+{
+"event_id": "089763b58d06f84ae9546c2037e7d941",
+"league": "ncaab",
+"commence_time": "2026-11-21T21:30:00Z",
+"home": "San Diego Toreros",
+"away": "UC Irvine Anteaters",
+"model": {
+"home_win_prob": 0.2842,
+"away_win_prob": 0.7158,
+"market_home_prob": 0.3492702659194662,
+"disagreement": -6.5,
+"suspect": false,
+"source": "bpi",
+"proj": [
+70.4,
+76.7
+],
+"margin": -6.3,
+"edge": 0.0,
+"ev_home": -21.8,
+"ev_away": 9.3
+},
+"espn_id": "401917538",
+"ats": {
+"side": "away",
+"team": "UC Irvine Anteaters",
+"line": -4.5,
+"cover": 0.5511,
+"gap": 1.5,
+"raw": 3.0,
+"check": false,
+"tier": "pass",
+"stretch": 1.19
+},
+"teams": {
+"home": {
+"id": "301",
+"color": "2f99d4",
+"abbr": "USD",
+"school": "San Diego",
+"short_": "San Diego"
+},
+"away": {
+"id": "300",
+"color": "002B5C",
+"abbr": "UCI",
+"school": "UC Irvine",
+"short_": "UC Irvine"
+}
+},
+"team_stats": {
+"away": {
+"id": "300",
+"name": "UC Irvine Anteaters",
+"color": "002B5C",
+"rank": null,
+"record": "3-1",
+"bpi": 113,
+"games": 4,
+"stats": {
+"ats": [
+2,
+0,
+0
+],
+"h1": [
+44.25,
+26.5
+],
+"pts": 83.5,
+"opp": 62.5,
+"fg": 45.4,
+"reb": 53.75,
+"ast": 13.0,
+"blk": 5.0,
+"tpm": 6.75,
+"tpm_rank": 286,
+"stl": 6.5
+}
+},
+"home": {
+"id": "301",
+"name": "San Diego Toreros",
+"color": "2f99d4",
+"rank": null,
+"record": "4-1",
+"bpi": 217,
+"games": 5,
+"stats": {
+"ats": [
+3,
+1,
+0
+],
+"h1": [
+38.8,
+32.0
+],
+"pts": 81.6,
+"opp": 72.8,
+"fg": 46.2,
+"reb": 33.8,
+"ast": 17.0,
+"blk": 2.4,
+"tpm": 8.0,
+"tpm_rank": 202,
+"stl": 7.8
+}
+}
+},
+"sys_neutral": true,
+"sys_ranks": [
+217,
+113
+],
+"markets": {
+"spreads": {
+"point": 4.5,
+"side_a": "home"
+},
+"totals": {
+"point": 132.5
+}
+}
+},
+{
+"event_id": "6ed855b5052c6914a70d4c336653271e",
+"league": "ncaab",
+"commence_time": "2026-11-21T22:00:00Z",
+"home": "Southern Miss Golden Eagles",
+"away": "Nicholls Colonels",
+"model": {
+"home_win_prob": 0.5307,
+"away_win_prob": 0.4693,
+"market_home_prob": 0.5868848471238467,
+"disagreement": -5.6,
+"suspect": false,
+"source": "bpi",
+"proj": [
+70.1,
+69.2
+],
+"margin": 0.8,
+"edge": 0.0,
+"ev_home": -10.3,
+"ev_away": 9.3
+},
+"espn_id": "401925065",
+"ats": {
+"side": "away",
+"team": "Nicholls Colonels",
+"line": 2.5,
+"cover": 0.5333,
+"gap": 0.9,
+"raw": 1.9,
+"check": false,
+"tier": "pass",
+"stretch": 1.19
+},
+"teams": {
+"home": {
+"id": "2572",
+"color": "ffc72c",
+"abbr": "USM",
+"school": "Southern Miss",
+"short_": "Southern Miss"
+},
+"away": {
+"id": "2447",
+"color": "C41230",
+"abbr": "NICH",
+"school": "Nicholls",
+"short_": "Nicholls"
+}
+},
+"team_stats": {
+"away": {
+"id": "2447",
+"name": "Nicholls Colonels",
+"color": "C41230",
+"rank": null,
+"record": "2-3",
+"bpi": 276,
+"games": 5,
+"stats": {
+"ats": [
+2,
+2,
+0
+],
+"h1": [
+28.8,
+35.0
+],
+"pts": 69.6,
+"opp": 69.4,
+"fg": 41.9,
+"reb": 33.8,
+"ast": 14.8,
+"blk": 3.8,
+"tpm": 9.4,
+"tpm_rank": 105,
+"stl": 9.8
+}
+},
+"home": {
+"id": "2572",
+"name": "Southern Miss Golden Eagles",
+"color": "ffc72c",
+"rank": null,
+"record": "3-3",
+"bpi": 257,
+"games": 6,
+"stats": {
+"ats": [
+2,
+3,
+0
+],
+"h1": [
+35.0,
+38.17
+],
+"pts": 77.17,
+"opp": 77.67,
+"fg": 42.8,
+"reb": 38.67,
+"ast": 10.33,
+"blk": 3.5,
+"tpm": 5.83,
+"tpm_rank": 330,
+"stl": 8.17
+}
+}
+},
+"sys_neutral": true,
+"sys_ranks": [
+257,
+276
+],
+"markets": {
+"spreads": {
+"point": -2.5,
+"side_a": "home"
+},
+"totals": {
+"point": 141.5
+}
+}
+},
+{
+"event_id": "e7d59ea4f2c81294a88a46cc63628713",
+"league": "ncaab",
+"commence_time": "2026-11-21T22:00:00Z",
+"home": "Stonehill Skyhawks",
+"away": "Northeastern Huskies",
+"model": {
+"home_win_prob": 0.2769,
+"away_win_prob": 0.7231,
+"market_home_prob": 0.23474607641434256,
+"disagreement": 4.2,
+"suspect": false,
+"source": "bpi",
+"proj": [
+69.8,
+76.3
+],
+"margin": -6.5,
+"edge": 3.5,
+"ev_home": 13.5,
+"ev_away": -7.0
+},
+"espn_id": "401919849",
+"ats": {
+"side": "home",
+"team": "Stonehill Skyhawks",
+"line": 8.5,
+"cover": 0.5341,
+"gap": 1.1,
+"raw": 2.1,
+"check": false,
+"tier": "pass",
+"stretch": 1.19
+},
+"teams": {
+"home": {
+"id": "284",
+"color": "000000",
+"abbr": "STO",
+"school": "Stonehill",
+"short_": "Stonehill"
+},
+"away": {
+"id": "111",
+"color": "CC0001",
+"abbr": "NE",
+"school": "Northeastern",
+"short_": "Northeastern"
+}
+},
+"team_stats": {
+"away": {
+"id": "111",
+"name": "Northeastern Huskies",
+"color": "CC0001",
+"rank": null,
+"record": "2-3",
+"bpi": 222,
+"games": 5,
+"stats": {
+"ats": [
+4,
+1,
+0
+],
+"h1": [
+35.6,
+35.8
+],
+"pts": 78.4,
+"opp": 83.4,
+"fg": 47.1,
+"reb": 32.2,
+"ast": 14.2,
+"blk": 4.6,
+"tpm": 8.2,
+"tpm_rank": 184,
+"stl": 5.8
+}
+},
+"home": {
+"id": "284",
+"name": "Stonehill Skyhawks",
+"color": "000000",
+"rank": null,
+"record": "1-4",
+"bpi": 357,
+"games": 5,
+"stats": {
+"ats": [
+1,
+3,
+0
+],
+"h1": [
+32.6,
+33.2
+],
+"pts": 61.8,
+"opp": 78.4,
+"fg": 34.7,
+"reb": 37.8,
+"ast": 10.4,
+"blk": 3.8,
+"tpm": 6.0,
+"tpm_rank": 318,
+"stl": 5.8
+}
+}
+},
+"sys_neutral": false,
+"sys_ranks": [
+357,
+222
+],
+"system": {
+"side": null,
+"reasons": [],
+"under": true
+},
+"markets": {
+"spreads": {
+"point": 8.5,
+"side_a": "home"
+},
+"totals": {
+"point": 147.5
+}
+}
+},
+{
+"event_id": "a25c47368079760e1df98f700e9cda49",
+"league": "ncaab",
+"commence_time": "2026-11-21T22:00:00Z",
+"home": "UTSA Roadrunners",
+"away": "Air Force Falcons",
+"model": {
+"home_win_prob": 0.7631,
+"away_win_prob": 0.2369,
+"market_home_prob": 0.713191704135709,
+"disagreement": 5.0,
+"suspect": false,
+"source": "bpi",
+"proj": [
+78.9,
+71.0
+],
+"margin": 7.9,
+"edge": 3.5,
+"ev_home": 5.7,
+"ev_away": -21.8
+},
+"espn_id": "401911337",
+"ats": {
+"side": "home",
+"team": "UTSA Roadrunners",
+"line": -6.5,
+"cover": 0.5216,
+"gap": 0.7,
+"raw": 1.3,
+"check": false,
+"tier": "pass",
+"stretch": 1.19
+},
+"teams": {
+"home": {
+"id": "2636",
+"color": "0c2340",
+"abbr": "UTSA",
+"school": "UTSA",
+"short_": "UTSA"
+},
+"away": {
+"id": "2005",
+"color": "003594",
+"abbr": "AF",
+"school": "Air Force",
+"short_": "Air Force"
+}
+},
+"team_stats": {
+"away": {
+"id": "2005",
+"name": "Air Force Falcons",
+"color": "003594",
+"rank": null,
+"record": "3-2",
+"bpi": 319,
+"games": 5,
+"stats": {
+"ats": [
+2,
+1,
+0
+],
+"h1": [
+40.6,
+43.0
+],
+"pts": 88.6,
+"opp": 85.6,
+"fg": 39.5,
+"reb": 40.8,
+"ast": 14.0,
+"blk": 2.4,
+"tpm": 8.6,
+"tpm_rank": 160,
+"stl": 11.4
+}
+},
+"home": {
+"id": "2636",
+"name": "UTSA Roadrunners",
+"color": "0c2340",
+"rank": null,
+"record": "3-2",
+"bpi": 243,
+"games": 5,
+"stats": {
+"ats": [
+2,
+3,
+0
+],
+"h1": [
+37.2,
+35.6
+],
+"pts": 79.0,
+"opp": 77.4,
+"fg": 43.3,
+"reb": 34.4,
+"ast": 14.8,
+"blk": 3.4,
+"tpm": 8.8,
+"tpm_rank": 144,
+"stl": 9.8
+}
+}
+},
+"sys_neutral": false,
+"sys_ranks": [
+243,
+319
+],
+"markets": {
+"spreads": {
+"point": -6.5,
+"side_a": "home"
+},
+"totals": {
+"point": 173.0
+}
+}
+},
+{
+"event_id": "7522960fbb3bcea978fbb1291c8c866b",
+"league": "ncaab",
+"commence_time": "2026-11-21T22:00:00Z",
+"home": "Wofford Terriers",
+"away": "Winthrop Eagles",
+"model": {
+"home_win_prob": 0.6423,
+"away_win_prob": 0.3577,
+"market_home_prob": 0.7175165656963616,
+"disagreement": -7.5,
+"suspect": false,
+"source": "bpi",
+"proj": [
+79.5,
+75.5
+],
+"margin": 4.0,
+"edge": 3.5,
+"ev_home": -12.0,
+"ev_away": 16.6
+},
+"espn_id": "401925709",
+"ats": {
+"side": "away",
+"team": "Winthrop Eagles",
+"line": 6.5,
+"cover": 0.52,
+"gap": 0.6,
+"raw": 1.2,
+"check": false,
+"tier": "pass",
+"stretch": 1.19
+},
+"teams": {
+"home": {
+"id": "2747",
+"color": "533B22",
+"abbr": "WOF",
+"school": "Wofford",
+"short_": "Wofford"
+},
+"away": {
+"id": "2737",
+"color": "9e0b0e",
+"abbr": "WIN",
+"school": "Winthrop",
+"short_": "Winthrop"
+}
+},
+"team_stats": {
+"away": {
+"id": "2737",
+"name": "Winthrop Eagles",
+"color": "9e0b0e",
+"rank": null,
+"record": "0-5",
+"bpi": 277,
+"games": 5,
+"stats": {
+"ats": [
+1,
+4,
+0
+],
+"h1": [
+34.6,
+40.6
+],
+"pts": 83.6,
+"opp": 90.0,
+"fg": 46.0,
+"reb": 37.4,
+"ast": 12.2,
+"blk": 3.6,
+"tpm": 9.4,
+"tpm_rank": 104,
+"stl": 6.0
+}
+},
+"home": {
+"id": "2747",
+"name": "Wofford Terriers",
+"color": "533B22",
+"rank": null,
+"record": "3-3",
+"bpi": 264,
+"games": 6,
+"stats": {
+"ats": [
+2,
+2,
+0
+],
+"h1": [
+39.67,
+33.0
+],
+"pts": 81.83,
+"opp": 81.17,
+"fg": 45.4,
+"reb": 37.5,
+"ast": 17.0,
+"blk": 2.33,
+"tpm": 8.5,
+"tpm_rank": 168,
+"stl": 6.5
+}
+}
+},
+"sys_neutral": false,
+"sys_ranks": [
+264,
+277
+],
+"markets": {
+"spreads": {
+"point": -6.5,
+"side_a": "home"
+},
+"totals": {
+"point": 165.0
+}
+}
+},
+{
+"event_id": "fa6a6d717b7ee026ba18c92b10e5e36e",
+"league": "ncaab",
+"commence_time": "2026-11-21T22:30:00Z",
+"home": "East Carolina Pirates",
+"away": "Southern Illinois Salukis",
+"model": {
+"home_win_prob": 0.4441,
+"away_win_prob": 0.5559,
+"market_home_prob": 0.48075418221720556,
+"disagreement": -3.7,
+"suspect": false,
+"source": "bpi",
+"proj": [
+71.8,
+73.4
+],
+"margin": -1.5,
+"edge": 0.0,
+"ev_home": -11.2,
+"ev_away": 5.2
+},
+"espn_id": "401920570",
+"teams": {
+"home": {
+"id": "151",
+"color": "582c83",
+"abbr": "ECU",
+"school": "East Carolina",
+"short_": "East Carolina"
+},
+"away": {
+"id": "79",
+"color": "85283D",
+"abbr": "SIU",
+"school": "Southern Illinois",
+"short_": "S Illinois"
+}
+},
+"team_stats": {
+"away": {
+"id": "79",
+"name": "Southern Illinois Salukis",
+"color": "85283D",
+"rank": null,
+"record": "2-3",
+"bpi": 169,
+"games": 5,
+"stats": {
+"ats": [
+1,
+3,
+0
+],
+"h1": [
+37.6,
+37.4
+],
+"pts": 81.2,
+"opp": 74.6,
+"fg": 43.8,
+"reb": 37.8,
+"ast": 14.4,
+"blk": 5.4,
+"tpm": 11.4,
+"tpm_rank": 21,
+"stl": 4.2
+}
+},
+"home": {
+"id": "151",
+"name": "East Carolina Pirates",
+"color": "582c83",
+"rank": null,
+"record": "3-2",
+"bpi": 199,
+"games": 5,
+"stats": {
+"ats": [
+2,
+3,
+0
+],
+"h1": [
+36.8,
+32.0
+],
+"pts": 76.2,
+"opp": 70.6,
+"fg": 42.6,
+"reb": 32.6,
+"ast": 15.6,
+"blk": 4.0,
+"tpm": 9.6,
+"tpm_rank": 95,
+"stl": 7.6
+}
+}
+},
+"sys_neutral": true,
+"sys_ranks": [
+199,
+169
+],
+"markets": {
+"spreads": {
+"point": 1.5,
+"side_a": "home"
+},
+"totals": {
+"point": 153.0
+}
+}
+},
+{
+"event_id": "d4ff5572dfce3797f92425c0269392d5",
+"league": "ncaab",
+"commence_time": "2026-11-21T23:00:00Z",
+"home": "Georgetown Hoyas",
+"away": "Coppin St Eagles",
+"model": {
+"home_win_prob": 0.9824,
+"away_win_prob": 0.0176,
+"market_home_prob": null,
+"disagreement": null,
+"suspect": false,
+"source": "bpi",
+"proj": [
+84.8,
+61.6
+],
+"margin": 23.2,
+"edge": 3.5,
+"ev_home": null,
+"ev_away": null
+},
+"espn_id": "401909517",
+"ats": {
+"side": "away",
+"team": "Coppin St Eagles",
+"line": 31.5,
+"cover": 0.5868,
+"gap": 3.5,
+"raw": 6.9,
+"check": false,
+"tier": "lean",
+"stretch": 1.19
+},
+"teams": {
+"home": {
+"id": "46",
+"color": "110E42",
+"abbr": "GTWN",
+"school": "Georgetown",
+"short_": "Georgetown"
+},
+"away": {
+"id": "2154",
+"color": "2e3192",
+"abbr": "COPP",
+"school": "Coppin State",
+"short_": "Coppin St"
+}
+},
+"team_stats": {
+"away": {
+"id": "2154",
+"name": "Coppin State Eagles",
+"color": "2e3192",
+"rank": null,
+"record": "1-5",
+"bpi": 354,
+"games": 6,
+"stats": {
+"ats": [
+3,
+2,
+0
+],
+"h1": [
+30.17,
+37.83
+],
+"pts": 62.17,
+"opp": 71.0,
+"fg": 41.0,
+"reb": 33.5,
+"ast": 10.0,
+"blk": 3.67,
+"tpm": 4.33,
+"tpm_rank": 363,
+"stl": 6.17
+}
+},
+"home": {
+"id": "46",
+"name": "Georgetown Hoyas",
+"color": "110E42",
+"rank": null,
+"record": "5-0",
+"bpi": 78,
+"games": 5,
+"stats": {
+"ats": [
+3,
+2,
+0
+],
+"h1": [
+41.6,
+27.8
+],
+"pts": 83.6,
+"opp": 68.2,
+"fg": 50.0,
+"reb": 35.4,
+"ast": 18.4,
+"blk": 3.8,
+"tpm": 10.0,
+"tpm_rank": 75,
+"stl": 5.2
+}
+}
+},
+"sys_neutral": false,
+"sys_ranks": [
+78,
+354
+],
+"system": {
+"side": "away",
+"reasons": [
+"bigdog"
+],
+"under": false
+},
+"markets": {
+"spreads": {
+"point": -31.5,
+"side_a": "home"
+},
+"totals": {
+"point": 142.5
+}
+}
+},
+{
+"event_id": "a8d9f06e5e8a38eff46544b225f7b425",
+"league": "ncaab",
+"commence_time": "2026-11-21T23:00:00Z",
+"home": "Massachusetts Minutemen",
+"away": "Maine Black Bears",
+"model": {
+"home_win_prob": 0.7935,
+"away_win_prob": 0.2065,
+"market_home_prob": 0.8788691009039077,
+"disagreement": -8.5,
+"suspect": false,
+"source": "bpi",
+"proj": [
+74.7,
+65.7
+],
+"margin": 9.0,
+"edge": 3.5,
+"ev_home": -9.7,
+"ev_away": 39.4
+},
+"espn_id": "401911023",
+"ats": {
+"side": "away",
+"team": "Maine Black Bears",
+"line": 12.0,
+"cover": 0.5203,
+"gap": 0.7,
+"raw": 1.3,
+"check": false,
+"tier": "pass",
+"stretch": 1.19
+},
+"teams": {
+"home": {
+"id": "113",
+"color": "881c1c",
+"abbr": "MASS",
+"school": "Massachusetts",
+"short_": "UMass"
+},
+"away": {
+"id": "311",
+"color": "127dbe",
+"abbr": "ME",
+"school": "Maine",
+"short_": "Maine"
+}
+},
+"team_stats": {
+"away": {
+"id": "311",
+"name": "Maine Black Bears",
+"color": "127dbe",
+"rank": null,
+"record": "2-4",
+"bpi": 299,
+"games": 6,
+"stats": {
+"ats": [
+5,
+1,
+0
+],
+"h1": [
+28.5,
+27.5
+],
+"pts": 65.0,
+"opp": 71.17,
+"fg": 44.0,
+"reb": 31.33,
+"ast": 14.0,
+"blk": 4.5,
+"tpm": 8.33,
+"tpm_rank": 176,
+"stl": 5.17
+}
+},
+"home": {
+"id": "113",
+"name": "Massachusetts Minutemen",
+"color": "881c1c",
+"rank": null,
+"record": "2-2",
+"bpi": 191,
+"games": 4,
+"stats": {
+"ats": [
+2,
+2,
+0
+],
+"h1": [
+33.0,
+30.75
+],
+"pts": 69.25,
+"opp": 69.0,
+"fg": 43.1,
+"reb": 47.0,
+"ast": 13.25,
+"blk": 5.0,
+"tpm": 5.25,
+"tpm_rank": 351,
+"stl": 3.5
+}
+}
+},
+"sys_neutral": false,
+"sys_ranks": [
+191,
+299
+],
+"system": {
+"side": "away",
+"reasons": [
+"bigdog"
+],
+"under": false
+},
+"markets": {
+"spreads": {
+"point": -12.0,
+"side_a": "home"
+},
+"totals": {
+"point": 138.5
+}
+}
+},
+{
+"event_id": "7d2d0772fddef71e92f444c6221354a3",
+"league": "ncaab",
+"commence_time": "2026-11-21T23:00:00Z",
+"home": "Norfolk St Spartans",
+"away": "UNC Wilmington Seahawks",
+"model": {
+"home_win_prob": 0.1776,
+"away_win_prob": 0.8224,
+"market_home_prob": 0.1096301184235524,
+"disagreement": 6.8,
+"suspect": false,
+"source": "bpi",
+"proj": [
+69.9,
+80.1
+],
+"margin": -10.2,
+"edge": 3.5,
+"ev_home": 30.9,
+"ev_away": -7.9
+},
+"espn_id": "401925897",
+"ats": {
+"side": "home",
+"team": "Norfolk St Spartans",
+"line": 12.5,
+"cover": 0.5046,
+"gap": 0.1,
+"raw": 0.3,
+"check": false,
+"tier": "pass",
+"stretch": 1.19
+},
+"teams": {
+"home": {
+"id": "2450",
+"color": "0c8968",
+"abbr": "NORF",
+"school": "Norfolk State",
+"short_": "Norfolk St"
+},
+"away": {
+"id": "350",
+"color": "00665e",
+"abbr": "UNCW",
+"school": "UNC Wilmington",
+"short_": "UNC Wilmington"
+}
+},
+"team_stats": {
+"away": {
+"id": "350",
+"name": "UNC Wilmington Seahawks",
+"color": "00665e",
+"rank": null,
+"record": "4-1",
+"bpi": 128,
+"games": 5,
+"stats": {
+"ats": [
+1,
+2,
+0
+],
+"h1": [
+44.2,
+33.4
+],
+"pts": 96.8,
+"opp": 73.8,
+"fg": 47.8,
+"reb": 50.4,
+"ast": 17.0,
+"blk": 3.8,
+"tpm": 10.0,
+"tpm_rank": 76,
+"stl": 8.6
+}
+},
+"home": {
+"id": "2450",
+"name": "Norfolk State Spartans",
+"color": "0c8968",
+"rank": null,
+"record": "2-4",
+"bpi": 348,
+"games": 6,
+"stats": {
+"ats": [
+1,
+3,
+0
+],
+"h1": [
+33.17,
+35.0
+],
+"pts": 68.5,
+"opp": 77.0,
+"fg": 40.8,
+"reb": 32.83,
+"ast": 12.0,
+"blk": 4.33,
+"tpm": 6.67,
+"tpm_rank": 290,
+"stl": 9.5
+}
+}
+},
+"sys_neutral": false,
+"sys_ranks": [
+348,
+128
+],
+"markets": {
+"spreads": {
+"point": 12.5,
+"side_a": "home"
+},
+"totals": {
+"point": 149.5
+}
+}
+},
+{
+"event_id": "ab342b5218a6e8b0cc7efa7c92bf8c01",
+"league": "ncaab",
+"commence_time": "2026-11-22T00:00:00Z",
+"home": "Cal Poly Mustangs",
+"away": "Northern Arizona Lumberjacks",
+"model": {
+"home_win_prob": 0.7476,
+"away_win_prob": 0.2524,
+"market_home_prob": 0.7751999555521526,
+"disagreement": -2.8,
+"suspect": false,
+"source": "bpi",
+"proj": [
+80.2,
+72.9
+],
+"margin": 7.3,
+"edge": 3.5,
+"ev_home": -3.6,
+"ev_away": 3.5
+},
+"espn_id": "401920125",
+"ats": {
+"side": "away",
+"team": "Northern Arizona Lumberjacks",
+"line": 8.5,
+"cover": 0.513,
+"gap": 0.4,
+"raw": 0.8,
+"check": false,
+"tier": "pass",
+"stretch": 1.19
+},
+"teams": {
+"home": {
+"id": "13",
+"color": "1E4D2B",
+"abbr": "CP",
+"school": "Cal Poly",
+"short_": "Cal Poly"
+},
+"away": {
+"id": "2464",
+"color": "003976",
+"abbr": "NAU",
+"school": "Northern Arizona",
+"short_": "N Arizona"
+}
+},
+"team_stats": {
+"away": {
+"id": "2464",
+"name": "Northern Arizona Lumberjacks",
+"color": "003976",
+"rank": null,
+"record": "1-4",
+"bpi": 297,
+"games": 5,
+"stats": {
+"ats": [
+3,
+1,
+0
+],
+"h1": [
+34.2,
+39.8
+],
+"pts": 70.0,
+"opp": 82.0,
+"fg": 47.2,
+"reb": 31.8,
+"ast": 12.8,
+"blk": 2.0,
+"tpm": 8.6,
+"tpm_rank": 163,
+"stl": 2.2
+}
+},
+"home": {
+"id": "13",
+"name": "Cal Poly Mustangs",
+"color": "1E4D2B",
+"rank": null,
+"record": "2-3",
+"bpi": 226,
+"games": 5,
+"stats": {
+"ats": [
+2,
+2,
+0
+],
+"h1": [
+33.0,
+37.6
+],
+"pts": 73.6,
+"opp": 83.2,
+"fg": 42.3,
+"reb": 39.0,
+"ast": 12.0,
+"blk": 2.8,
+"tpm": 10.2,
+"tpm_rank": 70,
+"stl": 6.6
+}
+}
+},
+"sys_neutral": false,
+"sys_ranks": [
+226,
+297
+],
+"markets": {
+"spreads": {
+"point": -8.5,
+"side_a": "home"
+},
+"totals": {
+"point": 156.5
+}
+}
+},
+{
+"event_id": "e36499bff95a05a2521431370edf4dae",
+"league": "ncaab",
+"commence_time": "2026-11-22T00:00:00Z",
+"home": "Chattanooga Mocs",
+"away": "Radford Highlanders",
+"model": {
+"home_win_prob": 0.7151,
+"away_win_prob": 0.2849,
+"market_home_prob": 0.7869354502770264,
+"disagreement": -7.2,
+"suspect": false,
+"source": "bpi",
+"proj": [
+78.8,
+72.6
+],
+"margin": 6.3,
+"edge": 3.5,
+"ev_home": -9.9,
+"ev_away": 23.6
+},
+"espn_id": "401920975",
+"ats": {
+"side": "away",
+"team": "Radford Highlanders",
+"line": 8.5,
+"cover": 0.513,
+"gap": 0.4,
+"raw": 0.8,
+"check": false,
+"tier": "pass",
+"stretch": 1.19
+},
+"teams": {
+"home": {
+"id": "236",
+"color": "00386b",
+"abbr": "UTC",
+"school": "Chattanooga",
+"short_": "Chattanooga"
+},
+"away": {
+"id": "2515",
+"color": "BC1515",
+"abbr": "RAD",
+"school": "Radford",
+"short_": "Radford"
+}
+},
+"team_stats": {
+"away": {
+"id": "2515",
+"name": "Radford Highlanders",
+"color": "BC1515",
+"rank": null,
+"record": "1-4",
+"bpi": 233,
+"games": 5,
+"stats": {
+"ats": [
+3,
+1,
+0
+],
+"h1": [
+38.2,
+37.0
+],
+"pts": 70.4,
+"opp": 74.2,
+"fg": 44.4,
+"reb": 35.2,
+"ast": 12.0,
+"blk": 4.4,
+"tpm": 6.4,
+"tpm_rank": 307,
+"stl": 6.0
+}
+},
+"home": {
+"id": "236",
+"name": "Chattanooga Mocs",
+"color": "00386b",
+"rank": null,
+"record": "3-2",
+"bpi": 171,
+"games": 5,
+"stats": {
+"ats": [
+4,
+0,
+0
+],
+"h1": [
+41.2,
+38.6
+],
+"pts": 85.4,
+"opp": 79.4,
+"fg": 46.3,
+"reb": 42.0,
+"ast": 18.6,
+"blk": 1.2,
+"tpm": 11.2,
+"tpm_rank": 26,
+"stl": 8.4
+}
+}
+},
+"sys_neutral": false,
+"sys_ranks": [
+171,
+233
+],
+"markets": {
+"spreads": {
+"point": -8.5,
+"side_a": "home"
+},
+"totals": {
+"point": 152.5
+}
+}
+},
+{
+"event_id": "b2203e33d7aedad7f3ac39e1282c44d4",
+"league": "ncaab",
+"commence_time": "2026-11-22T00:00:00Z",
+"home": "Elon Phoenix",
+"away": "Morehead St Eagles",
+"model": {
+"home_win_prob": 0.8051,
+"away_win_prob": 0.1949,
+"market_home_prob": 0.8870060098988553,
+"disagreement": -8.2,
+"suspect": false,
+"source": "bpi",
+"proj": [
+81.7,
+72.2
+],
+"margin": 9.5,
+"edge": 3.5,
+"ev_home": -8.2,
+"ev_away": 41.7
+},
+"espn_id": "401920964",
+"ats": {
+"side": "away",
+"team": "Morehead St Eagles",
+"line": 12.0,
+"cover": 0.5466,
+"gap": 1.5,
+"raw": 3.0,
+"check": false,
+"tier": "pass",
+"stretch": 1.19
+},
+"teams": {
+"home": {
+"id": "2210",
+"color": "020303",
+"abbr": "ELON",
+"school": "Elon",
+"short_": "Elon"
+},
+"away": {
+"id": "2413",
+"color": "094FA3",
+"abbr": "MORE",
+"school": "Morehead State",
+"short_": "Morehead St"
+}
+},
+"team_stats": {
+"away": {
+"id": "2413",
+"name": "Morehead State Eagles",
+"color": "094FA3",
+"rank": null,
+"record": "3-3",
+"bpi": 317,
+"games": 6,
+"stats": {
+"ats": [
+2,
+2,
+0
+],
+"h1": [
+40.67,
+35.33
+],
+"pts": 81.5,
+"opp": 80.83,
+"fg": 47.9,
+"reb": 38.0,
+"ast": 17.67,
+"blk": 2.67,
+"tpm": 7.0,
+"tpm_rank": 258,
+"stl": 5.5
+}
+},
+"home": {
+"id": "2210",
+"name": "Elon Phoenix",
+"color": "020303",
+"rank": null,
+"record": "2-3",
+"bpi": 203,
+"games": 5,
+"stats": {
+"ats": [
+2,
+3,
+0
+],
+"h1": [
+34.0,
+34.4
+],
+"pts": 70.0,
+"opp": 72.4,
+"fg": 42.8,
+"reb": 34.2,
+"ast": 12.8,
+"blk": 5.2,
+"tpm": 7.2,
+"tpm_rank": 243,
+"stl": 6.0
+}
+}
+},
+"sys_neutral": false,
+"sys_ranks": [
+203,
+317
+],
+"markets": {
+"spreads": {
+"point": -12.0,
+"side_a": "home"
+},
+"totals": {
+"point": 143.5
+}
+}
+},
+{
+"event_id": "8c116bae5bbaa0e4fe66308c754c8637",
+"league": "ncaab",
+"commence_time": "2026-11-22T00:00:00Z",
+"home": "Loyola Marymount Lions",
+"away": "California Baptist Lancers",
+"model": {
+"home_win_prob": 0.8505,
+"away_win_prob": 0.1495,
+"market_home_prob": 0.9180394799735487,
+"disagreement": -6.8,
+"suspect": false,
+"source": "bpi",
+"proj": [
+79.5,
+68.1
+],
+"margin": 11.4,
+"edge": 0.0,
+"ev_home": -7.9,
+"ev_away": 37.1
+},
+"espn_id": "401917539",
+"ats": {
+"side": "home",
+"team": "Loyola Marymount Lions",
+"line": -13.5,
+"cover": 0.5046,
+"gap": 0.1,
+"raw": 0.3,
+"check": false,
+"tier": "pass",
+"stretch": 1.19
+},
+"teams": {
+"home": {
+"id": "2351",
+"color": "880029",
+"abbr": "LMU",
+"school": "Loyola Marymount",
+"short_": "LMU"
+},
+"away": {
+"id": "2856",
+"color": "000080",
+"abbr": "CBU",
+"school": "California Baptist",
+"short_": "CA Baptist"
+}
+},
+"team_stats": {
+"away": {
+"id": "2856",
+"name": "California Baptist Lancers",
+"color": "000080",
+"rank": null,
+"record": "1-4",
+"bpi": 335,
+"games": 5,
+"stats": {
+"ats": [
+0,
+5,
+0
+],
+"h1": [
+29.8,
+38.2
+],
+"pts": 64.2,
+"opp": 78.2,
+"fg": 37.6,
+"reb": 29.6,
+"ast": 10.0,
+"blk": 2.0,
+"tpm": 7.2,
+"tpm_rank": 246,
+"stl": 5.2
+}
+},
+"home": {
+"id": "2351",
+"name": "Loyola Marymount Lions",
+"color": "880029",
+"rank": null,
+"record": "2-3",
+"bpi": 136,
+"games": 5,
+"stats": {
+"ats": [
+1,
+3,
+0
+],
+"h1": [
+45.0,
+31.8
+],
+"pts": 84.8,
+"opp": 69.6,
+"fg": 47.0,
+"reb": 40.6,
+"ast": 17.4,
+"blk": 5.0,
+"tpm": 11.0,
+"tpm_rank": 38,
+"stl": 6.2
+}
+}
+},
+"sys_neutral": true,
+"sys_ranks": [
+136,
+335
+],
+"markets": {
+"spreads": {
+"point": -13.5,
+"side_a": "home"
+},
+"totals": {
+"point": 135.0
+}
+}
+},
+{
+"event_id": "d2225a902743456bc09613327cb26bb5",
+"league": "ncaab",
+"commence_time": "2026-11-22T00:00:00Z",
+"home": "Mercer Bears",
+"away": "Charleston Southern Buccaneers",
+"model": {
+"home_win_prob": 0.7372,
+"away_win_prob": 0.2628,
+"market_home_prob": 0.7947915670167225,
+"disagreement": -5.8,
+"suspect": false,
+"source": "bpi",
+"proj": [
+78.4,
+71.4
+],
+"margin": 7.0,
+"edge": 3.5,
+"ev_home": -8.5,
+"ev_away": 13.0
+},
+"espn_id": "401911378",
+"ats": {
+"side": "away",
+"team": "Charleston Southern Buccaneers",
+"line": 9.5,
+"cover": 0.5496,
+"gap": 1.6,
+"raw": 3.1,
+"check": false,
+"tier": "pass",
+"stretch": 1.19
+},
+"teams": {
+"home": {
+"id": "2382",
+"color": "ff7f29",
+"abbr": "MER",
+"school": "Mercer",
+"short_": "Mercer"
+},
+"away": {
+"id": "2127",
+"color": "2e3192",
+"abbr": "CHSO",
+"school": "Charleston Southern",
+"short_": "Charleston So"
+}
+},
+"team_stats": {
+"away": {
+"id": "2127",
+"name": "Charleston Southern Buccaneers",
+"color": "2e3192",
+"rank": null,
+"record": "2-3",
+"bpi": 284,
+"games": 5,
+"stats": {
+"ats": [
+2,
+2,
+0
+],
+"h1": [
+31.2,
+35.6
+],
+"pts": 78.0,
+"opp": 75.2,
+"fg": 44.6,
+"reb": 40.0,
+"ast": 16.4,
+"blk": 3.0,
+"tpm": 9.2,
+"tpm_rank": 118,
+"stl": 5.6
+}
+},
+"home": {
+"id": "2382",
+"name": "Mercer Bears",
+"color": "ff7f29",
+"rank": null,
+"record": "2-4",
+"bpi": 220,
+"games": 6,
+"stats": {
+"ats": [
+2,
+3,
+0
+],
+"h1": [
+33.5,
+37.67
+],
+"pts": 79.17,
+"opp": 81.83,
+"fg": 42.8,
+"reb": 37.33,
+"ast": 10.83,
+"blk": 2.67,
+"tpm": 7.17,
+"tpm_rank": 247,
+"stl": 7.5
+}
+}
+},
+"sys_neutral": false,
+"sys_ranks": [
+220,
+284
+],
+"markets": {
+"spreads": {
+"point": -9.5,
+"side_a": "home"
+},
+"totals": {
+"point": 162.5
+}
+}
+},
+{
+"event_id": "1e244cf66149400c5e73025d7d4cfc60",
+"league": "ncaab",
+"commence_time": "2026-11-22T00:00:00Z",
+"home": "VMI Keydets",
+"away": "Gardner-Webb Runnin' Bulldogs",
+"model": {
+"home_win_prob": 0.7409,
+"away_win_prob": 0.2591,
+"market_home_prob": 0.7703987168355951,
+"disagreement": -2.9,
+"suspect": false,
+"source": "bpi",
+"proj": [
+76.3,
+69.1
+],
+"margin": 7.1,
+"edge": 3.5,
+"ev_home": -3.5,
+"ev_away": 6.2
+},
+"espn_id": "401911394",
+"ats": {
+"side": "home",
+"team": "VMI Keydets",
+"line": -7.5,
+"cover": 0.5427,
+"gap": 1.3,
+"raw": 2.6,
+"check": false,
+"tier": "pass",
+"stretch": 1.19
+},
+"teams": {
+"home": {
+"id": "2678",
+"color": "ae122a",
+"abbr": "VMI",
+"school": "VMI",
+"short_": "VMI"
+},
+"away": {
+"id": "2241",
+"color": "c12535",
+"abbr": "GWEB",
+"school": "Gardner-Webb",
+"short_": "Gardner-Webb"
+}
+},
+"team_stats": {
+"away": {
+"id": "2241",
+"name": "Gardner-Webb Runnin' Bulldogs",
+"color": "c12535",
+"rank": null,
+"record": "1-4",
+"bpi": 350,
+"games": 5,
+"stats": {
+"ats": [
+2,
+2,
+0
+],
+"h1": [
+29.2,
+40.8
+],
+"pts": 63.6,
+"opp": 81.4,
+"fg": 39.4,
+"reb": 32.4,
+"ast": 8.2,
+"blk": 2.0,
+"tpm": 6.4,
+"tpm_rank": 305,
+"stl": 6.4
+}
+},
+"home": {
+"id": "2678",
+"name": "VMI Keydets",
+"color": "ae122a",
+"rank": null,
+"record": "3-3",
+"bpi": 310,
+"games": 6,
+"stats": {
+"ats": [
+3,
+1,
+0
+],
+"h1": [
+38.0,
+31.67
+],
+"pts": 77.5,
+"opp": 72.33,
+"fg": 40.9,
+"reb": 41.33,
+"ast": 14.0,
+"blk": 1.33,
+"tpm": 10.0,
+"tpm_rank": 74,
+"stl": 9.33
+}
+}
+},
+"sys_neutral": false,
+"sys_ranks": [
+310,
+350
+],
+"markets": {
+"spreads": {
+"point": -7.5,
+"side_a": "home"
+},
+"totals": {
+"point": 145.5
+}
+}
+},
+{
+"event_id": "509452e9c30d0b4edddf769f5d142f71",
+"league": "ncaab",
+"commence_time": "2026-11-22T00:00:00Z",
+"home": "Vermont Catamounts",
+"away": "Brown Bears",
+"model": {
+"home_win_prob": 0.7395,
+"away_win_prob": 0.2605,
+"market_home_prob": 0.6481828270470323,
+"disagreement": 9.1,
+"suspect": false,
+"source": "bpi",
+"proj": [
+76.3,
+69.2
+],
+"margin": 7.1,
+"edge": 3.5,
+"ev_home": 13.3,
+"ev_away": -28.4
+},
+"espn_id": "401911310",
+"ats": {
+"side": "home",
+"team": "Vermont Catamounts",
+"line": -4.5,
+"cover": 0.5663,
+"gap": 1.9,
+"raw": 3.9,
+"check": false,
+"tier": "pass",
+"stretch": 1.19
+},
+"teams": {
+"home": {
+"id": "261",
+"color": "154734",
+"abbr": "UVM",
+"school": "Vermont",
+"short_": "Vermont"
+},
+"away": {
+"id": "225",
+"color": "411e09",
+"abbr": "BRWN",
+"school": "Brown",
+"short_": "Brown"
+}
+},
+"team_stats": {
+"away": {
+"id": "225",
+"name": "Brown Bears",
+"color": "411e09",
+"rank": null,
+"record": "2-4",
+"bpi": 252,
+"games": 6,
+"stats": {
+"ats": [
+3,
+3,
+0
+],
+"h1": [
+32.83,
+31.0
+],
+"pts": 69.33,
+"opp": 69.0,
+"fg": 43.8,
+"reb": 37.0,
+"ast": 15.83,
+"blk": 2.83,
+"tpm": 6.5,
+"tpm_rank": 296,
+"stl": 7.83
+}
+},
+"home": {
+"id": "261",
+"name": "Vermont Catamounts",
+"color": "154734",
+"rank": null,
+"record": "2-3",
+"bpi": 170,
+"games": 5,
+"stats": {
+"ats": [
+2,
+2,
+0
+],
+"h1": [
+38.8,
+28.0
+],
+"pts": 77.6,
+"opp": 67.4,
+"fg": 47.9,
+"reb": 41.4,
+"ast": 12.0,
+"blk": 3.4,
+"tpm": 7.6,
+"tpm_rank": 224,
+"stl": 3.6
+}
+}
+},
+"sys_neutral": false,
+"sys_ranks": [
+170,
+252
+],
+"markets": {
+"spreads": {
+"point": -4.5,
+"side_a": "home"
+},
+"totals": {
+"point": 134.0
+}
+}
+},
+{
+"event_id": "029de1352f9ba49f22486bda5427cc7a",
+"league": "ncaab",
+"commence_time": "2026-11-22T00:00:00Z",
+"home": "Villanova Wildcats",
+"away": "Michigan Wolverines",
+"model": {
+"home_win_prob": 0.4852,
+"away_win_prob": 0.5148,
+"market_home_prob": 0.36731054138634517,
+"disagreement": 11.8,
+"suspect": false,
+"source": "bpi",
+"proj": [
+75.5,
+75.9
+],
+"margin": -0.4,
+"edge": 3.5,
+"ev_home": 31.0,
+"ev_away": -19.9
+},
+"espn_id": "401921776",
+"ats": {
+"side": "home",
+"team": "Villanova Wildcats",
+"line": 4.0,
+"cover": 0.56,
+"gap": 1.8,
+"raw": 3.5,
+"check": false,
+"tier": "pass",
+"stretch": 1.19
+},
+"teams": {
+"home": {
+"id": "222",
+"color": "00205b",
+"abbr": "VILL",
+"school": "Villanova",
+"short_": "Villanova"
+},
+"away": {
+"id": "130",
+"color": "00274c",
+"abbr": "MICH",
+"school": "Michigan",
+"short_": "Michigan"
+}
+},
+"team_stats": {
+"away": {
+"id": "130",
+"name": "Michigan Wolverines",
+"color": "00274c",
+"rank": 18,
+"record": "3-1",
+"bpi": 29,
+"games": 4,
+"stats": {
+"ats": [
+2,
+2,
+0
+],
+"h1": [
+40.0,
+37.25
+],
+"pts": 92.0,
+"opp": 75.5,
+"fg": 46.3,
+"reb": 44.75,
+"ast": 20.5,
+"blk": 5.5,
+"tpm": 9.75,
+"tpm_rank": 91,
+"stl": 7.75
+}
+},
+"home": {
+"id": "222",
+"name": "Villanova Wildcats",
+"color": "00205b",
+"rank": null,
+"record": "3-2",
+"bpi": 55,
+"games": 5,
+"stats": {
+"ats": [
+2,
+3,
+0
+],
+"h1": [
+38.0,
+30.0
+],
+"pts": 81.4,
+"opp": 68.4,
+"fg": 46.8,
+"reb": 42.6,
+"ast": 18.2,
+"blk": 4.6,
+"tpm": 9.8,
+"tpm_rank": 87,
+"stl": 6.8
+}
+}
+},
+"sys_neutral": false,
+"sys_ranks": [
+55,
+29
+],
+"markets": {
+"spreads": {
+"point": 4.0,
+"side_a": "home"
+},
+"totals": {
+"point": 160.5
+}
+}
+},
+{
+"event_id": "d579b046d1ffdb6960b62c6d4e8c46e5",
+"league": "ncaab",
+"commence_time": "2026-11-22T00:30:00Z",
+"home": "Tennessee Tech Golden Eagles",
+"away": "Presbyterian Blue Hose",
+"model": {
+"home_win_prob": 0.7331,
+"away_win_prob": 0.2669,
+"market_home_prob": 0.7640398234906055,
+"disagreement": -3.1,
+"suspect": false,
+"source": "bpi",
+"proj": [
+80.0,
+73.2
+],
+"margin": 6.8,
+"edge": 3.5,
+"ev_home": -5.1,
+"ev_away": 2.8
+},
+"espn_id": "401926217",
+"ats": {
+"side": "home",
+"team": "Tennessee Tech Golden Eagles",
+"line": -8.0,
+"cover": 0.5016,
+"gap": 0.1,
+"raw": 0.1,
+"check": false,
+"tier": "pass",
+"stretch": 1.19
+},
+"teams": {
+"home": {
+"id": "2635",
+"color": "5A4099",
+"abbr": "TNTC",
+"school": "Tennessee Tech",
+"short_": "Tennessee Tech"
+},
+"away": {
+"id": "2506",
+"color": "194896",
+"abbr": "PRES",
+"school": "Presbyterian",
+"short_": "Presbyterian"
+}
+},
+"team_stats": {
+"away": {
+"id": "2506",
+"name": "Presbyterian Blue Hose",
+"color": "194896",
+"rank": null,
+"record": "1-3",
+"bpi": 263,
+"games": 4,
+"stats": {
+"ats": [
+2,
+2,
+0
+],
+"h1": [
+34.5,
+42.0
+],
+"pts": 75.75,
+"opp": 89.0,
+"fg": 44.7,
+"reb": 33.25,
+"ast": 11.0,
+"blk": 4.25,
+"tpm": 6.25,
+"tpm_rank": 311,
+"stl": 5.5
+}
+},
+"home": {
+"id": "2635",
+"name": "Tennessee Tech Golden Eagles",
+"color": "5A4099",
+"rank": null,
+"record": "4-2",
+"bpi": 184,
+"games": 6,
+"stats": {
+"ats": [
+4,
+0,
+0
+],
+"h1": [
+51.17,
+35.0
+],
+"pts": 94.5,
+"opp": 78.5,
+"fg": 45.2,
+"reb": 41.67,
+"ast": 20.0,
+"blk": 3.67,
+"tpm": 13.0,
+"tpm_rank": 4,
+"stl": 12.33
+}
+}
+},
+"sys_neutral": false,
+"sys_ranks": [
+184,
+263
+],
+"markets": {
+"spreads": {
+"point": -8.0,
+"side_a": "home"
+},
+"totals": {
+"point": 164.5
+}
+}
+},
+{
+"event_id": "8bdd386f44d40d94d3e032317435ebff",
+"league": "ncaab",
+"commence_time": "2026-11-22T01:00:00Z",
+"home": "Oral Roberts Golden Eagles",
+"away": "Texas A&M-Corpus Christi Islanders",
+"model": {
+"home_win_prob": 0.5949,
+"away_win_prob": 0.4051,
+"market_home_prob": 0.589947932755573,
+"disagreement": 0.5,
+"suspect": false,
+"source": "bpi",
+"proj": [
+72.5,
+69.9
+],
+"margin": 2.6,
+"edge": 3.5,
+"ev_home": 2.6,
+"ev_away": -4.8
+},
+"espn_id": "401925099",
+"ats": {
+"side": "home",
+"team": "Oral Roberts Golden Eagles",
+"line": -3.5,
+"cover": 0.5156,
+"gap": 0.5,
+"raw": 0.9,
+"check": false,
+"tier": "pass",
+"stretch": 1.19
+},
+"teams": {
+"home": {
+"id": "198",
+"color": "002462",
+"abbr": "ORU",
+"school": "Oral Roberts",
+"short_": "Oral Roberts"
+},
+"away": {
+"id": "357",
+"color": "0067c5",
+"abbr": "AMCC",
+"school": "Texas A&M-Corpus Christi",
+"short_": "Texas A&M-CC"
+}
+},
+"team_stats": {
+"away": {
+"id": "357",
+"name": "Texas A&M-Corpus Christi Islanders",
+"color": "0067c5",
+"rank": null,
+"record": "2-3",
+"bpi": 187,
+"games": 5,
+"stats": {
+"ats": [
+2,
+2,
+0
+],
+"h1": [
+33.4,
+33.4
+],
+"pts": 71.6,
+"opp": 70.0,
+"fg": 45.9,
+"reb": 35.6,
+"ast": 11.4,
+"blk": 4.2,
+"tpm": 4.2,
+"tpm_rank": 364,
+"stl": 6.6
+}
+},
+"home": {
+"id": "198",
+"name": "Oral Roberts Golden Eagles",
+"color": "002462",
+"rank": null,
+"record": "2-3",
+"bpi": 209,
+"games": 5,
+"stats": {
+"ats": [
+2,
+1,
+0
+],
+"h1": [
+36.8,
+28.4
+],
+"pts": 74.8,
+"opp": 63.8,
+"fg": 40.7,
+"reb": 40.6,
+"ast": 15.6,
+"blk": 1.4,
+"tpm": 10.0,
+"tpm_rank": 78,
+"stl": 10.4
+}
+}
+},
+"sys_neutral": false,
+"sys_ranks": [
+209,
+187
+],
+"markets": {
+"spreads": {
+"point": -3.5,
+"side_a": "home"
+},
+"totals": {
+"point": 139.5
+}
+}
+},
+{
+"event_id": "abe6046c0e5100a1e721207ddedccc18",
+"league": "ncaab",
+"commence_time": "2026-11-22T01:00:00Z",
+"home": "Troy Trojans",
+"away": "Valparaiso Beacons",
+"model": {
+"home_win_prob": 0.34,
+"away_win_prob": 0.66,
+"market_home_prob": 0.3623610453568003,
+"disagreement": -2.2,
+"suspect": false,
+"source": "bpi",
+"proj": [
+71.5,
+76.1
+],
+"margin": -4.5,
+"edge": 0.0,
+"ev_home": -8.2,
+"ev_away": 1.7
+},
+"espn_id": "401928998",
+"ats": {
+"side": "away",
+"team": "Valparaiso Beacons",
+"line": -4.5,
+"cover": 0.5154,
+"gap": 0.5,
+"raw": 0.9,
+"check": false,
+"tier": "pass",
+"stretch": 1.19
+},
+"teams": {
+"home": {
+"id": "2653",
+"color": "862633",
+"abbr": "TROY",
+"school": "Troy",
+"short_": "Troy"
+},
+"away": {
+"id": "2674",
+"color": "794500",
+"abbr": "VAL",
+"school": "Valparaiso",
+"short_": "Valparaiso"
+}
+},
+"team_stats": {
+"away": {
+"id": "2674",
+"name": "Valparaiso Beacons",
+"color": "794500",
+"rank": null,
+"record": "3-1",
+"bpi": 119,
+"games": 4,
+"stats": {
+"ats": [
+2,
+1,
+0
+],
+"h1": [
+35.5,
+30.0
+],
+"pts": 84.5,
+"opp": 63.5,
+"fg": 46.1,
+"reb": 42.0,
+"ast": 9.75,
+"blk": 4.0,
+"tpm": 6.0,
+"tpm_rank": 321,
+"stl": 6.5
+}
+},
+"home": {
+"id": "2653",
+"name": "Troy Trojans",
+"color": "862633",
+"rank": null,
+"record": "2-3",
+"bpi": 188,
+"games": 5,
+"stats": {
+"ats": [
+3,
+2,
+0
+],
+"h1": [
+30.2,
+35.8
+],
+"pts": 69.6,
+"opp": 77.2,
+"fg": 39.7,
+"reb": 33.4,
+"ast": 11.2,
+"blk": 4.6,
+"tpm": 8.0,
+"tpm_rank": 194,
+"stl": 7.8
+}
+}
+},
+"sys_neutral": true,
+"sys_ranks": [
+188,
+119
+],
+"markets": {
+"spreads": {
+"point": 4.5,
+"side_a": "home"
+},
+"totals": {
+"point": 138.5
+}
+}
+},
+{
+"event_id": "7be34d4b1b24a90daf0928088053bc5a",
+"league": "ncaab",
+"commence_time": "2026-11-22T01:30:00Z",
+"home": "Texas Southern Tigers",
+"away": "LSU New Orleans Privateers",
+"model": {
+"home_win_prob": 0.6456,
+"away_win_prob": 0.3544,
+"market_home_prob": 0.5291051545561828,
+"disagreement": 11.6,
+"suspect": false,
+"source": "bpi",
+"proj": [
+76.2,
+72.1
+],
+"margin": 4.1,
+"edge": 3.5,
+"ev_home": 20.7,
+"ev_away": -27.3
+},
+"espn_id": "401925049",
+"ats": {
+"side": "home",
+"team": "Texas Southern Tigers",
+"line": -1.5,
+"cover": 0.5602,
+"gap": 1.7,
+"raw": 3.4,
+"check": false,
+"tier": "pass",
+"stretch": 1.19
+},
+"teams": {
+"home": {
+"id": "2640",
+"color": "860038",
+"abbr": "TXSO",
+"school": "Texas Southern",
+"short_": "Texas Southern"
+},
+"away": {
+"id": "2443",
+"color": "461d7c",
+"abbr": "NOLA",
+"school": "LSU New Orleans",
+"short_": "LSU N Orleans"
+}
+},
+"team_stats": {
+"away": {
+"id": "2443",
+"name": "LSU New Orleans Privateers",
+"color": "461d7c",
+"rank": null,
+"record": "2-2",
+"bpi": 344,
+"games": 4,
+"stats": {
+"ats": [
+0,
+2,
+0
+],
+"h1": [
+28.5,
+42.25
+],
+"pts": 71.5,
+"opp": 83.25,
+"fg": 38.2,
+"reb": 40.5,
+"ast": 11.25,
+"blk": 4.75,
+"tpm": 6.0,
+"tpm_rank": 327,
+"stl": 7.25
+}
+},
+"home": {
+"id": "2640",
+"name": "Texas Southern Tigers",
+"color": "860038",
+"rank": null,
+"record": "1-5",
+"bpi": 338,
+"games": 6,
+"stats": {
+"ats": [
+3,
+2,
+0
+],
+"h1": [
+36.17,
+48.5
+],
+"pts": 74.83,
+"opp": 94.33,
+"fg": 42.3,
+"reb": 33.5,
+"ast": 10.67,
+"blk": 3.83,
+"tpm": 5.17,
+"tpm_rank": 355,
+"stl": 9.17
+}
+}
+},
+"sys_neutral": false,
+"sys_ranks": [
+338,
+344
+],
+"system": {
+"side": null,
+"reasons": [],
+"under": true
+},
+"markets": {
+"spreads": {
+"point": -1.5,
+"side_a": "home"
+},
+"totals": {
+"point": 156.5
+}
+}
+},
+{
+"event_id": "a771a9f91712c2747321ed9cadf62f36",
+"league": "ncaab",
+"commence_time": "2026-11-22T03:00:00Z",
+"home": "Pacific Tigers",
+"away": "Bradley Braves",
+"model": {
+"home_win_prob": 0.7415,
+"away_win_prob": 0.2585,
+"market_home_prob": 0.8081495353203476,
+"disagreement": -6.7,
+"suspect": false,
+"source": "bpi",
+"proj": [
+73.9,
+66.7
+],
+"margin": 7.1,
+"edge": 3.5,
+"ev_home": -8.6,
+"ev_away": 22.8
+},
+"espn_id": "401917537",
+"ats": {
+"side": "home",
+"team": "Pacific Tigers",
+"line": -9.5,
+"cover": 0.516,
+"gap": 0.5,
+"raw": 1.0,
+"check": false,
+"tier": "pass",
+"stretch": 1.19
+},
+"teams": {
+"home": {
+"id": "279",
+"color": "F47820",
+"abbr": "PAC",
+"school": "Pacific",
+"short_": "Pacific"
+},
+"away": {
+"id": "71",
+"color": "b70002",
+"abbr": "BRAD",
+"school": "Bradley",
+"short_": "Bradley"
+}
+},
+"team_stats": {
+"away": {
+"id": "71",
+"name": "Bradley Braves",
+"color": "b70002",
+"rank": null,
+"record": "3-3",
+"bpi": 214,
+"games": 6,
+"stats": {
+"ats": [
+0,
+5,
+0
+],
+"h1": [
+28.5,
+30.0
+],
+"pts": 62.17,
+"opp": 59.83,
+"fg": 37.8,
+"reb": 35.83,
+"ast": 12.33,
+"blk": 2.33,
+"tpm": 8.67,
+"tpm_rank": 155,
+"stl": 6.83
+}
+},
+"home": {
+"id": "279",
+"name": "Pacific Tigers",
+"color": "F47820",
+"rank": null,
+"record": "4-1",
+"bpi": 147,
+"games": 5,
+"stats": {
+"ats": [
+1,
+1,
+0
+],
+"h1": [
+42.6,
+25.2
+],
+"pts": 82.6,
+"opp": 54.2,
+"fg": 49.8,
+"reb": 48.4,
+"ast": 17.8,
+"blk": 3.4,
+"tpm": 8.8,
+"tpm_rank": 153,
+"stl": 7.2
+}
+}
+},
+"sys_neutral": false,
+"sys_ranks": [
+147,
+214
+],
+"markets": {
+"spreads": {
+"point": -9.5,
+"side_a": "home"
+},
+"totals": {
+"point": 128.5
+}
+}
+},
+{
+"event_id": "9f7f8d885eb724ca669f64bacad9321c",
+"league": "ncaab",
+"commence_time": "2026-11-22T04:00:00Z",
+"home": "Duke Blue Devils",
+"away": "Washington St Cougars",
+"model": {
+"home_win_prob": 0.9836,
+"away_win_prob": 0.0164,
+"market_home_prob": 0.9898673151718826,
+"disagreement": -0.6,
+"suspect": false,
+"source": "bpi",
+"proj": [
+87.4,
+63.9
+],
+"margin": 23.5,
+"edge": 0.0,
+"ev_home": -0.4,
+"ev_away": -52.4
+},
+"espn_id": "401909567",
+"ats": {
+"side": "away",
+"team": "Washington St Cougars",
+"line": 25.5,
+"cover": 0.5323,
+"gap": 1.2,
+"raw": 2.4,
+"check": false,
+"tier": "pass",
+"stretch": 1.19
+},
+"teams": {
+"home": {
+"id": "150",
+"color": "00539b",
+"abbr": "DUKE",
+"school": "Duke",
+"short_": "Duke"
+},
+"away": {
+"id": "265",
+"color": "a60f2d",
+"abbr": "WSU",
+"school": "Washington State",
+"short_": "Washington St"
+}
+},
+"team_stats": {
+"away": {
+"id": "265",
+"name": "Washington State Cougars",
+"color": "a60f2d",
+"rank": null,
+"record": "2-3",
+"bpi": 161,
+"games": 5,
+"stats": {
+"ats": [
+3,
+1,
+0
+],
+"h1": [
+38.2,
+32.8
+],
+"pts": 81.0,
+"opp": 76.2,
+"fg": 48.6,
+"reb": 37.2,
+"ast": 16.8,
+"blk": 2.8,
+"tpm": 8.4,
+"tpm_rank": 172,
+"stl": 8.6
+}
+},
+"home": {
+"id": "150",
+"name": "Duke Blue Devils",
+"color": "00539b",
+"rank": 5,
+"record": "3-2",
+"bpi": 2,
+"games": 5,
+"stats": {
+"ats": [
+1,
+4,
+0
+],
+"h1": [
+37.4,
+26.4
+],
+"pts": 87.6,
+"opp": 65.4,
+"fg": 45.3,
+"reb": 43.0,
+"ast": 19.0,
+"blk": 7.4,
+"tpm": 8.0,
+"tpm_rank": 190,
+"stl": 10.4
+}
+}
+},
+"sys_neutral": true,
+"sys_ranks": [
+2,
+161
+],
+"markets": {
+"spreads": {
+"point": -25.5,
+"side_a": "home"
+},
+"totals": {
+"point": 149.5
+}
+}
+},
+{
+"event_id": "espn-401924884",
+"espn_id": "401924884",
+"league": "ncaab",
+"commence_time": "2026-11-21T16:00Z",
+"home": "Bucknell Bison",
+"away": "Siena Saints",
+"model": {
+"home_win_prob": 0.4015,
+"away_win_prob": 0.5985,
+"market_home_prob": null,
+"disagreement": null,
+"suspect": false,
+"source": "bpi",
+"proj": [
+72.5,
+75.2
+],
+"margin": -2.7,
+"edge": 3.5,
+"ev_home": null,
+"ev_away": null
+},
+"line_source": "espn",
+"ats": {
+"side": "home",
+"team": "Bucknell Bison",
+"line": 7.5,
+"cover": 0.5671,
+"gap": 2.0,
+"raw": 4.1,
+"check": false,
+"tier": "lean",
+"stretch": 1.19
+},
+"counted": false,
+"teams": {
+"home": {
+"id": "2083",
+"color": "000060",
+"abbr": "BUCK",
+"school": "Bucknell",
+"short_": "Bucknell"
+},
+"away": {
+"id": "2561",
+"color": "037961",
+"abbr": "SIE",
+"school": "Siena",
+"short_": "Siena"
+}
+},
+"team_stats": {
+"away": {
+"id": "2561",
+"name": "Siena Saints",
+"color": "037961",
+"rank": null,
+"record": "3-2",
+"bpi": 249,
+"games": 5,
+"stats": {
+"ats": [
+2,
+3,
+0
+],
+"h1": [
+40.0,
+42.4
+],
+"pts": 81.4,
+"opp": 86.0,
+"fg": 41.9,
+"reb": 40.8,
+"ast": 15.2,
+"blk": 3.2,
+"tpm": 7.4,
+"tpm_rank": 233,
+"stl": 8.2
+}
+},
+"home": {
+"id": "2083",
+"name": "Bucknell Bison",
+"color": "000060",
+"rank": null,
+"record": "1-4",
+"bpi": 340,
+"games": 5,
+"stats": {
+"ats": [
+3,
+2,
+0
+],
+"h1": [
+29.6,
+35.4
+],
+"pts": 60.4,
+"opp": 79.8,
+"fg": 37.8,
+"reb": 26.8,
+"ast": 15.0,
+"blk": 2.4,
+"tpm": 8.8,
+"tpm_rank": 147,
+"stl": 7.2
+}
+}
+},
+"sys_neutral": false,
+"sys_ranks": [
+340,
+249
+],
+"markets": {
+"spreads": {
+"point": 7.5,
+"side_a": "home"
+},
+"totals": {
+"point": 159.5
+}
+}
+},
+{
+"event_id": "espn-401922284",
+"espn_id": "401922284",
+"league": "ncaab",
+"commence_time": "2026-11-21T16:00Z",
+"home": "UNC Greensboro Spartans",
+"away": "South Carolina Upstate Spartans",
+"model": {
+"home_win_prob": 0.7793,
+"away_win_prob": 0.2207,
+"market_home_prob": null,
+"disagreement": null,
+"suspect": false,
+"source": "bpi",
+"proj": [
+79.0,
+70.6
+],
+"margin": 8.5,
+"edge": 3.5,
+"ev_home": null,
+"ev_away": null
+},
+"line_source": "espn",
+"ats": {
+"side": "home",
+"team": "UNC Greensboro Spartans",
+"line": -6.5,
+"cover": 0.5531,
+"gap": 1.6,
+"raw": 3.2,
+"check": false,
+"tier": "pass",
+"stretch": 1.19
+},
+"counted": false,
+"teams": {
+"home": {
+"id": "2430",
+"color": "003559",
+"abbr": "UNCG",
+"school": "UNC Greensboro",
+"short_": "UNC Greensboro"
+},
+"away": {
+"id": "2908",
+"color": "008545",
+"abbr": "UPST",
+"school": "South Carolina Upstate",
+"short_": "SC Upstate"
+}
+},
+"team_stats": {
+"away": {
+"id": "2908",
+"name": "South Carolina Upstate Spartans",
+"color": "008545",
+"rank": null,
+"record": "1-5",
+"bpi": 323,
+"games": 6,
+"stats": {
+"ats": [
+2,
+3,
+0
+],
+"h1": [
+35.17,
+35.67
+],
+"pts": 73.5,
+"opp": 73.67,
+"fg": 43.6,
+"reb": 40.83,
+"ast": 13.33,
+"blk": 3.67,
+"tpm": 6.33,
+"tpm_rank": 308,
+"stl": 6.0
+}
+},
+"home": {
+"id": "2430",
+"name": "UNC Greensboro Spartans",
+"color": "003559",
+"rank": null,
+"record": "3-2",
+"bpi": 239,
+"games": 5,
+"stats": {
+"ats": [
+3,
+0,
+0
+],
+"h1": [
+38.0,
+35.4
+],
+"pts": 80.4,
+"opp": 71.0,
+"fg": 45.1,
+"reb": 36.8,
+"ast": 12.2,
+"blk": 4.2,
+"tpm": 8.6,
+"tpm_rank": 162,
+"stl": 5.6
+}
+}
+},
+"sys_neutral": false,
+"sys_ranks": [
+239,
+323
+],
+"markets": {
+"spreads": {
+"point": -6.5,
+"side_a": "home"
+},
+"totals": {
+"point": 145.5
+}
+}
+}
+]
+}
