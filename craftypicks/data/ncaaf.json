@@ -955,7 +955,9 @@
       "away": "North Carolina Tar Heels",
       "model": {
         "home_win_prob": 0.42459859374341447,
-        "away_win_prob": 0.5754014062565855
+        "away_win_prob": 0.5754014062565855,
+        "market_home_prob": 0.4826358742837298,
+        "disagreement": -5.8
       },
       "line_note": [
         "Spread: North Carolina Tar Heels -1.5 · Total 41.5",
@@ -970,22 +972,22 @@
           "name": "North Carolina Tar Heels",
           "color": "7bafd4",
           "rank": null,
-          "record": "5-5",
-          "games": 10,
+          "record": "5-6",
+          "games": 11,
           "fpi": 36,
           "power_rank": 36,
           "rank_label": "FPI",
           "stats": {
             "ats": [
               7,
-              3,
+              4,
               0
             ],
-            "pts": 25.8,
-            "opp": 22.1,
-            "giv": 1.4,
-            "tak": 1.1,
-            "ypp": 5.7
+            "pts": 25.64,
+            "opp": 23.82,
+            "giv": 1.45,
+            "tak": 1.0,
+            "ypp": 5.8
           }
         },
         "home": {
@@ -993,22 +995,22 @@
           "name": "Virginia Cavaliers",
           "color": "232d4b",
           "rank": null,
-          "record": "5-5",
-          "games": 10,
+          "record": "6-5",
+          "games": 11,
           "fpi": 49,
           "power_rank": 49,
           "rank_label": "FPI",
           "stats": {
             "ats": [
-              4,
+              5,
               5,
               1
             ],
-            "pts": 26.9,
-            "opp": 21.5,
-            "giv": 0.6,
-            "tak": 1.2,
-            "ypp": 5.4
+            "pts": 28.18,
+            "opp": 21.73,
+            "giv": 0.55,
+            "tak": 1.27,
+            "ypp": 5.6
           }
         }
       },
@@ -1016,9 +1018,9 @@
         "side": "home",
         "team": "Virginia Cavaliers",
         "line": 1.5,
-        "cover": 0.5266,
-        "gap": 0.9,
-        "raw": 1.9,
+        "cover": 0.5378,
+        "gap": 1.4,
+        "raw": 2.7,
         "check": false,
         "tier": "pass",
         "stretch": 0.93
@@ -3235,12 +3237,12 @@
         "away_win_prob": 0.15249630063326358
       },
       "line_note": [
-        "Spread: Louisiana Tech Bulldogs -14.5 · Total 54.5",
+        "Spread: Louisiana Tech Bulldogs -14.5 · Total 55.5",
         "FPI line: Louisiana Tech Bulldogs -14.4"
       ],
       "spread_home": -14.5,
       "fpi_margin": 14.360999999999999,
-      "total": 54.5,
+      "total": 55.5,
       "team_stats": {
         "away": {
           "id": "2032",
@@ -5487,9 +5489,9 @@
     }
   ],
   "summary": {
-    "graded": 90,
-    "pending": 59,
-    "brier": 0.2046,
+    "graded": 91,
+    "pending": 58,
+    "brier": 0.2059,
     "market_brier": null,
     "fpi_ats": [
       35,
@@ -7230,7 +7232,8 @@
       "p_home": 0.42846413513216036,
       "mkt_home": null,
       "spread_home": null,
-      "fpi_margin": -2.523999999999999
+      "fpi_margin": -2.523999999999999,
+      "home_won": true
     },
     {
       "event_id": "401871080",
