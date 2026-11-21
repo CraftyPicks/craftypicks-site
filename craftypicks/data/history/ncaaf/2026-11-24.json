@@ -13,11 +13,12 @@
 "away_win_prob": 0.2559350418931634
 },
 "line_note": [
+"Spread: Eastern Michigan Eagles -6.5 \u00b7 Total 46.5",
 "FPI line: Eastern Michigan Eagles -9.2"
 ],
-"spread_home": null,
+"spread_home": -6.5,
 "fpi_margin": 9.183,
-"total": null,
+"total": 46.5,
 "team_stats": {
 "away": {
 "id": "2309",
@@ -66,6 +67,17 @@
 }
 }
 },
+"ats": {
+"side": "home",
+"team": "Eastern Michigan Eagles",
+"line": -6.5,
+"cover": 0.516,
+"gap": 0.6,
+"raw": 1.2,
+"check": false,
+"tier": "pass",
+"stretch": 0.93
+},
 "espn_id": "401866470",
 "teams": {
 "home": {
@@ -87,7 +99,13 @@
 "sys_ranks": [
 128,
 136
+],
+"system": {
+"side": "away",
+"reasons": [
+"small"
 ]
+}
 },
 {
 "event_id": "401866471",
@@ -101,11 +119,12 @@
 "away_win_prob": 0.2920912284076983
 },
 "line_note": [
+"Spread: Western Michigan Broncos -7.5 \u00b7 Total 46.5",
 "FPI line: Western Michigan Broncos -7.7"
 ],
-"spread_home": null,
+"spread_home": -7.5,
 "fpi_margin": 7.661999999999999,
-"total": null,
+"total": 46.5,
 "team_stats": {
 "away": {
 "id": "193",
@@ -154,6 +173,17 @@
 }
 }
 },
+"ats": {
+"side": "away",
+"team": "Miami (OH) RedHawks",
+"line": 7.5,
+"cover": 0.5185,
+"gap": 0.7,
+"raw": 1.4,
+"check": false,
+"tier": "pass",
+"stretch": 0.93
+},
 "espn_id": "401866471",
 "teams": {
 "home": {
@@ -175,7 +205,13 @@
 "sys_ranks": [
 84,
 99
+],
+"system": {
+"side": "away",
+"reasons": [
+"road"
 ]
+}
 }
 ]
 }

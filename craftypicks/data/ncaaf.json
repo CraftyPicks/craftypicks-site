@@ -1035,7 +1035,9 @@
       "away": "Western Kentucky Hilltoppers",
       "model": {
         "home_win_prob": 0.9232512216803007,
-        "away_win_prob": 0.07674877831969928
+        "away_win_prob": 0.07674877831969928,
+        "market_home_prob": 0.8720930232558138,
+        "disagreement": 5.1
       },
       "line_note": [
         "Spread: Liberty Flames -17.5 · Total 53.5",
@@ -1050,22 +1052,22 @@
           "name": "Western Kentucky Hilltoppers",
           "color": "e13a3e",
           "rank": null,
-          "record": "4-6",
-          "games": 10,
+          "record": "4-7",
+          "games": 11,
           "fpi": 118,
           "power_rank": 118,
           "rank_label": "FPI",
           "stats": {
             "ats": [
               5,
-              5,
+              6,
               0
             ],
-            "pts": 24.6,
-            "opp": 32.4,
-            "giv": 1.5,
-            "tak": 1.0,
-            "ypp": 5.2
+            "pts": 23.64,
+            "opp": 33.55,
+            "giv": 1.36,
+            "tak": 1.09,
+            "ypp": 5.1
           }
         },
         "home": {
@@ -1073,29 +1075,29 @@
           "name": "Liberty Flames",
           "color": "0a254e",
           "rank": null,
-          "record": "9-1",
-          "games": 10,
+          "record": "10-1",
+          "games": 11,
           "fpi": 54,
           "power_rank": 54,
           "rank_label": "FPI",
           "stats": {
             "ats": [
-              7,
+              8,
               3,
               0
             ],
-            "pts": 32.8,
-            "opp": 14.5,
-            "giv": 0.7,
-            "tak": 1.5,
-            "ypp": 6.4
+            "pts": 33.91,
+            "opp": 14.45,
+            "giv": 0.82,
+            "tak": 1.36,
+            "ypp": 6.6
           }
         }
       },
       "ats": {
-        "side": "away",
-        "team": "Western Kentucky Hilltoppers",
-        "line": 17.5,
+        "side": "home",
+        "team": "Liberty Flames",
+        "line": -17.5,
         "cover": 0.5048,
         "gap": 0.2,
         "raw": 0.4,
@@ -1117,7 +1119,55 @@
       ],
       "spread_home": -30.5,
       "fpi_margin": null,
-      "total": 59.5
+      "total": 59.5,
+      "team_stats": {
+        "away": {
+          "id": "2635",
+          "name": "Tennessee Tech Golden Eagles",
+          "color": "5A4099",
+          "rank": null,
+          "record": "0-1",
+          "games": 1,
+          "fpi": null,
+          "power_rank": null,
+          "rank_label": "FPI",
+          "stats": {
+            "ats": [
+              1,
+              0,
+              0
+            ],
+            "pts": 16.0,
+            "opp": 34.0,
+            "giv": 1.0,
+            "tak": 2.0,
+            "ypp": 4.5
+          }
+        },
+        "home": {
+          "id": "344",
+          "name": "Mississippi State Bulldogs",
+          "color": "5d1725",
+          "rank": null,
+          "record": "5-6",
+          "games": 11,
+          "fpi": 50,
+          "power_rank": 50,
+          "rank_label": "FPI",
+          "stats": {
+            "ats": [
+              4,
+              7,
+              0
+            ],
+            "pts": 25.36,
+            "opp": 27.91,
+            "giv": 1.64,
+            "tak": 0.91,
+            "ypp": 5.8
+          }
+        }
+      }
     },
     {
       "event_id": "401856868",
@@ -1128,7 +1178,9 @@
       "away": "Houston Cougars",
       "model": {
         "home_win_prob": 0.26908870658170747,
-        "away_win_prob": 0.7309112934182925
+        "away_win_prob": 0.7309112934182925,
+        "market_home_prob": 0.3249687530045188,
+        "disagreement": -5.6
       },
       "line_note": [
         "Spread: Houston Cougars -7 · Total 71.5",
@@ -1142,22 +1194,22 @@
           "id": "248",
           "name": "Houston Cougars",
           "color": "c8102e",
-          "rank": 14,
-          "record": "7-3",
-          "games": 10,
+          "rank": 20,
+          "record": "8-3",
+          "games": 11,
           "fpi": 28,
           "power_rank": 28,
           "rank_label": "FPI",
           "stats": {
             "ats": [
               3,
-              7,
+              8,
               0
             ],
-            "pts": 35.1,
-            "opp": 23.4,
-            "giv": 0.8,
-            "tak": 1.4,
+            "pts": 35.0,
+            "opp": 24.09,
+            "giv": 0.73,
+            "tak": 1.27,
             "ypp": 6.7
           }
         },
@@ -1166,22 +1218,22 @@
           "name": "West Virginia Mountaineers",
           "color": "eaaa00",
           "rank": null,
-          "record": "5-5",
-          "games": 10,
+          "record": "5-6",
+          "games": 11,
           "fpi": 68,
           "power_rank": 68,
           "rank_label": "FPI",
           "stats": {
             "ats": [
-              5,
+              6,
               4,
               1
             ],
-            "pts": 34.9,
-            "opp": 34.8,
-            "giv": 0.9,
-            "tak": 1.1,
-            "ypp": 6.2
+            "pts": 34.55,
+            "opp": 34.73,
+            "giv": 0.82,
+            "tak": 1.0,
+            "ypp": 6.1
           }
         }
       },
@@ -1189,9 +1241,9 @@
         "side": "home",
         "team": "West Virginia Mountaineers",
         "line": 7.0,
-        "cover": 0.5172,
-        "gap": 0.7,
-        "raw": 1.3,
+        "cover": 0.5199,
+        "gap": 0.8,
+        "raw": 1.5,
         "check": false,
         "tier": "pass",
         "stretch": 0.93
@@ -1210,7 +1262,55 @@
       ],
       "spread_home": -48.5,
       "fpi_margin": null,
-      "total": 57.5
+      "total": 57.5,
+      "team_stats": {
+        "away": {
+          "id": "236",
+          "name": "Chattanooga Mocs",
+          "color": "00386b",
+          "rank": null,
+          "record": "0-1",
+          "games": 1,
+          "fpi": null,
+          "power_rank": null,
+          "rank_label": "FPI",
+          "stats": {
+            "ats": [
+              1,
+              0,
+              0
+            ],
+            "pts": 0.0,
+            "opp": 47.0,
+            "giv": 0.0,
+            "tak": 0.0,
+            "ypp": 2.4
+          }
+        },
+        "home": {
+          "id": "333",
+          "name": "Alabama Crimson Tide",
+          "color": "9e1b32",
+          "rank": 3,
+          "record": "9-2",
+          "games": 11,
+          "fpi": 4,
+          "power_rank": 4,
+          "rank_label": "FPI",
+          "stats": {
+            "ats": [
+              6,
+              5,
+              0
+            ],
+            "pts": 36.82,
+            "opp": 17.18,
+            "giv": 1.27,
+            "tak": 1.91,
+            "ypp": 6.4
+          }
+        }
+      }
     },
     {
       "event_id": "401871079",
@@ -1221,7 +1321,9 @@
       "away": "Missouri State Bears",
       "model": {
         "home_win_prob": 0.8211389573452887,
-        "away_win_prob": 0.17886104265471126
+        "away_win_prob": 0.17886104265471126,
+        "market_home_prob": 0.7957758771164253,
+        "disagreement": 2.5
       },
       "line_note": [
         "Spread: Jacksonville State Gamecocks -10.5 · Total 52.5",
@@ -1236,22 +1338,22 @@
           "name": "Missouri State Bears",
           "color": "5e0009",
           "rank": null,
-          "record": "4-6",
-          "games": 10,
+          "record": "4-7",
+          "games": 11,
           "fpi": 124,
           "power_rank": 124,
           "rank_label": "FPI",
           "stats": {
             "ats": [
-              6,
+              7,
               4,
               0
             ],
-            "pts": 24.2,
-            "opp": 29.1,
-            "giv": 1.1,
-            "tak": 1.3,
-            "ypp": 5.5
+            "pts": 23.82,
+            "opp": 28.73,
+            "giv": 1.0,
+            "tak": 1.27,
+            "ypp": 5.4
           }
         },
         "home": {
@@ -1259,21 +1361,21 @@
           "name": "Jacksonville State Gamecocks",
           "color": "cc0000",
           "rank": null,
-          "record": "7-3",
-          "games": 10,
+          "record": "8-3",
+          "games": 11,
           "fpi": 91,
           "power_rank": 91,
           "rank_label": "FPI",
           "stats": {
             "ats": [
               5,
-              4,
+              5,
               1
             ],
-            "pts": 28.6,
-            "opp": 20.7,
-            "giv": 1.5,
-            "tak": 1.0,
+            "pts": 28.27,
+            "opp": 20.64,
+            "giv": 1.45,
+            "tak": 0.91,
             "ypp": 6.4
           }
         }
@@ -1299,7 +1401,9 @@
       "away": "Middle Tennessee Blue Raiders",
       "model": {
         "home_win_prob": 0.37418639304399226,
-        "away_win_prob": 0.6258136069560077
+        "away_win_prob": 0.6258136069560077,
+        "market_home_prob": 0.33099297893681046,
+        "disagreement": 4.3
       },
       "line_note": [
         "Spread: Middle Tennessee Blue Raiders -6.5 · Total 48.5",
@@ -1314,22 +1418,22 @@
           "name": "Middle Tennessee Blue Raiders",
           "color": "036eb7",
           "rank": null,
-          "record": "5-5",
-          "games": 10,
+          "record": "6-5",
+          "games": 11,
           "fpi": 120,
           "power_rank": 120,
           "rank_label": "FPI",
           "stats": {
             "ats": [
               7,
-              3,
+              4,
               0
             ],
-            "pts": 26.5,
-            "opp": 30.7,
-            "giv": 0.7,
-            "tak": 1.3,
-            "ypp": 5.7
+            "pts": 26.91,
+            "opp": 30.45,
+            "giv": 1.0,
+            "tak": 1.27,
+            "ypp": 5.8
           }
         },
         "home": {
@@ -1337,21 +1441,21 @@
           "name": "Sam Houston Bearkats",
           "color": "f56423",
           "rank": null,
-          "record": "1-9",
-          "games": 10,
+          "record": "1-10",
+          "games": 11,
           "fpi": 133,
           "power_rank": 133,
           "rank_label": "FPI",
           "stats": {
             "ats": [
-              3,
+              4,
               7,
               0
             ],
-            "pts": 16.5,
-            "opp": 27.4,
+            "pts": 17.55,
+            "opp": 27.73,
             "giv": 1.0,
-            "tak": 0.9,
+            "tak": 1.18,
             "ypp": 4.9
           }
         }
@@ -1377,7 +1481,9 @@
       "away": "Charlotte 49ers",
       "model": {
         "home_win_prob": 0.9561486844761078,
-        "away_win_prob": 0.04385131552389221
+        "away_win_prob": 0.04385131552389221,
+        "market_home_prob": 0.9197080291970804,
+        "disagreement": 3.6
       },
       "line_note": [
         "Spread: Tulsa Golden Hurricane -22.5 · Total 51.5",
@@ -1392,22 +1498,22 @@
           "name": "Charlotte 49ers",
           "color": "005035",
           "rank": null,
-          "record": "1-9",
-          "games": 10,
+          "record": "1-10",
+          "games": 11,
           "fpi": 130,
           "power_rank": 130,
           "rank_label": "FPI",
           "stats": {
             "ats": [
               5,
-              5,
+              6,
               0
             ],
-            "pts": 19.3,
-            "opp": 36.2,
-            "giv": 1.8,
-            "tak": 1.4,
-            "ypp": 5.1
+            "pts": 18.82,
+            "opp": 36.73,
+            "giv": 1.73,
+            "tak": 1.36,
+            "ypp": 5.0
           }
         },
         "home": {
@@ -1415,22 +1521,22 @@
           "name": "Tulsa Golden Hurricane",
           "color": "003595",
           "rank": null,
-          "record": "6-4",
-          "games": 10,
+          "record": "7-4",
+          "games": 11,
           "fpi": 70,
           "power_rank": 70,
           "rank_label": "FPI",
           "stats": {
             "ats": [
-              6,
+              7,
               4,
               0
             ],
-            "pts": 33.6,
-            "opp": 22.6,
-            "giv": 0.8,
-            "tak": 1.8,
-            "ypp": 6.1
+            "pts": 34.36,
+            "opp": 21.82,
+            "giv": 0.82,
+            "tak": 1.73,
+            "ypp": 6.2
           }
         }
       },
@@ -1438,9 +1544,9 @@
         "side": "away",
         "team": "Charlotte 49ers",
         "line": 22.5,
-        "cover": 0.5367,
-        "gap": 1.6,
-        "raw": 3.2,
+        "cover": 0.5287,
+        "gap": 1.2,
+        "raw": 2.5,
         "check": false,
         "tier": "pass",
         "stretch": 0.93
@@ -1455,7 +1561,9 @@
       "away": "UL Monroe Warhawks",
       "model": {
         "home_win_prob": 0.8746188934924479,
-        "away_win_prob": 0.12538110650755208
+        "away_win_prob": 0.12538110650755208,
+        "market_home_prob": 0.827123695976155,
+        "disagreement": 4.7
       },
       "line_note": [
         "Spread: App State Mountaineers -14 · Total 50.5",
@@ -1470,22 +1578,22 @@
           "name": "UL Monroe Warhawks",
           "color": "840029",
           "rank": null,
-          "record": "2-8",
-          "games": 10,
+          "record": "2-9",
+          "games": 11,
           "fpi": 135,
           "power_rank": 135,
           "rank_label": "FPI",
           "stats": {
             "ats": [
-              3,
+              4,
               7,
               0
             ],
-            "pts": 20.2,
-            "opp": 35.5,
-            "giv": 1.6,
-            "tak": 0.8,
-            "ypp": 5.1
+            "pts": 19.82,
+            "opp": 33.82,
+            "giv": 1.55,
+            "tak": 0.82,
+            "ypp": 5.0
           }
         },
         "home": {
@@ -1493,22 +1601,22 @@
           "name": "App State Mountaineers",
           "color": "000000",
           "rank": null,
-          "record": "6-4",
-          "games": 10,
+          "record": "7-4",
+          "games": 11,
           "fpi": 107,
           "power_rank": 107,
           "rank_label": "FPI",
           "stats": {
             "ats": [
               6,
-              4,
+              5,
               0
             ],
-            "pts": 25.7,
-            "opp": 23.6,
-            "giv": 1.6,
-            "tak": 1.4,
-            "ypp": 5.8
+            "pts": 24.91,
+            "opp": 22.91,
+            "giv": 1.55,
+            "tak": 1.36,
+            "ypp": 5.7
           }
         }
       },
@@ -1516,9 +1624,9 @@
         "side": "away",
         "team": "UL Monroe Warhawks",
         "line": 14.0,
-        "cover": 0.5111,
-        "gap": 0.5,
-        "raw": 0.9,
+        "cover": 0.5161,
+        "gap": 0.7,
+        "raw": 1.3,
         "check": false,
         "tier": "pass",
         "stretch": 0.93
@@ -1611,7 +1719,9 @@
       "away": "Iowa Hawkeyes",
       "model": {
         "home_win_prob": 0.36687447424736813,
-        "away_win_prob": 0.6331255257526318
+        "away_win_prob": 0.6331255257526318,
+        "market_home_prob": 0.27792074112197634,
+        "disagreement": 8.9
       },
       "line_note": [
         "Spread: Iowa Hawkeyes -8.5 · Total 40.5",
@@ -1626,22 +1736,22 @@
           "name": "Iowa Hawkeyes",
           "color": "231f20",
           "rank": 15,
-          "record": "8-2",
-          "games": 10,
+          "record": "9-2",
+          "games": 11,
           "fpi": 17,
           "power_rank": 17,
           "rank_label": "FPI",
           "stats": {
             "ats": [
-              7,
+              8,
               3,
               0
             ],
-            "pts": 27.8,
-            "opp": 11.7,
+            "pts": 28.36,
+            "opp": 12.18,
             "giv": 1.0,
-            "tak": 1.0,
-            "ypp": 6.0
+            "tak": 1.09,
+            "ypp": 5.9
           }
         },
         "home": {
@@ -1649,21 +1759,21 @@
           "name": "Illinois Fighting Illini",
           "color": "ff5f05",
           "rank": null,
-          "record": "6-4",
-          "games": 10,
+          "record": "6-5",
+          "games": 11,
           "fpi": 42,
           "power_rank": 42,
           "rank_label": "FPI",
           "stats": {
             "ats": [
               5,
-              4,
+              5,
               1
             ],
-            "pts": 27.0,
-            "opp": 22.9,
-            "giv": 0.9,
-            "tak": 0.7,
+            "pts": 26.09,
+            "opp": 23.91,
+            "giv": 1.0,
+            "tak": 0.73,
             "ypp": 6.0
           }
         }
@@ -1672,9 +1782,9 @@
         "side": "home",
         "team": "Illinois Fighting Illini",
         "line": 8.5,
-        "cover": 0.5586,
-        "gap": 2.2,
-        "raw": 4.5,
+        "cover": 0.5521,
+        "gap": 2.0,
+        "raw": 4.0,
         "check": false,
         "tier": "lean",
         "stretch": 0.93
@@ -1689,7 +1799,9 @@
       "away": "Florida International Panthers",
       "model": {
         "home_win_prob": 0.6229953296250131,
-        "away_win_prob": 0.37700467037498686
+        "away_win_prob": 0.37700467037498686,
+        "market_home_prob": 0.5217391304347826,
+        "disagreement": 10.1
       },
       "line_note": [
         "Spread: Kennesaw State Owls -1.5 · Total 44.5",
@@ -1704,21 +1816,21 @@
           "name": "Florida International Panthers",
           "color": "091f3f",
           "rank": null,
-          "record": "4-6",
-          "games": 10,
+          "record": "4-7",
+          "games": 11,
           "fpi": 114,
           "power_rank": 114,
           "rank_label": "FPI",
           "stats": {
             "ats": [
               3,
-              6,
+              7,
               1
             ],
-            "pts": 19.0,
-            "opp": 20.7,
-            "giv": 1.5,
-            "tak": 1.1,
+            "pts": 19.45,
+            "opp": 22.0,
+            "giv": 1.36,
+            "tak": 1.0,
             "ypp": 5.6
           }
         },
@@ -1727,21 +1839,21 @@
           "name": "Kennesaw State Owls",
           "color": "fdbb30",
           "rank": null,
-          "record": "4-6",
-          "games": 10,
+          "record": "5-6",
+          "games": 11,
           "fpi": 110,
           "power_rank": 110,
           "rank_label": "FPI",
           "stats": {
             "ats": [
-              7,
+              8,
               3,
               0
             ],
-            "pts": 25.2,
-            "opp": 25.0,
-            "giv": 1.2,
-            "tak": 1.2,
+            "pts": 26.09,
+            "opp": 24.91,
+            "giv": 1.09,
+            "tak": 1.09,
             "ypp": 5.5
           }
         }
@@ -1750,9 +1862,9 @@
         "side": "home",
         "team": "Kennesaw State Owls",
         "line": -1.5,
-        "cover": 0.5322,
-        "gap": 1.1,
-        "raw": 2.3,
+        "cover": 0.5378,
+        "gap": 1.4,
+        "raw": 2.7,
         "check": false,
         "tier": "pass",
         "stretch": 0.93
@@ -1767,7 +1879,9 @@
       "away": "Coastal Carolina Chanticleers",
       "model": {
         "home_win_prob": 0.7861110886094247,
-        "away_win_prob": 0.2138889113905753
+        "away_win_prob": 0.2138889113905753,
+        "market_home_prob": 0.7659021045164341,
+        "disagreement": 2.0
       },
       "line_note": [
         "Spread: Louisiana Ragin' Cajuns -10.5 · Total 48.5",
@@ -1782,21 +1896,21 @@
           "name": "Coastal Carolina Chanticleers",
           "color": "006f71",
           "rank": null,
-          "record": "4-6",
-          "games": 10,
+          "record": "4-7",
+          "games": 11,
           "fpi": 112,
           "power_rank": 112,
           "rank_label": "FPI",
           "stats": {
             "ats": [
               5,
-              5,
+              6,
               0
             ],
-            "pts": 25.0,
-            "opp": 24.3,
-            "giv": 2.1,
-            "tak": 2.1,
+            "pts": 24.91,
+            "opp": 25.55,
+            "giv": 2.18,
+            "tak": 2.0,
             "ypp": 5.6
           }
         },
@@ -1805,21 +1919,21 @@
           "name": "Louisiana Ragin' Cajuns",
           "color": "ce181e",
           "rank": null,
-          "record": "7-3",
-          "games": 10,
+          "record": "8-3",
+          "games": 11,
           "fpi": 82,
           "power_rank": 82,
           "rank_label": "FPI",
           "stats": {
             "ats": [
-              6,
+              7,
               3,
               1
             ],
-            "pts": 31.1,
-            "opp": 21.7,
-            "giv": 1.2,
-            "tak": 1.9,
+            "pts": 31.73,
+            "opp": 21.91,
+            "giv": 1.18,
+            "tak": 2.0,
             "ypp": 6.0
           }
         }
@@ -1828,9 +1942,9 @@
         "side": "away",
         "team": "Coastal Carolina Chanticleers",
         "line": 10.5,
-        "cover": 0.5243,
-        "gap": 0.9,
-        "raw": 1.9,
+        "cover": 0.5192,
+        "gap": 0.8,
+        "raw": 1.5,
         "check": false,
         "tier": "pass",
         "stretch": 0.93
@@ -1845,7 +1959,9 @@
       "away": "Delaware Blue Hens",
       "model": {
         "home_win_prob": 0.3857988334528757,
-        "away_win_prob": 0.6142011665471243
+        "away_win_prob": 0.6142011665471243,
+        "market_home_prob": 0.4675324675324675,
+        "disagreement": -8.2
       },
       "line_note": [
         "Spread: Delaware Blue Hens -2.5 · Total 53.5",
@@ -1860,22 +1976,22 @@
           "name": "Delaware Blue Hens",
           "color": "00539f",
           "rank": null,
-          "record": "5-5",
-          "games": 10,
+          "record": "6-5",
+          "games": 11,
           "fpi": 101,
           "power_rank": 101,
           "rank_label": "FPI",
           "stats": {
             "ats": [
-              6,
+              7,
               4,
               0
             ],
-            "pts": 29.7,
-            "opp": 27.8,
-            "giv": 1.2,
-            "tak": 1.7,
-            "ypp": 6.0
+            "pts": 30.82,
+            "opp": 28.0,
+            "giv": 1.09,
+            "tak": 1.55,
+            "ypp": 6.1
           }
         },
         "home": {
@@ -1883,32 +1999,32 @@
           "name": "New Mexico State Aggies",
           "color": "7e141b",
           "rank": null,
-          "record": "3-7",
-          "games": 10,
+          "record": "3-8",
+          "games": 11,
           "fpi": 122,
           "power_rank": 122,
           "rank_label": "FPI",
           "stats": {
             "ats": [
               4,
-              6,
+              7,
               0
             ],
-            "pts": 20.7,
-            "opp": 25.9,
-            "giv": 2.0,
-            "tak": 1.1,
-            "ypp": 5.5
+            "pts": 21.55,
+            "opp": 27.36,
+            "giv": 1.82,
+            "tak": 1.0,
+            "ypp": 5.6
           }
         }
       },
       "ats": {
-        "side": "home",
-        "team": "New Mexico State Aggies",
-        "line": 2.5,
-        "cover": 0.5014,
+        "side": "away",
+        "team": "Delaware Blue Hens",
+        "line": -2.5,
+        "cover": 0.5042,
         "gap": 0.1,
-        "raw": 0.1,
+        "raw": 0.3,
         "check": false,
         "tier": "pass",
         "stretch": 0.93
@@ -3237,12 +3353,12 @@
         "away_win_prob": 0.15249630063326358
       },
       "line_note": [
-        "Spread: Louisiana Tech Bulldogs -14.5 · Total 55.5",
+        "Spread: Louisiana Tech Bulldogs -15.5 · Total 54.5",
         "FPI line: Louisiana Tech Bulldogs -14.4"
       ],
-      "spread_home": -14.5,
+      "spread_home": -15.5,
       "fpi_margin": 14.360999999999999,
-      "total": 55.5,
+      "total": 54.5,
       "team_stats": {
         "away": {
           "id": "2032",
@@ -3294,10 +3410,10 @@
       "ats": {
         "side": "away",
         "team": "Arkansas State Red Wolves",
-        "line": 14.5,
-        "cover": 0.5357,
-        "gap": 1.4,
-        "raw": 2.9,
+        "line": 15.5,
+        "cover": 0.5475,
+        "gap": 1.9,
+        "raw": 3.9,
         "check": false,
         "tier": "pass",
         "stretch": 0.93
@@ -3315,10 +3431,10 @@
         "away_win_prob": 0.031115740685000892
       },
       "line_note": [
-        "Spread: Miami Hurricanes -20.5 · Total 61.5",
+        "Spread: Miami Hurricanes -21 · Total 61.5",
         "FPI line: Miami Hurricanes -26.1"
       ],
-      "spread_home": -20.5,
+      "spread_home": -21.0,
       "fpi_margin": 26.105,
       "total": 61.5,
       "team_stats": {
@@ -3372,10 +3488,10 @@
       "ats": {
         "side": "away",
         "team": "Virginia Tech Hokies",
-        "line": 20.5,
-        "cover": 0.5338,
-        "gap": 1.4,
-        "raw": 2.9,
+        "line": 21.0,
+        "cover": 0.5395,
+        "gap": 1.7,
+        "raw": 3.4,
         "check": false,
         "tier": "pass",
         "stretch": 0.93
@@ -3393,12 +3509,12 @@
         "away_win_prob": 0.6936218168396661
       },
       "line_note": [
-        "Spread: UNLV Rebels -6.5 · Total 47.5",
+        "Spread: UNLV Rebels -6.5 · Total 48.5",
         "FPI line: UNLV Rebels -7.1"
       ],
       "spread_home": 6.5,
       "fpi_margin": -7.0859999999999985,
-      "total": 47.5,
+      "total": 48.5,
       "team_stats": {
         "away": {
           "id": "2439",
@@ -3549,12 +3665,12 @@
         "away_win_prob": 0.08382631621148184
       },
       "line_note": [
-        "Spread: Fresno State Bulldogs -20.5 · Total 66.5",
+        "Spread: Fresno State Bulldogs -20.5 · Total 67.5",
         "FPI line: Fresno State Bulldogs -19.3"
       ],
       "spread_home": -20.5,
       "fpi_margin": 19.317,
-      "total": 66.5,
+      "total": 67.5,
       "team_stats": {
         "away": {
           "id": "36",
@@ -3627,10 +3743,10 @@
         "away_win_prob": 0.23125675908027188
       },
       "line_note": [
-        "Spread: Louisville Cardinals -11.5 · Total 50.5",
+        "Spread: Louisville Cardinals -10.5 · Total 50.5",
         "FPI line: Louisville Cardinals -10.3"
       ],
-      "spread_home": -11.5,
+      "spread_home": -10.5,
       "fpi_margin": 10.286000000000001,
       "total": 50.5,
       "team_stats": {
@@ -3684,12 +3800,12 @@
       "ats": {
         "side": "away",
         "team": "Pittsburgh Panthers",
-        "line": 11.5,
-        "cover": 0.5581,
-        "gap": 2.3,
-        "raw": 4.6,
+        "line": 10.5,
+        "cover": 0.546,
+        "gap": 1.8,
+        "raw": 3.6,
         "check": false,
-        "tier": "lean",
+        "tier": "pass",
         "stretch": 0.93
       }
     },
@@ -4407,11 +4523,12 @@
         "away_win_prob": 0.2559350418931634
       },
       "line_note": [
+        "Spread: Eastern Michigan Eagles -6.5 · Total 46.5",
         "FPI line: Eastern Michigan Eagles -9.2"
       ],
-      "spread_home": null,
+      "spread_home": -6.5,
       "fpi_margin": 9.183,
-      "total": null,
+      "total": 46.5,
       "team_stats": {
         "away": {
           "id": "2309",
@@ -4459,6 +4576,17 @@
             "ypp": 4.7
           }
         }
+      },
+      "ats": {
+        "side": "home",
+        "team": "Eastern Michigan Eagles",
+        "line": -6.5,
+        "cover": 0.516,
+        "gap": 0.6,
+        "raw": 1.2,
+        "check": false,
+        "tier": "pass",
+        "stretch": 0.93
       }
     },
     {
@@ -4473,11 +4601,12 @@
         "away_win_prob": 0.2920912284076983
       },
       "line_note": [
+        "Spread: Western Michigan Broncos -7.5 · Total 46.5",
         "FPI line: Western Michigan Broncos -7.7"
       ],
-      "spread_home": null,
+      "spread_home": -7.5,
       "fpi_margin": 7.661999999999999,
-      "total": null,
+      "total": 46.5,
       "team_stats": {
         "away": {
           "id": "193",
@@ -4525,6 +4654,17 @@
             "ypp": 5.7
           }
         }
+      },
+      "ats": {
+        "side": "away",
+        "team": "Miami (OH) RedHawks",
+        "line": 7.5,
+        "cover": 0.5185,
+        "gap": 0.7,
+        "raw": 1.4,
+        "check": false,
+        "tier": "pass",
+        "stretch": 0.93
       }
     },
     {
@@ -4617,11 +4757,12 @@
         "away_win_prob": 0.7747897834936447
       },
       "line_note": [
+        "Spread: Buffalo Bulls -10 · Total 49.5",
         "FPI line: Buffalo Bulls -10.6"
       ],
-      "spread_home": null,
+      "spread_home": 10.0,
       "fpi_margin": -10.565999999999999,
-      "total": null,
+      "total": 49.5,
       "team_stats": {
         "away": {
           "id": "2084",
@@ -4669,6 +4810,17 @@
             "ypp": 5.5
           }
         }
+      },
+      "ats": {
+        "side": "home",
+        "team": "Akron Zips",
+        "line": 10.0,
+        "cover": 0.5334,
+        "gap": 1.3,
+        "raw": 2.6,
+        "check": false,
+        "tier": "pass",
+        "stretch": 0.93
       }
     },
     {
@@ -4683,10 +4835,10 @@
         "away_win_prob": 0.4036154099591023
       },
       "line_note": [
-        "Spread: Iowa Hawkeyes -6.5 · Total 38.5",
+        "Spread: Iowa Hawkeyes -6 · Total 38.5",
         "FPI line: Iowa Hawkeyes -3.4"
       ],
-      "spread_home": -6.5,
+      "spread_home": -6.0,
       "fpi_margin": 3.4159999999999986,
       "total": 38.5,
       "team_stats": {
@@ -4718,32 +4870,32 @@
           "name": "Iowa Hawkeyes",
           "color": "231f20",
           "rank": 15,
-          "record": "8-2",
-          "games": 10,
+          "record": "9-2",
+          "games": 11,
           "fpi": 17,
           "power_rank": 17,
           "rank_label": "FPI",
           "stats": {
             "ats": [
-              7,
+              8,
               3,
               0
             ],
-            "pts": 27.8,
-            "opp": 11.7,
+            "pts": 28.36,
+            "opp": 12.18,
             "giv": 1.0,
-            "tak": 1.0,
-            "ypp": 6.0
+            "tak": 1.09,
+            "ypp": 5.9
           }
         }
       },
       "ats": {
         "side": "away",
         "team": "Nebraska Cornhuskers",
-        "line": 6.5,
-        "cover": 0.5425,
-        "gap": 1.6,
-        "raw": 3.2,
+        "line": 6.0,
+        "cover": 0.5361,
+        "gap": 1.4,
+        "raw": 2.7,
         "check": false,
         "tier": "pass",
         "stretch": 0.93
@@ -4827,33 +4979,34 @@
         "away_win_prob": 0.12411835437822494
       },
       "line_note": [
+        "Spread: Ole Miss Rebels -19.5 · Total 57.5",
         "FPI line: Ole Miss Rebels -16.2"
       ],
-      "spread_home": null,
+      "spread_home": -19.5,
       "fpi_margin": 16.165,
-      "total": null,
+      "total": 57.5,
       "team_stats": {
         "away": {
           "id": "344",
           "name": "Mississippi State Bulldogs",
           "color": "5d1725",
           "rank": null,
-          "record": "4-6",
-          "games": 10,
+          "record": "5-6",
+          "games": 11,
           "fpi": 50,
           "power_rank": 50,
           "rank_label": "FPI",
           "stats": {
             "ats": [
               4,
-              6,
+              7,
               0
             ],
-            "pts": 24.5,
-            "opp": 29.1,
-            "giv": 1.6,
-            "tak": 0.9,
-            "ypp": 5.6
+            "pts": 25.36,
+            "opp": 27.91,
+            "giv": 1.64,
+            "tak": 0.91,
+            "ypp": 5.8
           }
         },
         "home": {
@@ -4879,6 +5032,17 @@
             "ypp": 6.2
           }
         }
+      },
+      "ats": {
+        "side": "away",
+        "team": "Mississippi State Bulldogs",
+        "line": 19.5,
+        "cover": 0.59,
+        "gap": 3.9,
+        "raw": 7.7,
+        "check": false,
+        "tier": "lean",
+        "stretch": 0.93
       }
     },
     {
@@ -4904,22 +5068,22 @@
           "name": "Tulsa Golden Hurricane",
           "color": "003595",
           "rank": null,
-          "record": "6-4",
-          "games": 10,
+          "record": "7-4",
+          "games": 11,
           "fpi": 70,
           "power_rank": 70,
           "rank_label": "FPI",
           "stats": {
             "ats": [
-              6,
+              7,
               4,
               0
             ],
-            "pts": 33.6,
-            "opp": 22.6,
-            "giv": 0.8,
-            "tak": 1.8,
-            "ypp": 6.1
+            "pts": 34.36,
+            "opp": 21.82,
+            "giv": 0.82,
+            "tak": 1.73,
+            "ypp": 6.2
           }
         },
         "home": {
@@ -4970,22 +5134,22 @@
           "name": "App State Mountaineers",
           "color": "000000",
           "rank": null,
-          "record": "6-4",
-          "games": 10,
+          "record": "7-4",
+          "games": 11,
           "fpi": 107,
           "power_rank": 107,
           "rank_label": "FPI",
           "stats": {
             "ats": [
               6,
-              4,
+              5,
               0
             ],
-            "pts": 25.7,
-            "opp": 23.6,
-            "giv": 1.6,
-            "tak": 1.4,
-            "ypp": 5.8
+            "pts": 24.91,
+            "opp": 22.91,
+            "giv": 1.55,
+            "tak": 1.36,
+            "ypp": 5.7
           }
         },
         "home": {
@@ -5444,22 +5608,22 @@
           "name": "West Virginia Mountaineers",
           "color": "eaaa00",
           "rank": null,
-          "record": "5-5",
-          "games": 10,
+          "record": "5-6",
+          "games": 11,
           "fpi": 68,
           "power_rank": 68,
           "rank_label": "FPI",
           "stats": {
             "ats": [
-              5,
+              6,
               4,
               1
             ],
-            "pts": 34.9,
-            "opp": 34.8,
-            "giv": 0.9,
-            "tak": 1.1,
-            "ypp": 6.2
+            "pts": 34.55,
+            "opp": 34.73,
+            "giv": 0.82,
+            "tak": 1.0,
+            "ypp": 6.1
           }
         },
         "home": {
@@ -5489,13 +5653,13 @@
     }
   ],
   "summary": {
-    "graded": 91,
-    "pending": 58,
-    "brier": 0.2059,
+    "graded": 101,
+    "pending": 48,
+    "brier": 0.1929,
     "market_brier": null,
     "fpi_ats": [
       35,
-      32,
+      33,
       3
     ],
     "ats_tiers": {
@@ -5516,7 +5680,7 @@
       ],
       "pass": [
         1,
-        0,
+        1,
         0
       ]
     }
@@ -7121,7 +7285,8 @@
       "p_home": 0.27737987143040255,
       "mkt_home": null,
       "spread_home": null,
-      "fpi_margin": -8.269
+      "fpi_margin": -8.269,
+      "home_won": false
     },
     {
       "event_id": "401862831",
@@ -7243,7 +7408,8 @@
       "p_home": 0.9226629772171946,
       "mkt_home": null,
       "spread_home": null,
-      "fpi_margin": 19.925
+      "fpi_margin": 19.925,
+      "home_won": true
     },
     {
       "event_id": "401871079",
@@ -7253,7 +7419,8 @@
       "p_home": 0.8215866412216782,
       "mkt_home": null,
       "spread_home": null,
-      "fpi_margin": 12.899999999999999
+      "fpi_margin": 12.899999999999999,
+      "home_won": true
     },
     {
       "event_id": "401871081",
@@ -7263,7 +7430,8 @@
       "p_home": 0.3762452514492041,
       "mkt_home": null,
       "spread_home": null,
-      "fpi_margin": -4.414999999999999
+      "fpi_margin": -4.414999999999999,
+      "home_won": false
     },
     {
       "event_id": "401862832",
@@ -7273,7 +7441,8 @@
       "p_home": 0.9551178989565294,
       "mkt_home": null,
       "spread_home": null,
-      "fpi_margin": 23.753
+      "fpi_margin": 23.753,
+      "home_won": true
     },
     {
       "event_id": "401869929",
@@ -7283,7 +7452,8 @@
       "p_home": 0.8749868936306318,
       "mkt_home": null,
       "spread_home": null,
-      "fpi_margin": 16.104
+      "fpi_margin": 16.104,
+      "home_won": true
     },
     {
       "event_id": "401862833",
@@ -7305,7 +7475,9 @@
       "spread_home": 6.5,
       "fpi_margin": -4.7860000000000005,
       "ats_side": "home",
-      "ats_tier": "pass"
+      "ats_tier": "pass",
+      "home_won": false,
+      "fpi_ats": "L"
     },
     {
       "event_id": "401871078",
@@ -7315,7 +7487,8 @@
       "p_home": 0.6252450677126117,
       "mkt_home": null,
       "spread_home": null,
-      "fpi_margin": 4.470000000000001
+      "fpi_margin": 4.470000000000001,
+      "home_won": true
     },
     {
       "event_id": "401869946",
@@ -7325,7 +7498,8 @@
       "p_home": 0.7868594106006979,
       "mkt_home": null,
       "spread_home": null,
-      "fpi_margin": 11.138000000000002
+      "fpi_margin": 11.138000000000002,
+      "home_won": true
     },
     {
       "event_id": "401871077",
@@ -7335,7 +7509,8 @@
       "p_home": 0.387001468984012,
       "mkt_home": null,
       "spread_home": null,
-      "fpi_margin": -4.02
+      "fpi_margin": -4.02,
+      "home_won": false
     },
     {
       "event_id": "401858304",
