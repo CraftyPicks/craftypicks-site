@@ -140,6 +140,10 @@ def parse_event(ev) -> dict | None:
         "season": season.get("year"),
         "season_type": season.get("type"),
         "neutral": bool(comp.get("neutralSite")),
+        # Conference game (None when ESPN leaves it out): the System's under
+        # rule only plays non-conference games.
+        "conf_game": (bool(comp["conferenceCompetition"])
+                      if comp.get("conferenceCompetition") is not None else None),
         "postseason": season.get("type") == 3
                       or any(w in notes for w in _TOURNEY_WORDS),
         "completed": done,
@@ -355,9 +359,10 @@ def _team(tid, name, abbr):
 
 
 def _fx_event(completed=True, odds=None, neutral=False, notes=None,
-              season_type=2):
+              season_type=2, conf=None):
     comp = {
         "neutralSite": neutral,
+        **({"conferenceCompetition": conf} if conf is not None else {}),
         "notes": notes or [],
         "status": {"type": {"completed": completed}},
         "competitors": [
@@ -471,6 +476,10 @@ def _self_test() -> None:
     assert (g["home_1h"], g["away_1h"]) == (36, 30)
     assert g["spread_home"] == -9.5 and g["completed"] and g["season"] == 2027
     assert g["postseason"] is False and g["neutral"] is False
+    # Conference game, for the System's under rule: ESPN's flag, None when absent.
+    assert g["conf_game"] is None
+    assert parse_event(_fx_event(conf=True))["conf_game"] is True
+    assert parse_event(_fx_event(conf=False))["conf_game"] is False
     up = parse_event(_fx_event(completed=False))
     assert up["home_score"] is None and up["home_1h"] is None
     assert up["spread_home"] is None

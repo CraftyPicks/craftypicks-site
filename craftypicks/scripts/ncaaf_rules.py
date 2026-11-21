@@ -111,7 +111,8 @@ def plays(spread_home, neutral: bool, home_form: dict | None,
 
 
 def for_game(store: dict, home_id, away_id, commence, spread_home,
-             neutral: bool, ranks=(None, None)) -> dict:
+             neutral: bool, ranks=(None, None), total=None, conf=None) -> dict:
+    """(total and conf are basketball's; football has no total rule.)"""
     forms = team_forms(store, _ts(commence))
     return plays(spread_home, neutral, forms.get(str(home_id)), forms.get(str(away_id)), ranks)
 

@@ -586,9 +586,13 @@ def attach_system(rows: list[dict], store: dict, ranks: dict | None = None,
         pair = [ranks.get(str(hid)), ranks.get(str(aid))]
         if "sys_ranks" not in r and None not in pair:
             r["sys_ranks"] = pair
+        tot = ((r.get("markets") or {}).get("totals") or {}).get("point")
+        if tot is None:
+            tot = g.get("total")
         play = rules.for_game(store, hid, aid, r.get("commence_time"), hp,
-                                    bool(g.get("neutral")), tuple(r.get("sys_ranks") or pair))
-        if play["side"]:
+                              bool(g.get("neutral")), tuple(r.get("sys_ranks") or pair),
+                              total=tot, conf=g.get("conf_game"))
+        if play["side"] or play.get("under"):
             r["system"] = play
             n += 1
         else:
@@ -1099,36 +1103,44 @@ def _remove_orphans(written: set) -> None:
 
 def _test_history() -> None:
     # The System, attached to each college basketball row from the store as
-    # of that game's start.
-    sstore = {"games": {
-        "1": {"event_id": "1", "commence_time": "2026-11-03T23:00Z", "completed": True,
-              "home": {"id": "D"}, "away": {"id": "x"}, "home_score": 60, "away_score": 50,
-              "box": {"D": {"reb": 40, "stl": 10}, "x": {"reb": 30, "stl": 4}}},
-        "2": {"event_id": "2", "commence_time": "2026-11-05T23:00Z", "completed": True,
-              "home": {"id": "x"}, "away": {"id": "D"}, "home_score": 50, "away_score": 66,
-              "box": {"D": {"reb": 38, "stl": 9}, "x": {"reb": 30, "stl": 4}}},
-        "3": {"event_id": "3", "commence_time": "2026-11-04T23:00Z", "completed": True,
-              "home": {"id": "O"}, "away": {"id": "y"}, "home_score": 90, "away_score": 85,
-              "box": {"O": {"reb": 30, "stl": 3}, "y": {"reb": 35, "stl": 6}}},
-        "4": {"event_id": "4", "commence_time": "2026-11-06T23:00Z", "completed": True,
-              "home": {"id": "y"}, "away": {"id": "O"}, "home_score": 92, "away_score": 95,
-              "box": {"O": {"reb": 31, "stl": 4}, "y": {"reb": 36, "stl": 7}}},
-        "9": {"event_id": "9", "commence_time": "2026-11-10T23:00Z", "completed": False,
-              "neutral": True, "home": {"id": "O"}, "away": {"id": "D"}}}}
+    # of that game's start: BIGDOG (a 10+ point dog with the better
+    # defense) and UNDER (two poor shooting defenses, non-conference).
+    def sg(eid, day, h, a, hs, as_, hb, ab):
+        return {"event_id": eid, "commence_time": f"2026-11-{day:02d}T23:00Z", "completed": True,
+                "home": {"id": h}, "away": {"id": a}, "home_score": hs, "away_score": as_,
+                "box": {h: hb, a: ab}}
+    def sb(stl, tov, fgm, fga, tpm, tpa):
+        return {"stl": stl, "tov": tov, "fgm": fgm, "fga": fga, "tpm": tpm, "tpa": tpa}
+    sstore = {"games": {}}
+    for i in range(3):
+        d = 2 + i
+        sstore["games"][f"d{i}"] = sg(f"d{i}", d, "D", f"x{i}", 75, 60, sb(9, 10, 28, 60, 7, 20), sb(4, 15, 20, 60, 5, 20))
+        sstore["games"][f"o{i}"] = sg(f"o{i}", d, "O", f"y{i}", 90, 85, sb(5, 10, 33, 60, 9, 22), sb(6, 10, 32, 60, 10, 25))
+        sstore["games"][f"p{i}"] = sg(f"p{i}", d, "P", f"z{i}", 82, 80, sb(6, 11, 31, 60, 8, 21), sb(6, 11, 30, 60, 9, 24))
+        sstore["games"][f"m{i}"] = sg(f"m{i}", d, "M", f"w{i}", 70, 70, sb(6, 11, 25, 60, 6, 20), sb(6, 11, 25, 60, 6, 20))
+    sstore["games"]["9"] = {"event_id": "9", "commence_time": "2026-11-10T23:00Z", "completed": False,
+                            "neutral": True, "conf_game": True, "home": {"id": "O"}, "away": {"id": "D"}}
+    sstore["games"]["8"] = {"event_id": "8", "commence_time": "2026-11-10T23:00Z", "completed": False,
+                            "conf_game": False, "home": {"id": "O"}, "away": {"id": "P"}}
     srows = [{"league": "ncaab", "espn_id": "9", "commence_time": "2026-11-10T23:00Z",
               "teams": {"home": {"id": "O"}, "away": {"id": "D"}},
-              "markets": {"spreads": {"point": -8.0, "side_a": "home"}, "totals": {"point": 150.0}}},
+              "markets": {"spreads": {"point": -12.0, "side_a": "home"}, "totals": {"point": 150.0}}},
+             {"league": "ncaab", "espn_id": "8", "commence_time": "2026-11-10T23:00Z",
+              "teams": {"home": {"id": "O"}, "away": {"id": "P"}},
+              "markets": {"spreads": {"point": -3.0, "side_a": "home"}, "totals": {"point": 152.0}}},
              {"league": "ncaab", "commence_time": "2026-11-10T23:00Z", "markets": {}}]
-    assert attach_system(srows, sstore) == 1
-    assert srows[0]["system"] == {"side": "away", "reasons": ["defense"]}, \
-        "D is the better defence getting 8; neutral site, so not a small-dog play"
-    assert "system" not in srows[1], "no teams, no play"
-    # Power ranks: stamped on the row the first time, so History keeps the
-    # ranks the play was made with even after BPI moves.
+    assert attach_system(srows, sstore) == 2
+    assert srows[0]["system"] == {"side": "away", "reasons": ["bigdog"], "under": False}, \
+        "D, the better defence, getting 12; a conference game, so no under"
+    assert srows[1]["system"] == {"side": None, "reasons": [], "under": True}, \
+        "O and P both defend shots poorly in a non-conference game"
+    assert "system" not in srows[2], "no teams, no play"
+    # Ranks are stamped once, so History keeps the pair a play was made with.
     assert "sys_ranks" not in srows[0], "no ranks given: nothing stamped"
-    assert attach_system(srows, sstore, {"O": 5, "D": 150}) == 0, "145 apart: no play"
-    assert srows[0]["sys_ranks"] == [5, 150] and "system" not in srows[0]
-    assert attach_system(srows, sstore, {"O": 5, "D": 20}) == 0, "the stamped ranks win"
+    attach_system(srows, sstore, {"O": 5, "D": 150})
+    assert srows[0]["sys_ranks"] == [5, 150]
+    attach_system(srows, sstore, {"O": 5, "D": 20})
+    assert srows[0]["sys_ranks"] == [5, 150], "the stamped ranks win"
     # Football: the same call with its rules module and FPI ranks.
     import ncaaf_rules  # noqa: PLC0415
     frows = [{"league": "ncaaf", "espn_id": "f9", "commence_time": "2026-11-21T20:00Z",

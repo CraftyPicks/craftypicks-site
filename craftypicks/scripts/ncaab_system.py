@@ -49,7 +49,7 @@ CHECKS = {
 # ----------------------------------------------------------------- the store
 # data/ncaab_games.json: {"season": 2027, "last_day": "YYYY-MM-DD",
 #                         "games": {event_id: parsed event + "box"}}
-_KEEP_IF_MISSING = ("spread_home", "ml_home", "ml_away", "total")
+_KEEP_IF_MISSING = ("spread_home", "ml_home", "ml_away", "total", "conf_game")
 
 
 def merge_games(store: dict, games: list[dict]) -> int:

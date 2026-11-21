@@ -1,65 +1,40 @@
 #!/usr/bin/env python3
-"""The college basketball System: plays chosen by rules, not by the rating.
+"""The college basketball System: two rules that passed a six-season test.
 
-Rules (Nov 2026), tested on every game with a line from Nov 1 to Nov 17.
-Each was found on Nov 1-11 and checked on Nov 12-17, which it had never
-seen; both held up in both halves:
+Chosen on 2020-21 through 2024-25 and checked on 2025-26, which chose
+nothing (research/search_ncaab_angles.py, search_ncaab_totals.py, on
+CollegeBasketballData history; every stat as of the game, closing lines):
 
-  DEFENSE  The underdog is the better defensive team: fewer points allowed,
-           a better rebound margin and more steals, combined into one score.
-           70-43 (62%) against the spread.
-  SMALL    The underdog gets 6 points or fewer on a true home court
-           (neutral sites left out). 99-63 (61%).
+  BIGDOG  The underdog getting 10 or more, when it allows fewer points per
+          game than the favourite, or has more steals AND forces more
+          turnovers. 1656-1351 (55.1%), break-even or better in all six
+          seasons, 57% in the held-out one. All season.
+  UNDER   The under in a non-conference game when both teams defend shots
+          poorly: both allow an above-median effective FG% and 3PT%.
+          449-330 (57.6%), 55%+ in every season. Non-conference games are
+          nearly all November-December; where the flag is unknown, those
+          months stand in (56.6% over the same seasons).
 
-A dog meeting DEFENSE or SMALL is a spread play (143-90, 61%); with the
-rank-gap rules below (Nov 18) it is 98-46 (68%), 69% and 67% in the two
-halves -- the gaps were chosen on these games, so that is the best case. The bar for
-a -110 bet is 52.4%. (An under-at-145+ rule went 276-216 but was dropped,
-Nov 18, at the owner's call: the System is spreads only.)
+They replace the Nov 2026 rules (small dog, defense dog, road dog, favourite
+vs 300+), which looked like 61-69% on two weeks but went 50.3% over six
+seasons once graded without hindsight. The bar for -110 is 52.4%.
 
 Every number a play uses comes from games that started BEFORE it, so a
 page rebuilt after the game cannot leak the result into its own pick.
-Teams need MIN_GAMES finals before DEFENSE applies. Stdlib only.
+Stdlib only.
 """
 from __future__ import annotations
 
-from datetime import datetime
+import statistics
+from datetime import datetime, timedelta
 
-MIN_GAMES = 2
-SMALL_DOG = 6.0
-# Power-rank (BPI) gap, Nov 18: the System went 19-28 when the teams were
-# 100+ spots apart, so those are skipped; SMALL went 61-27 within 50 spots
-# and 38-36 beyond, so it needs the teams within 50.
-MAX_GAP = 100
-SMALL_GAP = 50
-# ROAD (Nov 19): an away dog getting 6.5 to 9.5 at the home team's court
-# covered 50-27 (65%), steady in all three stretches; 37-18 of it was not
-# already a System play. Home favourites of that size covered only 35%.
-ROAD_MIN, ROAD_MAX = 6.0, 9.5
-# FAV300 (Nov 19, the owner's rule from before the System): the favourite
-# when a team ranked LOW_RANK or better is favoured by under FAV_MAX against
-# a team ranked worse than LOW_RANK. 32-19 (63%) Nov 1-19, in all three
-# stretches; graded on today's ranks, so it flatters. It takes the favourite
-# over any underdog rule (those games went 8-8) and ignores MAX_GAP.
-LOW_RANK, FAV_MAX = 300, 10.0
-# The spread of each defensive stat across teams this season, used to put
-# points allowed (about 11 points), steals (2.5) and rebound margin (8.6)
-# on one scale. Measured Nov 2026; they only weigh the three stats.
-PA_SD, STL_SD, REB_SD = 10.8, 2.54, 8.6
+BIG_DOG = 10.0       # BIGDOG: the underdog gets at least this many
+MIN_BOX = 3          # box scores a team needs before its stats are used
+UNDER_MONTHS = (11, 12)   # UNDER's window when the conference flag is unknown
 
-# The backtest, for the page. Not the record: that is counted forward.
-BACKTEST = {"spread": [146, 67, 0], "through": "2026-11-17",
-            # Tracked, not played: when DEFENSE fires, the favourite's team
-            # total (total/2 + spread/2) going under.
-            "tt": [54, 20, 0],
-            # Spread plays by the rules that chose them, for the cards.
-            "by_reason": {"small": [43, 15], "defense": [25, 13],
-                          "small+defense": [17, 6], "road": [26, 13],
-                          "road+defense": [9, 4], "fav300": [26, 16]},
-            # Tracked, not played: the team total of the one team ranked
-            # worse than 300 going under. Graded on today's ranks, which
-            # those games helped set, so it flatters; the live row is clean.
-            "low": [123, 81, 0]}
+BACKTEST = {"spread": [1656, 1351, 0], "total": [449, 330, 0],
+            "through": "2026-04-06", "seasons": "2020-21 to 2025-26",
+            "by_reason": {"bigdog": [1656, 1351], "under": [449, 330]}}
 
 
 def _ts(stamp) -> float | None:
@@ -70,9 +45,11 @@ def _ts(stamp) -> float | None:
 
 
 def team_forms(store: dict, before) -> dict:
-    """{team id: {"n", "pa", "stl", "reb"}} per game, from finals that
-    started before `before` (a timestamp). `reb` is the rebound margin."""
-    acc: dict[str, list] = {}
+    """{team id: form} from finals that started before `before` (a timestamp):
+    n and pa (points allowed) from every final; stl and tovf (turnovers
+    forced) from box scores (`box`); oefg and otpp (opponents' effective
+    FG% and 3PT%) from box scores carrying three-pointers (`shot`)."""
+    acc: dict[str, dict] = {}
     for g in (store or {}).get("games", {}).values():
         t = _ts(g.get("commence_time"))
         if (not g.get("completed") or g.get("home_score") is None or t is None
@@ -81,142 +58,142 @@ def team_forms(store: dict, before) -> dict:
         box = g.get("box") or {}
         for me, ot in (("home", "away"), ("away", "home")):
             tid, oid = str(g[me]["id"]), str(g[ot]["id"])
-            a = acc.setdefault(tid, [0, 0.0, 0.0, 0.0, 0])  # n, pa, stl, reb margin, boxed
-            a[0] += 1
-            a[1] += g[f"{ot}_score"]
+            a = acc.setdefault(tid, {"n": 0, "pa": 0.0, "box": 0, "stl": 0.0, "tovf": 0.0,
+                                     "shot": 0, "ofgm": 0, "ofga": 0, "otpm": 0, "otpa": 0})
+            a["n"] += 1
+            a["pa"] += g[f"{ot}_score"]
             mb, ob = box.get(tid) or {}, box.get(oid) or {}
-            if mb.get("stl") is not None and mb.get("reb") is not None and ob.get("reb") is not None:
-                a[2] += mb["stl"]
-                a[3] += mb["reb"] - ob["reb"]
-                a[4] += 1
-    return {tid: {"n": n, "pa": pa / n, "stl": stl / bx if bx else 0.0,
-                  "reb": reb / bx if bx else 0.0}
-            for tid, (n, pa, stl, reb, bx) in acc.items() if n}
-
-
-def defense(form: dict) -> float:
-    """One defensive score: higher is better."""
-    return -form["pa"] / PA_SD + form["stl"] / STL_SD + form["reb"] / REB_SD
-
-
-def plays(spread_home, neutral: bool, home_form: dict | None,
-          away_form: dict | None, ranks=(None, None)) -> dict:
-    """The System's play for one game: {"side": "home"/"away" or None,
-    "reasons": [...]}. The side is the underdog, except FAV300. `ranks` is
-    the (home, away) power rank; when either is missing the rank rules are off."""
-    out = {"side": None, "reasons": []}
-    if spread_home in (None, 0):
-        return out
-    rh, ra = ranks or (None, None)
-    if rh is not None and ra is not None and abs(spread_home) < FAV_MAX:
-        fav, fr, dr = ("home", rh, ra) if spread_home < 0 else ("away", ra, rh)
-        if fr <= LOW_RANK < dr:
-            return {"side": fav, "reasons": ["fav300"]}
-    gap = abs(rh - ra) if rh is not None and ra is not None else None
-    if gap is not None and gap >= MAX_GAP:
-        return out
-    dog = "home" if spread_home > 0 else "away"
-    if abs(spread_home) <= SMALL_DOG and not neutral and (gap is None or gap < SMALL_GAP):
-        out["reasons"].append("small")
-    if dog == "away" and not neutral and ROAD_MIN < abs(spread_home) <= ROAD_MAX:
-        out["reasons"].append("road")
-    forms = {"home": home_form, "away": away_form}
-    if all(f and f["n"] >= MIN_GAMES for f in forms.values()):
-        other = "away" if dog == "home" else "home"
-        if defense(forms[dog]) > defense(forms[other]):
-            out["reasons"].append("defense")
-    if out["reasons"]:
-        out["side"] = dog
+            if mb.get("stl") is not None and ob.get("tov") is not None:
+                a["box"] += 1
+                a["stl"] += mb["stl"]
+                a["tovf"] += ob["tov"]
+            if all(ob.get(k) is not None for k in ("fgm", "fga", "tpm", "tpa")) and ob["fga"]:
+                a["shot"] += 1
+                for k in ("fgm", "fga", "tpm", "tpa"):
+                    a[f"o{k}"] += ob[k]
+    out = {}
+    for tid, a in acc.items():
+        out[tid] = {
+            "n": a["n"], "pa": a["pa"] / a["n"], "box": a["box"],
+            "stl": a["stl"] / a["box"] if a["box"] else None,
+            "tovf": a["tovf"] / a["box"] if a["box"] else None,
+            "shot": a["shot"],
+            "oefg": (a["ofgm"] + 0.5 * a["otpm"]) / a["ofga"] if a["ofga"] else None,
+            "otpp": a["otpm"] / a["otpa"] if a["otpa"] else None}
     return out
 
 
-def for_game(store: dict, home_id, away_id, commence, spread_home,
-             neutral: bool, ranks=(None, None)) -> dict:
+def medians(forms: dict) -> dict:
+    """The median team's oefg and otpp, over teams with MIN_BOX shot boxes."""
+    pool = [f for f in forms.values() if f["shot"] >= MIN_BOX]
+    return {k: statistics.median(f[k] for f in pool) if pool else None for k in ("oefg", "otpp")}
+
+
+def _bigdog(dog: dict | None, fav: dict | None) -> bool:
+    if not dog or not fav or min(dog["box"], fav["box"]) < MIN_BOX:
+        return False
+    if dog["pa"] < fav["pa"]:
+        return True
+    return dog["stl"] > fav["stl"] and dog["tovf"] > fav["tovf"]
+
+
+def _poor_shot_defense(f: dict | None, med: dict) -> bool:
+    return (bool(f) and f["shot"] >= MIN_BOX and med.get("oefg") is not None
+            and f["oefg"] > med["oefg"] and f["otpp"] > med["otpp"])
+
+
+def plays(spread_home, neutral: bool, home_form: dict | None, away_form: dict | None,
+          ranks=(None, None), total=None, conf=None, month=None, med=None) -> dict:
+    """The System's plays for one game: {"side": the underdog or None,
+    "reasons": ["bigdog"] or [], "under": bool}. `conf` is whether it is a
+    conference game (None when unknown); `month` the game's month."""
+    out = {"side": None, "reasons": [], "under": False}
+    if spread_home not in (None, 0) and abs(spread_home) >= BIG_DOG:
+        dog, fav = ("home", "away") if spread_home > 0 else ("away", "home")
+        forms = {"home": home_form, "away": away_form}
+        if _bigdog(forms[dog], forms[fav]):
+            out["side"], out["reasons"] = dog, ["bigdog"]
+    window = (conf is False) if conf is not None else (month in UNDER_MONTHS)
+    if (total is not None and window and med
+            and _poor_shot_defense(home_form, med) and _poor_shot_defense(away_form, med)):
+        out["under"] = True
+    return out
+
+
+def for_game(store: dict, home_id, away_id, commence, spread_home, neutral: bool,
+             ranks=(None, None), total=None, conf=None) -> dict:
     """plays() for a game, with each team's form as of its start."""
-    forms = team_forms(store, _ts(commence))
-    return plays(spread_home, neutral, forms.get(str(home_id)), forms.get(str(away_id)), ranks)
+    t = _ts(commence)
+    forms = team_forms(store, t)
+    month = (datetime.fromtimestamp(t) - timedelta(hours=5)).month if t is not None else None
+    return plays(spread_home, neutral, forms.get(str(home_id)), forms.get(str(away_id)),
+                 ranks, total, conf, month, medians(forms))
 
 
-def grade(play: dict, spread_home, home_score, away_score) -> dict:
-    """{"spread": "W"/"L"/"P" or None} for a finished game."""
-    out = {"spread": None}
+def grade(play: dict, spread_home, home_score, away_score, total=None) -> dict:
+    """{"spread": "W"/"L"/"P" or None, "total": ...} for a finished game."""
+    out = {"spread": None, "total": None}
     if play.get("side") and spread_home is not None:
         e = home_score - away_score + spread_home
         if play["side"] == "away":
             e = -e
         out["spread"] = "W" if e > 0 else "L" if e < 0 else "P"
+    if play.get("under") and total is not None:
+        d = home_score + away_score - total
+        out["total"] = "W" if d < 0 else "L" if d > 0 else "P"
     return out
 
 
 def _self_test() -> None:
-    def g(eid, when, h, a, hs, as_, box=None):
-        return {"event_id": eid, "commence_time": when, "completed": True,
+    def g(eid, day, h, a, hs, as_, hbox, abox):
+        return {"event_id": eid, "commence_time": f"2026-11-{day:02d}T23:00Z", "completed": True,
                 "home": {"id": h}, "away": {"id": a}, "home_score": hs, "away_score": as_,
-                "box": box or {}}
-    def bx(h, a, hreb, areb, hstl, astl):
-        return {h: {"reb": hreb, "stl": hstl}, a: {"reb": areb, "stl": astl}}
-    store = {"games": {
-        "1": g("1", "2026-11-03T23:00Z", "D", "x", 60, 50, bx("D", "x", 40, 30, 10, 4)),
-        "2": g("2", "2026-11-06T23:00Z", "y", "D", 55, 65, bx("y", "D", 28, 38, 5, 9)),
-        "3": g("3", "2026-11-04T23:00Z", "O", "x", 90, 85, bx("O", "x", 30, 35, 3, 6)),
-        "4": g("4", "2026-11-07T23:00Z", "O", "y", 95, 92, bx("O", "y", 31, 36, 4, 7)),
-        "5": g("5", "2026-11-20T23:00Z", "D", "O", 70, 60, bx("D", "O", 40, 30, 10, 2)),
-    }}
-    before = _ts("2026-11-10T00:00Z")
-    f = team_forms(store, before)
-    assert f["D"] == {"n": 2, "pa": 52.5, "stl": 9.5, "reb": 10.0}, f["D"]
-    assert f["O"]["n"] == 2 and f["O"]["pa"] == 88.5 and f["O"]["reb"] == -5.0
-    assert team_forms(store, _ts("2026-11-21T00:00Z"))["D"]["n"] == 3, "later cutoff sees game 5"
-    assert defense(f["D"]) > defense(f["O"])
-    # D is the better defense and the underdog by 8 at home: DEFENSE only.
-    p = plays(8.0, False, f["D"], f["O"])
-    assert p == {"side": "home", "reasons": ["defense"]}, p
-    # Small dog with the worse defense: SMALL only. No total play any more.
-    p = plays(-4.5, False, f["D"], f["O"])
-    assert p == {"side": "away", "reasons": ["small"]}, p
-    # Both rules.
-    assert plays(4.0, False, f["D"], f["O"])["reasons"] == ["small", "defense"]
-    # A neutral site is not a small-dog play; too few games is not a defense play.
-    assert plays(-4.5, True, f["D"], f["O"])["side"] is None
-    thin = dict(f["D"], n=1)
-    assert plays(8.0, False, thin, f["O"])["side"] is None
-    assert plays(0, False, f["D"], f["O"]) == {"side": None, "reasons": []}
-    # No leak: a game's own result never feeds its play.
-    assert for_game(store, "D", "O", "2026-11-20T23:00Z", 8.0, False)["side"] == "home"
-    # ROAD: an away dog getting 6.5 to 9.5 on the home team's court.
-    # (Away team O is the worse defense; with D away it is the better one.)
-    assert plays(-7.5, False, f["D"], f["O"])["reasons"] == ["road"]
-    assert plays(-7.5, False, f["O"], f["D"])["reasons"] == ["road", "defense"]
-    assert plays(-10.0, False, f["D"], f["O"])["side"] is None, "past 9.5"
-    assert plays(-7.5, True, f["D"], f["O"])["side"] is None, "neutral site"
-    assert plays(7.5, False, f["O"], f["D"])["side"] is None, "home dogs are not ROAD"
-    assert plays(-7.5, False, f["D"], f["O"], ranks=(10, 115))["side"] is None, "100+ apart"
-    assert plays(-7.5, False, f["D"], f["O"], ranks=(10, 90))["reasons"] == ["road"], "no 50 limit"
-    # FAV300: a team ranked 300 or better, favored by under 10, against a
-    # team ranked worse than 300 -- the favourite, over any underdog rule,
-    # and past the 100-spot skip.
-    assert plays(-6.5, False, f["O"], f["D"], ranks=(120, 320)) == {"side": "home", "reasons": ["fav300"]}
-    assert plays(4.0, False, f["D"], f["O"], ranks=(330, 150)) == {"side": "away", "reasons": ["fav300"]}, \
-        "away favourite; beats SMALL and DEFENSE for the home dog"
-    assert plays(-9.5, False, f["O"], f["D"], ranks=(20, 310))["reasons"] == ["fav300"], "290 apart: no skip"
-    assert plays(-10.0, False, f["O"], f["D"], ranks=(20, 310))["side"] is None, "10 or more: not this rule"
-    assert plays(-6.5, False, f["O"], f["D"], ranks=(301, 320))["reasons"] != ["fav300"], "both 300+"
-    assert plays(-6.5, False, f["O"], f["D"], ranks=(300, 301))["reasons"] == ["fav300"], "300th counts"
-    assert plays(6.5, False, f["O"], f["D"], ranks=(320, 120))["reasons"] == ["fav300"]
-    assert plays(-6.5, False, f["O"], f["D"], ranks=(320, 120))["reasons"] != ["fav300"], "favourite is the 300+ team"
-    # Rank gap (BPI): 100+ apart, no play at all; SMALL needs under 50.
-    assert plays(4.0, False, f["D"], f["O"], ranks=(30, 60))["reasons"] == ["small", "defense"]
-    assert plays(4.0, False, f["D"], f["O"], ranks=(30, 90))["reasons"] == ["defense"], "gap 60: no SMALL"
-    assert plays(4.0, False, f["D"], f["O"], ranks=(30, 130))["side"] is None, "gap 100: no play"
-    assert plays(-4.5, False, f["D"], f["O"], ranks=(10, 70))["side"] is None, "SMALL only, gap 60"
-    assert plays(4.0, False, f["D"], f["O"], ranks=(None, 60))["reasons"] == ["small", "defense"], \
-        "a missing rank leaves the gap rules out"
-    assert for_game(store, "D", "O", "2026-11-20T23:00Z", 8.0, False, ranks=(5, 200))["side"] is None
-    # Grading.
-    assert grade({"side": "home"}, 8.0, 60, 65) == {"spread": "W"}
-    assert grade({"side": "away"}, -4.5, 70, 60) == {"spread": "L"}
-    assert grade({"side": "away"}, -4.0, 70, 66) == {"spread": "P"}
-    assert grade({"side": None}, -4.0, 70, 66) == {"spread": None}
+                "box": {h: hbox, a: abox}}
+
+    def bx(stl, tov, fgm, fga, tpm, tpa):
+        return {"stl": stl, "tov": tov, "fgm": fgm, "fga": fga, "tpm": tpm, "tpa": tpa}
+    store = {"games": {}}
+    # D: allows 60, 9 steals, forces 15; opponents shoot 20-60 (5-20 from 3).
+    # B: allows 85, 5 steals, forces 10; opponents shoot 32-60 (10-25 from 3).
+    # P: allows 80; opponents shoot 30-60 (9-24). Two more average teams set the median.
+    for i in range(3):
+        d = 2 + i
+        store["games"][f"d{i}"] = g(f"d{i}", d, "D", f"x{i}", 75, 60, bx(9, 10, 28, 60, 7, 20), bx(4, 15, 20, 60, 5, 20))
+        store["games"][f"b{i}"] = g(f"b{i}", d, "B", f"y{i}", 90, 85, bx(5, 10, 33, 60, 9, 22), bx(6, 10, 32, 60, 10, 25))
+        store["games"][f"p{i}"] = g(f"p{i}", d, "P", f"z{i}", 82, 80, bx(6, 11, 31, 60, 8, 21), bx(6, 11, 30, 60, 9, 24))
+        store["games"][f"m{i}"] = g(f"m{i}", d, "M", f"w{i}", 70, 70, bx(6, 11, 25, 60, 6, 20), bx(6, 11, 25, 60, 6, 20))
+        store["games"][f"n{i}"] = g(f"n{i}", d, "N", f"v{i}", 70, 70, bx(6, 11, 26, 60, 6, 21), bx(6, 11, 26, 60, 6, 21))
+    f = team_forms(store, _ts("2026-11-10T00:00Z"))
+    assert f["D"]["n"] == 3 and f["D"]["pa"] == 60 and f["D"]["stl"] == 9 and f["D"]["tovf"] == 15
+    assert abs(f["D"]["oefg"] - (20 + 2.5) / 60) < 1e-9 and f["D"]["otpp"] == 0.25
+    med = medians(f)
+    # BIGDOG: D getting 12 at B -- fewer points allowed.
+    p = plays(-12.0, False, f["B"], f["D"], med=med, month=11)
+    assert p["side"] == "away" and p["reasons"] == ["bigdog"], p
+    assert plays(-9.5, False, f["B"], f["D"], med=med)["side"] is None, "under 10 points"
+    assert plays(12.0, False, f["B"], f["D"], med=med)["side"] is None, "the dog B is worse"
+    # Steals AND turnovers forced also qualify, either alone does not.
+    dog = dict(f["B"], pa=99.0, stl=10.0, tovf=16.0)   # beats D's 9 and 15
+    assert plays(12.0, False, dog, f["D"], med=med)["side"] == "home"
+    assert plays(12.0, False, dict(dog, tovf=1.0), f["D"], med=med)["side"] is None
+    thin = dict(f["D"], box=2)
+    assert plays(-12.0, False, f["B"], thin, med=med)["side"] is None, "too few box scores"
+    # UNDER: B and P both defend shots poorly; non-conference, total posted.
+    assert plays(-3.0, False, f["B"], f["P"], total=150.0, conf=False, med=med)["under"]
+    assert not plays(-3.0, False, f["B"], f["P"], total=150.0, conf=True, med=med)["under"], "conference game"
+    assert not plays(-3.0, False, f["B"], f["D"], total=150.0, conf=False, med=med)["under"], "D defends well"
+    assert not plays(-3.0, False, f["B"], f["P"], total=None, conf=False, med=med)["under"], "no total"
+    assert plays(-3.0, False, f["B"], f["P"], total=150.0, month=12, med=med)["under"], "flag unknown: December"
+    assert not plays(-3.0, False, f["B"], f["P"], total=150.0, month=1, med=med)["under"], "flag unknown: January"
+    # for_game: forms as of the start; no leak from the game itself.
+    store["games"]["late"] = g("late", 20, "B", "D", 90, 60, bx(5, 10, 33, 60, 9, 22), bx(4, 15, 20, 60, 5, 20))
+    q = for_game(store, "B", "D", "2026-11-20T23:00Z", -12.0, False, total=150.0, conf=True)
+    assert q["side"] == "away" and not q["under"]
+    assert team_forms(store, _ts("2026-11-20T23:00Z"))["B"]["n"] == 3, "its own result is not in"
+    # Grading both kinds.
+    assert grade({"side": "away", "under": True}, -12.0, 80, 70, 155.0) == {"spread": "W", "total": "W"}
+    assert grade({"side": "home", "under": False}, 12.0, 60, 75, 140.0) == {"spread": "L", "total": None}
+    assert grade({"side": None, "under": True}, -3.0, 80, 70, 150.0) == {"spread": None, "total": "P"}
     print("ncaab_rules self-test: all invariants hold")
 
 
