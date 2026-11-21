@@ -92,7 +92,9 @@
       "away": "Syracuse Orange",
       "model": {
         "home_win_prob": 0.38053673677547417,
-        "away_win_prob": 0.6194632632245258
+        "away_win_prob": 0.6194632632245258,
+        "market_home_prob": 0.4170073589533933,
+        "disagreement": -3.6
       },
       "line_note": [
         "Spread: Syracuse Orange -3 · Total 52.5",
@@ -107,22 +109,22 @@
           "name": "Syracuse Orange",
           "color": "000e54",
           "rank": null,
-          "record": "5-5",
-          "games": 10,
+          "record": "5-6",
+          "games": 11,
           "fpi": 60,
           "power_rank": 60,
           "rank_label": "FPI",
           "stats": {
             "ats": [
               5,
-              4,
+              5,
               1
             ],
-            "pts": 29.8,
-            "opp": 26.0,
-            "giv": 1.2,
-            "tak": 1.4,
-            "ypp": 5.4
+            "pts": 28.45,
+            "opp": 26.09,
+            "giv": 1.09,
+            "tak": 1.27,
+            "ypp": 5.5
           }
         },
         "home": {
@@ -130,32 +132,32 @@
           "name": "Boston College Eagles",
           "color": "8c2232",
           "rank": null,
-          "record": "4-6",
-          "games": 10,
+          "record": "5-6",
+          "games": 11,
           "fpi": 88,
           "power_rank": 88,
           "rank_label": "FPI",
           "stats": {
             "ats": [
-              5,
+              6,
               5,
               0
             ],
-            "pts": 20.4,
-            "opp": 28.4,
-            "giv": 1.6,
-            "tak": 1.7,
-            "ypp": 5.2
+            "pts": 21.0,
+            "opp": 27.18,
+            "giv": 1.45,
+            "tak": 1.55,
+            "ypp": 5.4
           }
         }
       },
       "ats": {
-        "side": "away",
-        "team": "Syracuse Orange",
-        "line": -3.0,
-        "cover": 0.5097,
-        "gap": 0.3,
-        "raw": 0.7,
+        "side": "home",
+        "team": "Boston College Eagles",
+        "line": 3.0,
+        "cover": 0.5014,
+        "gap": 0.1,
+        "raw": 0.1,
         "check": false,
         "tier": "pass",
         "stretch": 0.93
@@ -250,7 +252,9 @@
       "away": "Vanderbilt Commodores",
       "model": {
         "home_win_prob": 0.839923338452895,
-        "away_win_prob": 0.16007666154710498
+        "away_win_prob": 0.16007666154710498,
+        "market_home_prob": 0.817258883248731,
+        "disagreement": 2.3
       },
       "line_note": [
         "Spread: Florida Gators -13.5 · Total 47.5",
@@ -265,44 +269,44 @@
           "name": "Vanderbilt Commodores",
           "color": "000000",
           "rank": null,
-          "record": "4-6",
-          "games": 10,
+          "record": "4-7",
+          "games": 11,
           "fpi": 64,
           "power_rank": 64,
           "rank_label": "FPI",
           "stats": {
             "ats": [
-              4,
+              5,
               6,
               0
             ],
-            "pts": 21.3,
-            "opp": 28.6,
-            "giv": 1.5,
+            "pts": 21.82,
+            "opp": 29.09,
+            "giv": 1.45,
             "tak": 1.0,
-            "ypp": 5.1
+            "ypp": 5.2
           }
         },
         "home": {
           "id": "57",
           "name": "Florida Gators",
           "color": "0021a5",
-          "rank": null,
-          "record": "6-4",
-          "games": 10,
+          "rank": 24,
+          "record": "7-4",
+          "games": 11,
           "fpi": 24,
           "power_rank": 24,
           "rank_label": "FPI",
           "stats": {
             "ats": [
               5,
-              5,
+              6,
               0
             ],
-            "pts": 31.3,
-            "opp": 26.2,
-            "giv": 1.3,
-            "tak": 1.1,
+            "pts": 31.55,
+            "opp": 26.27,
+            "giv": 1.27,
+            "tak": 1.09,
             "ypp": 5.8
           }
         }
@@ -311,9 +315,9 @@
         "side": "away",
         "team": "Vanderbilt Commodores",
         "line": 13.5,
-        "cover": 0.5336,
-        "gap": 1.4,
-        "raw": 2.7,
+        "cover": 0.5323,
+        "gap": 1.3,
+        "raw": 2.6,
         "check": false,
         "tier": "pass",
         "stretch": 0.93
@@ -328,7 +332,9 @@
       "away": "Wake Forest Demon Deacons",
       "model": {
         "home_win_prob": 0.07752349392804048,
-        "away_win_prob": 0.9224765060719595
+        "away_win_prob": 0.9224765060719595,
+        "market_home_prob": 0.08029197080291971,
+        "disagreement": -0.3
       },
       "line_note": [
         "Spread: Wake Forest Demon Deacons -21.5 · Total 55.5",
@@ -342,23 +348,23 @@
           "id": "154",
           "name": "Wake Forest Demon Deacons",
           "color": "ceb888",
-          "rank": 13,
-          "record": "9-1",
-          "games": 10,
+          "rank": 11,
+          "record": "10-1",
+          "games": 11,
           "fpi": 10,
           "power_rank": 10,
           "rank_label": "FPI",
           "stats": {
             "ats": [
               8,
-              2,
+              3,
               0
             ],
-            "pts": 43.9,
-            "opp": 15.0,
-            "giv": 0.4,
-            "tak": 1.0,
-            "ypp": 7.4
+            "pts": 44.45,
+            "opp": 16.27,
+            "giv": 0.45,
+            "tak": 1.18,
+            "ypp": 7.5
           }
         },
         "home": {
@@ -366,22 +372,22 @@
           "name": "Georgia Tech Yellow Jackets",
           "color": "b3a369",
           "rank": null,
-          "record": "3-7",
-          "games": 10,
+          "record": "3-8",
+          "games": 11,
           "fpi": 78,
           "power_rank": 78,
           "rank_label": "FPI",
           "stats": {
             "ats": [
-              2,
+              3,
               8,
               0
             ],
-            "pts": 23.5,
-            "opp": 29.6,
-            "giv": 1.4,
-            "tak": 0.8,
-            "ypp": 5.6
+            "pts": 24.0,
+            "opp": 31.45,
+            "giv": 1.55,
+            "tak": 0.82,
+            "ypp": 5.7
           }
         }
       },
@@ -389,9 +395,9 @@
         "side": "home",
         "team": "Georgia Tech Yellow Jackets",
         "line": 21.5,
-        "cover": 0.5543,
-        "gap": 2.4,
-        "raw": 4.7,
+        "cover": 0.5531,
+        "gap": 2.3,
+        "raw": 4.6,
         "check": false,
         "tier": "lean",
         "stretch": 0.93
@@ -406,7 +412,9 @@
       "away": "BYU Cougars",
       "model": {
         "home_win_prob": 0.3004622736791611,
-        "away_win_prob": 0.6995377263208389
+        "away_win_prob": 0.6995377263208389,
+        "market_home_prob": 0.3630958183058778,
+        "disagreement": -6.3
       },
       "line_note": [
         "Spread: BYU Cougars -5.5 · Total 46.5",
@@ -421,22 +429,22 @@
           "name": "BYU Cougars",
           "color": "0047ba",
           "rank": 10,
-          "record": "8-2",
-          "games": 10,
+          "record": "9-2",
+          "games": 11,
           "fpi": 15,
           "power_rank": 15,
           "rank_label": "FPI",
           "stats": {
             "ats": [
               7,
-              3,
+              4,
               0
             ],
-            "pts": 30.7,
-            "opp": 18.5,
-            "giv": 1.2,
-            "tak": 1.2,
-            "ypp": 6.1
+            "pts": 30.73,
+            "opp": 19.45,
+            "giv": 1.27,
+            "tak": 1.27,
+            "ypp": 6.0
           }
         },
         "home": {
@@ -444,22 +452,22 @@
           "name": "Kansas Jayhawks",
           "color": "0051ba",
           "rank": null,
-          "record": "4-6",
-          "games": 10,
+          "record": "4-7",
+          "games": 11,
           "fpi": 45,
           "power_rank": 45,
           "rank_label": "FPI",
           "stats": {
             "ats": [
-              4,
+              5,
               6,
               0
             ],
-            "pts": 30.2,
-            "opp": 23.7,
-            "giv": 1.6,
-            "tak": 1.1,
-            "ypp": 6.1
+            "pts": 30.09,
+            "opp": 24.36,
+            "giv": 1.64,
+            "tak": 1.18,
+            "ypp": 6.0
           }
         }
       },
@@ -564,7 +572,9 @@
       "away": "Memphis Tigers",
       "model": {
         "home_win_prob": 0.35398961259811856,
-        "away_win_prob": 0.6460103874018814
+        "away_win_prob": 0.6460103874018814,
+        "market_home_prob": 0.4572564612326044,
+        "disagreement": -10.3
       },
       "line_note": [
         "Spread: Memphis Tigers -2.5 · Total 68.5",
@@ -579,21 +589,21 @@
           "name": "Memphis Tigers",
           "color": "004991",
           "rank": null,
-          "record": "8-2",
-          "games": 10,
+          "record": "8-3",
+          "games": 11,
           "fpi": 52,
           "power_rank": 52,
           "rank_label": "FPI",
           "stats": {
             "ats": [
               6,
-              4,
+              5,
               0
             ],
-            "pts": 39.0,
-            "opp": 25.3,
-            "giv": 1.3,
-            "tak": 1.9,
+            "pts": 38.55,
+            "opp": 26.45,
+            "giv": 1.45,
+            "tak": 1.82,
             "ypp": 7.3
           }
         },
@@ -602,22 +612,22 @@
           "name": "Navy Midshipmen",
           "color": "00225b",
           "rank": null,
-          "record": "3-6",
-          "games": 9,
+          "record": "4-6",
+          "games": 10,
           "fpi": 87,
           "power_rank": 87,
           "rank_label": "FPI",
           "stats": {
             "ats": [
-              3,
+              4,
               6,
               0
             ],
-            "pts": 29.22,
-            "opp": 30.44,
-            "giv": 1.33,
-            "tak": 0.67,
-            "ypp": 6.2
+            "pts": 30.1,
+            "opp": 30.8,
+            "giv": 1.3,
+            "tak": 0.9,
+            "ypp": 6.3
           }
         }
       },
@@ -625,9 +635,9 @@
         "side": "away",
         "team": "Memphis Tigers",
         "line": -2.5,
-        "cover": 0.5333,
-        "gap": 1.2,
-        "raw": 2.4,
+        "cover": 0.5263,
+        "gap": 0.9,
+        "raw": 1.9,
         "check": false,
         "tier": "pass",
         "stretch": 0.93
@@ -642,7 +652,9 @@
       "away": "Ohio State Buckeyes",
       "model": {
         "home_win_prob": 0.2924593236820964,
-        "away_win_prob": 0.7075406763179036
+        "away_win_prob": 0.7075406763179036,
+        "market_home_prob": 0.3690596562184025,
+        "disagreement": -7.7
       },
       "line_note": [
         "Spread: Ohio State Buckeyes -3.5 · Total 41.5",
@@ -656,22 +668,22 @@
           "id": "194",
           "name": "Ohio State Buckeyes",
           "color": "ba0c2f",
-          "rank": 20,
-          "record": "7-3",
-          "games": 10,
+          "rank": 14,
+          "record": "7-4",
+          "games": 11,
           "fpi": 5,
           "power_rank": 5,
           "rank_label": "FPI",
           "stats": {
             "ats": [
               5,
-              5,
+              6,
               0
             ],
-            "pts": 34.9,
-            "opp": 18.4,
-            "giv": 1.3,
-            "tak": 1.2,
+            "pts": 34.27,
+            "opp": 19.55,
+            "giv": 1.36,
+            "tak": 1.09,
             "ypp": 6.6
           }
         },
@@ -680,22 +692,22 @@
           "name": "Nebraska Cornhuskers",
           "color": "e31937",
           "rank": null,
-          "record": "6-4",
-          "games": 10,
+          "record": "7-4",
+          "games": 11,
           "fpi": 19,
           "power_rank": 19,
           "rank_label": "FPI",
           "stats": {
             "ats": [
-              7,
+              8,
               3,
               0
             ],
-            "pts": 30.3,
-            "opp": 14.9,
-            "giv": 0.7,
-            "tak": 1.2,
-            "ypp": 5.9
+            "pts": 30.36,
+            "opp": 16.09,
+            "giv": 0.64,
+            "tak": 1.27,
+            "ypp": 5.8
           }
         }
       },
@@ -703,9 +715,9 @@
         "side": "home",
         "team": "Nebraska Cornhuskers",
         "line": 3.5,
-        "cover": 0.5124,
-        "gap": 0.5,
-        "raw": 0.9,
+        "cover": 0.5151,
+        "gap": 0.6,
+        "raw": 1.1,
         "check": false,
         "tier": "pass",
         "stretch": 0.93
@@ -2911,10 +2923,10 @@
         "away_win_prob": 0.7257944837243709
       },
       "line_note": [
-        "Spread: Georgia Southern Eagles -8.5 · Total 47.5",
+        "Spread: Georgia Southern Eagles -7.5 · Total 47.5",
         "FPI line: Georgia Southern Eagles -8.4"
       ],
-      "spread_home": 8.5,
+      "spread_home": 7.5,
       "fpi_margin": -8.402,
       "total": 47.5,
       "team_stats": {
@@ -2968,10 +2980,10 @@
       "ats": {
         "side": "home",
         "team": "Troy Trojans",
-        "line": 8.5,
-        "cover": 0.5352,
-        "gap": 1.4,
-        "raw": 2.7,
+        "line": 7.5,
+        "cover": 0.5224,
+        "gap": 0.8,
+        "raw": 1.7,
         "check": false,
         "tier": "pass",
         "stretch": 0.93
@@ -3067,12 +3079,12 @@
         "away_win_prob": 0.08436659698652049
       },
       "line_note": [
-        "Spread: USC Trojans -17.5 · Total 56.5",
+        "Spread: USC Trojans -17.5 · Total 57.5",
         "FPI line: USC Trojans -19.3"
       ],
       "spread_home": -17.5,
       "fpi_margin": 19.268,
-      "total": 56.5,
+      "total": 57.5,
       "team_stats": {
         "away": {
           "id": "120",
@@ -4681,22 +4693,22 @@
           "name": "Nebraska Cornhuskers",
           "color": "e31937",
           "rank": null,
-          "record": "6-4",
-          "games": 10,
+          "record": "7-4",
+          "games": 11,
           "fpi": 19,
           "power_rank": 19,
           "rank_label": "FPI",
           "stats": {
             "ats": [
-              7,
+              8,
               3,
               0
             ],
-            "pts": 30.3,
-            "opp": 14.9,
-            "giv": 0.7,
-            "tak": 1.2,
-            "ypp": 5.9
+            "pts": 30.36,
+            "opp": 16.09,
+            "giv": 0.64,
+            "tak": 1.27,
+            "ypp": 5.8
           }
         },
         "home": {
@@ -4727,9 +4739,9 @@
         "side": "away",
         "team": "Nebraska Cornhuskers",
         "line": 6.5,
-        "cover": 0.5465,
-        "gap": 1.8,
-        "raw": 3.5,
+        "cover": 0.5425,
+        "gap": 1.6,
+        "raw": 3.2,
         "check": false,
         "tier": "pass",
         "stretch": 0.93
@@ -5021,22 +5033,22 @@
           "id": "57",
           "name": "Florida Gators",
           "color": "0021a5",
-          "rank": null,
-          "record": "6-4",
-          "games": 10,
+          "rank": 24,
+          "record": "7-4",
+          "games": 11,
           "fpi": 24,
           "power_rank": 24,
           "rank_label": "FPI",
           "stats": {
             "ats": [
               5,
-              5,
+              6,
               0
             ],
-            "pts": 31.3,
-            "opp": 26.2,
-            "giv": 1.3,
-            "tak": 1.1,
+            "pts": 31.55,
+            "opp": 26.27,
+            "giv": 1.27,
+            "tak": 1.09,
             "ypp": 5.8
           }
         },
@@ -5111,21 +5123,21 @@
           "name": "Memphis Tigers",
           "color": "004991",
           "rank": null,
-          "record": "8-2",
-          "games": 10,
+          "record": "8-3",
+          "games": 11,
           "fpi": 52,
           "power_rank": 52,
           "rank_label": "FPI",
           "stats": {
             "ats": [
               6,
-              4,
+              5,
               0
             ],
-            "pts": 39.0,
-            "opp": 25.3,
-            "giv": 1.3,
-            "tak": 1.9,
+            "pts": 38.55,
+            "opp": 26.45,
+            "giv": 1.45,
+            "tak": 1.82,
             "ypp": 7.3
           }
         }
@@ -5475,14 +5487,14 @@
     }
   ],
   "summary": {
-    "graded": 84,
-    "pending": 65,
-    "brier": 0.2024,
+    "graded": 90,
+    "pending": 59,
+    "brier": 0.2046,
     "market_brier": null,
     "fpi_ats": [
-      33,
+      35,
       32,
-      2
+      3
     ],
     "ats_tiers": {
       "best": [
@@ -5491,9 +5503,9 @@
         0
       ],
       "lean": [
+        1,
         0,
-        0,
-        0
+        1
       ],
       "check": [
         0,
@@ -5501,7 +5513,7 @@
         0
       ],
       "pass": [
-        0,
+        1,
         0,
         0
       ]
@@ -7018,7 +7030,9 @@
       "spread_home": 21.0,
       "fpi_margin": -19.923000000000002,
       "ats_side": "home",
-      "ats_tier": "lean"
+      "ats_tier": "lean",
+      "home_won": false,
+      "fpi_ats": "P"
     },
     {
       "event_id": "401856866",
@@ -7030,7 +7044,9 @@
       "spread_home": 7.5,
       "fpi_margin": -7.504000000000001,
       "ats_side": "home",
-      "ats_tier": "lean"
+      "ats_tier": "lean",
+      "home_won": false,
+      "fpi_ats": "W"
     },
     {
       "event_id": "401856865",
@@ -7124,7 +7140,8 @@
       "p_home": 0.38746641501945633,
       "mkt_home": null,
       "spread_home": null,
-      "fpi_margin": -4.003
+      "fpi_margin": -4.003,
+      "home_won": true
     },
     {
       "event_id": "401856867",
@@ -7145,7 +7162,8 @@
       "p_home": 0.8385635645347628,
       "mkt_home": null,
       "spread_home": null,
-      "fpi_margin": 13.84
+      "fpi_margin": 13.84,
+      "home_won": true
     },
     {
       "event_id": "401858530",
@@ -7166,7 +7184,8 @@
       "p_home": 0.35027748288439225,
       "mkt_home": null,
       "spread_home": null,
-      "fpi_margin": -5.384
+      "fpi_margin": -5.384,
+      "home_won": true
     },
     {
       "event_id": "401858531",
@@ -7178,7 +7197,9 @@
       "spread_home": 4.5,
       "fpi_margin": -7.454999999999998,
       "ats_side": "home",
-      "ats_tier": "pass"
+      "ats_tier": "pass",
+      "home_won": true,
+      "fpi_ats": "W"
     },
     {
       "event_id": "401856752",
