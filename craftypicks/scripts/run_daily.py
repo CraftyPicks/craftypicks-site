@@ -725,6 +725,11 @@ def main() -> int:
     # tip-off, so a board priced late lost every game already under way (Nov 9
     # was priced at 7:32 PM and showed 13 of 34). ESPN's scoreboard, already
     # stored by the System run, keeps them all with ESPN's line. Free.
+    # No odds bought this morning (credits under the floor, or the feed
+    # down): build the college board from ESPN's lines alone, so the page
+    # shows today's games, picks and System plays rather than yesterday's.
+    if board_mod and board_mod.espn_board_needed(boards, now.date()):
+        print("-- ncaab: no odds board today; building it from ESPN's lines")
     if board_mod and "ncaab" in boards:
         try:
             espn_day = list((load_json(DATA / "ncaab_games.json", {})

@@ -515,6 +515,23 @@ def _et_day(stamp):
     return t.astimezone(ZoneInfo("America/New_York")).date()
 
 
+NCAAB_MONTHS = (11, 12, 1, 2, 3, 4)
+
+
+def espn_board_needed(boards: dict, day) -> bool:
+    """Start an empty college basketball board when the odds bought none --
+    the monthly credits ran out, or the feed failed -- so espn_fill builds
+    the day's whole slate from ESPN's free lines instead of the site showing
+    yesterday's games. In season only. True when the board is to be filled
+    from ESPN alone."""
+    if day.month not in NCAAB_MONTHS:
+        return False
+    if boards.get("ncaab"):
+        return False
+    boards["ncaab"] = []
+    return True
+
+
 def espn_fill(rows: list[dict], espn_games: list[dict], day) -> list[dict]:
     """The whole day's college basketball slate, not just what the Odds API
     still lists. The Odds API drops a game once it tips off, so a board priced
@@ -819,6 +836,17 @@ def _test_bpi_model() -> None:
 
 def _test_espn_fill() -> None:
     from datetime import date as _d
+    # No odds bought (credits out): an empty college board is started so the
+    # ESPN fill can build the whole slate. Never out of season, never over a
+    # board the odds did buy.
+    b = {"nba": [{"event_id": "n"}]}
+    assert espn_board_needed(b, _d(2026, 11, 22)) is True and b["ncaab"] == [], b
+    kept = {"ncaab": [{"event_id": "odds"}]}
+    assert espn_board_needed(kept, _d(2026, 11, 22)) is False and len(kept["ncaab"]) == 1
+    summer = {}
+    assert espn_board_needed(summer, _d(2026, 7, 4)) is False and "ncaab" not in summer
+    empty = {"ncaab": []}
+    assert espn_board_needed(empty, _d(2027, 1, 10)) is True, "an empty odds board is filled too"
     odds = [{"event_id": "odds1", "league": "ncaab", "home": "Ohio State Buckeyes",
              "away": "Marshall Thundering Herd", "commence_time": "2026-11-09T23:00:00Z",
              "markets": {"spreads": {"point": -25.5, "side_a": "home"}}}]
