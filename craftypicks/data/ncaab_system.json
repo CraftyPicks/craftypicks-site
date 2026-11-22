@@ -1,7 +1,95 @@
 {
-  "date": "2026-11-21",
-  "date_label": "Saturday, November 21, 2026",
-  "rows": [],
+  "date": "2026-11-22",
+  "date_label": "Sunday, November 22, 2026",
+  "rows": [
+    {
+      "tab": "1h",
+      "event_id": "401920905",
+      "date": "2026-11-23",
+      "commence_time": "2026-11-23T00:00Z",
+      "home": {
+        "id": "26",
+        "name": "UCLA Bruins",
+        "abbr": "UCLA",
+        "short": "UCLA",
+        "school": "UCLA",
+        "color": "2774ae",
+        "rank": 7,
+        "record": "5-0"
+      },
+      "away": {
+        "id": "48",
+        "name": "Delaware Blue Hens",
+        "abbr": "DEL",
+        "short": "Delaware",
+        "school": "Delaware",
+        "color": "00539f",
+        "rank": null,
+        "record": "4-2"
+      },
+      "side": "home",
+      "line": -15.0,
+      "est": true,
+      "ml": null,
+      "checks": [
+        {
+          "key": "reb",
+          "mark": "n",
+          "v": [
+            42.4,
+            41.5
+          ]
+        },
+        {
+          "key": "ats",
+          "mark": "y",
+          "v": [
+            3,
+            1,
+            "home"
+          ]
+        },
+        {
+          "key": "h2h",
+          "mark": "na",
+          "v": [
+            0,
+            0
+          ]
+        },
+        {
+          "key": "depth",
+          "mark": "y",
+          "v": [
+            4,
+            1
+          ]
+        },
+        {
+          "key": "form",
+          "mark": "y",
+          "v": [
+            4,
+            4,
+            "home"
+          ]
+        },
+        {
+          "key": "def",
+          "mark": "y",
+          "v": [
+            9.4,
+            0.7
+          ]
+        }
+      ],
+      "passed": 4,
+      "applicable": 5,
+      "postseason": false,
+      "under_note": false,
+      "total": 145.5
+    }
+  ],
   "summary": {
     "system": {
       "w": 1,
@@ -32,7 +120,7 @@
       "w": 5,
       "l": 10,
       "p": 1,
-      "pending": 0,
+      "pending": 1,
       "units": -5.45,
       "checks": {
         "reb": [
@@ -1636,6 +1724,93 @@
         52,
         114
       ]
+    },
+    {
+      "tab": "1h",
+      "event_id": "401920905",
+      "date": "2026-11-23",
+      "commence_time": "2026-11-23T00:00Z",
+      "home": {
+        "id": "26",
+        "name": "UCLA Bruins",
+        "abbr": "UCLA",
+        "short": "UCLA",
+        "school": "UCLA",
+        "color": "2774ae",
+        "rank": 7,
+        "record": "5-0"
+      },
+      "away": {
+        "id": "48",
+        "name": "Delaware Blue Hens",
+        "abbr": "DEL",
+        "short": "Delaware",
+        "school": "Delaware",
+        "color": "00539f",
+        "rank": null,
+        "record": "4-2"
+      },
+      "side": "home",
+      "line": -15.0,
+      "est": true,
+      "ml": null,
+      "checks": [
+        {
+          "key": "reb",
+          "mark": "n",
+          "v": [
+            42.4,
+            41.5
+          ]
+        },
+        {
+          "key": "ats",
+          "mark": "y",
+          "v": [
+            3,
+            1,
+            "home"
+          ]
+        },
+        {
+          "key": "h2h",
+          "mark": "na",
+          "v": [
+            0,
+            0
+          ]
+        },
+        {
+          "key": "depth",
+          "mark": "y",
+          "v": [
+            4,
+            1
+          ]
+        },
+        {
+          "key": "form",
+          "mark": "y",
+          "v": [
+            4,
+            4,
+            "home"
+          ]
+        },
+        {
+          "key": "def",
+          "mark": "y",
+          "v": [
+            9.4,
+            0.7
+          ]
+        }
+      ],
+      "passed": 4,
+      "applicable": 5,
+      "postseason": false,
+      "under_note": false,
+      "total": 145.5
     }
   ]
 }
