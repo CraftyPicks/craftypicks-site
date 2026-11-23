@@ -1,43 +1,43 @@
 {
-  "date": "2026-11-22",
-  "date_label": "Sunday, November 22, 2026",
+  "date": "2026-11-23",
+  "date_label": "Monday, November 23, 2026",
   "rows": [
     {
       "tab": "1h",
-      "event_id": "401920905",
-      "date": "2026-11-23",
-      "commence_time": "2026-11-23T00:00Z",
+      "event_id": "401913530",
+      "date": "2026-11-24",
+      "commence_time": "2026-11-24T01:00Z",
       "home": {
-        "id": "26",
-        "name": "UCLA Bruins",
-        "abbr": "UCLA",
-        "short": "UCLA",
-        "school": "UCLA",
-        "color": "2774ae",
-        "rank": 7,
-        "record": "5-0"
+        "id": "356",
+        "name": "Illinois Fighting Illini",
+        "abbr": "ILL",
+        "short": "Illinois",
+        "school": "Illinois",
+        "color": "ff5f05",
+        "rank": 10,
+        "record": "5-1"
       },
       "away": {
-        "id": "48",
-        "name": "Delaware Blue Hens",
-        "abbr": "DEL",
-        "short": "Delaware",
-        "school": "Delaware",
-        "color": "00539f",
+        "id": "2737",
+        "name": "Winthrop Eagles",
+        "abbr": "WIN",
+        "short": "Winthrop",
+        "school": "Winthrop",
+        "color": "9e0b0e",
         "rank": null,
-        "record": "4-2"
+        "record": "0-6"
       },
       "side": "home",
-      "line": -15.0,
+      "line": -22.0,
       "est": true,
       "ml": null,
       "checks": [
         {
           "key": "reb",
-          "mark": "n",
+          "mark": "y",
           "v": [
-            42.4,
-            41.5
+            50.67,
+            35.83
           ]
         },
         {
@@ -59,10 +59,10 @@
         },
         {
           "key": "depth",
-          "mark": "y",
+          "mark": "n",
           "v": [
-            4,
-            1
+            2,
+            2
           ]
         },
         {
@@ -78,8 +78,8 @@
           "key": "def",
           "mark": "y",
           "v": [
-            9.4,
-            0.7
+            1.3,
+            -2.7
           ]
         }
       ],
@@ -87,12 +87,94 @@
       "applicable": 5,
       "postseason": false,
       "under_note": false,
-      "total": 145.5,
-      "result": "W",
-      "final": [
-        48,
-        85
-      ]
+      "total": 180.5
+    },
+    {
+      "tab": "1h",
+      "event_id": "401909743",
+      "date": "2026-11-24",
+      "commence_time": "2026-11-24T04:30Z",
+      "home": {
+        "id": "12",
+        "name": "Arizona Wildcats",
+        "abbr": "ARIZ",
+        "short": "Arizona",
+        "school": "Arizona",
+        "color": "cc0033",
+        "rank": 12,
+        "record": "4-1"
+      },
+      "away": {
+        "id": "36",
+        "name": "Colorado State Rams",
+        "abbr": "CSU",
+        "short": "Colorado St",
+        "school": "Colorado State",
+        "color": "004c23",
+        "rank": null,
+        "record": "4-1"
+      },
+      "side": "home",
+      "line": -8.5,
+      "est": true,
+      "ml": null,
+      "checks": [
+        {
+          "key": "reb",
+          "mark": "y",
+          "v": [
+            41.0,
+            34.0
+          ]
+        },
+        {
+          "key": "ats",
+          "mark": "na",
+          "v": [
+            1,
+            2,
+            "home"
+          ]
+        },
+        {
+          "key": "h2h",
+          "mark": "na",
+          "v": [
+            0,
+            0
+          ]
+        },
+        {
+          "key": "depth",
+          "mark": "y",
+          "v": [
+            3,
+            0
+          ]
+        },
+        {
+          "key": "form",
+          "mark": "y",
+          "v": [
+            3,
+            3,
+            "home"
+          ]
+        },
+        {
+          "key": "def",
+          "mark": "y",
+          "v": [
+            0.4,
+            0.2
+          ]
+        }
+      ],
+      "passed": 4,
+      "applicable": 4,
+      "postseason": false,
+      "under_note": false,
+      "total": 159.5
     }
   ],
   "summary": {
@@ -125,7 +207,7 @@
       "w": 6,
       "l": 10,
       "p": 1,
-      "pending": 0,
+      "pending": 2,
       "units": -4.55,
       "checks": {
         "reb": [
@@ -1821,6 +1903,180 @@
         48,
         85
       ]
+    },
+    {
+      "tab": "1h",
+      "event_id": "401913530",
+      "date": "2026-11-24",
+      "commence_time": "2026-11-24T01:00Z",
+      "home": {
+        "id": "356",
+        "name": "Illinois Fighting Illini",
+        "abbr": "ILL",
+        "short": "Illinois",
+        "school": "Illinois",
+        "color": "ff5f05",
+        "rank": 10,
+        "record": "5-1"
+      },
+      "away": {
+        "id": "2737",
+        "name": "Winthrop Eagles",
+        "abbr": "WIN",
+        "short": "Winthrop",
+        "school": "Winthrop",
+        "color": "9e0b0e",
+        "rank": null,
+        "record": "0-6"
+      },
+      "side": "home",
+      "line": -22.0,
+      "est": true,
+      "ml": null,
+      "checks": [
+        {
+          "key": "reb",
+          "mark": "y",
+          "v": [
+            50.67,
+            35.83
+          ]
+        },
+        {
+          "key": "ats",
+          "mark": "y",
+          "v": [
+            3,
+            1,
+            "home"
+          ]
+        },
+        {
+          "key": "h2h",
+          "mark": "na",
+          "v": [
+            0,
+            0
+          ]
+        },
+        {
+          "key": "depth",
+          "mark": "n",
+          "v": [
+            2,
+            2
+          ]
+        },
+        {
+          "key": "form",
+          "mark": "y",
+          "v": [
+            4,
+            4,
+            "home"
+          ]
+        },
+        {
+          "key": "def",
+          "mark": "y",
+          "v": [
+            1.3,
+            -2.7
+          ]
+        }
+      ],
+      "passed": 4,
+      "applicable": 5,
+      "postseason": false,
+      "under_note": false,
+      "total": 180.5
+    },
+    {
+      "tab": "1h",
+      "event_id": "401909743",
+      "date": "2026-11-24",
+      "commence_time": "2026-11-24T04:30Z",
+      "home": {
+        "id": "12",
+        "name": "Arizona Wildcats",
+        "abbr": "ARIZ",
+        "short": "Arizona",
+        "school": "Arizona",
+        "color": "cc0033",
+        "rank": 12,
+        "record": "4-1"
+      },
+      "away": {
+        "id": "36",
+        "name": "Colorado State Rams",
+        "abbr": "CSU",
+        "short": "Colorado St",
+        "school": "Colorado State",
+        "color": "004c23",
+        "rank": null,
+        "record": "4-1"
+      },
+      "side": "home",
+      "line": -8.5,
+      "est": true,
+      "ml": null,
+      "checks": [
+        {
+          "key": "reb",
+          "mark": "y",
+          "v": [
+            41.0,
+            34.0
+          ]
+        },
+        {
+          "key": "ats",
+          "mark": "na",
+          "v": [
+            1,
+            2,
+            "home"
+          ]
+        },
+        {
+          "key": "h2h",
+          "mark": "na",
+          "v": [
+            0,
+            0
+          ]
+        },
+        {
+          "key": "depth",
+          "mark": "y",
+          "v": [
+            3,
+            0
+          ]
+        },
+        {
+          "key": "form",
+          "mark": "y",
+          "v": [
+            3,
+            3,
+            "home"
+          ]
+        },
+        {
+          "key": "def",
+          "mark": "y",
+          "v": [
+            0.4,
+            0.2
+          ]
+        }
+      ],
+      "passed": 4,
+      "applicable": 4,
+      "postseason": false,
+      "under_note": false,
+      "total": 159.5
     }
   ]
 }
