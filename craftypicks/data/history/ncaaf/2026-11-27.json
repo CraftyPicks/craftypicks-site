@@ -225,10 +225,10 @@
 "away_win_prob": 0.6264359789369578
 },
 "line_note": [
-"Spread: Toledo Rockets -4 \u00b7 Total 49.5",
+"Spread: Toledo Rockets -3.5 \u00b7 Total 49.5",
 "FPI line: Toledo Rockets -4.5"
 ],
-"spread_home": 4.0,
+"spread_home": 3.5,
 "fpi_margin": -4.513999999999999,
 "total": 49.5,
 "team_stats": {
@@ -282,10 +282,10 @@
 "ats": {
 "side": "home",
 "team": "Ohio Bobcats",
-"line": 4.0,
-"cover": 0.5191,
-"gap": 0.7,
-"raw": 1.4,
+"line": 3.5,
+"cover": 0.5124,
+"gap": 0.5,
+"raw": 0.9,
 "check": false,
 "tier": "pass",
 "stretch": 0.88
@@ -1039,12 +1039,12 @@
 "away_win_prob": 0.818551072939391
 },
 "line_note": [
-"Spread: Texas Longhorns -10.5 \u00b7 Total 39.5",
+"Spread: Texas Longhorns -11.5 \u00b7 Total 40.5",
 "FPI line: Texas Longhorns -12.7"
 ],
-"spread_home": 10.5,
+"spread_home": 11.5,
 "fpi_margin": -12.738000000000001,
-"total": 39.5,
+"total": 40.5,
 "team_stats": {
 "away": {
 "id": "251",
@@ -1096,12 +1096,12 @@
 "ats": {
 "side": "home",
 "team": "Texas A&M Aggies",
-"line": 10.5,
-"cover": 0.5396,
-"gap": 1.6,
-"raw": 3.1,
+"line": 11.5,
+"cover": 0.5519,
+"gap": 2.0,
+"raw": 4.1,
 "check": false,
-"tier": "pass",
+"tier": "lean",
 "stretch": 0.88
 },
 "espn_id": "401856756",
@@ -1139,12 +1139,12 @@
 "away_win_prob": 0.20566042795321127
 },
 "line_note": [
-"Spread: Wisconsin Badgers -7 \u00b7 Total 36.5",
+"Spread: Wisconsin Badgers -7.5 \u00b7 Total 37.5",
 "FPI line: Wisconsin Badgers -11.5"
 ],
-"spread_home": -7.0,
+"spread_home": -7.5,
 "fpi_margin": 11.502,
-"total": 36.5,
+"total": 37.5,
 "team_stats": {
 "away": {
 "id": "135",
@@ -1196,10 +1196,10 @@
 "ats": {
 "side": "home",
 "team": "Wisconsin Badgers",
-"line": -7.0,
-"cover": 0.5225,
-"gap": 0.8,
-"raw": 1.7,
+"line": -7.5,
+"cover": 0.5158,
+"gap": 0.6,
+"raw": 1.2,
 "check": false,
 "tier": "pass",
 "stretch": 0.88
@@ -1225,7 +1225,13 @@
 "sys_ranks": [
 32,
 67
+],
+"system": {
+"side": "away",
+"reasons": [
+"road"
 ]
+}
 },
 {
 "event_id": "401856880",
