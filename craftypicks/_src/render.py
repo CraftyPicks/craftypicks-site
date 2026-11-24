@@ -1494,11 +1494,11 @@ def _gm_summary(items: list[tuple[int, str]]) -> str:
 _TIER_TAG = {"best": "pc_best", "lean": "pc_lean", "check": "pc_check"}
 
 
-SYS_REASON = {"bigdog": "sys_bigdog",
+SYS_REASON = {"bigdog": "sys_bigdog", "roadfav": "sys_roadfav",
               # Football's rules (ncaaf_rules) still use these.
               "small": "sys_small", "road": "sys_road", "defense": "sys_defense",
               "favbottom": "sys_favbottom"}
-SYS_SINCE = "2026-11-21"       # the two-rule System's live record starts here
+SYS_SINCE = "2026-11-21"       # the System's live record starts here (ROADFAV: Nov 25, ncaab_rules)
 SYS_SINCE_BY = {"ncaab": SYS_SINCE, "ncaaf": "2026-11-20"}   # football's, per league
 _SYS_RATES: dict = {}          # {league: rates}, set by build from History
 
@@ -1644,7 +1644,8 @@ def _sys_box(r: dict) -> str:
 
 def rules_record(days: dict[str, list[dict]], since: str) -> dict:
     """The System's record from `since` on (games it had not been tested on),
-    graded on each saved day's finals: spread plays and unders."""
+    graded on each saved day's finals: spread plays, unders, and the spread
+    plays again by rule ("bigdog", "roadfav"...)."""
     out = {"spread": [0, 0, 0], "total": [0, 0, 0], "days": 0}
     for d, rows in days.items():
         if d < since:
@@ -1656,6 +1657,9 @@ def rules_record(days: dict[str, list[dict]], since: str) -> dict:
                 if g[k]:
                     out[k]["WLP".index(g[k])] += 1
                     counted = True
+            if g["spread"]:
+                rule = "+".join((r.get("system") or {}).get("reasons") or [])
+                out.setdefault(rule, [0, 0, 0])["WLP".index(g["spread"])] += 1
         out["days"] += counted
     return out
 
@@ -1674,13 +1678,17 @@ def rules_section(days: dict[str, list[dict]], since: str, league: str = "ncaab"
         return (f'<td>{v[0]}-{v[1]}' + (f"-{v[2]}" if v[2] else "")
                 + (f'<small>{round(100 * v[0] / n)}%</small>' if n else "<small>&ndash;</small>") + "</td>")
 
-    kinds = (("spread", "sys_spread_plays"),) if foot else (
-        ("spread", "sys_spread_plays"), ("total", "sys_total_plays"))
-    rows = "".join(f'<tr><th scope="row">{_(lab)}</th>{cell(rec[k])}{cell(bt[k])}</tr>'
-                   for k, lab in kinds)
+    # Basketball: a row per rule, so each can be judged on its own.
+    if foot:
+        kinds = (("spread", "sys_spread_plays", bt["spread"]),)
+    else:
+        kinds = tuple((k, SYS_REASON[k], list(bt["by_reason"][k]) + [0]) for k in ("bigdog", "roadfav")) \
+            + (("total", "sys_total_plays", bt["total"]),)
+    rows = "".join(f'<tr><th scope="row">{_(lab)}</th>{cell(rec.get(k, [0, 0, 0]))}{cell(b)}</tr>'
+                   for k, lab, b in kinds)
     rules = (("sysf_rule_small", "sysf_rule_defense", "sysf_rule_road", "sysf_rule_fav",
               "sysf_rule_gap", "sysf_rule_wait") if foot else
-             ("sys_rule_bigdog", "sys_rule_under"))
+             ("sys_rule_bigdog", "sys_rule_roadfav", "sys_rule_under"))
     return (f'<section class="sys-sec"><h2 class="sc-h">{_("sys_head")}</h2>'
             f'<ul class="sys-rules">{"".join(f"<li>{_(k)}</li>" for k in rules)}'
             f'</ul>'
@@ -4470,11 +4478,22 @@ def _test_pick_card() -> None:
             "2026-11-21": [dict(sysrow, final={"away": 60, "home": 95}),
                            dict(sysrow, event_id="o", final=None)]}
     rec = rules_record(days, "2026-11-21")
-    assert rec == {"spread": [0, 1, 0], "total": [0, 1, 0], "days": 1}, rec
+    assert rec == {"spread": [0, 1, 0], "total": [0, 1, 0], "days": 1, "bigdog": [0, 1, 0]}, rec
     box = rules_section(days, "2026-11-21")
     assert "Big underdog, better defense:" in box and "10 or more" in box
     assert "Under, poor shooting defenses:" in box and "non-conference" in box
     assert "1656-1351" in box and "449-330" in box and "0-1" in box and "Since Nov 21" in box
+    # A row per rule: ROADFAV has its own live and backtest record.
+    assert "Road favorite, close in rank:" in box and "within 25" in box
+    assert '<th scope="row">Road favorite, close in rank</th><td>0-0<small>&ndash;</small></td><td>341-275<small>55%</small></td>' in box, box
+    rfrow = dict(sysrow, event_id="rf", markets={"spreads": {"point": 4.5, "side_a": "home"}, "totals": {"point": 140.5}},
+                 system={"side": "away", "reasons": ["roadfav"], "under": False})
+    rl = college_list([rfrow])
+    assert "<b>Eastern Washington -4.5</b><small>Road favorite, close in rank</small>" in rl, rl
+    assert '<span class="gm-sys-rate"><b>55%</b><small>341-275</small></span>' in rl
+    assert '<span class="gm-sys-site">Road fav</span>' in rl
+    rr = rules_record({"2026-11-25": [dict(rfrow, final={"away": 70, "home": 60})]}, "2026-11-21")
+    assert rr["roadfav"] == [1, 0, 0] and rr["spread"] == [1, 0, 0], rr
     assert "Tracking" not in box and "300+" not in box, "the old tracking rows are retired"
     # Where the play is: every side play says so; the home dog (the
     # strongest group over six seasons, 59.6%) is highlighted.

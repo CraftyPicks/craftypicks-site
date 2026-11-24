@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""The college basketball System: two rules that passed a six-season test.
+"""The college basketball System: rules that passed a six-season test.
 
 Chosen on 2020-21 through 2024-25 and checked on 2025-26, which chose
 nothing (research/search_ncaab_angles.py, search_ncaab_totals.py, on
@@ -14,6 +14,14 @@ CollegeBasketballData history; every stat as of the game, closing lines):
           449-330 (57.6%), 55%+ in every season. Non-conference games are
           nearly all November-December; where the flag is unknown, those
           months stand in (56.6% over the same seasons).
+  ROADFAV The away favourite giving under 10 points in a conference game
+          when the teams are within 25 spots in the power rank: 341-275
+          (55.4%), break-even or better in every season (2023: 51%),
+          55% in the held-out one. Close teams where the road team is still
+          favoured: the home dogs within 25 spots lost 46.7% ATS. Where the
+          conference flag is unknown, January-April stand in (55.9%). Added
+          Nov 2026, after a wider search (140 versions tried; only the
+          25-spot ones qualified, so it is the shakiest of the three).
 
 They replace the Nov 2026 rules (small dog, defense dog, road dog, favourite
 vs 300+), which looked like 61-69% on two weeks but went 50.3% over six
@@ -26,15 +34,19 @@ Stdlib only.
 from __future__ import annotations
 
 import statistics
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 BIG_DOG = 10.0       # BIGDOG: the underdog gets at least this many
 MIN_BOX = 3          # box scores a team needs before its stats are used
 UNDER_MONTHS = (11, 12)   # UNDER's window when the conference flag is unknown
+ROADFAV_MAX = 10.0        # ROADFAV: the favourite gives less than this
+ROADFAV_GAP = 25          # ... with the teams fewer than this many ranks apart
+CONF_MONTHS = (1, 2, 3, 4)   # ROADFAV's window when the conference flag is unknown
+ROADFAV_FROM = "2026-11-25"  # ROADFAV's first live day (ET): no plays on earlier games
 
-BACKTEST = {"spread": [1656, 1351, 0], "total": [449, 330, 0],
+BACKTEST = {"spread": [1997, 1626, 0], "total": [449, 330, 0],
             "through": "2026-04-06", "seasons": "2020-21 to 2025-26",
-            "by_reason": {"bigdog": [1656, 1351], "under": [449, 330]}}
+            "by_reason": {"bigdog": [1656, 1351], "roadfav": [341, 275], "under": [449, 330]}}
 
 
 def _ts(stamp) -> float | None:
@@ -103,16 +115,24 @@ def _poor_shot_defense(f: dict | None, med: dict) -> bool:
 
 
 def plays(spread_home, neutral: bool, home_form: dict | None, away_form: dict | None,
-          ranks=(None, None), total=None, conf=None, month=None, med=None) -> dict:
-    """The System's plays for one game: {"side": the underdog or None,
-    "reasons": ["bigdog"] or [], "under": bool}. `conf` is whether it is a
-    conference game (None when unknown); `month` the game's month."""
+          ranks=(None, None), total=None, conf=None, month=None, med=None,
+          roadfav: bool = True) -> dict:
+    """The System's plays for one game: {"side": "home"/"away" or None,
+    "reasons": ["bigdog"], ["roadfav"] or [], "under": bool}. `conf` is
+    whether it is a conference game (None when unknown); `month` the game's
+    month; `roadfav` False turns ROADFAV off (games before it went live)."""
     out = {"side": None, "reasons": [], "under": False}
     if spread_home not in (None, 0) and abs(spread_home) >= BIG_DOG:
         dog, fav = ("home", "away") if spread_home > 0 else ("away", "home")
         forms = {"home": home_form, "away": away_form}
         if _bigdog(forms[dog], forms[fav]):
             out["side"], out["reasons"] = dog, ["bigdog"]
+    rh, ra = ranks or (None, None)
+    in_conf = (conf is True) if conf is not None else (month in CONF_MONTHS)
+    if (roadfav and not out["side"] and not neutral and spread_home is not None
+            and 0 < spread_home < ROADFAV_MAX and rh is not None and ra is not None
+            and abs(rh - ra) < ROADFAV_GAP and in_conf):
+        out["side"], out["reasons"] = "away", ["roadfav"]
     window = (conf is False) if conf is not None else (month in UNDER_MONTHS)
     if (total is not None and window and med
             and _poor_shot_defense(home_form, med) and _poor_shot_defense(away_form, med)):
@@ -125,9 +145,10 @@ def for_game(store: dict, home_id, away_id, commence, spread_home, neutral: bool
     """plays() for a game, with each team's form as of its start."""
     t = _ts(commence)
     forms = team_forms(store, t)
-    month = (datetime.fromtimestamp(t) - timedelta(hours=5)).month if t is not None else None
+    et = datetime.fromtimestamp(t, timezone.utc) - timedelta(hours=5) if t is not None else None
     return plays(spread_home, neutral, forms.get(str(home_id)), forms.get(str(away_id)),
-                 ranks, total, conf, month, medians(forms))
+                 ranks, total, conf, et.month if et else None, medians(forms),
+                 roadfav=bool(et) and et.date().isoformat() >= ROADFAV_FROM)
 
 
 def grade(play: dict, spread_home, home_score, away_score, total=None) -> dict:
@@ -185,6 +206,29 @@ def _self_test() -> None:
     assert not plays(-3.0, False, f["B"], f["P"], total=None, conf=False, med=med)["under"], "no total"
     assert plays(-3.0, False, f["B"], f["P"], total=150.0, month=12, med=med)["under"], "flag unknown: December"
     assert not plays(-3.0, False, f["B"], f["P"], total=150.0, month=1, med=med)["under"], "flag unknown: January"
+    # ROADFAV: the away favourite giving under 10 to a home team within 25
+    # ranks, in a conference game (January-April when the flag is unknown).
+    rf = plays(4.5, False, f["M"], f["N"], ranks=(120, 100), conf=True, med=med)
+    assert rf["side"] == "away" and rf["reasons"] == ["roadfav"], rf
+    assert plays(4.5, False, f["M"], f["N"], ranks=(120, 95), conf=True, med=med)["side"] is None, "25 apart"
+    assert plays(4.5, False, f["M"], f["N"], ranks=(120, 100), conf=False, med=med)["side"] is None, "non-conference"
+    assert plays(4.5, True, f["M"], f["N"], ranks=(120, 100), conf=True, med=med)["side"] is None, "neutral site"
+    assert plays(-4.5, False, f["M"], f["N"], ranks=(120, 100), conf=True, med=med)["side"] is None, "home favourite"
+    assert plays(10.0, False, f["M"], f["N"], ranks=(120, 100), conf=True, med=med)["side"] is None, "10 is too many"
+    assert plays(9.5, False, f["M"], f["N"], ranks=(120, 100), conf=True, med=med)["side"] == "away"
+    assert plays(4.5, False, f["M"], f["N"], conf=True, med=med)["side"] is None, "no ranks"
+    assert plays(4.5, False, f["M"], f["N"], ranks=(100, 120), conf=True, med=med)["side"] == "away", \
+        "either team may be ranked higher"
+    assert plays(4.5, False, f["M"], f["N"], ranks=(120, 100), month=2, med=med)["side"] == "away", "flag unknown: Feb"
+    assert plays(4.5, False, f["M"], f["N"], ranks=(120, 100), month=12, med=med)["side"] is None, "flag unknown: Dec"
+    assert plays(4.5, False, f["M"], f["N"], ranks=(120, 100), conf=True, med=med, roadfav=False)["side"] is None
+    # BIGDOG still takes a 10+ point game, so the two never meet.
+    assert plays(-12.0, False, f["B"], f["D"], ranks=(100, 110), conf=True, med=med)["reasons"] == ["bigdog"]
+    # ROADFAV starts on its go-live day: no plays on earlier games.
+    store["games"]["mn"] = {"event_id": "mn", "commence_time": "2026-11-23T23:00Z", "completed": False,
+                            "home": {"id": "M"}, "away": {"id": "N"}}
+    assert for_game(store, "M", "N", "2026-11-23T23:00Z", 4.5, False, (120, 100), conf=True)["side"] is None
+    assert for_game(store, "M", "N", "2026-11-26T00:30Z", 4.5, False, (120, 100), conf=True)["side"] == "away"
     # for_game: forms as of the start; no leak from the game itself.
     store["games"]["late"] = g("late", 20, "B", "D", 90, 60, bx(5, 10, 33, 60, 9, 22), bx(4, 15, 20, 60, 5, 20))
     q = for_game(store, "B", "D", "2026-11-20T23:00Z", -12.0, False, total=150.0, conf=True)
