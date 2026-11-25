@@ -12,7 +12,9 @@
       "away": "Kent State Golden Flashes",
       "model": {
         "home_win_prob": 0.7552845561947678,
-        "away_win_prob": 0.24471544380523225
+        "away_win_prob": 0.24471544380523225,
+        "market_home_prob": 0.690792883054068,
+        "disagreement": 6.4
       },
       "line_note": [
         "Spread: Eastern Michigan Eagles -7 · Total 46.5",
@@ -27,21 +29,21 @@
           "name": "Kent State Golden Flashes",
           "color": "002664",
           "rank": null,
-          "record": "3-8",
-          "games": 11,
+          "record": "3-9",
+          "games": 12,
           "fpi": 136,
           "power_rank": 136,
           "rank_label": "FPI",
           "stats": {
             "ats": [
-              4,
+              5,
               7,
               0
             ],
-            "pts": 14.55,
-            "opp": 29.82,
-            "giv": 1.82,
-            "tak": 0.82,
+            "pts": 14.33,
+            "opp": 28.75,
+            "giv": 1.92,
+            "tak": 0.75,
             "ypp": 4.7
           }
         },
@@ -50,22 +52,22 @@
           "name": "Eastern Michigan Eagles",
           "color": "006938",
           "rank": null,
-          "record": "4-7",
-          "games": 11,
+          "record": "5-7",
+          "games": 12,
           "fpi": 128,
           "power_rank": 128,
           "rank_label": "FPI",
           "stats": {
             "ats": [
               5,
-              6,
+              7,
               0
             ],
-            "pts": 20.55,
-            "opp": 27.27,
-            "giv": 1.18,
-            "tak": 1.09,
-            "ypp": 4.7
+            "pts": 20.25,
+            "opp": 26.0,
+            "giv": 1.08,
+            "tak": 1.25,
+            "ypp": 4.6
           }
         }
       },
@@ -90,7 +92,9 @@
       "away": "Miami (OH) RedHawks",
       "model": {
         "home_win_prob": 0.7080804755604738,
-        "away_win_prob": 0.2919195244395262
+        "away_win_prob": 0.2919195244395262,
+        "market_home_prob": 0.6369041816941223,
+        "disagreement": 7.1
       },
       "line_note": [
         "Spread: Western Michigan Broncos -4.5 · Total 44.5",
@@ -105,22 +109,22 @@
           "name": "Miami (OH) RedHawks",
           "color": "c41230",
           "rank": null,
-          "record": "7-4",
-          "games": 11,
+          "record": "8-4",
+          "games": 12,
           "fpi": 99,
           "power_rank": 99,
           "rank_label": "FPI",
           "stats": {
             "ats": [
-              6,
+              7,
               5,
               0
             ],
-            "pts": 27.36,
-            "opp": 23.64,
-            "giv": 0.73,
-            "tak": 1.18,
-            "ypp": 6.0
+            "pts": 27.42,
+            "opp": 23.67,
+            "giv": 0.67,
+            "tak": 1.25,
+            "ypp": 6.1
           }
         },
         "home": {
@@ -128,21 +132,21 @@
           "name": "Western Michigan Broncos",
           "color": "532e1f",
           "rank": null,
-          "record": "8-3",
-          "games": 11,
+          "record": "8-4",
+          "games": 12,
           "fpi": 84,
           "power_rank": 84,
           "rank_label": "FPI",
           "stats": {
             "ats": [
               4,
-              7,
+              8,
               0
             ],
-            "pts": 28.36,
-            "opp": 19.45,
-            "giv": 0.82,
-            "tak": 1.18,
+            "pts": 28.0,
+            "opp": 20.17,
+            "giv": 0.92,
+            "tak": 1.08,
             "ypp": 5.7
           }
         }
@@ -151,9 +155,9 @@
         "side": "home",
         "team": "Western Michigan Broncos",
         "line": -4.5,
-        "cover": 0.5204,
-        "gap": 0.8,
-        "raw": 1.5,
+        "cover": 0.5163,
+        "gap": 0.6,
+        "raw": 1.2,
         "check": false,
         "tier": "pass",
         "stretch": 0.9
@@ -1185,12 +1189,12 @@
         "away_win_prob": 0.070240795583145
       },
       "line_note": [
-        "Spread: Utah Utes -25.5 · Total 68.5",
+        "Spread: Utah Utes -25.5 · Total 67.5",
         "FPI line: Utah Utes -20.6"
       ],
       "spread_home": -25.5,
       "fpi_margin": 20.636,
-      "total": 68.5,
+      "total": 67.5,
       "team_stats": {
         "away": {
           "id": "277",
@@ -5387,9 +5391,9 @@
     }
   ],
   "summary": {
-    "graded": 133,
-    "pending": 69,
-    "brier": 0.1926,
+    "graded": 135,
+    "pending": 67,
+    "brier": 0.1943,
     "market_brier": null,
     "fpi_ats": [
       39,
@@ -7545,7 +7549,8 @@
       "p_home": 0.7198850292405025,
       "mkt_home": null,
       "spread_home": null,
-      "fpi_margin": 8.155000000000001
+      "fpi_margin": 8.155000000000001,
+      "home_won": true
     },
     {
       "event_id": "401866471",
@@ -7555,7 +7560,8 @@
       "p_home": 0.735185164856202,
       "mkt_home": null,
       "spread_home": null,
-      "fpi_margin": 8.8
+      "fpi_margin": 8.8,
+      "home_won": false
     },
     {
       "event_id": "401856879",
