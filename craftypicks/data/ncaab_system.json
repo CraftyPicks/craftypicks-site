@@ -179,7 +179,12 @@
       "applicable": 5,
       "postseason": false,
       "under_note": false,
-      "total": 143.5
+      "total": 143.5,
+      "result": "L",
+      "final": [
+        52,
+        70
+      ]
     },
     {
       "tab": "system",
@@ -275,7 +280,13 @@
       "applicable": 5,
       "postseason": false,
       "under_note": false,
-      "total": 152.5
+      "total": 152.5,
+      "result": "L",
+      "closing": -2.5,
+      "final": [
+        67,
+        82
+      ]
     },
     {
       "tab": "1h",
@@ -542,14 +553,14 @@
   "summary": {
     "system": {
       "w": 1,
-      "l": 0,
+      "l": 1,
       "p": 0,
-      "pending": 1,
-      "units": 0.91,
+      "pending": 0,
+      "units": -0.09,
       "checks": {
         "reb": [
           1,
-          0
+          1
         ],
         "h2h": [
           1,
@@ -557,24 +568,28 @@
         ],
         "depth": [
           1,
-          0
+          1
         ],
         "def": [
           1,
-          0
+          1
+        ],
+        "ats": [
+          0,
+          1
         ]
       }
     },
     "1h": {
       "w": 8,
-      "l": 11,
+      "l": 12,
       "p": 1,
-      "pending": 4,
-      "units": -3.73,
+      "pending": 3,
+      "units": -4.73,
       "checks": {
         "reb": [
           7,
-          10
+          11
         ],
         "depth": [
           3,
@@ -582,11 +597,11 @@
         ],
         "form": [
           8,
-          10
+          11
         ],
         "def": [
           8,
-          11
+          12
         ],
         "h2h": [
           2,
@@ -594,7 +609,7 @@
         ],
         "ats": [
           5,
-          6
+          7
         ]
       }
     }
@@ -2627,7 +2642,12 @@
       "applicable": 5,
       "postseason": false,
       "under_note": false,
-      "total": 143.5
+      "total": 143.5,
+      "result": "L",
+      "final": [
+        52,
+        70
+      ]
     },
     {
       "tab": "1h",
@@ -2984,7 +3004,13 @@
       "applicable": 5,
       "postseason": false,
       "under_note": false,
-      "total": 152.5
+      "total": 152.5,
+      "result": "L",
+      "closing": -2.5,
+      "final": [
+        67,
+        82
+      ]
     }
   ]
 }
