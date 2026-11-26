@@ -1,38 +1,38 @@
 {
- "generated_at": "2026-11-25T10:17:17-05:00",
- "date": "2026-11-25",
+ "generated_at": "2026-11-26T08:24:37-05:00",
+ "date": "2026-11-26",
  "leagues": {
   "ncaab": {
    "label": "NCAAB",
    "games": [
     {
-     "event_id": "espn-401909800",
-     "espn_id": "401909800",
+     "event_id": "espn-401921714",
+     "espn_id": "401921714",
      "league": "ncaab",
-     "commence_time": "2026-11-25T05:49Z",
-     "home": "Kansas State Wildcats",
-     "away": "Gonzaga Bulldogs",
+     "commence_time": "2026-11-26T05:30Z",
+     "home": "Colorado State Rams",
+     "away": "Clemson Tigers",
      "markets": {
       "spreads": {
-       "point": 15.5,
+       "point": 3.5,
        "side_a": "home"
       },
       "totals": {
-       "point": 157.5
+       "point": 147.5
       }
      },
      "model": {
-      "home_win_prob": 0.1716,
-      "away_win_prob": 0.8284,
+      "home_win_prob": 0.5256,
+      "away_win_prob": 0.4744,
       "market_home_prob": null,
       "disagreement": null,
       "suspect": false,
       "source": "bpi",
       "proj": [
-       69.8,
-       80.3
+       78.4,
+       77.7
       ],
-      "margin": -10.4,
+      "margin": 0.7,
       "edge": 3.5,
       "ev_home": null,
       "ev_away": null
@@ -40,45 +40,170 @@
      "line_source": "espn",
      "ats": {
       "side": "home",
-      "team": "Kansas State Wildcats",
-      "line": 15.5,
-      "cover": 0.5774,
-      "gap": 2.6,
-      "raw": 5.2,
+      "team": "Colorado State Rams",
+      "line": 3.5,
+      "cover": 0.5791,
+      "gap": 2.3,
+      "raw": 4.6,
       "check": false,
       "tier": "lean",
-      "stretch": 1.16
+      "stretch": 0.94
      },
      "counted": false
     },
     {
-     "event_id": "espn-401909763",
-     "espn_id": "401909763",
+     "event_id": "espn-401921672",
+     "espn_id": "401921672",
      "league": "ncaab",
-     "commence_time": "2026-11-25T06:00Z",
-     "home": "Stanford Cardinal",
-     "away": "Colorado Buffaloes",
+     "commence_time": "2026-11-26T06:08Z",
+     "home": "Saint Louis Billikens",
+     "away": "Stanford Cardinal",
      "markets": {
       "spreads": {
-       "point": -4.5,
+       "point": -3.5,
        "side_a": "home"
       },
       "totals": {
-       "point": 140.5
+       "point": 152.5
       }
      },
      "model": {
-      "home_win_prob": 0.6208,
-      "away_win_prob": 0.3792,
+      "home_win_prob": 0.789,
+      "away_win_prob": 0.211,
       "market_home_prob": null,
       "disagreement": null,
       "suspect": false,
       "source": "bpi",
       "proj": [
-       76.0,
-       72.7
+       79.1,
+       70.3
       ],
-      "margin": 3.4,
+      "margin": 8.8,
+      "edge": 3.5,
+      "ev_home": null,
+      "ev_away": null
+     },
+     "line_source": "espn",
+     "ats": {
+      "side": "home",
+      "team": "Saint Louis Billikens",
+      "line": -3.5,
+      "cover": 0.5638,
+      "gap": 1.9,
+      "raw": 3.7,
+      "check": false,
+      "tier": "pass",
+      "stretch": 0.94
+     },
+     "detail": {
+      "home_form": {
+       "w": 3,
+       "l": 1,
+       "streak": "L1",
+       "l10_w": 3,
+       "l10_l": 1
+      },
+      "away_form": {
+       "w": 4,
+       "l": 1,
+       "streak": "W1",
+       "l10_w": 4,
+       "l10_l": 1
+      },
+      "series": []
+     },
+     "counted": false
+    },
+    {
+     "event_id": "espn-401929281",
+     "espn_id": "401929281",
+     "league": "ncaab",
+     "commence_time": "2026-11-26T16:00Z",
+     "home": "Cincinnati Bearcats",
+     "away": "Georgia Bulldogs",
+     "markets": {
+      "spreads": {
+       "point": -2.5,
+       "side_a": "home"
+      },
+      "totals": {
+       "point": 154.5
+      }
+     },
+     "model": {
+      "home_win_prob": 0.6045,
+      "away_win_prob": 0.3955,
+      "market_home_prob": null,
+      "disagreement": null,
+      "suspect": false,
+      "source": "bpi",
+      "proj": [
+       77.2,
+       74.3
+      ],
+      "margin": 2.9,
+      "edge": 0.0,
+      "ev_home": null,
+      "ev_away": null
+     },
+     "line_source": "espn",
+     "ats": {
+      "side": "away",
+      "team": "Georgia Bulldogs",
+      "line": 2.5,
+      "cover": 0.5035,
+      "gap": 0.1,
+      "raw": 0.2,
+      "check": false,
+      "tier": "pass",
+      "stretch": 0.94
+     },
+     "detail": {
+      "home_form": {
+       "w": 4,
+       "l": 1,
+       "streak": "W2",
+       "l10_w": 4,
+       "l10_l": 1
+      },
+      "away_form": {
+       "w": 5,
+       "l": 0,
+       "streak": "W5",
+       "l10_w": 5,
+       "l10_l": 0
+      },
+      "series": []
+     }
+    },
+    {
+     "event_id": "espn-401912231",
+     "espn_id": "401912231",
+     "league": "ncaab",
+     "commence_time": "2026-11-26T17:00Z",
+     "home": "UTSA Roadrunners",
+     "away": "Army Black Knights",
+     "markets": {
+      "spreads": {
+       "point": -12.5,
+       "side_a": "home"
+      },
+      "totals": {
+       "point": 148.5
+      }
+     },
+     "model": {
+      "home_win_prob": 0.7719,
+      "away_win_prob": 0.2281,
+      "market_home_prob": null,
+      "disagreement": null,
+      "suspect": false,
+      "source": "bpi",
+      "proj": [
+       78.6,
+       70.4
+      ],
+      "margin": 8.2,
       "edge": 3.5,
       "ev_home": null,
       "ev_away": null
@@ -86,60 +211,104 @@
      "line_source": "espn",
      "ats": {
       "side": "away",
-      "team": "Colorado Buffaloes",
-      "line": 4.5,
-      "cover": 0.5017,
-      "gap": 0.1,
-      "raw": 0.1,
+      "team": "Army Black Knights",
+      "line": 12.5,
+      "cover": 0.5815,
+      "gap": 2.6,
+      "raw": 5.3,
       "check": false,
-      "tier": "pass",
-      "stretch": 1.16
-     },
-     "detail": {
-      "home_form": {
-       "w": 4,
-       "l": 1,
-       "streak": "W1",
-       "l10_w": 4,
-       "l10_l": 1
-      },
-      "away_form": {
-       "w": 2,
-       "l": 3,
-       "streak": "L2",
-       "l10_w": 2,
-       "l10_l": 3
-      },
-      "series": []
-     },
-     "counted": false
+      "tier": "lean",
+      "stretch": 0.94
+     }
     },
     {
-     "event_id": "espn-401928845",
-     "espn_id": "401928845",
+     "event_id": "espn-401906807",
+     "espn_id": "401906807",
      "league": "ncaab",
-     "commence_time": "2026-11-25T16:00Z",
-     "home": "Ohio Bobcats",
-     "away": "Rice Owls",
+     "commence_time": "2026-11-26T17:00Z",
+     "home": "Purdue Boilermakers",
+     "away": "Oklahoma Sooners",
      "markets": {
       "spreads": {
-       "point": -3.5,
+       "point": -4.5,
        "side_a": "home"
       },
       "totals": {
-       "point": 155.5
+       "point": 142.5
       }
      },
      "model": {
-      "home_win_prob": 0.5734,
-      "away_win_prob": 0.4266,
+      "home_win_prob": 0.6629,
+      "away_win_prob": 0.3371,
       "market_home_prob": null,
       "disagreement": null,
       "suspect": false,
       "source": "bpi",
       "proj": [
-       76.2,
-       74.2
+       81.3,
+       76.6
+      ],
+      "margin": 4.6,
+      "edge": 0.0,
+      "ev_home": null,
+      "ev_away": null
+     },
+     "line_source": "espn",
+     "ats": {
+      "side": "away",
+      "team": "Oklahoma Sooners",
+      "line": 4.5,
+      "cover": 0.5154,
+      "gap": 0.5,
+      "raw": 0.9,
+      "check": false,
+      "tier": "pass",
+      "stretch": 0.94
+     },
+     "detail": {
+      "home_form": {
+       "w": 3,
+       "l": 2,
+       "streak": "W3",
+       "l10_w": 3,
+       "l10_l": 2
+      },
+      "away_form": {
+       "w": 4,
+       "l": 1,
+       "streak": "W4",
+       "l10_w": 4,
+       "l10_l": 1
+      },
+      "series": []
+     }
+    },
+    {
+     "event_id": "espn-401920528",
+     "espn_id": "401920528",
+     "league": "ncaab",
+     "commence_time": "2026-11-26T18:00Z",
+     "home": "Maryland Terrapins",
+     "away": "San Diego State Aztecs",
+     "markets": {
+      "spreads": {
+       "point": -4.5,
+       "side_a": "home"
+      },
+      "totals": {
+       "point": 152.5
+      }
+     },
+     "model": {
+      "home_win_prob": 0.5737,
+      "away_win_prob": 0.4263,
+      "market_home_prob": null,
+      "disagreement": null,
+      "suspect": false,
+      "source": "bpi",
+      "proj": [
+       75.8,
+       73.7
       ],
       "margin": 2.0,
       "edge": 0.0,
@@ -149,488 +318,26 @@
      "line_source": "espn",
      "ats": {
       "side": "away",
-      "team": "Rice Owls",
-      "line": 3.5,
-      "cover": 0.5363,
-      "gap": 1.1,
-      "raw": 2.1,
+      "team": "San Diego State Aztecs",
+      "line": 4.5,
+      "cover": 0.5596,
+      "gap": 1.8,
+      "raw": 3.5,
       "check": false,
       "tier": "pass",
-      "stretch": 1.16
-     },
-     "detail": {
-      "home_form": {
-       "w": 3,
-       "l": 1,
-       "streak": "W1",
-       "l10_w": 3,
-       "l10_l": 1
-      },
-      "away_form": {
-       "w": 2,
-       "l": 2,
-       "streak": "W2",
-       "l10_w": 2,
-       "l10_l": 2
-      },
-      "series": []
+      "stretch": 0.94
      }
     },
     {
-     "event_id": "espn-401921702",
-     "espn_id": "401921702",
+     "event_id": "espn-401929282",
+     "espn_id": "401929282",
      "league": "ncaab",
-     "commence_time": "2026-11-25T16:00Z",
-     "home": "Charlotte 49ers",
-     "away": "Northern Iowa Panthers",
-     "markets": {
-      "spreads": {
-       "point": -8.5,
-       "side_a": "home"
-      },
-      "totals": {
-       "point": 143.5
-      }
-     },
-     "model": {
-      "home_win_prob": 0.6875,
-      "away_win_prob": 0.3125,
-      "market_home_prob": null,
-      "disagreement": null,
-      "suspect": false,
-      "source": "bpi",
-      "proj": [
-       78.1,
-       72.8
-      ],
-      "margin": 5.4,
-      "edge": 0.0,
-      "ev_home": null,
-      "ev_away": null
-     },
-     "line_source": "espn",
-     "ats": {
-      "side": "away",
-      "team": "Northern Iowa Panthers",
-      "line": 8.5,
-      "cover": 0.547,
-      "gap": 1.4,
-      "raw": 2.9,
-      "check": false,
-      "tier": "pass",
-      "stretch": 1.16
-     },
-     "detail": {
-      "home_form": {
-       "w": 3,
-       "l": 2,
-       "streak": "W1",
-       "l10_w": 3,
-       "l10_l": 2
-      },
-      "away_form": {
-       "w": 2,
-       "l": 3,
-       "streak": "W1",
-       "l10_w": 2,
-       "l10_l": 3
-      },
-      "series": []
-     }
-    },
-    {
-     "event_id": "espn-401920428",
-     "espn_id": "401920428",
-     "league": "ncaab",
-     "commence_time": "2026-11-25T17:00Z",
-     "home": "Marquette Golden Eagles",
-     "away": "Virginia Cavaliers",
-     "markets": {
-      "spreads": {
-       "point": 5.5,
-       "side_a": "home"
-      },
-      "totals": {
-       "point": 152.5
-      }
-     },
-     "model": {
-      "home_win_prob": 0.4526,
-      "away_win_prob": 0.5474,
-      "market_home_prob": null,
-      "disagreement": null,
-      "suspect": false,
-      "source": "bpi",
-      "proj": [
-       75.3,
-       76.6
-      ],
-      "margin": -1.3,
-      "edge": 0.0,
-      "ev_home": null,
-      "ev_away": null
-     },
-     "line_source": "espn",
-     "ats": {
-      "side": "home",
-      "team": "Marquette Golden Eagles",
-      "line": 5.5,
-      "cover": 0.5688,
-      "gap": 2.0,
-      "raw": 4.1,
-      "check": false,
-      "tier": "lean",
-      "stretch": 1.16
-     },
-     "detail": {
-      "home_form": {
-       "w": 3,
-       "l": 2,
-       "streak": "W1",
-       "l10_w": 3,
-       "l10_l": 2
-      },
-      "away_form": {
-       "w": 6,
-       "l": 0,
-       "streak": "W6",
-       "l10_w": 6,
-       "l10_l": 0
-      },
-      "series": []
-     }
-    },
-    {
-     "event_id": "espn-401928831",
-     "espn_id": "401928831",
-     "league": "ncaab",
-     "commence_time": "2026-11-25T17:30Z",
-     "home": "Wright State Raiders",
-     "away": "Yale Bulldogs",
-     "markets": {
-      "spreads": {
-       "point": -5.5,
-       "side_a": "home"
-      },
-      "totals": {
-       "point": 138.5
-      }
-     },
-     "model": {
-      "home_win_prob": 0.6118,
-      "away_win_prob": 0.3882,
-      "market_home_prob": null,
-      "disagreement": null,
-      "suspect": false,
-      "source": "bpi",
-      "proj": [
-       77.7,
-       74.6
-      ],
-      "margin": 3.1,
-      "edge": 0.0,
-      "ev_home": null,
-      "ev_away": null
-     },
-     "line_source": "espn",
-     "ats": {
-      "side": "away",
-      "team": "Yale Bulldogs",
-      "line": 5.5,
-      "cover": 0.5101,
-      "gap": 0.3,
-      "raw": 0.6,
-      "check": false,
-      "tier": "pass",
-      "stretch": 1.16
-     }
-    },
-    {
-     "event_id": "espn-401920547",
-     "espn_id": "401920547",
-     "league": "ncaab",
-     "commence_time": "2026-11-25T17:30Z",
-     "home": "Detroit Mercy Titans",
-     "away": "Northern Colorado Bears",
-     "markets": {
-      "spreads": {
-       "point": 5.5,
-       "side_a": "home"
-      },
-      "totals": {
-       "point": 147.5
-      }
-     },
-     "model": {
-      "home_win_prob": 0.2919,
-      "away_win_prob": 0.7081,
-      "market_home_prob": null,
-      "disagreement": null,
-      "suspect": false,
-      "source": "bpi",
-      "proj": [
-       69.4,
-       75.5
-      ],
-      "margin": -6.0,
-      "edge": 0.0,
-      "ev_home": null,
-      "ev_away": null
-     },
-     "line_source": "espn",
-     "ats": {
-      "side": "away",
-      "team": "Northern Colorado Bears",
-      "line": -5.5,
-      "cover": 0.5755,
-      "gap": 2.2,
-      "raw": 4.5,
-      "check": false,
-      "tier": "lean",
-      "stretch": 1.16
-     }
-    },
-    {
-     "event_id": "espn-401926835",
-     "espn_id": "401926835",
-     "league": "ncaab",
-     "commence_time": "2026-11-25T18:00Z",
-     "home": "Stony Brook Seawolves",
-     "away": "Lindenwood Lions",
-     "markets": {
-      "spreads": {
-       "point": -10.5,
-       "side_a": "home"
-      },
-      "totals": {
-       "point": 144.5
-      }
-     },
-     "model": {
-      "home_win_prob": 0.7518,
-      "away_win_prob": 0.2482,
-      "market_home_prob": null,
-      "disagreement": null,
-      "suspect": false,
-      "source": "bpi",
-      "proj": [
-       75.4,
-       67.9
-      ],
-      "margin": 7.5,
-      "edge": 3.5,
-      "ev_home": null,
-      "ev_away": null
-     },
-     "line_source": "espn",
-     "ats": {
-      "side": "away",
-      "team": "Lindenwood Lions",
-      "line": 10.5,
-      "cover": 0.5238,
-      "gap": 0.8,
-      "raw": 1.5,
-      "check": false,
-      "tier": "pass",
-      "stretch": 1.16
-     },
-     "detail": {
-      "home_form": {
-       "w": 0,
-       "l": 2,
-       "streak": "L2",
-       "l10_w": 0,
-       "l10_l": 2
-      },
-      "away_form": {
-       "w": 0,
-       "l": 4,
-       "streak": "L4",
-       "l10_w": 0,
-       "l10_l": 4
-      },
-      "series": []
-     }
-    },
-    {
-     "event_id": "espn-401924268",
-     "espn_id": "401924268",
-     "league": "ncaab",
-     "commence_time": "2026-11-25T18:00Z",
-     "home": "Long Beach State Beach",
-     "away": "Southern Utah Thunderbirds",
+     "commence_time": "2026-11-26T18:30Z",
+     "home": "UCF Knights",
+     "away": "Boston College Eagles",
      "markets": {
       "spreads": {
        "point": -1.5,
-       "side_a": "home"
-      },
-      "totals": {
-       "point": 150.5
-      }
-     },
-     "model": {
-      "home_win_prob": 0.4063,
-      "away_win_prob": 0.5937,
-      "market_home_prob": null,
-      "disagreement": null,
-      "suspect": false,
-      "source": "bpi",
-      "proj": [
-       74.5,
-       77.1
-      ],
-      "margin": -2.6,
-      "edge": 0.0,
-      "ev_home": null,
-      "ev_away": null
-     },
-     "line_source": "espn",
-     "ats": {
-      "side": "away",
-      "team": "Southern Utah Thunderbirds",
-      "line": 1.5,
-      "cover": 0.6292,
-      "gap": 3.7,
-      "raw": 7.4,
-      "check": false,
-      "tier": "lean",
-      "stretch": 1.16
-     }
-    },
-    {
-     "event_id": "espn-401911029",
-     "espn_id": "401911029",
-     "league": "ncaab",
-     "commence_time": "2026-11-25T18:00Z",
-     "home": "Miami (OH) RedHawks",
-     "away": "Eastern Kentucky Colonels",
-     "markets": {
-      "spreads": {
-       "point": -14.5,
-       "side_a": "home"
-      },
-      "totals": {
-       "point": 158.5
-      }
-     },
-     "model": {
-      "home_win_prob": 0.8494,
-      "away_win_prob": 0.1506,
-      "market_home_prob": null,
-      "disagreement": null,
-      "suspect": false,
-      "source": "bpi",
-      "proj": [
-       80.9,
-       69.6
-      ],
-      "margin": 11.4,
-      "edge": 3.5,
-      "ev_home": null,
-      "ev_away": null
-     },
-     "line_source": "espn",
-     "ats": {
-      "side": "away",
-      "team": "Eastern Kentucky Colonels",
-      "line": 14.5,
-      "cover": 0.5782,
-      "gap": 2.6,
-      "raw": 5.2,
-      "check": false,
-      "tier": "lean",
-      "stretch": 1.16
-     },
-     "detail": {
-      "home_form": {
-       "w": 3,
-       "l": 0,
-       "streak": "W3",
-       "l10_w": 3,
-       "l10_l": 0
-      },
-      "away_form": {
-       "w": 1,
-       "l": 1,
-       "streak": "W1",
-       "l10_w": 1,
-       "l10_l": 1
-      },
-      "series": []
-     }
-    },
-    {
-     "event_id": "espn-401919007",
-     "espn_id": "401919007",
-     "league": "ncaab",
-     "commence_time": "2026-11-25T18:30Z",
-     "home": "Davidson Wildcats",
-     "away": "Tulane Green Wave",
-     "markets": {
-      "spreads": {
-       "point": -8.5,
-       "side_a": "home"
-      },
-      "totals": {
-       "point": 137.5
-      }
-     },
-     "model": {
-      "home_win_prob": 0.7303,
-      "away_win_prob": 0.2697,
-      "market_home_prob": null,
-      "disagreement": null,
-      "suspect": false,
-      "source": "bpi",
-      "proj": [
-       76.7,
-       69.9
-      ],
-      "margin": 6.8,
-      "edge": 0.0,
-      "ev_home": null,
-      "ev_away": null
-     },
-     "line_source": "espn",
-     "ats": {
-      "side": "away",
-      "team": "Tulane Green Wave",
-      "line": 8.5,
-      "cover": 0.5211,
-      "gap": 0.7,
-      "raw": 1.3,
-      "check": false,
-      "tier": "pass",
-      "stretch": 1.16
-     },
-     "detail": {
-      "home_form": {
-       "w": 3,
-       "l": 2,
-       "streak": "L2",
-       "l10_w": 3,
-       "l10_l": 2
-      },
-      "away_form": {
-       "w": 2,
-       "l": 2,
-       "streak": "L1",
-       "l10_w": 2,
-       "l10_l": 2
-      },
-      "series": []
-     }
-    },
-    {
-     "event_id": "espn-401921669",
-     "espn_id": "401921669",
-     "league": "ncaab",
-     "commence_time": "2026-11-25T19:00Z",
-     "home": "LSU Tigers",
-     "away": "Arizona State Sun Devils",
-     "markets": {
-      "spreads": {
-       "point": -4.5,
        "side_a": "home"
       },
       "totals": {
@@ -638,17 +345,17 @@
       }
      },
      "model": {
-      "home_win_prob": 0.5864,
-      "away_win_prob": 0.4136,
+      "home_win_prob": 0.4616,
+      "away_win_prob": 0.5384,
       "market_home_prob": null,
       "disagreement": null,
       "suspect": false,
       "source": "bpi",
       "proj": [
-       76.8,
-       74.4
+       76.7,
+       77.7
       ],
-      "margin": 2.4,
+      "margin": -1.1,
       "edge": 0.0,
       "ev_home": null,
       "ev_away": null
@@ -656,1175 +363,43 @@
      "line_source": "espn",
      "ats": {
       "side": "away",
-      "team": "Arizona State Sun Devils",
-      "line": 4.5,
-      "cover": 0.5205,
-      "gap": 0.6,
-      "raw": 1.2,
-      "check": false,
-      "tier": "pass",
-      "stretch": 1.16
-     }
-    },
-    {
-     "event_id": "espn-401929406",
-     "espn_id": "401929406",
-     "league": "ncaab",
-     "commence_time": "2026-11-25T19:00Z",
-     "home": "South Dakota Coyotes",
-     "away": "Arkansas-Pine Bluff Golden Lions",
-     "markets": {
-      "spreads": {
-       "point": -22.5,
-       "side_a": "home"
-      },
-      "totals": {
-       "point": 148.5
-      }
-     },
-     "model": {
-      "home_win_prob": 0.8991,
-      "away_win_prob": 0.1009,
-      "market_home_prob": null,
-      "disagreement": null,
-      "suspect": false,
-      "source": "bpi",
-      "proj": [
-       80.5,
-       66.5
-      ],
-      "margin": 14.0,
-      "edge": 3.5,
-      "ev_home": null,
-      "ev_away": null
-     },
-     "line_source": "espn",
-     "ats": {
-      "side": "away",
-      "team": "Arkansas-Pine Bluff Golden Lions",
-      "line": 22.5,
-      "cover": 0.5374,
-      "gap": 1.4,
-      "raw": 2.7,
-      "check": false,
-      "tier": "pass",
-      "stretch": 1.16
-     },
-     "detail": {
-      "home_form": {
-       "w": 0,
-       "l": 5,
-       "streak": "L5",
-       "l10_w": 0,
-       "l10_l": 5
-      },
-      "away_form": {
-       "w": 0,
-       "l": 6,
-       "streak": "L6",
-       "l10_w": 0,
-       "l10_l": 6
-      },
-      "series": []
-     }
-    },
-    {
-     "event_id": "espn-401924705",
-     "espn_id": "401924705",
-     "league": "ncaab",
-     "commence_time": "2026-11-25T19:00Z",
-     "home": "Columbia Lions",
-     "away": "Saint Peter's Peacocks",
-     "markets": {
-      "spreads": {
-       "point": -13.5,
-       "side_a": "home"
-      },
-      "totals": {
-       "point": 125.5
-      }
-     },
-     "model": {
-      "home_win_prob": 0.9323,
-      "away_win_prob": 0.0677,
-      "market_home_prob": null,
-      "disagreement": null,
-      "suspect": false,
-      "source": "bpi",
-      "proj": [
-       77.7,
-       61.3
-      ],
-      "margin": 16.4,
-      "edge": 3.5,
-      "ev_home": null,
-      "ev_away": null
-     },
-     "line_source": "espn",
-     "ats": {
-      "side": "home",
-      "team": "Columbia Lions",
-      "line": -13.5,
-      "cover": 0.5941,
-      "gap": 3.1,
-      "raw": 6.2,
-      "check": false,
-      "tier": "lean",
-      "stretch": 1.16
-     },
-     "detail": {
-      "home_form": {
-       "w": 3,
-       "l": 1,
-       "streak": "W3",
-       "l10_w": 3,
-       "l10_l": 1
-      },
-      "away_form": {
-       "w": 0,
-       "l": 5,
-       "streak": "L5",
-       "l10_w": 0,
-       "l10_l": 5
-      },
-      "series": []
-     }
-    },
-    {
-     "event_id": "espn-401920868",
-     "espn_id": "401920868",
-     "league": "ncaab",
-     "commence_time": "2026-11-25T19:00Z",
-     "home": "NJIT Highlanders",
-     "away": "Manhattan Jaspers",
-     "markets": {
-      "spreads": {
-       "point": -1.5,
-       "side_a": "home"
-      },
-      "totals": {
-       "point": 140.5
-      }
-     },
-     "model": {
-      "home_win_prob": 0.5903,
-      "away_win_prob": 0.4097,
-      "market_home_prob": null,
-      "disagreement": null,
-      "suspect": false,
-      "source": "bpi",
-      "proj": [
-       72.7,
-       70.2
-      ],
-      "margin": 2.5,
-      "edge": 3.5,
-      "ev_home": null,
-      "ev_away": null
-     },
-     "line_source": "espn",
-     "ats": {
-      "side": "home",
-      "team": "NJIT Highlanders",
-      "line": -1.5,
-      "cover": 0.5231,
-      "gap": 0.7,
-      "raw": 1.3,
-      "check": false,
-      "tier": "pass",
-      "stretch": 1.16
-     },
-     "detail": {
-      "home_form": {
-       "w": 1,
-       "l": 6,
-       "streak": "L4",
-       "l10_w": 1,
-       "l10_l": 6
-      },
-      "away_form": {
-       "w": 1,
-       "l": 4,
-       "streak": "L2",
-       "l10_w": 1,
-       "l10_l": 4
-      },
-      "series": []
-     }
-    },
-    {
-     "event_id": "espn-401917967",
-     "espn_id": "401917967",
-     "league": "ncaab",
-     "commence_time": "2026-11-25T19:00Z",
-     "home": "South Dakota State Jackrabbits",
-     "away": "Abilene Christian Wildcats",
-     "markets": {
-      "spreads": {
-       "point": -6.5,
-       "side_a": "home"
-      },
-      "totals": {
-       "point": 141.5
-      }
-     },
-     "model": {
-      "home_win_prob": 0.7944,
-      "away_win_prob": 0.2056,
-      "market_home_prob": null,
-      "disagreement": null,
-      "suspect": false,
-      "source": "bpi",
-      "proj": [
-       77.8,
-       68.8
-      ],
-      "margin": 9.0,
-      "edge": 3.5,
-      "ev_home": null,
-      "ev_away": null
-     },
-     "line_source": "espn",
-     "ats": {
-      "side": "home",
-      "team": "South Dakota State Jackrabbits",
-      "line": -6.5,
-      "cover": 0.5515,
-      "gap": 1.6,
-      "raw": 3.1,
-      "check": false,
-      "tier": "pass",
-      "stretch": 1.16
-     }
-    },
-    {
-     "event_id": "espn-401921715",
-     "espn_id": "401921715",
-     "league": "ncaab",
-     "commence_time": "2026-11-25T19:30Z",
-     "home": "Arizona Wildcats",
-     "away": "Ole Miss Rebels",
-     "markets": {
-      "spreads": {
-       "point": -5.5,
-       "side_a": "home"
-      },
-      "totals": {
-       "point": 153.5
-      }
-     },
-     "model": {
-      "home_win_prob": 0.5876,
-      "away_win_prob": 0.4124,
-      "market_home_prob": null,
-      "disagreement": null,
-      "suspect": false,
-      "source": "bpi",
-      "proj": [
-       74.9,
-       72.4
-      ],
-      "margin": 2.4,
-      "edge": 0.0,
-      "ev_home": null,
-      "ev_away": null
-     },
-     "line_source": "espn",
-     "ats": {
-      "side": "away",
-      "team": "Ole Miss Rebels",
-      "line": 5.5,
-      "cover": 0.6018,
-      "gap": 3.0,
-      "raw": 6.1,
-      "check": false,
-      "tier": "lean",
-      "stretch": 1.16
-     },
-     "detail": {
-      "home_form": {
-       "w": 4,
-       "l": 1,
-       "streak": "W4",
-       "l10_w": 4,
-       "l10_l": 1
-      },
-      "away_form": {
-       "w": 4,
-       "l": 0,
-       "streak": "W4",
-       "l10_w": 4,
-       "l10_l": 0
-      },
-      "series": []
-     }
-    },
-    {
-     "event_id": "espn-401920809",
-     "espn_id": "401920809",
-     "league": "ncaab",
-     "commence_time": "2026-11-25T19:30Z",
-     "home": "Xavier Musketeers",
-     "away": "Texas A&M Aggies",
-     "markets": {
-      "spreads": {
-       "point": 4.5,
-       "side_a": "home"
-      },
-      "totals": {
-       "point": 170.5
-      }
-     },
-     "model": {
-      "home_win_prob": 0.3643,
-      "away_win_prob": 0.6357,
-      "market_home_prob": null,
-      "disagreement": null,
-      "suspect": false,
-      "source": "bpi",
-      "proj": [
-       72.0,
-       75.8
-      ],
-      "margin": -3.8,
-      "edge": 0.0,
-      "ev_home": null,
-      "ev_away": null
-     },
-     "line_source": "espn",
-     "ats": {
-      "side": "home",
-      "team": "Xavier Musketeers",
-      "line": 4.5,
-      "cover": 0.5051,
-      "gap": 0.1,
-      "raw": 0.3,
-      "check": false,
-      "tier": "pass",
-      "stretch": 1.16
-     },
-     "detail": {
-      "home_form": {
-       "w": 5,
-       "l": 0,
-       "streak": "W5",
-       "l10_w": 5,
-       "l10_l": 0
-      },
-      "away_form": {
-       "w": 5,
-       "l": 0,
-       "streak": "W5",
-       "l10_w": 5,
-       "l10_l": 0
-      },
-      "series": []
-     }
-    },
-    {
-     "event_id": "espn-401928836",
-     "espn_id": "401928836",
-     "league": "ncaab",
-     "commence_time": "2026-11-25T20:00Z",
-     "home": "App State Mountaineers",
-     "away": "Akron Zips",
-     "markets": {
-      "spreads": {
-       "point": 6.5,
-       "side_a": "home"
-      },
-      "totals": {
-       "point": 132.5
-      }
-     },
-     "model": {
-      "home_win_prob": 0.3836,
-      "away_win_prob": 0.6164,
-      "market_home_prob": null,
-      "disagreement": null,
-      "suspect": false,
-      "source": "bpi",
-      "proj": [
-       71.4,
-       74.6
-      ],
-      "margin": -3.3,
-      "edge": 0.0,
-      "ev_home": null,
-      "ev_away": null
-     },
-     "line_source": "espn",
-     "ats": {
-      "side": "home",
-      "team": "App State Mountaineers",
-      "line": 6.5,
-      "cover": 0.5383,
-      "gap": 1.1,
-      "raw": 2.3,
-      "check": false,
-      "tier": "pass",
-      "stretch": 1.16
-     }
-    },
-    {
-     "event_id": "espn-401920548",
-     "espn_id": "401920548",
-     "league": "ncaab",
-     "commence_time": "2026-11-25T20:00Z",
-     "home": "North Dakota Fighting Hawks",
-     "away": "SE Louisiana Lions",
-     "markets": {
-      "spreads": {
-       "point": 1.5,
-       "side_a": "home"
-      },
-      "totals": {
-       "point": 143.5
-      }
-     },
-     "model": {
-      "home_win_prob": 0.491,
-      "away_win_prob": 0.509,
-      "market_home_prob": null,
-      "disagreement": null,
-      "suspect": false,
-      "source": "bpi",
-      "proj": [
-       74.7,
-       74.9
-      ],
-      "margin": -0.2,
-      "edge": 0.0,
-      "ev_home": null,
-      "ev_away": null
-     },
-     "line_source": "espn",
-     "ats": {
-      "side": "home",
-      "team": "North Dakota Fighting Hawks",
+      "team": "Boston College Eagles",
       "line": 1.5,
-      "cover": 0.5742,
+      "cover": 0.5759,
       "gap": 2.1,
-      "raw": 4.2,
+      "raw": 4.3,
       "check": false,
       "tier": "lean",
-      "stretch": 1.16
+      "stretch": 0.94
      },
      "detail": {
       "home_form": {
-       "w": 2,
-       "l": 3,
-       "streak": "W1",
-       "l10_w": 2,
-       "l10_l": 3
-      },
-      "away_form": {
-       "w": 1,
-       "l": 3,
-       "streak": "L2",
-       "l10_w": 1,
-       "l10_l": 3
-      },
-      "series": []
-     }
-    },
-    {
-     "event_id": "espn-401919042",
-     "espn_id": "401919042",
-     "league": "ncaab",
-     "commence_time": "2026-11-25T20:00Z",
-     "home": "Oklahoma State Cowboys",
-     "away": "Jackson State Tigers",
-     "markets": {
-      "spreads": {
-       "point": -35.5,
-       "side_a": "home"
-      },
-      "totals": {
-       "point": 160.5
-      }
-     },
-     "model": {
-      "home_win_prob": 0.99,
-      "away_win_prob": 0.01,
-      "market_home_prob": null,
-      "disagreement": null,
-      "suspect": false,
-      "source": "bpi",
-      "proj": [
-       89.2,
-       61.5
-      ],
-      "margin": 27.7,
-      "edge": 3.5,
-      "ev_home": null,
-      "ev_away": null
-     },
-     "line_source": "espn",
-     "ats": {
-      "side": "away",
-      "team": "Jackson State Tigers",
-      "line": 35.5,
-      "cover": 0.5765,
-      "gap": 3.1,
-      "raw": 6.3,
-      "check": false,
-      "tier": "lean",
-      "stretch": 1.16
-     }
-    },
-    {
-     "event_id": "espn-401928359",
-     "espn_id": "401928359",
-     "league": "ncaab",
-     "commence_time": "2026-11-25T20:30Z",
-     "home": "Florida International Panthers",
-     "away": "Arkansas State Red Wolves",
-     "markets": {
-      "spreads": {
-       "point": -1.5,
-       "side_a": "home"
-      },
-      "totals": {
-       "point": 175.5
-      }
-     },
-     "model": {
-      "home_win_prob": 0.6164,
-      "away_win_prob": 0.3836,
-      "market_home_prob": null,
-      "disagreement": null,
-      "suspect": false,
-      "source": "bpi",
-      "proj": [
-       76.3,
-       73.0
-      ],
-      "margin": 3.3,
-      "edge": 3.5,
-      "ev_home": null,
-      "ev_away": null
-     },
-     "line_source": "espn",
-     "ats": {
-      "side": "home",
-      "team": "Florida International Panthers",
-      "line": -1.5,
-      "cover": 0.5461,
-      "gap": 1.3,
-      "raw": 2.6,
-      "check": false,
-      "tier": "pass",
-      "stretch": 1.16
-     }
-    },
-    {
-     "event_id": "espn-401925050",
-     "espn_id": "401925050",
-     "league": "ncaab",
-     "commence_time": "2026-11-25T21:00Z",
-     "home": "LSU New Orleans Privateers",
-     "away": "Grambling Tigers",
-     "markets": {
-      "spreads": {
-       "point": -3.5,
-       "side_a": "home"
-      },
-      "totals": {
-       "point": 149.5
-      }
-     },
-     "model": {
-      "home_win_prob": 0.4501,
-      "away_win_prob": 0.5499,
-      "market_home_prob": null,
-      "disagreement": null,
-      "suspect": false,
-      "source": "bpi",
-      "proj": [
-       71.8,
-       73.1
-      ],
-      "margin": -1.4,
-      "edge": 3.5,
-      "ev_home": null,
-      "ev_away": null
-     },
-     "line_source": "espn",
-     "ats": {
-      "side": "away",
-      "team": "Grambling Tigers",
-      "line": 3.5,
-      "cover": 0.5926,
-      "gap": 2.7,
-      "raw": 5.4,
-      "check": false,
-      "tier": "lean",
-      "stretch": 1.16
-     }
-    },
-    {
-     "event_id": "espn-401924737",
-     "espn_id": "401924737",
-     "league": "ncaab",
-     "commence_time": "2026-11-25T21:00Z",
-     "home": "Liberty Flames",
-     "away": "Princeton Tigers",
-     "markets": {
-      "spreads": {
-       "point": -3.5,
-       "side_a": "home"
-      },
-      "totals": {
-       "point": 137.5
-      }
-     },
-     "model": {
-      "home_win_prob": 0.5871,
-      "away_win_prob": 0.4129,
-      "market_home_prob": null,
-      "disagreement": null,
-      "suspect": false,
-      "source": "bpi",
-      "proj": [
-       76.9,
-       74.5
-      ],
-      "margin": 2.4,
-      "edge": 0.0,
-      "ev_home": null,
-      "ev_away": null
-     },
-     "line_source": "espn",
-     "ats": {
-      "side": "away",
-      "team": "Princeton Tigers",
-      "line": 3.5,
-      "cover": 0.5156,
-      "gap": 0.5,
-      "raw": 0.9,
-      "check": false,
-      "tier": "pass",
-      "stretch": 1.16
-     },
-     "detail": {
-      "home_form": {
-       "w": 2,
+       "w": 4,
        "l": 1,
-       "streak": "W2",
-       "l10_w": 2,
+       "streak": "L1",
+       "l10_w": 4,
        "l10_l": 1
       },
       "away_form": {
-       "w": 2,
-       "l": 2,
-       "streak": "L1",
-       "l10_w": 2,
-       "l10_l": 2
+       "w": 5,
+       "l": 0,
+       "streak": "W5",
+       "l10_w": 5,
+       "l10_l": 0
       },
       "series": []
      }
     },
     {
-     "event_id": "espn-401921703",
-     "espn_id": "401921703",
+     "event_id": "espn-401921674",
+     "espn_id": "401921674",
      "league": "ncaab",
-     "commence_time": "2026-11-25T21:00Z",
-     "home": "Florida Gulf Coast Eagles",
-     "away": "Georgia State Panthers",
-     "markets": {
-      "spreads": {
-       "point": 3.5,
-       "side_a": "home"
-      },
-      "totals": {
-       "point": 143.5
-      }
-     },
-     "model": {
-      "home_win_prob": 0.4534,
-      "away_win_prob": 0.5466,
-      "market_home_prob": null,
-      "disagreement": null,
-      "suspect": false,
-      "source": "bpi",
-      "proj": [
-       75.0,
-       76.3
-      ],
-      "margin": -1.3,
-      "edge": 0.0,
-      "ev_home": null,
-      "ev_away": null
-     },
-     "line_source": "espn",
-     "ats": {
-      "side": "home",
-      "team": "Florida Gulf Coast Eagles",
-      "line": 3.5,
-      "cover": 0.538,
-      "gap": 1.1,
-      "raw": 2.2,
-      "check": false,
-      "tier": "pass",
-      "stretch": 1.16
-     }
-    },
-    {
-     "event_id": "espn-401920858",
-     "espn_id": "401920858",
-     "league": "ncaab",
-     "commence_time": "2026-11-25T21:00Z",
-     "home": "Marshall Thundering Herd",
-     "away": "Prairie View A&M Panthers",
-     "markets": {
-      "spreads": {
-       "point": -13.5,
-       "side_a": "home"
-      },
-      "totals": {
-       "point": 151.5
-      }
-     },
-     "model": {
-      "home_win_prob": 0.9117,
-      "away_win_prob": 0.0883,
-      "market_home_prob": null,
-      "disagreement": null,
-      "suspect": false,
-      "source": "bpi",
-      "proj": [
-       79.5,
-       64.6
-      ],
-      "margin": 14.9,
-      "edge": 3.5,
-      "ev_home": null,
-      "ev_away": null
-     },
-     "line_source": "espn",
-     "ats": {
-      "side": "home",
-      "team": "Marshall Thundering Herd",
-      "line": -13.5,
-      "cover": 0.5199,
-      "gap": 0.7,
-      "raw": 1.3,
-      "check": false,
-      "tier": "pass",
-      "stretch": 1.16
-     }
-    },
-    {
-     "event_id": "espn-401921670",
-     "espn_id": "401921670",
-     "league": "ncaab",
-     "commence_time": "2026-11-25T21:30Z",
-     "home": "USC Trojans",
+     "commence_time": "2026-11-26T19:00Z",
+     "home": "Arizona State Sun Devils",
      "away": "South Carolina Gamecocks",
      "markets": {
       "spreads": {
-       "point": -10.5,
-       "side_a": "home"
-      },
-      "totals": {
-       "point": 146.5
-      }
-     },
-     "model": {
-      "home_win_prob": 0.8361,
-      "away_win_prob": 0.1639,
-      "market_home_prob": null,
-      "disagreement": null,
-      "suspect": false,
-      "source": "bpi",
-      "proj": [
-       80.0,
-       69.2
-      ],
-      "margin": 10.8,
-      "edge": 0.0,
-      "ev_home": null,
-      "ev_away": null
-     },
-     "line_source": "espn",
-     "ats": {
-      "side": "home",
-      "team": "USC Trojans",
-      "line": -10.5,
-      "cover": 0.5095,
-      "gap": 0.3,
-      "raw": 0.6,
-      "check": false,
-      "tier": "pass",
-      "stretch": 1.16
-     },
-     "detail": {
-      "home_form": {
-       "w": 4,
-       "l": 0,
-       "streak": "W4",
-       "l10_w": 4,
-       "l10_l": 0
-      },
-      "away_form": {
-       "w": 5,
-       "l": 0,
-       "streak": "W5",
-       "l10_w": 5,
-       "l10_l": 0
-      },
-      "series": []
-     }
-    },
-    {
-     "event_id": "espn-401926065",
-     "espn_id": "401926065",
-     "league": "ncaab",
-     "commence_time": "2026-11-25T22:00Z",
-     "home": "Nebraska Cornhuskers",
-     "away": "Southern Jaguars",
-     "markets": {
-      "spreads": {
-       "point": -35.5,
-       "side_a": "home"
-      },
-      "totals": {
-       "point": 150.5
-      }
-     },
-     "model": {
-      "home_win_prob": 0.99,
-      "away_win_prob": 0.01,
-      "market_home_prob": null,
-      "disagreement": null,
-      "suspect": false,
-      "source": "bpi",
-      "proj": [
-       86.7,
-       58.2
-      ],
-      "margin": 28.5,
-      "edge": 3.5,
-      "ev_home": null,
-      "ev_away": null
-     },
-     "line_source": "espn",
-     "ats": {
-      "side": "away",
-      "team": "Southern Jaguars",
-      "line": 35.5,
-      "cover": 0.5657,
-      "gap": 2.7,
-      "raw": 5.4,
-      "check": false,
-      "tier": "lean",
-      "stretch": 1.16
-     },
-     "detail": {
-      "home_form": {
-       "w": 5,
-       "l": 0,
-       "streak": "W5",
-       "l10_w": 5,
-       "l10_l": 0
-      },
-      "away_form": {
-       "w": 0,
-       "l": 5,
-       "streak": "L5",
-       "l10_w": 0,
-       "l10_l": 5
-      },
-      "series": []
-     }
-    },
-    {
-     "event_id": "espn-401917182",
-     "espn_id": "401917182",
-     "league": "ncaab",
-     "commence_time": "2026-11-25T22:00Z",
-     "home": "Penn State Nittany Lions",
-     "away": "Memphis Tigers",
-     "markets": {
-      "spreads": {
-       "point": 3.5,
-       "side_a": "home"
-      },
-      "totals": {
-       "point": 163.5
-      }
-     },
-     "model": {
-      "home_win_prob": 0.3769,
-      "away_win_prob": 0.6231,
-      "market_home_prob": null,
-      "disagreement": null,
-      "suspect": false,
-      "source": "bpi",
-      "proj": [
-       76.9,
-       80.3
-      ],
-      "margin": -3.5,
-      "edge": 0.0,
-      "ev_home": null,
-      "ev_away": null
-     },
-     "line_source": "espn",
-     "ats": {
-      "side": "home",
-      "team": "Penn State Nittany Lions",
-      "line": 3.5,
-      "cover": 0.5328,
-      "gap": 0.9,
-      "raw": 1.9,
-      "check": false,
-      "tier": "pass",
-      "stretch": 1.16
-     },
-     "detail": {
-      "home_form": {
-       "w": 5,
-       "l": 1,
-       "streak": "W3",
-       "l10_w": 5,
-       "l10_l": 1
-      },
-      "away_form": {
-       "w": 3,
-       "l": 1,
-       "streak": "W1",
-       "l10_w": 3,
-       "l10_l": 1
-      },
-      "series": []
-     }
-    },
-    {
-     "event_id": "espn-401925917",
-     "espn_id": "401925917",
-     "league": "ncaab",
-     "commence_time": "2026-11-25T22:00Z",
-     "home": "UC Riverside Highlanders",
-     "away": "Portland State Vikings",
-     "markets": {
-      "spreads": {
-       "point": -2.5,
-       "side_a": "home"
-      },
-      "totals": {
-       "point": 152.5
-      }
-     },
-     "model": {
-      "home_win_prob": 0.5763,
-      "away_win_prob": 0.4237,
-      "market_home_prob": null,
-      "disagreement": null,
-      "suspect": false,
-      "source": "bpi",
-      "proj": [
-       73.1,
-       71.0
-      ],
-      "margin": 2.1,
-      "edge": 3.5,
-      "ev_home": null,
-      "ev_away": null
-     },
-     "line_source": "espn",
-     "ats": {
-      "side": "away",
-      "team": "Portland State Vikings",
-      "line": 2.5,
-      "cover": 0.5018,
-      "gap": 0.1,
-      "raw": 0.1,
-      "check": false,
-      "tier": "pass",
-      "stretch": 1.16
-     }
-    },
-    {
-     "event_id": "espn-401925688",
-     "espn_id": "401925688",
-     "league": "ncaab",
-     "commence_time": "2026-11-25T22:00Z",
-     "home": "Texas State Bobcats",
-     "away": "Alcorn State Braves",
-     "markets": {
-      "spreads": {
-       "point": -24.5,
-       "side_a": "home"
-      },
-      "totals": {
-       "point": 147.5
-      }
-     },
-     "model": {
-      "home_win_prob": 0.9842,
-      "away_win_prob": 0.0158,
-      "market_home_prob": null,
-      "disagreement": null,
-      "suspect": false,
-      "source": "bpi",
-      "proj": [
-       85.2,
-       61.5
-      ],
-      "margin": 23.6,
-      "edge": 0.0,
-      "ev_home": null,
-      "ev_away": null
-     },
-     "line_source": "espn",
-     "ats": {
-      "side": "home",
-      "team": "Texas State Bobcats",
-      "line": -24.5,
-      "cover": 0.5596,
-      "gap": 2.2,
-      "raw": 4.4,
-      "check": false,
-      "tier": "lean",
-      "stretch": 1.16
-     }
-    },
-    {
-     "event_id": "espn-401920237",
-     "espn_id": "401920237",
-     "league": "ncaab",
-     "commence_time": "2026-11-25T22:00Z",
-     "home": "Dartmouth Big Green",
-     "away": "Holy Cross Crusaders",
-     "markets": {
-      "spreads": {
-       "point": -11.5,
-       "side_a": "home"
-      },
-      "totals": {
-       "point": 148.5
-      }
-     },
-     "model": {
-      "home_win_prob": 0.8638,
-      "away_win_prob": 0.1362,
-      "market_home_prob": null,
-      "disagreement": null,
-      "suspect": false,
-      "source": "bpi",
-      "proj": [
-       79.5,
-       67.4
-      ],
-      "margin": 12.1,
-      "edge": 3.5,
-      "ev_home": null,
-      "ev_away": null
-     },
-     "line_source": "espn",
-     "ats": {
-      "side": "home",
-      "team": "Dartmouth Big Green",
-      "line": -11.5,
-      "cover": 0.5733,
-      "gap": 2.4,
-      "raw": 4.7,
-      "check": false,
-      "tier": "lean",
-      "stretch": 1.16
-     },
-     "detail": {
-      "home_form": {
-       "w": 2,
-       "l": 2,
-       "streak": "L1",
-       "l10_w": 2,
-       "l10_l": 2
-      },
-      "away_form": {
-       "w": 0,
-       "l": 5,
-       "streak": "L5",
-       "l10_w": 0,
-       "l10_l": 5
-      },
-      "series": []
-     }
-    },
-    {
-     "event_id": "espn-401921716",
-     "espn_id": "401921716",
-     "league": "ncaab",
-     "commence_time": "2026-11-25T22:30Z",
-     "home": "Providence Friars",
-     "away": "BYU Cougars",
-     "markets": {
-      "spreads": {
-       "point": 2.5,
-       "side_a": "home"
-      },
-      "totals": {
-       "point": 154.5
-      }
-     },
-     "model": {
-      "home_win_prob": 0.3153,
-      "away_win_prob": 0.6847,
-      "market_home_prob": null,
-      "disagreement": null,
-      "suspect": false,
-      "source": "bpi",
-      "proj": [
-       72.3,
-       77.6
-      ],
-      "margin": -5.3,
-      "edge": 0.0,
-      "ev_home": null,
-      "ev_away": null
-     },
-     "line_source": "espn",
-     "ats": {
-      "side": "away",
-      "team": "BYU Cougars",
-      "line": -2.5,
-      "cover": 0.5525,
-      "gap": 1.5,
-      "raw": 3.0,
-      "check": false,
-      "tier": "pass",
-      "stretch": 1.16
-     },
-     "detail": {
-      "home_form": {
-       "w": 4,
-       "l": 1,
-       "streak": "W3",
-       "l10_w": 4,
-       "l10_l": 1
-      },
-      "away_form": {
-       "w": 5,
-       "l": 0,
-       "streak": "W5",
-       "l10_w": 5,
-       "l10_l": 0
-      },
-      "series": []
-     }
-    },
-    {
-     "event_id": "espn-401922253",
-     "espn_id": "401922253",
-     "league": "ncaab",
-     "commence_time": "2026-11-25T23:00Z",
-     "home": "Northwestern State Demons",
-     "away": "West Florida Argonauts",
-     "markets": {
-      "spreads": {
-       "point": -1.5,
+       "point": -3.5,
        "side_a": "home"
       },
       "totals": {
@@ -1832,44 +407,168 @@
       }
      },
      "model": {
-      "home_win_prob": 0.5965,
-      "away_win_prob": 0.4035,
+      "home_win_prob": 0.5623,
+      "away_win_prob": 0.4377,
       "market_home_prob": null,
       "disagreement": null,
       "suspect": false,
       "source": "bpi",
       "proj": [
-       74.8,
-       72.2
+       76.2,
+       74.5
       ],
-      "margin": 2.7,
-      "edge": 3.5,
+      "margin": 1.7,
+      "edge": 0.0,
       "ev_home": null,
       "ev_away": null
      },
      "line_source": "espn",
      "ats": {
       "side": "away",
-      "team": "West Florida Argonauts",
-      "line": 1.5,
-      "cover": 0.5443,
+      "team": "South Carolina Gamecocks",
+      "line": 3.5,
+      "cover": 0.5432,
       "gap": 1.2,
       "raw": 2.5,
       "check": false,
       "tier": "pass",
-      "stretch": 1.16
+      "stretch": 0.94
      }
     },
     {
-     "event_id": "espn-401920549",
-     "espn_id": "401920549",
+     "event_id": "espn-401906869",
+     "espn_id": "401906869",
      "league": "ncaab",
-     "commence_time": "2026-11-25T23:00Z",
-     "home": "Charleston Cougars",
-     "away": "Kennesaw State Owls",
+     "commence_time": "2026-11-26T19:30Z",
+     "home": "Texas Longhorns",
+     "away": "Georgetown Hoyas",
      "markets": {
       "spreads": {
-       "point": -1.5,
+       "point": -8.5,
+       "side_a": "home"
+      },
+      "totals": {
+       "point": 154.5
+      }
+     },
+     "model": {
+      "home_win_prob": 0.8806,
+      "away_win_prob": 0.1194,
+      "market_home_prob": null,
+      "disagreement": null,
+      "suspect": false,
+      "source": "bpi",
+      "proj": [
+       84.2,
+       71.2
+      ],
+      "margin": 13.0,
+      "edge": 0.0,
+      "ev_home": null,
+      "ev_away": null
+     },
+     "line_source": "espn",
+     "ats": {
+      "side": "home",
+      "team": "Texas Longhorns",
+      "line": -8.5,
+      "cover": 0.5373,
+      "gap": 1.1,
+      "raw": 2.3,
+      "check": false,
+      "tier": "pass",
+      "stretch": 0.94
+     },
+     "detail": {
+      "home_form": {
+       "w": 4,
+       "l": 0,
+       "streak": "W4",
+       "l10_w": 4,
+       "l10_l": 0
+      },
+      "away_form": {
+       "w": 5,
+       "l": 0,
+       "streak": "W5",
+       "l10_w": 5,
+       "l10_l": 0
+      },
+      "series": []
+     }
+    },
+    {
+     "event_id": "espn-401920529",
+     "espn_id": "401920529",
+     "league": "ncaab",
+     "commence_time": "2026-11-26T20:30Z",
+     "home": "Iowa State Cyclones",
+     "away": "Tennessee Volunteers",
+     "markets": {
+      "spreads": {
+       "point": -3.5,
+       "side_a": "home"
+      },
+      "totals": {
+       "point": 139.5
+      }
+     },
+     "model": {
+      "home_win_prob": 0.5255,
+      "away_win_prob": 0.4745,
+      "market_home_prob": null,
+      "disagreement": null,
+      "suspect": false,
+      "source": "bpi",
+      "proj": [
+       70.1,
+       69.4
+      ],
+      "margin": 0.7,
+      "edge": 0.0,
+      "ev_home": null,
+      "ev_away": null
+     },
+     "line_source": "espn",
+     "ats": {
+      "side": "away",
+      "team": "Tennessee Volunteers",
+      "line": 3.5,
+      "cover": 0.5518,
+      "gap": 1.5,
+      "raw": 3.0,
+      "check": false,
+      "tier": "pass",
+      "stretch": 0.94
+     },
+     "detail": {
+      "home_form": {
+       "w": 3,
+       "l": 1,
+       "streak": "W3",
+       "l10_w": 3,
+       "l10_l": 1
+      },
+      "away_form": {
+       "w": 4,
+       "l": 0,
+       "streak": "W4",
+       "l10_w": 4,
+       "l10_l": 0
+      },
+      "series": []
+     }
+    },
+    {
+     "event_id": "espn-401920537",
+     "espn_id": "401920537",
+     "league": "ncaab",
+     "commence_time": "2026-11-26T20:30Z",
+     "home": "Michigan Wolverines",
+     "away": "Miami Hurricanes",
+     "markets": {
+      "spreads": {
+       "point": 2.5,
        "side_a": "home"
       },
       "totals": {
@@ -1877,17 +576,17 @@
       }
      },
      "model": {
-      "home_win_prob": 0.5287,
-      "away_win_prob": 0.4713,
+      "home_win_prob": 0.3278,
+      "away_win_prob": 0.6722,
       "market_home_prob": null,
       "disagreement": null,
       "suspect": false,
       "source": "bpi",
       "proj": [
-       73.7,
-       72.9
+       71.9,
+       76.8
       ],
-      "margin": 0.8,
+      "margin": -4.9,
       "edge": 0.0,
       "ev_home": null,
       "ev_away": null
@@ -1895,224 +594,27 @@
      "line_source": "espn",
      "ats": {
       "side": "away",
-      "team": "Kennesaw State Owls",
-      "line": 1.5,
-      "cover": 0.5195,
-      "gap": 0.6,
-      "raw": 1.1,
+      "team": "Miami Hurricanes",
+      "line": -2.5,
+      "cover": 0.5663,
+      "gap": 1.9,
+      "raw": 3.8,
       "check": false,
       "tier": "pass",
-      "stretch": 1.16
-     }
-    },
-    {
-     "event_id": "espn-401920299",
-     "espn_id": "401920299",
-     "league": "ncaab",
-     "commence_time": "2026-11-25T23:00Z",
-     "home": "Weber State Wildcats",
-     "away": "Cal State Northridge Matadors",
-     "markets": {
-      "spreads": {
-       "point": 1.5,
-       "side_a": "home"
-      },
-      "totals": {
-       "point": 168.5
-      }
-     },
-     "model": {
-      "home_win_prob": 0.4318,
-      "away_win_prob": 0.5682,
-      "market_home_prob": null,
-      "disagreement": null,
-      "suspect": false,
-      "source": "bpi",
-      "proj": [
-       74.7,
-       76.6
-      ],
-      "margin": -1.9,
-      "edge": 3.5,
-      "ev_home": null,
-      "ev_away": null
-     },
-     "line_source": "espn",
-     "ats": {
-      "side": "away",
-      "team": "Cal State Northridge Matadors",
-      "line": -1.5,
-      "cover": 0.5124,
-      "gap": 0.3,
-      "raw": 0.7,
-      "check": false,
-      "tier": "pass",
-      "stretch": 1.16
-     }
-    },
-    {
-     "event_id": "espn-401911241",
-     "espn_id": "401911241",
-     "league": "ncaab",
-     "commence_time": "2026-11-25T23:00Z",
-     "home": "Richmond Spiders",
-     "away": "Bethune-Cookman Wildcats",
-     "markets": {
-      "spreads": {
-       "point": -11.5,
-       "side_a": "home"
-      },
-      "totals": {
-       "point": 147.5
-      }
-     },
-     "model": {
-      "home_win_prob": 0.8195,
-      "away_win_prob": 0.1805,
-      "market_home_prob": null,
-      "disagreement": null,
-      "suspect": false,
-      "source": "bpi",
-      "proj": [
-       80.0,
-       70.0
-      ],
-      "margin": 10.0,
-      "edge": 3.5,
-      "ev_home": null,
-      "ev_away": null
-     },
-     "line_source": "espn",
-     "ats": {
-      "side": "home",
-      "team": "Richmond Spiders",
-      "line": -11.5,
-      "cover": 0.511,
-      "gap": 0.3,
-      "raw": 0.7,
-      "check": false,
-      "tier": "pass",
-      "stretch": 1.16
-     },
-     "detail": {
-      "home_form": {
-       "w": 2,
-       "l": 2,
-       "streak": "L2",
-       "l10_w": 2,
-       "l10_l": 2
-      },
-      "away_form": {
-       "w": 0,
-       "l": 5,
-       "streak": "L5",
-       "l10_w": 0,
-       "l10_l": 5
-      },
-      "series": []
-     }
-    },
-    {
-     "event_id": "espn-401909720",
-     "espn_id": "401909720",
-     "league": "ncaab",
-     "commence_time": "2026-11-25T23:00Z",
-     "home": "Syracuse Orange",
-     "away": "UAlbany Great Danes",
-     "markets": {
-      "spreads": {
-       "point": -26.5,
-       "side_a": "home"
-      },
-      "totals": {
-       "point": 146.5
-      }
-     },
-     "model": {
-      "home_win_prob": 0.9778,
-      "away_win_prob": 0.0222,
-      "market_home_prob": null,
-      "disagreement": null,
-      "suspect": false,
-      "source": "bpi",
-      "proj": [
-       86.4,
-       64.3
-      ],
-      "margin": 22.1,
-      "edge": 3.5,
-      "ev_home": null,
-      "ev_away": null
-     },
-     "line_source": "espn",
-     "ats": {
-      "side": "away",
-      "team": "UAlbany Great Danes",
-      "line": 26.5,
-      "cover": 0.5755,
-      "gap": 2.9,
-      "raw": 5.7,
-      "check": false,
-      "tier": "lean",
-      "stretch": 1.16
-     }
-    },
-    {
-     "event_id": "espn-401909568",
-     "espn_id": "401909568",
-     "league": "ncaab",
-     "commence_time": "2026-11-26T00:00Z",
-     "home": "Duke Blue Devils",
-     "away": "UConn Huskies",
-     "markets": {
-      "spreads": {
-       "point": 2.5,
-       "side_a": "home"
-      },
-      "totals": {
-       "point": 146.5
-      }
-     },
-     "model": {
-      "home_win_prob": 0.5487,
-      "away_win_prob": 0.4513,
-      "market_home_prob": null,
-      "disagreement": null,
-      "suspect": false,
-      "source": "bpi",
-      "proj": [
-       74.1,
-       72.8
-      ],
-      "margin": 1.3,
-      "edge": 0.0,
-      "ev_home": null,
-      "ev_away": null
-     },
-     "line_source": "espn",
-     "ats": {
-      "side": "home",
-      "team": "Duke Blue Devils",
-      "line": 2.5,
-      "cover": 0.5611,
-      "gap": 1.8,
-      "raw": 3.5,
-      "check": false,
-      "tier": "pass",
-      "stretch": 1.16
+      "stretch": 0.94
      },
      "detail": {
       "home_form": {
        "w": 3,
-       "l": 2,
-       "streak": "L1",
+       "l": 1,
+       "streak": "W2",
        "l10_w": 3,
-       "l10_l": 2
+       "l10_l": 1
       },
       "away_form": {
        "w": 4,
        "l": 1,
-       "streak": "L1",
+       "streak": "W4",
        "l10_w": 4,
        "l10_l": 1
       },
@@ -2120,291 +622,60 @@
      }
     },
     {
-     "event_id": "espn-401922285",
-     "espn_id": "401922285",
+     "event_id": "espn-401925757",
+     "espn_id": "401925757",
      "league": "ncaab",
-     "commence_time": "2026-11-26T00:00Z",
-     "home": "The Citadel Bulldogs",
-     "away": "South Carolina Upstate Spartans",
+     "commence_time": "2026-11-26T21:30Z",
+     "home": "Michigan State Spartans",
+     "away": "Arkansas Razorbacks",
      "markets": {
       "spreads": {
-       "point": -3.5,
+       "point": -5.5,
        "side_a": "home"
       },
       "totals": {
-       "point": 138.5
+       "point": 150.5
       }
      },
      "model": {
-      "home_win_prob": 0.7069,
-      "away_win_prob": 0.2931,
+      "home_win_prob": 0.6313,
+      "away_win_prob": 0.3687,
       "market_home_prob": null,
       "disagreement": null,
       "suspect": false,
       "source": "bpi",
       "proj": [
-       76.5,
-       70.5
+       78.4,
+       74.7
       ],
-      "margin": 6.0,
-      "edge": 3.5,
-      "ev_home": null,
-      "ev_away": null
-     },
-     "line_source": "espn",
-     "ats": {
-      "side": "home",
-      "team": "The Citadel Bulldogs",
-      "line": -3.5,
-      "cover": 0.5842,
-      "gap": 2.5,
-      "raw": 4.9,
-      "check": false,
-      "tier": "lean",
-      "stretch": 1.16
-     },
-     "detail": {
-      "home_form": {
-       "w": 1,
-       "l": 2,
-       "streak": "L1",
-       "l10_w": 1,
-       "l10_l": 2
-      },
-      "away_form": {
-       "w": 0,
-       "l": 5,
-       "streak": "L5",
-       "l10_w": 0,
-       "l10_l": 5
-      },
-      "series": []
-     }
-    },
-    {
-     "event_id": "espn-401921108",
-     "espn_id": "401921108",
-     "league": "ncaab",
-     "commence_time": "2026-11-26T00:00Z",
-     "home": "Northern Kentucky Norse",
-     "away": "Bellarmine Knights",
-     "markets": {
-      "spreads": {
-       "point": -7.5,
-       "side_a": "home"
-      },
-      "totals": {
-       "point": 148.5
-      }
-     },
-     "model": {
-      "home_win_prob": 0.6736,
-      "away_win_prob": 0.3264,
-      "market_home_prob": null,
-      "disagreement": null,
-      "suspect": false,
-      "source": "bpi",
-      "proj": [
-       79.9,
-       75.0
-      ],
-      "margin": 4.9,
-      "edge": 3.5,
+      "margin": 3.7,
+      "edge": 0.0,
       "ev_home": null,
       "ev_away": null
      },
      "line_source": "espn",
      "ats": {
       "side": "away",
-      "team": "Bellarmine Knights",
-      "line": 7.5,
-      "cover": 0.5378,
-      "gap": 1.1,
-      "raw": 2.3,
+      "team": "Arkansas Razorbacks",
+      "line": 5.5,
+      "cover": 0.5471,
+      "gap": 1.4,
+      "raw": 2.8,
       "check": false,
       "tier": "pass",
-      "stretch": 1.16
-     },
-     "detail": {
-      "home_form": {
-       "w": 2,
-       "l": 3,
-       "streak": "L3",
-       "l10_w": 2,
-       "l10_l": 3
-      },
-      "away_form": {
-       "w": 0,
-       "l": 5,
-       "streak": "L5",
-       "l10_w": 0,
-       "l10_l": 5
-      },
-      "series": []
+      "stretch": 0.94
      }
     },
     {
-     "event_id": "espn-401920916",
-     "espn_id": "401920916",
+     "event_id": "espn-401921673",
+     "espn_id": "401921673",
      "league": "ncaab",
-     "commence_time": "2026-11-26T00:00Z",
-     "home": "SIU Edwardsville Cougars",
-     "away": "Northern Illinois Huskies",
+     "commence_time": "2026-11-26T21:30Z",
+     "home": "USC Trojans",
+     "away": "Utah State Aggies",
      "markets": {
       "spreads": {
-       "point": 3.5,
-       "side_a": "home"
-      },
-      "totals": {
-       "point": 137.5
-      }
-     },
-     "model": {
-      "home_win_prob": 0.4776,
-      "away_win_prob": 0.5224,
-      "market_home_prob": null,
-      "disagreement": null,
-      "suspect": false,
-      "source": "bpi",
-      "proj": [
-       72.8,
-       73.4
-      ],
-      "margin": -0.6,
-      "edge": 3.5,
-      "ev_home": null,
-      "ev_away": null
-     },
-     "line_source": "espn",
-     "ats": {
-      "side": "home",
-      "team": "SIU Edwardsville Cougars",
-      "line": 3.5,
-      "cover": 0.5621,
-      "gap": 1.8,
-      "raw": 3.6,
-      "check": false,
-      "tier": "pass",
-      "stretch": 1.16
-     }
-    },
-    {
-     "event_id": "espn-401920847",
-     "espn_id": "401920847",
-     "league": "ncaab",
-     "commence_time": "2026-11-26T00:00Z",
-     "home": "UNC Wilmington Seahawks",
-     "away": "St. Thomas Tommies",
-     "markets": {
-      "spreads": {
-       "point": -6.5,
-       "side_a": "home"
-      },
-      "totals": {
-       "point": 156.5
-      }
-     },
-     "model": {
-      "home_win_prob": 0.6229,
-      "away_win_prob": 0.3771,
-      "market_home_prob": null,
-      "disagreement": null,
-      "suspect": false,
-      "source": "bpi",
-      "proj": [
-       80.8,
-       77.3
-      ],
-      "margin": 3.4,
-      "edge": 3.5,
-      "ev_home": null,
-      "ev_away": null
-     },
-     "line_source": "espn",
-     "ats": {
-      "side": "away",
-      "team": "St. Thomas Tommies",
-      "line": 6.5,
-      "cover": 0.5216,
-      "gap": 0.7,
-      "raw": 1.3,
-      "check": false,
-      "tier": "pass",
-      "stretch": 1.16
-     }
-    },
-    {
-     "event_id": "espn-401920076",
-     "espn_id": "401920076",
-     "league": "ncaab",
-     "commence_time": "2026-11-26T00:00Z",
-     "home": "George Mason Patriots",
-     "away": "Longwood Lancers",
-     "markets": {
-      "spreads": {
-       "point": -16.5,
-       "side_a": "home"
-      },
-      "totals": {
-       "point": 145.5
-      }
-     },
-     "model": {
-      "home_win_prob": 0.8545,
-      "away_win_prob": 0.1455,
-      "market_home_prob": null,
-      "disagreement": null,
-      "suspect": false,
-      "source": "bpi",
-      "proj": [
-       77.6,
-       66.0
-      ],
-      "margin": 11.6,
-      "edge": 3.5,
-      "ev_home": null,
-      "ev_away": null
-     },
-     "line_source": "espn",
-     "ats": {
-      "side": "away",
-      "team": "Longwood Lancers",
-      "line": 16.5,
-      "cover": 0.5895,
-      "gap": 3.0,
-      "raw": 6.1,
-      "check": false,
-      "tier": "lean",
-      "stretch": 1.16
-     },
-     "detail": {
-      "home_form": {
-       "w": 4,
-       "l": 1,
-       "streak": "W1",
-       "l10_w": 4,
-       "l10_l": 1
-      },
-      "away_form": {
-       "w": 2,
-       "l": 2,
-       "streak": "W1",
-       "l10_w": 2,
-       "l10_l": 2
-      },
-      "series": []
-     }
-    },
-    {
-     "event_id": "espn-401918971",
-     "espn_id": "401918971",
-     "league": "ncaab",
-     "commence_time": "2026-11-26T00:00Z",
-     "home": "Utah State Aggies",
-     "away": "SMU Mustangs",
-     "markets": {
-      "spreads": {
-       "point": -3.5,
+       "point": -2.5,
        "side_a": "home"
       },
       "totals": {
@@ -2412,15 +683,201 @@
       }
      },
      "model": {
-      "home_win_prob": 0.5939,
-      "away_win_prob": 0.4061,
+      "home_win_prob": 0.5712,
+      "away_win_prob": 0.4288,
       "market_home_prob": null,
       "disagreement": null,
       "suspect": false,
       "source": "bpi",
       "proj": [
-       79.9,
-       77.3
+       77.8,
+       75.9
+      ],
+      "margin": 2.0,
+      "edge": 0.0,
+      "ev_home": null,
+      "ev_away": null
+     },
+     "line_source": "espn",
+     "ats": {
+      "side": "away",
+      "team": "Utah State Aggies",
+      "line": 2.5,
+      "cover": 0.535,
+      "gap": 1.0,
+      "raw": 2.0,
+      "check": false,
+      "tier": "pass",
+      "stretch": 0.94
+     },
+     "detail": {
+      "home_form": {
+       "w": 4,
+       "l": 0,
+       "streak": "W4",
+       "l10_w": 4,
+       "l10_l": 0
+      },
+      "away_form": {
+       "w": 5,
+       "l": 0,
+       "streak": "W5",
+       "l10_w": 5,
+       "l10_l": 0
+      },
+      "series": []
+     }
+    },
+    {
+     "event_id": "espn-401917547",
+     "espn_id": "401917547",
+     "league": "ncaab",
+     "commence_time": "2026-11-26T22:00Z",
+     "home": "UCLA Bruins",
+     "away": "Saint Mary's Gaels",
+     "markets": {
+      "spreads": {
+       "point": -7.5,
+       "side_a": "home"
+      },
+      "totals": {
+       "point": 152.5
+      }
+     },
+     "model": {
+      "home_win_prob": 0.8001,
+      "away_win_prob": 0.1999,
+      "market_home_prob": null,
+      "disagreement": null,
+      "suspect": false,
+      "source": "bpi",
+      "proj": [
+       82.7,
+       73.4
+      ],
+      "margin": 9.3,
+      "edge": 0.0,
+      "ev_home": null,
+      "ev_away": null
+     },
+     "line_source": "espn",
+     "ats": {
+      "side": "home",
+      "team": "UCLA Bruins",
+      "line": -7.5,
+      "cover": 0.5214,
+      "gap": 0.7,
+      "raw": 1.3,
+      "check": false,
+      "tier": "pass",
+      "stretch": 0.94
+     },
+     "detail": {
+      "home_form": {
+       "w": 5,
+       "l": 0,
+       "streak": "W5",
+       "l10_w": 5,
+       "l10_l": 0
+      },
+      "away_form": {
+       "w": 4,
+       "l": 1,
+       "streak": "W2",
+       "l10_w": 4,
+       "l10_l": 1
+      },
+      "series": []
+     }
+    },
+    {
+     "event_id": "espn-401920538",
+     "espn_id": "401920538",
+     "league": "ncaab",
+     "commence_time": "2026-11-26T23:00Z",
+     "home": "Creighton Bluejays",
+     "away": "TCU Horned Frogs",
+     "markets": {
+      "spreads": {
+       "point": -1.5,
+       "side_a": "home"
+      },
+      "totals": {
+       "point": 154.5
+      }
+     },
+     "model": {
+      "home_win_prob": 0.5331,
+      "away_win_prob": 0.4669,
+      "market_home_prob": null,
+      "disagreement": null,
+      "suspect": false,
+      "source": "bpi",
+      "proj": [
+       75.5,
+       74.5
+      ],
+      "margin": 0.9,
+      "edge": 0.0,
+      "ev_home": null,
+      "ev_away": null
+     },
+     "line_source": "espn",
+     "ats": {
+      "side": "away",
+      "team": "TCU Horned Frogs",
+      "line": 1.5,
+      "cover": 0.5302,
+      "gap": 0.8,
+      "raw": 1.7,
+      "check": false,
+      "tier": "pass",
+      "stretch": 0.94
+     },
+     "detail": {
+      "home_form": {
+       "w": 4,
+       "l": 1,
+       "streak": "W2",
+       "l10_w": 4,
+       "l10_l": 1
+      },
+      "away_form": {
+       "w": 4,
+       "l": 0,
+       "streak": "W4",
+       "l10_w": 4,
+       "l10_l": 0
+      },
+      "series": []
+     }
+    },
+    {
+     "event_id": "espn-401918972",
+     "espn_id": "401918972",
+     "league": "ncaab",
+     "commence_time": "2026-11-27T00:00Z",
+     "home": "LSU Tigers",
+     "away": "SMU Mustangs",
+     "markets": {
+      "spreads": {
+       "point": -6.5,
+       "side_a": "home"
+      },
+      "totals": {
+       "point": 160.5
+      }
+     },
+     "model": {
+      "home_win_prob": 0.5921,
+      "away_win_prob": 0.4079,
+      "market_home_prob": null,
+      "disagreement": null,
+      "suspect": false,
+      "source": "bpi",
+      "proj": [
+       76.2,
+       73.7
       ],
       "margin": 2.6,
       "edge": 0.0,
@@ -2431,13 +888,13 @@
      "ats": {
       "side": "away",
       "team": "SMU Mustangs",
-      "line": 3.5,
-      "cover": 0.5017,
-      "gap": 0.1,
-      "raw": 0.1,
+      "line": 6.5,
+      "cover": 0.5581,
+      "gap": 1.8,
+      "raw": 3.5,
       "check": false,
       "tier": "pass",
-      "stretch": 1.16
+      "stretch": 0.94
      },
      "detail": {
       "home_form": {
@@ -2458,279 +915,31 @@
      }
     },
     {
-     "event_id": "espn-401918960",
-     "espn_id": "401918960",
+     "event_id": "espn-401909506",
+     "espn_id": "401909506",
      "league": "ncaab",
-     "commence_time": "2026-11-26T00:00Z",
-     "home": "NC State Wolfpack",
-     "away": "Norfolk State Spartans",
-     "markets": {
-      "spreads": {
-       "point": -28.5,
-       "side_a": "home"
-      },
-      "totals": {
-       "point": 149.5
-      }
-     },
-     "model": {
-      "home_win_prob": 0.99,
-      "away_win_prob": 0.01,
-      "market_home_prob": null,
-      "disagreement": null,
-      "suspect": false,
-      "source": "bpi",
-      "proj": [
-       91.6,
-       63.3
-      ],
-      "margin": 28.3,
-      "edge": 3.5,
-      "ev_home": null,
-      "ev_away": null
-     },
-     "line_source": "espn",
-     "ats": {
-      "side": "away",
-      "team": "Norfolk State Spartans",
-      "line": 28.5,
-      "cover": 0.5118,
-      "gap": 0.5,
-      "raw": 0.9,
-      "check": false,
-      "tier": "pass",
-      "stretch": 1.16
-     }
-    },
-    {
-     "event_id": "espn-401911028",
-     "espn_id": "401911028",
-     "league": "ncaab",
-     "commence_time": "2026-11-26T00:00Z",
-     "home": "Wisconsin Badgers",
-     "away": "Northeastern Huskies",
-     "markets": {
-      "spreads": {
-       "point": -19.5,
-       "side_a": "home"
-      },
-      "totals": {
-       "point": 155.5
-      }
-     },
-     "model": {
-      "home_win_prob": 0.945,
-      "away_win_prob": 0.055,
-      "market_home_prob": null,
-      "disagreement": null,
-      "suspect": false,
-      "source": "bpi",
-      "proj": [
-       85.3,
-       67.7
-      ],
-      "margin": 17.6,
-      "edge": 3.5,
-      "ev_home": null,
-      "ev_away": null
-     },
-     "line_source": "espn",
-     "ats": {
-      "side": "away",
-      "team": "Northeastern Huskies",
-      "line": 19.5,
-      "cover": 0.5286,
-      "gap": 1.0,
-      "raw": 2.0,
-      "check": false,
-      "tier": "pass",
-      "stretch": 1.16
-     },
-     "detail": {
-      "home_form": {
-       "w": 4,
-       "l": 0,
-       "streak": "W4",
-       "l10_w": 4,
-       "l10_l": 0
-      },
-      "away_form": {
-       "w": 2,
-       "l": 2,
-       "streak": "W2",
-       "l10_w": 2,
-       "l10_l": 2
-      },
-      "series": []
-     }
-    },
-    {
-     "event_id": "espn-401929287",
-     "espn_id": "401929287",
-     "league": "ncaab",
-     "commence_time": "2026-11-26T00:30Z",
-     "home": "Mississippi State Bulldogs",
-     "away": "Wake Forest Demon Deacons",
-     "markets": {
-      "spreads": {
-       "point": -3.5,
-       "side_a": "home"
-      },
-      "totals": {
-       "point": 148.5
-      }
-     },
-     "model": {
-      "home_win_prob": 0.6437,
-      "away_win_prob": 0.3563,
-      "market_home_prob": null,
-      "disagreement": null,
-      "suspect": false,
-      "source": "bpi",
-      "proj": [
-       76.7,
-       72.6
-      ],
-      "margin": 4.1,
-      "edge": 0.0,
-      "ev_home": null,
-      "ev_away": null
-     },
-     "line_source": "espn"
-    },
-    {
-     "event_id": "espn-401920138",
-     "espn_id": "401920138",
-     "league": "ncaab",
-     "commence_time": "2026-11-26T01:00Z",
-     "home": "Pepperdine Waves",
-     "away": "Cal State Bakersfield Roadrunners",
-     "markets": {
-      "spreads": {
-       "point": -9.5,
-       "side_a": "home"
-      },
-      "totals": {
-       "point": 159.5
-      }
-     },
-     "model": {
-      "home_win_prob": 0.8397,
-      "away_win_prob": 0.1603,
-      "market_home_prob": null,
-      "disagreement": null,
-      "suspect": false,
-      "source": "bpi",
-      "proj": [
-       82.2,
-       71.3
-      ],
-      "margin": 10.9,
-      "edge": 3.5,
-      "ev_home": null,
-      "ev_away": null
-     },
-     "line_source": "espn",
-     "ats": {
-      "side": "home",
-      "team": "Pepperdine Waves",
-      "line": -9.5,
-      "cover": 0.5496,
-      "gap": 1.6,
-      "raw": 3.1,
-      "check": false,
-      "tier": "pass",
-      "stretch": 1.16
-     }
-    },
-    {
-     "event_id": "espn-401911522",
-     "espn_id": "401911522",
-     "league": "ncaab",
-     "commence_time": "2026-11-26T01:00Z",
-     "home": "UC Davis Aggies",
-     "away": "Omaha Mavericks",
-     "markets": {
-      "spreads": {
-       "point": -5.5,
-       "side_a": "home"
-      },
-      "totals": {
-       "point": 147.5
-      }
-     },
-     "model": {
-      "home_win_prob": 0.7176,
-      "away_win_prob": 0.2824,
-      "market_home_prob": null,
-      "disagreement": null,
-      "suspect": false,
-      "source": "bpi",
-      "proj": [
-       73.5,
-       67.2
-      ],
-      "margin": 6.3,
-      "edge": 0.0,
-      "ev_home": null,
-      "ev_away": null
-     },
-     "line_source": "espn",
-     "ats": {
-      "side": "home",
-      "team": "UC Davis Aggies",
-      "line": -5.5,
-      "cover": 0.5387,
-      "gap": 1.1,
-      "raw": 2.3,
-      "check": false,
-      "tier": "pass",
-      "stretch": 1.16
-     },
-     "detail": {
-      "home_form": {
-       "w": 2,
-       "l": 2,
-       "streak": "L1",
-       "l10_w": 2,
-       "l10_l": 2
-      },
-      "away_form": {
-       "w": 1,
-       "l": 3,
-       "streak": "L1",
-       "l10_w": 1,
-       "l10_l": 3
-      },
-      "series": []
-     }
-    },
-    {
-     "event_id": "espn-401920550",
-     "espn_id": "401920550",
-     "league": "ncaab",
-     "commence_time": "2026-11-26T01:30Z",
-     "home": "UTEP Miners",
-     "away": "Eastern Michigan Eagles",
+     "commence_time": "2026-11-27T00:00Z",
+     "home": "Pittsburgh Panthers",
+     "away": "DePaul Blue Demons",
      "markets": {
       "spreads": {
        "point": -1.5,
        "side_a": "home"
       },
       "totals": {
-       "point": 130.5
+       "point": 138.5
       }
      },
      "model": {
-      "home_win_prob": 0.5168,
-      "away_win_prob": 0.4832,
+      "home_win_prob": 0.5169,
+      "away_win_prob": 0.4831,
       "market_home_prob": null,
       "disagreement": null,
       "suspect": false,
       "source": "bpi",
       "proj": [
-       71.8,
-       71.3
+       71.7,
+       71.2
       ],
       "margin": 0.5,
       "edge": 0.0,
@@ -2740,275 +949,213 @@
      "line_source": "espn",
      "ats": {
       "side": "away",
-      "team": "Eastern Michigan Eagles",
+      "team": "DePaul Blue Demons",
       "line": 1.5,
-      "cover": 0.5249,
-      "gap": 0.7,
-      "raw": 1.4,
+      "cover": 0.5302,
+      "gap": 0.8,
+      "raw": 1.7,
       "check": false,
       "tier": "pass",
-      "stretch": 1.16
+      "stretch": 0.94
      },
      "detail": {
       "home_form": {
-       "w": 3,
-       "l": 1,
-       "streak": "W3",
-       "l10_w": 3,
-       "l10_l": 1
-      },
-      "away_form": {
-       "w": 2,
-       "l": 1,
-       "streak": "W1",
-       "l10_w": 2,
-       "l10_l": 1
-      },
-      "series": []
-     }
-    },
-    {
-     "event_id": "espn-401924897",
-     "espn_id": "401924897",
-     "league": "ncaab",
-     "commence_time": "2026-11-26T02:00Z",
-     "home": "New Mexico Lobos",
-     "away": "Mississippi Valley State Delta Devils",
-     "markets": {
-      "spreads": {
-       "point": -36.5,
-       "side_a": "home"
-      },
-      "totals": {
-       "point": 152.5
-      }
-     },
-     "model": {
-      "home_win_prob": 0.99,
-      "away_win_prob": 0.01,
-      "market_home_prob": null,
-      "disagreement": null,
-      "suspect": false,
-      "source": "bpi",
-      "proj": [
-       87.5,
-       59.7
-      ],
-      "margin": 27.8,
-      "edge": 3.5,
-      "ev_home": null,
-      "ev_away": null
-     },
-     "line_source": "espn",
-     "ats": {
-      "side": "away",
-      "team": "Mississippi Valley State Delta Devils",
-      "line": 36.5,
-      "cover": 0.5782,
-      "gap": 3.2,
-      "raw": 6.5,
-      "check": false,
-      "tier": "lean",
-      "stretch": 1.16
-     }
-    },
-    {
-     "event_id": "espn-401917545",
-     "espn_id": "401917545",
-     "league": "ncaab",
-     "commence_time": "2026-11-26T02:00Z",
-     "home": "Loyola Marymount Lions",
-     "away": "Eastern Washington Eagles",
-     "markets": {
-      "spreads": {
-       "point": -7.5,
-       "side_a": "home"
-      },
-      "totals": {
-       "point": 152.5
-      }
-     },
-     "model": {
-      "home_win_prob": 0.6872,
-      "away_win_prob": 0.3128,
-      "market_home_prob": null,
-      "disagreement": null,
-      "suspect": false,
-      "source": "bpi",
-      "proj": [
-       77.6,
-       72.2
-      ],
-      "margin": 5.4,
-      "edge": 3.5,
-      "ev_home": null,
-      "ev_away": null
-     },
-     "line_source": "espn",
-     "ats": {
-      "side": "home",
-      "team": "Loyola Marymount Lions",
-      "line": -7.5,
-      "cover": 0.5082,
-      "gap": 0.2,
-      "raw": 0.5,
-      "check": false,
-      "tier": "pass",
-      "stretch": 1.16
-     },
-     "detail": {
-      "home_form": {
-       "w": 1,
-       "l": 3,
-       "streak": "W1",
-       "l10_w": 1,
-       "l10_l": 3
-      },
-      "away_form": {
-       "w": 1,
-       "l": 3,
-       "streak": "W1",
-       "l10_w": 1,
-       "l10_l": 3
-      },
-      "series": []
-     }
-    },
-    {
-     "event_id": "espn-401921671",
-     "espn_id": "401921671",
-     "league": "ncaab",
-     "commence_time": "2026-11-26T02:30Z",
-     "home": "Colorado Buffaloes",
-     "away": "Grand Canyon Lopes",
-     "markets": {
-      "spreads": {
-       "point": 9.5,
-       "side_a": "home"
-      },
-      "totals": {
-       "point": 154.5
-      }
-     },
-     "model": {
-      "home_win_prob": 0.2623,
-      "away_win_prob": 0.7377,
-      "market_home_prob": null,
-      "disagreement": null,
-      "suspect": false,
-      "source": "bpi",
-      "proj": [
-       70.7,
-       77.7
-      ],
-      "margin": -7.0,
-      "edge": 0.0,
-      "ev_home": null,
-      "ev_away": null
-     },
-     "line_source": "espn",
-     "ats": {
-      "side": "home",
-      "team": "Colorado Buffaloes",
-      "line": 9.5,
-      "cover": 0.5177,
-      "gap": 0.6,
-      "raw": 1.1,
-      "check": false,
-      "tier": "pass",
-      "stretch": 1.16
-     }
-    },
-    {
-     "event_id": "espn-401921713",
-     "espn_id": "401921713",
-     "league": "ncaab",
-     "commence_time": "2026-11-26T03:00Z",
-     "home": "VCU Rams",
-     "away": "Washington Huskies",
-     "markets": {
-      "spreads": {
-       "point": -4.5,
-       "side_a": "home"
-      },
-      "totals": {
-       "point": 146.5
-      }
-     },
-     "model": {
-      "home_win_prob": 0.6727,
-      "away_win_prob": 0.3273,
-      "market_home_prob": null,
-      "disagreement": null,
-      "suspect": false,
-      "source": "bpi",
-      "proj": [
-       79.1,
-       74.2
-      ],
-      "margin": 4.9,
-      "edge": 0.0,
-      "ev_home": null,
-      "ev_away": null
-     },
-     "line_source": "espn",
-     "ats": {
-      "side": "away",
-      "team": "Washington Huskies",
-      "line": 4.5,
-      "cover": 0.5188,
-      "gap": 0.6,
-      "raw": 1.1,
-      "check": false,
-      "tier": "pass",
-      "stretch": 1.16
-     },
-     "detail": {
-      "home_form": {
-       "w": 2,
-       "l": 1,
-       "streak": "W1",
-       "l10_w": 2,
-       "l10_l": 1
-      },
-      "away_form": {
-       "w": 2,
+       "w": 5,
        "l": 0,
-       "streak": "W2",
-       "l10_w": 2,
+       "streak": "W5",
+       "l10_w": 5,
+       "l10_l": 0
+      },
+      "away_form": {
+       "w": 5,
+       "l": 0,
+       "streak": "W5",
+       "l10_w": 5,
        "l10_l": 0
       },
       "series": []
      }
     },
     {
-     "event_id": "espn-401917544",
-     "espn_id": "401917544",
+     "event_id": "espn-401911523",
+     "espn_id": "401911523",
      "league": "ncaab",
-     "commence_time": "2026-11-26T03:30Z",
-     "home": "Jacksonville State Gamecocks",
-     "away": "Pacific Tigers",
+     "commence_time": "2026-11-27T01:00Z",
+     "home": "UC Davis Aggies",
+     "away": "Jacksonville State Gamecocks",
      "markets": {
       "spreads": {
-       "point": 4.5,
+       "point": 1.5,
        "side_a": "home"
       },
       "totals": {
-       "point": 132.5
+       "point": 140.5
       }
      },
      "model": {
-      "home_win_prob": 0.3852,
-      "away_win_prob": 0.6148,
+      "home_win_prob": 0.4197,
+      "away_win_prob": 0.5803,
       "market_home_prob": null,
       "disagreement": null,
       "suspect": false,
       "source": "bpi",
       "proj": [
-       70.9,
-       74.1
+       71.6,
+       73.8
       ],
-      "margin": -3.2,
+      "margin": -2.2,
+      "edge": 0.0,
+      "ev_home": null,
+      "ev_away": null
+     },
+     "line_source": "espn",
+     "ats": {
+      "side": "home",
+      "team": "UC Davis Aggies",
+      "line": 1.5,
+      "cover": 0.5071,
+      "gap": 0.2,
+      "raw": 0.4,
+      "check": false,
+      "tier": "pass",
+      "stretch": 0.94
+     }
+    },
+    {
+     "event_id": "espn-401920530",
+     "espn_id": "401920530",
+     "league": "ncaab",
+     "commence_time": "2026-11-27T02:00Z",
+     "home": "St. John's Red Storm",
+     "away": "Louisville Cardinals",
+     "markets": {
+      "spreads": {
+       "point": -2.5,
+       "side_a": "home"
+      },
+      "totals": {
+       "point": 160.5
+      }
+     },
+     "model": {
+      "home_win_prob": 0.5714,
+      "away_win_prob": 0.4286,
+      "market_home_prob": null,
+      "disagreement": null,
+      "suspect": false,
+      "source": "bpi",
+      "proj": [
+       76.5,
+       74.5
+      ],
+      "margin": 2.0,
+      "edge": 0.0,
+      "ev_home": null,
+      "ev_away": null
+     },
+     "line_source": "espn",
+     "ats": {
+      "side": "home",
+      "team": "St. John's Red Storm",
+      "line": -2.5,
+      "cover": 0.5105,
+      "gap": 0.3,
+      "raw": 0.6,
+      "check": false,
+      "tier": "pass",
+      "stretch": 0.94
+     },
+     "detail": {
+      "home_form": {
+       "w": 5,
+       "l": 0,
+       "streak": "W5",
+       "l10_w": 5,
+       "l10_l": 0
+      },
+      "away_form": {
+       "w": 2,
+       "l": 1,
+       "streak": "L1",
+       "l10_w": 2,
+       "l10_l": 1
+      },
+      "series": []
+     }
+    },
+    {
+     "event_id": "espn-401920539",
+     "espn_id": "401920539",
+     "league": "ncaab",
+     "commence_time": "2026-11-27T02:00Z",
+     "home": "Kansas State Wildcats",
+     "away": "Alabama Crimson Tide",
+     "markets": {
+      "spreads": {
+       "point": 14.5,
+       "side_a": "home"
+      },
+      "totals": {
+       "point": 170.5
+      }
+     },
+     "model": {
+      "home_win_prob": 0.1519,
+      "away_win_prob": 0.8481,
+      "market_home_prob": null,
+      "disagreement": null,
+      "suspect": false,
+      "source": "bpi",
+      "proj": [
+       71.1,
+       82.4
+      ],
+      "margin": -11.3,
+      "edge": 0.0,
+      "ev_home": null,
+      "ev_away": null
+     },
+     "line_source": "espn",
+     "ats": {
+      "side": "home",
+      "team": "Kansas State Wildcats",
+      "line": 14.5,
+      "cover": 0.5752,
+      "gap": 2.5,
+      "raw": 5.0,
+      "check": false,
+      "tier": "lean",
+      "stretch": 0.94
+     }
+    },
+    {
+     "event_id": "espn-401917546",
+     "espn_id": "401917546",
+     "league": "ncaab",
+     "commence_time": "2026-11-27T03:30Z",
+     "home": "Omaha Mavericks",
+     "away": "Pacific Tigers",
+     "markets": {
+      "spreads": {
+       "point": 8.5,
+       "side_a": "home"
+      },
+      "totals": {
+       "point": 139.5
+      }
+     },
+     "model": {
+      "home_win_prob": 0.1835,
+      "away_win_prob": 0.8165,
+      "market_home_prob": null,
+      "disagreement": null,
+      "suspect": false,
+      "source": "bpi",
+      "proj": [
+       67.1,
+       77.1
+      ],
+      "margin": -9.9,
       "edge": 0.0,
       "ev_home": null,
       "ev_away": null
@@ -3017,105 +1164,60 @@
      "ats": {
       "side": "away",
       "team": "Pacific Tigers",
-      "line": -4.5,
-      "cover": 0.5205,
-      "gap": 0.6,
-      "raw": 1.2,
+      "line": -8.5,
+      "cover": 0.547,
+      "gap": 1.4,
+      "raw": 2.9,
       "check": false,
       "tier": "pass",
-      "stretch": 1.16
-     }
-    },
-    {
-     "event_id": "espn-401929005",
-     "espn_id": "401929005",
-     "league": "ncaab",
-     "commence_time": "2026-11-26T04:59Z",
-     "home": "Hawai'i Rainbow Warriors",
-     "away": "Incarnate Word Cardinals",
-     "markets": {
-      "spreads": {
-       "point": -16.5,
-       "side_a": "home"
-      },
-      "totals": {
-       "point": 139.5
-      }
-     },
-     "model": {
-      "home_win_prob": 0.8785,
-      "away_win_prob": 0.1215,
-      "market_home_prob": null,
-      "disagreement": null,
-      "suspect": false,
-      "source": "bpi",
-      "proj": [
-       78.1,
-       65.2
-      ],
-      "margin": 12.8,
-      "edge": 3.5,
-      "ev_home": null,
-      "ev_away": null
-     },
-     "line_source": "espn",
-     "ats": {
-      "side": "away",
-      "team": "Incarnate Word Cardinals",
-      "line": 16.5,
-      "cover": 0.5266,
-      "gap": 0.9,
-      "raw": 1.8,
-      "check": false,
-      "tier": "pass",
-      "stretch": 1.16
+      "stretch": 0.94
      },
      "detail": {
       "home_form": {
-       "w": 2,
-       "l": 2,
-       "streak": "L2",
-       "l10_w": 2,
-       "l10_l": 2
+       "w": 1,
+       "l": 3,
+       "streak": "L1",
+       "l10_w": 1,
+       "l10_l": 3
       },
       "away_form": {
-       "w": 0,
-       "l": 5,
-       "streak": "L5",
-       "l10_w": 0,
-       "l10_l": 5
+       "w": 2,
+       "l": 1,
+       "streak": "W1",
+       "l10_w": 2,
+       "l10_l": 1
       },
       "series": []
      }
     },
     {
-     "event_id": "espn-401921672",
-     "espn_id": "401921672",
+     "event_id": "espn-401920531",
+     "espn_id": "401920531",
      "league": "ncaab",
-     "commence_time": "2026-11-26T04:59Z",
-     "home": "Saint Louis Billikens",
-     "away": "Stanford Cardinal",
+     "commence_time": "2026-11-27T04:30Z",
+     "home": "Oregon Ducks",
+     "away": "Texas Tech Red Raiders",
      "markets": {
       "spreads": {
-       "point": -4.5,
+       "point": 9.5,
        "side_a": "home"
       },
       "totals": {
-       "point": 154.5
+       "point": 148.5
       }
      },
      "model": {
-      "home_win_prob": 0.7021,
-      "away_win_prob": 0.2979,
+      "home_win_prob": 0.1937,
+      "away_win_prob": 0.8063,
       "market_home_prob": null,
       "disagreement": null,
       "suspect": false,
       "source": "bpi",
       "proj": [
-       78.7,
-       72.9
+       69.9,
+       79.5
       ],
-      "margin": 5.8,
+      "margin": -9.5,
       "edge": 0.0,
       "ev_home": null,
       "ev_away": null
@@ -3123,20 +1225,82 @@
      "line_source": "espn",
      "ats": {
       "side": "home",
-      "team": "Saint Louis Billikens",
-      "line": -4.5,
-      "cover": 0.512,
-      "gap": 0.3,
-      "raw": 0.7,
+      "team": "Oregon Ducks",
+      "line": 9.5,
+      "cover": 0.5193,
+      "gap": 0.6,
+      "raw": 1.2,
       "check": false,
       "tier": "pass",
-      "stretch": 1.16
+      "stretch": 0.94
+     },
+     "detail": {
+      "home_form": {
+       "w": 3,
+       "l": 0,
+       "streak": "W3",
+       "l10_w": 3,
+       "l10_l": 0
+      },
+      "away_form": {
+       "w": 5,
+       "l": 0,
+       "streak": "W5",
+       "l10_w": 5,
+       "l10_l": 0
+      },
+      "series": []
+     }
+    },
+    {
+     "event_id": "espn-401920540",
+     "espn_id": "401920540",
+     "league": "ncaab",
+     "commence_time": "2026-11-27T04:30Z",
+     "home": "Gonzaga Bulldogs",
+     "away": "Baylor Bears",
+     "markets": {
+      "spreads": {
+       "point": -3.5,
+       "side_a": "home"
+      },
+      "totals": {
+       "point": 155.5
+      }
+     },
+     "model": {
+      "home_win_prob": 0.5706,
+      "away_win_prob": 0.4294,
+      "market_home_prob": null,
+      "disagreement": null,
+      "suspect": false,
+      "source": "bpi",
+      "proj": [
+       76.7,
+       74.8
+      ],
+      "margin": 2.0,
+      "edge": 0.0,
+      "ev_home": null,
+      "ev_away": null
+     },
+     "line_source": "espn",
+     "ats": {
+      "side": "away",
+      "team": "Baylor Bears",
+      "line": 3.5,
+      "cover": 0.5501,
+      "gap": 1.4,
+      "raw": 2.9,
+      "check": false,
+      "tier": "pass",
+      "stretch": 0.94
      },
      "detail": {
       "home_form": {
        "w": 3,
        "l": 1,
-       "streak": "L1",
+       "streak": "W1",
        "l10_w": 3,
        "l10_l": 1
       },
@@ -3154,6 +1318,6 @@
   }
  },
  "counts": {
-  "ncaab": 58
+  "ncaab": 23
  }
 }
