@@ -22,6 +22,13 @@ CollegeBasketballData history; every stat as of the game, closing lines):
           conference flag is unknown, January-April stand in (55.9%). Added
           Nov 2026, after a wider search (140 versions tried; only the
           25-spot ones qualified, so it is the shakiest of the three).
+  FAVTT   In an UNDER game with a spread under 10 and a total of 140 to
+          169.5, the favourite's team total under, at its implied number
+          (total/2 + spread/2): 223-118 (65.4%), 60%+ in five of six
+          seasons. It rides with UNDER -- the two tend to win and lose
+          together -- so it is not a separate edge. Graded at the implied
+          number; books may post a point either side. Added Nov 2026, after
+          looking at 12 splits of the under games.
 
 They replace the Nov 2026 rules (small dog, defense dog, road dog, favourite
 vs 300+), which looked like 61-69% on two weeks but went 50.3% over six
@@ -43,10 +50,14 @@ ROADFAV_MAX = 10.0        # ROADFAV: the favourite gives less than this
 ROADFAV_GAP = 25          # ... with the teams fewer than this many ranks apart
 CONF_MONTHS = (1, 2, 3, 4)   # ROADFAV's window when the conference flag is unknown
 ROADFAV_FROM = "2026-11-25"  # ROADFAV's first live day (ET): no plays on earlier games
+FAVTT_MAX_SPREAD = 10.0      # FAVTT: the spread is under this
+FAVTT_TOTALS = (140.0, 170.0)   # ... and the total in [140, 170)
+FAVTT_FROM = "2026-11-26"    # FAVTT's first live day (ET)
 
 BACKTEST = {"spread": [1997, 1626, 0], "total": [449, 330, 0],
             "through": "2026-04-06", "seasons": "2020-21 to 2025-26",
-            "by_reason": {"bigdog": [1656, 1351], "roadfav": [341, 275], "under": [449, 330]}}
+            "by_reason": {"bigdog": [1656, 1351], "roadfav": [341, 275], "under": [449, 330],
+                          "favtt": [223, 118]}}
 
 
 def _ts(stamp) -> float | None:
@@ -116,12 +127,13 @@ def _poor_shot_defense(f: dict | None, med: dict) -> bool:
 
 def plays(spread_home, neutral: bool, home_form: dict | None, away_form: dict | None,
           ranks=(None, None), total=None, conf=None, month=None, med=None,
-          roadfav: bool = True) -> dict:
+          roadfav: bool = True, favtt: bool = True) -> dict:
     """The System's plays for one game: {"side": "home"/"away" or None,
     "reasons": ["bigdog"], ["roadfav"] or [], "under": bool}. `conf` is
     whether it is a conference game (None when unknown); `month` the game's
-    month; `roadfav` False turns ROADFAV off (games before it went live)."""
-    out = {"side": None, "reasons": [], "under": False}
+    month; `roadfav` / `favtt` False turn those rules off (games before they
+    went live). "fav_tt" is {"side", "line"} for FAVTT, else None."""
+    out = {"side": None, "reasons": [], "under": False, "fav_tt": None}
     if spread_home not in (None, 0) and abs(spread_home) >= BIG_DOG:
         dog, fav = ("home", "away") if spread_home > 0 else ("away", "home")
         forms = {"home": home_form, "away": away_form}
@@ -137,6 +149,10 @@ def plays(spread_home, neutral: bool, home_form: dict | None, away_form: dict | 
     if (total is not None and window and med
             and _poor_shot_defense(home_form, med) and _poor_shot_defense(away_form, med)):
         out["under"] = True
+        if (favtt and spread_home not in (None, 0) and abs(spread_home) < FAVTT_MAX_SPREAD
+                and FAVTT_TOTALS[0] <= total < FAVTT_TOTALS[1]):
+            out["fav_tt"] = {"side": "home" if spread_home < 0 else "away",
+                             "line": round((total + abs(spread_home)) / 2 * 2) / 2}
     return out
 
 
@@ -148,12 +164,14 @@ def for_game(store: dict, home_id, away_id, commence, spread_home, neutral: bool
     et = datetime.fromtimestamp(t, timezone.utc) - timedelta(hours=5) if t is not None else None
     return plays(spread_home, neutral, forms.get(str(home_id)), forms.get(str(away_id)),
                  ranks, total, conf, et.month if et else None, medians(forms),
-                 roadfav=bool(et) and et.date().isoformat() >= ROADFAV_FROM)
+                 roadfav=bool(et) and et.date().isoformat() >= ROADFAV_FROM,
+                 favtt=bool(et) and et.date().isoformat() >= FAVTT_FROM)
 
 
 def grade(play: dict, spread_home, home_score, away_score, total=None) -> dict:
-    """{"spread": "W"/"L"/"P" or None, "total": ...} for a finished game."""
-    out = {"spread": None, "total": None}
+    """{"spread": "W"/"L"/"P" or None, "total": ..., "fav_tt": ...} for a
+    finished game."""
+    out = {"spread": None, "total": None, "fav_tt": None}
     if play.get("side") and spread_home is not None:
         e = home_score - away_score + spread_home
         if play["side"] == "away":
@@ -162,6 +180,10 @@ def grade(play: dict, spread_home, home_score, away_score, total=None) -> dict:
     if play.get("under") and total is not None:
         d = home_score + away_score - total
         out["total"] = "W" if d < 0 else "L" if d > 0 else "P"
+    ft = play.get("fav_tt")
+    if ft:
+        d = (home_score if ft["side"] == "home" else away_score) - ft["line"]
+        out["fav_tt"] = "W" if d < 0 else "L" if d > 0 else "P"
     return out
 
 
@@ -229,15 +251,34 @@ def _self_test() -> None:
                             "home": {"id": "M"}, "away": {"id": "N"}}
     assert for_game(store, "M", "N", "2026-11-23T23:00Z", 4.5, False, (120, 100), conf=True)["side"] is None
     assert for_game(store, "M", "N", "2026-11-26T00:30Z", 4.5, False, (120, 100), conf=True)["side"] == "away"
+    # FAVTT: in an UNDER game with a spread under 10 and a total of 140 to
+    # 169.5, the favourite's team total under, at its implied number.
+    ft = plays(-3.5, False, f["B"], f["P"], total=143.5, conf=False, med=med)
+    assert ft["under"] and ft["fav_tt"] == {"side": "home", "line": 73.5}, ft
+    assert plays(4.0, False, f["B"], f["P"], total=150.0, conf=False, med=med)["fav_tt"] == {"side": "away", "line": 77.0}
+    assert plays(-10.0, False, f["B"], f["P"], total=150.0, conf=False, med=med)["fav_tt"] is None, "spread 10"
+    assert plays(-3.5, False, f["B"], f["P"], total=170.0, conf=False, med=med)["fav_tt"] is None, "total 170"
+    assert plays(-3.5, False, f["B"], f["P"], total=139.5, conf=False, med=med)["fav_tt"] is None, "total under 140"
+    assert plays(-3.5, False, f["B"], f["D"], total=150.0, conf=False, med=med)["fav_tt"] is None, "no under, no FAVTT"
+    assert plays(0, False, f["B"], f["P"], total=150.0, conf=False, med=med)["fav_tt"] is None, "pick'em: no favourite"
+    assert plays(-3.5, False, f["B"], f["P"], total=150.0, conf=False, med=med, favtt=False)["fav_tt"] is None
+    assert grade({"fav_tt": {"side": "home", "line": 73.5}}, -3.5, 70, 60, 143.5)["fav_tt"] == "W"
+    assert grade({"fav_tt": {"side": "away", "line": 77.0}}, 4.0, 70, 77, 150.0)["fav_tt"] == "P"
+    assert grade({"fav_tt": None}, 4.0, 70, 77, 150.0)["fav_tt"] is None
+    store["games"]["bp"] = {"event_id": "bp", "commence_time": "2026-11-24T23:00Z", "completed": False,
+                            "home": {"id": "B"}, "away": {"id": "P"}}
+    assert for_game(store, "B", "P", "2026-11-24T23:00Z", -3.5, False, total=143.5, conf=False)["fav_tt"] is None, \
+        "before FAVTT went live"
+    assert for_game(store, "B", "P", "2026-11-27T00:00Z", -3.5, False, total=143.5, conf=False)["fav_tt"]
     # for_game: forms as of the start; no leak from the game itself.
     store["games"]["late"] = g("late", 20, "B", "D", 90, 60, bx(5, 10, 33, 60, 9, 22), bx(4, 15, 20, 60, 5, 20))
     q = for_game(store, "B", "D", "2026-11-20T23:00Z", -12.0, False, total=150.0, conf=True)
     assert q["side"] == "away" and not q["under"]
     assert team_forms(store, _ts("2026-11-20T23:00Z"))["B"]["n"] == 3, "its own result is not in"
     # Grading both kinds.
-    assert grade({"side": "away", "under": True}, -12.0, 80, 70, 155.0) == {"spread": "W", "total": "W"}
-    assert grade({"side": "home", "under": False}, 12.0, 60, 75, 140.0) == {"spread": "L", "total": None}
-    assert grade({"side": None, "under": True}, -3.0, 80, 70, 150.0) == {"spread": None, "total": "P"}
+    assert grade({"side": "away", "under": True}, -12.0, 80, 70, 155.0) == {"spread": "W", "total": "W", "fav_tt": None}
+    assert grade({"side": "home", "under": False}, 12.0, 60, 75, 140.0) == {"spread": "L", "total": None, "fav_tt": None}
+    assert grade({"side": None, "under": True}, -3.0, 80, 70, 150.0) == {"spread": None, "total": "P", "fav_tt": None}
     print("ncaab_rules self-test: all invariants hold")
 
 

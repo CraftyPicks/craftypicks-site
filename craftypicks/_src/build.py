@@ -1130,9 +1130,9 @@ def _test_history() -> None:
               "markets": {"spreads": {"point": -3.0, "side_a": "home"}, "totals": {"point": 152.0}}},
              {"league": "ncaab", "commence_time": "2026-11-10T23:00Z", "markets": {}}]
     assert attach_system(srows, sstore) == 2
-    assert srows[0]["system"] == {"side": "away", "reasons": ["bigdog"], "under": False}, \
+    assert srows[0]["system"] == {"side": "away", "reasons": ["bigdog"], "under": False, "fav_tt": None}, \
         "D, the better defence, getting 12; a conference game, so no under"
-    assert srows[1]["system"] == {"side": None, "reasons": [], "under": True}, \
+    assert srows[1]["system"] == {"side": None, "reasons": [], "under": True, "fav_tt": None}, \
         "O and P both defend shots poorly in a non-conference game"
     assert "system" not in srows[2], "no teams, no play"
     # Ranks are stamped once, so History keeps the pair a play was made with.

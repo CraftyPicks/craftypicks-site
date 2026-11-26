@@ -1526,7 +1526,7 @@ def sys_rates(days: dict[str, list[dict]], since: str, league: str = "ncaab") ->
         for r in rows:
             g = _sys_grade(r)
             for kind, res in (("+".join((r.get("system") or {}).get("reasons") or []), g["spread"]),
-                              ("under", g.get("total"))):
+                              ("under", g.get("total")), ("favtt", g.get("fav_tt"))):
                 if res in ("W", "L"):
                     live.setdefault(kind, [0, 0])["WL".index(res)] += 1
                     through = max(through, d)
@@ -1570,9 +1570,9 @@ def _row_total(r: dict):
 
 def _sys_grade(r: dict) -> dict:
     """W/L/P for a row's System plays once it is final: "spread" for the
-    side, "total" for the under."""
+    side, "total" for the under, "fav_tt" for the favourite's team total."""
     play, f = r.get("system") or {}, r.get("final")
-    out = {"spread": None, "total": None}
+    out = {"spread": None, "total": None, "fav_tt": None}
     if not f:
         return out
     hp, tot = _home_spread(r), _row_total(r)
@@ -1583,6 +1583,10 @@ def _sys_grade(r: dict) -> dict:
     if play.get("under") and tot is not None:
         d = f["home"] + f["away"] - tot
         out["total"] = "W" if d < 0 else "L" if d > 0 else "P"
+    ft = play.get("fav_tt")
+    if ft:
+        d = f[ft["side"]] - ft["line"]
+        out["fav_tt"] = "W" if d < 0 else "L" if d > 0 else "P"
     return out
 
 
@@ -1628,6 +1632,15 @@ def _sys_box(r: dict) -> str:
                    "P": _("res_push")}[g["total"]]
             res = f'<b class="{cls}">{txt}</b>'
         lines.append(line(_("sys_under", t=f"{tot:g}"), _("sys_under_why"), "under", res))
+    ft = play.get("fav_tt")
+    if ft:
+        res = ""
+        if g["fav_tt"]:
+            txt = {"W": "\u2713 " + _("sys_hit"), "L": "\u2717 " + _("sys_miss"),
+                   "P": _("res_push")}[g["fav_tt"]]
+            res = f'<b class="{words[g["fav_tt"]][0]}">{txt}</b>'
+        head = _("sys_favtt", team=esc(_school(r, ft["side"])), t=f'{ft["line"]:g}')
+        lines.append(line(head, _("sys_favtt_why"), "favtt", res))
     if not lines:
         return ""
     # Where the play is: home/road/neutral, dog or favourite. The home dog,
@@ -1660,6 +1673,8 @@ def rules_record(days: dict[str, list[dict]], since: str) -> dict:
             if g["spread"]:
                 rule = "+".join((r.get("system") or {}).get("reasons") or [])
                 out.setdefault(rule, [0, 0, 0])["WLP".index(g["spread"])] += 1
+            if g.get("fav_tt"):
+                out.setdefault("favtt", [0, 0, 0])["WLP".index(g["fav_tt"])] += 1
         out["days"] += counted
     return out
 
@@ -1683,12 +1698,13 @@ def rules_section(days: dict[str, list[dict]], since: str, league: str = "ncaab"
         kinds = (("spread", "sys_spread_plays", bt["spread"]),)
     else:
         kinds = tuple((k, SYS_REASON[k], list(bt["by_reason"][k]) + [0]) for k in ("bigdog", "roadfav")) \
-            + (("total", "sys_total_plays", bt["total"]),)
+            + (("total", "sys_total_plays", bt["total"]),
+               ("favtt", "sys_favtt_plays", list(bt["by_reason"]["favtt"]) + [0]))
     rows = "".join(f'<tr><th scope="row">{_(lab)}</th>{cell(rec.get(k, [0, 0, 0]))}{cell(b)}</tr>'
                    for k, lab, b in kinds)
     rules = (("sysf_rule_small", "sysf_rule_defense", "sysf_rule_road", "sysf_rule_fav",
               "sysf_rule_gap", "sysf_rule_wait") if foot else
-             ("sys_rule_bigdog", "sys_rule_roadfav", "sys_rule_under"))
+             ("sys_rule_bigdog", "sys_rule_roadfav", "sys_rule_under", "sys_rule_favtt"))
     return (f'<section class="sys-sec"><h2 class="sc-h">{_("sys_head")}</h2>'
             f'<ul class="sys-rules">{"".join(f"<li>{_(k)}</li>" for k in rules)}'
             f'</ul>'
@@ -4492,6 +4508,21 @@ def _test_pick_card() -> None:
     assert "<b>Eastern Washington -4.5</b><small>Road favorite, close in rank</small>" in rl, rl
     assert '<span class="gm-sys-rate"><b>55%</b><small>341-275</small></span>' in rl
     assert '<span class="gm-sys-site">Road fav</span>' in rl
+    # FAVTT: the favourite's team total under, its own line, rate and row.
+    ftrow = dict(sysrow, event_id="ft", markets={"spreads": {"point": -3.5, "side_a": "home"}, "totals": {"point": 143.5}},
+                 system={"side": None, "reasons": [], "under": True, "fav_tt": {"side": "home", "line": 73.5}})
+    fl = college_list([ftrow])
+    assert "<b>Under 143.5</b>" in fl and "<small>Favorite in a System under game</small>" in fl, fl
+    assert "team total Under 73.5</b>" in fl and "<b>65%</b><small>223-118</small>" in fl, fl
+    def sbox(h):
+        return h[h.index('class="gm-sys"'):h.index('class="pc-more')]
+    fdone = sbox(college_list([dict(ftrow, final={"home": 70, "away": 66})]))
+    assert fdone.count('class="won"') == 2, ("136 under 143.5; home 70 under 73.5", fdone)
+    fmix = sbox(college_list([dict(ftrow, final={"home": 75, "away": 60})]))
+    assert fmix.count('class="won"') == 1 and fmix.count('class="lost"') == 1, "135 under; 75 over 73.5"
+    assert sys_rates({"2026-11-26": [dict(ftrow, final={"home": 75, "away": 60})]}, "2026-11-21")["favtt"][:2] == (223, 119)
+    assert rules_record({"2026-11-26": [dict(ftrow, final={"home": 70, "away": 66})]}, "2026-11-21")["favtt"] == [1, 0, 0]
+    assert "Favorite team total under:" in box and "223-118" in box
     rr = rules_record({"2026-11-25": [dict(rfrow, final={"away": 70, "home": 60})]}, "2026-11-21")
     assert rr["roadfav"] == [1, 0, 0] and rr["spread"] == [1, 0, 0], rr
     assert "Tracking" not in box and "300+" not in box, "the old tracking rows are retired"
