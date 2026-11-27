@@ -10,7 +10,9 @@
 "away": "Buffalo Bulls",
 "model": {
 "home_win_prob": 0.22893548927769775,
-"away_win_prob": 0.7710645107223022
+"away_win_prob": 0.7710645107223022,
+"market_home_prob": 0.27792074112197634,
+"disagreement": -4.9
 },
 "line_note": [
 "Spread: Buffalo Bulls -7.5 \u00b7 Total 50.5",
@@ -25,22 +27,22 @@
 "name": "Buffalo Bulls",
 "color": "005bbb",
 "rank": null,
-"record": "8-3",
-"games": 11,
+"record": "9-3",
+"games": 12,
 "fpi": 105,
 "power_rank": 105,
 "rank_label": "FPI",
 "stats": {
 "ats": [
-7,
+8,
 4,
 0
 ],
-"pts": 25.73,
-"opp": 23.82,
-"giv": 1.27,
-"tak": 1.09,
-"ypp": 5.0
+"pts": 25.0,
+"opp": 22.58,
+"giv": 1.17,
+"tak": 1.0,
+"ypp": 4.9
 }
 },
 "home": {
@@ -48,21 +50,21 @@
 "name": "Akron Zips",
 "color": "041e42",
 "rank": null,
-"record": "2-9",
-"games": 11,
+"record": "2-10",
+"games": 12,
 "fpi": 135,
 "power_rank": 135,
 "rank_label": "FPI",
 "stats": {
 "ats": [
 5,
-6,
+7,
 0
 ],
-"pts": 20.0,
-"opp": 33.18,
-"giv": 1.73,
-"tak": 0.91,
+"pts": 19.08,
+"opp": 31.83,
+"giv": 1.58,
+"tak": 0.83,
 "ypp": 5.5
 }
 }
@@ -116,7 +118,9 @@
 "away": "Toledo Rockets",
 "model": {
 "home_win_prob": 0.3776559799136492,
-"away_win_prob": 0.6223440200863508
+"away_win_prob": 0.6223440200863508,
+"market_home_prob": 0.3835616438356164,
+"disagreement": -0.6
 },
 "line_note": [
 "Spread: Toledo Rockets -3 \u00b7 Total 44.5",
@@ -131,8 +135,8 @@
 "name": "Toledo Rockets",
 "color": "0b2240",
 "rank": null,
-"record": "9-2",
-"games": 11,
+"record": "10-2",
+"games": 12,
 "fpi": 82,
 "power_rank": 82,
 "rank_label": "FPI",
@@ -140,12 +144,12 @@
 "ats": [
 6,
 4,
-1
+2
 ],
-"pts": 32.91,
-"opp": 20.0,
+"pts": 33.0,
+"opp": 20.92,
 "giv": 1.0,
-"tak": 1.27,
+"tak": 1.25,
 "ypp": 6.3
 }
 },
@@ -154,8 +158,8 @@
 "name": "Ohio Bobcats",
 "color": "154734",
 "rank": null,
-"record": "8-3",
-"games": 11,
+"record": "8-4",
+"games": 12,
 "fpi": 104,
 "power_rank": 104,
 "rank_label": "FPI",
@@ -163,11 +167,11 @@
 "ats": [
 4,
 7,
-0
+1
 ],
-"pts": 28.82,
-"opp": 23.36,
-"giv": 1.27,
+"pts": 29.0,
+"opp": 24.25,
+"giv": 1.25,
 "tak": 1.0,
 "ypp": 6.0
 }
@@ -216,7 +220,9 @@
 "away": "Mississippi State Bulldogs",
 "model": {
 "home_win_prob": 0.8795018139427297,
-"away_win_prob": 0.12049818605727025
+"away_win_prob": 0.12049818605727025,
+"market_home_prob": 0.8720930232558138,
+"disagreement": 0.7
 },
 "line_note": [
 "Spread: Ole Miss Rebels -17.5 \u00b7 Total 56.5",
@@ -231,21 +237,21 @@
 "name": "Mississippi State Bulldogs",
 "color": "5d1725",
 "rank": null,
-"record": "5-6",
-"games": 11,
+"record": "5-7",
+"games": 12,
 "fpi": 53,
 "power_rank": 53,
 "rank_label": "FPI",
 "stats": {
 "ats": [
 4,
-7,
+8,
 0
 ],
-"pts": 25.36,
-"opp": 27.91,
-"giv": 1.64,
-"tak": 0.91,
+"pts": 24.67,
+"opp": 29.0,
+"giv": 1.58,
+"tak": 0.83,
 "ypp": 5.8
 }
 },
@@ -253,23 +259,23 @@
 "id": "145",
 "name": "Ole Miss Rebels",
 "color": "13294b",
-"rank": 25,
-"record": "7-4",
-"games": 11,
+"rank": 22,
+"record": "8-4",
+"games": 12,
 "fpi": 13,
 "power_rank": 13,
 "rank_label": "FPI",
 "stats": {
 "ats": [
-4,
+5,
 7,
 0
 ],
-"pts": 34.55,
-"opp": 25.0,
-"giv": 1.55,
-"tak": 1.27,
-"ypp": 6.2
+"pts": 35.08,
+"opp": 24.33,
+"giv": 1.42,
+"tak": 1.25,
+"ypp": 6.1
 }
 }
 },
@@ -277,9 +283,9 @@
 "side": "away",
 "team": "Mississippi State Bulldogs",
 "line": 17.5,
-"cover": 0.5692,
-"gap": 2.9,
-"raw": 5.8,
+"cover": 0.5598,
+"gap": 2.5,
+"raw": 5.0,
 "check": false,
 "tier": "lean",
 "stretch": 0.91
@@ -316,7 +322,9 @@
 "away": "Tulsa Golden Hurricane",
 "model": {
 "home_win_prob": 0.49675150590165973,
-"away_win_prob": 0.5032484940983403
+"away_win_prob": 0.5032484940983403,
+"market_home_prob": 0.4826358742837298,
+"disagreement": 1.4
 },
 "line_note": [
 "Spread: Tulsa Golden Hurricane -1.5 \u00b7 Total 57.5",
@@ -331,22 +339,22 @@
 "name": "Tulsa Golden Hurricane",
 "color": "003595",
 "rank": null,
-"record": "7-4",
-"games": 11,
+"record": "7-5",
+"games": 12,
 "fpi": 69,
 "power_rank": 69,
 "rank_label": "FPI",
 "stats": {
 "ats": [
 7,
-4,
+5,
 0
 ],
-"pts": 34.36,
-"opp": 21.82,
-"giv": 0.82,
-"tak": 1.73,
-"ypp": 6.2
+"pts": 33.33,
+"opp": 22.33,
+"giv": 0.75,
+"tak": 1.67,
+"ypp": 6.1
 }
 },
 "home": {
@@ -354,22 +362,22 @@
 "name": "UTSA Roadrunners",
 "color": "0c2340",
 "rank": null,
-"record": "9-2",
-"games": 11,
+"record": "10-2",
+"games": 12,
 "fpi": 77,
 "power_rank": 77,
 "rank_label": "FPI",
 "stats": {
 "ats": [
-6,
+7,
 5,
 0
 ],
-"pts": 31.91,
-"opp": 27.36,
-"giv": 1.09,
-"tak": 1.55,
-"ypp": 5.9
+"pts": 31.58,
+"opp": 26.92,
+"giv": 1.08,
+"tak": 1.42,
+"ypp": 6.0
 }
 }
 },
@@ -377,9 +385,9 @@
 "side": "home",
 "team": "UTSA Roadrunners",
 "line": 1.5,
-"cover": 0.5098,
-"gap": 0.3,
-"raw": 0.7,
+"cover": 0.5154,
+"gap": 0.6,
+"raw": 1.1,
 "check": false,
 "tier": "pass",
 "stretch": 0.91
@@ -422,7 +430,9 @@
 "away": "Nebraska Cornhuskers",
 "model": {
 "home_win_prob": 0.5903712219393022,
-"away_win_prob": 0.40962877806069775
+"away_win_prob": 0.40962877806069775,
+"market_home_prob": 0.6164383561643836,
+"disagreement": -2.6
 },
 "line_note": [
 "Spread: Iowa Hawkeyes -3.5 \u00b7 Total 40.5",
@@ -436,56 +446,56 @@
 "id": "158",
 "name": "Nebraska Cornhuskers",
 "color": "e31937",
-"rank": null,
-"record": "7-4",
-"games": 11,
+"rank": 25,
+"record": "7-5",
+"games": 12,
 "fpi": 18,
 "power_rank": 18,
 "rank_label": "FPI",
 "stats": {
 "ats": [
 8,
-3,
+4,
 0
 ],
-"pts": 30.36,
-"opp": 16.09,
-"giv": 0.64,
-"tak": 1.27,
-"ypp": 5.8
+"pts": 28.42,
+"opp": 17.33,
+"giv": 0.83,
+"tak": 1.25,
+"ypp": 5.7
 }
 },
 "home": {
 "id": "2294",
 "name": "Iowa Hawkeyes",
 "color": "231f20",
-"rank": 15,
-"record": "9-2",
-"games": 11,
+"rank": 13,
+"record": "10-2",
+"games": 12,
 "fpi": 16,
 "power_rank": 16,
 "rank_label": "FPI",
 "stats": {
 "ats": [
-8,
+9,
 3,
 0
 ],
-"pts": 28.36,
-"opp": 12.18,
+"pts": 28.58,
+"opp": 11.75,
 "giv": 1.0,
-"tak": 1.09,
+"tak": 1.25,
 "ypp": 5.9
 }
 }
 },
 "ats": {
-"side": "away",
-"team": "Nebraska Cornhuskers",
-"line": 3.5,
-"cover": 0.5041,
-"gap": 0.1,
-"raw": 0.3,
+"side": "home",
+"team": "Iowa Hawkeyes",
+"line": -3.5,
+"cover": 0.5082,
+"gap": 0.3,
+"raw": 0.6,
 "check": false,
 "tier": "pass",
 "stretch": 0.91
@@ -528,7 +538,9 @@
 "away": "App State Mountaineers",
 "model": {
 "home_win_prob": 0.6209588338306534,
-"away_win_prob": 0.3790411661693466
+"away_win_prob": 0.3790411661693466,
+"market_home_prob": 0.5996387718242023,
+"disagreement": 2.1
 },
 "line_note": [
 "Spread: South Alabama Jaguars -3 \u00b7 Total 56.5",
@@ -543,22 +555,22 @@
 "name": "App State Mountaineers",
 "color": "000000",
 "rank": null,
-"record": "7-4",
-"games": 11,
+"record": "7-5",
+"games": 12,
 "fpi": 109,
 "power_rank": 109,
 "rank_label": "FPI",
 "stats": {
 "ats": [
 6,
-5,
+6,
 0
 ],
-"pts": 24.91,
-"opp": 22.91,
-"giv": 1.55,
-"tak": 1.36,
-"ypp": 5.7
+"pts": 23.92,
+"opp": 22.67,
+"giv": 1.58,
+"tak": 1.33,
+"ypp": 5.6
 }
 },
 "home": {
@@ -566,22 +578,22 @@
 "name": "South Alabama Jaguars",
 "color": "00205b",
 "rank": null,
-"record": "6-5",
-"games": 11,
+"record": "7-5",
+"games": 12,
 "fpi": 103,
 "power_rank": 103,
 "rank_label": "FPI",
 "stats": {
 "ats": [
-7,
+8,
 4,
 0
 ],
-"pts": 32.64,
-"opp": 30.82,
-"giv": 0.73,
-"tak": 1.18,
-"ypp": 6.0
+"pts": 31.58,
+"opp": 29.33,
+"giv": 0.75,
+"tak": 1.25,
+"ypp": 5.9
 }
 }
 },
@@ -589,9 +601,9 @@
 "side": "home",
 "team": "South Alabama Jaguars",
 "line": -3.0,
-"cover": 0.5028,
-"gap": 0.1,
-"raw": 0.2,
+"cover": 0.5069,
+"gap": 0.2,
+"raw": 0.5,
 "check": false,
 "tier": "pass",
 "stretch": 0.91
@@ -1038,10 +1050,10 @@
 "away_win_prob": 0.8177777145087052
 },
 "line_note": [
-"Spread: Texas Longhorns -11.5 \u00b7 Total 41.5",
+"Spread: Texas Longhorns -10.5 \u00b7 Total 41.5",
 "FPI line: Texas Longhorns -12.7"
 ],
-"spread_home": 11.5,
+"spread_home": 10.5,
 "fpi_margin": -12.697,
 "total": 41.5,
 "team_stats": {
@@ -1095,10 +1107,10 @@
 "ats": {
 "side": "home",
 "team": "Texas A&M Aggies",
-"line": 11.5,
-"cover": 0.5493,
-"gap": 1.9,
-"raw": 3.9,
+"line": 10.5,
+"cover": 0.5371,
+"gap": 1.4,
+"raw": 2.9,
 "check": false,
 "tier": "pass",
 "stretch": 0.91
