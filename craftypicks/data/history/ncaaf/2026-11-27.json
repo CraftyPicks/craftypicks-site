@@ -9,16 +9,16 @@
 "home": "Akron Zips",
 "away": "Buffalo Bulls",
 "model": {
-"home_win_prob": 0.2290003929478323,
-"away_win_prob": 0.7709996070521676
+"home_win_prob": 0.22893548927769775,
+"away_win_prob": 0.7710645107223022
 },
 "line_note": [
-"Spread: Buffalo Bulls -7.5 \u00b7 Total 48.5",
+"Spread: Buffalo Bulls -7.5 \u00b7 Total 50.5",
 "FPI line: Buffalo Bulls -10.4"
 ],
 "spread_home": 7.5,
-"fpi_margin": -10.39,
-"total": 48.5,
+"fpi_margin": -10.392999999999999,
+"total": 50.5,
 "team_stats": {
 "away": {
 "id": "2084",
@@ -108,112 +108,6 @@
 }
 },
 {
-"event_id": "401858536",
-"league": "ncaaf",
-"commence_time": "2026-11-27T17:00Z",
-"date": "2026-11-27",
-"home": "Iowa Hawkeyes",
-"away": "Nebraska Cornhuskers",
-"model": {
-"home_win_prob": 0.5903989832994082,
-"away_win_prob": 0.4096010167005918
-},
-"line_note": [
-"Spread: Iowa Hawkeyes -3.5 \u00b7 Total 40.5",
-"FPI line: Iowa Hawkeyes -3.2"
-],
-"spread_home": -3.5,
-"fpi_margin": 3.1999999999999993,
-"total": 40.5,
-"team_stats": {
-"away": {
-"id": "158",
-"name": "Nebraska Cornhuskers",
-"color": "e31937",
-"rank": null,
-"record": "7-4",
-"games": 11,
-"fpi": 18,
-"power_rank": 18,
-"rank_label": "FPI",
-"stats": {
-"ats": [
-8,
-3,
-0
-],
-"pts": 30.36,
-"opp": 16.09,
-"giv": 0.64,
-"tak": 1.27,
-"ypp": 5.8
-}
-},
-"home": {
-"id": "2294",
-"name": "Iowa Hawkeyes",
-"color": "231f20",
-"rank": 15,
-"record": "9-2",
-"games": 11,
-"fpi": 16,
-"power_rank": 16,
-"rank_label": "FPI",
-"stats": {
-"ats": [
-8,
-3,
-0
-],
-"pts": 28.36,
-"opp": 12.18,
-"giv": 1.0,
-"tak": 1.09,
-"ypp": 5.9
-}
-}
-},
-"ats": {
-"side": "away",
-"team": "Nebraska Cornhuskers",
-"line": 3.5,
-"cover": 0.5041,
-"gap": 0.1,
-"raw": 0.3,
-"check": false,
-"tier": "pass",
-"stretch": 0.91
-},
-"espn_id": "401858536",
-"teams": {
-"home": {
-"id": "2294",
-"color": "231f20",
-"abbr": "IOWA",
-"school": "Iowa",
-"short_": "Iowa"
-},
-"away": {
-"id": "158",
-"color": "e31937",
-"abbr": "NEB",
-"school": "Nebraska",
-"short_": "Nebraska"
-}
-},
-"sys_neutral": false,
-"sys_ranks": [
-16,
-18
-],
-"system": {
-"side": "away",
-"reasons": [
-"small"
-]
-}
-},
-{
 "event_id": "401866473",
 "league": "ncaaf",
 "commence_time": "2026-11-27T17:00Z",
@@ -221,15 +115,15 @@
 "home": "Ohio Bobcats",
 "away": "Toledo Rockets",
 "model": {
-"home_win_prob": 0.3776288350552733,
-"away_win_prob": 0.6223711649447268
+"home_win_prob": 0.3776559799136492,
+"away_win_prob": 0.6223440200863508
 },
 "line_note": [
 "Spread: Toledo Rockets -3 \u00b7 Total 44.5",
 "FPI line: Toledo Rockets -4.4"
 ],
 "spread_home": 3.0,
-"fpi_margin": -4.364,
+"fpi_margin": -4.3629999999999995,
 "total": 44.5,
 "team_stats": {
 "away": {
@@ -321,15 +215,15 @@
 "home": "Ole Miss Rebels",
 "away": "Mississippi State Bulldogs",
 "model": {
-"home_win_prob": 0.8793441072202394,
-"away_win_prob": 0.12065589277976063
+"home_win_prob": 0.8795018139427297,
+"away_win_prob": 0.12049818605727025
 },
 "line_note": [
 "Spread: Ole Miss Rebels -17.5 \u00b7 Total 56.5",
 "FPI line: Ole Miss Rebels -16.4"
 ],
 "spread_home": -17.5,
-"fpi_margin": 16.404,
+"fpi_margin": 16.415,
 "total": 56.5,
 "team_stats": {
 "away": {
@@ -520,6 +414,112 @@
 }
 },
 {
+"event_id": "401858536",
+"league": "ncaaf",
+"commence_time": "2026-11-27T17:08Z",
+"date": "2026-11-27",
+"home": "Iowa Hawkeyes",
+"away": "Nebraska Cornhuskers",
+"model": {
+"home_win_prob": 0.5903712219393022,
+"away_win_prob": 0.40962877806069775
+},
+"line_note": [
+"Spread: Iowa Hawkeyes -3.5 \u00b7 Total 40.5",
+"FPI line: Iowa Hawkeyes -3.2"
+],
+"spread_home": -3.5,
+"fpi_margin": 3.199,
+"total": 40.5,
+"team_stats": {
+"away": {
+"id": "158",
+"name": "Nebraska Cornhuskers",
+"color": "e31937",
+"rank": null,
+"record": "7-4",
+"games": 11,
+"fpi": 18,
+"power_rank": 18,
+"rank_label": "FPI",
+"stats": {
+"ats": [
+8,
+3,
+0
+],
+"pts": 30.36,
+"opp": 16.09,
+"giv": 0.64,
+"tak": 1.27,
+"ypp": 5.8
+}
+},
+"home": {
+"id": "2294",
+"name": "Iowa Hawkeyes",
+"color": "231f20",
+"rank": 15,
+"record": "9-2",
+"games": 11,
+"fpi": 16,
+"power_rank": 16,
+"rank_label": "FPI",
+"stats": {
+"ats": [
+8,
+3,
+0
+],
+"pts": 28.36,
+"opp": 12.18,
+"giv": 1.0,
+"tak": 1.09,
+"ypp": 5.9
+}
+}
+},
+"ats": {
+"side": "away",
+"team": "Nebraska Cornhuskers",
+"line": 3.5,
+"cover": 0.5041,
+"gap": 0.1,
+"raw": 0.3,
+"check": false,
+"tier": "pass",
+"stretch": 0.91
+},
+"espn_id": "401858536",
+"teams": {
+"home": {
+"id": "2294",
+"color": "231f20",
+"abbr": "IOWA",
+"school": "Iowa",
+"short_": "Iowa"
+},
+"away": {
+"id": "158",
+"color": "e31937",
+"abbr": "NEB",
+"school": "Nebraska",
+"short_": "Nebraska"
+}
+},
+"sys_neutral": false,
+"sys_ranks": [
+16,
+18
+],
+"system": {
+"side": "away",
+"reasons": [
+"small"
+]
+}
+},
+{
 "event_id": "401869930",
 "league": "ncaaf",
 "commence_time": "2026-11-27T20:00Z",
@@ -527,15 +527,15 @@
 "home": "South Alabama Jaguars",
 "away": "App State Mountaineers",
 "model": {
-"home_win_prob": 0.6209860093465029,
-"away_win_prob": 0.37901399065349706
+"home_win_prob": 0.6209588338306534,
+"away_win_prob": 0.3790411661693466
 },
 "line_note": [
-"Spread: South Alabama Jaguars -3.5 \u00b7 Total 56.5",
+"Spread: South Alabama Jaguars -3 \u00b7 Total 56.5",
 "FPI line: South Alabama Jaguars -4.3"
 ],
-"spread_home": -3.5,
-"fpi_margin": 4.312999999999999,
+"spread_home": -3.0,
+"fpi_margin": 4.312000000000001,
 "total": 56.5,
 "team_stats": {
 "away": {
@@ -586,12 +586,12 @@
 }
 },
 "ats": {
-"side": "away",
-"team": "App State Mountaineers",
-"line": 3.5,
-"cover": 0.5041,
+"side": "home",
+"team": "South Alabama Jaguars",
+"line": -3.0,
+"cover": 0.5028,
 "gap": 0.1,
-"raw": 0.3,
+"raw": 0.2,
 "check": false,
 "tier": "pass",
 "stretch": 0.91
@@ -634,16 +634,16 @@
 "home": "Florida State Seminoles",
 "away": "Florida Gators",
 "model": {
-"home_win_prob": 0.3790683422830641,
-"away_win_prob": 0.6209316577169359
+"home_win_prob": 0.3793401362753598,
+"away_win_prob": 0.6206598637246402
 },
 "line_note": [
-"Spread: Florida Gators -6.5 \u00b7 Total 53.5",
+"Spread: Florida Gators -6.5 \u00b7 Total 54.5",
 "FPI line: Florida Gators -4.3"
 ],
 "spread_home": 6.5,
-"fpi_margin": -4.310999999999999,
-"total": 53.5,
+"fpi_margin": -4.301,
+"total": 54.5,
 "team_stats": {
 "away": {
 "id": "57",
@@ -675,8 +675,8 @@
 "rank": null,
 "record": "5-6",
 "games": 11,
-"fpi": 44,
-"power_rank": 44,
+"fpi": 45,
+"power_rank": 45,
 "rank_label": "FPI",
 "stats": {
 "ats": [
@@ -722,7 +722,7 @@
 },
 "sys_neutral": false,
 "sys_ranks": [
-44,
+45,
 22
 ]
 },
@@ -734,15 +734,15 @@
 "home": "Memphis Tigers",
 "away": "Temple Owls",
 "model": {
-"home_win_prob": 0.9057690522742251,
-"away_win_prob": 0.0942309477257749
+"home_win_prob": 0.9056369771443423,
+"away_win_prob": 0.09436302285565767
 },
 "line_note": [
-"Spread: Memphis Tigers -18.5 \u00b7 Total 66.5",
+"Spread: Memphis Tigers -19.5 \u00b7 Total 66.5",
 "FPI line: Memphis Tigers -18.4"
 ],
-"spread_home": -18.5,
-"fpi_margin": 18.412,
+"spread_home": -19.5,
+"fpi_margin": 18.401,
 "total": 66.5,
 "team_stats": {
 "away": {
@@ -795,10 +795,10 @@
 "ats": {
 "side": "away",
 "team": "Temple Owls",
-"line": 18.5,
-"cover": 0.5533,
-"gap": 2.2,
-"raw": 4.5,
+"line": 19.5,
+"cover": 0.5645,
+"gap": 2.8,
+"raw": 5.5,
 "check": false,
 "tier": "lean",
 "stretch": 0.91
@@ -834,15 +834,15 @@
 "home": "San Jos\u00e9 State Spartans",
 "away": "North Dakota State Bison",
 "model": {
-"home_win_prob": 0.24189674568455094,
-"away_win_prob": 0.7581032543154491
+"home_win_prob": 0.2418744457356995,
+"away_win_prob": 0.7581255542643005
 },
 "line_note": [
-"Spread: North Dakota State Bison -8.5 \u00b7 Total 39.5",
+"Spread: North Dakota State Bison -7.5 \u00b7 Total 39.5",
 "FPI line: North Dakota State Bison -9.8"
 ],
-"spread_home": 8.5,
-"fpi_margin": -9.802999999999999,
+"spread_home": 7.5,
+"fpi_margin": -9.804,
 "total": 39.5,
 "team_stats": {
 "away": {
@@ -893,12 +893,12 @@
 }
 },
 "ats": {
-"side": "home",
-"team": "San Jos\u00e9 State Spartans",
-"line": 8.5,
-"cover": 0.5118,
-"gap": 0.5,
-"raw": 0.9,
+"side": "away",
+"team": "North Dakota State Bison",
+"line": -7.5,
+"cover": 0.5013,
+"gap": 0.1,
+"raw": 0.1,
 "check": false,
 "tier": "pass",
 "stretch": 0.91
@@ -934,15 +934,15 @@
 "home": "New Mexico Lobos",
 "away": "Air Force Falcons",
 "model": {
-"home_win_prob": 0.7198369286200739,
-"away_win_prob": 0.28016307137992613
+"home_win_prob": 0.7198609794305592,
+"away_win_prob": 0.28013902056944084
 },
 "line_note": [
-"Spread: New Mexico Lobos -6.5 \u00b7 Total 42.5",
+"Spread: New Mexico Lobos -7 \u00b7 Total 42.5",
 "FPI line: New Mexico Lobos -8.2"
 ],
-"spread_home": -6.5,
-"fpi_margin": 8.152999999999999,
+"spread_home": -7.0,
+"fpi_margin": 8.154,
 "total": 42.5,
 "team_stats": {
 "away": {
@@ -975,8 +975,8 @@
 "rank": null,
 "record": "9-2",
 "games": 11,
-"fpi": 45,
-"power_rank": 45,
+"fpi": 44,
+"power_rank": 44,
 "rank_label": "FPI",
 "stats": {
 "ats": [
@@ -993,12 +993,12 @@
 }
 },
 "ats": {
-"side": "home",
-"team": "New Mexico Lobos",
-"line": -6.5,
-"cover": 0.504,
+"side": "away",
+"team": "Air Force Falcons",
+"line": 7.0,
+"cover": 0.5027,
 "gap": 0.1,
-"raw": 0.3,
+"raw": 0.2,
 "check": false,
 "tier": "pass",
 "stretch": 0.91
@@ -1022,7 +1022,7 @@
 },
 "sys_neutral": false,
 "sys_ranks": [
-45,
+44,
 73
 ]
 },
@@ -1034,16 +1034,16 @@
 "home": "Texas A&M Aggies",
 "away": "Texas Longhorns",
 "model": {
-"home_win_prob": 0.18195798057244433,
-"away_win_prob": 0.8180420194275557
+"home_win_prob": 0.18222228549129482,
+"away_win_prob": 0.8177777145087052
 },
 "line_note": [
-"Spread: Texas Longhorns -10.5 \u00b7 Total 40.5",
+"Spread: Texas Longhorns -11.5 \u00b7 Total 41.5",
 "FPI line: Texas Longhorns -12.7"
 ],
-"spread_home": 10.5,
-"fpi_margin": -12.710999999999999,
-"total": 40.5,
+"spread_home": 11.5,
+"fpi_margin": -12.697,
+"total": 41.5,
 "team_stats": {
 "away": {
 "id": "251",
@@ -1095,10 +1095,10 @@
 "ats": {
 "side": "home",
 "team": "Texas A&M Aggies",
-"line": 10.5,
-"cover": 0.5371,
-"gap": 1.4,
-"raw": 2.9,
+"line": 11.5,
+"cover": 0.5493,
+"gap": 1.9,
+"raw": 3.9,
 "check": false,
 "tier": "pass",
 "stretch": 0.91
@@ -1138,10 +1138,10 @@
 "away_win_prob": 0.20620986719080225
 },
 "line_note": [
-"Spread: Wisconsin Badgers -8.5 \u00b7 Total 37.5",
+"Spread: Wisconsin Badgers -9.5 \u00b7 Total 37.5",
 "FPI line: Wisconsin Badgers -11.5"
 ],
-"spread_home": -8.5,
+"spread_home": -9.5,
 "fpi_margin": 11.475,
 "total": 37.5,
 "team_stats": {
@@ -1193,12 +1193,12 @@
 }
 },
 "ats": {
-"side": "home",
-"team": "Wisconsin Badgers",
-"line": -8.5,
-"cover": 0.5039,
-"gap": 0.1,
-"raw": 0.3,
+"side": "away",
+"team": "Minnesota Golden Gophers",
+"line": 9.5,
+"cover": 0.5091,
+"gap": 0.3,
+"raw": 0.7,
 "check": false,
 "tier": "pass",
 "stretch": 0.91
@@ -1240,16 +1240,16 @@
 "home": "Utah Utes",
 "away": "West Virginia Mountaineers",
 "model": {
-"home_win_prob": 0.9297399705258231,
-"away_win_prob": 0.07026002947417687
+"home_win_prob": 0.9292384664144877,
+"away_win_prob": 0.07076153358551229
 },
 "line_note": [
-"Spread: Utah Utes -26.5 \u00b7 Total 66.5",
+"Spread: Utah Utes -25.5 \u00b7 Total 65.5",
 "FPI line: Utah Utes -20.6"
 ],
-"spread_home": -26.5,
-"fpi_margin": 20.634,
-"total": 66.5,
+"spread_home": -25.5,
+"fpi_margin": 20.582,
+"total": 65.5,
 "team_stats": {
 "away": {
 "id": "277",
@@ -1301,10 +1301,10 @@
 "ats": {
 "side": "away",
 "team": "West Virginia Mountaineers",
-"line": 26.5,
-"cover": 0.6191,
-"gap": 5.5,
-"raw": 10.9,
+"line": 25.5,
+"cover": 0.6105,
+"gap": 5.0,
+"raw": 10.0,
 "check": true,
 "tier": "check",
 "stretch": 0.91
