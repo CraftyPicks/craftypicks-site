@@ -7971,48 +7971,6 @@
       "scored": null
     },
     {
-      "player_id": "00-0037277",
-      "name": "Teagan Quitoriano",
-      "team": "ARI",
-      "opponent": "WAS",
-      "position": "TE",
-      "per_game": 0.333,
-      "chance": 0.3210182680653404,
-      "weight": 0.333,
-      "opp_allowed": 2.86,
-      "league_allowed": 2.46,
-      "week": 12,
-      "game_id": "2026_12_WAS_ARI",
-      "commence_time": "2026-11-29T16:25:00-05:00",
-      "recent": [
-        {
-          "season": 2025,
-          "week": 12,
-          "opponent": "NO",
-          "value": 0.0
-        },
-        {
-          "season": 2025,
-          "week": 17,
-          "opponent": "LA",
-          "value": 0.0
-        },
-        {
-          "season": 2026,
-          "week": 5,
-          "opponent": "DET",
-          "value": 2.0
-        },
-        {
-          "season": 2026,
-          "week": 9,
-          "opponent": "SEA",
-          "value": 0.0
-        }
-      ],
-      "scored": null
-    },
-    {
       "player_id": "00-0041027",
       "name": "Jeremiyah Love",
       "team": "ARI",
@@ -8061,6 +8019,48 @@
           "season": 2026,
           "week": 8,
           "opponent": "DAL",
+          "value": 0.0
+        }
+      ],
+      "scored": null
+    },
+    {
+      "player_id": "00-0037277",
+      "name": "Teagan Quitoriano",
+      "team": "ARI",
+      "opponent": "WAS",
+      "position": "TE",
+      "per_game": 0.333,
+      "chance": 0.3210182680653404,
+      "weight": 0.333,
+      "opp_allowed": 2.86,
+      "league_allowed": 2.46,
+      "week": 12,
+      "game_id": "2026_12_WAS_ARI",
+      "commence_time": "2026-11-29T16:25:00-05:00",
+      "recent": [
+        {
+          "season": 2025,
+          "week": 12,
+          "opponent": "NO",
+          "value": 0.0
+        },
+        {
+          "season": 2025,
+          "week": 17,
+          "opponent": "LA",
+          "value": 0.0
+        },
+        {
+          "season": 2026,
+          "week": 5,
+          "opponent": "DET",
+          "value": 2.0
+        },
+        {
+          "season": 2026,
+          "week": 9,
+          "opponent": "SEA",
           "value": 0.0
         }
       ],
@@ -9748,9 +9748,9 @@
     }
   ],
   "summary": {
-    "graded": 1141,
-    "expected": 37.5,
-    "actual": 38.7,
+    "graded": 1150,
+    "expected": 37.6,
+    "actual": 38.8,
     "buckets": [
       {
         "label": "0-10%",
@@ -9766,21 +9766,21 @@
       },
       {
         "label": "20-30%",
-        "n": 313,
+        "n": 314,
         "expected": 25.1,
-        "actual": 31.6
+        "actual": 31.8
       },
       {
         "label": "30-45%",
-        "n": 488,
+        "n": 493,
         "expected": 36.6,
         "actual": 36.5
       },
       {
         "label": "45-100%",
-        "n": 283,
-        "expected": 56.8,
-        "actual": 51.9
+        "n": 286,
+        "expected": 56.9,
+        "actual": 52.1
       }
     ]
   }
