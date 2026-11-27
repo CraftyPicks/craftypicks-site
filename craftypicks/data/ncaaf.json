@@ -412,7 +412,9 @@
       "away": "App State Mountaineers",
       "model": {
         "home_win_prob": 0.6209588338306534,
-        "away_win_prob": 0.3790411661693466
+        "away_win_prob": 0.3790411661693466,
+        "market_home_prob": 0.5996387718242023,
+        "disagreement": 2.1
       },
       "line_note": [
         "Spread: South Alabama Jaguars -3 · Total 56.5",
@@ -427,22 +429,22 @@
           "name": "App State Mountaineers",
           "color": "000000",
           "rank": null,
-          "record": "7-4",
-          "games": 11,
+          "record": "7-5",
+          "games": 12,
           "fpi": 109,
           "power_rank": 109,
           "rank_label": "FPI",
           "stats": {
             "ats": [
               6,
-              5,
+              6,
               0
             ],
-            "pts": 24.91,
-            "opp": 22.91,
-            "giv": 1.55,
-            "tak": 1.36,
-            "ypp": 5.7
+            "pts": 23.92,
+            "opp": 22.67,
+            "giv": 1.58,
+            "tak": 1.33,
+            "ypp": 5.6
           }
         },
         "home": {
@@ -450,22 +452,22 @@
           "name": "South Alabama Jaguars",
           "color": "00205b",
           "rank": null,
-          "record": "6-5",
-          "games": 11,
+          "record": "7-5",
+          "games": 12,
           "fpi": 103,
           "power_rank": 103,
           "rank_label": "FPI",
           "stats": {
             "ats": [
-              7,
+              8,
               4,
               0
             ],
-            "pts": 32.64,
-            "opp": 30.82,
-            "giv": 0.73,
-            "tak": 1.18,
-            "ypp": 6.0
+            "pts": 31.58,
+            "opp": 29.33,
+            "giv": 0.75,
+            "tak": 1.25,
+            "ypp": 5.9
           }
         }
       },
@@ -473,9 +475,9 @@
         "side": "home",
         "team": "South Alabama Jaguars",
         "line": -3.0,
-        "cover": 0.5028,
-        "gap": 0.1,
-        "raw": 0.2,
+        "cover": 0.5069,
+        "gap": 0.2,
+        "raw": 0.5,
         "check": false,
         "tier": "pass",
         "stretch": 0.91
@@ -1741,10 +1743,10 @@
         "away_win_prob": 0.2963990213058333
       },
       "line_note": [
-        "Spread: Northwestern Wildcats -2.5 · Total 50.5",
+        "Spread: Northwestern Wildcats -3 · Total 50.5",
         "FPI line: Northwestern Wildcats -7.5"
       ],
-      "spread_home": -2.5,
+      "spread_home": -3.0,
       "fpi_margin": 7.487,
       "total": 50.5,
       "team_stats": {
@@ -1798,10 +1800,10 @@
       "ats": {
         "side": "home",
         "team": "Northwestern Wildcats",
-        "line": -2.5,
-        "cover": 0.5512,
-        "gap": 1.9,
-        "raw": 3.7,
+        "line": -3.0,
+        "cover": 0.5441,
+        "gap": 1.6,
+        "raw": 3.2,
         "check": false,
         "tier": "pass",
         "stretch": 0.91
@@ -3067,10 +3069,10 @@
         "away_win_prob": 0.13724394768352888
       },
       "line_note": [
-        "Spread: BYU Cougars -15.5 · Total 55.5",
+        "Spread: BYU Cougars -16.5 · Total 55.5",
         "FPI line: BYU Cougars -15.3"
       ],
-      "spread_home": -15.5,
+      "spread_home": -16.5,
       "fpi_margin": 15.299,
       "total": 55.5,
       "team_stats": {
@@ -3124,10 +3126,10 @@
       "ats": {
         "side": "away",
         "team": "Cincinnati Bearcats",
-        "line": 15.5,
-        "cover": 0.5572,
-        "gap": 2.4,
-        "raw": 4.7,
+        "line": 16.5,
+        "cover": 0.5687,
+        "gap": 2.9,
+        "raw": 5.7,
         "check": false,
         "tier": "lean",
         "stretch": 0.91
@@ -3914,12 +3916,12 @@
         "away_win_prob": 0.48917289614164705
       },
       "line_note": [
-        "Spread: Missouri Tigers -2.5 · Total 42.5",
+        "Spread: Missouri Tigers -1.5 · Total 41.5",
         "FPI line: Missouri Tigers -0.4"
       ],
-      "spread_home": -2.5,
+      "spread_home": -1.5,
       "fpi_margin": 0.3800000000000008,
-      "total": 42.5,
+      "total": 41.5,
       "team_stats": {
         "away": {
           "id": "201",
@@ -3969,10 +3971,10 @@
         }
       },
       "ats": {
-        "side": "away",
-        "team": "Oklahoma Sooners",
-        "line": 2.5,
-        "cover": 0.5069,
+        "side": "home",
+        "team": "Missouri Tigers",
+        "line": -1.5,
+        "cover": 0.507,
         "gap": 0.2,
         "raw": 0.5,
         "check": false,
@@ -4460,10 +4462,10 @@
         "away_win_prob": 0.11381237954309542
       },
       "line_note": [
-        "Spread: Alabama Crimson Tide -15.5 · Total 49.5",
+        "Spread: Alabama Crimson Tide -14.5 · Total 49.5",
         "FPI line: Alabama Crimson Tide -16.9"
       ],
-      "spread_home": -15.5,
+      "spread_home": -14.5,
       "fpi_margin": 16.891,
       "total": 49.5,
       "team_stats": {
@@ -4517,10 +4519,10 @@
       "ats": {
         "side": "away",
         "team": "Auburn Tigers",
-        "line": 15.5,
-        "cover": 0.5354,
-        "gap": 1.4,
-        "raw": 2.9,
+        "line": 14.5,
+        "cover": 0.5234,
+        "gap": 0.9,
+        "raw": 1.9,
         "check": false,
         "tier": "pass",
         "stretch": 0.91
@@ -4694,10 +4696,10 @@
         "away_win_prob": 0.21993031856420575
       },
       "line_note": [
-        "Spread: Arizona Wildcats -8.5 · Total 53.5",
+        "Spread: Arizona Wildcats -9.5 · Total 53.5",
         "FPI line: Arizona Wildcats -10.8"
       ],
-      "spread_home": -8.5,
+      "spread_home": -9.5,
       "fpi_margin": 10.814,
       "total": 53.5,
       "team_stats": {
@@ -4749,12 +4751,12 @@
         }
       },
       "ats": {
-        "side": "home",
-        "team": "Arizona Wildcats",
-        "line": -8.5,
-        "cover": 0.5039,
-        "gap": 0.1,
-        "raw": 0.3,
+        "side": "away",
+        "team": "Arizona State Sun Devils",
+        "line": 9.5,
+        "cover": 0.5091,
+        "gap": 0.3,
+        "raw": 0.7,
         "check": false,
         "tier": "pass",
         "stretch": 0.91
@@ -5152,9 +5154,9 @@
     }
   ],
   "summary": {
-    "graded": 141,
-    "pending": 61,
-    "brier": 0.1907,
+    "graded": 142,
+    "pending": 60,
+    "brier": 0.1905,
     "market_brier": null,
     "fpi_ats": [
       39,
@@ -7404,7 +7406,8 @@
       "p_home": 0.6020721518290768,
       "mkt_home": null,
       "spread_home": null,
-      "fpi_margin": 3.622
+      "fpi_margin": 3.622,
+      "home_won": true
     },
     {
       "event_id": "401856759",
