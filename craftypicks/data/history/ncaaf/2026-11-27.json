@@ -1044,7 +1044,9 @@
 "away": "Texas Longhorns",
 "model": {
 "home_win_prob": 0.18222228549129482,
-"away_win_prob": 0.8177777145087052
+"away_win_prob": 0.8177777145087052,
+"market_home_prob": 0.22849462365591394,
+"disagreement": -4.6
 },
 "line_note": [
 "Spread: Texas Longhorns -10.5 \u00b7 Total 41.5",
@@ -1058,23 +1060,23 @@
 "id": "251",
 "name": "Texas Longhorns",
 "color": "af5c37",
-"rank": 5,
-"record": "9-2",
-"games": 11,
+"rank": 3,
+"record": "10-2",
+"games": 12,
 "fpi": 3,
 "power_rank": 3,
 "rank_label": "FPI",
 "stats": {
 "ats": [
 6,
-5,
+6,
 0
 ],
-"pts": 31.55,
-"opp": 16.45,
-"giv": 1.55,
-"tak": 1.36,
-"ypp": 5.5
+"pts": 30.25,
+"opp": 15.58,
+"giv": 1.5,
+"tak": 1.42,
+"ypp": 5.4
 }
 },
 "home": {
@@ -1082,21 +1084,21 @@
 "name": "Texas A&M Aggies",
 "color": "500000",
 "rank": null,
-"record": "4-7",
-"games": 11,
+"record": "4-8",
+"games": 12,
 "fpi": 31,
 "power_rank": 31,
 "rank_label": "FPI",
 "stats": {
 "ats": [
-4,
+5,
 7,
 0
 ],
-"pts": 22.64,
-"opp": 19.82,
-"giv": 1.27,
-"tak": 1.18,
+"pts": 21.25,
+"opp": 19.5,
+"giv": 1.33,
+"tak": 1.17,
 "ypp": 4.9
 }
 }
@@ -1105,9 +1107,9 @@
 "side": "home",
 "team": "Texas A&M Aggies",
 "line": 10.5,
-"cover": 0.5371,
+"cover": 0.5345,
 "gap": 1.4,
-"raw": 2.9,
+"raw": 2.7,
 "check": false,
 "tier": "pass",
 "stretch": 0.91
@@ -1144,7 +1146,9 @@
 "away": "Minnesota Golden Gophers",
 "model": {
 "home_win_prob": 0.7937901328091977,
-"away_win_prob": 0.20620986719080225
+"away_win_prob": 0.20620986719080225,
+"market_home_prob": 0.7335423197492164,
+"disagreement": 6.0
 },
 "line_note": [
 "Spread: Wisconsin Badgers -9.5 \u00b7 Total 37.5",
@@ -1159,22 +1163,22 @@
 "name": "Minnesota Golden Gophers",
 "color": "5e0a2f",
 "rank": null,
-"record": "6-5",
-"games": 11,
+"record": "6-6",
+"games": 12,
 "fpi": 67,
 "power_rank": 67,
 "rank_label": "FPI",
 "stats": {
 "ats": [
 7,
-4,
+5,
 0
 ],
-"pts": 23.27,
-"opp": 23.36,
-"giv": 1.0,
-"tak": 1.55,
-"ypp": 4.9
+"pts": 21.75,
+"opp": 23.75,
+"giv": 0.92,
+"tak": 1.58,
+"ypp": 4.8
 }
 },
 "home": {
@@ -1182,32 +1186,32 @@
 "name": "Wisconsin Badgers",
 "color": "a00000",
 "rank": null,
-"record": "7-4",
-"games": 11,
+"record": "8-4",
+"games": 12,
 "fpi": 32,
 "power_rank": 32,
 "rank_label": "FPI",
 "stats": {
 "ats": [
-6,
+7,
 5,
 0
 ],
-"pts": 25.73,
-"opp": 16.45,
-"giv": 1.18,
-"tak": 1.0,
-"ypp": 5.6
+"pts": 25.92,
+"opp": 15.5,
+"giv": 1.25,
+"tak": 0.92,
+"ypp": 5.8
 }
 }
 },
 "ats": {
-"side": "away",
-"team": "Minnesota Golden Gophers",
-"line": 9.5,
-"cover": 0.5091,
-"gap": 0.3,
-"raw": 0.7,
+"side": "home",
+"team": "Wisconsin Badgers",
+"line": -9.5,
+"cover": 0.5013,
+"gap": 0.1,
+"raw": 0.1,
 "check": false,
 "tier": "pass",
 "stretch": 0.91

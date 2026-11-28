@@ -801,7 +801,9 @@
       "away": "Texas Longhorns",
       "model": {
         "home_win_prob": 0.18222228549129482,
-        "away_win_prob": 0.8177777145087052
+        "away_win_prob": 0.8177777145087052,
+        "market_home_prob": 0.22849462365591394,
+        "disagreement": -4.6
       },
       "line_note": [
         "Spread: Texas Longhorns -10.5 · Total 41.5",
@@ -815,23 +817,23 @@
           "id": "251",
           "name": "Texas Longhorns",
           "color": "af5c37",
-          "rank": 5,
-          "record": "9-2",
-          "games": 11,
+          "rank": 3,
+          "record": "10-2",
+          "games": 12,
           "fpi": 3,
           "power_rank": 3,
           "rank_label": "FPI",
           "stats": {
             "ats": [
               6,
-              5,
+              6,
               0
             ],
-            "pts": 31.55,
-            "opp": 16.45,
-            "giv": 1.55,
-            "tak": 1.36,
-            "ypp": 5.5
+            "pts": 30.25,
+            "opp": 15.58,
+            "giv": 1.5,
+            "tak": 1.42,
+            "ypp": 5.4
           }
         },
         "home": {
@@ -839,21 +841,21 @@
           "name": "Texas A&M Aggies",
           "color": "500000",
           "rank": null,
-          "record": "4-7",
-          "games": 11,
+          "record": "4-8",
+          "games": 12,
           "fpi": 31,
           "power_rank": 31,
           "rank_label": "FPI",
           "stats": {
             "ats": [
-              4,
+              5,
               7,
               0
             ],
-            "pts": 22.64,
-            "opp": 19.82,
-            "giv": 1.27,
-            "tak": 1.18,
+            "pts": 21.25,
+            "opp": 19.5,
+            "giv": 1.33,
+            "tak": 1.17,
             "ypp": 4.9
           }
         }
@@ -862,9 +864,9 @@
         "side": "home",
         "team": "Texas A&M Aggies",
         "line": 10.5,
-        "cover": 0.5371,
+        "cover": 0.5345,
         "gap": 1.4,
-        "raw": 2.9,
+        "raw": 2.7,
         "check": false,
         "tier": "pass",
         "stretch": 0.91
@@ -879,7 +881,9 @@
       "away": "Minnesota Golden Gophers",
       "model": {
         "home_win_prob": 0.7937901328091977,
-        "away_win_prob": 0.20620986719080225
+        "away_win_prob": 0.20620986719080225,
+        "market_home_prob": 0.7335423197492164,
+        "disagreement": 6.0
       },
       "line_note": [
         "Spread: Wisconsin Badgers -9.5 · Total 37.5",
@@ -894,22 +898,22 @@
           "name": "Minnesota Golden Gophers",
           "color": "5e0a2f",
           "rank": null,
-          "record": "6-5",
-          "games": 11,
+          "record": "6-6",
+          "games": 12,
           "fpi": 67,
           "power_rank": 67,
           "rank_label": "FPI",
           "stats": {
             "ats": [
               7,
-              4,
+              5,
               0
             ],
-            "pts": 23.27,
-            "opp": 23.36,
-            "giv": 1.0,
-            "tak": 1.55,
-            "ypp": 4.9
+            "pts": 21.75,
+            "opp": 23.75,
+            "giv": 0.92,
+            "tak": 1.58,
+            "ypp": 4.8
           }
         },
         "home": {
@@ -917,32 +921,32 @@
           "name": "Wisconsin Badgers",
           "color": "a00000",
           "rank": null,
-          "record": "7-4",
-          "games": 11,
+          "record": "8-4",
+          "games": 12,
           "fpi": 32,
           "power_rank": 32,
           "rank_label": "FPI",
           "stats": {
             "ats": [
-              6,
+              7,
               5,
               0
             ],
-            "pts": 25.73,
-            "opp": 16.45,
-            "giv": 1.18,
-            "tak": 1.0,
-            "ypp": 5.6
+            "pts": 25.92,
+            "opp": 15.5,
+            "giv": 1.25,
+            "tak": 0.92,
+            "ypp": 5.8
           }
         }
       },
       "ats": {
-        "side": "away",
-        "team": "Minnesota Golden Gophers",
-        "line": 9.5,
-        "cover": 0.5091,
-        "gap": 0.3,
-        "raw": 0.7,
+        "side": "home",
+        "team": "Wisconsin Badgers",
+        "line": -9.5,
+        "cover": 0.5013,
+        "gap": 0.1,
+        "raw": 0.1,
         "check": false,
         "tier": "pass",
         "stretch": 0.91
@@ -1740,12 +1744,12 @@
         "away_win_prob": 0.2963990213058333
       },
       "line_note": [
-        "Spread: Northwestern Wildcats -3 · Total 49.5",
+        "Spread: Northwestern Wildcats -3.5 · Total 48.5",
         "FPI line: Northwestern Wildcats -7.5"
       ],
-      "spread_home": -3.0,
+      "spread_home": -3.5,
       "fpi_margin": 7.487,
-      "total": 49.5,
+      "total": 48.5,
       "team_stats": {
         "away": {
           "id": "356",
@@ -1797,10 +1801,10 @@
       "ats": {
         "side": "home",
         "team": "Northwestern Wildcats",
-        "line": -3.0,
-        "cover": 0.5441,
-        "gap": 1.6,
-        "raw": 3.2,
+        "line": -3.5,
+        "cover": 0.537,
+        "gap": 1.4,
+        "raw": 2.7,
         "check": false,
         "tier": "pass",
         "stretch": 0.91
@@ -2208,12 +2212,12 @@
         "away_win_prob": 0.5432287882720552
       },
       "line_note": [
-        "Spread: Colorado Buffaloes -2.5 · Total 48.5",
+        "Spread: Colorado Buffaloes -2.5 · Total 47.5",
         "FPI line: UCF Knights -1.5"
       ],
       "spread_home": -2.5,
       "fpi_margin": -1.5200000000000005,
-      "total": 48.5,
+      "total": 47.5,
       "team_stats": {
         "away": {
           "id": "2116",
@@ -2442,12 +2446,12 @@
         "away_win_prob": 0.41928838895250287
       },
       "line_note": [
-        "Spread: Iowa State Cyclones -4 · Total 53.5",
+        "Spread: Iowa State Cyclones -4 · Total 52.5",
         "FPI line: Iowa State Cyclones -2.9"
       ],
       "spread_home": -4.0,
       "fpi_margin": 2.8520000000000003,
-      "total": 53.5,
+      "total": 52.5,
       "team_stats": {
         "away": {
           "id": "2306",
@@ -2754,12 +2758,12 @@
         "away_win_prob": 0.73452989910765
       },
       "line_note": [
-        "Spread: Army Black Knights -5.5 · Total 47.5",
+        "Spread: Army Black Knights -4.5 · Total 46.5",
         "FPI line: Army Black Knights -8.8"
       ],
-      "spread_home": 5.5,
+      "spread_home": 4.5,
       "fpi_margin": -8.772,
-      "total": 47.5,
+      "total": 46.5,
       "team_stats": {
         "away": {
           "id": "349",
@@ -2811,10 +2815,10 @@
       "ats": {
         "side": "away",
         "team": "Army Black Knights",
-        "line": -5.5,
-        "cover": 0.5175,
-        "gap": 0.7,
-        "raw": 1.3,
+        "line": -4.5,
+        "cover": 0.5312,
+        "gap": 1.1,
+        "raw": 2.3,
         "check": false,
         "tier": "pass",
         "stretch": 0.91
@@ -4693,10 +4697,10 @@
         "away_win_prob": 0.21993031856420575
       },
       "line_note": [
-        "Spread: Arizona Wildcats -8.5 · Total 53.5",
+        "Spread: Arizona Wildcats -9.5 · Total 53.5",
         "FPI line: Arizona Wildcats -10.8"
       ],
-      "spread_home": -8.5,
+      "spread_home": -9.5,
       "fpi_margin": 10.814,
       "total": 53.5,
       "team_stats": {
@@ -4748,12 +4752,12 @@
         }
       },
       "ats": {
-        "side": "home",
-        "team": "Arizona Wildcats",
-        "line": -8.5,
-        "cover": 0.5039,
-        "gap": 0.1,
-        "raw": 0.3,
+        "side": "away",
+        "team": "Arizona State Sun Devils",
+        "line": 9.5,
+        "cover": 0.5091,
+        "gap": 0.3,
+        "raw": 0.7,
         "check": false,
         "tier": "pass",
         "stretch": 0.91
@@ -5151,13 +5155,13 @@
     }
   ],
   "summary": {
-    "graded": 146,
-    "pending": 56,
-    "brier": 0.1931,
+    "graded": 148,
+    "pending": 54,
+    "brier": 0.1913,
     "market_brier": null,
     "fpi_ats": [
       39,
-      38,
+      39,
       3
     ],
     "ats_tiers": {
@@ -5178,7 +5182,7 @@
       ],
       "pass": [
         5,
-        5,
+        6,
         0
       ]
     }
@@ -7460,7 +7464,9 @@
       "spread_home": 7.5,
       "fpi_margin": -9.631000000000002,
       "ats_side": "home",
-      "ats_tier": "pass"
+      "ats_tier": "pass",
+      "home_won": false,
+      "fpi_ats": "L"
     },
     {
       "event_id": "401858544",
@@ -7470,7 +7476,8 @@
       "p_home": 0.7650722815093443,
       "mkt_home": null,
       "spread_home": null,
-      "fpi_margin": 10.118
+      "fpi_margin": 10.118,
+      "home_won": true
     },
     {
       "event_id": "401856880",
