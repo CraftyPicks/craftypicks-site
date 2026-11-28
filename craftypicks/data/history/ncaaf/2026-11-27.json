@@ -647,7 +647,9 @@
 "away": "Florida Gators",
 "model": {
 "home_win_prob": 0.3793401362753598,
-"away_win_prob": 0.6206598637246402
+"away_win_prob": 0.6206598637246402,
+"market_home_prob": 0.30920711694593195,
+"disagreement": 7.0
 },
 "line_note": [
 "Spread: Florida Gators -6.5 \u00b7 Total 54.5",
@@ -661,23 +663,23 @@
 "id": "57",
 "name": "Florida Gators",
 "color": "0021a5",
-"rank": 24,
-"record": "7-4",
-"games": 11,
+"rank": 20,
+"record": "8-4",
+"games": 12,
 "fpi": 22,
 "power_rank": 22,
 "rank_label": "FPI",
 "stats": {
 "ats": [
-5,
+6,
 6,
 0
 ],
-"pts": 31.55,
-"opp": 26.27,
-"giv": 1.27,
-"tak": 1.09,
-"ypp": 5.8
+"pts": 31.08,
+"opp": 24.92,
+"giv": 1.25,
+"tak": 1.17,
+"ypp": 5.7
 }
 },
 "home": {
@@ -685,22 +687,22 @@
 "name": "Florida State Seminoles",
 "color": "782f40",
 "rank": null,
-"record": "5-6",
-"games": 11,
+"record": "5-7",
+"games": 12,
 "fpi": 45,
 "power_rank": 45,
 "rank_label": "FPI",
 "stats": {
 "ats": [
 5,
-5,
+6,
 1
 ],
-"pts": 27.45,
-"opp": 26.64,
-"giv": 1.64,
-"tak": 0.82,
-"ypp": 6.0
+"pts": 26.0,
+"opp": 26.58,
+"giv": 1.67,
+"tak": 0.83,
+"ypp": 5.8
 }
 }
 },
@@ -708,9 +710,9 @@
 "side": "home",
 "team": "Florida State Seminoles",
 "line": 6.5,
-"cover": 0.5623,
-"gap": 2.4,
-"raw": 4.7,
+"cover": 0.5544,
+"gap": 2.0,
+"raw": 4.1,
 "check": false,
 "tier": "lean",
 "stretch": 0.91
@@ -747,7 +749,9 @@
 "away": "Temple Owls",
 "model": {
 "home_win_prob": 0.9056369771443423,
-"away_win_prob": 0.09436302285565767
+"away_win_prob": 0.09436302285565767,
+"market_home_prob": 0.8800000000000001,
+"disagreement": 2.6
 },
 "line_note": [
 "Spread: Memphis Tigers -19.5 \u00b7 Total 66.5",
@@ -762,22 +766,22 @@
 "name": "Temple Owls",
 "color": "a41e35",
 "rank": null,
-"record": "2-9",
-"games": 11,
+"record": "3-9",
+"games": 12,
 "fpi": 114,
 "power_rank": 114,
 "rank_label": "FPI",
 "stats": {
 "ats": [
-5,
+6,
 5,
 1
 ],
-"pts": 23.73,
-"opp": 29.27,
-"giv": 1.27,
-"tak": 1.0,
-"ypp": 6.2
+"pts": 24.67,
+"opp": 29.42,
+"giv": 1.25,
+"tak": 1.17,
+"ypp": 6.1
 }
 },
 "home": {
@@ -785,21 +789,21 @@
 "name": "Memphis Tigers",
 "color": "004991",
 "rank": null,
-"record": "8-3",
-"games": 11,
+"record": "8-4",
+"games": 12,
 "fpi": 55,
 "power_rank": 55,
 "rank_label": "FPI",
 "stats": {
 "ats": [
 6,
-5,
+6,
 0
 ],
-"pts": 38.55,
-"opp": 26.45,
-"giv": 1.45,
-"tak": 1.82,
+"pts": 37.92,
+"opp": 27.17,
+"giv": 1.58,
+"tak": 1.75,
 "ypp": 7.3
 }
 }
@@ -808,9 +812,9 @@
 "side": "away",
 "team": "Temple Owls",
 "line": 19.5,
-"cover": 0.5645,
-"gap": 2.8,
-"raw": 5.5,
+"cover": 0.5703,
+"gap": 3.0,
+"raw": 6.0,
 "check": false,
 "tier": "lean",
 "stretch": 0.91
@@ -847,7 +851,9 @@
 "away": "North Dakota State Bison",
 "model": {
 "home_win_prob": 0.2418744457356995,
-"away_win_prob": 0.7581255542643005
+"away_win_prob": 0.7581255542643005,
+"market_home_prob": 0.22849462365591394,
+"disagreement": 1.3
 },
 "line_note": [
 "Spread: North Dakota State Bison -7.5 \u00b7 Total 39.5",
@@ -862,21 +868,21 @@
 "name": "North Dakota State Bison",
 "color": "01402A",
 "rank": null,
-"record": "9-2",
-"games": 11,
+"record": "10-2",
+"games": 12,
 "fpi": 75,
 "power_rank": 75,
 "rank_label": "FPI",
 "stats": {
 "ats": [
 5,
-6,
+7,
 0
 ],
-"pts": 27.73,
-"opp": 13.18,
+"pts": 28.58,
+"opp": 14.67,
 "giv": 1.0,
-"tak": 2.0,
+"tak": 2.08,
 "ypp": 5.4
 }
 },
@@ -885,35 +891,24 @@
 "name": "San Jos\u00e9 State Spartans",
 "color": "0038a8",
 "rank": null,
-"record": "5-7",
-"games": 12,
+"record": "5-8",
+"games": 13,
 "fpi": 112,
 "power_rank": 112,
 "rank_label": "FPI",
 "stats": {
 "ats": [
-6,
+7,
 6,
 0
 ],
-"pts": 19.5,
-"opp": 22.33,
-"giv": 0.92,
-"tak": 1.42,
+"pts": 20.38,
+"opp": 23.54,
+"giv": 1.08,
+"tak": 1.38,
 "ypp": 5.3
 }
 }
-},
-"ats": {
-"side": "away",
-"team": "North Dakota State Bison",
-"line": -7.5,
-"cover": 0.5013,
-"gap": 0.1,
-"raw": 0.1,
-"check": false,
-"tier": "pass",
-"stretch": 0.91
 },
 "espn_id": "401864549",
 "teams": {
@@ -947,7 +942,9 @@
 "away": "Air Force Falcons",
 "model": {
 "home_win_prob": 0.7198609794305592,
-"away_win_prob": 0.28013902056944084
+"away_win_prob": 0.28013902056944084,
+"market_home_prob": 0.705033164260632,
+"disagreement": 1.5
 },
 "line_note": [
 "Spread: New Mexico Lobos -7 \u00b7 Total 42.5",
@@ -962,22 +959,22 @@
 "name": "Air Force Falcons",
 "color": "003594",
 "rank": null,
-"record": "9-2",
-"games": 11,
+"record": "9-3",
+"games": 12,
 "fpi": 73,
 "power_rank": 73,
 "rank_label": "FPI",
 "stats": {
 "ats": [
 8,
-3,
+4,
 0
 ],
-"pts": 30.36,
-"opp": 18.09,
-"giv": 0.73,
-"tak": 0.91,
-"ypp": 5.8
+"pts": 29.42,
+"opp": 20.08,
+"giv": 0.83,
+"tak": 0.92,
+"ypp": 5.7
 }
 },
 "home": {
@@ -985,32 +982,32 @@
 "name": "New Mexico Lobos",
 "color": "ba0c2f",
 "rank": null,
-"record": "9-2",
-"games": 11,
+"record": "10-2",
+"games": 12,
 "fpi": 44,
 "power_rank": 44,
 "rank_label": "FPI",
 "stats": {
 "ats": [
-7,
+8,
 4,
 0
 ],
-"pts": 32.0,
-"opp": 12.36,
+"pts": 32.83,
+"opp": 12.92,
 "giv": 1.0,
-"tak": 2.55,
-"ypp": 5.6
+"tak": 2.5,
+"ypp": 5.8
 }
 }
 },
 "ats": {
-"side": "away",
-"team": "Air Force Falcons",
-"line": 7.0,
-"cover": 0.5027,
-"gap": 0.1,
-"raw": 0.2,
+"side": "home",
+"team": "New Mexico Lobos",
+"line": -7.0,
+"cover": 0.508,
+"gap": 0.3,
+"raw": 0.6,
 "check": false,
 "tier": "pass",
 "stretch": 0.91
@@ -1256,10 +1253,10 @@
 "away_win_prob": 0.07076153358551229
 },
 "line_note": [
-"Spread: Utah Utes -25.5 \u00b7 Total 65.5",
+"Spread: Utah Utes -24.5 \u00b7 Total 65.5",
 "FPI line: Utah Utes -20.6"
 ],
-"spread_home": -25.5,
+"spread_home": -24.5,
 "fpi_margin": 20.582,
 "total": 65.5,
 "team_stats": {
@@ -1313,10 +1310,10 @@
 "ats": {
 "side": "away",
 "team": "West Virginia Mountaineers",
-"line": 25.5,
-"cover": 0.6105,
-"gap": 5.0,
-"raw": 10.0,
+"line": 24.5,
+"cover": 0.6005,
+"gap": 4.5,
+"raw": 9.0,
 "check": true,
 "tier": "check",
 "stretch": 0.91
